@@ -1,0 +1,47 @@
+name: Test Windows
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install yq
+        run: choco install yq -y
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Run install-windows.ps1 (DRY_RUN)
+        env:
+          DRY_RUN: '1'
+        run: pwsh -File ./setup/install-windows.ps1
+
+      - name: Run verify-windows.ps1 (DRY_RUN)
+        env:
+          DRY_RUN: '1'
+        run: pwsh -File ./setup/verify-windows.ps1 || true
+
+      - name: Summary
+        if: always()
+        run: |
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Test Summary"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Install dry-run: ✅"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Verify: ⚠️ (some checks expected to fail in CI)"

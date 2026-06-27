@@ -14,6 +14,7 @@
 #   SKIP_DOTFILES=1  → no crear symlinks de dotfiles
 #   SKIP_MCP=1       → no regenerar config de MCP
 #   SKIP_VERIFY=1    → no correr tests de verificación al final
+#   DRY_RUN=1        → simular sin ejecutar (CI mode)
 
 set -euo pipefail
 
@@ -28,6 +29,11 @@ log() { echo "$LOG_PREFIX $*"; }
 err() { echo "$LOG_PREFIX ❌ $*" >&2; }
 ok() { echo "$LOG_PREFIX ✅ $*"; }
 warn() { echo "$LOG_PREFIX ⚠️  $*"; }
+
+# ─── DRY_RUN mode (CI) ───
+if [ "${DRY_RUN:-0}" = "1" ]; then
+  exec bash "$SCRIPT_DIR/install-mac.dry-run.sh"
+fi
 
 # ─── Header ───
 log "═══════════════════════════════════════════════════════════"

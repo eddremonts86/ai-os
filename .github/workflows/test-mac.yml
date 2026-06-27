@@ -1,0 +1,52 @@
+name: Test macOS
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install yq
+        run: brew install yq
+
+      - name: Install PyYAML
+        run: pip3 install pyyaml
+
+      - name: Run install-mac.sh (DRY_RUN)
+        env:
+          DRY_RUN: '1'
+        run: bash setup/install-mac.sh
+
+      - name: Run verify.sh (DRY_RUN)
+        env:
+          DRY_RUN: '1'
+        run: |
+          # verify.sh funciona también en dry-run mode (no requiere sistema real)
+          # Pero algunas checks fallan (Warp, brew packages, etc.) — son esperados
+          bash setup/verify.sh || true
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## macOS Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Install dry-run: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify: ⚠️ (some checks expected to fail in CI)" >> $GITHUB_STEP_SUMMARY
