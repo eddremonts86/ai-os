@@ -1,0 +1,14 @@
+# Outputs (artefactos generados, no versionar)
+outputs/*
+
+# Archive (Specs viejas, pero el directorio queda)
+archive/*
+
+# No versionar archivos vacíos
+*.swp
+.DS_Store
+*.log
+
+# Mantener directorios
+!outputs/.gitkeep
+!archive/.gitkeep
