@@ -63,6 +63,36 @@ Plus AI-OS internal:
 - For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime (browser nav, smoke test) and report concrete evidence.
 - Always finish on URL + status for any started service.
 
+### Parallel sub-agents: the default
+
+**If a task has 2+ independent workstreams, dispatch them in parallel.** This is the default, not an exception. Sequential execution is only for tightly coupled steps.
+
+Concrete patterns where parallelism wins:
+
+- **Research + setup**: gather docs / context while preparing the environment.
+- **Multiple file edits**: 3+ files that don't depend on each other → 3 sub-agents in parallel.
+- **Multiple verifications**: lint + type check + tests in parallel (one subagent each).
+- **Multi-repo work**: changes in 2+ repos at once.
+- **Multi-CLI verification**: run the same check across Claude Code + Hermes + Codex + Gemini in parallel.
+
+How to dispatch:
+
+```python
+delegate_task(tasks=[
+    {"goal": "...", "toolsets": ["terminal", "file"]},
+    {"goal": "...", "toolsets": ["web"]},
+    {"goal": "...", "toolsets": ["terminal"]}
+])
+```
+
+Max 3 concurrent per user (configured via `delegation.max_concurrent_children`).
+
+When NOT to dispatch: tasks <2 min, tightly coupled steps, interactive tasks, or when you don't know what the subagent would do.
+
+**Always verify subagent output yourself.** Subagents are self-reporting; require verifiable handles (URLs, paths, IDs) and check them before claiming success.
+
+Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel when possible".
+
 ## 7. Languages
 
 - **Chat**: Spanish (lowercase, terse, no ceremonies).

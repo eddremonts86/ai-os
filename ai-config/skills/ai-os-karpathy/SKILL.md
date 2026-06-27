@@ -100,6 +100,24 @@ If any dependency fails, run `bash setup/verify.sh` to diagnose.
 | `research` | `verification-before-completion`, `code-review-and-quality` |
 | `content_creation` | `documentation-and-adrs`, `code-review-and-quality` |
 
+## How it integrates with sub-agents (parallel dispatch)
+
+**Default for any task with 2+ independent workstreams: dispatch sub-agents in parallel.**
+
+`delegate_task(tasks=[...])` is the standard tool. Max 3 concurrent sub-agents per user. Each subagent gets isolated context and returns a final summary.
+
+Concrete patterns where AI-OS workflows dispatch in parallel:
+
+- **`daily_start`** in parallel with research on the user's domain.
+- **`project_start`**: brainstorm + gather-context + scan-similar-projects in 3 parallel sub-agents.
+- **`coding`**: implement block 1 (sub-agent 1) + implement block 2 (sub-agent 2) + verify (sub-agent 3).
+- **`research`**: research topic A (sub-agent 1) + research topic B (sub-agent 2) + summarize (sub-agent 3).
+- **`content_creation`**: write draft (sub-agent 1) + verify URLs (sub-agent 2) + cross-platform check (sub-agent 3).
+
+**Threshold rule:** if you can break the task into 2+ independent workstreams, dispatching is **mandatory**. Sequential is the exception that requires justification.
+
+Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel when possible".
+
 ## Output
 
 After loading this skill, the AI should have:
