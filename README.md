@@ -1,129 +1,542 @@
-# AI-OS
+# AI-OS — AI Operating System
 
-> AI Operating System local — Karpathy method (Spec + Verifier + Environment) + reproducible dev env setup for Mac and Windows.
-
-**What is it?** Your versioned AI work system: persistent context, global skills, MCP servers, dotfiles, setup scripts. A new Mac = `git clone + bash setup/install-mac.sh` = 5 min and you have everything working.
-
-**Who is it for?** Devs who use multiple CLIs (Claude Code, Codex, Gemini CLI, Antigravity, Hermes Agent) and want a consistent setup between Macs.
-
-## CI Status
+> **Personal AI work system based on Andrej Karpathy's method** (Spec + Verifier + Environment), extended with a reproducible dev environment setup that works across Macs and Windows.
+>
+> **One command setup. 99 skills. 5 CLIs. 1 repo.**
 
 [![Test macOS](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml)
 [![Test Linux](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml)
 [![Test Windows](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Skills: 99+](https://img.shields.io/badge/skills-99+-green.svg)](ai-config/skills/)
 
-## Quickstart
+---
 
-### On a new Mac
+## What is AI-OS?
+
+AI-OS is the **single source of truth** for everything AI in your dev workflow:
+
+- **99+ global skills** propagated to 5 AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes).
+- **14 required superpowers skills** (the framework that powers all workflows).
+- **5 recurring workflows** (daily_start, project_start, coding, research, content_creation).
+- **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
+- **3 verifiers** (quality_checklist, critic_prompt, source_check_prompt) — applied after every task.
+- **7 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser).
+- **Replicable dev env** (zsh + Oh My Zsh + p10k, Warp, Brewfile, git/ssh config templates).
+- **1-command setup** on Mac, Linux, and Windows.
+- **CI** (macOS, Linux, Windows runners) that validates the install scripts on every PR.
+
+It's the answer to the question: *"I just got a new Mac. How do I get my AI setup back in 5 minutes?"*
+
+---
+
+## Why?
+
+Most devs who use AI assistants daily end up with the same problems:
+
+- Skills scattered across multiple CLI configs (`~/.claude/`, `~/.codex/`, etc.).
+- MCP servers hardcoded in `~/.hermes/config.yaml` — no version control, no diff.
+- dotfiles (`~/.zshrc`, `~/.gitconfig`) duplicated or out of sync between Macs.
+- Workflows (Spec → Plan → Execute → Verify) only in your head.
+- 14 superpowers skills are required for the workflows to work, but they're missing in fresh setups.
+- Onboarding a new dev (junior, partner) takes hours of "first, install this, then configure that..."
+
+AI-OS solves all of this with **a single git repo** that contains:
+
+1. The **method** (Spec → Verifier → Environment) as workflows and templates.
+2. The **skills** as a single source of truth, symlinked to 5 CLIs.
+3. The **MCP config** as declarative YAML, generated at install time.
+4. The **dev env** (shell, terminal, packages) as install scripts.
+5. The **CI** that validates everything works on Mac, Linux, and Windows.
+
+---
+
+## Quick start
+
+### Prerequisites
+
+- **Mac (Apple Silicon or Intel)** or **Windows 10/11** with PowerShell, or **Linux**.
+- `git`, `curl`, internet connection.
+- 30-60 minutes for the first install (most of it is downloading packages).
+
+### One-command setup
 
 ```bash
-# 1. Clone the repo (change URL if you move it)
+# 1. Clone
 git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
 cd ~/Projects/ai-os
 
-# 2. Install everything
+# 2. Install everything (Mac)
 bash setup/install-mac.sh
 
 # 3. Verify
 bash setup/verify.sh
 ```
 
-### On native Windows
+For Windows (PowerShell as Admin):
 
 ```powershell
-# 1. open PowerShell as Admin
-# 2. Clone
 git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
 cd $HOME\Projects\ai-os
-
-# 3. Install
 powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
-
-# 4. Verify
 powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1
 ```
 
-## Structure
+The install script is **idempotent**: run it multiple times without breaking anything. It also has **dry-run mode** for CI:
+
+```bash
+DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your system
+```
+
+### What the install does
+
+| Step | What happens |
+|---|---|
+| 1 | Installs Homebrew packages from `dev-env/packages/Brewfile` (60+ packages). |
+| 2 | Installs npm globals from `dev-env/packages/npm-globals.txt` (50+ packages). |
+| 3 | Installs pip packages from `dev-env/packages/pip-packages.txt` (26+ packages). |
+| 4 | Installs Oh My Zsh + Powerlevel10k + custom plugins. |
+| 5 | Creates dotfile symlinks (`~/.zshrc`, `~/.gitconfig`, `~/.ssh/config`, etc.) from `dev-env/dotfiles/`. |
+| 6 | Symlinks 99 skills from `ai-config/skills/` to 5 CLIs (`~/.claude/`, `~/.codex/`, `~/.gemini/`, `~/.agents/`, `~/.hermes/skills/imported/`). |
+| 7 | Installs the 14 required superpowers skills (if missing). |
+| 8 | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers). |
+| 9 | Configures Warp (Mac) + Terminal.app. |
+| 10 | Runs verification (15 health checks). |
+
+---
+
+## Architecture
+
+AI-OS is structured in **3 layers**, each with a clear responsibility:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  Layer 0: AI-OS (this repo)                                      │
+│  • Method: Spec → Verifier → Environment (Karpathy)             │
+│  • 18 master instructions in CLAUDE.md                            │
+│  • 5 workflows, 3 rules, 3 verifiers                            │
+│  • 102 skills (99 global + 2 AI-OS + 1 system)                   │
+│  • 7 declarative MCP servers in YAML                             │
+│  • Replicable dev-env (zsh, Warp, Brewfile, packages)           │
+└──────────────────────────────────────────────────────────────────┘
+                              ▲ symlinks
+┌──────────────────────────────────────────────────────────────────┐
+│  Layer 1: AI CLIs                                                │
+│  Claude Code, Codex, Gemini, Antigravity, Hermes                  │
+│  Each one reads skills from its own ~/.{claude,codex,gemini,...}/│
+└──────────────────────────────────────────────────────────────────┘
+                              ▲ symlinks
+┌──────────────────────────────────────────────────────────────────┐
+│  Layer 2: OS & Shell                                            │
+│  Mac: zsh + Oh My Zsh + p10k + Warp                             │
+│  Windows: PowerShell + Windows Terminal                        │
+│  Linux: bash + zsh                                              │
+└──────────────────────────────────────────────────────────────────┘
+                              ▲
+┌──────────────────────────────────────────────────────────────────┐
+│  Layer 3: System                                                │
+│  Homebrew (Mac) / Chocolatey (Windows) / apt (Linux)            │
+│  Node, Python, Git, Docker, fonts, etc.                        │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### Repository layout
 
 ```
 ai-os/
-├── CLAUDE.md                    # Master instructions (AI-OS)
-├── context/                     # Persistent context (profile, prefs, etc.)
-├── rules/                       # Hard rules (always/ask/never)
-├── specs/                       # Task Specs
-├── verifiers/                   # Quality gates
-├── skills/                      # Local skills
-├── workflows/                   # Recurring processes
-├── archive/                     # Completed Specs
-├── outputs/                     # Generated artifacts
-├── promps/                      # Original Karpathy prompts
+├── CLAUDE.md                    # Master instructions (18 sections)
+├── README.md                    # This file
+├── LICENSE                      # MIT
 │
-├── ai-config/                   # AI config (replicable)
-│   ├── skills/                  #   99 skills source of truth
-│   ├── mcp/                     #   7 MCP servers (declarative)
-│   ├── clis/                    #   CLI-specific config
-│   └── commands/                #   Snippets
+├── context/                     # Persistent context (6 files, mine)
+│   ├── 00_profile.md            # Who I am, style, autonomy rules
+│   ├── 01_business_or_work.md    # Schilling + personal projects
+│   ├── 02_projects.md            # Active/archived projects
+│   ├── 03_preferences.md         # Language, format, autonomy triggers
+│   ├── 04_tools.md               # Mac, terminals, CLIs, packages
+│   └── 05_sources.md             # Official docs URLs
 │
-├── dev-env/                     # Dev env (replicable)
-│   ├── dotfiles/                #   Source of truth for personal configs
-│   ├── packages/                #   Brewfile, npm-globals, pip-packages
-│   └── fonts/                   #   Nerd Fonts
+├── rules/                       # Hard rules (3 files)
+│   ├── always_do.md             # 23 mandatory actions + parallel dispatch rule
+│   ├── ask_before_doing.md       # 30+ actions that need confirmation
+│   └── never_do.md               # 60+ absolute prohibitions
 │
-├── setup/                       # Install scripts
-│   ├── install-mac.sh           #   1-command: full Mac setup
-│   ├── install-windows.ps1      #   1-command: full Windows setup
-│   ├── verify.sh                #   Verify Mac setup
-│   ├── verify-windows.ps1       #   Verify Windows setup
-│   └── generate-mcp-config.py   #   Generates ~/.hermes/config.yaml
+├── workflows/                   # Recurring processes (5 files)
+│   ├── daily_start.md            # Load AI-OS at session start
+│   ├── project_start.md          # Create Spec + dispatch plan
+│   ├── coding.md                 # TDD + verification + PR
+│   ├── research.md               # Research + summarize findings
+│   └── content_creation.md       # Docs, ADRs, READMEs
 │
-└── docs/                        # Documentation
-    ├── README.md                 #   (this file)
-    ├── getting-started.md        #   Onboarding for new users
-    ├── cross-platform.md         #   Mac vs Windows differences
-    ├── sharing.md                #   How to contribute
-    └── architecture.md           #   How it's organized
+├── specs/                        # Active Specs (2 files)
+│   ├── spec_template.md          # Template for new Specs
+│   └── current_spec.md           # Active Spec (reset between tasks)
+│
+├── verifiers/                    # Quality gates (3 files)
+│   ├── quality_checklist.md      # 30+ items to check
+│   ├── critic_prompt.md          # Self-critique prompt
+│   └── source_check_prompt.md    # Verify URLs and claims
+│
+├── skills/                       # Local skills (workspace-specific, 2 files)
+│   ├── README.md
+│   └── skill_template.md
+│
+├── docs/                         # Documentation (4 files)
+│   ├── getting-started.md         # Onboarding for new users
+│   ├── cross-platform.md          # Mac vs Windows differences
+│   ├── sharing.md                 # How to contribute
+│   └── architecture.md            # Internal organization
+│
+├── promps/                       # Original Karpathy prompts (8 files)
+│   ├── README.md
+│   ├── setup/                     # Run once (3 files)
+│   ├── daily-use/                 # Run daily (1 file)
+│   ├── verifiers-specs/            # Per task (2 files)
+│   └── skill-creation/            # When discovering patterns (1 file)
+│
+├── archive/                      # Completed Specs (gitignored content)
+├── outputs/                      # Generated artifacts (gitignored content)
+│
+├── ai-config/                    # AI config (replicable, 1297 files)
+│   ├── skills/                    #   99 skills (single source of truth)
+│   │   ├── ai-os-karpathy/        #   AI-OS router skill (own)
+│   │   ├── ai-os-quickstart/      #   Bootstrap skill (own)
+│   │   ├── brainstorming/         #   14 superpowers skills
+│   │   ├── dispatching-parallel-agents/
+│   │   ├── executing-plans/
+│   │   ├── finishing-a-development-branch/
+│   │   ├── receiving-code-review/
+│   │   ├── requesting-code-review/
+│   │   ├── subagent-driven-development/
+│   │   ├── systematic-debugging/
+│   │   ├── test-driven-development/
+│   │   ├── using-git-worktrees/
+│   │   ├── using-superpowers/     #   The router skill
+│   │   ├── verification-before-completion/
+│   │   ├── writing-plans/
+│   │   ├── writing-skills/
+│   │   ├── code-review-and-quality/
+│   │   └── ... 84+ third-party skills (antfu, tanstack, react, shadcn, etc.)
+│   └── mcp/                       #   7 declarative MCP servers (YAML)
+│       ├── README.md
+│       ├── time.yaml
+│       ├── filesystem.yaml
+│       ├── pdf.yaml
+│       ├── sequential-thinking.yaml
+│       ├── memory.yaml
+│       ├── chrome.yaml
+│       └── agent-browser.yaml
+│
+├── dev-env/                      # Dev env (replicable, 13 files)
+│   ├── dotfiles/                 #   Source of truth for personal configs
+│   │   ├── zsh/                   #   .zshrc + .p10k.zsh
+│   │   ├── git/                  #   .gitconfig template + personal/work
+│   │   ├── ssh/                   #   config (no keys)
+│   │   ├── warp/                  #   README with settings
+│   │   └── terminal/              #   README with settings
+│   ├── packages/                 #   Brewfile + npm-globals + pip-packages
+│   └── fonts/                    #   Nerd Fonts guide
+│
+├── setup/                        # Install scripts (7 files, idempotent)
+│   ├── install-mac.sh             #   1-command Mac setup (with DRY_RUN)
+│   ├── install-mac.dry-run.sh     #   CI-mode simulation
+│   ├── install-windows.ps1        #   1-command Windows setup
+│   ├── install-windows.dry-run.ps1
+│   ├── verify.sh                  #   15 health checks (Mac)
+│   ├── verify-windows.ps1         #   Windows health checks
+│   └── generate-mcp-config.py     #   Auto-install PyYAML + generate config
+│
+└── .github/workflows/             # CI (3 workflows)
+    ├── README.md
+    ├── test-mac.yml               #   macos-latest
+    ├── test-linux.yml             #   ubuntu-latest
+    └── test-windows.yml           #   windows-latest
 ```
 
-## Common commands
+---
 
-```bash
-# Start session with AI-OS
-hermes chat --skills ai-os-quickstart
+## The method: Spec → Verifier → Environment
 
-# Or from any CLI:
-# Claude Code: /skill ai-os-quickstart
-# Codex / Gemini / Antigravity: auto-loaded from ~/.codex/skills/, ~/.gemini/skills/
+This is Karpathy's framework for AI-assisted work. Every non-trivial task follows this loop:
 
-# Verify AI-OS state
-bash setup/verify.sh
-
-# List installed skills
-hermes skills list | grep "imported"
-
-# Create a new Spec
-$EDITOR ~/projects/ai-os/specs/current_spec.md
-
-# Archive a completed Spec
-mv ~/projects/ai-os/specs/current_spec.md ~/projects/ai-os/archive/$(date +%Y-%m-%d)-slug.md
 ```
+┌─────────────┐     ┌──────────────┐     ┌──────────────┐     ┌─────────────┐
+│  1. Spec    │ ──> │  2. Plan    │ ──> │  3. Execute │ ──> │ 4. Verify  │
+│  objective  │     │  blocks     │     │  blocks     │     │  (gates)   │
+│  criteria  │     │  (≤30 min)  │     │  (parallel) │     │            │
+└─────────────┘     └──────────────┘     └──────────────┘     └─────────────┘
+```
+
+1. **Spec**: Create a Spec in `specs/current_spec.md` using `specs/spec_template.md`. Define objective, acceptance criteria, non-goals, plan (blocks of ≤30 min), risks.
+2. **Plan**: → Load skill `writing-plans` to break the Spec into detailed blocks.
+3. **Execute**: Block by block. → Load skill `verification-before-completion` after each block.
+4. **Verify**: Apply the 3 verifiers (`quality_checklist`, `critic_prompt`, `source_check_prompt`). 6 gates per task.
+
+At the end: archive the Spec to `archive/`, clean `current_spec.md`, commit, push.
+
+Full details: [`CLAUDE.md`](CLAUDE.md).
+
+---
+
+## Key rules
+
+### Always do (24 actions)
+
+1. Read `CLAUDE.md` + `context/` at session start.
+2. Load skill `using-superpowers` as the router.
+3. Follow the Spec → Plan → Execute → Verify loop.
+4. **Use sub-agents in parallel when possible** (if a task has 2+ independent workstreams, dispatching is mandatory).
+5. Run verifiers before declaring done.
+6. Use conventional commits.
+7. Archive completed Specs.
+
+Full list: [`rules/always_do.md`](rules/always_do.md).
+
+### Never do (60+ prohibitions)
+
+- Never `rm -rf` outside safe paths.
+- Never commit secrets, API keys, SSH private keys.
+- Never modify another user's home or system files.
+- Never disable git hooks (`--no-verify`) without permission.
+- Never invent URLs, versions, or sources.
+- Never claim done without verification.
+
+Full list: [`rules/never_do.md`](rules/never_do.md).
+
+### Ask before doing (30+ actions)
+
+- `rm -rf` outside safe paths.
+- `sudo` commands (except for personal brew ownership).
+- Git force pushes (even on your own branch).
+- Installing unverified packages.
+- Publishing (npm publish, etc.).
+- Sending messages on behalf of the user.
+
+Full list: [`rules/ask_before_doing.md`](rules/ask_before_doing.md).
+
+---
+
+## The 14 required superpowers skills
+
+These come from [obra/superpowers](https://github.com/obra/superpowers). AI-OS workflows invoke them explicitly. Without them, workflows fail.
+
+| Skill | When loaded |
+|---|---|
+| `using-superpowers` | Router for all skills (load at session start) |
+| `brainstorming` | When the idea is vague |
+| `spec-driven-development` | When starting a new project (similar to AI-OS Spec) |
+| `writing-plans` | After Spec, before execution |
+| `executing-plans` | During execution (block by block) |
+| `verification-before-completion` | Before claiming done |
+| `test-driven-development` | Writing tests |
+| `systematic-debugging` | Bug or unexpected behavior |
+| `code-review-and-quality` | Before PR |
+| `finishing-a-development-branch` | At the end of work |
+| `requesting-code-review` | Asking for review |
+| `receiving-code-review` | Receiving review |
+| `dispatching-parallel-agents` | Multi-task work |
+| `subagent-driven-development` | Executing implementation plans |
+
+If any is missing, run [`promps/setup/03-required-skills.md`](promps/setup/03-required-skills.md).
+
+---
+
+## MCP servers
+
+7 declarative servers in `ai-config/mcp/*.yaml`. Generated to `~/.hermes/config.yaml` at install time:
+
+| Server | Purpose |
+|---|---|
+| `time` | Time/date/timezone utilities |
+| `filesystem` | Read/write files outside cwd |
+| `pdf` | PDF reading, extraction, OCR |
+| `sequential-thinking` | Multi-step planning |
+| `memory` | Persistent knowledge graph |
+| `chrome` | Browser automation, screenshots |
+| `agent-browser` | Vercel agent-browser (token-efficient @ref) |
+
+To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/generate-mcp-config.py`, commit.
+
+---
+
+## How to use AI-OS
+
+### Daily session
+
+```
+1. Start CLI (Hermes / Claude Code / etc.)
+2. → Load skill `ai-os-karpathy` (or `ai-os-quickstart` for first-time setup)
+3. → Load skill `using-superpowers` (router)
+4. → Load skill `workflows/daily_start.md` (load context + rules + Spec)
+5. Check `specs/current_spec.md`. If empty → new task. If filled → execute.
+6. At the end → run verifiers → archive Spec → commit.
+```
+
+### New task (>30 min)
+
+```
+1. → Load skill `workflows/project_start.md`
+2. → Load skill `brainstorming` (if idea is vague)
+3. Create Spec in `specs/current_spec.md`
+4. Get user approval
+5. → Load skill `writing-plans`
+6. Dispatch sub-agents in parallel for independent blocks
+7. → Load skill `verification-before-completion` after each block
+8. → Load skill `code-review-and-quality` before final commit
+9. → Load skill `finishing-a-development-branch` at the end
+10. Archive Spec to `archive/`
+```
+
+### Code work (feature, bug, refactor)
+
+```
+1. → Load skill `workflows/coding.md`
+2. → Load skill `systematic-debugging` if it's a bug
+3. → Load skill `test-driven-development` for tests
+4. → Load skill `using-git-worktrees` for large features
+5. Run TDD: red → green → refactor
+6. → Load skill `code-review-and-quality` before PR
+```
+
+### Research
+
+```
+1. → Load skill `workflows/research.md`
+2. Search official docs
+3. Summarize with sources
+4. → Load skill `verifiers/source_check_prompt` to verify URLs
+5. → Load skill `verifiers/critic_prompt` to review
+```
+
+### Writing docs
+
+```
+1. → Load skill `workflows/content_creation.md`
+2. Define audience and goal
+3. Write first draft
+4. → Load skill `verification-before-completion`
+5. → Load skill `verifiers/critic_prompt`
+```
+
+---
+
+## Cross-platform
+
+AI-OS works on **Mac** (premium experience), **Windows** (PowerShell), and **Linux** (bash).
+
+Differences:
+
+| Feature | Mac | Windows | Linux |
+|---|---|---|---|
+| **AI-OS core** | ✅ | ✅ | ✅ |
+| **99 skills** | ✅ | ✅ | ✅ |
+| **7 MCP servers** | ✅ | ✅ | ✅ |
+| **Oh My Zsh + p10k** | ✅ | ❌ (use Oh-My-Posh or Starship) | ✅ |
+| **Warp** | ✅ |✅ (Windows version) |❌ (use Wezterm) |
+| **Homebrew** | ✅ |❌ (Chocolatey) |❌ (apt) |
+| **Symlinks** | ✅ |⚠️ (need admin or Dev Mode) | ✅ |
+| **CI** | ✅ |✅ | ✅ |
+
+See [`docs/cross-platform.md`](docs/cross-platform.md) for full details.
+
+---
+
+## CI
+
+3 GitHub Actions workflows, one per platform:
+
+- `test-mac.yml`: runs on `macos-latest`, validates Mac install in dry-run mode.
+- `test-linux.yml`: runs on `ubuntu-latest`, validates Mac install (bash) in dry-run.
+- `test-windows.yml`: runs on `windows-latest`, validates Windows install in dry-run.
+
+Triggers: pull_request + push to main.
+
+Workflow:
+1. Checkout repo.
+2. Install `yq` (mikefarah/yq v4).
+3. Run `DRY_RUN=1 bash setup/install-mac.sh` (or windows equivalent).
+4. Validate: structure, Brewfile, MCP YAMLs, symlinks, frontmatter, superpowers.
+5. Report pass/fail.
+
+See [`.github/workflows/README.md`](.github/workflows/README.md) for details.
+
+---
+
+## Sharing & Contributing
+
+The repo is currently **private** on GitHub. To share with other devs:
+
+1. **Open it as public** (or invite collaborators).
+2. They fork, clone, and run `bash setup/install-mac.sh`.
+3. They customize `dev-env/dotfiles/git/` (per-user config) and `context/`.
+
+To contribute back:
+
+- New skills: add to `ai-config/skills/<name>/SKILL.md`. They get distributed to all 5 CLIs automatically.
+- New MCP server: add `ai-config/mcp/<name>.yaml`. It gets generated to `~/.hermes/config.yaml` automatically.
+- New workflow: add `workflows/<name>.md`. It gets loaded by `daily_start.md` automatically.
+- Improvements: PRs welcome. CI will validate.
+
+See [`docs/sharing.md`](docs/sharing.md) for full contribution guide.
+
+---
+
+## Success metrics
+
+AI-OS is successful if:
+
+- ✅ Setup on a new Mac completes in <30 min.
+- ✅ Setup on Windows completes in <60 min.
+- ✅ All 99 skills invokable from 5 CLIs.
+- ✅ All 14/14 superpowers skills present.
+- ✅ All 7 MCP servers auto-connect in Hermes.
+- ✅ Zero secrets in the repo (`git log -p | grep -iE "secret|api[_-]?key|password"` returns nothing).
+- ✅ CI: 3/3 success on PRs to main.
+
+---
+
+## State (current)
+
+- **Files:** 1363
+- **Skills:** 102 (14 superpowers + 2 AI-OS + 86 third-party).
+- **MCP servers:** 7 (declarative YAML).
+- **Workflows:** 5.
+- **Rules:** 3.
+- **Verifiers:** 3.
+- **CI workflows:** 3 (macOS, Linux, Windows).
+- **Setup scripts:** 7 (3 install + 3 verify + 1 generator).
+- **Commits:** 11.
+- **License:** MIT.
+
+---
+
+## Roadmap
+
+- [x] v0.1.0: AI-OS bootstrap (Karpathy method) with superpowers integration.
+- [x] v0.2.0: `ai-os-quickstart` skill (bootstrap 1-line).
+- [x] v0.3.0: Full setup system (Mac + Windows) with Brewfile + MCP config generation.
+- [x] v0.4.0: Windows PowerShell install.
+- [x] v0.5.0: GitHub Actions CI for setup scripts.
+- [ ] v0.6.0: i18n complete (all files in English, including third-party skills).
+- [ ] v1.0.0: Stable API for skills + workflows.
+- [ ] v1.1.0: WSL2 support as primary Windows workflow.
+- [ ] v2.0.0: Multi-tenant / team support (config layers).
+
+---
 
 ## Links
 
+- **Master instructions:** [CLAUDE.md](CLAUDE.md)
 - **Setup details:** [docs/getting-started.md](docs/getting-started.md)
 - **Cross-platform:** [docs/cross-platform.md](docs/cross-platform.md)
-- **Sharing/Contributing:** [docs/sharing.md](docs/sharing.md)
+- **Sharing & Contributing:** [docs/sharing.md](docs/sharing.md)
 - **Architecture:** [docs/architecture.md](docs/architecture.md)
-- **AI-OS method:** [CLAUDE.md](CLAUDE.md)
-- **Required superpowers:** [CLAUDE.md section 16](CLAUDE.md#16-️-requirement-superpowers-skills-mandatory)
+- **Required superpowers:** [promps/setup/03-required-skills.md](promps/setup/03-required-skills.md)
+- **obra/superpowers:** https://github.com/obra/superpowers
+- **Karpathy's method:** Search for "Karpathy AI Operating System" on YouTube.
 
-## State
-
-- 99 global skills (14 superpowers required + 84 community/custom + ai-os-karpathy + ai-os-quickstart)
-- 7 declarative MCP servers
-- Setup verified on Mac
-- Setup documented for Windows
-- CI in GitHub Actions (Mac + Linux + Windows)
+---
 
 ## License
 
-MIT (see [LICENSE](LICENSE)).
+[MIT](LICENSE) — Eduardo Schilling, 2026.
