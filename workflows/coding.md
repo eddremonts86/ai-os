@@ -1,239 +1,188 @@
 # Coding
 
-Workflow para tareas de código: feature nueva, bugfix, refactor.
+Workflow for code tasks: new feature, bug fix, refactor.
 
-> **Prerrequisito:** tener las 14 superpowers skills instaladas (ver `~/Projects/ai-os/CLAUDE.md` sección 16). Sin ellas, este workflow se ejecuta sin TDD, sin systematic-debugging, sin code-review-and-quality.
+> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+>
+> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
-## Cuándo usar
+## When to use
 
-- Implementar feature nueva.
-- Fixear bug.
-- Refactor con impacto > 1 archivo.
-- Tests para código existente.
-- Performance optimization.
+- Implement a new feature.
+- Fix a bug.
+- Refactor with impact >1 file.
+- Tests for existing code.
 
-**Si es trivial (< 30 min, 1-2 archivos)** → ejecutar sin Spec completa.
+Do not use for: configuration changes, single-line fixes (do them directly), research (use `workflows/research.md`).
 
-## Pasos
+## Steps
 
-### 1. Spec o ejecución directa
+### 1. Determine the type of work (read Spec)
 
-**Spec completa** si:
-- Toca > 3 archivos.
-- Tiene impacto en arquitectura.
-- Necesita decisiones de diseño.
-- Hay riesgo de regresión.
+Read `specs/current_spec.md` to understand:
 
-**Spec mínima** si:
-- 1-2 archivos.
-- Cambio aislado.
-- Bug específico con error conocido.
+- What we are building/fixing/refactoring.
+- What acceptance criteria apply.
+- Which blocks are pending.
 
-### 2. Cargar skills
+If the Spec is empty or doesn't exist, run `workflows/project_start.md` first.
 
-| Tarea | Skills a cargar (orden) |
+### 2. Load the right skill (load skill)
+
+Depending on the type of work:
+
+| Type | Load skill |
 |---|---|
-| React/TS feature | `using-superpowers` → `react-patterns` + `tanstack-patterns` + `typescript-advanced` + `test-driven-development` |
-| Wave/Schilling feature | `wave-template-conventions` + `tanstack-patterns` + `shadcn-patterns` |
-| Backend Node | `env-config-and-secrets` + `owasp-security` |
-| Drupal | `drupal8-pattern` |
-| **Bug** | **→ Load skill `systematic-debugging` PRIMERO** + `debugging-and-error-recovery` |
-| Refactor | `code-review-and-quality` |
-| **Tests** | **→ Load skill `test-driven-development`** |
-| Performance | `performance-optimization` |
-| Security | `owasp-security` + `code-review-and-quality` |
-| Multi-file o paralelo | → load `dispatching-parallel-agents` + `subagent-driven-development` |
-| Branch aislado | → load `using-git-worktrees` |
+| New feature (with Spec) | `workflows/project_start.md` (AI-OS) |
+| New feature (without Spec) | `workflows/project_start.md` first, then this |
+| Bug | → Load skill `systematic-debugging` |
+| Refactor | → Load skill `code-simplification` (if available, else `code-review-and-quality`) |
+| Tests | → Load skill `test-driven-development` |
+| New skill | → Load skill `writing-skills` |
+| Hotfix (urgent) | Skip Spec, do it directly, document later |
 
-### 3. Explorar el codebase
+### 3. For bugs: → Load skill `systematic-debugging` (load skill)
 
-Antes de tocar nada:
+If the task is a bug, → Load skill `systematic-debugging` FIRST.
 
-- Leer `AGENTS.md` / `CLAUDE.md` del proyecto si existe.
-- Leer `package.json` / `composer.json` / equivalente.
-- Identificar conventions (linter config, prettier, prettier config).
-- Buscar archivos similares que ya resuelvan el problema (no reinventar).
-- Si es un bug → reproducir primero (test mínimo que falla).
+This skill has 4 phases:
 
-### 4. Planear los cambios
+1. **Reproduce** — confirm the bug exists, get a minimal reproduction.
+2. **Isolate** — find the smallest change that causes the bug.
+3. **Hypothesize** — list 3+ possible causes, pick the most likely.
+4. **Fix and verify** — apply the fix, verify the reproduction is gone, run regression tests.
 
-Para cada cambio, identificar:
+Do not skip the reproduction phase. "I think the bug is X" is not a verification.
 
-- **Archivos a tocar** (path exactos).
-- **Archivos a crear** (si son nuevos).
-- **Archivos a NO tocar** (scope discipline).
-- **Tests a actualizar o crear.**
-- **Migrations si aplica** (DB, schema, types).
-- **Documentación a actualizar** (README, docs, JSDoc).
+### 4. For tests: → Load skill `test-driven-development` (load skill)
 
-**Si el plan toca > 5 archivos** → dividir en bloques antes de empezar.
+If the task is to add or fix tests:
 
-### 5. Implementar
+- Write the test FIRST (red).
+- Verify the test fails for the right reason.
+- Write the minimal code to pass (green).
+- Refactor while keeping tests green.
 
-Por cada cambio:
+This is TDD. It is not "write code then add tests".
 
-#### 5a. Si es feature nueva
+### 5. For new features: work in branches (load skill)
 
-1. **→ Load skill `test-driven-development`** (TDD: test primero, código mínimo, refactor).
-2. Escribir test que falla.
-3. Código mínimo que pasa el test.
-4. Refactor solo si está limpio y el test sigue pasando.
-5. Verificar convenciones del proyecto (linter + prettier + commit hooks).
+→ Load skill `using-git-worktrees` if the work is large or might conflict with other work.
 
-#### 5b. Si es bug
-
-1. **→ Load skill `systematic-debugging`** PRIMERO.
-2. Reproducir el bug con test mínimo.
-3. Aplicar las 4 fases del debugging: reproducir → aislar → hipótesis → fix.
-4. Verificar que el test ahora pasa y no rompiste otros.
-
-#### 5c. Si es refactor
-
-1. **→ Load skill `code-simplification`** (cubrir clean code patterns).
-2. Hacer cambios atómicos (un cambio por commit si es posible).
-3. Verificar que tests siguen pasando después de cada cambio.
-
-**Reglas duras (siempre):**
-
-- TypeScript estricto (no `any`).
-- No secrets hardcoded.
-- No swallow errors (catch + log + rethrow).
-- Validar input en boundaries (API endpoints, form submissions).
-- Manejar async correctamente (no Promise chains innecesarias, usar async/await).
-
-### 6. Verificar
-
-Antes de declarar terminado, **SIEMPRE** correr:
-
-#### 6a. → Load skill `verification-before-completion`
-
-Esta skill ejecuta los checks obligatorios:
+For small features, you can work on the main branch directly. For large features, use a worktree:
 
 ```bash
-# Lint
-pnpm lint  # o npm run lint, eslint, etc.
-
-# Typecheck
-pnpm typecheck  # o tsc --noEmit
-
-# Tests
-pnpm test           # unit
-pnpm test:integration
-pnpm test:e2e       # si aplica
-
-# Build
-pnpm build
-
-# Pre-flight checks (si deploy)
-node scripts/deploy/preflight-deploy.mjs --app <name>
+git worktree add ../<project>-<feature> -b feat/<feature-name>
+cd ../<project>-<feature>
 ```
 
-**Si algún check falla** → fix antes de declarar listo.
+### 6. For new features: use → Load skill `test-driven-development` (load skill)
 
-### 7. Aplicar verifiers
+Even if the task is "new feature" and not "add tests", TDD applies:
 
-1. **Self-check** vs Spec.
-2. **`verifiers/critic_prompt.md`** — sobre el diff generado.
-3. **`verifiers/source_check_prompt.md`** — si el código usa APIs externas.
-4. **→ Load skill `code-review-and-quality`** — checklist de review con prefijos 🔴/🟡/💡.
+- Write the test for the new feature first.
+- Verify the test fails.
+- Write the code to pass.
+- Refactor.
 
-### 8. Branch y PR
+### 7. For refactor: → Load skill `code-review-and-quality` (load skill)
 
-#### 8a. → Load skill `using-git-worktrees`
+If the task is a refactor, → Load skill `code-review-and-quality` first to identify what to refactor.
 
-**Cuando:** el cambio es > 1 sesión o toca código que no querés ensuciar.
+Anti-patterns to avoid:
 
-Te da un workspace aislado en `../.worktrees/<branch>/`.
+- ❌ Refactor + new feature in the same PR (split into 2 PRs).
+- ❌ Refactor without tests (add characterization tests first).
+- ❌ Refactor without measurement (use benchmarks).
 
-#### 8b. → Load skill `finishing-a-development-branch`
+### 8. Execute the work (execute)
 
-**Cuando:** terminaste el trabajo y querés mergear o abrir PR.
+Apply the loaded skill's instructions. Common patterns:
 
-Cubre: rebase, push, merge vs PR, cleanup.
+- TypeScript / JavaScript: `tsc --noEmit` for type check, `vitest` for tests, `eslint` for linting.
+- Python: `mypy` for types, `pytest` for tests, `ruff` for linting.
+- Bash: `shellcheck` for linting, `bats` for tests.
+- PowerShell: `PSScriptAnalyzer` for linting, `Pester` for tests.
 
-#### 8c. → Load skill `requesting-code-review`
+Run tests after each significant change, not just at the end.
 
-**Cuando:** querés review antes de mergear.
+### 9. Verify with → Load skill `verification-before-completion` (load skill)
 
-#### 8d. → Load skill `receiving-code-review`
+→ Load skill `verification-before-completion` and apply its 6 gates:
 
-**Cuando:** recibiste feedback de review y querés aplicarlo bien.
+1. Does the artifact exist? (file, route, log)
+2. Does it have the expected content? (grep, head, count)
+3. Are there error indicators? (error, fail, exit 1)
+4. Is the system healthy? (processes, services, health checks)
+5. Did the test pass? (type check, lint, unit, integration)
+6. Is the user-facing flow verified? (URL, smoke test)
 
-### 9. Commit y reporte
+If any gate fails, the work is NOT complete. Fix and re-verify.
 
-**Commit:**
+### 10. Self-review with → Load skill `code-review-and-quality` (load skill)
 
-- Conventional Commits: `<type>(<scope>): <description>`.
-- Tipos: feat, fix, refactor, docs, test, chore, perf.
-- Scope: nombre del feature/módulo/área.
-- Mensaje en inglés, body opcional con "why" + "what".
+→ Load skill `code-review-and-quality` for self-review before requesting review.
 
-**Reporte:**
+This skill has:
 
-```
-## Coding task completada
+- Self-review checklist.
+- Conventional comments (🔴/🟡/💡/❓/🎓).
+- Size limits for PRs.
+- Anti-patterns to look for.
 
-### Spec
-<path a current_spec.md> o "Spec mínima inline"
+### 11. Commit and finish (load skill)
 
-### Skills usadas
-- using-superpowers → test-driven-development + ...
+→ Load skill `finishing-a-development-branch` to:
 
-### Archivos tocados
-- `<path>`: <qué cambió>
-- `<path>` (nuevo): <qué hace>
+- Commit with conventional message.
+- Push to remote.
+- Open PR.
+- Update Spec status to "complete".
 
-### Tests
-- <cuántos agregados/modificados>
-- <coverage change>
+### 12. Archive the Spec (move file)
 
-### Verificación
-- Lint: ✅
-- Typecheck: ✅
-- Tests: ✅ (X passing)
-- Build: ✅
-- verification-before-completion: ✅
-- Critic prompt: <score>
-- code-review-and-quality: <score>
-
-### Commit
-`<mensaje del commit>`
-
-### Branch / PR
-<creado/mergeado/pendiente>
-
-### Próximo paso
-<sugerencia>
+```bash
+mv ~/Projects/ai-os/specs/current_spec.md \
+   ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-<slug>.md
 ```
 
-### 10. Archivar Spec
+## Output
 
-Mover `specs/current_spec.md` → `archive/YYYY-MM-DD-<slug>.md`.
+At the end of this workflow, you should have:
 
----
+- Code committed (or PR open).
+- Tests passing.
+- Lint passing.
+- Type check passing.
+- Spec archived.
+- A clean commit history.
 
 ## Anti-patterns
 
-- ❌ Empezar a codear sin leer el codebase.
-- ❌ "Refactor mientras estoy ahí" sin estar en scope.
-- ❌ **Fixear sin test que reproduzca el bug** (sin systematic-debugging).
-- ❌ Agregar dependencias sin justificar.
-- ❌ Code style que rompa conventions del proyecto.
-- ❌ TODOs en código de producción.
-- ❌ Comentarios obvios (`// increment i` sobre `i++`).
-- ❌ Funciones > 50 líneas o archivos > 300 líneas sin refactor.
-- ❌ **Saltarse TDD** "porque el código es obvio".
-- ❌ **No verificar antes de declarar listo** (sin verification-before-completion).
+- ❌ Skipping the type check (TypeScript, Python) → runtime errors.
+- ❌ Skipping tests → regressions.
+- ❌ Mixing refactor with new feature in the same PR.
+- ❌ Not running `verification-before-completion` at the end.
+- ❌ Not archiving the Spec.
 
-## Cuándo dividir en bloques explícitos
+## Quick reference
 
-- Feature > 1 sesión → dividir.
-- Bug con varios archivos afectados → dividir (repro → fix → tests → cleanup).
-- Refactor > 200 líneas de diff → dividir (extract function → extract module → cleanup).
+```bash
+# Type check (TypeScript)
+npx tsc --noEmit
 
-## Cuándo volver a Spec
+# Tests (Vitest)
+npx vitest run
 
-- Descubres que el approach inicial no funciona.
-- User cambia requirements mid-implementation.
-- Encuentras que la feature ya existe parcialmente.
-- El plan original era incorrecto sobre el codebase real.
+# Lint (ESLint)
+npx eslint .
+
+# Format (Prettier)
+npx prettier --write .
+
+# Build (Vite)
+npm run build
+
+# Dev server
+npm run dev
+```

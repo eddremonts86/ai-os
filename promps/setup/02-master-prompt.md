@@ -1,96 +1,167 @@
-Quiero que me ayudes a implementar en mi macOS un sistema de trabajo con IA basado en el método de Andrej Karpathy explicado en el video: Spec + Verificador + Entorno.
+# Master Prompt to Implement AI-OS
 
-Tu objetivo es ayudarme a crear un “AI Operating System” local en mi Mac para que cada vez que trabaje contigo no tenga que repetir todo mi contexto desde cero.
+> Run once on a new Mac, after creating the directory structure. Fills all the empty `.md` files with personalized content based on the Karpathy method.
 
-Trabaja bajo esta carpeta principal:
+---
 
-~/Projects/ai-os
+You are an expert in productivity systems, dev environments, and AI assistants. Implement the **AI Operating System** based on the Karpathy method on this Mac.
 
-Quiero que me guíes paso a paso, pero no quiero teoría larga. Quiero que produzcas archivos útiles, estructura clara y prompts reutilizables.
+## What AI-OS is
 
-Primero, entrevístame para descubrir mi objetivo real. Hazme preguntas sobre:
+A directory at `~/Projects/ai-os/` with:
 
-1. Quién soy y a qué me dedico.
-2. Qué tipo de trabajo quiero delegar o acelerar con IA.
-3. Qué proyectos tengo activos.
-4. Qué estilo de respuesta prefiero.
-5. Qué herramientas uso en macOS.
-6. Qué cosas la IA siempre debe hacer.
-7. Qué cosas debe preguntarme antes de hacer.
-8. Qué cosas nunca debe hacer.
-9. Qué criterios uso para decir que un resultado es bueno.
-10. Qué tareas repetitivas debería convertir en “skills”.
+- `CLAUDE.md` — master instructions loaded by any AI assistant at the start of the conversation.
+- `context/` — persistent context (who I am, my projects, preferences, tools, sources).
+- `rules/` — hard rules (always do, ask before doing, never do).
+- `specs/` — task Specs (the unit of work).
+- `verifiers/` — quality gates (applied at the end of each task).
+- `skills/` — local skills (reusable procedures).
+- `workflows/` — recurring processes (daily_start, project_start, coding, research, content_creation).
+- `archive/` — completed Specs.
+- `outputs/` — generated artifacts.
 
-Después de entrevistarme, crea esta estructura de carpetas:
+## Goal
 
-~/Projects/ai-os/
-  CLAUDE.md
-  context/
-    00_profile.md
-    01_business_or_work.md
-    02_projects.md
-    03_preferences.md
-    04_tools.md
-    05_sources.md
-  specs/
-    spec_template.md
-    current_spec.md
-  verifiers/
-    quality_checklist.md
-    critic_prompt.md
-    source_check_prompt.md
-  skills/
-    README.md
-    skill_template.md
-  rules/
-    always_do.md
-    ask_before_doing.md
-    never_do.md
-  workflows/
-    daily_start.md
-    project_start.md
-    content_creation.md
-    research.md
-    coding.md
-  outputs/
-  archive/
+The user says:
 
-Luego crea el contenido inicial de cada archivo.
+- "I'm starting a new task" → you check `specs/current_spec.md`. If empty, you create one.
+- "I'm coding" → you follow `workflows/coding.md` (with TDD, debugging, review).
+- "I'm researching" → you follow `workflows/research.md`.
+- "I'm writing docs" → you follow `workflows/content_creation.md`.
 
-El archivo más importante será:
+## Concrete tasks
 
-~/Projects/ai-os/CLAUDE.md
+### 1. Fill `CLAUDE.md`
 
-Debe funcionar como el archivo principal de instrucciones del sistema. Quiero que incluya:
+Create the master instructions that any AI assistant should follow:
 
-1. Quién soy.
-2. Cómo debes trabajar conmigo.
-3. Qué contexto debes leer siempre.
-4. Qué contexto debes leer solo bajo demanda.
-5. Cómo debes crear una Spec antes de trabajar.
-6. Cómo debes dividir tareas grandes en subtareas pequeñas.
-7. Cómo debes pedirme confirmación en decisiones importantes.
-8. Cómo debes verificar tu trabajo.
-9. Cómo debes usar mis fuentes y documentos.
-10. Qué acciones siempre debes hacer.
-11. Qué acciones siempre debes preguntarme antes de hacer.
-12. Qué acciones nunca debes hacer.
-13. Cómo debes crear o actualizar skills cuando detectes tareas repetitivas.
+- The Karpathy method (Spec → Verifier → Environment).
+- The 5 daily workflows.
+- Output style (terse, English for code, etc.).
+- Memory rules.
+- Hard prohibitions.
+- Project structure.
+- Skill loading order (using-superpowers as router).
 
-Reglas de trabajo obligatorias:
+### 2. Fill `context/00_profile.md`
 
-- No empieces una tarea grande sin crear antes una Spec.
-- No asumas contexto personal, profesional o técnico si no está documentado.
-- Si falta información importante, pregúntame.
-- Divide todo proyecto grande en bloques pequeños.
-- Después de cada bloque, genera una revisión breve.
-- Antes de entregar algo final, pásalo por el Verificador.
-- Si una tarea se repite más de dos veces, sugiere convertirla en una skill.
-- No borres, muevas ni sobrescribas archivos importantes sin preguntarme.
-- No ejecutes comandos destructivos.
-- No instales herramientas en mi Mac sin explicarme para qué sirven y pedirme permiso.
-- Usa lenguaje claro, directo y accionable.
+Ask the user 5-10 questions to learn:
 
-Quiero que también me des los comandos de Terminal para crear esta estructura en macOS usando zsh.
+- Name, location, languages.
+- Style (terse, formal, casual).
+- Triggers (what means "go", "ok", "continue").
+- Tools used (terminal, editor, CLIs).
 
-Empieza ahora con la entrevista inicial. No crees todavía los archivos hasta que tengas mis respuestas.
+Write the answers in English.
+
+### 3. Fill `context/01_business_or_work.md`
+
+Ask the user about their work:
+
+- Employment (if any).
+- Active projects.
+- Personal projects.
+- Archived projects.
+
+### 4. Fill `context/02_projects.md`
+
+Inventory of projects:
+
+- Active projects with stack, path, relevant skills.
+- Archived projects with reason and date.
+
+### 5. Fill `context/03_preferences.md`
+
+User preferences:
+
+- Language (chat in Spanish, code in English).
+- Format (terse, no ceremony).
+- Triggers.
+
+### 6. Fill `context/04_tools.md`
+
+Inventory of installed tools:
+
+- OS, terminal, CLIs, languages, key packages.
+
+### 7. Fill `context/05_sources.md`
+
+Sources the AI can trust:
+
+- Official docs URLs.
+- Reference repositories.
+
+### 8. Fill `rules/always_do.md`
+
+23 actions that the AI should always do (read context at the start, verify before declaring done, etc.).
+
+### 9. Fill `rules/ask_before_doing.md`
+
+30+ actions that require explicit confirmation (rm -rf, sudo, install packages, etc.).
+
+### 10. Fill `rules/never_do.md`
+
+60+ absolute prohibitions (never commit secrets, never rm -rf /, never modify other profiles without permission, etc.).
+
+### 11. Fill `verifiers/quality_checklist.md`
+
+Checklist of 30+ items to apply at the end of each task.
+
+### 12. Fill `verifiers/critic_prompt.md`
+
+Prompt for the AI to critique its own output (spec compliance, code quality, documentation, etc.).
+
+### 13. Fill `verifiers/source_check_prompt.md`
+
+Prompt for verifying URLs and external claims (don't accept invented sources).
+
+### 14. Fill `skills/README.md`
+
+Explain what local skills are and when to create them.
+
+### 15. Fill `skills/skill_template.md`
+
+Template for creating new skills.
+
+### 16. Fill `workflows/daily_start.md`
+
+Workflow to start any session (load AI-OS, load context, load rules, check Spec).
+
+### 17. Fill `workflows/project_start.md`
+
+Workflow to create a Spec for a new task.
+
+### 18. Fill `workflows/coding.md`
+
+Workflow for code work (feature, bug, refactor).
+
+### 19. Fill `workflows/research.md`
+
+Workflow for research (compare options, summarize findings).
+
+### 20. Fill `workflows/content_creation.md`
+
+Workflow for content (docs, ADRs, tutorials).
+
+### 21. Fill `specs/spec_template.md`
+
+Template for creating a new Spec.
+
+## Style
+
+- ALL files in English (the chat can be in Spanish).
+- Terse, no ceremony.
+- Concrete, not pedagogical.
+- Cite sources.
+
+## Output
+
+When done, the AI-OS is functional. The user can:
+
+- Start a session: `cat ~/Projects/ai-os/CLAUDE.md` (or load the skill `ai-os-karpathy`).
+- Create a Spec: `nano ~/Projects/ai-os/specs/current_spec.md`.
+- Run a workflow: `cat ~/Projects/ai-os/workflows/coding.md`.
+
+## Next step
+
+After filling all the files, run `setup/03-required-skills.md` to install the 14 superpowers skills.

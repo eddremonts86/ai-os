@@ -1,93 +1,55 @@
 # 05 — Sources
 
-## Documentación oficial (preferir URLs reales)
+## Official documentation (prefer real URLs)
 
-### Lenguajes / Frameworks
+### Languages / frameworks
 
 - **TypeScript:** https://www.typescriptlang.org/docs/handbook/
 - **React:** https://react.dev/
 - **Vue 3:** https://vuejs.org/guide/
 - **Nuxt:** https://nuxt.com/docs
-- **Next.js:** https://nextjs.org/docs
-- **Svelte:** https://svelte.dev/docs
-- **Node.js:** https://nodejs.org/en/docs
-- **Python:** https://docs.python.org/3/
-- **PHP:** https://www.php.net/docs.php
-- **Drupal:** https://www.drupal.org/docs
+- **TanStack Router:** https://tanstack.com/router/latest
+- **TanStack Query:** https://tanstack.com/query/latest
+- **TanStack Start:** https://tanstack.com/start/latest
+- **PHP / Drupal:** https://www.drupal.org/docs
 
-### Tooling
+### Tools
 
-- **Vite:** https://vitejs.dev/
-- **TanStack:** https://tanstack.com/
-- **shadcn/ui:** https://ui.shadcn.com/
-- **Tailwind:** https://tailwindcss.com/docs
-- **Playwright:** https://playwright.dev/docs/intro
-- **Vitest:** https://vitest.dev/
-- **MSW:** https://mswjs.io/docs/
-- **Percy:** https://docs.percy.io/
-- **Sentry:** https://docs.sentry.io/
-
-### Infra / DevOps
-
+- **Warp:** https://docs.warp.dev/
+- **Oh My Zsh:** https://ohmyz.sh/
+- **Powerlevel10k:** https://github.com/romkatv/powerlevel10k
 - **Homebrew:** https://docs.brew.sh/
-- **Docker:** https://docs.docker.com/
-- **Traefik:** https://doc.traefik.io/traefik/
+- **GitHub Actions:** https://docs.github.com/en/actions
 - **Coolify:** https://coolify.io/docs
 - **Hetzner Cloud:** https://docs.hetzner.cloud/
-- **Nginx:** https://nginx.org/en/docs/
-- **Postgres:** https://www.postgresql.org/docs/
-- **Redis:** https://redis.io/docs/
 
-### AI / Hermes
+### Reference repositories
 
-- **Hermes Agent docs:** https://hermes-agent.nousresearch.com/docs/
-- **Hermes repo:** https://github.com/NousResearch/hermes-agent
-- **MCP spec:** https://modelcontextprotocol.io/
-- **Claude Code:** https://docs.claude.com/en/docs/claude-code
-- **Codex CLI:** https://github.com/openai/codex
+- **obra/superpowers:** https://github.com/obra/superpowers (14 skills required for AI-OS).
+- **antfu/skill:** https://github.com/antfu/skill (skill collection).
+- **NousResearch/hermes:** https://github.com/NousResearch/hermes (Hermes Agent).
+- **Eddremonts86/ai-os:** https://github.com/eddremonts86/ai-os (this repo).
 
-## Skills globales (source of truth)
+## Skills as sources of truth
 
-- **Path:** `~/.claude/skills/`
-- **READMEDD:** `~/.claude/skills/READMEDD.md` (índice completo)
-- **Distribución:** symlinks a `~/.codex/`, `~/.gemini/`, `~/.agents/`, `~/.hermes/skills/imported/`
-- **Total:** 97 skills
+Each installed skill has its own SKILL.md with procedures. When in doubt:
 
-## Documentación interna por proyecto
+1. Check `~/.claude/skills/<skill>/SKILL.md`.
+2. Check the original repo (`gh repo view <owner>/<repo>`).
 
-- **wave-template:** `~/Projects/ei-schilling/wave-template/web-docs/` (Docusaurus oficial).
-- **hermes-agent:** `~/Projects/eddremonts86/hermes-agent/website/docs/`.
-- **iaWorkSpace:** `~/Projects/eddremonts86/iaWorkSpace/README.md` + `SPEC.md` + `AGENTS.md`.
-- **Hermes docs site:** https://hermes-agent.nousresearch.com/docs/
+## When to add a new source
 
-## Repos de referencia (open source skills)
+Add to this file when:
 
-- **anthropics/skills:** https://github.com/anthropics/skills (oficial)
-- **obra/superpowers:** https://github.com/obra/superpowers (proceso)
-- **pbakaus/impeccable:** https://github.com/pbakaus/impeccable (frontend design)
-- **Leonxlnx/taste-skill:** https://github.com/Leonxlnx/taste-skill (taste)
-- **antfu/skills:** https://github.com/antfu/skills (Vue/Vite ecosystem, 19 skills)
-- **secondsky/claude-skills:** https://github.com/secondsky/claude-skills (community plugins)
+- You discover an official doc URL that was missing.
+- You adopt a new library/framework/tool.
+- You install a new skill.
 
-## Skills marketplaces
+## When NOT to trust a source
 
-- **https://skills.sh/** — `npx skills find <query>`
-- **https://skillsmp.com/** — directorio
+- Blog posts (unless official).
+- StackOverflow answers (unless verified by tests).
+- Random Medium articles.
+- LLM-generated content (unless verifiable).
 
-## Reglas sobre fuentes
-
-1. **Preferir documentación oficial** sobre tutoriales random.
-2. **Verificar versión** — React 18 vs 19 cambia mucho.
-3. **Si contradice mi contexto** → mi contexto gana, documentar la diferencia.
-4. **URLs verificadas** — no "docs.example.com" placeholders.
-5. **Si una fuente no responde** → no inventar, decir "no pude verificar".
-
-## Cuándo buscar vs cuándo ya sé
-
-| Ya sé (consultar memoria) | Buscar en fuentes |
-|---|---|
-| Patrones generales del stack | Versiones específicas |
-| Mis preferences | Breaking changes recientes |
-| Skills instaladas | APIs deprecadas |
-| Config de mi Mac | Nuevas features de tools |
-| Proyectos activos | Comandos específicos de una tool |
+Always cite the source. If unsure, → Load skill `verifiers/source_check_prompt.md`.

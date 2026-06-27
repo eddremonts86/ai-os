@@ -1,58 +1,50 @@
-# Skills Locales
+# Local Skills
 
-Skills específicas de este AI-OS. **No son globales** — viven aquí porque aplican solo al contexto `~/Projects/ai-os/`.
+Skills specific to this AI-OS. **Not global** — they live here because they apply only to the `~/Projects/ai-os/` context.
 
-## Diferencia con skills globales
+## Difference with global skills
 
-| Tipo | Path | Propósito |
+| Type | Path | Purpose |
 |---|---|---|
-| **Global** | `~/.claude/skills/<name>/SKILL.md` | Skills reutilizables en cualquier proyecto. Distribuidas a 5 CLIs via symlinks. |
-| **Local (AI-OS)** | `~/Projects/ai-os/skills/<name>.md` | Skills que solo aplican a este AI-OS o al contexto de trabajo. |
+| **Global** | `~/.claude/skills/<name>/` | Skills available to any project (99 in AI-OS). |
+| **Local** | `~/Projects/ai-os/skills/<name>/` | Skills specific to AI-OS (this directory). |
+| **Workspace** | `<project>/.agents/skills/<name>/` | Project-specific skills, not propagated. |
 
-## Cómo se cargan
+## When to create a local skill
 
-Desde cualquier CLI:
+When you find a recurring workflow that **only** applies to AI-OS. Examples:
 
-```bash
-# Claude Code / Codex / Gemini
-# Pegar contenido en la conversación, o
-# Si está en .claude/skills/, ya está cargada
+- Creating a new Spec following the template.
+- Archiving completed Specs.
+- Generating MCP config.
+- validating that setup scripts work.
 
-# Hermes
---skills ai-os-karpathy
-# o /skill ai-os-karpathy
+## When to create a global skill instead
 
-# Manual
-cat ~/Projects/ai-os/skills/<name>.md
-```
+When the workflow applies to:
 
-## Convención de naming
+- Any coding project (use `workflows/coding.md` patterns).
+- Multiple CLIs (Claude Code, Hermes, Codex, etc.).
+- Debugging, testing, reviewing, deploying.
 
-- Una skill = un archivo `.md` con frontmatter.
-- Nombre en kebab-case: `cargar-contexto.md`, `spec-rapida.md`.
-- Si la skill es global → mover a `~/.claude/skills/<name>/SKILL.md` y distribuir.
+Put global skills in `~/.claude/skills/<name>/` (or use `setup/install-mac.sh` which symlinks from `ai-config/skills/`).
 
-## Cuándo crear una skill local
+## Local skill template
 
-- Workflow específico del AI-OS (no aplica a otros proyectos).
-- Convención propia que no quiero en skills globales.
-- Helper para una tarea repetitiva específica.
+Use `skill_template.md` as the base. Include:
 
-## Cuándo promover a global
+- Frontmatter with `name:` and `description:`.
+- "When to Use" section (triggers).
+- "When NOT to Use" section (anti-patterns).
+- Concrete steps with code.
+- 1-2 examples.
+- Pitfalls section.
+- Verification section.
 
-- Si la skill se usa en 2+ proyectos distintos.
-- Si es genérica (no depende de `~/Projects/ai-os/`).
-- Si vale para otros developers.
+## Conventions
 
-## Skills locales actuales
-
-- `skill_template.md` — template para crear nuevas skills (este archivo es meta).
-
-## Próximas skills candidatas
-
-- `spec-rapida.md` — para tareas < 30 min sin entrevistar.
-- `commit-message.md` — Conventional Commits sin pensar.
-- `pr-description.md` — PR template automático.
-- `release-notes.md` — generar changelog desde commits.
-
-Si alguna de estas se usa 2+ veces → crearla siguiendo `skill_template.md`.
+- Skill names in kebab-case (`brainstorming`, `wave-template-conventions`).
+- Frontmatter in YAML.
+- Sections in H2 (`##`).
+- Code examples in fenced blocks with language (`bash`, `python`, etc.).
+- Links to other skills or docs.

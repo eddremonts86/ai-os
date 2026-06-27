@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 # setup/install-mac.sh
-# Setup AI-OS en Mac desde cero. 1-comando.
+# Setup AI-OS on Mac from zero. 1-command.
 #
-# Uso:
+# Usage:
 #   git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
 #   cd ~/Projects/ai-os
 #   bash setup/install-mac.sh
 #
-# Idempotente: corre múltiples veces sin romper nada.
-# Opciones (env vars):
-#   SKIP_BREW=1      → no instalar packages de brew
-#   SKIP_NPM=1       → no instalar packages de npm
-#   SKIP_DOTFILES=1  → no crear symlinks de dotfiles
-#   SKIP_MCP=1       → no regenerar config de MCP
-#   SKIP_VERIFY=1    → no correr tests de verificación al final
-#   DRY_RUN=1        → simular sin ejecutar (CI mode)
+# Idempotent: runs multiple times without breaking anything.
+# Options (env vars):
+#   SKIP_BREW=1      → skip brew packages
+#   SKIP_NPM=1       → skip npm packages
+#   SKIP_DOTFILES=1  → skip dotfile symlinks
+#   SKIP_MCP=1       → skip MCP config regeneration
+#   SKIP_VERIFY=1    → skip verification at the end
+#   DRY_RUN=1        → simulate without executing (CI mode)
 
 set -euo pipefail
 
@@ -44,7 +44,7 @@ log "═════════════════════════
 echo ""
 
 # ─── 0. Prereqs ───
-log "0. Verificando prerequisites..."
+log "0. Verifying prerequisites..."
 
 command -v git >/dev/null || { err "git no instalado. Instala Xcode CLI Tools: xcode-select --install"; exit 1; }
 command -v brew >/dev/null || {
@@ -71,7 +71,7 @@ fi
 echo ""
 
 # ─── 2. Fonts ───
-log "2. Verificando Nerd Fonts..."
+log "2. Verifying Nerd Fonts..."
 CASKE_FONT="$HOME/Library/Fonts/CaskaydiaCoveNerdFont-Regular.ttf"
 if [ ! -f "$CASKE_FONT" ]; then
   warn "CaskaydiaCove Nerd Font no instalado. Instalando..."
@@ -195,7 +195,7 @@ ok "Skills propagadas a 5 CLIs ($SKILL_COUNT archivos en source)"
 echo ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───
-log "6. Verificando superpowers skills (REQUIRED)..."
+log "6. Verifying superpowers skills (REQUIRED)..."
 EXPECTED=14
 ACTUAL=0
 for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do

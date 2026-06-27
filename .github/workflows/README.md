@@ -1,41 +1,41 @@
 # GitHub Actions CI
 
-> Tres workflows que validan que `install-{mac,linux,windows}` y `verify-*` funcionan en dry-run mode.
+> Three workflows that validate that `install-{mac,linux,windows}` and `verify-*` work in dry-run mode.
 
 ## Workflows
 
-| Workflow | OS | Triggers | Tiempo estimado |
+| Workflow | OS | Triggers | Estimated time |
 |---|---|---|---|
-| `test-mac.yml` | `macos-latest` (GitHub runner) | PR + push a main | 3-5 min |
-| `test-linux.yml` | `ubuntu-latest` (GitHub runner) | PR + push a main | 2-3 min |
-| `test-windows.yml` | `windows-latest` (GitHub runner) | PR + push a main | 5-8 min |
+| `test-mac.yml` | `macos-latest` (GitHub runner) | PR + push to main | 3-5 min |
+| `test-linux.yml` | `ubuntu-latest` (GitHub runner) | PR + push to main | 2-3 min |
+| `test-windows.yml` | `windows-latest` (GitHub runner) | PR + push to main | 5-8 min |
 
-## Qué testean
+## What they test
 
-Los workflows ejecutan `install-{mac,windows}.sh/ps1` con `DRY_RUN=1`. Esto:
+The workflows run `install-{mac,windows}.sh/ps1` with `DRY_RUN=1`. This:
 
-1. **NO** instala packages reales (Brew, Chocolatey, npm, pip).
-2. **NO** modifica el sistema del runner.
-3. **SÍ** valida que el script corre sin errores de sintaxis.
-4. **SÍ** valida estructura AI-OS, Brewfile, MCP YAMLs, frontmatter de skills.
-5. **SÍ** simula symlinks en un HOME temporal.
+1. **Does NOT** install real packages (Brew, Chocolatey, npm, pip).
+2. **Does NOT** modify the runner's system.
+3. **Does** validate that the script runs without syntax errors.
+4. **Does** validate AI-OS structure, Brewfile, MCP YAMLs, skills frontmatter.
+5. **Does** simulate symlinks in a temporary HOME.
 
-## Qué NO testean (requiere test manual)
+## What they do NOT test (requires manual testing)
 
-- Instalación real de packages (tarda 10-15 min, puede fallar por rate limits).
-- Interactividad (p10k wizard, prompts de Windows).
-- Configuración real del OS (Warp defaults, Terminal.app).
-- Conexión a servicios externos (GitHub API para gh CLI, etc.).
+- Real package installation (takes 10-15 min, can fail due to rate limits).
+- Interactivity (p10k wizard, Windows prompts).
+- Real OS configuration (Warp defaults, Terminal.app).
+- Connection to external services (GitHub API for gh cli, etc.).
 
-## Cómo correr local
+## How to run locally
 
-Simular lo que hace CI en tu máquina:
+Simulate what CI does on your machine:
 
 ```bash
 # Mac
 DRY_RUN=1 bash setup/install-mac.sh
 
-# Linux (cambia $HOME a algo escribible)
+# Linux (change $HOME to something writable)
 DRY_RUN=1 bash setup/install-mac.sh
 
 # Windows (PowerShell)
@@ -43,22 +43,22 @@ $env:DRY_RUN = "1"
 powershell -File .\setup\install-windows.ps1
 ```
 
-## Cuándo se rompe
+## When it breaks
 
-Si un workflow falla en CI:
+If a workflow fails in CI:
 
-1. Ver el log completo en GitHub Actions.
-2. Identificar qué check falló (estructura, Brewfile, MCP, frontmatter, etc.).
-3. Si es un error legítimo → fix y push.
-4. Si es un falso positivo (ej: yq no instalado en runner) → agregar step de install.
+1. View the full log in GitHub Actions.
+2. Identify which check failed (structure, Brewfile, MCP, frontmatter, etc.).
+3. If it's a real error → fix and push.
+4. If it's a false positive (eg: yq not installed in runner) → add install step.
 
-## Limitaciones de runners
+## Runner limitations
 
-- **macOS runner:** tiene Xcode CLI tools, brew, git preinstalados. NO tiene Warp, p10k, ni Oh My Zsh.
-- **Linux runner:** tiene apt-get, snap, git, python preinstalados.
-- **Windows runner:** tiene PowerShell Core, git, choco preinstalados.
+- **macOS runner:** has Xcode CLI tools, brew, git pre-installed. Does NOT have Warp, p10k, or Oh My Zsh.
+- **Linux runner:** has apt-get, snap, git, python pre-installed.
+- **Windows runner:** has PowerShell Core, git, choco pre-installed.
 
-Si un check requiere tools específicas (Warp, Powerlevel10k), el verify.sh marca `warn` (no fail) en dry-run. Solo errores de sintaxis/lógica son `err` (fail).
+If a check requires specific tools (Warp, Powerlevel10k), the verify.sh marks it as `warn` (not fail) in dry-run. Only syntax/logic errors are `err` (fail).
 
 ## Triggers
 
@@ -70,25 +70,25 @@ on:
     branches: [main]
 ```
 
-- **PRs a main:** corre antes de mergear.
-- **Push a main:** corre después de mergear.
+- **PRs to main:** runs before merging.
+- **Push to main:** runs after merging.
 
-Para correr manual: Actions tab → "Test macOS" / "Test Linux" / "Test Windows" → Run workflow.
+To run manually: Actions tab → "Test macOS" / "Test Linux" / "Test Windows" → Run workflow.
 
-## Costos
+## Costs
 
 GitHub Actions:
-- **macOS runner:** 10x más caro que Linux (~$0.08/min).
-- **Linux runner:** gratis para repos públicos, gratis hasta 2000 min/mes para privados.
-- **Windows runner:** 2x más caro que Linux.
+- **macOS runner:** 10x more expensive than linux (~$0.08/min).
+- **Linux runner:** free for public repos, free up to 2000 min/month for private.
+- **Windows runner:** 2x more expensive than linux.
 
-Setup actual: 3 workflows × ~5 min promedio × 10 min timeout = ~30 min por PR.
+Current setup: 3 workflows × ~5 min average × 10 min timeout = ~30 min per PR.
 
-**Para repo privado:** ~$0.50 por PR con macOS, ~$0.05 con Linux/Windows.
+**For private repo:** ~$0.50 per PR with macOS, ~$0.05 with linux/Windows.
 
-## Próximas mejoras
+## Future improvements
 
-- [ ] Agregar test de `install-mac.sh` real (con brew bundle) en un job separado (15 min timeout).
-- [ ] Cachear `node_modules` y Python deps.
-- [ ] Agregar badge de status al README.
-- [ ] Matrix strategy: probar en macos-13, macos-14, ubuntu-22.04, ubuntu-24.04, windows-2022, windows-2025.
+- [ ] Add a real `install-mac.sh` test (with `brew bundle`) in a separate job (15 min timeout).
+- [ ] Cache `node_modules` and python deps.
+- [ ] Add status badge to README.
+- [ ] Matrix strategy: test on macos-13, macos-14, ubuntu-22.04, ubuntu-24.04, windows-2022, windows-2025.

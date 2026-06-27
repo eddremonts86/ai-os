@@ -1,10 +1,10 @@
 # AI-OS
 
-> AI Operating System local — método Karpathy (Spec + Verifier + Entorno) + setup reproducible del dev env para Mac y Windows.
+> AI Operating System local — Karpathy method (Spec + Verifier + Environment) + reproducible dev env setup for Mac and Windows.
 
-**¿Qué es?** Tu sistema de trabajo con IA versionado: contexto persistente, skills globales, MCP servers, dotfiles, scripts de setup. Una Mac nueva = `git clone + bash setup/install-mac.sh` = 5 min y tenés todo funcionando.
+**What is it?** Your versioned AI work system: persistent context, global skills, MCP servers, dotfiles, setup scripts. A new Mac = `git clone + bash setup/install-mac.sh` = 5 min and you have everything working.
 
-**¿Para quién?** Devs que usan múltiples CLIs (Claude Code, Codex, Gemini CLI, Antigravity, Hermes Agent) y quieren un setup consistente entre Macs.
+**Who is it for?** Devs who use multiple CLIs (Claude Code, Codex, Gemini CLI, Antigravity, Hermes Agent) and want a consistent setup between Macs.
 
 ## CI Status
 
@@ -14,97 +14,97 @@
 
 ## Quickstart
 
-### En una Mac nueva
+### On a new Mac
 
 ```bash
-# 1. Clonar el repo (cambiá la URL si lo movés)
+# 1. Clone the repo (change URL if you move it)
 git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
 cd ~/Projects/ai-os
 
-# 2. Instalar todo
+# 2. Install everything
 bash setup/install-mac.sh
 
-# 3. Verificar
+# 3. Verify
 bash setup/verify.sh
 ```
 
-### En Windows nativo
+### On native Windows
 
 ```powershell
-# 1. Abrir PowerShell como Admin
-# 2. Clonar
+# 1. open PowerShell as Admin
+# 2. Clone
 git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
 cd $HOME\Projects\ai-os
 
-# 3. Instalar
+# 3. Install
 powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
 
-# 4. Verificar
+# 4. Verify
 powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1
 ```
 
-## Estructura
+## Structure
 
 ```
 ai-os/
-├── CLAUDE.md                    # Instrucciones maestras (AI-OS)
-├── context/                     # Contexto persistente (perfil, prefs, etc.)
-├── rules/                       # Reglas duras (always/ask/never)
-├── specs/                       # Specs de tareas
+├── CLAUDE.md                    # Master instructions (AI-OS)
+├── context/                     # Persistent context (profile, prefs, etc.)
+├── rules/                       # Hard rules (always/ask/never)
+├── specs/                       # Task Specs
 ├── verifiers/                   # Quality gates
-├── skills/                      # Skills locales
-├── workflows/                   # Procesos recurrentes
-├── archive/                     # Specs completadas
-├── outputs/                     # Artefactos generados
-├── promps/                      # Prompts Karpathy originales
+├── skills/                      # Local skills
+├── workflows/                   # Recurring processes
+├── archive/                     # Completed Specs
+├── outputs/                     # Generated artifacts
+├── promps/                      # Original Karpathy prompts
 │
-├── ai-config/                   # ⚙️ Config replicable del AI
+├── ai-config/                   # AI config (replicable)
 │   ├── skills/                  #   99 skills source of truth
-│   ├── mcp/                     #   7 MCP servers declarativos
-│   ├── clis/                    #   Config específica por CLI
-│   └── commands/                #   Snippets copy-paste
+│   ├── mcp/                     #   7 MCP servers (declarative)
+│   ├── clis/                    #   CLI-specific config
+│   └── commands/                #   Snippets
 │
-├── dev-env/                     # 🔧 Setup replicable del dev env
-│   ├── dotfiles/                #   Source of truth configs personales
+├── dev-env/                     # Dev env (replicable)
+│   ├── dotfiles/                #   Source of truth for personal configs
 │   ├── packages/                #   Brewfile, npm-globals, pip-packages
 │   └── fonts/                   #   Nerd Fonts
 │
-├── setup/                       # 🚀 Scripts de instalación
-│   ├── install-mac.sh           #   1-comando: setup completo en Mac
-│   ├── install-windows.ps1      #   1-comando: setup completo en Windows
-│   ├── verify.sh                #   Verificar setup en Mac
-│   ├── verify-windows.ps1       #   Verificar setup en Windows
-│   └── generate-mcp-config.py   #   Genera ~/.hermes/config.yaml
+├── setup/                       # Install scripts
+│   ├── install-mac.sh           #   1-command: full Mac setup
+│   ├── install-windows.ps1      #   1-command: full Windows setup
+│   ├── verify.sh                #   Verify Mac setup
+│   ├── verify-windows.ps1       #   Verify Windows setup
+│   └── generate-mcp-config.py   #   Generates ~/.hermes/config.yaml
 │
-└── docs/                        # 📚 Documentación
-    ├── README.md                 #   (este archivo)
-    ├── getting-started.md        #   Onboarding para nuevos users
-    ├── cross-platform.md         #   Mac vs Windows: qué funciona dónde
-    ├── sharing.md                #   Cómo contribuir y compartir
-    └── architecture.md           #   Cómo está organizado
+└── docs/                        # Documentation
+    ├── README.md                 #   (this file)
+    ├── getting-started.md        #   Onboarding for new users
+    ├── cross-platform.md         #   Mac vs Windows differences
+    ├── sharing.md                #   How to contribute
+    └── architecture.md           #   How it's organized
 ```
 
-## Comandos frecuentes
+## Common commands
 
 ```bash
-# Arrancar sesión con AI-OS
+# Start session with AI-OS
 hermes chat --skills ai-os-quickstart
 
-# O desde cualquier CLI:
+# Or from any CLI:
 # Claude Code: /skill ai-os-quickstart
-# Codex / Gemini: la skill se carga automática de ~/.codex/skills/ o ~/.gemini/skills/
+# Codex / Gemini / Antigravity: auto-loaded from ~/.codex/skills/, ~/.gemini/skills/
 
-# Verificar estado del AI-OS
+# Verify AI-OS state
 bash setup/verify.sh
 
-# Listar skills instaladas
+# List installed skills
 hermes skills list | grep "imported"
 
-# Crear nueva Spec
-$EDITOR ~/Projects/ai-os/specs/current_spec.md
+# Create a new Spec
+$EDITOR ~/projects/ai-os/specs/current_spec.md
 
-# Archivar Spec completada
-mv ~/Projects/ai-os/specs/current_spec.md ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-slug.md
+# Archive a completed Spec
+mv ~/projects/ai-os/specs/current_spec.md ~/projects/ai-os/archive/$(date +%Y-%m-%d)-slug.md
 ```
 
 ## Links
@@ -114,15 +114,16 @@ mv ~/Projects/ai-os/specs/current_spec.md ~/Projects/ai-os/archive/$(date +%Y-%m
 - **Sharing/Contributing:** [docs/sharing.md](docs/sharing.md)
 - **Architecture:** [docs/architecture.md](docs/architecture.md)
 - **AI-OS method:** [CLAUDE.md](CLAUDE.md)
-- **Required superpowers:** [CLAUDE.md sección 16](CLAUDE.md#16-️-requisito-superpowers-skills-obligatorio)
+- **Required superpowers:** [CLAUDE.md section 16](CLAUDE.md#16-️-requirement-superpowers-skills-mandatory)
 
-## Estado
+## State
 
-- 99 skills globales (14 superpowers required + 84 community/custom + ai-os-karpathy + ai-os-quickstart)
-- 7 MCP servers declarativos
-- Setup verificado en Mac
-- Setup documentado para Windows
+- 99 global skills (14 superpowers required + 84 community/custom + ai-os-karpathy + ai-os-quickstart)
+- 7 declarative MCP servers
+- Setup verified on Mac
+- Setup documented for Windows
+- CI in GitHub Actions (Mac + Linux + Windows)
 
 ## License
 
-Internal.
+MIT (see [LICENSE](LICENSE)).

@@ -15,7 +15,7 @@ function Ok($msg) { Write-Host "$LogPrefix ✅ $msg" }
 function Warn($msg) { Write-Host "$LogPrefix ⚠️  $msg" -ForegroundColor Yellow }
 function Err($msg) { Write-Host "$LogPrefix ❌ $msg" -ForegroundColor Red }
 
-# Crear HOME temporal
+# Create temporary HOME
 $TempHome = Join-Path $env:TEMP "aios-dryrun-$PID"
 New-Item -ItemType Directory -Path $TempHome -Force | Out-Null
 $env:HOME = $TempHome
@@ -28,8 +28,8 @@ Log "  Simulated HOME: $TempHome"
 Log "═══════════════════════════════════════════════════════════"
 Write-Host ""
 
-# ─── 0. Verificar estructura ───
-Log "0. Verificando estructura AI-OS..."
+# ─── 0. Verify structure ───
+Log "0. Verifying AI-OS structure..."
 $fail = 0
 
 $requiredFiles = @(
@@ -56,11 +56,11 @@ foreach ($f in $requiredFiles) {
 if ($fail -eq 0) {
     Ok "Estructura AI-OS completa"
 } else {
-    Err "$fail archivos faltantes"
+    Err "$fail missing files"
     exit 1
 }
 
-# ─── 1. Validar archivos de packages ───
+# ─── 1. Validate packages files ───
 Log "1. Validando archivos de packages..."
 $brewfile = Get-Content "$AIOSRoot\dev-env\packages\Brewfile" -ErrorAction SilentlyContinue
 if ($brewfile) {
@@ -172,7 +172,7 @@ if ($pythonCmd) {
     Warn "Python no disponible, saltando MCP check"
 }
 
-# ─── 5. Validar frontmatter de skills (sample) ───
+# ─── 5. Validate skills frontmatter (sample) ───
 Log "5. Validando frontmatter de skills (sample de 10)..."
 $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Get-Random -Count 10
 $fmErrors = 0
@@ -187,11 +187,11 @@ foreach ($skillDir in $skillDirs) {
     $hasName = $content | Where-Object { $_ -match "^name:" }
     $hasDesc = $content | Where-Object { $_ -match "^description:" }
     if (-not $hasName) {
-        Err "  $($skillDir.Name): sin name: en frontmatter"
+        Err "  $($skillDir.Name): missing name: in frontmatter"
         $fmErrors++
     }
     if (-not $hasDesc) {
-        Err "  $($skillDir.Name): sin description: en frontmatter"
+        Err "  $($skillDir.Name): missing description: in frontmatter"
         $fmErrors++
     }
 }

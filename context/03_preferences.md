@@ -1,75 +1,46 @@
 # 03 — Preferences
 
-## Idioma
+## Language
 
-- **Chateo:** Español, lowercase, terse, sin ceremonias.
-- **Código / commits / docs:** inglés.
-- **Mensajes de error / logs:** inglés.
-- **Comentarios en código:** inglés (contexto para humanos y herramientas).
+- **Chat:** Spanish, lowercase, terse, no ceremonies.
+- **Code / commits / docs:** English.
+- **Error messages / logs:** English.
+- **Code comments:** English.
 
-## Formato de respuestas
+## Style
 
-| Situación | Preferencia |
-|---|---|
-| Comando para correr | `bash` block copy-paste, sin explicación previa |
-| Lista de cambios | bullets, concisos |
-| Comparación | tabla solo si 3+ items |
-| Decisión con opciones | numeradas (1, 2, 3) + recomendación |
-| Error | qué pasó + qué hacer, sin teoría |
-| Output largo | solo secciones relevantes, no el bloque entero |
-| Progreso | "X / Y completado" + siguiente paso |
+- Terse, no ceremony. No "as you can see", no "I hope this helps".
+- Tables only when comparing 3+ items.
+- Direct answers over long explanations.
+- "luce como que funciona, continua" = accept partial, continue.
+- "no quiero tener que intervenir" = autonomy end-to-end.
 
-## Tono
+## Output format
 
-- Directo, sin "I'd be happy to" / "I cannot" / "As you can see".
-- Tuteo ("podés", "querés"), no "usted".
-- Sin emojis decorativos (✅ ❌ 🚀) salvo cuando resumen status.
-- Sin "Hope this helps!" / "Let me know if..."
-- Sin disclaimers legales innecesarios ("I'm not a licensed...").
+- Lead with the most likely cause.
+- For "dame la url" → URL only, no status, no extras.
+- For lists → use real lists, not paragraph-form summaries.
+- For errors → first the cause, then the fix, then the prevention.
+- For "ok crea todos los docs" → tight and operational, not pedagogical.
 
-## Estructura de trabajo
+## Autonomy + verification
 
-- **Autonomía máxima:** ejecutar primero, reportar después.
-- **Bloques pequeños:** dividir tareas grandes (ver workflow).
-- **Preview antes de actuar destructivo:** decir qué vas a hacer, esperar ok.
-- **No repetir contexto** que ya está en archivos.
-- **Reportar resultado final** breve: qué se hizo + qué falló + siguiente paso.
+- Max autonomy: do not ask "should I continue?" mid-task.
+- Run-time evidence > build/lint/tests alone.
+- For services started → always end with URL + 1-line status.
+- "no pares hasta el final" / "haslo todo hasta el final" = execute the complete plan without pausing.
+- Apply only to reversible operations (do NOT apply to `rm -rf`, force pushes, etc.).
 
-## Decisiones y confirmaciones
+## Triggers
 
-- **Reversible + barato** → ejecutar, mencionar al final.
-- **Reversible + caro** → ejecutar con justificación, mencionar al final.
-- **Irreversible** → pedir confirmación con opciones.
+- "go" → execute without asking.
+- "ok" → continue without asking.
+- "no pares hasta el final" → execute all the way through.
+- "dame la url" → URL only, no extras.
+- "obviamente usa todos los sub-agentes que necesites" → max 3 in parallel.
 
-Ejemplos:
-- `git status` → ejecutar.
-- `brew install --cask warp` → ejecutar, mencionar.
-- `git push` → ejecutar, mencionar.
-- `git push --force` → pedir.
-- `rm -rf node_modules/` → ejecutar (regenerable), mencionar.
-- `rm -rf .git/` → pedir.
-- `chsh -s /bin/zsh` → pedir.
+## AI-OS files (this repo)
 
-## Calidad de output
-
-- **Código:** production-ready, no stubs placeholders. Tests si aplica.
-- **Documentación:** ejemplos reales, no "lorem ipsum".
-- **Explicaciones:** just enough para actuar, no encyclopedias.
-- **Tablas:** solo si suman. Listas para todo lo demás.
-
-## Lo que me frustra
-
-- Repetir el mismo comando 3 veces porque algo se rompió.
-- "I cannot do that because..." sin alternativa concreta.
-- Output que requiere scroll infinito para encontrar la respuesta.
-- Decisiones tomadas sin preguntarme cuando son irreversibles.
-- Tools/scripts globales instalados sin mi permiso.
-- Código con TODOs y "esto lo arreglo después".
-
-## Lo que valoro
-
-- Autonomía con guardrails.
-- Comandos copy-paste ready.
-- Skills reutilizables bien documentadas.
-- Reports al final con qué hice + qué sigue.
-- Honestidad sobre lo que NO funciona.
+- ALL files in `CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`, `archive/`, `outputs/`, `promps/` must be in **English**.
+- The chat with the user can be in Spanish.
+- Reason: the repo is public/shared with other devs and CLIs that default to English.

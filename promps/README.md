@@ -1,28 +1,35 @@
-# Prompts originales de Karpathy
+# Original Karpathy Prompts
 
-> Los 6 prompts originales del video "AI Operating System" de Andrej Karpathy + 1 prompt de setup adicional que creé. **Reorganizados por categoría** (en lugar de la numeración original 1-6).
+> The 6 original prompts from Andrej Karpathy's "AI Operating System" video + 1 additional setup prompt I created. **Reorganized by category** (instead of flat, as they were originally).
+>
+> **Use case:** if you want to bootstrap AI-OS in a new Mac or share it with other devs, these prompts are the starting point.
 
-## Estructura
+## Categories
 
-| Categoría | Archivo | Para qué sirve |
-|---|---|---|
-| `setup/` | `01-create-structure.md` | Comando bash que crea la estructura de directorios del AI-OS. |
-| `setup/` | `02-master-prompt.md` | Prompt maestro para implementar el AI-OS completo (entrevista inicial + crear archivos). |
-| `setup/` | `03-required-skills.md` | **Setup obligatorio** de las 14 superpowers skills antes del primer uso. |
-| `daily-use/` | `01-daily-start.md` | Prompt corto para arrancar sesión — lee contexto y crea Spec. |
-| `verifiers-specs/` | `02-create-spec.md` | Prompt para crear una Spec antes de cualquier tarea grande. |
-| `verifiers-specs/` | `03-verifier.md` | Prompt para que el agente se autocritique antes de declarar listo. |
-| `skill-creation/` | `04-convert-to-skill.md` | Prompt para convertir tareas repetitivas en skills reutilizables. |
+### setup/ (run once on a new Mac)
 
-## Orden de uso típico
+- **`01-create-structure.md`** — base command to create the directory structure on a new Mac.
+- **`02-master-prompt.md`** — master prompt that generates CLAUDE.md, context/, rules/, specs/, etc.
+- **`03-required-skills.md`** — verifies and installs the 14 superpowers skills required by AI-OS.
 
-1. **Setup único (primera vez):** `setup/01` + `setup/02` + `setup/03` en orden.
-2. **Cada sesión:** `daily-use/01`.
-3. **Tarea grande (>30 min):** `verifiers-specs/02` antes, `verifiers-specs/03` al final.
-4. **Tarea repetitiva detectada:** `skill-creation/04`.
+### daily-use/ (run daily)
 
-## Notas
+- **`01-daily-start.md`** — short prompt to start the day with AI-OS loaded.
 
-- Los prompts originales eran "para Claude Code" específicamente. Los workflows del AI-OS (`~/Projects/ai-os/workflows/`) son la **implementación** de estos prompts para funcionar en **cualquier CLI** (Claude Code, Hermes, Codex, Gemini, Antigravity).
-- Si necesitás los prompts originales exactos, están preservados aquí. Si querés el flujo moderno, usá los workflows.
-- Los archivos están numerados con prefijo (`01-`, `02-`, etc.) para mantener orden lógico al listar.
+### verifiers-specs/ (run per task)
+
+- **`02-create-spec.md`** — creates a Spec for a new task.
+- **`03-verifier.md`** — verifies the output of a completed task.
+
+### skill-creation/ (run when discovering a pattern)
+
+- **`04-convert-to-skill.md`** — converts a recurring task into a reusable skill.
+
+## Recommended order
+
+1. **`setup/01-create-structure.md`** — create the AI-OS directory structure.
+2. **`setup/02-master-prompt.md`** — generate the master instructions.
+3. **`setup/03-required-skills.md`** — install required superpowers skills.
+4. **`daily-use/01-daily-start.md`** — daily session workflow.
+5. For each task: `verifiers-specs/02-create-spec.md` → execute → `verifiers-specs/03-verifier.md`.
+6. When a pattern repeats: `skill-creation/04-convert-to-skill.md`.

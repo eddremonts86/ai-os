@@ -1,268 +1,130 @@
 ---
 name: ai-os-karpathy
-description: AI Operating System local de Edd basado en el método "Spec + Verifier + Entorno" de Andrej Karpathy. Carga contexto persistente (perfil, proyectos, preferencias, tools) desde ~/Projects/ai-os/ y aplica workflows de Spec/verifier antes de cualquier tarea grande. Aplica al arrancar sesión en Claude Code, Hermes, Codex, Gemini o Antigravity.
-license: Internal
+description: AI Operating System local of Edd based on the "Spec + Verifier + Environment" method from Andrej Karpathy. Loads persistent context (profile, projects, preferences, tools, sources), 99 global skills, MCP servers, and rules for daily work with any AI CLI. Use when starting any AI session in Claude Code, Hermes, Codex, Gemini, or Antigravity.
+license: MIT
+metadata:
+  hermes:
+    tags: [meta, context, orchestration]
 ---
 
-# AI Operating System (Karpathy Method)
+# AI-OS (Karpathy Method)
 
-## Cuándo invocar
+Personal AI work system. Local, versioned, replicable.
 
-- **Al iniciar cualquier sesión de trabajo** en cualquier CLI.
-- Cuando vas a hacer una tarea grande (> 30 min, varios archivos).
-- Cuando necesitás contexto persistente entre sesiones.
-- Cuando querés Spec → ejecución → verificación como flujo estándar.
+## What it provides
 
-## Path del AI-OS
+- **18 master instructions** in `CLAUDE.md` (method, workflows, prohibitions).
+- **6 context files** (`context/`): profile, business/work, projects, preferences, tools, sources.
+- **3 rules files** (`rules/`): always_do, ask_before_doing, never_do.
+- **3 verifiers** (`verifiers/`): quality_checklist, critic_prompt, source_check_prompt.
+- **5 workflows** (`workflows/`): daily_start, project_start, coding, research, content_creation.
+- **99 global skills** distributed to 5 CLIs.
+- **14 superpowers skills (REQUIRED)** integrated into the workflows.
+- **7 declarative MCP servers** generated automatically.
 
-`~/Projects/ai-os/` — repo local con CLAUDE.md, context/, rules/, workflows/, specs/, verifiers/, skills/, outputs/, archive/.
+## When to load
 
-**Cargar al inicio de sesión:**
+- **Start of any session** in Claude Code, Hermes, Codex, Gemini, or Antigravity.
+- **When you want to apply the Karpathy method** (Spec + Verifier + Environment) to a task.
+- **When switching projects** and need to reload the context.
 
-1. `~/Projects/ai-os/CLAUDE.md` — instrucciones maestras (siempre).
-2. `~/Projects/ai-os/context/00_profile.md` — quién soy.
-3. `~/Projects/ai-os/context/02_projects.md` — proyectos activos (si vas a tocar uno).
-4. `~/Projects/ai-os/context/03_preferences.md` — estilo de respuesta.
-5. `~/Projects/ai-os/context/04_tools.md` — qué tools hay instaladas.
-6. `~/Projects/ai-os/rules/never_do.md` — reglas absolutas.
+## How to load
 
-## Cargar bajo demanda
-
-- `specs/current_spec.md` — si hay Spec activa.
-- `verifiers/critic_prompt.md` — antes de declarar terminado.
-- `verifiers/source_check_prompt.md` — si hay claims externos (URLs, versiones, APIs).
-- `rules/always_do.md` + `rules/ask_before_doing.md` — durante ejecución.
-- `workflows/` — el workflow que aplique (`daily_start`, `project_start`, `coding`, etc.).
-
-## Workflow principal (resumen)
-
-### Tarea grande (> 30 min)
-
-1. **Cargar AI-OS** (pasos arriba).
-2. **Cargar skills relevantes** según el área (ver tabla abajo).
-3. **Entrevistar** si la tarea es ambigua (`workflows/project_start.md`).
-4. **Crear Spec** en `specs/current_spec.md` usando `specs/spec_template.md`.
-5. **Esperar aprobación explícita** antes de ejecutar.
-6. **Ejecutar en bloques** < 30 min c/u.
-7. **Aplicar verifiers** al final.
-8. **Reportar** + archivar Spec.
-
-### Tarea pequeña (< 30 min)
-
-1. Cargar AI-OS (contexto mínimo).
-2. Spec mínima inline (objetivo + criterios de éxito).
-3. Ejecutar.
-4. Verifier si > 5 min.
-5. Reportar breve.
-
-## Skills relevantes por área
-
-| Área | Skills a cargar |
-|---|---|
-| Frontend React/TS | `react-patterns`, `tanstack-patterns`, `shadcn-patterns`, `typescript-advanced`, `frontend-design` |
-| Wave/Schilling | `wave-template-conventions`, `tanstack-patterns`, `react-patterns`, `shadcn-patterns` |
-| Backend Node | `env-config-and-secrets`, `debugging-and-error-recovery`, `code-review-and-quality`, `owasp-security` |
-| Drupal | `drupal8-pattern`, `debugging-and-error-recovery` |
-| Vue/Nuxt | `vue-patterns`, `antfu-nuxt`, `antfu-vue`, `antfu-vite` |
-| Deploy/Coolify | `coolify-deploy`, `coolify-env-sync-and-postdeploy`, `prod-deploy-verification`, `shipping-and-launch` |
-| Hetzner | `hetzner-cloud-cli`, `prod-fleet-register` |
-| Debugging | `debugging-and-error-recovery`, `systematic-debugging` |
-| Code review | `code-review-and-quality`, `owasp-security` |
-| Setup nuevo proyecto | `wave-template-conventions`, `pnpm-docker-deploy`, `tanstack-start-coolify-deploy` |
-| Diseño/UX | `frontend-design`, `taste-skill`, `impeccable` |
-| Open-design | `open-design-integration`, `frontend-design` |
-| Containers/Docker | `containers-architecture`, `pnpm-docker-deploy` |
-| Multi-CLI routing | `using-superpowers` (cargar primero si hay múltiples skills relevantes) |
-
-## Reglas absolutas (resumen)
-
-### ALWAYS DO
-
-- Leer contexto mínimo antes de actuar.
-- Spec para tareas grandes, esperar aprobación.
-- Preview de comandos destructivos.
-- Aplicar verifiers antes de declarar terminado.
-- Reportar al final (qué hice + qué falló + siguiente paso).
-
-### ASK BEFORE
-
-- Instalar tools globales nuevas.
-- Cambiar `~/.zshrc`, `~/.gitconfig`, configs del sistema.
-- `git push --force`, `rm -rf`, `DROP DATABASE`.
-- Deploy a producción.
-- Modificar archivos del AI-OS (`~/Projects/ai-os/`).
-
-### NEVER
-
-- Comandos destructivos sin confirmar.
-- Inventar datos, URLs, versiones.
-- Hardcodear secrets.
-- Saltarse Spec en tareas grandes.
-- "I'd be happy to...", "I cannot...", "As you can see...".
-- Modificar AI-OS sin pedir.
-
-(Ver `~/Projects/ai-os/rules/never_do.md` para el detalle completo.)
-
-## Idiomas
-
-- **Chat:** Español (Edd prefiere terse Spanish).
-- **Código, commits, docs:** inglés.
-- **Mensajes de error / logs:** inglés.
-
-## Cómo invocar desde cada CLI
-
-### Claude Code
-
-```bash
-# Auto: este archivo se carga si está en ~/.claude/skills/
-# Manual: pegar contenido de CLAUDE.md al inicio de conversación
-```
-
-### Hermes
+### In Hermes (recommended)
 
 ```bash
 hermes chat --skills ai-os-karpathy
-# o
-hermes chat -q "tu tarea" --skills ai-os-karpathy
 ```
 
-### Codex / Gemini / Antigravity
+Or paste at the start of the conversation:
+
+> Load and apply `~/Projects/ai-os/CLAUDE.md`. Read `context/`, `rules/`, and `specs/current_spec.md` before responding.
+
+### In Claude Code
 
 ```bash
-# Mismo: skill se carga desde ~/.codex/skills/, ~/.gemini/skills/, ~/.agents/skills/
-# (vía symlinks a ~/.claude/skills/)
+# Auto-loads from ~/.claude/skills/ai-os-karpathy/
+# Or explicit:
+/skill ai-os-karpathy
 ```
 
-### Manual (cualquier CLI)
+### In Codex / Gemini / Antigravity
 
-Pegar este prompt al inicio:
+Auto-loads from `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`.
 
-```
-Trabaja bajo ~/Projects/ai-os/. Primero lee:
-1. ~/Projects/ai-os/CLAUDE.md
-2. ~/Projects/ai-os/context/00_profile.md
-3. ~/Projects/ai-os/context/03_preferences.md
-4. ~/Projects/ai-os/rules/never_do.md
+## What it does
 
-Luego carga skills relevantes y pregunta qué tarea hacer hoy.
-```
+1. **Reads `CLAUDE.md`** for the master instructions.
+2. **Loads `context/`** for who I am, my projects, my preferences, my tools.
+3. **Loads `rules/`** to know what to always do, what to ask before doing, what to never do.
+4. **Checks `specs/current_spec.md`** to see if there's an active Spec.
+5. **Loads `workflows/`** appropriate for the current task.
+6. **Triggers the right superpowers skill** for the phase of the work (brainstorming, writing-plans, verification-before-completion, etc.).
 
-## ⚠️ Requisito: superpowers skills
+## When to NOT use
 
-**Este AI-OS requiere las 14 superpowers skills de `obra/superpowers`** instaladas en `~/.claude/skills/`. Sin ellas, los workflows se ejecutan incompletos (sin TDD, sin brainstorming, sin code-review).
+- ❌ On a Mac without the 14 superpowers skills installed. The workflows will fail silently.
+- ❌ Without running `bash setup/verify.sh` first. If you don't know the state, don't assume.
+- ❌ As a replacement for `ai-os-quickstart`. `ai-os-quickstart` is for bootstrapping, `ai-os-karpathy` is for daily work.
 
-**Setup en otra Mac:**
+## Dependencies (REQUIRED)
 
-```bash
-gh repo clone obra/superpowers /tmp/sp -- --depth=1
-cp -R /tmp/sp/skills/* ~/.claude/skills/
-for cli_dir in ~/.codex/skills ~/.gemini/skills ~/.agents/skills; do
-  for s in ~/.claude/skills/*/; do
-    name=$(basename "$s")
-    [ ! -e "$cli_dir/$name" ] && ln -s "$s" "$cli_dir/$name"
-  done
-done
-mkdir -p ~/.hermes/skills/imported
-for s in ~/.claude/skills/*/; do
-  name=$(basename "$s")
-  [ ! -e ~/.hermes/skills/imported/$name ] && ln -s "$s" ~/.hermes/skills/imported/$name
-done
-```
-
-**Verificar:**
-
-```bash
-ls ~/.claude/skills/ | grep -cE "^(brainstorming|dispatching-parallel-agents|executing-plans|finishing-a-development-branch|receiving-code-review|requesting-code-review|subagent-driven-development|systematic-debugging|test-driven-development|using-git-worktrees|using-superpowers|verification-before-completion|writing-plans|writing-skills)$"
-# Debe decir: 14
-```
-
-**Mapeo AI-OS → superpowers:**
-
-| Workflow | Superpowers skill |
+| Dependency | Why |
 |---|---|
-| `daily_start.md` | `using-superpowers` |
-| `project_start.md` (ambiguo) | `brainstorming` |
-| `project_start.md` (plan) | `writing-plans` + `executing-plans` |
-| `coding.md` (feature) | `test-driven-development` |
-| `coding.md` (bug) | `systematic-debugging` |
-| `coding.md` (refactor) | `code-simplification` |
-| `coding.md` (final) | `verification-before-completion` + `code-review-and-quality` |
-| `coding.md` (branch) | `using-git-worktrees` + `finishing-a-development-branch` |
-| `coding.md` (PR) | `requesting-code-review` + `receiving-code-review` |
-| `coding.md` (paralelo) | `dispatching-parallel-agents` + `subagent-driven-development` |
-| `content_creation.md` (ADR) | `documentation-and-adrs` |
-| `research.md` (decisión) | `verification-before-completion` + `documentation-and-adrs` |
+| 14 superpowers skills | The workflows explicitly invoke them via `Load skill` syntax. |
+| Bash + Python 3.11 | To run setup scripts and MCP generator. |
+| yq | To validate MCP config in `verify.sh`. |
+| git | To commit and archive Specs. |
 
-Ver `~/Projects/ai-os/CLAUDE.md` sección 16 para detalle completo + `~/Projects/ai-os/promps/setup-required-skills.md` para setup paso a paso.
+If any dependency fails, run `bash setup/verify.sh` to diagnose.
 
-## Distribución
-
-Esta skill está en `~/.claude/skills/ai-os-karpathy/SKILL.md` y se distribuye via symlinks a:
-
-- `~/.codex/skills/`
-- `~/.gemini/skills/`
-- `~/.agents/skills/`
-- `~/.hermes/skills/imported/` (invocable como `imported:ai-os-karpathy`)
-
-Total: 5 CLIs cubiertos.
-
-## Estructura del AI-OS
+## Daily workflow (loaded after this skill)
 
 ```
-~/Projects/ai-os/
-├── CLAUDE.md                    ← instrucciones maestras
-├── context/                     ← contexto persistente
-│   ├── 00_profile.md
-│   ├── 01_business_or_work.md
-│   ├── 02_projects.md
-│   ├── 03_preferences.md
-│   ├── 04_tools.md
-│   └── 05_sources.md
-├── specs/                       ← Specs de tareas
-│   ├── spec_template.md
-│   └── current_spec.md          ← Spec activa
-├── verifiers/                   ← Quality gates
-│   ├── quality_checklist.md
-│   ├── critic_prompt.md
-│   └── source_check_prompt.md
-├── skills/                      ← Skills locales
-│   ├── README.md
-│   └── skill_template.md
-├── rules/                       ← Reglas
-│   ├── always_do.md
-│   ├── ask_before_doing.md
-│   └── never_do.md
-├── workflows/                   ← Procesos recurrentes
-│   ├── daily_start.md
-│   ├── project_start.md
-│   ├── content_creation.md
-│   ├── research.md
-│   └── coding.md
-├── outputs/                     ← Artefactos generados
-└── archive/                     ← Specs/resultados viejos
+1. → Load skill `workflows/daily_start.md` (AI-OS)
+2. → Load skill `using-superpowers` (router)
+3. Check `specs/current_spec.md`
+4. If new task → → Load skill `workflows/project_start.md`
+5. If existing Spec → execute block by block
+6. At the end → → Load skill `verification-before-completion`
+7. Archive the Spec
 ```
 
-## Anti-patterns a evitar
+## How it integrates with superpowers
 
-- ❌ Cargar AI-OS solo para tareas triviales (overhead).
-- ❌ Saltarse Spec en tareas grandes.
-- ❌ No aplicar verifiers al final.
-- ❌ Modificar archivos del AI-OS sin pedir.
-- ❌ Inventar contenido de `context/` (siempre verificar antes de escribir).
-- ❌ Asumir que el user ya leyó los archivos (recordar paths relevantes).
-- ❌ **Ejecutar workflows sin superpowers skills** instaladas (degradación silenciosa).
+| AI-OS workflow | Superpowers skill loaded |
+|---|---|
+| `daily_start` | `using-superpowers` (router) |
+| `project_start` | `brainstorming`, `writing-plans`, `executing-plans`, `verification-before-completion` |
+| `coding` | `test-driven-development`, `systematic-debugging`, `code-review-and-quality`, `verification-before-completion`, `using-git-worktrees`, `finishing-a-development-branch` |
+| `research` | `verification-before-completion`, `code-review-and-quality` |
+| `content_creation` | `documentation-and-adrs`, `code-review-and-quality` |
 
-## Cuándo NO usar AI-OS
+## Output
 
-- Tareas triviales (`ls -la`, `git status`, "qué dice este comando").
-- Cuando el user explícitamente dice "no cargues AI-OS".
-- Cuando hay conflicto con un proyecto específico que tiene su propio AGENTS.md (prioridad al del proyecto).
-- En una Mac donde **no se haya corrido `setup-required-skills.md`** (workflows rotos).
+After loading this skill, the AI should have:
 
-## Recursos
+- Loaded CLAUDE.md + context/ + rules/ + workflows/.
+- checked specs/current_spec.md.
+- ready to execute the next step.
 
-- **Path:** `~/Projects/ai-os/`
-- **Setup requerido:** `~/Projects/ai-os/promps/setup-required-skills.md`
-- **READMEDD de skills globales:** `~/.claude/skills/READMEDD.md`
-- **Skills count:** 14 superpowers (REQUIRED) + 84 community/custom (opcional) = 98 totales + 1 AI-OS = 99
-- **Método:** "Spec + Verifier + Entorno" — Andrej Karpathy (2025) + superpowers workflow
+## Verification
+
+```bash
+bash ~/Projects/ai-os/setup/verify.sh
+```
+
+If it shows "Pasados: 14, Fallados: 0", AI-OS is functional.
+
+## Pitfalls
+
+- ❌ Don't load `ai-os-karpathy` without the 14 superpowers installed. The workflows will silently degrade.
+- ❌ Don't skip the context load. Forgetting preferences = generic AI behavior.
+- ❌ Don't run this in a project that doesn't have AI-OS. The paths won't exist.
+
+## Related
+
+- `ai-os-quickstart` (bootstrap, 1-line) — for initial setup.
+- `using-superpowers` (router) — loaded automatically after this skill.
+- `workflows/daily_start.md` — the actual workflow loaded after this skill.
+- `setup/verify.sh` — to validate the AI-OS state.

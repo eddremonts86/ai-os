@@ -1,179 +1,186 @@
 # Research
 
-Workflow para investigar un tema nuevo y resumir findings accionables.
+Workflow to research a new topic and summarize actionable findings.
 
-> **Prerrequisito:** tener las 14 superpowers skills instaladas (ver `~/Projects/ai-os/CLAUDE.md` sección 16). Sin ellas, este workflow se ejecuta sin code-review-and-quality final.
+> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+>
+> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
-## Cuándo usar
+## When to use
 
-- Investigar una librería/framework nuevo.
-- Comparar opciones antes de decidir (ej: Hetzner vs DO, Coolify vs CapRover).
-- Entender un bug o comportamiento antes de fixear.
-- Evaluar una decisión técnica con tradeoffs reales.
+- Investigate a new library/framework.
+- Compare options before deciding (e.g., Hetzner vs DO, TanStack Query vs SWR).
+- Evaluate a tool for adoption.
+- Research a bug root cause (rare; usually use `systematic-debugging` instead).
+- Learn a new concept.
 
-## Pasos
+Do not use for: tasks that need code changes (use `workflows/coding.md`).
 
-### 1. Definir la pregunta de research
+## Steps
 
-Tener claro:
+### 1. Define the question (read Spec)
 
-- ¿Qué quiero saber exactamente?
-- ¿Para qué decisión? (output debe ser accionable)
-- ¿Qué nivel de profundidad? (overview vs deep dive)
-- ¿Hay deadline? (si no, mejor quality > speed)
+Read `specs/current_spec.md`. If empty, the user has no Spec. Ask:
 
-### 2. Cargar contexto relevante
+> "What is the question you want answered?"
 
-- `context/05_sources.md` — fuentes preferidas.
-- Si es para un proyecto → `context/02_projects.md`.
-- Skills relevantes (ej: `debugging-and-error-recovery` para entender un bug).
+Examples:
 
-### 3. Buscar fuentes
+- "Should we use TanStack Query or SWR for data fetching?"
+- "What's the difference between Hetzner Cloud Volumes and S3?"
+- "How does Oh My Zsh handle plugins?"
 
-**Prioridad de fuentes:**
+The question must be specific. If vague, run → Load skill `brainstorming` first.
 
-1. **Documentación oficial** del producto/framework.
-2. **GitHub repo** (issues, discussions, releases).
-3. **Blog posts oficiales** del maintainer.
-4. **Skills conocidas** instaladas (pueden tener el resumen).
-5. **Comunidades** (Reddit, HN, Discord) — solo para validar consenso.
-6. **AI search** (Perplexity, Exa, Tavily via MCP) — para validación cruzada.
+### 2. Define acceptance criteria (ask)
 
-**Reglas:**
+What does "research complete" look like? Examples:
 
-- Preferir **documentación oficial** sobre tutoriales random.
-- **Verificar versión** — confirmar que la doc aplica a la versión actual.
-- **URLs reales** — no placeholders. Si no podés verificar, decir "no pude verificar".
-- **No inventar** features que no existen.
+- A comparison table with 3+ options.
+- A recommendation with justification.
+- A list of pros/cons for each option.
+- Links to official docs.
+- Code examples that work.
 
-### 4. Validar fuentes
+Show criteria to the user. They must approve.
 
-Para cada claim importante:
+### 3. Search (execute)
+
+Use `context/05_sources.md` as starting point (it has official docs URLs).
+
+Search patterns:
 
 ```bash
-# Verificar URL
-curl -fsSL --max-time 10 "<url>" 2>&1 | head -20
+# Official docs (preferred)
+web_fetch("https://official-docs-url")
 
-# Verificar package version
-npm view <package> version
-brew info <formula>
+# GitHub repos
+gh repo view <owner>/<repo>
+gh api repos/<owner>/<repo>/contents/
 
-# Verificar que existe
-gh repo view <owner/repo>
+# Comparison articles
+web_search("X vs Y comparison 2026")
 ```
 
-Si una fuente no responde o no se puede verificar → marcar como "no verificada" y buscar alternativa.
+Tools:
 
-### 5. Sintetizar
+- `web_search` (Hermes tool) — Google search.
+- `web_fetch` — fetch URL content.
+- `web_extract` (Hermes tool) — extract main content from URL.
 
-**Output esperado:**
+For code-specific research:
 
-- Resumen ejecutivo (1-3 bullets con la conclusión principal).
-- Comparativa si aplica (tabla con criterios objetivos).
-- Pros/contras de cada opción (con números cuando posible).
-- Recomendación con justificación.
-- Links a fuentes verificadas.
-- Open questions o "no pude verificar X".
+- `gh search code` — search code in repos.
+- `gh search repos` — search repos.
+- `context7` (if installed) — official docs for any library.
 
-**Formato:**
+### 4. Summarize findings (write)
+
+Structure the research as:
 
 ```markdown
-## Research: <Título>
+## Question
+[the question]
 
-### TL;DR
-<conclusión principal en 1-2 frases>
+## Options evaluated
+- Option 1: [name]
+  - Pros: ...
+  - Cons: ...
+  - Use case: ...
+- Option 2: [name]
+  ...
 
-### Contexto
-<qué se preguntó y por qué>
+## Recommendation
+[the recommended option with justification]
 
-### Comparativa
-| Criterio | Opción A | Opción B | Opción C |
-|---|---|---|---|
-| Precio | $X | $Y | $Z |
-| ... | | | |
+## Sources
+- [Link 1](url)
+- [Link 2](url)
 
-### Recomendación
-<Opción X> porque <razones objetivas>.
+## Next steps
+- [concrete next step]
+```
 
-### Trade-offs
-- ✅ <beneficios>
-- ⚠️ <costos>
+Length: 200-1000 words. Not too short (no value), not too long (no action).
+
+### 5. Verify sources (execute)
+
+→ Load skill `verifiers/source_check_prompt.md` (AI-OS internal) to verify:
+
+- All URLs are real (not invented).
+- Versions are current.
+- No hallucinated content.
+
+If any check fails, redo the search or remove the claim.
+
+### 6. Critical review (load skill)
+
+→ Load skill `verifiers/critic_prompt.md` (AI-OS internal) to review:
+
+- Is the recommendation justified?
+- Are there missing options?
+- Is the analysis biased?
+- Are there hidden costs (licensing, maintenance, learning curve)?
+
+Apply the 2-3 improvements suggested. Do not skip this step.
+
+### 7. Review with → Load skill `code-review-and-quality` (load skill)
+
+For research that includes code examples:
+
+- Verify the code compiles/runs.
+- Verify the API is current.
+- Verify imports/exports are correct.
+
+### 8. Present to user (communicate)
+
+```markdown
+## [Topic]
+[1 paragraph summary]
+
+### Recommendation
+[the recommended option]
+
+### Why
+[3-5 bullet points]
 
 ### Sources
-- <url 1> — verified
-- <url 2> — verified
-- <url 3> — not verified, <razón>
-
-### Open questions
-- <lo que no pude resolver>
+- [link]
+- [link]
 ```
 
-### 6. → Load skill `verification-before-completion`
+Do not use long tables for 2-option comparisons. Use prose.
 
-**Cuando:** el research incluye verificación de claims o comparativas.
+### 9. Save as output (write file)
 
-Cubre los checks finales antes de reportar.
+If the research is reusable, save to `outputs/`:
 
-### 7. → Load skill `code-review-and-quality`
-
-**Si el research resultó en una decisión técnica**, aplicar esta skill para validar la calidad del output (no inventar, fuentes verificadas, etc.).
-
-### 8. → Load skill `documentation-and-adrs` (si la decisión merece ADR)
-
-**Cuando:** la conclusión del research guía una decisión arquitectural significativa.
-
-Crea un ADR con el formato canónico para documentar la decisión.
-
-### 9. Reporte y archivado
-
-- Si el research es para una decisión → guardarlo en `outputs/YYYY-MM-DD-<slug>.md`.
-- Si es para una Spec → linkearlo desde la Spec.
-- Si reveló conocimiento reusable → sugerir skill (ej: `<topic>-overview`).
-
-### 10. Sugerir próximos pasos
-
-```markdown
-### Próximos pasos sugeridos
-1. <acción concreta basada en la recomendación>
-2. <validar con POC si aplica>
-3. <documentar decisión en ADR>
+```bash
+cp ~/tmp/research-<topic>.md ~/Projects/ai-os/outputs/$(date +%Y-%m-%d)-<slug>.md
 ```
 
----
+### 10. Update context (write file)
+
+If the research changes the AI-OS state, update `context/`:
+
+- `04_tools.md` — new tool added.
+- `05_sources.md` — new official docs URL.
+- `02_projects.md` — new project.
+
+## Output
+
+At the end of this workflow, you should have:
+
+- A research document with the question, options, recommendation, sources.
+- Sources verified (no invented URLs).
+- Critical review applied.
+- Optionally saved to `outputs/`.
+- Context updated if applicable.
 
 ## Anti-patterns
 
-- ❌ Resumir sin haber leído (copy-paste de snippets random).
-- ❌ "Documentación oficial dice X" sin haber verificado.
-- ❌ Lista de features sin contexto de qué problema resuelven.
-- ❌ Comparativas con criterios subjetivos ("fácil de usar", "moderno").
-- ❌ Decidir por el user — el research informa, la decisión es del user.
-
-## Criterios objetivos para comparativas
-
-| Criterio | Tipo |
-|---|---|
-| Precio | Cuantitativo ($/mes, $/GB) |
-| Performance | Cuantitativo (req/s, ms latency) |
-| Comunidad | Cuantitativo (GitHub stars, npm downloads, contributors) |
-| Licencia | Categórico (MIT, Apache, GPL) |
-| Madurez | Cuantitativo (años en prod, versión actual) |
-| Breaking changes | Categórico (none, minor, major) |
-| Soporte | Categórico (community, paid, none) |
-| Self-hosted vs SaaS | Categórico |
-| Lock-in | Categórico (low, medium, high) |
-| Docs quality | Cualitativo pero descriptivo |
-
-## Skills útiles para research
-
-- `debugging-and-error-recovery` — entender bugs.
-- `<stack>-patterns` — comparar patrones del stack.
-- `wave-template-conventions` — decisiones en proyectos Schilling.
-- `prod-deploy-verification` — comparar deploy options.
-- `release-it-framework` — production readiness.
-
-## Cuándo NO hacer research
-
-- La respuesta ya está en mi memoria (skills, context).
-- El user ya decidió (no necesita validación).
-- El tema es well-known y obvio para el stack (ej: "¿React o Vue?" → usar lo del proyecto).
+- ❌ Research without a clear question → produces a document with no thesis.
+- ❌ Inventing sources or URLs → loses trust.
+- ❌ Not verifying versions → recommend deprecated tools.
+- ❌ Not including licensing/maintenance costs → biased comparison.
+- ❌ Research that doesn't end in a decision → wastes time.

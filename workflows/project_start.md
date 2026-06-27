@@ -1,182 +1,160 @@
 # Project Start
 
-Workflow para arrancar una tarea nueva, creando Spec y dividiendo en bloques.
+Workflow to start a new task, creating a Spec and breaking it into blocks.
 
-> **Prerrequisito:** tener las 14 superpowers skills instaladas (ver `~/Projects/ai-os/CLAUDE.md` sección 16). Sin ellas, este workflow se ejecuta sin brainstorming, sin writing-plans, sin executing-plans.
+> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+>
+> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
-## Cuándo usar
+## When to use
 
-- Tarea > 30 min estimada.
-- Tarea que toca varios archivos.
-- Feature nueva, refactor grande, o bug complejo.
-- Cualquier cosa que no entre en "comando rápido".
+- Task >30 min estimated.
+- Task touches multiple files.
+- New feature, large refactor, complex bug.
+- Anything that needs a Spec before execution.
 
-**Si la tarea es < 30 min y cabe en una Spec mínima** → usar `spec_template.md` versión corta y ejecutar directamente, sin entrevistar.
+Do not use for: trivial tasks, single-line fixes, quick questions.
 
-## Pasos
+## Steps
 
-### 1. Recibir la tarea
+### 1. → Load skill `brainstorming` (load skill)
 
-El user describe lo que quiere (en español, terse).
+If the user gave a vague idea, run brainstorming first. 7 techniques:
 
-### 2. Decidir: ¿entrevistar o ejecutar?
+1. "What are you trying to do?"
+2. "What does success look like?"
+3. "What constraints do you have?"
+4. "What's the risk if you don't do this?"
+5. "What's the simplest possible version?"
+6. "What could go wrong?"
+7. "What's the next concrete step?"
 
-| Situación | Acción |
-|---|---|
-| Tarea clara, scope conocido | Spec mínima, ejecutar |
-| Tarea ambigua, varias formas posibles | **→ Load skill `brainstorming`** primero |
-| Feature nueva sin precedente | **→ Load skill `brainstorming`** primero |
-| Bug con error específico | Spec mínima, ejecutar |
-| Refactor grande con impacto unclear | **→ Load skill `brainstorming`** primero |
+Output: a paragraph of 1-3 sentences describing the task clearly.
 
-### 3. Entrevistar (si aplica)
+If the user already has a clear idea, skip this step.
 
-> **Si aplicaste `brainstorming` en paso 2:** seguir sus pasos hasta tener una dirección clara, luego continuar acá.
+### 2. Create the Spec (write file)
 
-Preguntas necesarias (no repetir info que ya está en `context/`):
+Copy `specs/spec_template.md` to `specs/current_spec.md`. Fill in each section:
 
-1. **Objetivo real:** ¿qué querés conseguir con esto? (no el cómo, el qué)
-2. **Para qué sirve:** ¿quién lo usa o lee? ¿qué problema resuelve?
-3. **Contexto adicional:** ¿hay algo de proyectos/users/situación que no esté en `context/`?
-4. **Restricciones:** ¿hay deadlines, versiones específicas, cosas que NO puedo tocar?
-5. **Criterios de éxito:** ¿cómo sabemos que está listo?
-6. **Anti-ejemplos:** ¿hay algo que NO querés que pase (regresiones, patrones viejos)?
-7. **Scope:** ¿qué NO entra? (importante definirlo)
+- **Metadata**: date, status, blocks.
+- **Objective**: what we want to achieve (1 sentence).
+- **Context**: why this task exists, what problem it solves.
+- **Acceptance criteria**: specific, measurable conditions.
+- **Non-goals**: explicit list of what we WON'T do.
+- **Plan**: blocks of <=30 min each.
+- **Verification per block**: how to know each block worked.
+- **Risk and mitigation**: known risks + how to mitigate.
+- **References**: links to related docs, code, conversations.
 
-**NO preguntar:**
-- Info personal/profesional que ya está en `context/`.
-- Preferences que ya están en `03_preferences.md`.
-- Qué tecnología usar si ya está claro del proyecto.
+Use `brainstorming` answers to fill the Spec.
 
-### 4. Crear Spec
+Show the Spec to the user and ask:
 
-> **→ Load skill `writing-skills` o usar `specs/spec_template.md` directamente.**
+> "Here's the Spec. OK to proceed?"
 
-Copiar `spec_template.md` a `specs/current_spec.md` y rellenar.
+The user must approve before continuing.
 
-Si la tarea es simple, usar la **versión corta del template** (última sección).
+### 3. → Load skill `writing-plans` (load skill)
 
-### 5. → Load skill `writing-plans`
+If the Spec is approved, → Load skill `writing-plans` to break it into detailed blocks.
 
-**Cuando:** la Spec está aprobada y tiene más de 2-3 bloques de trabajo.
+This skill converts the Spec's "Plan" section into:
 
-La skill `writing-plans` toma la Spec y genera un **plan ejecutable** con bloques numerados, dependencias, y criterios de éxito por bloque.
+- Numbered blocks.
+- Dependencies between blocks.
+- Verification per block.
+- Estimated duration.
+- Risk per block.
 
-Si la Spec cabe en 1-2 bloques → skip esta skill, ejecutar directo.
+Update the Spec with the detailed plan.
 
-### 6. Validar Spec conmigo
+### 4. → Load skill `verification-before-completion` (load skill)
 
-```
-"Spec + plan listos. Resumen:
-- Objetivo: <X>
-- Output: <Y>
-- Tiempo estimado: <Z>
-- Bloques: N (del plan)
+Before executing each block, → Load skill `verification-before-completion`.
 
-¿Aprobás? Si sí, arranco con bloque 1."
-```
+This skill has 6 mandatory gates:
 
-### 7. → Load skill `executing-plans`
+1. Does the artifact exist? (file, route, log)
+2. Does it have the expected content? (grep, head, count)
+3. Are there error indicators? (error, fail, exit 1)
+4. Is the system healthy? (processes, services, health checks)
+5. Did the test pass? (if applicable)
+6. Is the user-facing flow verified? (URL, smoke test)
 
-**Esta skill guía la ejecución bloque por bloque.** Sus pasos reemplazan los de abajo — seguí su flujo.
+If any gate fails, the block is NOT complete. Fix before continuing.
 
-Si la skill no está disponible → usar el flujo manual de abajo.
+### 5. Execute blocks (execute)
 
-#### Flujo manual (si executing-plans no carga)
+For each block in the Spec:
 
-Por cada bloque:
+1. → Load `workflows/coding.md` (if code) or `workflows/research.md` (if research) or `workflows/content_creation.md` (if docs).
+2. Execute the block.
+3. Run `verifiers/verification-before-completion` after each block.
+4. If block is OK, move to the next.
+5. If block fails, fix and retry (don't move on).
+6. → Load skill `code-review-and-quality` before finishing.
 
-1. **Anunciar:** "Bloque N: <qué voy a hacer>"
-2. **Ejecutar** (comandos, código, etc.)
-3. **Review breve:** "Hecho: <qué>. Output: <path>. Siguiente: bloque N+1."
+If the block is code:
 
-Si un bloque toma > 30 min → dividirlo retroactivamente.
+- → Load skill `test-driven-development` before writing code.
+- → Load skill `systematic-debugging` if you hit a bug.
 
-Si descubro complejidad nueva → volver a Spec, no improvisar.
+If the block is research:
 
-### 8. Verificación final
+- → Load skill `verification-before-completion` after the research.
 
-Al terminar todos los bloques:
+If the block is content:
 
-#### 8a. → Load skill `verification-before-completion`
+- → Load skill `verification-before-completion` after writing.
 
-**Esta skill es OBLIGATORIA** antes de declarar terminado. Cubre los checks que el agente tiende a skipear (lint, typecheck, tests, build).
+### 6. Final review (load skill)
 
-#### 8b. Aplicar verifiers de AI-OS
+→ Load skill `code-review-and-quality` for the final pass.
 
-1. Aplicar `verifiers/critic_prompt.md`.
-2. Si hay claims externos → aplicar `verifiers/source_check_prompt.md`.
-3. Self-check vs criterios de éxito de la Spec.
+This skill has:
 
-#### 8c. → Load skill `code-review-and-quality`
+- Self-review checklist (before requesting review).
+- Conventional comments (with emoji prefix).
+- Size limits for PRs.
+- Anti-patterns to look for.
 
-**Si el output incluye código**, aplicar esta skill para revisar el diff con checklist completo.
+If the review finds issues, fix them in the same PR.
 
-#### 8d. Reporte final
+### 7. → Load skill `finishing-a-development-branch` (load skill)
 
-```
-## Tarea completada
+At the end:
 
-### Qué se hizo
-- Bloque 1: <output>
-- Bloque 2: <output>
-- Bloque N: <output>
+- → Load skill `finishing-a-development-branch` to:
+  - Commit with conventional message.
+  - Push to remote.
+  - Open PR (if applicable).
+  - Update Spec status to "complete".
 
-### Verificación
-- Spec cumplida: ✅ / ⚠️ / ❌
-- verification-before-completion: ✅
-- critic prompt: <score>
-- source check: <clean/con advertencias>
-- code-review-and-quality: <score>
+### 8. Archive the Spec (move file)
 
-### Output final
-- <path 1>: <descripción>
-- <path 2>: <descripción>
+```bash
+mv ~/Projects/ai-os/specs/current_spec.md \
+   ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-<slug>.md
 
-### Sugerencias
-- Próximo paso: <X>
-- Tarea repetitiva detectada → considerar skill
-```
-
-### 9. Archivar Spec
-
-Mover `specs/current_spec.md` → `archive/YYYY-MM-DD-<slug>.md`.
-
-Crear nuevo `specs/current_spec.md` vacío.
-
-### 10. → Load skill `writing-skills` (si aplica)
-
-Si hubo tareas repetitivas durante el flujo:
-
-```
-"Detecté 2 tareas repetitivas:
-1. <X> → candidata a skill `~/.claude/skills/<name>/SKILL.md`
-2. <Y> → candidata a skill local `~/Projects/ai-os/skills/<name>.md`
-
-¿Querés que las cree? Puedo cargar `writing-skills` para hacerlo bien."
+# Reset for next task
+echo "# Current Spec\n\n*No active Spec.* Load a new Spec following \`specs/spec_template.md\` or run \`workflows/project_start.md\`." \
+  > ~/Projects/ai-os/specs/current_spec.md
 ```
 
----
+## Output
 
-## Anti-patterns a evitar
+At the end of this workflow, you should have:
 
-- ❌ Entrevistar cuando la tarea es obvia.
-- ❌ Spec de 500 líneas para una feature de 50.
-- ❌ Dividir bloques de 5 min en 20 pedazos.
-- ❌ Volver a la Spec cada 2 minutos.
-- ❌ Reporte final de 200 líneas cuando cabe en 30.
-- ❌ Saltarse `verification-before-completion` "porque es trivial".
-- ❌ No aplicar `code-review-and-quality` después de escribir código.
+- A complete Spec in `archive/`.
+- All blocks executed and verified.
+- A clean git commit (or PR open).
+- A new empty `specs/current_spec.md` ready for the next task.
 
-## Cuándo volver a la Spec
+## Anti-patterns
 
-- Cambio de scope mid-execution.
-- Bloque revela dependencia inesperada.
-- User cambia requirements.
-- Output diverge significativamente de lo planeado.
-
-## Cuándo NO volver a la Spec
-
-- Pequeño ajuste de un bloque.
-- Decisión técnica que no afecta scope.
-- Color/naming/style detail.
+- ❌ Skipping Spec creation for "small" tasks → they grow and become unmanageable.
+- ❌ Not getting user approval before executing → wrong direction wastes time.
+- ❌ Executing all blocks at once without verifying → cascading failures.
+- ❌ Not archiving the Spec → loses institutional knowledge.
+- ❌ Not resetting current_spec.md → next task starts with garbage.

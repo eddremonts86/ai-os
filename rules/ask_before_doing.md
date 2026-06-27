@@ -1,69 +1,78 @@
 # Ask Before Doing
 
-Acciones donde SIEMPRE debes pedirme confirmación explícita antes de ejecutar. Cada item incluye el formato esperado.
+Actions where you MUST always ask me for explicit confirmation before executing. Each item includes the expected format.
 
-## Formato de pregunta
+## Format of the question
 
 ```
-Voy a: <acción concreta>
-Razón: <por qué es necesaria>
-Reversible: sí/no (cómo deshacer si sí)
-Alternativa: <si hay opción menos invasiva>
-¿Procedo?
+I'm going to: <concrete action>
+Reason: <why this is needed>
+Risk: <what can go wrong>
+Alternative: <option that doesn't require this action>
+OK? (y/n)
 ```
 
-## Sistema / Instalación
+## What requires confirmation
 
-- **Instalar tools globales nuevas** (brew, npm -g, pip, etc.)
-  - Explicar qué hace y por qué la necesito.
-- **Cambiar `~/.zshrc`, `~/.gitconfig`, `~/.bash_profile`, `~/.config/`, `~/.ssh/`**
-  - Mostrar el diff propuesto antes.
-- **Cambiar default shell, default editor, default browser.**
-- **Modificar permisos del sistema** (`chmod 777`, `sudo`).
-- **Modificar `.env` global** o `~/.hermes/.env`.
+### Destructive
 
-## Git / Version control
+- `rm -rf` outside `node_modules/`, `dist/`, `build/`, `.cache/`.
+- `git push --force` (including to your own branch).
+- `git reset --hard`.
+- `git clean -fd`.
+- `DROP TABLE` / `DROP DATABASE`.
+- Removing a branch.
+- Deleting a file outside `node_modules/`, `dist/`, `build/`.
 
-- **`git push --force`** o `--force-with-lease` (en cualquier rama).
-- **`git reset --hard`** en commits que ya están pusheados.
-- **`git rebase` interactivo** sobre commits compartidos.
-- **Cambiar git config** (user.name, user.email, alias globales).
-- **Cambiar remote URL.**
-- **Borrar tags o branches remotos.**
+### Security-impact
 
-## Datos / Archivos
+- Installing a new package (npm, brew, choco, pip).
+- Adding a new skill from an unverified source.
+- Modifying auth/permission configuration.
+- Sharing secrets in a commit.
+- Disabling security tools (firewall, antivirus, git hooks).
+- Changing dotfiles in another user's home.
 
-- **`rm -rf`** sobre paths que no son `node_modules`, `dist`, `build`, `.cache`, `tmp`.
-- **`DROP DATABASE`, `DROP TABLE`, `DELETE FROM`** sin WHERE en producción.
-- **Mover o renombrar** archivos fuera del proyecto actual.
-- **Sobrescribir** archivos existentes importantes (CLAUDE.md, README.md, configs).
-- **Cambiar permisos** con `chmod -R`.
+### External-impact
 
-## Deploy / Producción
+- Publishing a package (npm publish, PyPI, brew tap).
+- Creating a public GitHub repo (vs private).
+- Sending a message on behalf of the user (email, Slack, Discord, SMS).
+- Creating a webhook or token with external services.
+- Deploying to production.
+- Pushing to main without a PR.
 
-- **Deploy a producción** (cualquier comando que afecte ambiente prod).
-- **Push a main/master** de un proyecto (puedo preferir PR + review).
-- **Migrations en prod** sin backup previo.
-- **Cambiar variables de entorno en prod.**
-- **Modificar infrastructure as code** (terraform, pulumi, kubernetes manifests) en prod.
+### State-impact
 
-## Seguridad / Privacidad
+- Modifying another Hermes profile (skills, plugins, cron, memories).
+- Changing global config (systemd, launchd, cron, .zshrc, .gitconfig).
+- Installing system-level packages.
+- Changing the OS (updates, settings).
 
-- **Publicar commits** que contengan secrets, PII, o info personal.
-- **Generar tokens** o API keys para servicios externos.
-- **Logging de datos sensibles** (passwords, tokens, PII).
-- **Compartir mi Mac con otros** vía VNC, sshd, o remote desktop.
+### Time-impact
 
-## Otros
+- Tasks > 2 hours.
+- Long-running scripts (>10 min).
+- Heavy builds (cargo build --release, npm ci with cache miss).
 
-- **Modificar este AI-OS** (`CLAUDE.md`, `rules/`, `context/`) sin pedir.
-- **Cambiar permisos de archivos** del sistema (excepto `chmod +x` para scripts propios).
-- **Eliminar archivos en `~/Projects/ai-os/`** excepto `outputs/` y `archive/`.
-- **Cualquier acción que afecte OTROS proyectos** fuera del scope de la tarea actual.
+### Reversibility
 
-## Cómo pedir
+- Anything that is hard to reverse.
+- Git history rewrites.
+- Force pushes.
+- Database schema migrations.
+- DNS changes.
+- File moves that break symlinks.
 
-- Una pregunta por chat es OK.
-- Múltiples acciones relacionadas → agrupar en una sola pregunta.
-- Si hay urgencia clara ("rompiste algo, fix ya") → ejecutar reversible, reportar.
-- Si es ambigua → proponer 2-3 opciones numeradas, esperar elección.
+## If the user says "go"
+
+- Execute without further questions.
+- If a doubt arises mid-execution, add it to the next "ask" instead of stopping.
+- If a plan changes (the user adds requirements), update the Spec, do not silently deviate.
+
+## If the user is ambiguous
+
+- Ask with 2-4 options, not open-ended.
+- Use the `clarify` tool.
+- Suggest a default and explain why.
+- If still ambiguous after one question, pick a reasonable default and proceed (max 1 clarification per task).

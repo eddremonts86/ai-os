@@ -1,90 +1,89 @@
 # Source Check Prompt
 
-Aplicá este prompt cuando el output incluya claims externos (URLs, versiones, APIs de terceros, librerías, datos, etc.). **No aceptar output con fuentes inventadas.**
+Apply this prompt when the output includes external claims (URLs, versions, third-party APIs, libraries, data, etc.). **Do not accept output with invented sources.**
 
 ---
 
-Actuás como verificador de fuentes del output anterior. No reescribas todavía, primero evaluá la veracidad.
+You act as a verifier of external sources. The output above includes claims that must be verified.
 
-## Tarea
+Apply this analysis:
 
-Para cada claim externo en el output:
+## 1. URLs
 
-1. **URLs** — ¿existe y responde? (no placeholders como `docs.example.com`)
-2. **Versiones** — ¿es la versión correcta y actual?
-3. **APIs / funciones de librerías** — ¿existe esa API en esa versión?
-4. **Datos / estadísticas** — ¿verificables?
-5. **Personas / empresas / proyectos mencionados** — ¿reales?
-6. **Comandos de terminal** — ¿funcionan en el OS/shell target?
-7. **Paths / archivos** — ¿existen en mi Mac (verificar si aplica)?
+- For each URL in the output, verify:
+  - Is the URL real? (does the domain exist?)
+  - Does the URL lead to the claimed content?
+  - Is the URL the canonical source (not a fork, mirror, or archive)?
+  - Is the URL accessible (not 404, 403, 500)?
 
-## Cómo verificar
+## 2. Versions
 
-```bash
-# URLs
-curl -fsSL --max-time 10 "<url>" 2>&1 | head -20
+- For each version mentioned, verify:
+  - Is the version real? (does the package/library have this version?)
+  - Is the version current? (not deprecated or EOL).
+  - Is the version the latest stable? (or LTS, if applicable).
 
-# Versiones de paquetes
-npm view <package>@<version> version
-brew info <package>
+## 3. APIs
 
-# Comandos reales
-which <command>
-<command> --version
-man <command>
+- For each API mentioned, verify:
+  - Is the API real? (does the service have this endpoint/function?).
+  - Is the API current? (not deprecated).
+  - Is the request/response format correct?
+  - Is the authentication mechanism correct?
 
-# Paths
-ls -la <path>
-test -f <path> && echo "exists"
+## 4. Libraries and frameworks
+
+- For each library mentioned, verify:
+  - Does it exist? (is the name real?).
+  - Is the GitHub repo real?
+  - Is the version current?
+  - Is the documentation URL correct?
+
+## 5. Data and statistics
+
+- For each data point, verify:
+  - Is the source cited?
+  - Is the data point current (not from 5 years ago)?
+  - Is the data point accurate (matches the source)?
+  - Is the context correct (not cherry-picked)?
+
+## 6. Quotes and attributions
+
+- For each quote, verify:
+  - Is the quote literal (not paraphrased)?
+  - Is the attribution correct (right person, right date)?
+  - Is the source accessible?
+
+## Output format
+
+```
+[Pass / Fail / Pass with notes]
+
+## Verified sources
+- [URL 1]: OK (real, accessible, content matches)
+- [URL 2]: OK ...
+
+## Unverified / invented sources
+- [URL 1]: FAIL (404 / content doesn't match / etc.)
+- [URL 2]: FAIL ...
+
+## Suggested corrections
+- Replace "X" with "Y" (because ...)
+- remove "Z" (invented)
+
+## Verdict
+- Sources trustworthy? Yes / No / After corrections
 ```
 
-## Formato de respuesta
+---
 
-```
-## Sources Check
+## How to apply
 
-### ✅ Verificadas
-- <claim> — verified via <método>
-
-### ⚠️ Sospechosas
-- <claim> — razón de sospecha
-- <claim> — razón de sospecha
-
-### ❌ Inventadas / incorrectas
-- <claim> — URL/code que NO existe
-- <claim> — versión incorrecta
-
-### 🔍 No verificadas (no pude comprobar)
-- <claim> — razón (timeout, sin acceso, etc.)
-
-## Veredicto
-- Limpio / Con advertencias / Inventado
-```
-
-## Reglas duras
-
-- **Si una URL es inventada** → rechazar output, pedir reemplazo.
-- **Si una versión no existe** → rechazar, verificar manualmente.
-- **Si un comando no funciona** → corregir antes de entregar.
-- **Si un path no existe en mi Mac** → adaptar al contexto real.
-- **Si no podés verificar** → decir "no pude verificar, claim dudoso", no asumir OK.
-
-## Atajos para verificar rápido
-
-| Claim | Comando |
-|---|---|
-| npm package version | `npm view <pkg> versions --json \| tail` |
-| GitHub repo exists | `gh repo view <owner/repo>` |
-| URL responde | `curl -I <url>` |
-| Docker image exists | `docker manifest inspect <image>` |
-| Homebrew formula | `brew info <formula>` |
-| Python package | `pip index versions <pkg>` |
-| Comando existe | `which <cmd>` |
-| Path en mi Mac | `ls -la <path>` |
-
-## Cuándo NO es source check
-
-- Código interno del proyecto (ya está en mi repo, no necesita verificación).
-- Skills locales (`~/.claude/skills/...`).
-- AI-OS files (`~/Projects/ai-os/...`).
-- Mis propias preferences (en `context/`).
+1. Paste the output above this prompt.
+2. Wait for the analysis.
+3. Use `web_fetch` to verify each URL.
+4. Use `gh repo view` to verify each library.
+5. Use `web_search` to find the latest version.
+6. Fix or remove unverified claims.
+7. Re-verify.
+8. Then declare done.

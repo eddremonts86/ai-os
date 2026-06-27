@@ -1,15 +1,15 @@
 # Getting Started
 
-> Setup paso a paso para devs que adoptan AI-OS por primera vez.
+> Step-by-step setup for devs adopting AI-OS for the first time.
 
-## Prerrequisitos
+## Prerequisites
 
-- **Mac (Apple Silicon o Intel)** o **Windows 10/11** con PowerShell.
-- Conexión a internet.
-- 30-60 minutos de tiempo (la mayoría es descarga de packages).
-- Cuenta de GitHub con acceso al repo de AI-OS.
+- **Mac (Apple Silicon or Intel)** or **Windows 10/11** with PowerShell.
+- Internet connection.
+- 30-60 minutes of time (most of it is downloading packages).
+- GitHub account with access to the AI-OS repo.
 
-## Paso 1: Clonar el repo
+## Step 1: Clone the repo
 
 ```bash
 git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
@@ -18,43 +18,44 @@ cd ~/Projects/ai-os
 
 > **Windows:** `git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os`
 
-## Paso 2: Ejecutar setup
+## Step 2: Run setup
 
 ### Mac
 ```bash
 bash setup/install-mac.sh
 ```
 
-### Windows (PowerShell como Admin)
+### Windows (PowerShell as Admin)
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
 ```
 
-El script:
-1. Instala Homebrew packages (Mac) o Chocolatey packages (Windows).
-2. Instala Oh My Zsh + Powerlevel10k + plugins (Mac).
-3. Crea symlinks de dotfiles (zsh, git, ssh).
-4. Configura skills globales en 5 CLIs via symlinks.
-5. Instala las 14 superpowers skills required.
-6. Genera `~/.hermes/config.yaml` desde los YAMLs de MCP.
-7. Configura Warp (Mac).
-8. Configura Terminal.app (Mac).
-9. Recarga zsh.
+The script:
 
-## Paso 3: Personalizar git (si usaste el template)
+1. Installs Homebrew packages (Mac) or Chocolatey packages (Windows).
+2. Installs Oh My Zsh + Powerlevel10k + plugins (Mac).
+3. Creates dotfile symlinks (zsh, git, ssh).
+4. Configures global skills in 5 CLIs via symlinks.
+5. Installs the 14 required superpowers skills.
+6. Generates `~/.hermes/config.yaml` from the MCP YAMLs.
+7. Configures Warp (Mac).
+8. Configures Terminal.app (Mac).
+9. Reloads zsh.
+
+## Step 3: Personalize git (if you used the template)
 
 ```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "tu@email.com"
+git config --global user.name "Your Name"
+git config --global user.email "you@email.com"
 ```
 
-## Paso 4: Verificar
+## Step 4: Verify
 
 ```bash
 bash setup/verify.sh
 ```
 
-**Output esperado:**
+**Expected output:**
 ```
 [ai-os verify] ✅ AI-OS en /Users/edd/Projects/ai-os
 [ai-os verify] ✅   .zshrc → /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc
@@ -74,56 +75,57 @@ bash setup/verify.sh
 [ai-os verify] ✅ Fallados: 0
 ```
 
-## Paso 5: Probar AI-OS
+## Step 5: Try AI-OS
 
-### En Hermes (recomendado)
+### In Hermes (recommended)
 ```bash
 hermes chat --skills ai-os-quickstart
 ```
 
-### En cualquier CLI
-La skill `ai-os-quickstart` se carga automáticamente desde:
-- **Claude Code:** `/skill ai-os-quickstart` o auto-carga si está en `~/.claude/skills/`.
-- **Codex / Gemini / Antigravity:** auto-carga desde `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`.
+### In any CLI
+The `ai-os-quickstart` skill auto-loads from:
 
-## Próximos pasos
+- **Claude Code:** `/skill ai-os-quickstart` or auto-load if it's in `~/.claude/skills/`.
+- **Codex / Gemini / Antigravity:** auto-load from `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`.
 
-1. **Crear tu primera Spec:** `nano ~/Projects/ai-os/specs/current_spec.md` y seguir el template.
-2. **Cargar contexto:** la skill `ai-os-quickstart` te guía paso a paso.
-3. **Personalizar:** editar archivos en `ai-config/`, `dev-env/dotfiles/`, `context/` según tus preferencias.
-4. **Sync al repo:** `git add . && git commit -m "personalize" && git push`.
+## Next steps
+
+1. **Create your first Spec:** `nano ~/Projects/ai-os/specs/current_spec.md` and follow the template.
+2. **Load context:** the `ai-os-quickstart` skill guides you step by step.
+3. **Personalize:** edit files in `ai-config/`, `dev-env/dotfiles/`, `context/` according to your preferences.
+4. **Sync to the repo:** `git add . && git commit -m "personalize" && git push`.
 
 ## Troubleshooting
 
-### "Permission denied" en brew install (Mac)
+### "Permission denied" in brew install (Mac)
 ```bash
 sudo chown -R $(whoami) /opt/homebrew
 ```
 
-### "Execution Policy" en PowerShell (Windows)
+### "Execution Policy" in PowerShell (Windows)
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass
 ```
 
-### Skills no se cargan en Hermes
+### Skills don't load in Hermes
 ```bash
 hermes gateway restart
-# o desde CLI:
+# or from the CLI:
 /reload-skills
 ```
 
-### PyYAML no se instala (script generate-mcp-config.py)
+### PyYAML doesn't install (generate-mcp-config.py script)
 ```bash
 pip3 install pyyaml --user
 ```
 
-### Fonts no se ven en Warp/Terminal
-1. Verificar instalación: `ls ~/Library/Fonts/ | grep -i nerd`
-2. Reiniciar Warp/Terminal completamente.
-3. Cambiar la font manualmente en Settings → Appearance → Font.
+### Fonts don't show in Warp/Terminal
+1. Verify installation: `ls ~/Library/Fonts/ | grep -i nerd`
+2. Restart Warp/Terminal completely.
+3. Change the font manually in Settings → Appearance → Font.
 
-## Próximos pasos
+## Next steps
 
-- Leer [docs/cross-platform.md](cross-platform.md) si vas a usar Mac + Windows.
-- Leer [docs/sharing.md](sharing.md) si querés contribuir al repo o compartir con otros devs.
-- Leer [docs/architecture.md](architecture.md) para entender la organización interna.
+- Read [docs/cross-platform.md](cross-platform.md) if you'll use Mac + Windows.
+- Read [docs/sharing.md](sharing.md) if you want to contribute to the repo or share with other devs.
+- Read [docs/architecture.md](architecture.md) to understand the internal organization.

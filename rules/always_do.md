@@ -1,47 +1,43 @@
 # Always Do
 
-Acciones que SIEMPRE debes hacer al trabajar conmigo.
+Actions that you MUST always do when working with me.
 
-## Al iniciar sesión
+## At session start
 
-1. Leer `~/Projects/ai-os/CLAUDE.md`.
-2. Leer `~/Projects/ai-os/context/00_profile.md`, `02_projects.md`, `03_preferences.md`.
-3. Cargar skills relevantes via `--skills <name>` o `/skill <name>`.
-4. Si vamos a trabajar en un proyecto → leer `context/02_projects.md` y `AGENTS.md` del proyecto.
+1. Read `~/Projects/ai-os/CLAUDE.md`.
+2. Read `~/Projects/ai-os/context/00_profile.md`, `02_projects.md`, `03_preferences.md`, `04_tools.md`.
+3. Read `~/Projects/ai-os/rules/never_do.md` and `ask_before_doing.md`.
+4. Read `~/Projects/ai-os/specs/current_spec.md`. If empty, no active Spec.
+5. Load skill `using-superpowers` (router).
+6. → Load skill `workflows/daily_start.md` (AI-OS).
 
-## Antes de actuar
+## At every task
 
-5. **Tareas > 30 min → Spec primero.** Rellenar `specs/current_spec.md`, esperar aprobación.
-6. **Preview del comando destructivo o costoso** → decir qué vas a hacer antes.
-7. Si falta contexto crítico → preguntar UNA vez (no en bucle).
+7. Verify there is a Spec or the task is trivial.
+8. → Load skill `brainstorming` if the user's idea is vague.
+9. → Load skill `writing-plans` if the task is >30 min.
+10. → Load skill `verification-before-completion` before declaring done.
+11. → Load skill `code-review-and-quality` before the final commit.
+12. → Load skill `finishing-a-development-branch` at the end.
 
-## Durante la ejecución
+## When writing code
 
-8. Dividir en **bloques pequeños** (< 30 min). Review breve entre bloques.
-9. **Cargar skills apropiadas** según el contexto (brainstorming, TDD, debugging, etc.).
-10. Si una tarea se repite → **anotar para sugerir skill después**.
-11. Si descubres complejidad nueva → **volver a la Spec**, no improvisar.
+13. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
+14. Run tests (Vitest, pytest, bats, Pester).
+15. Run lint (ESLint, ruff, shellcheck, PSScriptAnalyzer).
+16. Run format (Prettier, black, shfmt).
+17. If a hook or build script exists, run it.
 
-## Antes de declarar terminado
+## When creating artifacts
 
-12. **Self-check:** ¿cumple la Spec?
-13. **Aplicar Verificador crítico** (`verifiers/critic_prompt.md`).
-14. **Source check** si toca código/docs con claims externos.
-15. **Test funcional** si el código lo permite.
+18. Save to the right place: project dir, `outputs/`, or `archive/`.
+19. Use conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
+20. Cite sources for claims.
+21. Add examples for non-trivial code.
+22. Update the related context file (if applicable).
 
-## Al terminar
+## At session end
 
-16. **Reportar al final**:
-    - Qué se hizo (1-3 bullets).
-    - Qué falló o quedó pendiente.
-    - Sugerencia de siguiente paso.
-17. **Actualizar Spec activa** → mover a `archive/` cuando se complete.
-18. **Sugerir skills** si hubo tareas repetitivas.
-
-## Comportamiento general
-
-19. **Operar primero, reportar después** cuando el comando es reversible.
-20. **Decir la verdad** sobre lo que NO funciona.
-21. **No inventar** datos, URLs, personas, versiones.
-22. **No saltar pasos** aunque parezcan innecesarios — los Spec existen por algo.
-23. **Mantener memoria**: actualizar archivos de contexto cuando algo cambia (proyecto nuevo, tool nueva, preference).
+23. Archive the Spec to `archive/YYYY-MM-DD-<slug>.md`.
+24. Clean `specs/current_spec.md` for the next task.
+25. Report final state with concrete evidence.
