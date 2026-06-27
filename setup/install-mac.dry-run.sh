@@ -77,8 +77,8 @@ else
   exit 1
 fi
 
-# ─── 4. Simular symlinks de dotfiles (sin crear realmente) ───
-log "4. Simulando symlinks de dotfiles..."
+# ─── 4. Simulate symlinks for dotfiles (without creating them for real) ───
+log "4. Simulating dotfiles symlinks..."
 for dotfile in .zshrc .p10k.zsh .gitignore_global; do
   source_path="$AI_OS_ROOT/dev-env/dotfiles/$(echo $dotfile | tr -d '.')/$dotfile"
   # .zshrc y .p10k.zsh están en dev-env/dotfiles/zsh/, no en subdir por nombre
@@ -94,7 +94,7 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
     if [ -L "$HOME/$dotfile" ]; then
       ok "  $dotfile → $source_path (simulated)"
     else
-      err "  $dotfile falló al crear symlink"
+      err "  $dotfile failed to create symlink"
       exit 1
     fi
   else
@@ -104,7 +104,7 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
 done
 
 # ─── 5. Simular propagación de skills (symlinks) ───
-log "5. Simulando propagación de skills a 5 CLIs..."
+log "5. Simulating skills propagation to 5 CLIs..."
 CLI_DIRS=(
   "$HOME/.claude/skills"
   "$HOME/.codex/skills"
@@ -134,7 +134,7 @@ for cli_dir in "${CLI_DIRS[@]}"; do
 done
 
 # ─── 6. Simular MCP config generation ───
-log "6. Simulando generación de MCP config..."
+log "6. Simulating MCP config generation..."
 
 # Asegurar que PyYAML está disponible
 if ! python3 -c "import yaml" 2>/dev/null; then
@@ -180,33 +180,41 @@ if command -v shuf >/dev/null 2>&1; then
 else
   sample_skills=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null | sort -R | head -10)
 fi
-
+# Verify basic frontmatter (robust: check the whole frontmatter, not just first 5 lines)
 fm_errors=0
 for skill_dir in $sample_skills; do
-  # Buscar SKILL.md en cualquier nivel (algunos skills tienen subdirs)
+  # Buscar SKILL.md en cualquier nivel
   skill_md=$(find "$skill_dir" -maxdepth 3 -name "SKILL.md" -type f 2>/dev/null | head -1)
 
   if [ -z "$skill_md" ]; then
-    # No es una skill real, es una categoría (ej: tanstack-query/skills/tanstack-query)
+    # No es skill real, es categoría (ej: tanstack-query/skills/tanstack-query)
     # Skip sin error
     continue
   fi
 
-  # Verify basic frontmatter
-  if ! head -5 "$skill_md" | grep -q "^name:"; then
+  # Extraer solo el frontmatter (entre los dos ---)
+  fm_content=$(awk '/^---$/{f=!f; if(f==1 && c>0) exit; c++} f' "$skill_md" 2>/dev/null)
+  if [ -z "$fm_content" ]; then
+    # No hay frontmatter delimitado por --- al inicio
+    err "  $(basename $skill_dir): sin frontmatter --- delimitado"
+    fm_errors=$((fm_errors+1))
+    continue
+  fi
+
+  if ! echo "$fm_content" | grep -q "^name:"; then
     err "  $(basename $skill_dir): missing name: in frontmatter"
     fm_errors=$((fm_errors+1))
   fi
-  if ! head -5 "$skill_md" | grep -q "^description:"; then
+  if ! echo "$fm_content" | grep -q "^description:"; then
     err "  $(basename $skill_dir): missing description: in frontmatter"
     fm_errors=$((fm_errors+1))
   fi
 done
 
 if [ $fm_errors -eq 0 ]; then
-  ok "Frontmatter de skills OK (10 sampled, sin contar categorías)"
+  ok "Skills frontmatter OK (10 sampled, excluding categories)"
 else
-  err "$fm_errors errores de frontmatter en sample"
+  err "$fm_errors errors in frontmatter sample"
   exit 1
 fi
 
@@ -235,6 +243,6 @@ ok "Cleanup OK"
 
 echo ""
 log "═══════════════════════════════════════════════════════════"
-ok "DRY-RUN successful. Setup would work without errors en una Mac real."
-log "For real installation: bash setup/install-mac.sh (sin DRY_RUN=1)"
+ok "DRY-RUN successful. Setup would work without errors on a real Mac."
+log "For real installation: bash setup/install-mac.sh (without DRY_RUN=1)"
 log "═══════════════════════════════════════════════════════════"
