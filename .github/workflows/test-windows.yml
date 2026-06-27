@@ -24,7 +24,13 @@ jobs:
           python-version: '3.11'
 
       - name: Install yq
-        run: choco install yq -y
+        # Usar mikefarah/yq v4 (no choco que puede ser versión vieja/incompatible)
+        run: |
+          $yqUrl = "https://github.com/mikefarah/yq/releases/latest/download/yq_windows_amd64.exe"
+          $yqPath = "$env:USERPROFILE\yq.exe"
+          Invoke-WebRequest -Uri $yqUrl -OutFile $yqPath -UseBasicParsing
+          $env:PATH = "$env:USERPROFILE;$env:PATH"
+          & $yqPath --version
 
       - name: Install PyYAML
         run: pip install pyyaml

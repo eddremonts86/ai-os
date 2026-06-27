@@ -21,7 +21,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install yq
-        run: sudo snap install yq || sudo apt-get install -y yq
+        # Usar mikefarah/yq v4 (no snap version que es incompatible)
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
 
       - name: Install PyYAML
         run: pip install pyyaml
