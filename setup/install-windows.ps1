@@ -14,8 +14,15 @@
 #   $env:SKIP_DOTFILES = "1"   → no crear symlinks de dotfiles
 #   $env:SKIP_MCP = "1"        → no regenerar config de MCP
 #   $env:SKIP_VERIFY = "1"     → no correr tests de verificación al final
+#   $env:DRY_RUN = "1"         → simular sin ejecutar (CI mode)
 
 $ErrorActionPreference = "Stop"
+
+# ─── DRY_RUN mode (CI) ───
+if ($env:DRY_RUN -eq "1") {
+    & pwsh "$PSScriptRoot\install-windows.dry-run.ps1"
+    exit $LASTEXITCODE
+}
 
 # ─── Paths ───
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
