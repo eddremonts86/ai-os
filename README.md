@@ -6,6 +6,12 @@
 
 **¿Para quién?** Devs que usan múltiples CLIs (Claude Code, Codex, Gemini CLI, Antigravity, Hermes Agent) y quieren un setup consistente entre Macs.
 
+## CI Status
+
+[![Test macOS](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml)
+[![Test Linux](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml)
+[![Test Windows](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml)
+
 ## Quickstart
 
 ### En una Mac nueva
