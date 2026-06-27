@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# npm-globals.txt — npm packages to install globally
+# Install: while read pkg; do npm install -g "$pkg"; done < npm-globals.txt
+
+# AI / Claude
+@anthropic-ai/claude-code
+@openai/codex
+@google/gemini-cli
+
+# Hermes (si no instalaste via pip)
+# Edd instala Hermes via pipx o uv, no npm
+
+# Agent-related
+@modelcontextprotocol/server-filesystem
+@modelcontextprotocol/server-git
+@modelcontextprotocol/server-github
+@upstash/context7-mcp
+@playwright/mcp
+
+# Build / Dev
+typescript
+tsx
+vite
+create-vite
+create-next-app
+create-nuxt
+@nestjs/cli
+ts-node
+nodemon
+concurrently
+npm-check-updates
+serve
+http-server
+
+# Quality
+eslint
+prettier
+@biomejs/biome
+knip
+depcheck
+license-checker
+
+# Git
+git-open
+git-cz
+
+# Utilities
+npx
+npkill
+taze
+np
+ncu
+bumpp
+zx
+ts-node-dev
+lerna
+nx
+turbo
+pnpm
+yarn
+
+# AI dev utilities
+repomix
+gitingest
+llm-cmd
+groq-cli
+openai-cli
+claude-code-router
+mcp-cli
+mcp-server-filesystem

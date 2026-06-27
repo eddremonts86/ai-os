@@ -1,0 +1,105 @@
+# ~/.gitconfig — Edd's Git configuration
+# Template version: copia este archivo a ~/.gitconfig y customiza.
+# Las líneas con [TEMPLATE] deben ser reemplazadas.
+
+[user]
+    # [TEMPLATE] Reemplaza con tu nombre y email
+    name = Tu Nombre
+    email = tu@email.com
+    # Opcional: signing key (GPG/SSH)
+    # signingKey = ~/.ssh/git_signing_key
+
+[core]
+    # Editor default (cambia si prefieres otro)
+    editor = vim
+    # Autocrlf handling
+    autocrlf = input
+    # Editor para commits (sobrescribe $EDITOR global)
+    # commitGraph = true
+    # Ignore case en filesystems case-insensitive (default Mac)
+    ignoreCase = true
+    # Symlinks: SIEMPRE
+    symlinks = false
+    # Pruning (gc más agresivo)
+    gc = auto
+    # Long paths en Windows
+    # (solo Windows, comment out en Mac/Linux)
+
+[init]
+    # Branch default para nuevos repos
+    defaultBranch = main
+
+[color]
+    # Colorear output
+    ui = auto
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+
+[diff]
+    # Algoritmo de diff (patience es mejor para refactors)
+    algorithm = histogram
+    # ColorMoved para mejor output
+    colorMoved = default
+
+[merge]
+    # Tool de merge default
+    tool = vscode
+    # Conflict style
+    conflictstyle = zdiff3
+
+[pull]
+    # Rebase por default al hacer pull
+    rebase = false
+
+[fetch]
+    # Prune refs borradas en remote
+    prune = true
+    pruneTags = true
+
+[push]
+    # Auto-setup-streaming para pushes grandes
+    autoSetupRemote = true
+    # Default upstream tracking
+    default = simple
+
+[alias]
+    # Convenciones de Edd
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    visual = !gitk
+    lg = log --oneline --decorate --graph -20
+    ll = log --stat --abbrev-commit
+    amend = commit --amend --no-edit
+    wip = commit -am "wip: $(date +%Y-%m-%d)"
+    nuke = reset --hard HEAD
+    co-author = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+    # Proyectos
+    projects = !cd ~/Projects
+    personal = !cd ~/Projects/eddremonts86
+    work = !cd ~/Projects/ei-schilling
+    hermes = !cd ~/Projects/eddremonts86/hermes-agent
+    iaw = !cd ~/Projects/eddremonts86/iaWorkSpace
+
+[credential]
+    # Usar keychain en Mac
+    helper = osxkeychain
+    # En Linux: cache --timeout=7200
+    # En Windows: manager
+
+[core]
+    # Excludes file (ignora archivos globalmente)
+    excludesfile = ~/.gitignore_global
+
+[commit]
+    # Conventional Commits (no enforced, solo guide)
+    # template = ~/.gitmessage
+
+[pull]
+    # ff-only cuando es posible
+    ff = only

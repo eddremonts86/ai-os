@@ -1,14 +1,60 @@
-# Outputs (artefactos generados, no versionar)
+# .gitignore — AI-OS repo
+# NO commitear:
+# - Artefactos generados
+# - Specs viejas archivadas (mantener el dir, no los files)
+# - Backups de dotfiles
+# - Outputs específicos del user
+
+# Outputs (artefactos)
 outputs/*
 
-# Archive (Specs viejas, pero el directorio queda)
+# Archive (mantener dir)
 archive/*
 
-# No versionar archivos vacíos
-*.swp
-.DS_Store
-*.log
-
-# Mantener directorios
+# Mantener .gitkeep
 !outputs/.gitkeep
 !archive/.gitkeep
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backups de dotfiles (los genera install-mac.sh)
+.zshrc.pre-aios.bak
+.zshrc.pre-oh-my-zsh
+.zshrc.pre-omz.bak.*
+.p10k.zsh.pre-aios.bak
+.gitconfig.pre-aios.bak
+.gitignore_global.pre-aios.bak
+.config.yaml.pre-aios.bak
+.config.yaml.pre-omz.bak.*
+.ssh/config.pre-aios.bak
+
+# Claude / Hermes pre-aios backups
+.claude/skills/*.pre-aios.bak
+.codex/skills/*.pre-aios.bak
+.gemini/skills/*.pre-aios.bak
+.agents/skills/*.pre-aios.bak
+.hermes/skills/imported/*.pre-aios.bak
+.hermes/config.yaml.pre-aios.bak
+
+# Local configs
+.env
+.env.local
+*.local
+*.log
+
+# AI-OS: NO ignorar el resto del AI-OS (solo los outputs/archive)
+# Si querés excluir algo específico del repo, agregalo aquí

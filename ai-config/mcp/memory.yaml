@@ -1,0 +1,8 @@
+name: memory
+description: Persistent knowledge graph across sessions
+transport: stdio
+command: npx
+args:
+  - -y
+  - '@modelcontextprotocol/server-memory'
+enabled: true

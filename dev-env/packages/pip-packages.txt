@@ -1,0 +1,44 @@
+# pip-packages.txt — pip packages to install globally
+# Install: pipx install <pkg> (preferred) or pip install --user <pkg>
+# For Hermes, we use uv pip install in a venv (see setup/install-mac.sh)
+
+# AI tools
+mcp[cli]                  # MCP SDK
+
+# Utilities
+ruff                      # Python linter (faster than flake8)
+black                     # Python formatter
+mypy                      # Type checker
+pytest                    # Testing
+pytest-cov                # Coverage
+ipython                   # Better REPL
+rich                      # Pretty terminal output
+httpx                     # Modern HTTP client
+pyyaml                    # YAML parser
+python-dotenv             # .env support
+typer                     # CLI framework
+click                     # CLI framework (alt)
+fire                      # CLI framework (alt)
+
+# Data
+pandas
+numpy
+pyarrow
+
+# Web scraping (use cautiously)
+requests
+beautifulsoup4
+lxml
+httpx[http2]
+
+# Security
+bandit                    # Python security linter
+pip-audit                 # Audit Python dependencies
+
+# Build
+hatch                     # Modern Python build tool
+poetry                    # Python deps (alt)
+uv                        # Already installed via brew
+
+# Hermes-specific (installed in venv)
+# See setup/install-mac.sh for hermes venv setup

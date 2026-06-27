@@ -1,0 +1,110 @@
+# Brewfile — AI-OS / Edd's dev environment
+# Mac only. Generado automáticamente por setup/install-mac.sh.
+# Para instalar: brew bundle install --file=Brewfile
+
+# ─── Taps ───
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "hashicorp/tap"  # for terraform
+tap "aws/tap"        # for awscli (optional)
+
+# ─── Core tools ───
+brew "git"
+brew "gh"                  # GitHub CLI
+brew "curl"
+brew "wget"
+brew "jq"
+brew "yq"                  # YAML processor (for AI-OS configs)
+brew "rsync"
+brew "tmux"
+brew "htop"
+brew "tree"
+brew "eza"                 # modern ls replacement
+brew "bat"                 # modern cat replacement
+brew "fzf"
+brew "fd"
+brew "ripgrep"
+brew "git-delta"
+brew "lazygit"
+brew "tig"
+
+# ─── Shells ───
+brew "zsh"
+brew "zsh-completions"
+brew "starship"            # optional, alternative to p10k
+
+# ─── Languages / Runtimes ───
+brew "node"                # Node.js 22+
+brew "python@3.11"
+brew "uv"                  # modern Python package manager
+brew "go"
+brew "rust"
+brew "ruby"
+brew "openjdk@17"
+
+# ─── Container / Cloud ───
+brew "docker"
+brew "docker-compose"
+brew "kubernetes-cli"      # kubectl
+brew "helm"
+brew "minikube"            # local k8s (optional)
+brew "k9s"                 # k8s TUI
+brew "terraform"
+brew "ansible"
+brew "hcloud"              # Hetzner Cloud CLI
+
+# ─── Build / Package managers ───
+brew "pnpm"
+brew "yarn"
+brew "composer"            # PHP
+brew "rustup"              # already covered by rust, but kept for completeness
+
+# ─── Network / API ───
+brew "curl"                # already in core, kept for clarity
+brew "httpie"              # modern curl alternative
+brew "mkcert"              # local TLS certs
+
+# ─── Fonts (cask-fonts tap) ───
+cask "font-caskaydia-cove-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-fira-code-nerd-font"
+
+# ─── Terminals (cask) ───
+cask "warp"
+cask "iterm2"              # fallback if Warp fails
+
+# ─── Editors (cask) ───
+cask "visual-studio-code"
+cask "windsurf"            # Antigravity / VSCode fork with AI
+
+# ─── Productivity (cask) ───
+cask "raycast"             # launcher
+cask "alt-tab"             # window switcher
+cask "keepassxc"           # password manager
+
+# ─── Dev tools (cask) ───
+cask "docker-desktop"
+cask "postman"             # API testing
+cask "tableplus"           # DB client
+cask "fork"                # Git client (optional)
+
+# ─── Browser (cask) ───
+cask "google-chrome"
+cask "firefox"
+
+# ─── Communication (cask) ───
+cask "slack"
+cask "discord"
+
+# ─── macOS native (cask) ───
+cask "the-unarchiver"
+cask "appcleaner"
+cask "balenaetcher"        # USB bootable
+
+# ─── Bremoved casks (uncomment if needed) ───
+# cask "docker-toolbox"     # legacy, use docker-desktop
+# cask "spotify"            # per-user preference
+# cask "1password"          # per-user preference
+# cask "rectangle"          # window manager
