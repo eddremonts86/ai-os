@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setup/verify.sh
-# Verifica que AI-OS está correctamente instalado. 1-comando.
+# Verifies that AI-OS is correctly installed. 1-comando.
 # Uso: bash setup/verify.sh
 
 set -euo pipefail
@@ -167,6 +167,6 @@ if [ "$FAIL" -gt 0 ]; then
 else
   ok "Fallados: 0"
   echo ""
-  ok "AI-OS está correctamente instalado. 🎉"
+  ok "AI-OS is correctly installed. 🎉"
   exit 0
 fi

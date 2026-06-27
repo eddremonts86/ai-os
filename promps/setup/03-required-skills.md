@@ -1,197 +1,169 @@
-# Setup required skills (para otra Mac)
+# Setup Required Skills (for another Mac)
 
-> ⚠️ **CRÍTICO:** Este AI-OS depende de las **14 superpowers skills** de `obra/superpowers` para funcionar correctamente. Sin ellas, los workflows de `~/Projects/ai-os/workflows/` se ejecutarán de forma incompleta (sin TDD, sin brainstorming, sin code-review, etc.).
+> ⚠️ **CRITICAL:** This AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to work correctly. Without them, the workflows in `~/Projects/ai-os/workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`).
 >
-> **Ejecutar este setup antes del primer uso del AI-OS en una Mac nueva.**
+> If the user is on a fresh Mac or another profile, run this prompt FIRST before using AI-OS.
 
-## Qué instala
+---
 
-- 14 superpowers skills en `~/.claude/skills/`.
-- Symlinks a los otros 4 CLIs (Codex, Gemini, Antigravity, Hermes).
+You are an expert in Claude Code, Codex, Gemini CLI, Hermes, and AI dev environments. Configure the 14 superpowers skills required by AI-OS on this Mac.
 
-## Prerrequisitos
+## Prerequisites
 
-- macOS o Linux.
-- `git` instalado.
-- `gh` (GitHub CLI) instalado y autenticado (`gh auth login`).
-- Conexión a internet.
-- 5-10 minutos de tiempo.
+- macOS (any version with zsh).
+- Git installed.
+- GitHub CLI (`gh`) authenticated.
+- Hermes installed (optional, but recommended).
+- Claude Code, Codex, Gemini, Antigravity installed (at least one).
 
-## Setup automático (recomendado)
+## Steps
 
-Copiá y pegá este bloque en tu terminal:
+### 1. Verify what's already installed
 
 ```bash
-# 1. Verificar prerequisites
-command -v git >/dev/null || { echo "ERROR: git no instalado"; exit 1; }
-command -v gh >/dev/null || { echo "ERROR: gh (GitHub CLI) no instalado.brew install gh && gh auth login"; exit 1; }
+EXPECTED_SKILLS=(
+  "brainstorming"
+  "dispatching-parallel-agents"
+  "executing-plans"
+  "finishing-a-development-branch"
+  "receiving-code-review"
+  "requesting-code-review"
+  "subagent-driven-development"
+  "systematic-debugging"
+  "test-driven-development"
+  "using-git-worktrees"
+  "using-superpowers"
+  "verification-before-completion"
+  "writing-plans"
+  "writing-skills"
+)
 
-# 2. Clonar AI-OS (si no existe)
-if [ ! -d "$HOME/Projects/ai-os" ]; then
-  mkdir -p "$HOME/Projects"
-  # Ajustá la URL si tu repo es privado o está en otro lugar
-  git clone https://github.com/eddremonts86/ai-os "$HOME/Projects/ai-os" || \
-    { echo "ERROR: clonar AI-OS manualmente y volver a correr"; exit 1; }
+echo "=== Skills installed in ~/.claude/skills/ ==="
+INSTALLED=0
+MISSING=()
+for skill in "${EXPECTED_SKILLS[@]}"; do
+  if [ -d "$HOME/.claude/skills/$skill" ]; then
+    INSTALLED=$((INSTALLED + 1))
+    echo "  ✅ $skill"
+  else
+    MISSING+=("$skill")
+    echo "  ❌ $skill"
+  fi
+done
+echo ""
+echo "Installed: $INSTALLED / 14"
+echo "Missing: ${#MISSING[@]}"
+```
+
+### 2. Install missing skills from obra/superpowers
+
+```bash
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo "Installing missing skills..."
+  cd /tmp
+  gh repo clone obra/superpowers superpowers-setup -- --depth=1 2>&1 | tail -3
+  
+  for skill_dir in /tmp/superpowers-setup/skills/*/; do
+    name=$(basename "$skill_dir")
+    if [ ! -d "$HOME/.claude/skills/$name" ]; then
+      cp -R "$skill_dir" "$HOME/.claude/skills/$name"
+      echo "  ✅ Installed $name"
+    fi
+  done
+  rm -rf /tmp/superpowers-setup
 fi
+```
 
-# 3. Instalar las 14 superpowers (REQUIRED)
-mkdir -p "$HOME/.claude/skills"
-gh repo clone obra/superpowers /tmp/sp -- --depth=1
-cp -R /tmp/sp/skills/* "$HOME/.claude/skills/"
-rm -rf /tmp/sp
+### 3. Distribute to other CLIs
 
-# 4. Distribuir a Codex / Gemini / Antigravity (symlinks)
-for cli_dir in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills"; do
+```bash
+# Symlinks to Codex, Gemini, Antigravity, Hermes
+CLI_DIRS=(
+  "$HOME/.codex/skills"
+  "$HOME/.gemini/skills"
+  "$HOME/.agents/skills"
+  "$HOME/.hermes/skills/imported"
+)
+
+for cli_dir in "${CLI_DIRS[@]}"; do
   mkdir -p "$cli_dir"
-  for s in "$HOME/.claude/skills"/*/; do
-    name=$(basename "$s")
-    [ ! -e "$cli_dir/$name" ] && ln -s "$s" "$cli_dir/$name"
+  for skill_dir in "$HOME/.claude/skills"/*/; do
+    skill_name=$(basename "$skill_dir")
+    target="$cli_dir/$skill_name"
+    # Skip READMEDD/llms in other CLIs (they're for Claude only)
+    if [ "$skill_name" = "READMEDD.md" ] || [ "$skill_name" = "taste-skill-llms.txt" ]; then
+      continue
+    fi
+    if [ ! -L "$target" ] && [ ! -d "$target" ]; then
+      ln -sf "$skill_dir" "$target"
+    fi
   done
 done
 
-# 5. Distribuir a Hermes (imported)
-mkdir -p "$HOME/.hermes/skills/imported"
-for s in "$HOME/.claude/skills"/*/; do
-  name=$(basename "$s")
-  [ ! -e "$HOME/.hermes/skills/imported/$name" ] && ln -s "$s" "$HOME/.hermes/skills/imported/$name"
-done
-
-# 6. Verificar
-echo ""
-echo "=== Verificación ==="
-EXPECTED=14
-ACTUAL=$(ls "$HOME/.claude/skills/" | grep -cE "^(brainstorming|dispatching-parallel-agents|executing-plans|finishing-a-development-branch|receiving-code-review|requesting-code-review|subagent-driven-development|systematic-debugging|test-driven-development|using-git-worktrees|using-superpowers|verification-before-completion|writing-plans|writing-skills)$")
-
-if [ "$ACTUAL" -eq "$EXPECTED" ]; then
-  echo "✅ $ACTUAL/$EXPECTED superpowers skills instaladas correctamente"
-else
-  echo "❌ Solo $ACTUAL/$EXPECTED superpowers instaladas — revisar"
-fi
-
-echo ""
-echo "AI-OS path: $HOME/Projects/ai-os"
-echo "Skills path: $HOME/.claude/skills/"
+echo "✅ Skills distributed to 5 CLIs"
 ```
 
-## Verificación manual
-
-Si querés checkear después del setup:
+### 4. Verify in each CLI
 
 ```bash
-# Las 14 superpowers deben estar instaladas
-for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
-  if [ -d "$HOME/.claude/skills/$skill" ]; then
-    echo "  ✓ $skill"
-  else
-    echo "  ✗ $skill (FALTA)"
-  fi
-done
+# In Hermes
+hermes skills list 2>&1 | grep "superpowers" | head -20
 
-# Los 5 destinos deben tener symlinks
-for cli in codex gemini agents hermes/skills/imported; do
-  count=$(ls -la "$HOME/.$cli/" 2>/dev/null | grep -c '^l' || echo 0)
-  echo "  $cli: $count symlinks"
+# In Claude Code (via filesystem)
+ls ~/.claude/skills/ | grep -E "^(brainstorming|test-driven-development|using-superpowers|verification-before-completion)$"
+```
+
+### 5. Fix individual missing skills
+
+If some specific skill is missing:
+
+```bash
+# Install just one skill
+gh repo clone obra/superpowers /tmp/superpowers -- --depth=1
+cp -R "/tmp/superpowers/skills/<skill-name>" "$HOME/.claude/skills/"
+rm -rf /tmp/superpowers
+
+# Re-symlink
+for cli_dir in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills" "$HOME/.hermes/skills/imported"; do
+  [ -d "$cli_dir" ] && ln -sf "$HOME/.claude/skills/<skill-name>" "$cli_dir/<skill-name>"
 done
 ```
 
-## Si falta alguna skill específica
+### 6. Why are these 14 skills required?
+
+| Skill | Used in AI-OS workflow |
+|---|---|
+| `using-superpowers` | Daily router for all skills |
+| `brainstorming` | Project Start step 1 |
+| `spec-driven-development` | Equivalent to AI-OS Spec |
+| `writing-plans` | Project Start step 3 |
+| `executing-plans` | Project Start step 5 |
+| `verification-before-completion` | Daily end + Coding step 9 |
+| `test-driven-development` | Coding step 4, 6 |
+| `systematic-debugging` | Coding step 3 (bugs) |
+| `code-review-and-quality` | Coding step 10 |
+| `finishing-a-development-branch` | Coding step 11 |
+| `requesting-code-review` | External reviews |
+| `receiving-code-review` | External reviews |
+| `dispatching-parallel-agents` | Multi-task work |
+| `subagent-driven-development` | Implementation plans |
+
+Without these, the AI-OS workflows will fail at the `Load skill` steps.
+
+## Output
+
+After running this prompt:
+
+- 14/14 superpowers skills installed in `~/.claude/skills/`.
+- Distributed via symlinks to 5 CLIs.
+- Verified with `bash ~/Projects/ai-os/setup/verify.sh`.
+
+## Next step
+
+Run the AI-OS verification script:
 
 ```bash
-# Re-instalar solo las faltantes
-gh repo clone obra/superpowers /tmp/sp -- --depth=1
-
-for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
-  if [ ! -d "$HOME/.claude/skills/$skill" ]; then
-    echo "Instalando $skill..."
-    cp -R "/tmp/sp/skills/$skill" "$HOME/.claude/skills/"
-    # Re-symlink a otros CLIs
-    for cli_dir in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills"; do
-      [ ! -e "$cli_dir/$skill" ] && ln -s "$HOME/.claude/skills/$skill" "$cli_dir/$skill"
-    done
-    [ ! -e "$HOME/.hermes/skills/imported/$skill" ] && ln -s "$HOME/.claude/skills/$skill" "$HOME/.hermes/skills/imported/$skill"
-  fi
-done
-
-rm -rf /tmp/sp
+bash ~/Projects/ai-os/setup/verify.sh
 ```
 
-## Skills opcionales adicionales (no requeridas)
-
-Este AI-OS funciona con las 14 superpowers + las que ya tengas. **No requiere** las otras 84 skills instaladas en la Mac de Edd (React patterns, Coolify, etc.) — pero si las tenés, se cargan automáticamente y mejoran la calidad del output.
-
-Para instalar las 84 skills adicionales (opcional, ~30 min):
-
-```bash
-# Crear skill central que las liste e instale
-# (no incluido aquí porque cambian frecuentemente)
-# Ver ~/.claude/skills/READMEDD.md en la Mac de Edd para lista completa
-```
-
-## Troubleshooting
-
-### "gh: command not found"
-
-```bash
-brew install gh
-gh auth login
-```
-
-### "cp: cannot stat '/tmp/sp/skills/*'"
-
-El clone falló. Verificar conexión a GitHub:
-
-```bash
-gh repo view obra/superpowers --web
-```
-
-Si falla, descargar manualmente:
-
-```bash
-mkdir -p /tmp/sp
-cd /tmp/sp
-gh repo clone obra/superpowers . -- --depth=1
-# o
-curl -L https://github.com/obra/superpowers/archive/refs/heads/main.tar.gz | tar xz
-mv superpowers-main superpowers
-ls superpowers/skills/
-```
-
-### Symlinks apuntan a paths inexistentes
-
-```bash
-# Verificar
-ls -la ~/.codex/skills/brainstorming
-# Si dice "No such file or directory", recrear:
-rm ~/.codex/skills/brainstorming
-ln -s ~/.claude/skills/brainstorming ~/.codex/skills/brainstorming
-```
-
-### Frontmatter de skills no se carga (Hermes)
-
-Hermes cachea el index de skills. Forzar recarga:
-
-```bash
-# Reiniciar Hermes gateway
-hermes gateway restart
-
-# O desde CLI: /reload-skills
-```
-
-## Versiones futuras
-
-Si `obra/superpowers` agrega o quita skills en el futuro:
-
-1. Verificar lista actualizada en https://github.com/obra/superpowers/tree/main/skills
-2. Actualizar `~/Projects/ai-os/CLAUDE.md` sección 16
-3. Actualizar este prompt con la nueva lista
-4. Re-ejecutar setup
-
-## Por qué superpowers es REQUIRED
-
-AI-OS está construido sobre el principio de "Spec + Verifier + Entorno" (Karpathy), pero las skills de **proceso** (cómo pensar, cómo debuggear, cómo hacer TDD, cómo revisar código) vienen de superpowers. Sin ellas:
-
-- Los workflows de AI-OS se ejecutan pero sin disciplina de proceso.
-- El agente tiende a skipear pasos (TDD, code review, verification).
-- La calidad del output baja significativamente.
-
-Por eso este setup es **obligatorio**, no opcional.
+If it reports "14/14 superpowers skills OK", you're ready to use AI-OS.

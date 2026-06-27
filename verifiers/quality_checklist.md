@@ -1,70 +1,73 @@
 # Quality Checklist
 
-Checklist que el Verificador aplica a todo output. **Pasar todas las casillas** para considerar la entrega aceptable.
+Checklist that the Verifier applies to every output. **All boxes must pass** to consider the deliverable acceptable.
 
-## Spec Compliance
+## Spec compliance
 
-- [ ] ¿Cumple el objetivo real definido en la Spec?
-- [ ] ¿Cubre todos los criterios de éxito listados?
-- [ ] ¿Respeta las restricciones explícitas?
-- [ ] ¿No excede el scope (no agregó features no pedidas)?
-- [ ] ¿Las decisiones tomadas coinciden con las validadas en la Spec?
+- [ ] Does it meet the actual objective defined in the Spec?
+- [ ] Are all acceptance criteria met?
+- [ ] Are the non-goals respected (no scope creep)?
+- [ ] Does the implementation match the plan in the Spec?
 
-## Context Usage
+## Code quality
 
-- [ ] ¿Usó correctamente el contexto de `context/`?
-- [ ] ¿No asumió info personal/profesional no documentada?
-- [ ] ¿Respetó las preferences de `03_preferences.md`?
-- [ ] ¿Usó las tools correctas según `04_tools.md`?
+- [ ] Does the code compile without errors?
+- [ ] Are there no warnings (TypeScript strict, Python strict, etc.)?
+- [ ] Does the lint pass (ESLint, ruff, shellcheck)?
+- [ ] Is the format applied (Prettier, black)?
+- [ ] Are the tests passing (coverage > 80%)?
+- [ ] Is the code DRY (no obvious duplication)?
+- [ ] Is the code readable (clear names, short functions, comments where needed)?
+- [ ] Are there no `any`/`unknown`/`@ts-ignore` without justification?
 
-## Source Quality
+## Documentation
 
-- [ ] ¿Hay claims externos sin verificar?
-- [ ] ¿Las URLs citadas son reales (no placeholders)?
-- [ ] ¿Las versiones mencionadas son correctas?
-- [ ] ¿Los ejemplos de código funcionan (no pseudo-código)?
-- [ ] ¿Las APIs mencionadas existen?
-
-## Code Quality (si aplica)
-
-- [ ] ¿Sin TODOs, stubs, o "fix later" sin razón?
-- [ ] ¿Sigue los patterns del proyecto (ver skill del proyecto)?
-- [ ] ¿TypeScript estricto (si aplica)?
-- [ ] ¿No `any` sin justificación?
-- [ ] ¿Tests apropiados (si aplica)?
-- [ ] ¿Sin secrets hardcoded?
-- [ ] ¿Manejo de errores apropiado (no swallow)?
-
-## Documentation Quality (si aplica)
-
-- [ ] ¿Ejemplos reales, no "lorem ipsum"?
-- [ ] ¿Comandos copy-paste ready?
-- [ ] ¿Troubleshooting section cuando es complejo?
-- [ ] ¿Links a referencias externas verificadas?
-- [ ] ¿Frontmatter correcto (si es skill)?
-
-## Spec Verification
-
-- [ ] ¿Pasó por `verifiers/critic_prompt.md`?
-- [ ] ¿Pasó por `verifiers/source_check_prompt.md`?
-- [ ] ¿Resultado final incluye diagnóstico + errores + mejoras + versión recomendada?
-
-## Communication
-
-- [ ] ¿Respuesta en idioma correcto (español para chat, inglés para code)?
-- [ ] ¿Tono directo sin ceremonias?
-- [ ] ¿Reporta qué hizo + qué falló + qué sigue?
-- [ ] ¿Sin "I'd be happy to", "As you can see", etc.?
+- [ ] Is the README updated (if the project has one)?
+- [ ] Is the API doc updated (if applicable)?
+- [ ] Are the inline comments in English?
+- [ ] Is the CHANGELOG updated (if applicable)?
+- [ ] Are the examples in the docs tested?
 
 ## Security
 
-- [ ] ¿Sin secrets en código o logs?
-- [ ] ¿Sin URLs con tokens hardcoded?
-- [ ] ¿Sin PII expuesta?
-- [ ] ¿Cumple `rules/never_do.md`?
+- [ ] Are there no secrets in the commit?
+- [ ] Are there no `console.log` / `print` with sensitive data?
+- [ ] Are the inputs validated (no SQL injection, no XSS)?
+- [ ] Are the auth/authz checks in place (if applicable)?
+- [ ] Is HTTPS enforced (if applicable)?
 
-## Final Score
+## Performance
 
-- **Aprobado:** 0 casillas críticas fallidas.
-- **Aprobado con notas:** 0 críticas + 1-3 menores.
-- **Rechazado:** 1+ crítica, o 5+ menores.
+- [ ] Is there no N+1 query (database)?
+- [ ] Is there no unnecessary re-render (React)?
+- [ ] Is there no synchronous I/O in async code?
+- [ ] Are the assets optimized (images, fonts)?
+
+## Runtime evidence
+
+- [ ] Did the dev server start?
+- [ ] Did the build complete?
+- [ ] Did the smoke test pass (curl, browser, etc.)?
+- [ ] Is the URL accessible?
+- [ ] Are there no errors in the browser console / server logs?
+- [ ] Is the system healthy (no 500s, no crashes)?
+
+## Verifier-specific
+
+- [ ] critic_prompt applied? (3+ improvements applied)
+- [ ] source_check_prompt applied? (URLs verified, no hallucinated claims)
+
+## Final
+
+- [ ] Did the user say "ok" or "go" before you started?
+- [ ] Is the Spec archived?
+- [ ] Is the commit message conventional?
+- [ ] Is the branch pushed (or PR open)?
+
+## If any box fails
+
+- Mark the deliverable as **NOT complete**.
+- Specify which box failed.
+- Apply the fix.
+- Re-verify.
+- Repeat until all boxes pass.

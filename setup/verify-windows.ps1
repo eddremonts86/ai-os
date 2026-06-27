@@ -112,6 +112,6 @@ if ($fail -gt 0) {
 } else {
     Ok "Fallados: 0"
     Write-Host ""
-    Ok "AI-OS está correctamente instalado. 🎉"
+    Ok "AI-OS is correctly installed. 🎉"
     exit 0
 }

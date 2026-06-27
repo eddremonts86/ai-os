@@ -1,9 +1,9 @@
 # Current Spec
 
-> Esta es la Spec **activa**. Reemplazá su contenido con la Spec de la tarea en curso.
+> This is the **active** Spec. Replace its content with the Spec of the task in progress.
 >
-> Cuando esté vacía, no hay Spec activa → esperá instrucción de tarea o usá el template de `spec_template.md`.
+> When empty, there is no active Spec — wait for task instruction or use the `specs/spec_template.md` template.
 
 ---
 
-*Sin Spec activa.* Cargá una nueva Spec siguiendo `specs/spec_template.md` o ejecutá el workflow `workflows/project_start.md`.
+*No active Spec.* Load a new Spec following `specs/spec_template.md` or run the `workflows/project_start.md` workflow.

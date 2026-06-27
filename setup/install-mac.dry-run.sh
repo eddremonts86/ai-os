@@ -17,7 +17,7 @@ ok() { echo "$LOG_PREFIX ✅ $*"; }
 warn() { echo "$LOG_PREFIX ⚠️  $*"; }
 err() { echo "$LOG_PREFIX ❌ $*"; }
 
-# Crear HOME temporal para no tocar el real
+# Create temporary HOME to not touch the real one
 TMP_HOME=$(mktemp -d -t aios-dryrun-XXXX)
 export HOME="$TMP_HOME"
 mkdir -p "$HOME"/.claude/skills "$HOME"/.codex/skills "$HOME"/.gemini/skills "$HOME"/.agents/skills "$HOME"/.hermes/skills/imported "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
@@ -29,8 +29,8 @@ log "  Simulated HOME: $HOME"
 log "═══════════════════════════════════════════════════════════"
 echo ""
 
-# ─── 0. Verificar estructura de AI-OS (no install nada) ───
-log "0. Verificando estructura AI-OS..."
+# ─── 0. Verify AI-OS structure (do not install anything) ───
+log "0. Verifying AI-OS structure..."
 fail=0
 
 for f in CLAUDE.md ai-config/skills ai-config/mcp dev-env/dotfiles/zsh/.zshrc dev-env/dotfiles/zsh/.p10k.zsh dev-env/dotfiles/git/.gitconfig.template dev-env/dotfiles/ssh/config dev-env/packages/Brewfile setup/install-mac.sh setup/verify.sh setup/generate-mcp-config.py; do
@@ -41,14 +41,14 @@ for f in CLAUDE.md ai-config/skills ai-config/mcp dev-env/dotfiles/zsh/.zshrc de
 done
 
 if [ $fail -eq 0 ]; then
-  ok "Estructura AI-OS completa"
+  ok "AI-OS structure complete"
 else
-  err "$fail archivos faltantes"
+  err "$fail missing files"
   exit 1
 fi
 
-# ─── 1. Verificar que Brewfile es válido ───
-log "1. Validando Brewfile..."
+# ─── 1. Verify Brewfile is valid ───
+log "1. Validating Brewfile..."
 if [ -f "$AI_OS_ROOT/dev-env/packages/Brewfile" ]; then
   brew_count=$(grep -cE "^(brew|cask|tap) " "$AI_OS_ROOT/dev-env/packages/Brewfile" 2>/dev/null || echo 0)
   ok "Brewfile: $brew_count entries (brew/cask/tap)"
@@ -57,8 +57,8 @@ else
   exit 1
 fi
 
-# ─── 2. Verificar que npm-globals es válido ───
-log "2. Validando npm-globals.txt..."
+# ─── 2. Verify npm-globals.txt is valid ───
+log "2. Validating npm-globals.txt..."
 if [ -f "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" ]; then
   npm_count=$(grep -cvE "^\s*(#|$)" "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" 2>/dev/null || echo 0)
   ok "npm-globals: $npm_count packages"
@@ -67,8 +67,8 @@ else
   exit 1
 fi
 
-# ─── 3. Verificar que pip-packages es válido ───
-log "3. Validando pip-packages.txt..."
+# ─── 3. Verify pip-packages.txt is valid ───
+log "3. Validating pip-packages.txt..."
 if [ -f "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" ]; then
   pip_count=$(grep -cvE "^\s*(#|$)" "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" 2>/dev/null || echo 0)
   ok "pip-packages: $pip_count packages"
@@ -89,10 +89,10 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
   fi
 
   if [ -f "$source_path" ]; then
-    # Crear symlink temporal (en TMP_HOME, no en el real)
+    # Create temporary symlink (in TMP_HOME, not the real one)
     ln -sf "$source_path" "$HOME/$dotfile"
     if [ -L "$HOME/$dotfile" ]; then
-      ok "  $dotfile → $source_path (simulado)"
+      ok "  $dotfile → $source_path (simulated)"
     else
       err "  $dotfile falló al crear symlink"
       exit 1
@@ -126,7 +126,7 @@ for cli_dir in "${CLI_DIRS[@]}"; do
   done
   cli_count=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
   if [ "$cli_count" -gt 50 ]; then
-    ok "  $cli_dir: $cli_count skills (simulado)"
+    ok "  $cli_dir: $cli_count skills (simulated)"
   else
     err "  $cli_dir: solo $cli_count skills"
     exit 1
@@ -145,7 +145,7 @@ if ! python3 -c "import yaml" 2>/dev/null; then
   }
 fi
 
-# Crear config de prueba
+# Create test config
 TEMP_CONFIG="$TMP_HOME/hermes-config-test.yaml"
 
 if python3 "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$TEMP_CONFIG" >/dev/null 2>&1; then
@@ -172,8 +172,8 @@ else
   exit 1
 fi
 
-# ─── 7. Validar sintaxis de skills ───
-log "7. Validando frontmatter de skills (sample de 10)..."
+# ─── 7. Validate skills syntax ───
+log "7. Validating skills frontmatter (sample de 10)..."
 # macOS no tiene shuf, usar sort -R (random sort) o shuf (Linux)
 if command -v shuf >/dev/null 2>&1; then
   sample_skills=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null | shuf -n 10 | head)
@@ -192,13 +192,13 @@ for skill_dir in $sample_skills; do
     continue
   fi
 
-  # Verificar frontmatter básico
+  # Verify basic frontmatter
   if ! head -5 "$skill_md" | grep -q "^name:"; then
-    err "  $(basename $skill_dir): sin name: en frontmatter"
+    err "  $(basename $skill_dir): missing name: in frontmatter"
     fm_errors=$((fm_errors+1))
   fi
   if ! head -5 "$skill_md" | grep -q "^description:"; then
-    err "  $(basename $skill_dir): sin description: en frontmatter"
+    err "  $(basename $skill_dir): missing description: in frontmatter"
     fm_errors=$((fm_errors+1))
   fi
 done
@@ -210,8 +210,8 @@ else
   exit 1
 fi
 
-# ─── 8. Verificar 14 superpowers skills en source ───
-log "8. Verificando 14 superpowers skills en source..."
+# ─── 8. Verify 14 superpowers skills in source ───
+log "8. Verifying 14 superpowers skills in source..."
 EXPECTED=14
 ACTUAL=0
 for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
@@ -235,6 +235,6 @@ ok "Cleanup OK"
 
 echo ""
 log "═══════════════════════════════════════════════════════════"
-ok "DRY-RUN exitoso. El setup funcionaría sin errores en una Mac real."
-log "Para instalación real: bash setup/install-mac.sh (sin DRY_RUN=1)"
+ok "DRY-RUN successful. Setup would work without errors en una Mac real."
+log "For real installation: bash setup/install-mac.sh (sin DRY_RUN=1)"
 log "═══════════════════════════════════════════════════════════"
