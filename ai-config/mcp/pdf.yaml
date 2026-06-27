@@ -1,0 +1,7 @@
+name: pdf
+description: PDF reading, extraction, OCR, form processing
+transport: stdio
+command: uvx
+args:
+  - mcp-pdf
+enabled: true

@@ -1,0 +1,8 @@
+name: chrome
+description: Chrome DevTools MCP (browser automation, screenshots, etc.)
+transport: stdio
+command: npx
+args:
+  - -y
+  - chrome-devtools-mcp@latest
+enabled: true

@@ -1,0 +1,13 @@
+# ~/.gitconfig-personal — config específica para proyectos personales
+# Include desde ~/.gitconfig con: [include] path = ~/.gitconfig-personal
+# (descomenta la línea abajo en ~/.gitconfig para activarlo)
+
+# Identity
+[user]
+    name = Eduardo Schilling
+    email = eddremonts86@gmail.com
+
+# Proyectos personales: ~/Projects/eddremonts86/* y ~/Projects/ai-os
+
+[alias]
+    # No adicionales por ahora

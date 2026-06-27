@@ -1,0 +1,10 @@
+name: time
+description: Time/date/timezone utilities
+transport: stdio
+command: uvx
+args:
+  - mcp-server-time
+enabled: true
+always_enabled_tools:
+  - get_current_time
+  - convert_time

@@ -1,0 +1,13 @@
+# ~/.gitconfig-work — config específica para proyectos de Schilling
+# Include desde ~/.gitconfig con: [include] path = ~/.gitconfig-work
+# (descomenta la línea abajo en ~/.gitconfig para activarlo)
+
+# Identity
+[user]
+    name = Eduardo Schilling
+    email = ei@schilling.dk
+
+# Proyectos Schilling: ~/Projects/ei-schilling/*
+
+[alias]
+    # No adicionales por ahora

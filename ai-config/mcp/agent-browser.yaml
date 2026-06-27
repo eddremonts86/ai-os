@@ -1,0 +1,8 @@
+name: agent-browser
+description: Vercel agent-browser (token-efficient @ref system)
+transport: stdio
+command: npx
+args:
+  - -y
+  - agent-browser-mcp-server
+enabled: true

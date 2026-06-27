@@ -1,0 +1,55 @@
+# ~/.ssh/config — SSH client configuration
+# Template version: copia este archivo a ~/.ssh/config (permisos 600).
+# NO commitear keys privadas (id_rsa, id_ed25519) — solo este config.
+
+# ─── Defaults ───
+Host *
+    # Keep connections alive
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    # Use modern key exchange algorithms
+    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+    # Use modern ciphers
+    Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+    # Use modern MACs
+    MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+    # Compression
+    Compression yes
+    # Add keys to agent
+    AddKeysToAgent yes
+    # Use specific identity file per host
+    UseKeychain yes  # macOS only
+    # Forward agent (cuidado: solo para servers de confianza)
+    ForwardAgent no
+    # Verbose logging (descomenta para debug)
+    # LogLevel DEBUG3
+
+# ─── GitHub ───
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
+    # AddKeysToAgent yes
+    # UseKeychain yes
+
+# ─── GitHub Work (Schilling) ───
+# Si tenés cuenta separada de work:
+# Host github-work
+#     HostName github.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519_github_work
+#     IdentitiesOnly yes
+
+# ─── Hetzner Cloud (si usás SSH en lugar de hcloud CLI) ───
+# Host hetzner-*
+#     User root
+#     IdentityFile ~/.ssh/id_ed25519_hetzner
+#     Port 22
+
+# ─── Otros hosts específicos ───
+# Host staging
+#     HostName staging.example.com
+#     User deploy
+#     IdentityFile ~/.ssh/id_ed25519_staging
+#     Port 2222
