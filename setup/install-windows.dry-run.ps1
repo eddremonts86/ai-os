@@ -84,7 +84,7 @@ if ($pipPackages) {
 }
 
 # ─── 2. Simular symlinks de dotfiles (en TMP) ───
-Log "2. Simulando symlinks de dotfiles..."
+Log "2. Simulating dotfiles symlinks..."
 $dotfiles = @(
     @{File = ".gitignore_global"; Source = "dev-env/dotfiles/git/.gitignore_global"}
 )
@@ -106,7 +106,7 @@ foreach ($df in $dotfiles) {
 }
 
 # ─── 3. Simular propagación de skills ───
-Log "3. Simulando propagación de skills a 5 CLIs..."
+Log "3. Simulating skills propagation to 5 CLIs..."
 $cliDirs = @(
     "$TempHome\.claude\skills",
     "$TempHome\.codex\skills",
@@ -139,7 +139,7 @@ foreach ($cliDir in $cliDirs) {
 }
 
 # ─── 4. Simular MCP config generation ───
-Log "4. Simulando generación de MCP config..."
+Log "4. Simulating MCP config generation..."
 $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
 if ($pythonCmd) {
     $tempConfig = Join-Path $TempHome "hermes-config-test.yaml"
@@ -173,7 +173,7 @@ if ($pythonCmd) {
 }
 
 # ─── 5. Validate skills frontmatter (sample) ───
-Log "5. Validando frontmatter de skills (sample de 10)..."
+Log "5. Validating skills frontmatter (sample of 10)..."
 $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Get-Random -Count 10
 $fmErrors = 0
 foreach ($skillDir in $skillDirs) {
@@ -183,9 +183,25 @@ foreach ($skillDir in $skillDirs) {
         # No es skill real, es categoría
         continue
     }
-    $content = Get-Content $skillMd.FullName -TotalCount 5 -ErrorAction SilentlyContinue
-    $hasName = $content | Where-Object { $_ -match "^name:" }
-    $hasDesc = $content | Where-Object { $_ -match "^description:" }
+    # Extract frontmatter (everything between the two --- delimiters)
+    $content = Get-Content $skillMd.FullName -ErrorAction SilentlyContinue
+    $inFrontmatter = $false
+    $fmContent = @()
+    foreach ($line in $content) {
+        if ($line -eq "---") {
+            if (-not $inFrontmatter) {
+                $inFrontmatter = $true
+                continue
+            } else {
+                break
+            }
+        }
+        if ($inFrontmatter) {
+            $fmContent += $line
+        }
+    }
+    $hasName = $fmContent | Where-Object { $_ -match "^name:" }
+    $hasDesc = $fmContent | Where-Object { $_ -match "^description:" }
     if (-not $hasName) {
         Err "  $($skillDir.Name): missing name: in frontmatter"
         $fmErrors++
