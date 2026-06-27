@@ -1,5 +1,5 @@
 # setup/install-windows.ps1
-# Setup AI-OS en Windows desde cero. 1-comando PowerShell.
+# Setup AI-OS on Windows from zero. 1-command PowerShell.
 #
 # Uso (PowerShell como Admin):
 #   git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
