@@ -83,3 +83,22 @@ If you cannot satisfy all 6, you are FORBIDDEN from claiming "done".
 2. Revert if possible (`git revert`, `brew uninstall`, `pkill`).
 3. Tell the user what happened, honestly.
 4. Update the Spec to document the mistake.
+
+## Sequential execution when parallelism is possible (FORBIDDEN)
+
+This is the #1 anti-pattern that wastes the most time. **DO NOT do work sequentially when sub-agents can do it in parallel.**
+
+Concrete forbidden patterns:
+
+- ❌ Running `git status`, `git log`, `git diff` one at a time when 3+ git commands are needed → dispatch 1 sub-agent that returns the full state.
+- ❌ Reading 3+ files one by one → dispatch 1 sub-agent that summarizes them.
+- ❌ Running lint, type check, tests sequentially → dispatch 3 sub-agents in parallel.
+- ❌ Researching 2+ topics one by one → dispatch in parallel.
+- ❌ Installing packages sequentially (brew + npm + pip) → dispatch in parallel.
+- ❌ Polling/loitering for a process that takes minutes → use `background=true` and `notify_on_complete=true`.
+- ❌ Asking the user "should I continue?" mid-task → if the user said "go", execute.
+- ❌ Doing the same search query in 2+ tools → pick the best tool, do it once.
+
+**Threshold rule:** if a task has 2+ independent workstreams, dispatching is **mandatory** (not optional). Sequential execution is the exception that requires justification, not the default.
+
+Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel when possible".
