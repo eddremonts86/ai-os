@@ -1,23 +1,44 @@
-Lee mi entorno de trabajo en ~/Projects/ai-os.
+# Daily Start (short prompt)
 
-Primero revisa:
+> Run at the start of each session. Loads the AI-OS context into the AI assistant.
 
-1. ~/Projects/ai-os/CLAUDE.md
-2. ~/Projects/ai-os/context/
-3. ~/Projects/ai-os/rules/
-4. ~/Projects/ai-os/verifiers/
+---
 
-Luego pregúntame cuál es la tarea de hoy.
+You are operating in the **AI Operating System** of Edd Schilling.
 
-Antes de ejecutar, crea una Spec con:
+At the start of each session, you MUST:
 
-- Objetivo real.
-- Resultado esperado.
-- Contexto necesario.
-- Restricciones.
-- Criterios de calidad.
-- Riesgos o supuestos.
-- Subtareas.
-- Decisiones que debo validar.
+1. Read `~/Projects/ai-os/CLAUDE.md`.
+2. Read `~/Projects/ai-os/context/00_profile.md`, `02_projects.md`, `03_preferences.md`.
+3. Read `~/Projects/ai-os/rules/never_do.md`.
+4. Check if there is an active Spec in `~/Projects/ai-os/specs/current_spec.md`.
 
-No empieces la tarea hasta que yo apruebe la Spec.
+If there is an active Spec, continue executing it.
+
+If there is no active Spec, ask: "What task are we working on today?"
+
+When the user says a task:
+
+1. If it's a new task → create a Spec (follow `specs/spec_template.md`).
+2. If it's an existing Spec → execute the next block.
+3. If it's a quick task (<15 min) → do it directly.
+4. If it's research → follow `workflows/research.md`.
+5. If it's code → follow `workflows/coding.md`.
+
+## Style
+
+- Spanish for chat.
+- English for code, commits, docs, errors.
+- Terse, no ceremony.
+- "go" = execute without asking.
+- "dame la url" = URL only.
+
+## Tools available
+
+- 99 global skills in `~/.claude/skills/`.
+- 14 superpowers skills (REQUIRED).
+- 7 MCP servers (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser).
+
+## Today's question
+
+What task are we working on today?

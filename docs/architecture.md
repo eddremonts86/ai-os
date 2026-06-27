@@ -1,39 +1,39 @@
 # Architecture
 
-> Cómo está organizado AI-OS internamente y por qué.
+> how AI-OS is organized internally and why.
 
-## Principios de diseño
+## Design principles
 
-1. **Single source of truth.** Las skills viven en `ai-config/skills/` y se symlinkean a los 5 CLIs. No hay duplicación.
-2. **Declarativo > imperativo.** MCP servers se definen en YAML, no se hardcodean en `~/.hermes/config.yaml`. La config se genera desde los YAMLs.
-3. **Idempotente.** El setup script corre múltiples veces sin romper nada (mata symlinks viejos, recrea, no falla).
-4. **Cross-platform best-effort.** Mac y Windows funcionan, con diferencias documentadas. Mac es la experiencia premium.
-5. **AI-OS como orquestador, no como dictador.** El AI-OS da estructura y skills, pero no impone un workflow único. Cada dev adapta.
+1. **Single source of truth.** Skills live in `ai-config/skills/` and are symlinked to 5 CLIs. No duplication.
+2. **declarative > imperative.** MCP servers are defined in YAML, not hardcoded in `~/.hermes/config.yaml`. The config is generated from the YAMLs.
+3. **idempotent.** The setup script runs multiple times without breaking anything (kills old symlinks, recreates, does not fail).
+4. **cross-platform best-effort.** Mac and Windows work, with documented differences. Mac is the premium experience.
+5. **AI-OS as orchestrator, not as dictator.** AI-OS gives structure and skills, but does not impose a single workflow. Each dev adapts.
 
-## Capas
+## Layers
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  Layer 0: AI-OS (Karpathy method)                                │
 │  - CLAUDE.md, context/, rules/, workflows/, specs/, verifiers/   │
-│  - 99 skills globales (5 CLIs via symlinks)                     │
+│  - 99 global skills (5 CLIs via symlinks)                       │
 │  - 14 superpowers skills (REQUIRED)                             │
-│  - 7 MCP servers declarativos                                   │
-│  - Prompt: ai-os-quickstart                                     │
+│  - 7 declarative MCP servers                                    │
+│  - Prompt: ai-os-quickstart                                      │
 └─────────────────────────────────────────────────────────────────┘
                               ▲
                               │ (symlinks)
 ┌─────────────────────────────────────────────────────────────────┐
 │  Layer 1: AI CLIs                                                │
 │  - Claude Code, Codex, Gemini CLI, Antigravity, Hermes Agent    │
-│  - Cada uno carga skills desde ~/.{claude,codex,gemini,...}/skills/│
+│  - Each one loads skills from ~/.{claude,codex,gemini,...}/skills/│
 └─────────────────────────────────────────────────────────────────┘
                               ▲
                               │ (symlinks)
 ┌─────────────────────────────────────────────────────────────────┐
 │  Layer 2: OS & Shell                                            │
 │  - Mac: zsh + Oh My Zsh + Powerlevel10k + Warp                  │
-│  - Windows: PowerShell + Windows Terminal + WezTerm             │
+│  - Windows: PowerShell + Windows Terminal + Wezterm             │
 │  - Terminal, fonts, dotfiles (git, ssh, etc.)                  │
 └─────────────────────────────────────────────────────────────────┘
                               ▲
@@ -46,114 +46,115 @@
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Decisiones de diseño clave
+## Key design decisions
 
-### ¿Por qué symlinks y no copiar?
+### Why symlinks and not copy?
 
 **Pro symlinks:**
-- Single source of truth (un cambio se propaga a 5 CLIs).
-- Tamaño total bajo.
-- Fácil de sincronizar con git (solo modificas source of truth).
+- Single source of truth (one change propagates to 5 CLIs).
+- Lower total size.
+- Easy to sync with git (you only modify the source of truth).
 
-**Contra symlinks:**
-- En Windows requieren admin o Developer Mode.
-- Debugging más difícil (¿es el archivo real o un symlink?).
-- Si borras el source, rompes 5 destinos a la vez.
+**Con symlinks:**
+- On Windows they require admin or Developer Mode.
+- Harder to debug (is it a real file or a symlink?).
+- If you delete the source, you break 5 destinations at once.
 
-**Decisión:** symlinks para skills (claro win, son read-only). Files para configs que se modifican per-CLI (raro).
+**Decision:** symlinks for skills (clear win, they're read-only). Files for configs that are modified per-CLI (rare).
 
-### ¿Por qué YAML para MCP y no JSON?
+### Why YAML for MCP and not JSON?
 
-- YAML es más legible para humanos.
-- Comentarios nativos (`# comment`).
-- `yq` lee/escribe bien.
-- Si preferís JSON, hay convertidores.
+- YAML is more readable for humans.
+- Native comments (`# comment`).
+- `yq` reads/writes well.
+- If you prefer JSON, there are converters.
 
-### ¿Por qué dotfiles en repo y no en `~/`?
+### Why dotfiles in the repo and not in `~/`?
 
-- Versionado en git = backup + history.
-- Múltiples Macs = sync automático.
-- Reviewable en PRs.
+- Versioned in git = backup + history.
+- Multiple Macs = automatic sync.
+- Reviewable in PRs.
 
-**Trade-off:** dotfiles muy personales no van en el repo público. Solución: `.gitconfig.template` con placeholders, cada dev copia y personaliza.
+**Trade-off:** very personal dotfiles are NOT in the public repo. Solution: `.gitconfig.template` with placeholders, each dev copies and personalizes.
 
-### ¿Por qué skills globales en `~/.claude/skills/` y no en `~/Projects/ai-os/ai-config/skills/`?
+### Why global skills in `~/.claude/skills/` and not in `~/Projects/ai-os/ai-config/skills/`?
 
-- **Compatibilidad:** los 5 CLIs esperan skills en `~/.{claude,codex,gemini,agents}/skills/`. Cambiar el path requiere modificar los CLIs.
-- **Source of truth:** el AI-OS mantiene la copia canónica en `ai-config/skills/` y symlinkea a los 5 destinos.
-- **Single user assumption:** el path `~/` es único por usuario. Si tenés multi-user, hay que cambiar.
+- **Compatibility:** 5 CLIs expect skills in `~/.{claude,codex,gemini,agents}/skills/`. Changing the path requires modifying the CLIs.
+- **Source of truth:** AI-OS keeps the canonical copy in `ai-config/skills/` and symlinks to 5 destinations.
+- **Single user assumption:** the `~/` path is unique per user. If you have multi-user, you need to change.
 
-### ¿Por qué no Nix/Home Manager?
+### Why not Nix/Home Manager?
 
-- **Curva de aprendizaje:** Nix es complejo, requiere aprender un nuevo lenguaje.
-- **Overhead:** para 1-2 Macs, Brewfile + scripts es suficiente.
-- **Flexibilidad:** dotfiles en scripts bash son más fáciles de personalizar que un `.nix` declarativo.
+- **Learning curve:** Nix is complex, requires learning a new language.
+- **Overhead:** for 1-2 Macs, Brewfile + scripts is enough.
+- **Flexibility:** dotfiles in bash scripts are easier to personalize than `.nix` declarative.
 
-**Cuándo migrar a Nix:** si AI-OS crece a 5+ devs con setups diversos, Nix vale la pena. Por ahora, overkill.
+**When to migrate to Nix:** if AI-OS grows to 5+ devs with diverse setups, Nix is worth it. For now, overkill.
 
 ## Skills: lifecycle
 
 ```
-1. Author escribe SKILL.md en ai-config/skills/<name>/
+1. author writes SKILL.md in ai-config/skills/<name>/
 2. Commit + push
-3. install-mac.sh / install-windows.ps1 corren en Mac/Windows
-4. Symlinks se crean en 5 CLIs
-5. Skill se auto-carga según description (frontmatter)
-6. Cuando cambia, se re-corre setup (o symlink manual)
-7. Cuando se depreca, mover a ai-config/skills/.deprecated/ (con timestamp)
+3. install-mac.sh / install-windows.ps1 run on Mac/Windows
+4. Symlinks are created in 5 CLIs
+5. Skill auto-loads based on description (frontmatter)
+6. When it changes, re-run setup (or symlink manually)
+7. When it's deprecated, move to ai-config/skills/.deprecated/ (with timestamp)
 ```
 
-## Skills: cómo se invocan
+## Skills: how they're invoked
 
-Cada CLI tiene su mecanismo:
+Each CLI has its own mechanism:
 
-| CLI | Mecanismo de invocación |
+| CLI | Invocation mechanism |
 |---|---|
-| Claude Code | `/skill <name>` o auto-load por description |
-| Codex | Auto-load por frontmatter, sin comando explícito |
-| Gemini CLI | Auto-load por frontmatter |
-| Antigravity | Auto-load por frontmatter |
-| Hermes | `--skills <name>` o auto-load desde `imported:`, o `/skill <name>` |
+| Claude Code | `/skill <name>` or auto-load by description |
+| Codex | Auto-load by frontmatter, no explicit command |
+| Gemini CLI | Auto-load by frontmatter |
+| Antigravity | Auto-load by frontmatter |
+| Hermes | `--skills <name>` or auto-load from `imported:`, or `/skill <name>` |
 
-El `description:` del frontmatter es el trigger. Si dice "Use when X", el CLI carga la skill cuando detecta X.
+The `description:` in the frontmatter is the trigger. If it says "Use when X", the CLI loads the skill when it detects X.
 
 ## MCP servers: lifecycle
 
 ```
-1. Author escribe YAML en ai-config/mcp/<name>.yaml
-2. install-mac.sh corre generate-mcp-config.py
-3. Script lee YAMLs, genera ~/.hermes/config.yaml
-4. Hermes recarga config, conecta MCPs
-5. Cuando cambia, re-correr setup (o editar manualmente)
+1. Author writes YAML in ai-config/mcp/<name>.yaml
+2. install-mac.sh runs generate-mcp-config.py
+3. Script reads YAMLs, generates ~/.hermes/config.yaml
+4. Hermes reloads config, connects MCPs
+5. When it changes, re-run setup (or edit manually)
 ```
 
-## Roadmap arquitectónico
+## Architectural roadmap
 
-- **v0.x:** Single-user, single-source-of-truth, symlinks.
-- **v1.0:** Stable, validación con CI.
-- **v1.x:** Multi-Mac sync via git (ya funciona).
-- **v2.0:** Multi-user con config layers (personal / team / public).
-- **v2.x:** Opcionalmente Nix para setups más complejos.
+- **v0.x:** single-user, single-source-of-truth, symlinks.
+- **v1.0:** stable, CI validation.
+- **v1.x:** multi-Mac sync via git (already works).
+- **v2.0:** multi-user with config layers (personal / team / public).
+- **v2.x:** optionally Nix for more complex setups.
 
-## Limitaciones conocidas
+## Known limitations
 
-- **Windows symlinks** requieren admin o Dev Mode.
-- **Brewfile** solo aplica a Mac (Windows usa Chocolatey).
-- **Oh My Zsh + p10k** solo en Mac. Windows tiene equivalente con Oh-My-Posh o Starship pero no está automatizado.
-- **Skills específicas por CLI** (ej: `imported:foo` solo en Hermes) no se manejan automáticamente. Si necesitás skills diferentes por CLI, usar el directorio `ai-config/clis/`.
+- **Windows symlinks** require admin or Dev Mode.
+- **Brewfile** only applies to Mac (Windows uses Chocolatey).
+- **Oh My Zsh + p10k** only on Mac. Windows has the equivalent with Oh-My-Posh or Starship but is not automated.
+- **CLI-specific skills** (eg: `imported:foo` only in Hermes) are not handled automatically. If you need different skills per CLI, use the `ai-config/clis/` directory.
 
-## Métricas de éxito
+## Success metrics
 
-AI-OS es exitoso si:
-- ✅ Setup completo en Mac nueva en < 30 min.
-- ✅ Setup completo en Windows en < 60 min.
-- ✅ Cero secrets en el repo (verificable con `git log -p | grep -iE "secret|api[_-]?key|password"`).
-- ✅ Todas las skills invocables desde los 5 CLIs.
-- ✅ 14/14 superpowers skills verificadas en `bash setup/verify.sh`.
+AI-OS is successful if:
 
-## Referencias
+- ✅ Complete setup on a new Mac in < 30 min.
+- ✅ Complete setup on Windows in < 60 min.
+- ✅ Zero secrets in the repo (verifiable with `git log -p | grep -iE "secret|api[_-]?key|password"`).
+- ✅ All skills invokable from 5 CLIs.
+- ✅ 14/14 superpowers skills verified in `bash setup/verify.sh`.
 
-- **Karpathy method:** [CLAUDE.md sección "Método"](../../CLAUDE.md)
+## References
+
+- **Karpathy method:** [CLAUDE.md "Method" section](../../CLAUDE.md)
 - **Setup scripts:** [setup/](../setup/)
 - **Skills:** [ai-config/skills/](../ai-config/skills/)
 - **MCP servers:** [ai-config/mcp/](../ai-config/mcp/)

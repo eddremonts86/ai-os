@@ -14,7 +14,7 @@
 #   $env:SKIP_DOTFILES = "1"   → no crear symlinks de dotfiles
 #   $env:SKIP_MCP = "1"        → no regenerar config de MCP
 #   $env:SKIP_VERIFY = "1"     → no correr tests de verificación al final
-#   $env:DRY_RUN = "1"         → simular sin ejecutar (CI mode)
+#   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 
 $ErrorActionPreference = "Stop"
 
@@ -44,7 +44,7 @@ Log "═════════════════════════
 Write-Host ""
 
 # ─── 0. Prereqs ───
-Log "0. Verificando prerequisites..."
+Log "0. Verifying prerequisites..."
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     Err "git no instalado. Instala Git for Windows: https://git-scm.com/download/win"
@@ -115,7 +115,7 @@ if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue))
 Write-Host ""
 
 # ─── 2. Fonts ───
-Log "2. Verificando Nerd Fonts..."
+Log "2. Verifying Nerd Fonts..."
 # PowerShell no maneja fonts directamente; usuario debe instalar manualmente
 # CaskaydiaCove Nerd Font: descargar de https://www.nerdfonts.com/font-downloads
 # O via chocolatey: choco install nerd-fonts-caskaydia-cove
@@ -272,7 +272,7 @@ Ok "Skills propagadas a 5 CLIs ($skillCount skills en source)"
 Write-Host ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───
-Log "6. Verificando superpowers skills (REQUIRED)..."
+Log "6. Verifying superpowers skills (REQUIRED)..."
 $expected = 14
 $actual = 0
 $superpowersSkills = @(

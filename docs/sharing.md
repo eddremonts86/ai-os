@@ -1,54 +1,54 @@
 # Sharing & Contributing
 
-> Cómo contribuir al AI-OS y compartir con otros devs.
+> how to contribute to AI-OS and share with other devs.
 
-## Para usar AI-OS sin contribuir
+## To use AI-OS without contributing
 
-1. Fork el repo (botón en GitHub).
-2. Clonar tu fork.
-3. Correr `setup/install-mac.sh` (o Windows).
-4. **Personalizar** los archivos en `ai-config/`, `dev-env/`, `context/` según tus preferencias.
-5. Commitear a tu fork (no al repo original).
+1. Fork the repo (button on GitHub).
+2. Clone your fork.
+3. Run `setup/install-mac.sh` (or Windows).
+4. **Personalize** the files in `ai-config/`, `dev-env/`, `context/` according to your preferences.
+5. Commit to your fork (not to the original repo).
 
-## Para contribuir al repo original (PR)
+## To contribute to the original repo (PR)
 
-1. Fork + clonar.
-2. Crear branch: `git checkout -b feat/mi-cambio`.
-3. Hacer cambios.
-4. **Conventional Commits** (ya en `dev-env/dotfiles/git/.gitconfig.template`):
-   - `feat:` nueva feature
-   - `fix:` bugfix
-   - `docs:` solo docs
+1. Fork + clone.
+2. Create branch: `git checkout -b feat/my-change`.
+3. Make changes.
+4. **Conventional Commits** (already in `dev-env/dotfiles/git/.gitconfig.template`):
+   - `feat:` new feature
+   - `fix:` bug fix
+   - `docs:` docs only
    - `chore:` maintenance
-   - `refactor:` refactor sin cambio funcional
+   - `refactor:` refactor without functional change
    - `test:` tests
 5. Push + PR.
-6. Describir: qué cambia, por qué, cómo testear.
+6. Describe: what changes, why, how to test.
 
-### Qué SÍ贡献uir
+### What TO contribute
 
-- **Skills nuevas** (`~/.claude/skills/<name>/SKILL.md`) que sean reutilizables.
-- **Skills de workspace** (project-specific, no van en `~/.claude/skills/`).
-- **Workflows** nuevos en `~/Projects/ai-os/workflows/`.
-- **Verifiers** nuevos.
-- **Brewfile** packages (si son útiles para devs en general).
-- **Dotfiles** (solo si son genéricos, no personales).
-- **MCP servers** adicionales en `ai-config/mcp/`.
-- **Fixes** a bugs en scripts de setup.
-- **Docs** mejoras.
+- **New skills** (`~/.claude/skills/<name>/SKILL.md`) that are reusable.
+- **Workspace skills** (project-specific, not in `~/.claude/skills/`).
+- **New workflows** in `~/Projects/ai-os/workflows/`.
+- **New verifiers**.
+- **Brewfile** packages (if useful for devs in general).
+- **Dotfiles** (only if generic, not personal).
+- **Additional MCP servers** in `ai-config/mcp/`.
+- **Fixes** to bugs in setup scripts.
+- **Docs** improvements.
 
-### Qué NO contribuir (específico del usuario)
+### What NOT to contribute (user-specific)
 
-- **Secrets** (API keys, tokens, passwords).
+- **secrets** (API keys, tokens, passwords).
 - **Git identity** (user.name, user.email).
-- **SSH keys privadas**.
-- **Paths absolutos** hardcoded.
-- **Aliases muy personales** sin documentación de qué hacen.
-- **Config de apps con info personal** (GPG keys, email signatures).
+- **SSH private keys**.
+- **Hardcoded absolute paths**.
+- **Very personal aliases** without documentation of what they do.
+- **App config with personal info** (GPG keys, email signatures).
 
-## Convenciones
+## Conventions
 
-### Frontmatter de skills
+### Frontmatter of skills
 
 ```yaml
 ---
@@ -77,38 +77,39 @@ docs(cross-platform): add WSL2 setup notes
 chore: bump superpowers version
 ```
 
-## Distribución de skills
+## Skill distribution
 
-### Skills globales (todos los devs las tienen)
+### Global skills (all devs have them)
 
 Path: `ai-config/skills/<name>/SKILL.md`
 
-Se distribuyen via symlinks a 5 CLIs:
+Distributed via symlinks to 5 CLIs:
+
 - `~/.claude/skills/<name>/`
 - `~/.codex/skills/<name>/`
 - `~/.gemini/skills/<name>/`
 - `~/.agents/skills/<name>/`
 - `~/.hermes/skills/imported/<name>/`
 
-El `setup/install-mac.sh` lo hace automáticamente.
+`setup/install-mac.sh` does this automatically.
 
-### Skills de workspace (específicas del proyecto)
+### Workspace skills (project-specific)
 
 Path: `<project>/.agents/skills/<name>/SKILL.md`
 
-**No** se distribuyen a otros CLIs automáticamente. Son workspace-scoped.
+**NOT** automatically distributed to other CLIs. Workspace-scoped.
 
-Si tu skill es workspace-specific pero querés compartirla → promoverla a global (mover a `ai-config/skills/`).
+If your skill is workspace-specific but you want to share it → promote it to global (move to `ai-config/skills/`).
 
-## Versionado
+## Versioning
 
-AI-OS sigue **Semantic Versioning**:
+AI-OS follows **Semantic Versioning**:
 
-- **MAJOR:** breaking changes en el setup, estructura, o skills core.
-- **MINOR:** nuevas skills, workflows, o features backward-compatible.
-- **PATCH:** bugfixes, doc fixes, mejoras menores.
+- **MAJOR:** breaking changes in setup, structure, or core skills.
+- **MINOR:** new skills, workflows, or backward-compatible features.
+- **PATCH:** bug fixes, doc fixes, minor improvements.
 
-Current version: 0.1.0 (en desarrollo inicial).
+Current version: 0.1.0 (in initial development).
 
 ## Releases
 
@@ -121,24 +122,24 @@ git push origin v0.2.0
 gh release create v0.2.0 --title "v0.2.0: ai-os-quickstart" --notes "..."
 ```
 
-## Canales
+## Channels
 
 - **GitHub:** [github.com/eddremonts86/ai-os](https://github.com/eddremonts86/ai-os)
-- **Issues:** para bugs y feature requests.
-- **Discussions:** para preguntas y compartir experiencias.
+- **Issues:** for bugs and feature requests.
+- **Discussions:** for questions and sharing experiences.
 
 ## Roles
 
-Por ahora, el repo es personal de Edd. Si crece:
+For now, the repo is Edd's personal. If it grows:
 
-- **Maintainer:** Edd (decisiones finales).
-- **Contributors:** cualquiera con PR mergeado.
-- **Users:** cualquiera que adopte AI-OS.
+- **Maintainer:** Edd (final decisions).
+- **Contributors:** anyone with a merged PR.
+- **Users:** anyone who adopts AI-OS.
 
 ## Roadmap (tentative)
 
 - [ ] v0.2.0: ai-os-quickstart skill (DONE)
-- [ ] v0.3.0: Setup script + Brewfile + MCP config generativa (DONE)
+- [ ] v0.3.0: Setup script + Brewfile + MCP config generation (DONE)
 - [ ] v0.4.0: Windows PowerShell install (DONE)
 - [ ] v0.5.0: More skills (TBD based on demand)
 - [ ] v1.0.0: Stable API for skills + workflows

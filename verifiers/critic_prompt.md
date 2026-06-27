@@ -1,76 +1,80 @@
 # Critic Prompt
 
-Aplicá este prompt al output antes de declararlo terminado. **No reescribas todavía** — primero evaluá.
+Apply this prompt to the output before declaring it done. **Do not rewrite yet** — first evaluate.
 
 ---
 
-Actuás como verificador crítico del output anterior. No reescribas, primero evaluá.
+You act as a critical verifier of the output above. Do not rewrite, first evaluate.
 
-## Tarea
+Apply this analysis:
 
-Revisá el trabajo usando estos criterios:
+## 1. Spec compliance (most important)
 
-1. ¿Cumple el objetivo real definido en la Spec?
-2. ¿Usa correctamente el contexto disponible (`~/Projects/ai-os/context/`)?
-3. ¿Hace suposiciones no justificadas?
-4. ¿Hay información vaga, inventada o débil?
-5. ¿Falta alguna decisión importante que debería validar?
-6. ¿El resultado es claro y accionable?
-7. ¿Respeta mis reglas de `~/Projects/ai-os/rules/`?
-8. ¿Cumple los criterios de calidad definidos en la Spec?
-9. ¿Qué partes deben mejorarse?
-10. ¿Qué versión final recomendás?
+- Does it really meet the **actual** objective? Not what I asked for literally, but what I really need.
+- Are the acceptance criteria met? Be specific.
+- Are there hidden scope creep? Things I didn't ask for but you included.
+- Is the implementation **complete** or did you skip parts?
 
-## Devolvé
+## 2. Code quality (if applicable)
 
-- **Diagnóstico** (1-3 frases).
-- **Errores encontrados** (lista numerada con archivo:línea si aplica).
-- **Mejoras concretas** (lista numerada, accionable).
-- **Versión corregida** (solo si hay errores que afectan funcionalidad).
-- **Score:** Aprobado / Aprobado con notas / Rechazado.
+- Are the names clear? (`getUserById` is better than `fetchData`).
+- Is the code DRY? (no obvious duplication).
+- Is the complexity justified? (no over-engineering).
+- Are the error messages clear? (don't say "Error", say "User not found").
+- Is the code testable? (no hard dependencies on global state).
+- Are there any `TODO` / `FIXME` / `XXX` left?
 
-## Formato de respuesta
+## 3. Documentation
+
+- Is the doc up to date with the code?
+- Are the examples tested and runnable?
+- Is the language consistent (no mixing Spanish and English)?
+- Is the structure clear (sections, headers, ToC)?
+
+## 4. User experience
+
+- Is the error message user-friendly (not technical jargon)?
+- Are the edge cases covered? (empty, null, error states).
+- Is the flow intuitive? (no unnecessary steps).
+- Is the response time acceptable?
+
+## 5. Risks and hidden costs
+
+- Is there a maintenance cost I didn't anticipate?
+- Are there security risks?
+- Are there performance risks?
+- Are there dependencies that might break?
+- Is the licensing clear?
+
+## 6. Missing pieces
+
+- What's missing that I would want?
+- What would I have asked for if I knew you could do it?
+- What would I disagree with if I read this?
+
+## Output format
 
 ```
-## Diagnóstico
-<1-3 frases>
+[Pass / Fail / Pass with notes]
 
-## Errores
-1. [critical/important/minor] <descripción> — archivo:línea si aplica
-2. ...
+## Strong points
+- ...
 
-## Mejoras
-1. <mejora accionable>
-2. ...
+## Improvement points (be specific, prioritized)
+1. [Priority high] Specific change to make
+2. [Priority medium] ...
+3. [Priority low] ...
 
-## Versión corregida
-<solo si hay cambios necesarios>
-
-## Score
-- Aprobado / Aprobado con notas / Rechazado
-- <1 frase de razón>
+## Verdict
+- Ready to ship? Yes / No / After X changes
 ```
 
 ---
 
-## Cuándo rechazar
+## How to apply
 
-- Inventar datos, URLs, versiones.
-- Saltarse Spec en tareas grandes.
-- Código con TODOs o stubs como final.
-- Secrets hardcoded.
-- No respetar `rules/never_do.md`.
-- Output inflado con prose innecesario.
-
-## Cuándo aprobar con notas
-
-- 1-3 mejoras menores que no afectan funcionalidad.
-- Convenciones del proyecto no seguidas al 100% (pero entendibles).
-- Edge case no contemplado (pero poco probable).
-
-## Cuándo aprobar limpio
-
-- 0 errores, 0 mejoras críticas.
-- Spec cumplida al 100%.
-- Código production-ready.
-- Comunicación clara y accionable.
+1. Paste the output above this prompt.
+2. Wait for the analysis.
+3. Apply 2-3 improvements (high priority).
+4. Re-verify with `verification-before-completion`.
+5. Then declare done.

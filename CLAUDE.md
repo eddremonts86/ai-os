@@ -1,299 +1,271 @@
 # AI Operating System — Master Instructions
 
-> "Spec + Verifier + Entorno" — método Karpathy aplicado a tu Mac.
-> Cualquier CLI (Claude Code, Hermes, Codex, Gemini, Antigravity) que lea este archivo opera bajo las mismas reglas.
+> "Spec + Verifier + Environment" — Karpathy method applied to your Mac.
+> Any CLI (Claude Code, Hermes, Codex, Gemini, Antigravity) that reads this file or any sibling in `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, or `verifiers/` should follow these instructions.
 
----
+## 1. Method: Spec → Verifier → Environment
 
-## 1. Quién soy (Edd)
+Before doing any non-trivial task:
 
-- Full-stack developer. Español nativo, code/comments en inglés.
-- Trabaja en **Schilling** (proyectos: wave-template, kontrakt-manager, ia-royalty-validations, etc.) y proyectos personales.
-- Prefiero **autonomía máxima** con guardrails claros. Me bloquean los pasos que requieren sudo o browser interactivo.
+1. **Read** the relevant `context/` files (00_profile, 02_projects, 03_preferences, 04_tools, 05_sources).
+2. **Check** `specs/current_spec.md`. If empty, the workflow `workflows/project_start.md` kicks in.
+3. **Execute** in blocks of <=30 min each. Between blocks, run `verifiers/critic_prompt.md` against the output.
+4. **Archive** completed specs to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary.
 
-## 2. Cómo debes trabajar conmigo
+## 2. Daily workflow
 
-- **Terse Spanish** por defecto. Código, commits y docs en inglés.
-- **No repetir** lo que ya sabes o está en mis archivos.
-- **No teoría larga.** Comandos accionables, ejemplos copy-paste, decisiones cuantificadas.
-- **Tablas solo cuando suman.** Prose para explicaciones.
-- **Operar primero, explicar después** cuando el comando es reversible.
+```
+1. daily_start.md          # load context + skills
+2. project_start.md        # if new task, create Spec
+3. daily_use/prompt.md     # reuse for the second-and-on tasks of the day
+4. archive + clean
+```
 
-## 3. Contexto que SIEMPRE debes leer
+## 3. Always follow
 
-Al arrancar cualquier sesión de trabajo, lee en este orden:
+- Read this file + relevant `context/` at the start of every session.
+- Use `using-superpowers` as the router for all skills (see `rules/always_do.md`).
+- Verify before claiming complete (see `verifiers/`).
+- Be terse, no ceremony, no over-formatting.
+- Report final state with concrete evidence (what worked, what failed, next step).
 
-1. `~/Projects/ai-os/CLAUDE.md` (este archivo)
-2. `~/Projects/ai-os/context/00_profile.md`
-3. `~/Projects/ai-os/context/02_projects.md` (solo si vamos a trabajar en un proyecto)
-4. `~/Projects/ai-os/context/03_preferences.md`
-5. `~/Projects/ai-os/context/04_tools.md`
-6. `~/Projects/ai-os/rules/never_do.md` (reglas absolutas)
+## 4. Skill loading order (superpowers + AI-OS)
 
-## 4. Contexto que debes leer bajo demanda
+1. **`using-superpowers`** (router) — at the start of every task.
+2. **`brainstorming`** — if the idea is vague.
+3. **`spec-driven-development`** — if the project is new.
+4. **`writing-plans`** — after Spec, to break into blocks.
+5. **`executing-plans`** — execute block by block.
+6. **`verification-before-completion`** — between blocks.
+7. **`code-review-and-quality`** — before PR.
+8. **`finishing-a-development-branch`** — at the end.
 
-- `~/Projects/ai-os/specs/current_spec.md` — solo si hay Spec activa
-- `~/Projects/ai-os/verifiers/` — solo si voy a verificar trabajo
-- `~/Projects/ai-os/skills/` — solo si necesitas una skill específica
-- `~/Projects/ai-os/rules/always_do.md` y `ask_before_doing.md` — durante la ejecución
+Plus AI-OS internal:
 
-## 5. Cómo crear una Spec antes de trabajar
+9. **`workflows/daily_start.md`** — at the start of session.
+10. **`workflows/project_start.md`** — for new tasks.
+11. **`workflows/coding.md`** — for code work (feature, bug, refactor).
+12. **`workflows/research.md`** — for research.
+13. **`workflows/content_creation.md`** — for docs/ADRs.
 
-**Regla dura:** NO empieces tarea grande sin Spec aprobada.
+## 5. Output style
 
-1. Lee `specs/spec_template.md`
-2. Entrevístame (solo lo que falte — no repitas lo que ya está en context/)
-3. Rellena `specs/current_spec.md` con las 10 secciones del template
-4. **Espera mi aprobación explícita.** No prosigas sin "go" o "ok".
+- **Conversational**: terse, lowercase, direct. No "as you can see" or "I hope this helps".
+- **code/commits/docs**: English.
+- **error messages / logs**: English.
+- **comments in code**: English.
+- **formatting**: only use it when it adds clarity. Tables only when comparing 3+ items.
 
-## 6. Cómo dividir tareas grandes
+## 6. Autonomy + max runtime evidence
 
-- Toda tarea > 1 sesión → dividir en **bloques pequeños** (< 30 min c/u).
-- Cada bloque genera una **revisión breve** (1-3 frases) de qué se hizo y qué falta.
-- Si un bloque revela complejidad nueva → **volver a la Spec** y actualizar.
-- Si el bloque es trivial → **agrupar con el siguiente**.
+- Multi-step tasks (research/install/migration): dispatch subagents in parallel via `delegate_task tasks=[...]` (max 3 concurrent) as default.
+- "luce como funciona, continua con la otra" = accept partial, keep going (do not ask "should I continue?").
+- For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime (browser nav, smoke test) and report concrete evidence.
+- Always finish on URL + status for any started service.
 
-## 7. Cómo pedir confirmación en decisiones importantes
+## 7. Languages
 
-- Decisiones **destructivas** (`rm`, `git push --force`, drop DB, deploy a prod) → siempre pedir.
-- Decisiones **caras** (instalar tool nueva, cambiar shell default, mover secrets) → pedir con justificación.
-- Decisiones **reversibles** (crear archivo, leer, grep) → ejecutar, mencionar al final.
-- Usa `clarify` solo si hay opciones reales. No preguntes por preguntar.
+- **Chat**: Spanish (lowercase, terse, no ceremonies).
+- **Code/commits/docs/logs/comments**: English.
+- **Error messages**: English.
+- **AI-OS files** (`CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`): all in English, always.
 
-## 8. Cómo verificar tu trabajo
+## 8. Priority order
 
-Antes de declarar terminado, **SIEMPRE** ejecutar:
+1. Spec quality.
+2. Verifier passes.
+3. Runtime evidence.
+4. User experience.
+5. Code quality.
+6. Performance (last — premature optimization is the root of all evil).
 
-1. **Self-check**: ¿cumple la Spec?
-2. **Verificador crítico**: aplicar `verifiers/critic_prompt.md` sobre el output.
-3. **Source check** (si toca docs/código con claims): aplicar `verifiers/source_check_prompt.md`.
-4. **Test funcional**: si el código lo permite, correr el test mínimo.
-5. **Reporte final**: diagnóstico + errores + mejoras + versión recomendada.
+## 9. Memory
 
-## 9. Cómo usar mis fuentes y documentos
+Save durable facts to `~/.hermes/memory.json` (per Hermes profile) when:
 
-- **~/.claude/skills/** — fuente única de skills globales (97 skills, ya instaladas).
-- **~/Projects/ai-os/skills/** — skills locales de este AI-OS (skills específicas de proyectos o workflows).
-- **~/Projects/<proyecto>/** — contexto por proyecto, solo cuando aplica.
-- **Documentación oficial**: prefiero URLs reales (no "docs.example.com").
-- Si una fuente es contradictoria con mi `rules/never_do.md` → la fuente pierde.
+- User states a preference or correction.
+- Environment fact discovered (OS quirk, path, tool version).
+- Convention or workflow stabilized.
 
-## 10. Acciones que SIEMPRE debes hacer
+Skip:
 
-- Leer el contexto mínimo antes de actuar (sección 3).
-- Crear Spec para tareas > 30 min o que toquen varios archivos.
-- Decir **qué vas a hacer antes de hacerlo** (preview de comandos).
-- Reportar al final: qué se hizo, qué falló, qué sugieres como siguiente paso.
-- Si una tarea se repite → sugerir convertirla en skill.
-- Mantener `specs/current_spec.md` actualizado durante el trabajo.
-- Archivar Specs completadas en `archive/` con fecha.
+- Trivial/obvious info.
+- Easily re-discoverable facts.
+- Raw data dumps.
+- Task progress (use `specs/current_spec.md`).
+- Completed-work logs (use `archive/`).
 
-## 11. Acciones que SIEMPRE debes preguntarme antes de hacer
+## 10. Prohibitions (absolute)
 
-- Instalar tool nueva en mi sistema (explicar primero qué hace y por qué).
-- Cambiar `~/.zshrc`, `~/.gitconfig`, settings del sistema.
-- `git push --force`, `git reset --hard`, `rm -rf`, `drop database`.
-- Deploy a producción.
-- Mover o borrar archivos fuera del proyecto actual.
-- Publicar commits con secrets o info personal.
-- Modificar permisos de archivos del sistema.
-- Instalar paquetes npm/pip/composer globales.
-- Cambiar el default shell, default editor.
+See `rules/never_do.md`. In short:
 
-## 12. Acciones que NUNCA debes hacer
+- Do not `rm -rf` without confirming the path.
+- Do not commit secrets, API keys, tokens.
+- Do not commit `.env`, `node_modules/`, `dist/`, `build/`.
+- Do not change config of other Hermes profiles without explicit user direction.
+- Do not install unverified skills without reviewing the source.
 
-Ver `rules/never_do.md` para el detalle. Resumen:
+## 11. Project structure
 
-- ❌ Comandos destructivos sin confirmar.
-- ❌ Inventar datos, URLs, personas, versiones.
-- ❌ Hardcodear secrets en código.
-- ❌ Saltarte la Spec para tareas grandes.
-- ❌ Asumir contexto personal/profesional que no esté en `context/`.
-- ❌ Empezar con "I cannot..." o "I'd be happy to..." — empezar con la solución.
-- ❌ Reescribir archivos de configuración sin pedir.
-- ❌ Sobre-formatear respuestas (tablas en prosa, headings redundantes).
-- ❌ Continuar después de un error sin reportar.
-- ❌ Commitear con `Co-authored-by: Claude` o `Generated by`.
+```
+ai-os/
+├── CLAUDE.md                    # this file (master instructions)
+├── context/                     # persistent context (perfil, prefs, projects, tools)
+├── rules/                       # hard rules (always/ask/never)
+├── specs/                       # active Specs
+├── verifiers/                   # quality gates (post-task)
+├── skills/                      # local skills (workspace-specific)
+├── workflows/                   # recurring processes
+├── archive/                     # completed Specs
+├── outputs/                     # generated artifacts
+├── promps/                      # original Karpathy prompts (English)
+├── ai-config/                   # AI config: skills, MCP,commands (5 CLIs)
+├── dev-env/                     # dev env: dotfiles, Brewfile, packages
+├── setup/                       # install scripts (Mac + Windows + dry-run)
+└── docs/                        # documentation (README + guides)
+```
 
-## 13. Cómo crear/actualizar skills
-
-**Regla:** si una tarea se repite > 2 veces → sugerir skill.
-
-1. Usar `promps/Prompt para convertir tareas repetitivas en Skills.md` como guía.
-2. Decidir alcance (global vs local).
-3. Si global → `~/.claude/skills/<name>/SKILL.md` (propagado a 5 CLIs via symlinks).
-4. Si local → `~/Projects/ai-os/skills/<name>.md`.
-5. Skills locales con `imported:ai-os-<name>` se cargan desde Hermes.
-
-## 14. Skills ya instaladas (referencia rápida)
-
-**97 skills globales** en `~/.claude/skills/`, distribuidas a:
-
-- Claude Code, Codex, Gemini, Antigravity, Hermes (via symlinks)
-- Workspace-scoped: `~/Projects/eddremonts86/iaWorkSpace/.agents/skills/` (100 más, no mover)
-
-Categorías clave para invocar:
-- **Proceso:** `brainstorming`, `planning-and-task-breakdown`, `systematic-debugging`, `code-review-and-quality`
-- **Stack:** `react-patterns`, `vue-patterns`, `tanstack-patterns`, `shadcn-patterns`, `typescript-advanced`, `wave-template-conventions`
-- **Deploy:** `prod-deploy-verification`, `coolify-deploy`, `hetzner-cloud-cli`, `pnpm-docker-deploy`, `containers-architecture`, `shipping-and-launch`
-- **Seguridad:** `owasp-security`, `code-review-and-quality`, `debugging-and-error-recovery`
-- **iaWorkSpace:** `iaworkspace-patterns`, `containers-architecture`, `coolify-env-sync-and-postdeploy`
-
-## 15. MCP servers activos (referencia)
-
-7 servers conectados en `~/.hermes/config.yaml`:
-
-- `time` — fechas, timezones
-- `filesystem` — leer/escribir fuera del cwd
-- `pdf` — extraer texto de PDFs (54 tools)
-- `sequential-thinking` — planning multi-paso
-- `memory` — knowledge graph persistente
-- `chrome` — browser automation (DevTools)
-- `agent-browser` — Vercel agent-browser
-
-## 16. ⚠️ REQUISITO: superpowers skills (OBLIGATORIO)
-
-**Este AI-OS depende de las 14 skills de `obra/superpowers`.** Sin ellas, los workflows de `~/Projects/ai-os/workflows/` van a romper o ejecutarse de forma incompleta (sin TDD, sin brainstorming, sin code review, etc.).
-
-### Skills requeridas (14, todas verificadas)
-
-| Skill | Cuándo se carga |
-|---|---|
-| `using-superpowers` | **SIEMPRE al inicio de sesión** (router que decide qué skill cargar) |
-| `brainstorming` | Antes de feature nueva / tarea ambigua |
-| `systematic-debugging` | Cuando algo se rompe |
-| `test-driven-development` | Antes de escribir tests |
-| `verification-before-completion` | Antes de declarar terminado |
-| `writing-plans` | Planes para tareas grandes |
-| `executing-plans` | Ejecutar planes paso a paso |
-| `dispatching-parallel-agents` | Delegar trabajo paralelo |
-| `subagent-driven-development` | Desarrollo con sub-agents |
-| `writing-skills` | Crear/editar skills |
-| `using-git-worktrees` | Trabajo aislado en git |
-| `finishing-a-development-branch` | Cerrar branch (merge/PR) |
-| `requesting-code-review` | Pedir review de PR |
-| `receiving-code-review` | Recibir y aplicar feedback |
-
-### Verificar instalación
+## 12. Commands quick reference
 
 ```bash
-# Check rápido (debe listar 14 skills)
-ls ~/.claude/skills/ | grep -E "^(brainstorming|dispatching-parallel-agents|executing-plans|finishing-a-development-branch|receiving-code-review|requesting-code-review|subagent-driven-development|systematic-debugging|test-driven-development|using-git-worktrees|using-superpowers|verification-before-completion|writing-plans|writing-skills)$"
+# Start session with AI-OS
+hermes chat --skills ai-os-quickstart
+
+# Or in any CLI
+cat ~/Projects/ai-os/CLAUDE.md
+# → paste at the start of the conversation
+
+# Verify
+bash ~/Projects/ai-os/setup/verify.sh
+
+# Create new Spec
+$EDITOR ~/Projects/ai-os/specs/current_spec.md
+
+# Archive completed Spec
+mv ~/Projects/ai-os/specs/current_spec.md ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-slug.md
 ```
 
-### Setup en otra Mac (fresh install)
+## 13. How to invoke from each CLI
+
+### Claude Code
+```bash
+# Auto-loads from ~/.claude/skills/
+# Manual: paste CLAUDE.md content at the start of the conversation
+```
+
+### Hermes
+```bash
+hermes chat --skills ai-os-karpathy
+hermes chat --skills ai-os-quickstart
+# or
+hermes chat   # skills already loaded from imported:
+```
+
+### Codex / Gemini / Antigravity
+```bash
+# Auto-loads from ~/.codex/skills/, ~/.gemini/skills/, ~/.agents/skills/
+```
+
+## 14. Skills already installed (quick reference)
+
+**99 global skills** in `~/.claude/skills/`, distributed to:
+
+- Claude Code, Codex, Gemini, Antigravity, Hermes (via symlinks).
+- Workspace-scoped: `~/Projects/<project>/.agents/skills/`.
+
+Categories:
+
+- **superpowers (14 required)**: using-superpowers, brainstorming, spec-driven-development, writing-plans, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, code-review-and-quality, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development.
+- **antfu (19)**: vite, vue, nuxt, nitro, pinia, pnpm, vitest, unocss, etc.
+- **anthropics (skills)**: claude-code, claude-api, frontend-design, mcp-builder, claude-best-practices, webapp-testing.
+- **taste-skill (v1, v2)**: anti-slop frontend design.
+- **secondsky (8)**: open-design, hcloud, coolify, prod-deploy, pnpm-docker, fleet-register, env-sync, containers-architecture.
+- **custom (Edd)**: ai-os-karpathy, ai-os-quickstart, wave-template, tanstack-*, vue-*, react-*, 30+ more.
+
+## 15. AI-OS as orchestrator
+
+AI-OS is the single source of truth for the AI setup:
+
+- **Skills** → `ai-config/skills/` (99 source of truth) → symlinks to 5 CLIs.
+- **MCP servers** → `ai-config/mcp/*.yaml` → generated to `~/.hermes/config.yaml`.
+- **Dotfiles** → `dev-env/dotfiles/` → symlinks to `~/`.
+- **Setup scripts** → `setup/install-{mac,windows}.sh/ps1` (1-command per OS).
+- **CI** → `.github/workflows/test-{mac,linux,windows}.yml` validates that setup scripts work.
+
+To replicate on another Mac: `git clone + bash setup/install-mac.sh`. To replicate on Windows: `git clone + powershell -File setup/install-windows.ps1`.
+
+## 16. ⚠️ REQUIREMENT: superpowers skills (MANDatory)
+
+AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function. Without them, workflows in `workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`).
+
+### Required superpowers skills
+
+| Skill | Loaded when |
+|---|---|
+| `using-superpowers` | At the start of every task (router) |
+| `brainstorming` | Idea is vague |
+| `spec-driven-development` | Project is new (similar to AI-OS Spec) |
+| `writing-plans` | After Spec, before execution |
+| `executing-plans` | During execution (block by block) |
+| `verification-before-completion` | Before claiming done |
+| `test-driven-development` | Writing tests |
+| `systematic-debugging` | Bug or unexpected behavior |
+| `code-review-and-quality` | Before PR |
+| `finishing-a-development-branch` | At the end of work |
+| `requesting-code-review` | Asking for review |
+| `receiving-code-review` | Receiving review |
+| `dispatching-parallel-agents` | Multi-task work |
+| `subagent-driven-development` | Executing implementation plans |
+
+### Verify that all 14 are installed
 
 ```bash
-# 1. Clonar AI-OS
-git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os  # o el path que uses
-cd ~/Projects/ai-os
-
-# 2. Instalar las 14 superpowers (requeridas)
-mkdir -p ~/.claude/skills
-gh repo clone obra/superpowers /tmp/sp -- --depth=1
-cp -R /tmp/sp/skills/* ~/.claude/skills/
-rm -rf /tmp/sp
-
-# 3. Distribuir a los otros 4 CLIs (symlinks)
-for cli_dir in ~/.codex/skills ~/.gemini/skills ~/.agents/skills; do
-  mkdir -p "$cli_dir"
-  for s in ~/.claude/skills/*/; do
-    name=$(basename "$s")
-    [ ! -e "$cli_dir/$name" ] && ln -s "$s" "$cli_dir/$name"
-  done
+for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
+  [ -d "$HOME/.claude/skills/$skill" ] || echo "MISSING: $skill"
 done
+```
 
-# 4. Para Hermes
-mkdir -p ~/.hermes/skills/imported
-for s in ~/.claude/skills/*/; do
-  name=$(basename "$s")
-  [ ! -e ~/.hermes/skills/imported/$name ] && ln -s "$s" ~/.hermes/skills/imported/$name
+### Setup on a new Mac (required for AI-OS to work)
+
+```bash
+# 1. Install 4 missing superpowers (most are pre-installed)
+gh repo clone obra/superpowers /tmp/superpowers -- --depth=1
+for skill in /tmp/superpowers/skills/*/; do
+  name=$(basename "$skill")
+  if [ ! -d "$HOME/.claude/skills/$name" ]; then
+    cp -R "$skill" "$HOME/.claude/skills/$name"
+    # Re-symlink to other CLIs
+    for cli in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills" "$HOME/.hermes/skills/imported"; do
+      [ -d "$cli" ] && ln -sf "$HOME/.claude/skills/$name" "$cli/$name"
+    done
+  fi
 done
+rm -rf /tmp/superpowers
 
-# 5. Verificar
-ls ~/.claude/skills/ | grep -cE "^(brainstorming|dispatching-parallel-agents|executing-plans|finishing-a-development-branch|receiving-code-review|requesting-code-review|subagent-driven-development|systematic-debugging|test-driven-development|using-git-worktrees|using-superpowers|verification-before-completion|writing-plans|writing-skills)$"
-# Debe decir: 14
+# 2. Verify
+bash ~/Projects/ai-os/setup/verify.sh
+# → Section 4 should show: 14/14 superpowers skills OK
 ```
 
-### Cómo se usan en este AI-OS
+Or use the comprehensive script `promps/setup-required-skills.md` which automates the full setup.
 
-| Workflow de AI-OS | Skill de superpowers que carga |
-|---|---|
-| `workflows/daily_start.md` | `using-superpowers` (router inicial) |
-| `workflows/project_start.md` (tarea ambigua) | `brainstorming` |
-| `workflows/project_start.md` (crear Spec) | `spec-driven-development` (NO incluido en superpowers, usar `specs/spec_template.md`) |
-| `workflows/project_start.md` (dividir en bloques) | `writing-plans` + `executing-plans` |
-| `workflows/coding.md` (feature nueva) | `test-driven-development` |
-| `workflows/coding.md` (bug) | `systematic-debugging` + `debugging-and-error-recovery` |
-| `workflows/coding.md` (refactor) | `code-simplification` |
-| `workflows/coding.md` (review final) | `code-review-and-quality` + `verification-before-completion` |
-| `workflows/coding.md` (sub-agents) | `dispatching-parallel-agents` + `subagent-driven-development` |
-| `workflows/coding.md` (branch) | `using-git-worktrees` + `finishing-a-development-branch` |
-| `workflows/coding.md` (PR review) | `requesting-code-review` + `receiving-code-review` |
-| `workflows/research.md` | (no superpowers específica, AI-OS cubre) |
-| `workflows/content_creation.md` (ADR) | `documentation-and-adrs` (workspace skill, no superpowers) |
+## 17. SKILLS.md locations (do not confuse)
 
-### Si las superpowers faltan en una Mac
+There are TWO levels of skills:
 
-Los workflows van a:
-- ❌ Saltarse brainstorming (tareas grandes mal definidas)
-- ❌ No hacer TDD (tests sin estructura)
-- ❌ No aplicar systematic-debugging (debugging caótico)
-- ❌ No verificar antes de declarar listo (regresiones)
-- ❌ No ejecutar planes paso a paso (trabajo sin bloques)
+1. **Global** (`~/.claude/skills/<name>/`) — 99 skills, propagated via symlinks to 5 CLIs.
+2. **Workspace** (`~/Projects/<project>/.agents/skills/<name>/`) — project-specific, NOT propagated.
 
-**Solución:** correr el setup de "Setup en otra Mac" arriba.
+When a skill is `imported:` in Hermes, it comes from `~/.hermes/skills/imported/` (a symlink to `~/.claude/skills/`).
 
-## 17. Skills del workspace iaWorkSpace (referencia)
+When writing a new skill, ask: "is this workspace-specific or globally useful?". If global → put it in `ai-config/skills/`. If workspace → put it in `<project>/.agents/skills/`.
 
-Hay 100 skills más en `~/Projects/eddremonts86/iaWorkSpace/.agents/skills/` que son workspace-scoped (no user-scope). Las globales instaladas arriba son extractos/versiones equivalentes para usar fuera de ese workspace.
+## 18. Final rule
 
----
+If you're not sure what to do:
 
-## Estructura de este AI-OS
-
-```
-~/Projects/ai-os/
-├── CLAUDE.md                    ← este archivo
-├── context/                     ← quién soy, qué hago, qué quiero
-│   ├── 00_profile.md
-│   ├── 01_business_or_work.md
-│   ├── 02_projects.md
-│   ├── 03_preferences.md
-│   ├── 04_tools.md
-│   └── 05_sources.md
-├── specs/                       ← specs de tareas activas y template
-│   ├── spec_template.md
-│   └── current_spec.md
-├── verifiers/                   ← quality gates
-│   ├── quality_checklist.md
-│   ├── critic_prompt.md
-│   └── source_check_prompt.md
-├── skills/                      ← skills locales de este AI-OS
-│   ├── README.md
-│   └── skill_template.md
-├── rules/                       ← reglas duras
-│   ├── always_do.md
-│   ├── ask_before_doing.md
-│   └── never_do.md
-├── workflows/                   ← procesos recurrentes
-│   ├── daily_start.md           ← arrancar sesión
-│   ├── project_start.md         ← Spec + ejecución
-│   ├── content_creation.md      ← escribir docs/blog/specs
-│   ├── research.md              ← investigar tema
-│   └── coding.md                ← feature/bugfix
-├── outputs/                     ← artefactos generados
-└── archive/                     ← specs/resultados viejos
-```
-
-## Cómo cargar este AI-OS desde cualquier CLI
-
-**Claude Code / Codex / Gemini / Antigravity:** este `CLAUDE.md` se auto-detecta al estar en `~/Projects/ai-os/` (working dir).
-
-**Hermes:** usar `--skills ai-os-karpathy` o `/skill ai-os-karpathy` (skill global en `~/.claude/skills/ai-os-karpathy/SKILL.md` que apunta a este AI-OS).
-
-**Manual:** pegar el contenido de `CLAUDE.md` al inicio de la conversación.
-
----
-
-_Última actualización: ver `git log -p CLAUDE.md` o `ls -la CLAUDE.md`._
+1. Re-read this file.
+2. Re-read `context/03_preferences.md`.
+3. Run `workflows/daily_start.md`.
+4. If the doubt persists, ask the user (with options).
+5. If the user says "go", execute without further questions.

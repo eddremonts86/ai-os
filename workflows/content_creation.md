@@ -1,218 +1,157 @@
 # Content Creation
 
-Workflow para crear contenido: docs, ADRs, blogs, READMEs, specs, tutoriales.
+Workflow to create content: docs, ADRs, blogs, READMEs, specs, tutorials.
 
-> **Prerrequisito:** tener las 14 superpowers skills instaladas (ver `~/Projects/ai-os/CLAUDE.md` sección 16). Sin ellas, este workflow se ejecuta sin documentation-and-adrs, sin code-review-and-quality.
+> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+>
+> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
-## Cuándo usar
+## When to use
 
-- Crear/actualizar README, AGENTS.md, CLAUDE.md.
-- Escribir ADR (Architecture Decision Record).
-- Crear docs de skills, tutorials, runbooks.
-- Blog posts, artículos técnicos.
-- Specs, propuestas, RFCs.
+- Create/update README, AGENTS.md, CLAUDE.md.
+- Write an ADR (Architecture Decision Record).
+- Write a blog post.
+- Write a tutorial.
+- Write API documentation.
+- Write release notes.
 
-## Pasos
+Do not use for: code changes (use `workflows/coding.md`), pure research (use `workflows/research.md`).
 
-### 1. Cargar contexto
+## Steps
 
-- `context/03_preferences.md` — estilo.
-- `rules/never_do.md` — qué evitar.
-- Si es para un proyecto específico → leer su `AGENTS.md` o `README.md`.
+### 1. Define the audience and goal (ask)
 
-### 2. Definir el output
+Who is the content for and what should they do after reading?
 
-Antes de escribir, tener claro:
+Examples:
 
-| Pregunta | Respuesta |
-|---|---|
-| ¿Para quién es? | (audiencia) |
-| ¿Qué debe lograr el lector? | (objetivo) |
-| ¿Qué sabe ya? | (asumir vs explicar) |
-| ¿Qué NO entra? | (scope) |
-| ¿Cuándo se vuelve obsoleto? | (mantenimiento) |
+- New developers joining the project → README + onboarding.
+- Team making a technical decision → ADR.
+- External devs using your library → API docs + tutorials.
+- Future self (looking back) → ADR + spec archive.
 
-Si la respuesta no es clara → Spec primero.
+Show the goal to the user. They must approve.
 
-### 3. Elegir estructura
+### 2. Determine the type of content (read Spec)
 
-| Tipo | Estructura |
-|---|---|
-| **README** | Title → one-liner → install → usage → config → troubleshooting → license |
-| **ADR** | Status → Context → Decision → Consequences → Alternatives considered |
-| **Tutorial** | Prereqs → step-by-step (numbered) → verify → next steps |
-| **Runbook** | When to use → diagnostic steps → fix steps → escalation |
-| **Skill (SKILL.md)** | Frontmatter → When to use → Quick reference → Procedure → Pitfalls → Verification |
-| **Spec** | Ver `specs/spec_template.md` |
-| **Blog post** | Hook → problem → solution → code → conclusion → CTA |
+| Type | Structure | Length |
+|---|---|---|
+| README | What, why, install, usage, contributing | 200-800 lines |
+| ADR | Context, decision, consequences, alternatives | 50-200 lines |
+| Tutorial | Goal, prerequisites, steps, verification, next | 100-500 lines |
+| API doc | Endpoint, params, response, example | 50-200 lines per endpoint |
+| Blog post | Hook, problem, solution, code, result | 500-2000 words |
+| Release notes | What's new, breaking changes, upgrade guide | 50-300 lines |
+| Spec | Metadata, objective, criteria, plan, risks | 50-300 lines |
 
-### 4. → Load skill `documentation-and-adrs` (si es un ADR)
+### 3. For ADRs: → Load skill `documentation-and-adrs` (load skill)
 
-**Cuando:** el output es un ADR formal.
+If the content is an ADR:
 
-Esta skill te da el template canónico (Status → Context → Decision → Consequences → Alternatives Considered).
+- Use the standard template: Context, Decision, Consequences, Alternatives.
+- State the decision clearly in 1 sentence.
+- List at least 2 alternatives and why they were rejected.
+- Document the consequences (positive and negative).
 
-Para otros tipos (README, tutorial, etc.) → seguir las estructuras de la tabla de arriba sin cargar skill extra.
+### 4. For tutorials: structure with verification (load skill)
 
-### 5. Escribir el contenido
+For tutorials, each step must have:
 
-**Reglas duras:**
+- Goal of the step.
+- Concrete commands (not abstract descriptions).
+- Expected output (what you should see).
+- Verification (how to know it worked).
 
-- **Ejemplos reales**, no pseudo-código o "lorem ipsum".
-- **Comandos copy-paste ready** (bash blocks con todas las flags).
-- **Links verificados** (URLs reales, no placeholders).
-- **Conventions del proyecto** si aplica (frontmatter, formato, etc.).
-- **Sin emojis decorativos** en exceso.
-- **Sin "Hope this helps" / "Let me know if..."**.
+### 5. For READMEs: use the standard structure (write)
 
-**Tono:**
+README standard structure:
 
-- Directo, accionable.
-- Imperativo para instrucciones ("Run X", "Create Y").
-- Descriptivo para conceptos ("X is a Y that...").
-- No condescendiente ni paternalista.
+1. **Title + 1-line description** — what is this?
+2. **Status badges** — CI, version, license.
+3. **Quickstart** — 1-command to install + run.
+4. **Usage** — 1-3 common use cases with code.
+5. **Configuration** — env vars, options.
+6. **Development** — how to contribute, run tests.
+7. **License** — MIT, Apache, etc.
+8. **Acknowledgments** — credits, inspiration.
 
-### 6. → Load skill `code-review-and-quality` (si incluye código)
+Keep it under 500 lines. Detailed docs go in `docs/`.
 
-**Cuando:** el documento tiene ejemplos de código o snippets ejecutables.
+### 6. Write the first draft (write)
 
-Su checklist de prefijos (🔴/🟡/💡/❓/🎓) aplica también a ejemplos en docs.
+Write the content following the structure. Style:
 
-### 7. Aplicar verifiers
+- Active voice ("Run `npm install`" not "you should run `npm install`").
+- Short sentences (max 25 words).
+- Code examples tested.
+- Links to official docs.
+- No filler ("as you can see", "obviously", "simply").
 
-Para todo contenido generado:
+### 7. Verify (load skill)
 
-1. **Self-check** vs la Spec/objetivo.
-2. **Source check** si hay URLs/comandos/API claims:
-   ```bash
-   # Verificar URLs
-   curl -I <url>
-   
-   # Verificar comandos
-   <command> --version
-   which <command>
-   
-   # Verificar paths
-   ls -la <path>
-   ```
-3. **Critic prompt** para revisar:
-   - ¿Cumple el objetivo?
-   - ¿Tono consistente?
-   - ¿Sin claims inventados?
-   - ¿Comandos copy-paste?
-   - ¿Sin fluff?
+→ Load skill `verification-before-completion` with these gates:
 
-### 8. Output y archivado
+1. Does the file exist?
+2. Does it have the expected sections? (grep for headers)
+3. Are all internal links valid? (`markdown-link-check` or `lychee`)
+4. Are all code examples valid? (run them)
+5. Is the content up to date with the actual code? (compare with reality)
 
-- Guardar en el path apropiado (`README.md`, `docs/<topic>.md`, `archive/`, etc.).
-- Si fue parte de una Spec → archivar Spec al terminar.
-- Si generó skill nueva → archivar skill al final.
+### 8. Critical review (load skill)
 
-### 9. Reporte
+→ Load skill `verifiers/critic_prompt.md` (AI-OS internal) to review:
 
-```
-## Contenido creado/actualizado
+- Is the audience clear?
+- Is the goal achieved?
+- Is the length appropriate (not too long, not too short)?
+- Are there sections that could be removed?
+- Are there missing sections?
 
-### Path
-<path>
+Apply 2-3 improvements. Do not skip this step.
 
-### Tipo
-<README|ADR|tutorial|skill|spec|...>
+### 9. Review with → Load skill `code-review-and-quality` (load skill)
 
-### Audiencia
-<audiencia>
+For content that includes code or technical accuracy:
 
-### Cambios principales
-- <bullets de qué se hizo>
+- Verify the code runs.
+- Verify the API is current.
+- Verify imports/exports are correct.
 
-### Verificación
-- Source check: ✅ / ⚠️ / ❌
-- Critic: <score>
-- documentation-and-adrs: <usado/no aplica>
-- code-review-and-quality: <usado/no aplica>
-
-### Próximo paso
-<sugerencia>
-```
-
----
-
-## Templates rápidos
-
-### README mínimo
-
-```markdown
-# <Project Name>
-
-<One-liner de qué hace>
-
-## Install
+### 10. Save the content (write file)
 
 ```bash
-<comando de install>
+# Save to AI-OS outputs/ if reusable
+mv ~/tmp/<content>.md ~/Projects/ai-os/outputs/$(date +%Y-%m-%d)-<slug>.md
+
+# Or commit to the project
+git add docs/
+git commit -m "docs: add <topic> guide"
 ```
 
-## Usage
+### 11. Update related context (write file)
 
-```bash
-<uso básico>
-```
+If the content changes the AI-OS state, update `context/`:
 
-## Config
+- `03_preferences.md` — new style preferences.
+- `04_tools.md` — new tools mentioned.
+- `05_sources.md` — new official docs URLs.
 
-<variables/env vars necesarios>
+## Output
 
-## Troubleshooting
+At the end of this workflow, you should have:
 
-- **<problema común>**: <fix>
-```
-
-### ADR mínimo (usar skill `documentation-and-adrs`)
-
-```markdown
-# ADR-NNN: <Título>
-
-**Status:** Proposed / Accepted / Deprecated
-**Date:** YYYY-MM-DD
-
-## Context
-
-<qué problema estamos resolviendo>
-
-## Decision
-
-<qué decidimos hacer>
-
-## Consequences
-
-- ✅ <beneficios>
-- ⚠️ <trade-offs>
-
-## Alternatives Considered
-
-1. <opción A> — rechazada porque <razón>
-2. <opción B> — rechazada porque <razón>
-```
-
-### Skill (SKILL.md)
-
-Ver `~/.claude/skills/<existing-skill>/SKILL.md` para el formato canónico. Frontmatter obligatorio:
-
-```yaml
----
-name: kebab-case-name
-description: "When to use this skill. Be specific — drives auto-loading by CLI agents."
-license: MIT|Internal
----
-```
-
----
+- Content file in the right place (project's docs/ or AI-OS outputs/).
+- All sections verified.
+- Critical review applied.
+- All links valid.
+- All code examples tested.
+- Context updated if applicable.
 
 ## Anti-patterns
 
-- ❌ Tutoriales con pseudo-código que no corren.
-- ❌ Documentación que requiere leer 5 archivos previos para entender.
-- ❌ "Lorem ipsum" en ejemplos.
-- ❌ Tablas de 20 columnas en lugar de prosa + tabla corta.
-- ❌ Empezar con "En este documento vamos a..."
-- ❌ Sections "Resumen ejecutivo" + "Introducción" + "Conclusión" en docs cortos.
+- ❌ Writing without a clear audience → produces generic content that helps no one.
+- ❌ Too long → no one reads.
+- ❌ Untested code examples → lose trust.
+- ❌ Invented URLs → lose trust.
+- ❌ Not updating the file when the code changes → documentation rot.
+- ❌ Skipping the verification phase → publish broken docs.

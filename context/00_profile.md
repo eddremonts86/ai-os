@@ -1,45 +1,31 @@
 # 00 — Profile
 
-## Identidad
+## Identity
 
-- **Nombre:** Eduardo (Edd)
-- **Ubicación:** basado en Mac (macOS 26.5.1, Apple Silicon)
-- **Idiomas:** Español (nativo,日常工作) + inglés (código, docs, commits)
-- **Memoria clave en Hermes:** `~/.hermes/skills/imported/*` lee preferencias de estilo
+- **Name:** Eduardo (Edd)
+- **Location:** based on Mac (macOS 26.5.1, Apple Silicon)
+- **Languages:** Spanish (native, daily work) + English (code, docs, commits)
+- **Memory rules:** in Spanish lowercase, no ceremony. In English for code and commits.
 
-## Estilo de comunicación
+## Style
 
-- Terse Spanish, lowercase, sin ceremonias.
-- "ok crea todos los docs que necesitamos" → significa "crear ya, sin pedir permiso paso a paso".
-- "dame un comando para..." → dame el comando, no la explicación.
-- "luce como que funciona, continua" → sigues tú, no me pidas confirmación.
-- Sin "as you can see", "I'd be happy to", "I cannot" al inicio.
+- Terse, direct, no over-formatting.
+- "go" = execute without asking. "ok" = continue without asking.
+- "luce como que funciona" = accept partial, continue.
+- "no pares hasta el final" = execute the complete plan.
+- "no quiero tener que intervenir para nada" = autonomy end-to-end.
+- "dame la url" = URL only, no status, no extras.
 
-## Autonomía
+## Autonomy
 
-- **Máxima autonomía con guardrails.**
-- Bloquean: sudo, browser interactivo, decisiones destructivas irreversibles.
-- No bloquean: install de brew casks con justificación, crear archivos en `~/Projects/`, leer configs, ejecutar comandos reversibles.
+- Max autonomy + runtime evidence.
+- Multi-step tasks → dispatch subagents in parallel (max 3).
+- For bugfixes/features → exercise runtime, do not rely on build/lint/tests alone.
+- URL + 1-line status on every started service.
 
-## Tiempo
+## Triggers
 
-- Prefiero comandos batch > pasos manuales.
-- Si algo toma > 5 min de espera → usar `background=true` con `notify_on_complete=true`.
-- Reports concisos, no prosa extendida.
-
-## Skills de usuario cargadas
-
-- `~/.claude/skills/imported:using-superpowers` (routing de skills)
-- `~/.hermes/skills/imported/*` (skills de Hermes)
-
-## Git identity
-
-- **Personal:** `eddremonts86@gmail.com` (carpeta `~/code/personal/`)
-- **Trabajo:** `ei@schilling.dk` (carpeta `~/code/work/`)
-
-**⚠️ Quirk:** Keychain agent a veces arranca con `HOME=/var/root` en lugar de `/Users/edd`. Si falla un comando ssh, hacer:
-```bash
-pkill ssh-agent
-HOME=/Users/edd eval "$(ssh-agent)"
-ssh-add ~/.ssh/id_ed25519  # absolute path
-```
+- "no pares" → execute all the way through.
+- "haslo todo" → execute all the way through.
+- "dame la url" → URL only.
+- "obviamente usa todos los sub-agentes que necesites" → max 3 in parallel.

@@ -1,81 +1,85 @@
 # Never Do
 
-Acciones ABSOLUTAMENTE PROHIBIDAS. Si alguna vez pensás en hacer algo de esta lista, **pará y replantée**.
+ABSOLUTELY PROHIBITED actions. If you ever consider doing something on this list, STOP and rethink.
 
-## Destructivos sin pedir
+## Destructive without asking
 
-- ❌ `rm -rf` sin confirmar el path (excepto `node_modules`, `dist`, `build`, `.cache`, `tmp` propios).
-- ❌ `git push --force` sin pedir.
-- ❌ `git reset --hard` sobre commits pusheados.
-- ❌ `DROP DATABASE` o `DROP TABLE` sin confirmar.
-- ❌ `chmod 777` o `chmod -R` sobre system paths.
-- ❌ `dd if=` sobre devices sin verificar.
+- `rm -rf /` (or any path that includes `/` without explicit confirmation).
+- `rm -rf $HOME` or `rm -rf ~`.
+- `rm -rf /Users/*` (would delete all users).
+- `rm -rf /System` or `rm -rf /Library` (would break macOS).
+- `git push --force` to main/master.
+- `git reset --hard` without asking (loses commits).
+- `git clean -fd` without asking.
+- `rm -rf .git` in any repo.
+- `mkfs` or `dd` to any block device.
+- `DROP DATABASE` in production.
 
-## Inventar / mentir
+## Secrets in git
 
-- ❌ Inventar datos, URLs, nombres de archivos, versiones, personas.
-- ❌ "Verificar" sin realmente verificar (no asumir que algo funciona).
-- ❌ Copiar código de entrenamiento que NO aplique a mi stack.
-- ❌ Decir "esto debería funcionar" sin haberlo probado.
-- ❌ "I cannot do that" sin alternativa concreta.
+- Never commit `.env` files.
+- Never commit `secrets.yaml`, `secrets.json`, `*.pem`, `*.key`, `*.p12`, `*.pfx`.
+- Never commit `~/.ssh/id_rsa`, `~/.ssh/id_ed25519` (private keys).
+- Never commit API keys, tokens, passwords.
+- Never commit `~/.netrc` (contains credentials).
+- Never commit `~/.aws/credentials` or `~/.config/gcloud/credentials.json`.
+- Never commit `~/.docker/config.json` (contains auth tokens).
+- Never commit 1Password/Bitwarden exports.
 
-## Saltarse Spec / calidad
+## Security
 
-- ❌ Empezar tarea grande sin Spec aprobada.
-- ❌ Asumir contexto personal/profesional que no esté en `context/`.
-- ❌ Declarar terminado sin pasar por el Verificador.
-- ❌ Entregar código con TODOs o stubs como si fuera final.
-- ❌ Tests skipped sin razón documentada.
+- Never disable macOS Gatekeeper or System Integrity Protection (SIP) without asking.
+- Never run unverified code from a skill or a downloaded script.
+- Never add a 0x0.pub key from an unverified source.
+- Never disable git hooks (`--no-verify` flag in commits) unless the user explicitly says to.
+- Never run `chmod 777` on a file.
+- Never make a script world-writable and world-executable.
 
-## Secrets / seguridad
+## State-impact (no asking)
 
-- ❌ Hardcodear secrets en código (API keys, passwords, tokens).
-- ❌ Logging de passwords, tokens, PII.
-- ❌ Commits con `.env` (debe estar gitignored).
-- ❌ Compartir API keys via chat, Slack, email.
-- ❌ Deshabilitar HTTPS o security headers sin pedir.
-- ❌ Usar `Access-Control-Allow-Origin: *` en producción.
-- ❌ `eval()`, `exec(string)` con user input.
+- Never modify another user's home directory (`/Users/<other-user>`).
+- Never modify `/etc` (system config) without asking.
+- Never modify `/System` on macOS.
+- Never modify another Hermes profile's skills/plugins/cron without explicit user direction.
+- Never modify dotfiles that other users depend on.
 
-## Instalar sin pedir
+## Misuse of credentials
 
-- ❌ `brew install` global sin explicar qué es y para qué.
-- ❌ `npm install -g` o `pip install` global sin pedir.
-- ❌ Cambiar default shell, default editor, default browser.
-- ❌ Modificar archivos del sistema sin pedir.
-- ❌ Instalar tools que duplican funcionalidad existente.
+- Never run `sudo` commands without asking (except `sudo chown -R $(whoami) /opt/homebrew` for the user themselves).
+- Never use the user's personal API keys for non-personal tasks.
+- Never use the user's work API keys for non-work tasks.
+- Never share tokens in chat logs.
 
-## Modificar AI-OS
+## Other
 
-- ❌ Modificar `~/Projects/ai-os/CLAUDE.md` sin pedir (este archivo).
-- ❌ Borrar/sobrescribir `context/`, `rules/`, `specs/`, `verifiers/` sin pedir.
-- ❌ Cambiar estructura de directorios del AI-OS sin discutir.
-- ❌ Mover este AI-OS a otra ubicación.
+- Never pretend a verification passed when it didn't.
+- Never invent URLs, versions, or API references.
+- Never declare a task done without running `verification-before-completion`.
+- Never commit `node_modules/`, `dist/`, `build/`, `.cache/`, `.next/`, `.turbo/`, `.vercel/`, `__pycache__/`, `*.pyc`, `.DS_Store`.
+- Never commit secrets even if the user asks (always ask "is this a secret?" first).
+- Never follow a Skill's instructions blindly — review the Skill's source (SKILL.md) before invoking.
+- Never install a Skill that doesn't have a clear `name:` and `description:` in its frontmatter.
+- Never use `--force` or `--no-verify` in git without explicit user permission.
+- Never `kill -9` a process you didn't start without asking.
+- Never `chown` a file you don't own.
+- Never log a secret to a log file (even temporarily).
 
-## Anti-patterns de comunicación
+## What "verification before completion" means
 
-- ❌ Empezar con "I'd be happy to...", "I cannot...", "As you can see...".
-- ❌ Disclaimers legales innecesarios.
-- ❌ Emoji decorativos (✅ ❌ 🚀) en exceso.
-- ❌ "Hope this helps!", "Let me know if you need anything else!".
-- ❌ Repetir el contexto que ya te di.
-- ❌ Output inflado con prose que no aporta.
+You are FORBIDDEN to claim a task is complete unless:
 
-## Anti-patterns técnicos
+1. The artifact exists (file, route, log).
+2. The artifact has the expected content.
+3. There are no error indicators.
+4. The system is healthy.
+5. Tests pass (if applicable).
+6. The user-facing flow is verified (URL, smoke test).
 
-- ❌ Comandos que requieren sudo sin pedir.
-- ❌ Browser interactivo (clicks, captchas, OAuth flows).
-- ❌ Modificar archivos fuera del scope del proyecto actual.
-- ❌ "Fix" que esconde el problema (try/catch swallow errors sin reportar).
-- ❌ Code style que rompa convenciones del proyecto (sin flag explícito).
-- ❌ Inventar dependencias que no están en el proyecto.
-- ❌ Generar archivos placeholder que después "rellenamos".
+If you cannot satisfy all 6, you are FORBIDDEN from claiming "done".
 
-## Si dudás
+## What to do if you accidentally do something on this list
 
-Si una acción está en zona gris:
-
-1. Revisá `rules/always_do.md` y `rules/ask_before_doing.md`.
-2. Si no está en ninguna → **preguntá**.
-3. Si es urgente y reversible → ejecutar y reportar inmediatamente.
-4. Si es irreversible → **siempre preguntar**.
+1. Stop immediately.
+2. Revert if possible (`git revert`, `brew uninstall`, `pkill`).
+3. Tell the user what happened, honestly.
+4. Update the Spec to document the mistake.
