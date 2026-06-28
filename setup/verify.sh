@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # setup/verify.sh
-# Verifies that AI-OS is correctly installed. 1-comando.
-# Uso: bash setup/verify.sh
+# Verifies that AI-OS is correctly installed. 1-command.
+# Usage: bash setup/verify.sh
 
 set -euo pipefail
 
@@ -22,10 +22,10 @@ FAIL=0
 # ─── 1. AI-OS path ───
 section "1. AI-OS path"
 if [ -d "$AI_OS_ROOT" ] && [ -f "$AI_OS_ROOT/CLAUDE.md" ]; then
-  ok "AI-OS en $AI_OS_ROOT"
+  ok "AI-OS at $AI_OS_ROOT"
   PASS=$((PASS+1))
 else
-  err "AI-OS no encontrado en $AI_OS_ROOT"
+  err "AI-OS not found at $AI_OS_ROOT"
   FAIL=$((FAIL+1))
 fi
 
@@ -42,12 +42,12 @@ for dotfile in ".zshrc" ".p10k.zsh" ".gitignore_global"; do
       FAIL=$((FAIL+1))
     fi
   else
-    warn "  $dotfile no es symlink (puede ser OK si tenías tu config custom)"
+    warn "  $dotfile is not a symlink (may be OK if you have your own custom config)"
   fi
 done
 
-# ─── 3. Skills en 5 CLIs ───
-section "3. Skills globales (5 CLIs)"
+# ─── 3. Skills in 5 CLIs ───
+section "3. Global skills (5 CLIs)"
 CLI_DIRS=(
   "$HOME_DIR/.claude/skills"
   "$HOME_DIR/.codex/skills"
@@ -57,14 +57,14 @@ CLI_DIRS=(
 )
 for cli_dir in "${CLI_DIRS[@]}"; do
   if [ -d "$cli_dir" ]; then
-    # Contar skills: cada skill es un directorio o symlink-a-directorio.
-    # Excluir archivos de meta (READMEDD, llms, .system).
+    # Count skills: each skill is a directory or symlink-to-directory.
+    # Exclude meta files (READMEDD, llms, .system).
     count=$(find "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" 2>/dev/null | wc -l | tr -d ' ')
     label="~/${cli_dir#$HOME_DIR/}"
     ok "  ${label}: $count skills"
     PASS=$((PASS+1))
   else
-    err "  $cli_dir no existe"
+    err "  $cli_dir does not exist"
     FAIL=$((FAIL+1))
   fi
 done
@@ -82,7 +82,7 @@ if [ "$ACTUAL" -eq "$EXPECTED" ]; then
   ok "14/14 superpowers skills OK"
   PASS=$((PASS+1))
 else
-  err "Solo $ACTUAL/14 superpowers skills instaladas"
+  err "Only $ACTUAL/14 superpowers skills installed"
   FAIL=$((FAIL+1))
 fi
 
@@ -92,80 +92,80 @@ if [ -f "$HOME_DIR/.hermes/config.yaml" ]; then
   if command -v yq >/dev/null 2>&1; then
     mcp_count=$(yq '.mcp_servers | length' "$HOME_DIR/.hermes/config.yaml" 2>/dev/null || echo "0")
     if [ "$mcp_count" -gt 0 ]; then
-      ok "MCP servers configurados: $mcp_count"
+      ok "MCP servers configured: $mcp_count"
       PASS=$((PASS+1))
     else
-      err "MCP servers = 0 (regenerar config)"
+      err "MCP servers = 0 (regenerate config)"
       FAIL=$((FAIL+1))
     fi
   else
-    warn "yq no instalado, no puedo contar MCP servers"
+    warn "yq not installed, cannot count MCP servers"
   fi
 else
-  err "~/.hermes/config.yaml no existe"
+  err "~/.hermes/config.yaml does not exist"
   FAIL=$((FAIL+1))
 fi
 
 # ─── 6. Oh My Zsh + Powerlevel10k ───
 section "6. Shell (Oh My Zsh + Powerlevel10k)"
 if [ -d "$HOME_DIR/.oh-my-zsh" ]; then
-  ok "Oh My Zsh instalado"
+  ok "Oh My Zsh installed"
   PASS=$((PASS+1))
 else
-  err "Oh My Zsh no instalado"
+  err "Oh My Zsh not installed"
   FAIL=$((FAIL+1))
 fi
 if [ -d "$HOME_DIR/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
-  ok "Powerlevel10k instalado"
+  ok "Powerlevel10k installed"
   PASS=$((PASS+1))
 else
-  err "Powerlevel10k no instalado"
+  err "Powerlevel10k not installed"
   FAIL=$((FAIL+1))
 fi
 
-# ─── 7. Warp (opcional) ───
-section "7. Warp (opcional)"
+# ─── 7. Warp (optional) ───
+section "7. Warp (optional)"
 if [ -d "/Applications/Warp.app" ]; then
   if defaults read dev.warp.Warp-Stable font_family 2>/dev/null | grep -q "CaskaydiaCove"; then
-    ok "Warp con CaskaydiaCove Nerd Font"
+    ok "Warp with CaskaydiaCove Nerd Font"
     PASS=$((PASS+1))
   else
-    warn "Warp instalado pero font no configurada (puede ser OK)"
+    warn "Warp installed but font not configured (may be OK)"
   fi
 else
-  warn "Warp no instalado (puede ser OK si usas otro terminal)"
+  warn "Warp not installed (may be OK if you use another terminal)"
 fi
 
 # ─── 8. Brew packages ───
-section "8. Brew packages (verifica que brew funciona)"
-# Lista de packages que el AI-OS asume via brew (ajustar según tu stack)
-# Nota: git/gh/python/node suelen venir con macOS/Xcode CLI, no siempre via brew.
+section "8. Brew packages (verifies that brew works)"
+# List of packages that AI-OS assumes via brew (adjust according to your stack)
+# Note: git/gh/python/node usually come with macOS/Xcode CLI, not always via brew.
 BREW_PACKAGES=("uv" "yq" "warp")
 INSTALLED=0
 for pkg in "${BREW_PACKAGES[@]}"; do
   if brew list 2>/dev/null | grep -qE "(^|/)$pkg(\s|$)"; then
-    ok "  $pkg instalado via brew"
+    ok "  $pkg installed via brew"
     INSTALLED=$((INSTALLED+1))
   else
-    warn "  $pkg NO instalado via brew (puede estar en otro lado)"
+    warn "  $pkg NOT installed via brew (may be installed elsewhere)"
   fi
 done
 if [ "$INSTALLED" -gt 0 ]; then
-  ok "brew funciona ($INSTALLED/${#BREW_PACKAGES[@]} packages instalados)"
+  ok "brew works ($INSTALLED/${#BREW_PACKAGES[@]} packages installed)"
   PASS=$((PASS+1))
 else
-  warn "ningún package vía brew detectado — pero puede estar OK si usás system packages"
+  warn "no brew package detected — but it may be OK if you use system packages"
 fi
 
-# ─── Resumen ───
-section "Resumen"
+# ─── Summary ───
+section "Summary"
 echo ""
-log "Pasados: $PASS"
+log "Passed: $PASS"
 if [ "$FAIL" -gt 0 ]; then
-  err "Fallados: $FAIL"
+  err "Failed: $FAIL"
   exit 1
 else
-  ok "Fallados: 0"
+  ok "Failed: 0"
   echo ""
   ok "AI-OS is correctly installed. 🎉"
   exit 0

@@ -36,12 +36,23 @@ jobs:
           DRY_RUN: '1'
         run: bash setup/install-mac.sh
 
+      - name: Verify ECC integration (--check)
+        # Non-fatal: ECC may not be vendored on every PR. We log a warning instead
+        # of failing the build so that PRs touching unrelated files stay green.
+        run: |
+          if [ -d vendor/ecc ]; then
+            echo "vendor/ecc/ present, running install-ecc.sh --check..."
+            bash setup/install-ecc.sh --check
+          else
+            echo "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
+          fi
+
       - name: Run verify.sh (DRY_RUN)
         env:
           DRY_RUN: '1'
         run: |
-          # verify.sh funciona también en dry-run mode (no requiere sistema real)
-          # Pero algunas checks fallan (Warp, brew packages, etc.) — son esperados
+          # verify.sh also works in dry-run mode (does not require a real system)
+          # But some checks will fail (Warp, brew packages, etc.) — these are expected
           bash setup/verify.sh || true
 
       - name: Summary
@@ -49,4 +60,5 @@ jobs:
         run: |
           echo "## macOS Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Install dry-run: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)" >> $GITHUB_STEP_SUMMARY
           echo "- Verify: ⚠️ (some checks expected to fail in CI)" >> $GITHUB_STEP_SUMMARY

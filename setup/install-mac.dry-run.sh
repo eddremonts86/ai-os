@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # setup/install-mac.dry-run.sh
-# Simula install-mac.sh sin tocar el sistema. Para CI.
+# Simulates install-mac.sh without touching the system. For CI.
 #
-# Uso: DRY_RUN=1 bash install-mac.sh
-# (install-mac.sh detecta DRY_RUN=1 y redirige a este script)
+# Usage: DRY_RUN=1 bash install-mac.sh
+# (install-mac.sh detects DRY_RUN=1 and redirects to this script)
 
 set -euo pipefail
 
@@ -35,7 +35,7 @@ fail=0
 
 for f in CLAUDE.md ai-config/skills ai-config/mcp dev-env/dotfiles/zsh/.zshrc dev-env/dotfiles/zsh/.p10k.zsh dev-env/dotfiles/git/.gitconfig.template dev-env/dotfiles/ssh/config dev-env/packages/Brewfile setup/install-mac.sh setup/verify.sh setup/generate-mcp-config.py; do
   if [ ! -e "$AI_OS_ROOT/$f" ]; then
-    err "Falta: $f"
+    err "Missing: $f"
     fail=$((fail+1))
   fi
 done
@@ -53,7 +53,7 @@ if [ -f "$AI_OS_ROOT/dev-env/packages/Brewfile" ]; then
   brew_count=$(grep -cE "^(brew|cask|tap) " "$AI_OS_ROOT/dev-env/packages/Brewfile" 2>/dev/null || echo 0)
   ok "Brewfile: $brew_count entries (brew/cask/tap)"
 else
-  err "Brewfile no existe"
+  err "Brewfile does not exist"
   exit 1
 fi
 
@@ -63,7 +63,7 @@ if [ -f "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" ]; then
   npm_count=$(grep -cvE "^\s*(#|$)" "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" 2>/dev/null || echo 0)
   ok "npm-globals: $npm_count packages"
 else
-  err "npm-globals.txt no existe"
+  err "npm-globals.txt does not exist"
   exit 1
 fi
 
@@ -73,7 +73,7 @@ if [ -f "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" ]; then
   pip_count=$(grep -cvE "^\s*(#|$)" "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" 2>/dev/null || echo 0)
   ok "pip-packages: $pip_count packages"
 else
-  err "pip-packages.txt no existe"
+  err "pip-packages.txt does not exist"
   exit 1
 fi
 
@@ -81,7 +81,7 @@ fi
 log "4. Simulating dotfiles symlinks..."
 for dotfile in .zshrc .p10k.zsh .gitignore_global; do
   source_path="$AI_OS_ROOT/dev-env/dotfiles/$(echo $dotfile | tr -d '.')/$dotfile"
-  # .zshrc y .p10k.zsh están en dev-env/dotfiles/zsh/, no en subdir por nombre
+  # .zshrc and .p10k.zsh are in dev-env/dotfiles/zsh/, not in a subdir named after them
   if [ "$dotfile" = ".zshrc" ] || [ "$dotfile" = ".p10k.zsh" ]; then
     source_path="$AI_OS_ROOT/dev-env/dotfiles/zsh/$dotfile"
   elif [ "$dotfile" = ".gitignore_global" ]; then
@@ -98,12 +98,12 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
       exit 1
     fi
   else
-    err "  Source no existe: $source_path"
+    err "  Source does not exist: $source_path"
     exit 1
   fi
 done
 
-# ─── 5. Simular propagación de skills (symlinks) ───
+# ─── 5. Simulate skills propagation (symlinks) ───
 log "5. Simulating skills propagation to 5 CLIs..."
 CLI_DIRS=(
   "$HOME/.claude/skills"
@@ -128,19 +128,19 @@ for cli_dir in "${CLI_DIRS[@]}"; do
   if [ "$cli_count" -gt 50 ]; then
     ok "  $cli_dir: $cli_count skills (simulated)"
   else
-    err "  $cli_dir: solo $cli_count skills"
+    err "  $cli_dir: only $cli_count skills"
     exit 1
   fi
 done
 
-# ─── 6. Simular MCP config generation ───
+# ─── 6. Simulate MCP config generation ───
 log "6. Simulating MCP config generation..."
 
-# Asegurar que PyYAML está disponible
+# Ensure PyYAML is available
 if ! python3 -c "import yaml" 2>/dev/null; then
-  warn "PyYAML no disponible, instalando..."
+  warn "PyYAML not available, installing..."
   python3 -m pip install --quiet --user pyyaml 2>&1 | tail -3 || {
-    err "No pude instalar PyYAML"
+    err "Could not install PyYAML"
     exit 1
   }
 fi
@@ -152,29 +152,29 @@ if python3 "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp
   if command -v yq >/dev/null 2>&1; then
     mcp_count=$(yq '.mcp_servers | keys | length' "$TEMP_CONFIG" 2>/dev/null || echo 0)
     if [ "$mcp_count" -ge 7 ]; then
-      ok "MCP config: $mcp_count servers generados"
+      ok "MCP config: $mcp_count servers generated"
     else
-      err "MCP config: solo $mcp_count servers (esperado >=7)"
+      err "MCP config: only $mcp_count servers (expected >=7)"
       exit 1
     fi
   else
-    # yq no disponible, parsear con python
+    # yq not available, parse with python
     mcp_count=$(python3 -c "import yaml; d=yaml.safe_load(open('$TEMP_CONFIG')); print(len(d.get('mcp_servers', {})))" 2>/dev/null || echo 0)
     if [ "$mcp_count" -ge 7 ]; then
-      ok "MCP config: $mcp_count servers generados (verificado con python)"
+      ok "MCP config: $mcp_count servers generated (verified with python)"
     else
-      err "MCP config: solo $mcp_count servers (esperado >=7)"
+      err "MCP config: only $mcp_count servers (expected >=7)"
       exit 1
     fi
   fi
 else
-  err "Script generate-mcp-config.py falló"
+  err "Script generate-mcp-config.py failed"
   exit 1
 fi
 
 # ─── 7. Validate skills syntax ───
-log "7. Validating skills frontmatter (sample de 10)..."
-# macOS no tiene shuf, usar sort -R (random sort) o shuf (Linux)
+log "7. Validating skills frontmatter (sample of 10)..."
+# macOS has no shuf, use sort -R (random sort) or shuf (Linux)
 if command -v shuf >/dev/null 2>&1; then
   sample_skills=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null | shuf -n 10 | head)
 else
@@ -183,20 +183,20 @@ fi
 # Verify basic frontmatter (robust: check the whole frontmatter, not just first 5 lines)
 fm_errors=0
 for skill_dir in $sample_skills; do
-  # Buscar SKILL.md en cualquier nivel
+  # Look for SKILL.md at any level
   skill_md=$(find "$skill_dir" -maxdepth 3 -name "SKILL.md" -type f 2>/dev/null | head -1)
 
   if [ -z "$skill_md" ]; then
-    # No es skill real, es categoría (ej: tanstack-query/skills/tanstack-query)
-    # Skip sin error
+    # Not a real skill, it's a category (e.g. tanstack-query/skills/tanstack-query)
+    # Skip without error
     continue
   fi
 
-  # Extraer solo el frontmatter (entre los dos ---)
+  # Extract only the frontmatter (between the two ---)
   fm_content=$(awk '/^---$/{f=!f; if(f==1 && c>0) exit; c++} f' "$skill_md" 2>/dev/null)
   if [ -z "$fm_content" ]; then
-    # No hay frontmatter delimitado por --- al inicio
-    err "  $(basename $skill_dir): sin frontmatter --- delimitado"
+    # No frontmatter delimited by --- at the start
+    err "  $(basename $skill_dir): no --- delimited frontmatter"
     fm_errors=$((fm_errors+1))
     continue
   fi
@@ -229,15 +229,15 @@ for skill in brainstorming dispatching-parallel-agents executing-plans finishing
 done
 
 if [ "$ACTUAL" -eq "$EXPECTED" ]; then
-  ok "14/14 superpowers skills presentes en source"
+  ok "14/14 superpowers skills present in source"
 else
-  err "Solo $ACTUAL/14 superpowers en source (instalar via install-mac.sh)"
-  # No es un fail bloqueante en dry-run, es solo un warning
-  warn "El install real los descarga de obra/superpowers"
+  err "Only $ACTUAL/14 superpowers in source (install via install-mac.sh)"
+  # Not a blocking fail in dry-run, just a warning
+  warn "The real install downloads them from obra/superpowers"
 fi
 
 # ─── 9. Cleanup ───
-log "9. Cleanup temporal..."
+log "9. Cleanup temporary..."
 rm -rf "$TMP_HOME"
 ok "Cleanup OK"
 

@@ -24,7 +24,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install yq
-        # Usar mikefarah/yq v4 (no choco que puede ser versión vieja/incompatible)
+        # Use mikefarah/yq v4 (not choco which can be old/incompatible)
         run: |
           $yqUrl = "https://github.com/mikefarah/yq/releases/latest/download/yq_windows_amd64.exe"
           $yqPath = "$env:USERPROFILE\yq.exe"
@@ -40,6 +40,17 @@ jobs:
           DRY_RUN: '1'
         run: pwsh -File ./setup/install-windows.ps1
 
+      - name: Verify ECC integration (--check)
+        # Non-fatal: ECC may not be vendored on every PR. We log a warning instead
+        # of failing the build so that PRs touching unrelated files stay green.
+        run: |
+          if (Test-Path vendor/ecc) {
+            Write-Host "vendor/ecc/ present, running bash setup/install-ecc.sh --check..."
+            bash setup/install-ecc.sh --check
+          } else {
+            Write-Host "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
+          }
+
       - name: Run verify-windows.ps1 (DRY_RUN)
         env:
           DRY_RUN: '1'
@@ -50,4 +61,5 @@ jobs:
         run: |
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Test Summary"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Install dry-run: ✅"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Verify: ⚠️ (some checks expected to fail in CI)"

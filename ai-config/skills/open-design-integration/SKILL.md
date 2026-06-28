@@ -1,20 +1,20 @@
 ---
 name: open-design-integration
-description: Integración con open-design daemon (127.0.0.1:7456) para DESIGN.md + design tokens + 5 escuelas visuales + flujo ProblemHunt. Aplica al trabajar con design systems auto-generados, design audits, o el flujo Scraper→SPEC.md→DESIGN.md→PLAN.md→TASKS.md.
+description: Integration with open-design daemon (127.0.0.1:7456) for DESIGN.md + design tokens + 5 visual schools + ProblemHunt flow. Applies when working with auto-generated design systems, design audits, or the Scraper→SPEC.md→DESIGN.md→PLAN.md→TASKS.md flow.
 license: Internal
 ---
 
 # Open-Design Integration
 
-Open-design es un daemon local (Next.js + REST API) que ayuda a generar design systems consistentes para proyectos. Corre en `127.0.0.1:7456` por default y expone una API REST para crear proyectos con skills + design systems predefinidos.
+Open-design is a local daemon (Next.js + REST API) that helps generate consistent design systems for projects. It runs at `127.0.0.1:7456` by default and exposes a REST API to create projects with predefined skills + design systems.
 
 ## Setup
 
 ```bash
-# Levantar container (parte de docker-compose raíz)
+# Start container (part of root docker-compose)
 docker compose up -d open-design
 
-# Verificar
+# Verify
 curl http://127.0.0.1:7456/api/health
 # {"status":"ok"}
 
@@ -22,7 +22,7 @@ curl http://127.0.0.1:7456/api/health
 open http://127.0.0.1:7456
 ```
 
-## Variables de entorno requeridas
+## Required environment variables
 
 ```bash
 # .env
@@ -31,101 +31,101 @@ OD_API_TOKEN=***   # openssl rand -hex 32
 OD_BIND_HOST=0.0.0.0
 ```
 
-El container falla fast si falta `OD_API_TOKEN`:
+The container fails fast if `OD_API_TOKEN` is missing:
 ```
 ERROR: OD_API_TOKEN required
 ```
 
-## API REST
+## REST API
 
-Base: `http://host.docker.internal:7456` (desde containers) o `http://127.0.0.1:7456` (desde host).
+Base: `http://host.docker.internal:7456` (from containers) or `http://127.0.0.1:7456` (from host).
 
-**Auth:** header `Authorization: Bearer ${OD_API_TOKEN}` en todas las requests excepto `/api/health`.
+**Auth:** header `Authorization: Bearer *** on all requests except `/api/health`.
 
 ### Endpoints
 
 ```bash
-# Health (sin auth)
+# Health (no auth)
 GET /api/health
 # → {"status":"ok"}
 
-# Listar skills (31 built-in)
+# List skills (31 built-in)
 GET /api/skills
 # → [{id: "design-md", name: "Design.md Generator", ...}, ...]
 
-# Skill específico
+# Specific skill
 GET /api/skills/design-md
 # → {id, name, description, params_schema, ...}
 
-# Listar design systems built-in
+# List built-in design systems
 GET /api/design-systems
 # → [{id: "vercel", name: "Vercel Design System", ...}, {id: "airbnb", ...}, ...]
 
-# Design system específico
+# Specific design system
 GET /api/design-systems/vercel
 # → {id, name, colors, typography, components, ...}
 
-# Listar proyectos existentes
+# List existing projects
 GET /api/projects
 # → [{uuid, name, skillId, designSystemId, createdAt, ...}]
 
-# Crear proyecto
+# Create project
 POST /api/projects
 Content-Type: application/json
-Authorization: Bearer ${OD_API_TOKEN}
+Authorization: Bearer ***
 
 {
-  "name": "Mi SaaS",
+  "name": "My SaaS",
   "skillId": "design-md",
   "designSystemId": "vercel",
   "params": {
-    "description": "Dashboard para gestión de proyectos",
+    "description": "Dashboard for project management",
     "audience": "developers and PMs"
   }
 }
 # → {uuid, name, ...}
-# Genera: docs/projects/mi-saas/DESIGN.md, tokens.css, plan suggestions
+# Generates: docs/projects/my-saas/DESIGN.md, tokens.css, plan suggestions
 
-# Health de providers
+# Provider health
 GET /api/providers
 # → [{id: "ollama", status: "ok"}, {id: "opencode", status: "ok"}, ...]
 ```
 
-## Skills built-in (31)
+## Built-in skills (31)
 
-| ID | Nombre | Uso |
+| ID | Name | Use |
 |---|---|---|
-| `design-md` | Design.md Generator | Genera DESIGN.md desde prompt + design system |
-| `brand-guidelines` | Brand Guidelines | Genera brand book (logo usage, colors, typography, voice) |
-| `web-prototype` | Web Prototype | HTML/CSS/JS prototype navegable |
-| `dashboard` | Dashboard Layout | Admin dashboard con sidebar + charts + tables |
-| `landing-page` | Landing Page | Marketing site con hero + features + CTA |
+| `design-md` | Design.md Generator | Generates DESIGN.md from prompt + design system |
+| `brand-guidelines` | Brand Guidelines | Generates brand book (logo usage, colors, typography, voice) |
+| `web-prototype` | Web Prototype | Navigable HTML/CSS/JS prototype |
+| `dashboard` | Dashboard Layout | Admin dashboard with sidebar + charts + tables |
+| `landing-page` | Landing Page | Marketing site with hero + features + CTA |
 | `e-commerce` | E-commerce | Product grid + cart + checkout flow |
 | `blog` | Blog Layout | Article list + single post + sidebar |
-| `docs-site` | Documentation | Docs site con sidebar nav + search + TOC |
-| `mobile-app` | Mobile App | iOS/Android mockup con safe areas |
-| `email-template` | Email Template | HTML email responsive |
-| ... | ... | (21 más) |
+| `docs-site` | Documentation | Docs site with sidebar nav + search + TOC |
+| `mobile-app` | Mobile App | iOS/Android mockup with safe areas |
+| `email-template` | Email Template | Responsive HTML email |
+| ... | ... | (21 more) |
 
-## Design systems built-in
+## Built-in design systems
 
-| ID | Tipo | Personalidad |
+| ID | Type | Personality |
 |---|---|---|
-| `vercel` | Modern minimal | SaaS clean, monochrome + accent |
-| `linear` | Tech utility | Dashboard denso, dark mode |
+| `vercel` | Modern minimal | Clean SaaS, monochrome + accent |
+| `linear` | Tech utility | Dense dashboard, dark mode |
 | `airbnb` | Editorial warm | Consumer warm, hospitality |
 | `stripe` | Editorial modern | Fintech, gradient accents |
 | `github` | Tech utility | Dev tool, sparse + functional |
 | `notion` | Modern minimal | Productivity, soft + friendly |
 | `figma` | Design tool | White-label, customizable |
 
-## 5 escuelas visuales (auto-detección)
+## 5 visual schools (auto-detection)
 
-Open-design detecta la escuela visual apropiada según keywords del proyecto:
+Open-design detects the appropriate visual school based on project keywords:
 
 ### 1. editorial-monocle
 **Keywords:** editorial, magazine, premium, luxury, lifestyle, fashion, art
-**Características:**
+**Characteristics:**
 - Serif display (Pangram, Klim, ABC Dinamo)
 - Generous whitespace
 - Editorial photography
@@ -133,15 +133,15 @@ Open-design detecta la escuela visual apropiada según keywords del proyecto:
 
 ### 2. modern-minimal
 **Keywords:** SaaS, productivity, B2B, platform, tool, dashboard, clean
-**Características:**
-- Sans-serif clean (Inter, Geist, Satoshi)
+**Characteristics:**
+- Clean sans-serif (Inter, Geist, Satoshi)
 - Minimal color palette (5-7 colors)
 - Grid-based layouts
 - Subtle shadows + borders
 
 ### 3. warm-soft
 **Keywords:** consumer, friendly, social, community, wellness, kids, family
-**Características:**
+**Characteristics:**
 - Rounded corners (16-24px)
 - Warm tones (peach, cream, terracotta)
 - Friendly typefaces (Recoleta, Fraunces, ABC Diatype)
@@ -149,7 +149,7 @@ Open-design detecta la escuela visual apropiada según keywords del proyecto:
 
 ### 4. tech-utility
 **Keywords:** dashboard, dev tool, analytics, monitoring, infra, platform
-**Características:**
+**Characteristics:**
 - Mono accents (JetBrains Mono, Berkeley Mono)
 - Dense data display
 - Functional layouts
@@ -157,32 +157,32 @@ Open-design detecta la escuela visual apropiada según keywords del proyecto:
 
 ### 5. brutalist-experimental
 **Keywords:** experimental, art, design, portfolio, agency, creative, bold
-**Características:**
+**Characteristics:**
 - Unconventional layouts
 - Heavy type weights
 - High contrast (black/white + 1 accent)
 - Asymmetric grids
 
-## Flujo ProblemHunt
+## ProblemHunt flow
 
-Para generar proyectos completos desde problemas scrapeados:
+To generate complete projects from scraped problems:
 
 ```
 Scraper (problemhunt-scraper.cjs)
    ↓
-SPEC.md (problema + solución + métricas)
+SPEC.md (problem + solution + metrics)
    ↓
-DESIGN.md (generado por open-design /api/projects con skillId=design-md)
+DESIGN.md (generated by open-design /api/projects with skillId=design-md)
    ↓
-PLAN.md (fases + milestones + dependencies)
+PLAN.md (phases + milestones + dependencies)
    ↓
-TASKS.md (tasks atómicas con estimates)
+TASKS.md (atomic tasks with estimates)
 ```
 
-### Ejemplo end-to-end
+### End-to-end example
 
 ```bash
-# 1. Spec del proyecto
+# 1. Project spec
 cat > /tmp/project-spec.md <<EOF
 # ProblemHunt #400
 Moving with furniture is a weeks-long headache...
@@ -194,9 +194,9 @@ Renters moving between cities
 Real-time booking with verified movers
 EOF
 
-# 2. Crear proyecto en open-design
+# 2. Create project in open-design
 PROJECT_UUID=$(curl -X POST http://127.0.0.1:7456/api/projects \
-  -H "Authorization: Bearer ${OD_API_TOKEN}" \
+  -H "Authorization: Bearer *** \
   -H "Content-Type: application/json" \
   -d '{
     "name": "moving-app",
@@ -208,24 +208,24 @@ PROJECT_UUID=$(curl -X POST http://127.0.0.1:7456/api/projects \
     }
   }' | jq -r '.uuid')
 
-# 3. Esperar generación (async, ~30s)
+# 3. Wait for generation (async, ~30s)
 sleep 30
 
-# 4. Obtener DESIGN.md
+# 4. Get DESIGN.md
 curl "http://127.0.0.1:7456/api/projects/${PROJECT_UUID}/design" \
-  -H "Authorization: Bearer ${OD_API_TOKEN}" \
+  -H "Authorization: Bearer *** \
   | jq -r '.design_md' > DESIGN.md
 
-# 5. Generar CSS tokens
+# 5. Generate CSS tokens
 npx @google/design.md export --format css-tailwind DESIGN.md > tokens.css
 
-# 6. Generar tasks
+# 6. Generate tasks
 curl "http://127.0.0.1:7456/api/projects/${PROJECT_UUID}/tasks" \
-  -H "Authorization: Bearer ${OD_API_TOKEN}" \
+  -H "Authorization: Bearer *** \
   | jq -r '.tasks_md' > TASKS.md
 ```
 
-## DESIGN.md — formato Google Labs
+## DESIGN.md — Google Labs format
 
 ```markdown
 ---
@@ -309,10 +309,10 @@ Base: 4px
 
 ## npx @google/design.md
 
-CLI oficial para trabajar con DESIGN.md:
+Official CLI to work with DESIGN.md:
 
 ```bash
-# Lint (validar contra schema)
+# Lint (validate against schema)
 npx @google/design.md lint DESIGN.md
 
 # Export to CSS custom properties
@@ -329,10 +329,10 @@ find /workspace/repo/docs/projects -name "DESIGN.md" -exec \
   npx @google/design.md lint {} \;
 ```
 
-## Integración con Tailwind
+## Integration with Tailwind
 
 ```js
-// tailwind.config.js (generado)
+// tailwind.config.js (generated)
 const tokens = require('./tokens.json');
 
 module.exports = {
@@ -354,30 +354,30 @@ module.exports = {
 };
 ```
 
-## Configuración de provider
+## Provider configuration
 
-Open-design usa un provider para generar el contenido (LLM). Default: opencode spawn.
+Open-design uses a provider to generate content (LLM). Default: opencode spawn.
 
 ```bash
-# Configurar provider
-pnpm od:provider ollama       # usa ollama local
-pnpm od:provider opencode     # usa opencode-ai spawn
+# Configure provider
+pnpm od:provider ollama       # uses local ollama
+pnpm od:provider opencode     # uses opencode-ai spawn
 ```
 
-Container open-design necesita acceso al binario opencode (ya viene en Dockerfile via `npm install -g opencode-ai`).
+The open-design container needs access to the opencode binary (already included in Dockerfile via `npm install -g opencode-ai`).
 
-## Errores comunes
+## Common errors
 
-1. ❌ Olvidar `OD_API_TOKEN` → container falla fast con error message.
-2. ❌ Usar `localhost` desde container → usar `host.docker.internal`.
-3. ❌ Llamar `POST /api/projects` sin Bearer token → 401.
-4. ❌ DESIGN.md sin frontmatter → no se puede parsear; `lint` falla.
-5. ❌ Tokens con hex (#fff) en lugar de OKLCH → export falla; usar OKLCH.
-6. ❌ `npx @google/design.md` sin conexión → instalar offline cache o usar API directa.
-7. ❌ Open-design no detecta escuela visual → prompt vago, no incluye keywords.
-8. ❌ Design system built-in no encaja con proyecto → crear custom.
+1. ❌ Forgetting `OD_API_TOKEN` → container fails fast with error message.
+2. ❌ Using `localhost` from container → use `host.docker.internal`.
+3. ❌ Calling `POST /api/projects` without Bearer token → 401.
+4. ❌ DESIGN.md without frontmatter → cannot parse; `lint` fails.
+5. ❌ Tokens with hex (#fff) instead of OKLCH → export fails; use OKLCH.
+6. ❌ `npx @google/design.md` without connection → install offline cache or use API directly.
+7. ❌ Open-design does not detect visual school → vague prompt, no keywords included.
+8. ❌ Built-in design system doesn't fit project → create custom.
 
-## Verificación
+## Verification
 
 ```bash
 # Open-design health
@@ -390,20 +390,20 @@ curl -fsS http://127.0.0.1:7456/api/skills | jq '. | length'
 # Design system count
 curl -fsS http://127.0.0.1:7456/api/design-systems | jq '. | length'
 
-# Listar proyectos
-curl -fsS http://127.0.0.1:7456/api/projects -H "Authorization: Bearer ${OD_API_TOKEN}" | jq
+# List projects
+curl -fsS http://127.0.0.1:7456/api/projects -H "Authorization: Bearer *** | jq
 
-# Lint DESIGN.md local
+# Lint DESIGN.md locally
 npx @google/design.md lint DESIGN.md
 
 # Export tokens
 npx @google/design.md export --format css-tailwind DESIGN.md > /tmp/tokens.css
-grep "primary" /tmp/tokens.css  # debe listar --primary
+grep "primary" /tmp/tokens.css  # should list --primary
 ```
 
-## Skills relacionadas
+## Related skills
 
-- `containers-architecture` — setup de open-design container
+- `containers-architecture` — open-design container setup
 - `iaworkspace-patterns` — overview
-- `frontend-design` (anthropics) — diseño sin open-design
-- `taste-skill` / `impeccable` — design taste general
+- `frontend-design` (anthropics) — design without open-design
+- `taste-skill` / `impeccable` — general design taste

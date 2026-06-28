@@ -46,27 +46,27 @@ echo ""
 # ─── 0. Prereqs ───
 log "0. Verifying prerequisites..."
 
-command -v git >/dev/null || { err "git no instalado. Instala Xcode CLI Tools: xcode-select --install"; exit 1; }
+command -v git >/dev/null || { err "git not installed. Install Xcode CLI Tools: xcode-select --install"; exit 1; }
 command -v brew >/dev/null || {
-  err "Homebrew no instalado."
-  log "Instálalo con:"
+  err "Homebrew not installed."
+  log "Install it with:"
   log '  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
   exit 1
 }
-command -v gh >/dev/null || { err "gh (GitHub CLI) no instalado. brew install gh"; exit 1; }
-command -v yq >/dev/null || { warn "yq no instalado, instalando con brew..."; brew install yq; }
+command -v gh >/dev/null || { err "gh (GitHub CLI) not installed. brew install gh"; exit 1; }
+command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; }
 
 ok "Prerequisites OK"
 echo ""
 
 # ─── 1. Brew packages ───
 if [ "${SKIP_BREW:-0}" != "1" ]; then
-  log "1. Instalando Brew packages (puede tardar 5-15 min)..."
+  log "1. Installing Brew packages (may take 5-15 min)..."
   cd "$AI_OS_ROOT"
   brew bundle install --file=dev-env/packages/Brewfile --verbose
-  ok "Brew packages instalados"
+  ok "Brew packages installed"
 else
-  log "1. SKIP_BREW=1, saltando brew"
+  log "1. SKIP_BREW=1, skipping brew"
 fi
 echo ""
 
@@ -74,16 +74,16 @@ echo ""
 log "2. Verifying Nerd Fonts..."
 CASKE_FONT="$HOME/Library/Fonts/CaskaydiaCoveNerdFont-Regular.ttf"
 if [ ! -f "$CASKE_FONT" ]; then
-  warn "CaskaydiaCove Nerd Font no instalado. Instalando..."
+  warn "CaskaydiaCove Nerd Font not installed. Installing..."
   brew install --cask font-caskaydia-cove-nerd-font
 else
-  ok "CaskaydiaCove Nerd Font ya instalado"
+  ok "CaskaydiaCove Nerd Font already installed"
 fi
 echo ""
 
-# ─── 3. Symlinks de dotfiles ───
+# ─── 3. Symlinks for dotfiles ───
 if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
-  log "3. Creando symlinks de dotfiles..."
+  log "3. Creating dotfiles symlinks..."
 
   # zsh
   if [ -f "$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc" ]; then
@@ -110,7 +110,7 @@ if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
       fi
       ok "  .gitconfig → template (customize: git config --global user.name/email)"
     else
-      ok "  .gitconfig ya existe, no se sobreescribe"
+      ok "  .gitconfig already exists, not overwriting"
     fi
   fi
   if [ -f "$AI_OS_ROOT/dev-env/dotfiles/git/.gitignore_global" ]; then
@@ -130,30 +130,30 @@ if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
     ok "  .ssh/config → ai-os"
   fi
 else
-  log "3. SKIP_DOTFILES=1, saltando dotfiles"
+  log "3. SKIP_DOTFILES=1, skipping dotfiles"
 fi
 echo ""
 
 # ─── 4. Oh My Zsh + Powerlevel10k ───
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
-  log "4. Instalando Oh My Zsh..."
+  log "4. Installing Oh My Zsh..."
   RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 2>&1 | tail -3
-  ok "Oh My Zsh instalado"
+  ok "Oh My Zsh installed"
 else
-  ok "Oh My Zsh ya instalado"
+  ok "Oh My Zsh already installed"
 fi
 
 if [ ! -d "$HOME_DIR/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
-  log "   Instalando Powerlevel10k..."
+  log "   Installing Powerlevel10k..."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
     "${ZSH_CUSTOM:-$HOME_DIR/.oh-my-zsh/custom}/themes/powerlevel10k" 2>&1 | tail -2
-  ok "   Powerlevel10k instalado"
+  ok "   Powerlevel10k installed"
 fi
 
-# Plugins adicionales
+# Additional plugins
 for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-completions; do
   if [ ! -d "$HOME_DIR/.oh-my-zsh/custom/plugins/$plugin" ]; then
-    log "   Instalando plugin: $plugin"
+    log "   Installing plugin: $plugin"
     git clone --depth=1 "https://github.com/zsh-users/$plugin" \
       "${ZSH_CUSTOM:-$HOME_DIR/.oh-my-zsh/custom}/plugins/$plugin" 2>&1 | tail -1
   fi
@@ -161,8 +161,8 @@ done
 ok "Oh My Zsh + plugins OK"
 echo ""
 
-# ─── 5. Skills globales (symlinks) ───
-log "5. Seteando skills globales en 5 CLIs..."
+# ─── 5. Global skills (symlinks) ───
+log "5. Setting global skills in 5 CLIs..."
 
 for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
   mkdir -p "$cli_dir"
@@ -175,7 +175,7 @@ for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.
     ln -sf "$skill_dir" "$cli_dir/$name"
   done
 done
-# READMEDD y llms solo en claude/
+# READMEDD and llms only in claude/
 ln -sf "$AI_OS_ROOT/ai-config/skills/READMEDD.md" "$HOME_DIR/.claude/skills/READMEDD.md" 2>/dev/null || true
 ln -sf "$AI_OS_ROOT/ai-config/skills/taste-skill-llms.txt" "$HOME_DIR/.claude/skills/taste-skill-llms.txt" 2>/dev/null || true
 
@@ -191,7 +191,7 @@ for skill_dir in "$AI_OS_ROOT/ai-config/skills"/*/; do
 done
 
 SKILL_COUNT=$(ls "$AI_OS_ROOT/ai-config/skills/" | wc -l | tr -d ' ')
-ok "Skills propagadas a 5 CLIs ($SKILL_COUNT archivos en source)"
+ok "Skills propagated to 5 CLIs ($SKILL_COUNT files in source)"
 echo ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───
@@ -202,7 +202,7 @@ for skill in brainstorming dispatching-parallel-agents executing-plans finishing
   [ -d "$HOME_DIR/.claude/skills/$skill" ] && ACTUAL=$((ACTUAL + 1))
 done
 if [ "$ACTUAL" -ne "$EXPECTED" ]; then
-  warn "Solo $ACTUAL/$EXPECTED superpowers skills instaladas. Instalando..."
+  warn "Only $ACTUAL/$EXPECTED superpowers skills installed. Installing..."
   TMP_SP="/tmp/superpowers-aios-$$"
   trap "rm -rf '$TMP_SP'" EXIT
   gh repo clone obra/superpowers "$TMP_SP" -- --depth=1 2>&1 | tail -1
@@ -210,49 +210,49 @@ if [ "$ACTUAL" -ne "$EXPECTED" ]; then
     name=$(basename "$skill")
     if [ -d "$skill" ] && [ ! -d "$HOME_DIR/.claude/skills/$name" ]; then
       cp -R "$skill" "$HOME_DIR/.claude/skills/$name"
-      # Re-symlink a otros CLIs
+      # Re-symlink to other CLIs
       for cli_dir in "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported"; do
         ln -sf "$HOME_DIR/.claude/skills/$name" "$cli_dir/$name"
       done
     fi
   done
-  ok "Superpowers instaladas ($EXPECTED/$EXPECTED)"
+  ok "Superpowers installed ($EXPECTED/$EXPECTED)"
 else
   ok "Superpowers OK ($ACTUAL/$EXPECTED)"
 fi
 echo ""
 
-# ─── 7. MCP servers (regenerar ~/.hermes/config.yaml) ───
+# ─── 7. MCP servers (regenerate ~/.hermes/config.yaml) ───
 if [ "${SKIP_MCP:-0}" != "1" ]; then
-  log "7. Configurando MCP servers desde ai-config/mcp/*.yaml..."
+  log "7. Configuring MCP servers from ai-config/mcp/*.yaml..."
 
-  # Generar bloque mcp_servers para ~/.hermes/config.yaml
+  # Generate mcp_servers block for ~/.hermes/config.yaml
   MCP_YAMLS=()
   for yaml in "$AI_OS_ROOT/ai-config/mcp"/*.yaml; do
     [ -f "$yaml" ] || continue
     MCP_YAMLS+=("$yaml")
   done
 
-  # Si ~/.hermes/config.yaml existe, hacer backup
+  # If ~/.hermes/config.yaml exists, make a backup
   if [ -f "$HOME_DIR/.hermes/config.yaml" ]; then
     cp "$HOME_DIR/.hermes/config.yaml" "$HOME_DIR/.hermes/config.yaml.pre-aios.bak"
   fi
   mkdir -p "$HOME_DIR/.hermes"
 
-  # Generar mcp_servers block con script Python standalone (que también sirve para Windows)
+  # Generate mcp_servers block with standalone Python script (also works on Windows)
   if command -v python3 >/dev/null 2>&1; then
     python3 "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml"
   elif command -v python >/dev/null 2>&1; then
     python "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml"
   else
-    warn "Python no encontrado, no puedo generar config MCP automáticamente"
+    warn "Python not found, cannot generate MCP config automatically"
   fi
 fi
 echo ""
 
 # ─── 8. Warp defaults (Mac only) ───
 if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
-  log "8. Configurando Warp defaults..."
+  log "8. Configuring Warp defaults..."
   defaults write dev.warp.Warp-Stable font_family -string "CaskaydiaCove Nerd Font"
   defaults write dev.warp.Warp-Stable font_size -int 14
   defaults write dev.warp.Warp-Stable line_height -float 1.4
@@ -260,15 +260,15 @@ if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
   defaults write dev.warp.Warp-Stable window_opacity -float 0.95
   defaults write dev.warp.Warp-Stable cursor_blink -bool true
   defaults write dev.warp.Warp-Stable cursor_shape -string "beam"
-  ok "Warp configurado (theme dark, font CaskaydiaCove Nerd 14)"
+  ok "Warp configured (theme dark, font CaskaydiaCove Nerd 14)"
 else
-  log "8. SKIP_WARP=1 o Warp no instalado, saltando"
+  log "8. SKIP_WARP=1 or Warp not installed, skipping"
 fi
 echo ""
 
 # ─── 9. Terminal.app defaults (Mac only) ───
 if [ -d "/Applications/Utilities/Terminal.app" ]; then
-  log "9. Configurando Terminal.app defaults..."
+  log "9. Configuring Terminal.app defaults..."
   plutil -replace "Default Window Settings" -string "Pro" "$HOME_DIR/Library/Preferences/com.apple.Terminal.plist" 2>/dev/null || true
   plutil -replace "Startup Window Settings" -string "Pro" "$HOME_DIR/Library/Preferences/com.apple.Terminal.plist" 2>/dev/null || true
   defaults write com.apple.Terminal Shell -string "/bin/zsh"
@@ -278,26 +278,26 @@ echo ""
 
 # ─── 10. Reload shell ───
 log "10. Reload zsh..."
-# Recargar shell solo si es interactivo
+# Reload shell only if interactive
 if [ -n "${PS1:-}" ]; then
   exec zsh
 else
-  ok "zsh (reload manual: exec zsh o abrir nueva terminal)"
+  ok "zsh (manual reload: exec zsh or open new terminal)"
 fi
 echo ""
 
-# ─── 11. Verificación final ───
+# ─── 11. Final verification ───
 if [ "${SKIP_VERIFY:-0}" != "1" ]; then
-  log "11. Verificación final..."
+  log "11. Final verification..."
   bash "$SCRIPT_DIR/verify.sh"
 fi
 
 echo ""
 log "═══════════════════════════════════════════════════════════"
-ok "AI-OS setup completo!"
+ok "AI-OS setup complete!"
 log ""
-log "Próximos pasos:"
-log "  1. exec zsh (o abrir nueva terminal)"
-log "  2. Probar: hermes chat --skills ai-os-quickstart"
-log "  3. Customizar ~/.gitconfig con tu email: git config --global user.name/email"
+log "Next steps:"
+log "  1. exec zsh (or open a new terminal)"
+log "  2. Try: hermes chat --skills ai-os-quickstart"
+log "  3. Customize ~/.gitconfig with your email: git config --global user.name/email"
 log "═══════════════════════════════════════════════════════════"

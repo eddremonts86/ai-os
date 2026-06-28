@@ -1,19 +1,19 @@
 # setup/install-windows.ps1
 # Setup AI-OS on Windows from zero. 1-command PowerShell.
 #
-# Uso (PowerShell como Admin):
+# Usage (PowerShell as Admin):
 #   git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
 #   cd $HOME\Projects\ai-os
 #   powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
 #
-# Idempotente: corre múltiples veces sin romper nada.
+# Idempotent: runs multiple times without breaking anything.
 #
-# Opciones (env vars):
-#   $env:SKIP_CHOCO = "1"       → no instalar packages de chocolatey
-#   $env:SKIP_NPM = "1"        → no instalar packages de npm
-#   $env:SKIP_DOTFILES = "1"   → no crear symlinks de dotfiles
-#   $env:SKIP_MCP = "1"        → no regenerar config de MCP
-#   $env:SKIP_VERIFY = "1"     → no correr tests de verificación al final
+# Options (env vars):
+#   $env:SKIP_CHOCO = "1"       → skip chocolatey packages
+#   $env:SKIP_NPM = "1"        → skip npm packages
+#   $env:SKIP_DOTFILES = "1"   → skip dotfile symlinks
+#   $env:SKIP_MCP = "1"        → skip MCP config regeneration
+#   $env:SKIP_VERIFY = "1"     → skip verification tests at the end
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 
 $ErrorActionPreference = "Stop"
@@ -47,30 +47,30 @@ Write-Host ""
 Log "0. Verifying prerequisites..."
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Err "git no instalado. Instala Git for Windows: https://git-scm.com/download/win"
+    Err "git not installed. Install Git for Windows: https://git-scm.com/download/win"
     exit 1
 }
 if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-    Warn "chocolatey no instalado (recomendado para Windows)"
-    Log "Instala con: Set-ExecutionPolicy Bypass; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+    Warn "chocolatey not installed (recommended for Windows)"
+    Log "Install with: Set-ExecutionPolicy Bypass; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
 } else {
     Ok "chocolatey OK"
 }
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Warn "Node.js no instalado. Instala desde https://nodejs.org"
+    Warn "Node.js not installed. Install from https://nodejs.org"
 }
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-    Warn "Python no instalado. Instala desde https://python.org"
+    Warn "Python not installed. Install from https://python.org"
 }
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
-    Warn "uv no instalado (recomendado para Python moderno)"
+    Warn "uv not installed (recommended for modern Python)"
 }
 Ok "Prerequisites OK"
 Write-Host ""
 
 # ─── 1. Chocolatey packages ───
 if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue)) {
-    Log "1. Instalando Chocolatey packages (puede tardar 5-15 min)..."
+    Log "1. Installing Chocolatey packages (may take 5-15 min)..."
 
     $packages = @(
         "git",
@@ -97,7 +97,7 @@ if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue))
         "keepassxc",
         "postman",
         "tableplus",
-        "warp"  # Warp tiene versión Windows
+        "warp"  # Warp has a Windows version
     )
 
     foreach ($pkg in $packages) {
@@ -108,25 +108,25 @@ if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue))
             Warn "  $pkg failed: $_"
         }
     }
-    Ok "Chocolatey packages instalados"
+    Ok "Chocolatey packages installed"
 } else {
-    Log "1. SKIP_CHOCO=1, saltando chocolatey"
+    Log "1. SKIP_CHOCO=1, skipping chocolatey"
 }
 Write-Host ""
 
 # ─── 2. Fonts ───
 Log "2. Verifying Nerd Fonts..."
-# PowerShell no maneja fonts directamente; usuario debe instalar manualmente
-# CaskaydiaCove Nerd Font: descargar de https://www.nerdfonts.com/font-downloads
-# O via chocolatey: choco install nerd-fonts-caskaydia-cove
-Warn "  Instalar CaskaydiaCove Nerd Font manualmente desde:"
+# PowerShell does not handle fonts directly; user must install manually
+# CaskaydiaCove Nerd Font: download from https://www.nerdfonts.com/font-downloads
+# Or via chocolatey: choco install nerd-fonts-caskaydia-cove
+Warn "  Install CaskaydiaCove Nerd Font manually from:"
 Log "    https://github.com/ryanoasis/nerd-fonts/releases/latest"
-Log "    O: choco install nerd-fonts-caskaydia-cove"
+Log "    Or: choco install nerd-fonts-caskaydia-cove"
 Write-Host ""
 
-# ─── 3. Symlinks de dotfiles ───
+# ─── 3. Symlinks for dotfiles ───
 if (-not $env:SKIP_DOTFILES) {
-    Log "3. Creando symlinks de dotfiles..."
+    Log "3. Creating dotfiles symlinks..."
 
     # PowerShell profile
     if (Test-Path "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1") {
@@ -148,7 +148,7 @@ if (-not $env:SKIP_DOTFILES) {
             Copy-Item "$AIOSRoot\dev-env\dotfiles\git\.gitconfig.template" "$HomeDir\.gitconfig"
             Ok "  .gitconfig → template (customize: git config --global user.name/email)"
         } else {
-            Ok "  .gitconfig ya existe, no se sobreescribe"
+            Ok "  .gitconfig already exists, not overwriting"
         }
     }
 
@@ -175,7 +175,7 @@ if (-not $env:SKIP_DOTFILES) {
         Ok "  .ssh/config → ai-os"
     }
 } else {
-    Log "3. SKIP_DOTFILES=1, saltando dotfiles"
+    Log "3. SKIP_DOTFILES=1, skipping dotfiles"
 }
 Write-Host ""
 
@@ -188,7 +188,7 @@ if (-not (Test-Path $profileDir)) {
 $customProfile = "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
 $customProfileContent = @'
 # AI-OS PowerShell profile (Edd)
-# Cargar Oh-My-Posh o Starship si están instalados (tema + git info)
+# Load Oh-My-Posh or Starship if installed (theme + git info)
 
 # Prompt
 function prompt {
@@ -200,7 +200,7 @@ function prompt {
     "$location$gitBranch > "
 }
 
-# Aliases estilo Unix
+# Unix-style aliases
 Set-Alias -Name ll -Value "ls -lh" -Option AllScope -Force
 Set-Alias -Name la -Value "ls -lha" -Option AllScope -Force
 Set-Alias -Name gs -Value "git status" -Option AllScope -Force
@@ -225,14 +225,14 @@ function work { Set-Location "$HOME\Projects\ei-schilling" }
 '@
 if (-not (Test-Path $customProfile)) {
     Set-Content -Path $customProfile -Value $customProfileContent
-    Ok "PowerShell custom profile creado en $customProfile"
+    Ok "PowerShell custom profile created at $customProfile"
 } else {
-    Ok "PowerShell custom profile ya existe"
+    Ok "PowerShell custom profile already exists"
 }
 Write-Host ""
 
-# ─── 5. Skills globales (symlinks) ───
-Log "5. Seteando skills globales en 5 CLIs..."
+# ─── 5. Global skills (symlinks) ───
+Log "5. Setting global skills in 5 CLIs..."
 
 $cliDirs = @(
     "$HomeDir\.claude\skills",
@@ -268,7 +268,7 @@ foreach ($skillDir in $skillDirs) {
 }
 
 $skillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory).Count
-Ok "Skills propagadas a 5 CLIs ($skillCount skills en source)"
+Ok "Skills propagated to 5 CLIs ($skillCount skills in source)"
 Write-Host ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───
@@ -289,7 +289,7 @@ foreach ($skill in $superpowersSkills) {
     }
 }
 if ($actual -ne $expected) {
-    Warn "Solo $actual/$expected superpowers skills instaladas. Instalando..."
+    Warn "Only $actual/$expected superpowers skills installed. Installing..."
     $tmpSp = "$env:TEMP\superpowers-aios-$PID"
     if (Test-Path $tmpSp) { Remove-Item $tmpSp -Recurse -Force }
     git clone --depth=1 https://github.com/obra/superpowers $tmpSp 2>&1 | Out-Null
@@ -299,7 +299,7 @@ if ($actual -ne $expected) {
         $destPath = "$HomeDir\.claude\skills\$($skillDir.Name)"
         if (-not (Test-Path $destPath)) {
             Copy-Item $skillDir.FullName $destPath -Recurse -Force
-            # Re-symlink a otros CLIs
+            # Re-symlink to other CLIs
             foreach ($cliDir in $cliDirs) {
                 $linkPath = Join-Path $cliDir $skillDir.Name
                 if (-not (Test-Path $linkPath)) {
@@ -313,15 +313,15 @@ if ($actual -ne $expected) {
         }
     }
     Remove-Item $tmpSp -Recurse -Force
-    Ok "Superpowers instaladas ($expected/$expected)"
+    Ok "Superpowers installed ($expected/$expected)"
 } else {
     Ok "Superpowers OK ($actual/$expected)"
 }
 Write-Host ""
 
-# ─── 7. MCP servers (regenerar ~/.hermes/config.yaml) ───
+# ─── 7. MCP servers (regenerate ~/.hermes/config.yaml) ───
 if (-not $env:SKIP_MCP) {
-    Log "7. Configurando MCP servers desde ai-config/mcp/*.yaml..."
+    Log "7. Configuring MCP servers from ai-config/mcp/*.yaml..."
 
     if (-not (Test-Path "$HomeDir\.hermes")) {
         New-Item -ItemType Directory -Path "$HomeDir\.hermes" -Force | Out-Null
@@ -331,7 +331,7 @@ if (-not $env:SKIP_MCP) {
         Move-Item "$HomeDir\.hermes\config.yaml" "$HomeDir\.hermes\config.yaml.pre-aios.bak" -Force
     }
 
-    # Generar config.yaml con Python (funciona en Windows)
+    # Generate config.yaml with Python (works on Windows)
     $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
     if ($pythonCmd) {
         $pythonArgs = @(
@@ -340,41 +340,41 @@ if (-not $env:SKIP_MCP) {
             $HomeDir + "\.hermes\config.yaml"
         )
         & $pythonCmd.Source $pythonArgs
-        Ok "MCP servers configurados (Python: $($pythonCmd.Source))"
+        Ok "MCP servers configured (Python: $($pythonCmd.Source))"
     } else {
-        Warn "Python no encontrado. MCP servers no configurados automáticamente. Editar ~/.hermes/config.yaml manualmente."
+        Warn "Python not found. MCP servers not configured automatically. Edit ~/.hermes/config.yaml manually."
     }
 }
 Write-Host ""
 
 # ─── 8. Terminal ───
-Log "8. Terminal (Windows Terminal o WezTerm)..."
+Log "8. Terminal (Windows Terminal or WezTerm)..."
 $wtInstalled = (Get-Command wt -ErrorAction SilentlyContinue) -ne $null
 $weztermInstalled = (Get-Command wezterm -ErrorAction SilentlyContinue) -ne $null
 if ($wtInstalled) {
-    Ok "Windows Terminal detectado"
+    Ok "Windows Terminal detected"
 } elseif ($weztermInstalled) {
-    Ok "WezTerm detectado"
+    Ok "WezTerm detected"
 } else {
-    Warn "Ni Windows Terminal ni WezTerm detectado. Instalar uno:"
+    Warn "Neither Windows Terminal nor WezTerm detected. Install one:"
     Log "  choco install microsoft-windows-terminal"
-    Log "  O: choco install wezterm"
+    Log "  Or: choco install wezterm"
 }
 Write-Host ""
 
-# ─── 9. Verificación final ───
+# ─── 9. Final verification ───
 if (-not $env:SKIP_VERIFY) {
-    Log "9. Verificación final..."
+    Log "9. Final verification..."
     powershell -ExecutionPolicy Bypass -File "$ScriptDir\verify-windows.ps1"
 }
 
 Write-Host ""
 Log "═══════════════════════════════════════════════════════════"
-Ok "AI-OS setup completo!"
+Ok "AI-OS setup complete!"
 Log ""
-Log "Próximos pasos:"
-Log "  1. Abrir nueva PowerShell (o Windows Terminal)"
-Log "  2. Probar: hermes chat --skills ai-os-quickstart"
-Log "  3. Customizar git config: git config --global user.name/email"
-Log "  4. Instalar CaskaydiaCove Nerd Font manualmente si no lo hiciste"
+Log "Next steps:"
+Log "  1. Open new PowerShell (or Windows Terminal)"
+Log "  2. Try: hermes chat --skills ai-os-quickstart"
+Log "  3. Customize git config: git config --global user.name/email"
+Log "  4. Install CaskaydiaCove Nerd Font manually if you haven't"
 Log "═══════════════════════════════════════════════════════════"
