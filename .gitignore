@@ -64,3 +64,8 @@ Thumbs.db
 vendor/ecc/.git
 vendor/ecc/node_modules
 vendor/ecc/dist
+
+# codex-plugin-cc vendored - internal git excluded
+vendor/codex-plugin-cc/.git
+vendor/codex-plugin-cc/node_modules
+vendor/codex-plugin-cc/dist

@@ -47,6 +47,21 @@ jobs:
             echo "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
           fi
 
+      - name: Verify claude.tools / gstack integration (--check)
+        # Non-fatal: vendor/codex-plugin-cc/ may not be cloned on every PR.
+        # The 12 individual skills live in ai-config/skills/ (checked in), so
+        # the frontmatter checks always run; the plugin-level check is conditional.
+        # We use `|| true` because the script exits non-zero only on real failures,
+        # and we don't want CI to fail on PRs that don't touch this integration.
+        run: |
+          if [ -d vendor/codex-plugin-cc ]; then
+            echo "vendor/codex-plugin-cc/ present, running install-claude-tools.sh --check..."
+            bash setup/install-claude-tools.sh --check || echo "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)"
+          else
+            echo "::warning::vendor/codex-plugin-cc/ not present; running --check anyway (12 individual skills are in ai-config/skills/)"
+            bash setup/install-claude-tools.sh --check || echo "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)"
+          fi
+
       - name: Run verify.sh (DRY_RUN)
         env:
           DRY_RUN: '1'
@@ -61,4 +76,5 @@ jobs:
           echo "## macOS Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Install dry-run: ✅" >> $GITHUB_STEP_SUMMARY
           echo "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)" >> $GITHUB_STEP_SUMMARY
+          echo "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)" >> $GITHUB_STEP_SUMMARY
           echo "- Verify: ⚠️ (some checks expected to fail in CI)" >> $GITHUB_STEP_SUMMARY

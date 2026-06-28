@@ -2,14 +2,15 @@
 
 > **Personal AI work system based on Andrej Karpathy's method** (Spec + Verifier + Environment), extended with a reproducible dev environment setup that works across Macs and Windows.
 >
-> **One command setup. 99 skills. 5 CLIs. 1 repo.**
+> **One command setup. 111 skills. 5 CLIs. 1 repo.**
 
 [![Test macOS](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml)
 [![Test Linux](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml)
 [![Test Windows](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Skills: 99+](https://img.shields.io/badge/skills-99+-green.svg)](ai-config/skills/)
+[![Skills: 111](https://img.shields.io/badge/skills-111-green.svg)](ai-config/skills/)
 [![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
+[![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
 
 ---
 
@@ -17,8 +18,9 @@
 
 AI-OS is the **single source of truth** for everything AI in your dev workflow:
 
-- **99+ global skills** propagated to 5 AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes).
+- **111 global skills** propagated to 5 AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes).
 - **+271 optional ECC skills** (vendored at `vendor/ecc/`, opt-in via `bash setup/install-ecc.sh`).
+- **+12 optional claude.tools / gstack skills** (4 from claude.tools, 8 cherry-picked from gstack, plus the OpenAI Codex plugin at `vendor/codex-plugin-cc/`).
 - **14 required superpowers skills** (the framework that powers all workflows).
 - **5 recurring workflows** (daily_start, project_start, coding, research, content_creation).
 - **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
@@ -280,6 +282,36 @@ Why two skill sources of truth?
 The two never conflict in practice because ECC and AI-OS use different naming conventions (ECC: `tdd-workflow`, AI-OS: `test-driven-development`). In Claude Code specifically, ECC also loads as a **plugin** (`~/.claude/plugins/ecc → vendor/ecc/`), exposing hooks and slash commands that the AI-OS installer doesn't manage.
 
 Full architecture, hook policy, and update procedure: [`docs/ecc-integration.md`](docs/ecc-integration.md). CI validates the ECC integration in [`test-mac.yml`](.github/workflows/test-mac.yml), [`test-linux.yml`](.github/workflows/test-linux.yml), and [`test-windows.yml`](.github/workflows/test-windows.yml) — the `--check` step is non-fatal and skips if `vendor/ecc/` is absent.
+
+### claude.tools / gstack Integration (optional layer)
+
+AI-OS also vendors a **small, focused set of skills** from [claude.tools](https://claude.tools) and cherry-picks a handful of skills from [gstack](https://github.com/earendil-works/gstack) — the same pattern as ECC but at a much smaller scale. These are checked directly into `ai-config/skills/`, so they propagate to `~/.claude/skills/` via `install-mac.sh` step 5 like any other AI-OS-native skill. The companion installer wires them into the other 4 CLIs and creates the plugin link for codex-plugin-cc:
+
+```bash
+# Install (idempotent). The 12 individual skills are already in ai-config/skills/,
+# so this script's main job is to wire them to the 4 non-Claude CLIs and to
+# symlink vendor/codex-plugin-cc/ into ~/.claude/plugins/.
+bash setup/install-claude-tools.sh
+
+# Verify only (CI mode)
+bash setup/install-claude-tools.sh --check
+```
+
+What gets vendored:
+
+| Source | Where it lives | Count |
+|---|---|---|
+| claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`) | `ai-config/skills/` | 4 skills |
+| gstack (`careful`, `context-save`, `context-restore`, `diagram`, `freeze`, `guard`, `spec`, `unfreeze`) | `ai-config/skills/` | 8 skills |
+| OpenAI Codex plugin for Claude Code | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to all 5 CLIs | 1 plugin + 3 skills |
+
+Why a separate installer (instead of folding into `install-mac.sh`)?
+
+- **Idempotency**: `install-claude-tools.sh --check` is the CI entrypoint — it validates frontmatter on every PR without touching the filesystem. Keeps `install-mac.sh` focused on Mac bootstrap.
+- **Selective install**: Users who don't want the plugin (it's optional, requires ChatGPT sub or OpenAI API key) can skip it.
+- **Mirrors ECC**: Same shape as `install-ecc.sh`, so the CI pattern is consistent.
+
+Full architecture, skill catalog, and update procedure: [`docs/claude-tools-integration.md`](docs/claude-tools-integration.md). CI validates it in the three platform workflows — the `--check` step is non-fatal and uses `|| echo ::warning::` so PRs that don't touch the integration stay green.
 
 ---
 
