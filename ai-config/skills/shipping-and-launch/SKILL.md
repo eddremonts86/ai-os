@@ -1,114 +1,114 @@
 ---
 name: shipping-and-launch
-description: Pre-launch checklist, feature flags con lifecycle completo, staged rollouts (canary/gradual), monitoring post-deploy, rollback plan documentado ANTES. Aplica a cualquier deploy que afecte usuarios (no triviales).
+description: Pre-launch checklist, feature flags with full lifecycle, staged rollouts (canary/gradual), post-deploy monitoring, rollback plan documented BEFORE. Applies to any deploy that affects users (non-trivial).
 license: Internal
 ---
 
 # Shipping & Launch
 
-## Mentalidad
+## Mindset
 
-> "El deploy más arriesgado es el que no tiene plan de rollback."
+> "The riskiest deploy is the one without a rollback plan."
 
-Nunca ships a producción sin:
-1. Checklist pre-launch completa.
-2. Feature flags con lifecycle definido.
-3. Monitoring activo en primera hora.
-4. Plan de rollback documentado ANTES del deploy.
-5. Triggers numéricos para rollback (no "feeling").
+Never ship to production without:
+1. Complete pre-launch checklist.
+2. Feature flags with defined lifecycle.
+3. Active monitoring during the first hour.
+4. Rollback plan documented BEFORE the deploy.
+5. Numeric triggers for rollback (not "feeling").
 
-## Pre-launch checklist (6 secciones)
+## Pre-launch checklist (6 sections)
 
 ### 1. Code quality
 
-- [ ] PR reviewed y approved
-- [ ] CI pasa: lint, typecheck, unit, integration, build
-- [ ] Coverage >= baseline (no bajó)
-- [ ] No `console.log`, `debugger`, `TODO` en código de prod
+- [ ] PR reviewed and approved
+- [ ] CI passes: lint, typecheck, unit, integration, build
+- [ ] Coverage >= baseline (did not drop)
+- [ ] No `console.log`, `debugger`, `TODO` in prod code
 - [ ] No secrets committed (`gitleaks detect` → 0)
 - [ ] Conventional Commits message
-- [ ] Branch actualizado con `main`
+- [ ] Branch updated with `main`
 
 ### 2. Security
 
-- [ ] `pnpm audit` con 0 Critical y 0 High
-- [ ] CSP configurado (Content-Security-Policy header)
-- [ ] HSTS habilitado (Strict-Transport-Security)
-- [ ] Rate limiting en endpoints públicos
-- [ ] CORS con whitelist explícita (no `*`)
-- [ ] XSS sanitization (DOMPurify antes de dangerouslySetInnerHTML)
-- [ ] CSRF tokens en forms state-changing
-- [ ] Inputs validados server-side (no solo client)
-- [ ] Auth check en todas las rutas protegidas
-- [ ] No secrets en logs ni en URLs
+- [ ] `pnpm audit` with 0 Critical and 0 High
+- [ ] CSP configured (Content-Security-Policy header)
+- [ ] HSTS enabled (Strict-Transport-Security)
+- [ ] Rate limiting on public endpoints
+- [ ] CORS with explicit whitelist (no `*`)
+- [ ] XSS sanitization (DOMPurify before dangerouslySetInnerHTML)
+- [ ] CSRF tokens on state-changing forms
+- [ ] Inputs validated server-side (not only client)
+- [ ] Auth check on all protected routes
+- [ ] No secrets in logs or URLs
 
 ### 3. Performance
 
-- [ ] Core Web Vitals dentro de presupuesto (LCP < 2.5s, FID < 100ms, CLS < 0.1)
-- [ ] Bundle size < budget (ej. main chunk < 200KB gzipped)
-- [ ] Images con `loading="lazy"` y formatos modernos (WebP/AVIF)
-- [ ] Code splitting en rutas grandes
-- [ ] DB queries con índices (no full table scans)
-- [ ] N+1 queries eliminadas
-- [ ] Cache apropiado (in-memory LRU para data caliente, Redis para distributed)
-- [ ] CDN para assets estáticos
+- [ ] Core Web Vitals within budget (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- [ ] Bundle size < budget (e.g. main chunk < 200KB gzipped)
+- [ ] Images with `loading="lazy"` and modern formats (WebP/AVIF)
+- [ ] Code splitting on large routes
+- [ ] DB queries with indexes (no full table scans)
+- [ ] N+1 queries eliminated
+- [ ] Appropriate cache (in-memory LRU for hot data, Redis for distributed)
+- [ ] CDN for static assets
 
 ### 4. Accessibility
 
-- [ ] WCAG AA compliance (color contrast >= 4.5:1 para texto normal)
-- [ ] Keyboard navigation funcional (tab, enter, escape)
-- [ ] ARIA labels en icon buttons
-- [ ] Form labels asociados a inputs
-- [ ] Focus indicators visibles
-- [ ] `prefers-reduced-motion` respetado
-- [ ] Screen reader test (NVDA o VoiceOver)
-- [ ] No contenido solo por color
+- [ ] WCAG AA compliance (color contrast >= 4.5:1 for normal text)
+- [ ] Functional keyboard navigation (tab, enter, escape)
+- [ ] ARIA labels on icon buttons
+- [ ] Form labels associated with inputs
+- [ ] Visible focus indicators
+- [ ] `prefers-reduced-motion` respected
+- [ ] Screen reader test (NVDA or VoiceOver)
+- [ ] No content conveyed by color alone
 
 ### 5. Infrastructure
 
-- [ ] Env vars nuevas agregadas a `.env.example`
-- [ ] DB migrations probadas en staging
-- [ ] DB migrations son backwards-compatible (expand → contract)
-- [ ] DNS configurado (si dominio nuevo)
-- [ ] SSL/TLS cert válido (no expired)
-- [ ] Health check endpoint (`/api/health`) responde 200
-- [ ] Health check verifica dependencias (DB, Redis, external APIs)
-- [ ] Auto-scaling config revisado (si aplica)
-- [ ] Backup antes de migrations destructivas
-- [ ] Rollback plan documentado
+- [ ] New env vars added to `.env.example`
+- [ ] DB migrations tested in staging
+- [ ] DB migrations are backwards-compatible (expand → contract)
+- [ ] DNS configured (if new domain)
+- [ ] SSL/TLS cert valid (not expired)
+- [ ] Health check endpoint (`/api/health`) responds 200
+- [ ] Health check verifies dependencies (DB, Redis, external APIs)
+- [ ] Auto-scaling config reviewed (if applicable)
+- [ ] Backup before destructive migrations
+- [ ] Rollback plan documented
 
 ### 6. Documentation
 
-- [ ] CHANGELOG actualizado
-- [ ] API docs actualizadas (si endpoints cambiaron)
-- [ ] README actualizado (si setup o usage cambió)
-- [ ] Runbooks actualizados (si hay nuevos alerts o procedures)
-- [ ] Team notificado del cambio (Slack #deploys)
+- [ ] CHANGELOG updated
+- [ ] API docs updated (if endpoints changed)
+- [ ] README updated (if setup or usage changed)
+- [ ] Runbooks updated (if there are new alerts or procedures)
+- [ ] Team notified of the change (Slack #deploys)
 
 ## Feature flag lifecycle
 
 ```
 DEPLOY OFF
-   ↓ (código deployed pero feature inactiva)
-ENABLE beta (5% de users internos / beta testers)
-   ↓ (métricas OK por 24-48h)
-CANARY 5% (5% de producción)
-   ↓ (métricas OK por 24h)
+   ↓ (code deployed but feature inactive)
+ENABLE beta (5% of internal users / beta testers)
+   ↓ (metrics OK for 24-48h)
+CANARY 5% (5% of production)
+   ↓ (metrics OK for 24h)
 GRADUAL 25% → 50% → 100%
-   ↓ (métricas OK por 1 semana)
-CLEAN UP (remove flag y código del feature)
+   ↓ (metrics OK for 1 week)
+CLEAN UP (remove flag and feature code)
 ```
 
-**Reglas:**
-- Cada step tiene minimum dwell time (24-48h para beta, 24h para canary, 24h entre graduales).
-- Cleanup debe ocurrir **dentro de 2 semanas** post-full-rollout (sino queda como deuda).
-- Flag en **default OFF** siempre (deploy sin exposición).
-- Flag removible sin re-deploy (config-only).
+**Rules:**
+- Each step has minimum dwell time (24-48h for beta, 24h for canary, 24h between graduals).
+- Cleanup must occur **within 2 weeks** post-full-rollout (otherwise it becomes debt).
+- Flag in **default OFF** always (deploy without exposure).
+- Flag removable without re-deploy (config-only).
 
-### Implementación
+### Implementation
 
 ```typescript
-// Feature flag system (custom o vendor: LaunchDarkly, Unleash, PostHog)
+// Feature flag system (custom or vendor: LaunchDarkly, Unleash, PostHog)
 
 interface FeatureFlags {
   'new-dashboard': boolean;
@@ -136,7 +136,7 @@ function isFeatureEnabled(flag: keyof FeatureFlags, userId: string): boolean {
   return false;
 }
 
-// Uso
+// Usage
 if (isFeatureEnabled('new-dashboard', user.id)) {
   return <NewDashboard />;
 }
@@ -151,13 +151,13 @@ return <OldDashboard />;
 # Vercel
 vercel --target production
 vercel alias set my-deployment-url.vercel.app my-domain.com  # 5%
-# Después de 24h OK:
+# After 24h OK:
 vercel alias set my-deployment-url-2.vercel.app my-domain.com  # 100%
 ```
 
 ```bash
-# AWS / Coolify con load balancer
-# Agregar nueva versión al target group con weight=5
+# AWS / Coolify with load balancer
+# Add new version to target group with weight=5
 aws elbv2 modify-listener --listener-arn ... --default-actions Type=forward,ForwardConfig={TargetGroups=[{TargetGroupArn=$OLD,Weight=95},{TargetGroupArn=$NEW,Weight=5}]}
 ```
 
@@ -174,7 +174,7 @@ aws elbv2 modify-listener --listener-arn ... --default-actions '...Weight=50,Wei
 aws elbv2 modify-listener --listener-arn ... --default-actions '...Weight=0,Weight=100...'
 ```
 
-## Monitoring post-deploy (primera hora)
+## Post-deploy monitoring (first hour)
 
 ### Health endpoint
 
@@ -211,20 +211,20 @@ app.get('/api/health', async (req, res) => {
 ### Metrics to watch
 
 **RED Method (Rate, Errors, Duration):**
-- Request rate (req/sec) — sudden spike o drop = problem
+- Request rate (req/sec) — sudden spike or drop = problem
 - Error rate (5xx %) — > 2x baseline = rollback
 - P50, P95, P99 latency — > 50% increase = rollback
 
 **USE Method (Utilization, Saturation, Errors):**
 - CPU utilization — sustained > 80% = scale up
-- Memory utilization — sustained > 80% = scale up o leak
+- Memory utilization — sustained > 80% = scale up or leak
 - Disk I/O — saturation = slow DB
-- Network I/O — saturation = DDoS o leak
+- Network I/O — saturation = DDoS or leak
 
-### Alerts (sobre síntomas, no causas)
+### Alerts (on symptoms, not causes)
 
 ```yaml
-# Ej: Datadog / Grafana / Sentry alerts
+# Example: Datadog / Grafana / Sentry alerts
 - alert: HighErrorRate
   condition: error_rate > 0.05 (5%) for 5min
   severity: page
@@ -241,29 +241,29 @@ app.get('/api/health', async (req, res) => {
   runbook: https://wiki/runbooks/health-check-failed
 ```
 
-**Principio:** alertar sobre **síntomas user-facing** (high error rate), no **causas** (high DB CPU). El síntoma te dice que hay problema user-facing; la causa puede o no ser real.
+**Principle:** alert on **user-facing symptoms** (high error rate), not **causes** (high DB CPU). The symptom tells you there is a user-facing problem; the cause may or may not be real.
 
-## Rollback plan (ANTES del deploy)
+## Rollback plan (BEFORE the deploy)
 
 ### Trigger conditions
 
 ```yaml
 rollback_triggers:
-  - condition: "error_rate > 2x baseline (sostenido 5min)"
+  - condition: "error_rate > 2x baseline (sustained 5min)"
     action: "rollback automatic via Coolify / Vercel"
-  - condition: "p95_latency > 1.5x baseline (sostenido 10min)"
+  - condition: "p95_latency > 1.5x baseline (sustained 10min)"
     action: "rollback automatic"
   - condition: "security_vuln discovered"
     action: "rollback immediate, fix forward in patch"
   - condition: "data_corruption reported"
     action: "rollback + freeze writes"
   - condition: "user_complaints > 5 in first hour"
-    action: "manual review, rollback si confirma"
+    action: "manual review, rollback if confirmed"
 ```
 
 ### Time-to-rollback target: < 5 minutes
 
-### Rollback procedures (una por entorno)
+### Rollback procedures (one per environment)
 
 **Vercel:**
 ```bash
@@ -285,79 +285,79 @@ kubectl rollout undo deployment/app
 **Database migrations:**
 ```bash
 # Drizzle
-pnpm drizzle-kit rollback  # o migrate:rollback manual
+pnpm drizzle-kit rollback  # or migrate:rollback manual
 # Prisma
 npx prisma migrate resolve --rolled-back <migration-name>
 ```
 
 ### Post-rollback
 
-- [ ] Verificar health check vuelve a OK
-- [ ] Verificar error rate vuelve a baseline
-- [ ] Post-mortem: ¿qué falló? ¿cómo prevenir?
-- [ ] Crear ticket de follow-up
-- [ ] Notificar al equipo
+- [ ] Verify health check returns to OK
+- [ ] Verify error rate returns to baseline
+- [ ] Post-mortem: what failed? how to prevent?
+- [ ] Create follow-up ticket
+- [ ] Notify the team
 
 ## NEVER ship Friday afternoon
 
-Razón: si algo falla a las 6pm viernes, nadie está para rollback. El fin de semana se pasa en llamas.
+Reason: if something fails at 6pm Friday, no one is around for rollback. The weekend is spent on fire.
 
-Reglas:
-- Lunes-Jueves: deploys OK
-- Viernes: solo hotfixes críticos, con todo el equipo presente
-- Sábado-Domingo: zero deploys (salvo emergencias)
+Rules:
+- Monday-Thursday: deploys OK
+- Friday: only critical hotfixes, with the whole team present
+- Saturday-Sunday: zero deploys (except emergencies)
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ Deploy sin rollback plan → 3am rollback manual caótico.
-2. ❌ Feature flag default ON → exposición total al primer deploy.
-3. ❌ Cleanup de flag pospuesto > 2 semanas → deuda técnica crece.
-4. ❌ Health check shallow (solo "app started") → DB down no se detecta.
-5. ❌ Alerts sobre causas (DB CPU high) en vez de síntomas (error rate) → alert fatigue.
-6. ❌ No monitorear primera hora → bug crítico descubre user, no monitoring.
-7. ❌ "Looks right, ship it" sin checklist → bug obvio en prod.
-8. ❌ No tener rollback plan tested → cuando falla, no sabés cómo volver.
-9. ❌ Deploy sin avisar al equipo → incidente sin comunicación.
+1. ❌ Deploy without rollback plan → 3am chaotic manual rollback.
+2. ❌ Feature flag default ON → full exposure on first deploy.
+3. ❌ Flag cleanup postponed > 2 weeks → tech debt grows.
+4. ❌ Shallow health check (only "app started") → DB down not detected.
+5. ❌ Alerts on causes (DB CPU high) instead of symptoms (error rate) → alert fatigue.
+6. ❌ Not monitoring first hour → critical bug discovered by user, not monitoring.
+7. ❌ "Looks right, ship it" without checklist → obvious bug in prod.
+8. ❌ No tested rollback plan → when it fails, you don't know how to revert.
+9. ❌ Deploy without notifying team → incident without communication.
 10. ❌ Friday afternoon deploy → weekend on-call nightmare.
 
-## Plantilla de runbook
+## Runbook template
 
 ```markdown
 # Runbook: <feature-name>
 
 ## Pre-deploy
-- [ ] Pre-launch checklist completa
-- [ ] Rollback plan revisado
-- [ ] Equipo notificado en #deploys
+- [ ] Pre-launch checklist complete
+- [ ] Rollback plan reviewed
+- [ ] Team notified in #deploys
 
 ## Deploy
-- [ ] Merge a main → CI pasa → auto-deploy
-- [ ] Verificar health check 200
-- [ ] Smoke tests (3-5 endpoints críticos)
-- [ ] Verificar logs sin errores nuevos
+- [ ] Merge to main → CI passes → auto-deploy
+- [ ] Verify health check 200
+- [ ] Smoke tests (3-5 critical endpoints)
+- [ ] Verify logs without new errors
 
-## Monitor (primera hora)
+## Monitor (first hour)
 - [ ] Error rate < baseline + 10%
 - [ ] P95 latency < baseline + 50%
-- [ ] No user complaints en #support
-- [ ] No nuevos alerts
+- [ ] No user complaints in #support
+- [ ] No new alerts
 
-## Si rollback necesario
-1. Ejecutar: `vercel rollback` / `kubectl rollout undo` / `curl POST /deploy?commit_sha=<prev>`
-2. Esperar 2min, verificar health
-3. Post-mortem dentro de 24h
+## If rollback necessary
+1. Run: `vercel rollback` / `kubectl rollout undo` / `curl POST /deploy?commit_sha=<prev>`
+2. Wait 2min, verify health
+3. Post-mortem within 24h
 
-## Contactos
+## Contacts
 - Tech lead: @user
 - On-call: PagerDuty
 - #deploys: https://slack.com/deploys
 ```
 
-## Recursos
+## Resources
 
 - [Google SRE Book — Release Engineering](https://sre.google/sre-book/release-engineering/)
 - [Feature flag best practices](https://launchdarkly.com/blog/feature-flag-best-practices/)
 - [RED/USE methods](https://www.brendangregg.com/methodology.html)
-- Skill relacionada: `prod-deploy-verification` (pre-flight)
-- Skill relacionada: `coolify-deploy` / `tanstack-start-coolify-deploy`
-- Skill relacionada: `code-review-and-quality` (workspace)
+- Related skill: `prod-deploy-verification` (pre-flight)
+- Related skill: `coolify-deploy` / `tanstack-start-coolify-deploy`
+- Related skill: `code-review-and-quality` (workspace)

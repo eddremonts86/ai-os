@@ -7,8 +7,8 @@
 @openai/codex
 @google/gemini-cli
 
-# Hermes (si no instalaste via pip)
-# Edd instala Hermes via pipx o uv, no npm
+# Hermes (if not installed via pip)
+# Edd installs Hermes via pipx or uv, not npm
 
 # Agent-related
 @modelcontextprotocol/server-filesystem

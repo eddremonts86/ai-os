@@ -1,46 +1,46 @@
 ---
 name: coolify-env-sync-and-postdeploy
-description: Sincronización idempotente de env vars a Coolify + setup de post_deployment_command para migrations/seeds. Cubre scripts/coolify/sync-env.mjs y set-post-deploy.mjs. Aplica a cualquier deploy en Coolify v4 con build_pack=dockerfile o dockercompose.
+description: Idempotent synchronization of env vars to Coolify + setup of post_deployment_command for migrations/seeds. Covers scripts/coolify/sync-env.mjs and set-post-deploy.mjs. Applies to any deploy on Coolify v4 with build_pack=dockerfile or dockercompose.
 license: Internal
 ---
 
 # Coolify Env Sync & Post-Deploy
 
-## sync-env.mjs — sync de .env a Coolify
+## sync-env.mjs — sync from .env to Coolify
 
-### Uso básico
+### Basic usage
 
 ```bash
-# Pre-flight: dry-run para ver qué se va a cambiar
-node scripts/coolify/sync-env.mjs --app mi-app --dry-run
+# Pre-flight: dry-run to see what will change
+node scripts/coolify/sync-env.mjs --app my-app --dry-run
 
-# Sync real
-node scripts/coolify/sync-env.mjs --app mi-app
+# Real sync
+node scripts/coolify/sync-env.mjs --app my-app
 
-# Sync desde archivo específico
-node scripts/coolify/sync-env.mjs --app mi-app --file .env.production
+# Sync from specific file
+node scripts/coolify/sync-env.mjs --app my-app --file .env.production
 
-# Solo vars específicas
-node scripts/coolify/sync-env.mjs --app mi-app --keys DATABASE_URL,REDIS_URL,SENTRY_DSN
+# Only specific vars
+node scripts/coolify/sync-env.mjs --app my-app --keys DATABASE_URL,REDIS_URL,SENTRY_DSN
 
-# Todas las apps
+# All apps
 node scripts/coolify/sync-env.mjs --all --dry-run
 
-# Por UUID directo
+# By direct UUID
 node scripts/coolify/sync-env.mjs --uuid abc-123-def
 ```
 
-### Variables requeridas
+### Required variables
 
 ```bash
-# .env (raíz)
+# .env (root)
 COOLIFY_API_URL=http://<server-ip>:8000
-COOLIFY_API_TOKEN=...  # generado en Coolify dashboard
+COOLIFY_API_TOKEN=***  # generated in Coolify dashboard
 ```
 
-### Deny-list inamovible
+### Immutable deny-list
 
-Estas variables **NUNCA** se sincronizan (gestionadas por Coolify o críticas para deploy):
+These variables are **NEVER** synced (managed by Coolify or critical for deploy):
 
 ```js
 const DENY_LIST = [
@@ -55,18 +55,18 @@ const DENY_LIST = [
 ];
 ```
 
-Razón: Coolify maneja internamente DB connection, el build process usa valores específicos, y secrets críticos los gestiona el operador manualmente.
+Reason: Coolify handles DB connection internally, the build process uses specific values, and critical secrets are managed by the operator manually.
 
-### Idempotencia
+### Idempotency
 
-- **POST** si la var NO existe en Coolify → la agrega.
-- **PATCH** si existe pero cambió el valor → actualiza.
-- **NUNCA DELETE** → preserva vars que Coolify necesita o el operador agregó manualmente.
+- **POST** if the var does NOT exist in Coolify → adds it.
+- **PATCH** if it exists but value changed → updates.
+- **NEVER DELETE** → preserves vars Coolify needs or the operator added manually.
 
-### Output esperado
+### Expected output
 
 ```
-[mi-app] Syncing 12 env vars (3 added, 9 updated, 25 preserved)
+[my-app] Syncing 12 env vars (3 added, 9 updated, 25 preserved)
 ✓ Added: SENTRY_DSN
 ✓ Updated: REDIS_URL (changed)
 ✓ Updated: API_TIMEOUT (changed)
@@ -77,9 +77,9 @@ Deploy required to apply changes. Run:
   curl -X POST https://coolify.example.com/api/v1/deploy?uuid=<uuid>
 ```
 
-### Importante: requiere redeploy
+### Important: requires redeploy
 
-Las env vars en Coolify se cargan al iniciar el container. Tras sync, hay que re-desplegar:
+Env vars in Coolify are loaded when the container starts. After sync, you must redeploy:
 
 ```bash
 # Trigger deploy via API
@@ -87,39 +87,39 @@ curl -X POST "https://coolify.example.com/api/v1/deploy?uuid=<app-uuid>" \
   -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
 ```
 
-O desde dashboard: Application → "Deploy".
+Or from dashboard: Application → "Deploy".
 
 ## set-post-deploy.mjs — post_deployment_command
 
-### Por qué se necesita
+### Why it's needed
 
-Coolify v4 con `build_pack=dockerfile` **ignora** `docker-compose.prod.yml` → el servicio `migrator` definido ahí es código muerto en prod.
+Coolify v4 with `build_pack=dockerfile` **ignores** `docker-compose.prod.yml` → the `migrator` service defined there is dead code in prod.
 
-Solución: usar `post_deployment_command` nativo de Coolify, que corre vía `docker exec` sobre el container `app` ya deployed.
+Solution: use Coolify's native `post_deployment_command`, which runs via `docker exec` over the already-deployed `app` container.
 
-### Uso básico
+### Basic usage
 
 ```bash
-# Auto-detect container y command
-node scripts/coolify/set-post-deploy.mjs --app mi-app
+# Auto-detect container and command
+node scripts/coolify/set-post-deploy.mjs --app my-app
 
-# Container custom
-node scripts/coolify/set-post-deploy.mjs --app mi-app --container api
+# Custom container
+node scripts/coolify/set-post-deploy.mjs --app my-app --container api
 
-# Command custom
-node scripts/coolify/set-post-deploy.mjs --app mi-app \
+# Custom command
+node scripts/coolify/set-post-deploy.mjs --app my-app \
   --command "pnpm db:migrate && pnpm cache:clear"
 
 # Dry-run
-node scripts/coolify/set-post-deploy.mjs --app mi-app --dry-run
+node scripts/coolify/set-post-deploy.mjs --app my-app --dry-run
 
-# Todas las apps
+# All apps
 node scripts/coolify/set-post-deploy.mjs --all
 ```
 
-### Auto-detección
+### Auto-detection
 
-Si no se pasa `--command`, el script infiere según `package.json`:
+If `--command` is not passed, the script infers from `package.json`:
 
 ```js
 // Auto-detect priority:
@@ -128,13 +128,13 @@ Si no se pasa `--command`, el script infiere según `package.json`:
 // 3. otherwise → skip (no command to set)
 ```
 
-### Comportamiento por build_pack
+### Behavior by build_pack
 
-- **`build_pack=dockerfile`** → setea `post_deployment_command` y `post_deployment_command_container`. ✅ Funciona.
-- **`build_pack=dockercompose`** → **ignora** `post_deployment_command`. ❌ No funciona; usar el servicio `migrator` del compose directamente.
-- **Otros** → skip con warning.
+- **`build_pack=dockerfile`** → sets `post_deployment_command` and `post_deployment_command_container`. Works.
+- **`build_pack=dockercompose`** → **ignores** `post_deployment_command`. Does not work; use the `migrator` service from compose directly.
+- **Others** → skip with warning.
 
-### Cuándo corre el hook
+### When the hook runs
 
 ```
 Deploy start
@@ -145,29 +145,29 @@ Start container
   ↓
 Healthcheck pass
   ↓
-post_deployment_command ← AQUÍ
+post_deployment_command ← HERE
   ↓
 Deploy done
 ```
 
-**Importante:** hook corre **DESPUÉS** del healthcheck. Si el hook falla, el deploy se marca como failed pero el container queda corriendo con la versión vieja.
+**Important:** hook runs **AFTER** the healthcheck. If the hook fails, the deploy is marked as failed but the container keeps running with the old version.
 
-### Idempotencia del hook
+### Hook idempotency
 
-Si el hook es idempotente (ej. migrations de Drizzle son idempotentes con `if not exists`), se puede re-ejecutar sin problemas. Si no, agregar guards:
+If the hook is idempotent (e.g. Drizzle migrations are idempotent with `if not exists`), it can be re-run without issues. If not, add guards:
 
 ```bash
 # pnpm db:migrate && (pnpm db:seed:admin || true)
-# ↑ el || true evita que un seed opcional rompa el deploy
+# ↑ the || true prevents an optional seed from breaking the deploy
 ```
 
-### Output esperado
+### Expected output
 
 ```
-[mi-app] build_pack=dockerfile ✓
-[mi-app] Setting post_deployment_command:
+[my-app] build_pack=dockerfile ✓
+[my-app] Setting post_deployment_command:
   pnpm db:migrate && (pnpm db:seed:admin || true)
-[mi-app] Container: app (default)
+[my-app] Container: app (default)
 ✓ POST /api/v1/applications/<uuid> → 200
 ---
 Test with:
@@ -175,35 +175,35 @@ Test with:
   # Watch logs for post_deployment_command output
 ```
 
-## Flujo completo recomendado
+## Recommended complete flow
 
 ```bash
-# 1. Desarrollo local
+# 1. Local development
 vim .env.production
 pnpm dev  # test
 
 # 2. Pre-deploy
-node scripts/deploy/preflight-deploy.mjs --app mi-app --check lockfile,deps,env
+node scripts/deploy/preflight-deploy.mjs --app my-app --check lockfile,deps,env
 
-# 3. Sync env (con dry-run primero)
-node scripts/coolify/sync-env.mjs --app mi-app --dry-run
-node scripts/coolify/sync-env.mjs --app mi-app
+# 3. Sync env (with dry-run first)
+node scripts/coolify/sync-env.mjs --app my-app --dry-run
+node scripts/coolify/sync-env.mjs --app my-app
 
-# 4. Asegurar post-deploy hook configurado
-node scripts/coolify/set-post-deploy.mjs --app mi-app
+# 4. Ensure post-deploy hook configured
+node scripts/coolify/set-post-deploy.mjs --app my-app
 
 # 5. Deploy
 curl -X POST "https://coolify.example.com/api/v1/deploy?uuid=<uuid>" \
   -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
 
 # 6. Watch logs
-ssh root@<server-ip> "docker logs -f mi-app-app-1"
+ssh root@<server-ip> "docker logs -f my-app-app-1"
 
 # 7. Verify
-curl -fsS https://mi-app.example.com/api/health
+curl -fsS https://my-app.example.com/api/health
 ```
 
-## Scripts alternativos (npm scripts)
+## Alternative scripts (npm scripts)
 
 ```json
 // package.json
@@ -218,37 +218,37 @@ curl -fsS https://mi-app.example.com/api/health
 }
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ Olvidar redeploy tras `sync-env.mjs` → container sigue con vars viejas.
-2. ❌ `set-post-deploy.mjs` en app con `build_pack=dockercompose` → hook no se aplica, migrator service se necesita en compose.
-3. ❌ Deny-list no incluye var crítica → secret leak a Coolify.
-4. ❌ Hook no idempotente → segundo deploy falla con "duplicate key" o similar.
-5. ❌ Comando hook referencia binario no instalado en container (`python3` cuando no está) → hook falla silently.
-6. ❌ `--keys` flag mal spelled → Coolify no acepta update parcial.
-7. ❌ Sync en producción con vars de desarrollo por error → app en prod usa `localhost` DB.
-8. ❌ `coolify:postdeploy` con container que no existe (typo) → hook nunca corre.
+1. ❌ Forgetting redeploy after `sync-env.mjs` → container keeps old vars.
+2. ❌ `set-post-deploy.mjs` on app with `build_pack=dockercompose` → hook not applied, migrator service needed in compose.
+3. ❌ Deny-list doesn't include critical var → secret leak to Coolify.
+4. ❌ Hook not idempotent → second deploy fails with "duplicate key" or similar.
+5. ❌ Hook command references binary not installed in container (`python3` when not present) → hook fails silently.
+6. ❌ `--keys` flag misspelled → Coolify doesn't accept partial update.
+7. ❌ Sync in production with development vars by mistake → prod app uses `localhost` DB.
+8. ❌ `coolify:postdeploy` with container that doesn't exist (typo) → hook never runs.
 
-## Verificación
+## Verification
 
 ```bash
-# Env sync correcto
-node scripts/coolify/sync-env.mjs --app mi-app --dry-run
-# Debe mostrar 0 added, 0 updated (todo en paridad)
+# Env sync correct
+node scripts/coolify/sync-env.mjs --app my-app --dry-run
+# Should show 0 added, 0 updated (all in parity)
 
-# Hook configurado
-node scripts/coolify/set-post-deploy.mjs --app mi-app --dry-run
-# Debe mostrar el comando actual
+# Hook configured
+node scripts/coolify/set-post-deploy.mjs --app my-app --dry-run
+# Should show current command
 
-# Hook ejecuta tras deploy
-# En logs del container, buscar:
+# Hook executes after deploy
+# In container logs, look for:
 # [post-deployment] Running: pnpm db:migrate && ...
 # [post-deployment] ✓ Migration complete
 ```
 
-## Recursos
+## Resources
 
 - [Coolify API docs](https://coolify.io/docs/api)
 - [Coolify post_deployment_command](https://coolify.io/docs/knowledge-base/post-deployment-scripts)
-- Skill relacionada: `coolify-deploy` (overview)
-- Skill relacionada: `prod-deploy-verification` (pre-flight checks)
+- Related skill: `coolify-deploy` (overview)
+- Related skill: `prod-deploy-verification` (pre-flight checks)

@@ -2,23 +2,23 @@
 """
 setup/generate-mcp-config.py
 
-Genera ~/.hermes/config.yaml desde los YAMLs en ai-config/mcp/.
-Funciona en Mac, Linux, Windows (si tenés Python 3+).
+Generates ~/.hermes/config.yaml from the YAMLs in ai-config/mcp/.
+Works on Mac, Linux, Windows (if you have Python 3+).
 
-Dependencia: PyYAML (pip install pyyaml)
+Dependency: PyYAML (pip install pyyaml)
 
-Uso:
+Usage:
   python3 setup/generate-mcp-config.py ai-config/mcp ~/.hermes/config.yaml
 """
 import sys
 import os
 import subprocess
 
-# Auto-install PyYAML si falta
+# Auto-install PyYAML if missing
 try:
     import yaml  # noqa: F401
 except ImportError:
-    print("⚠️  PyYAML no instalado. Instalando...")
+    print("⚠️  PyYAML not installed. Installing...")
     subprocess.run([sys.executable, "-m", "pip", "install", "pyyaml", "--user"], check=True)
     import yaml
 
@@ -28,28 +28,28 @@ from shutil import copy2
 
 def main():
     if len(sys.argv) < 3:
-        print("Uso: python3 generate-mcp-config.py <mcp_dir> <config_path>")
+        print("Usage: python3 generate-mcp-config.py <mcp_dir> <config_path>")
         sys.exit(1)
 
     mcp_dir = Path(sys.argv[1])
     config_path = Path(sys.argv[2])
 
-    # Backup si existe
+    # Backup if exists
     if config_path.exists():
         backup = config_path.with_suffix(config_path.suffix + ".pre-aios.bak")
         copy2(config_path, backup)
         print(f"📦 Backup: {backup}")
 
-    # Cargar config existente
+    # Load existing config
     existing = {}
     if config_path.exists():
         try:
             with open(config_path) as f:
                 existing = yaml.safe_load(f) or {}
         except Exception as e:
-            print(f"⚠️  No pude parsear config existente: {e}")
+            print(f"⚠️  Could not parse existing config: {e}")
 
-    # Generar mcp_servers desde YAMLs
+    # Generate mcp_servers from YAMLs
     mcp_servers = {}
     for yaml_file in sorted(mcp_dir.glob("*.yaml")):
         try:
@@ -88,12 +88,12 @@ def main():
     # Update
     existing["mcp_servers"] = mcp_servers
 
-    # Escribir
+    # Write
     config_path.parent.mkdir(parents=True, exist_ok=True)
     with open(config_path, "w") as f:
         yaml.safe_dump(existing, f, default_flow_style=False, sort_keys=False)
 
-    print(f"✅ {len(mcp_servers)} MCP servers escritos en {config_path}")
+    print(f"✅ {len(mcp_servers)} MCP servers written to {config_path}")
 
 
 if __name__ == "__main__":

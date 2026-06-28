@@ -21,7 +21,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install yq
-        # Usar mikefarah/yq v4 (no snap version que es incompatible)
+        # Use mikefarah/yq v4 (not snap version which is incompatible)
         run: |
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
@@ -30,13 +30,24 @@ jobs:
       - name: Install PyYAML
         run: pip install pyyaml
 
-      - name: Run install-mac.sh (DRY_RUN en Linux)
+      - name: Run install-mac.sh (DRY_RUN on Linux)
         env:
           DRY_RUN: '1'
-          # En Linux, $HOME es /home/runner
+          # On Linux, $HOME is /home/runner
         run: bash setup/install-mac.sh
 
-      - name: Run verify.sh (DRY_RUN en Linux)
+      - name: Verify ECC integration (--check)
+        # Non-fatal: ECC may not be vendored on every PR. We log a warning instead
+        # of failing the build so that PRs touching unrelated files stay green.
+        run: |
+          if [ -d vendor/ecc ]; then
+            echo "vendor/ecc/ present, running install-ecc.sh --check..."
+            bash setup/install-ecc.sh --check
+          else
+            echo "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
+          fi
+
+      - name: Run verify.sh (DRY_RUN on Linux)
         env:
           DRY_RUN: '1'
         run: |
@@ -47,4 +58,5 @@ jobs:
         run: |
           echo "## Linux Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Install dry-run: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)" >> $GITHUB_STEP_SUMMARY
           echo "- Verify: ⚠️ (Linux-specific paths expected to differ)" >> $GITHUB_STEP_SUMMARY

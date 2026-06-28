@@ -1,89 +1,89 @@
 ---
 name: debugging-and-error-recovery
-description: Debugging sistemático en 4 fases — reproducir → aislar → hipótesis → fix → verificación. Cubre logs, breakpoints, profiling, network inspection, root cause analysis. Aplica a cualquier bug que no se resuelve a la primera.
+description: Systematic debugging in 4 phases — reproduce → isolate → hypothesis → fix → verification. Covers logs, breakpoints, profiling, network inspection, root cause analysis. Applies to any bug that does not resolve on the first attempt.
 license: MIT
 ---
 
 # Debugging & Error Recovery
 
-## Mentalidad
+## Mindset
 
-> "El bug no está donde pensás. Está donde no miraste."
+> "The bug is not where you think it is. It is where you didn't look."
 
-El 80% del tiempo de debugging se va en:
-- Asumir la causa antes de reproducir.
-- Mirar el código equivocado.
-- Fixear síntomas, no causas.
-- No verificar el fix.
+80% of debugging time is spent on:
+- Assuming the cause before reproducing.
+- Looking at the wrong code.
+- Fixing symptoms, not causes.
+- Not verifying the fix.
 
-## Fase 1: Reproducir (10-20% del tiempo)
+## Phase 1: Reproduce (10-20% of time)
 
-### Objetivo
-Poder ejecutar el bug on-demand. Sin reproducción, no hay fix.
+### Objective
+Be able to run the bug on-demand. Without reproduction, there is no fix.
 
-### Preguntas clave
-- ¿Cuándo aparece? (siempre, a veces, race condition)
-- ¿Qué input lo dispara? (datos específicos, tamaño, encoding)
-- ¿Qué ambiente? (dev, staging, prod, browser, OS)
-- ¿Es determinístico o probabilístico?
-- ¿Cambió algo recientemente? (deploy, config, deps)
+### Key Questions
+- When does it appear? (always, sometimes, race condition)
+- What input triggers it? (specific data, size, encoding)
+- Which environment? (dev, staging, prod, browser, OS)
+- Is it deterministic or probabilistic?
+- Did something change recently? (deploy, config, deps)
 
 ### Checklist
-- [ ] Obtener steps exactos para reproducir
-- [ ] Verificar que el bug ocurre consistentemente
-- [ ] Documentar condiciones (browser, OS, data)
-- [ ] Crear test mínimo que reproduce el bug
-- [ ] Si es aleatorio: identificar correlación (timing, load, data shape)
+- [ ] Get exact steps to reproduce
+- [ ] Verify the bug occurs consistently
+- [ ] Document conditions (browser, OS, data)
+- [ ] Create minimum test that reproduces the bug
+- [ ] If random: identify correlation (timing, load, data shape)
 
 ```typescript
-// Test mínimo de reproducción
+// Minimum reproduction test
 test('bug: login fails when email has uppercase', async () => {
   const result = await login('User@Example.com', 'password123');
   expect(result).toEqual({ success: true });
 });
 ```
 
-## Fase 2: Aislar (30-40% del tiempo)
+## Phase 2: Isolate (30-40% of time)
 
-### Objetivo
-Identificar el componente/línea exacta responsable.
+### Objective
+Identify the exact component/line responsible.
 
-### Técnicas
+### Techniques
 
 #### Binary search (bisect)
-Reducir el espacio de búsqueda a la mitad cada vez.
+Reduce the search space by half each time.
 
 ```bash
-# Encontrar commit que introdujo el bug
+# Find the commit that introduced the bug
 git bisect start
 git bisect bad HEAD
 git bisect good <commit-where-it-worked>
-# Probar cada commit sugerido
+# Test each suggested commit
 git bisect run pnpm test
-# Cuando encuentra el bad commit:
+# When it finds the bad commit:
 git bisect reset
 ```
 
 #### Divide and conquer
-Comentar/deshabilitar mitades del código hasta encontrar el bug.
+Comment/disable halves of the code until you find the bug.
 
 ```typescript
-// Comentar secciones para aislar
+// Comment sections to isolate
 async function complexFunction(input) {
   // const step1 = await doStep1(input);
-  const step2 = await doStep2(input);  // ¿funciona sin step1?
+  const step2 = await doStep2(input);  // does it work without step1?
   // const step3 = await doStep3(step2);
   return step2;
 }
 ```
 
 #### Minimal reproduction
-Reducir a la mínima cantidad de código que muestra el bug.
+Reduce to the minimum amount of code that shows the bug.
 
 #### Rubber duck debugging
-Explicar el código línea por línea a otro (o a un pato). A veces el problema se revela al verbalizar.
+Explain the code line by line to someone else (or to a rubber duck). Sometimes the problem reveals itself when you verbalize it.
 
-### Herramientas
+### Tools
 
 ```bash
 # Logs
@@ -107,7 +107,7 @@ curl -v https://api.example.com/endpoint
 
 #### Browser DevTools
 
-| Tab | Uso |
+| Tab | Use |
 |---|---|
 | Console | Logs, errors, eval expressions |
 | Network | Requests, response, headers, timing |
@@ -119,7 +119,7 @@ curl -v https://api.example.com/endpoint
 #### Backend debugging
 
 ```typescript
-// Logger estructurado con contexto
+// Structured logger with context
 import pino from 'pino';
 const logger = pino();
 
@@ -127,7 +127,7 @@ logger.info({
   userId: req.user.id,
   endpoint: req.path,
   method: req.method,
-  body: req.body,  // ← sospechoso si crash
+  body: req.body,  // ← suspicious if crash
 }, 'request received');
 
 // Trace async flow
@@ -136,101 +136,101 @@ const result = await db.query(...);
 logger.debug({ step: 'after_db_query', rowCount: result.length }, 'query done');
 ```
 
-## Fase 3: Hipótesis y verificación (30-40% del tiempo)
+## Phase 3: Hypothesis and verification (30-40% of time)
 
-### Objetivo
-Formar hipótesis falsificables, no "intuir".
+### Objective
+Form falsifiable hypotheses, not "intuition".
 
-### Estructura de hipótesis
+### Hypothesis structure
 
 ```markdown
-## Hipótesis 1
-**Creo que:** el bug es causado por X.
-**Porque:** observé Y cuando Z.
-**Predicción:** si es cierto, entonces al cambiar W debería dejar de fallar.
-**Test:** [cómo verifico]
-**Resultado:** [verificado | refutado]
+## Hypothesis 1
+**I believe:** the bug is caused by X.
+**Because:** I observed Y when Z.
+**Prediction:** if true, then changing W should stop the failure.
+**Test:** [how I verify]
+**Result:** [verified | refuted]
 ```
 
-### Heurísticas comunes
+### Common heuristics
 
-| Síntoma | Hipótesis probable |
+| Symptom | Likely hypothesis |
 |---|---|
-| Funciona en dev, falla en prod | Env vars, CORS, HTTPS, build config |
-| Funciona solo a veces | Race condition, async ordering, cache stale |
-| Crash después de N requests | Memory leak, connection pool exhaustion |
-| UI muestra data vieja | Cache invalidation missing, optimistic update sin rollback |
-| Auth falla aleatoriamente | Token expiry, clock skew, session storage |
-| API lento | N+1 query, missing index, large payload |
-| Build local pasa, CI falla | Cache stale, node version diff, missing env |
+| Works in dev, fails in prod | Env vars, CORS, HTTPS, build config |
+| Works only sometimes | Race condition, async ordering, cache stale |
+| Crash after N requests | Memory leak, connection pool exhaustion |
+| UI shows stale data | Cache invalidation missing, optimistic update without rollback |
+| Auth fails randomly | Token expiry, clock skew, session storage |
+| API slow | N+1 query, missing index, large payload |
+| Local build passes, CI fails | Cache stale, node version diff, missing env |
 
 ### "5 Whys" — root cause analysis
 
 ```
-Problema: API devuelve 500 en POST /api/users
-Por qué? → DB query falla con "unique constraint"
-Por qué? → Dos requests simultáneos crean mismo email
-Por qué? → No hay unique constraint a nivel DB
-Por qué? → Schema se generó sin índice único
-Por qué? → Migración inicial no especificó constraint
+Problem: API returns 500 on POST /api/users
+Why? → DB query fails with "unique constraint"
+Why? → Two simultaneous requests create the same email
+Why? → No unique constraint at DB level
+Why? → Schema was generated without unique index
+Why? → Initial migration did not specify constraint
 → Root cause: schema design oversight
 ```
 
-## Fase 4: Fix y verificación (10-20% del tiempo)
+## Phase 4: Fix and verification (10-20% of time)
 
-### Principio: fixear la causa raíz, no el síntoma
+### Principle: fix the root cause, not the symptom
 
 ```typescript
-// ❌ MAL: fixea el síntoma
+// ❌ WRONG: fixes the symptom
 try {
   await db.users.create(data);
 } catch (e) {
   if (e.code === 'UNIQUE_VIOLATION') {
     return res.status(409).json({ error: 'Email exists' });
   }
-  // Sigue fallando con otros errors
+  // Still fails with other errors
 }
 
-// ✅ BIEN: previene el problema desde el origen
-// 1. Validar antes de query
+// ✅ RIGHT: prevents the problem at the source
+// 1. Validate before query
 if (!isValidEmail(data.email)) return res.status(400).json({ error: 'Invalid email' });
 
-// 2. Usar transacción con lock
+// 2. Use transaction with lock
 await db.transaction(async (tx) => {
   const existing = await tx.users.findByEmail(data.email);
   if (existing) throw new ConflictError('Email exists');
   await tx.users.create(data);
 });
 
-// 3. Schema correcto
+// 3. Correct schema
 // migration: email VARCHAR(255) UNIQUE NOT NULL
 ```
 
-### Checklist post-fix
-- [ ] El test de reproducción ahora pasa
-- [ ] No rompí tests existentes (run full suite)
-- [ ] Logs/metrics muestran el fix funcionando
-- [ ] Edge cases contemplados
-- [ ] Documentar en commit message: qué era + por qué + cómo se fixea
-- [ ] Si es bug de seguridad: agregar test que prevenga regresión
+### Post-fix checklist
+- [ ] The reproduction test now passes
+- [ ] I did not break existing tests (run full suite)
+- [ ] Logs/metrics show the fix working
+- [ ] Edge cases considered
+- [ ] Document in commit message: what it was + why + how it's fixed
+- [ ] If it's a security bug: add test to prevent regression
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ **Fixear sin reproducir** — "creo que es X" → fix → "no era X" → tiempo perdido.
-2. ❌ **Fixear el síntoma** — error 500 → try/catch → "resuelto" hasta el próximo crash.
-3. ❌ **Asumir la causa** — sin investigar, "debe ser X".
-4. ❌ **No leer el error completo** — stack trace truncado, mensaje ignorado.
-5. ❌ **Un fix a la vez sin verificar** — múltiples cambios, ninguno verificado individualmente.
-6. ❌ **Borrar el código que "no sirve"** — sin entender por qué estaba.
-7. ❌ **Console.log sin remover** — debugging en prod = log noise.
-8. ❌ **No escribir test de regresión** — bug vuelve en 3 meses.
-9. ❌ **Merge fix sin review** — bugs críticos merecen review aunque sean urgentes.
-10. ❌ **No documentar root cause** — team repite el mismo debugging después.
+1. ❌ **Fixing without reproducing** — "I think it's X" → fix → "it wasn't X" → wasted time.
+2. ❌ **Fixing the symptom** — 500 error → try/catch → "resolved" until next crash.
+3. ❌ **Assuming the cause** — without investigating, "it must be X".
+4. ❌ **Not reading the full error** — truncated stack trace, message ignored.
+5. ❌ **One fix at a time without verifying** — multiple changes, none verified individually.
+6. ❌ **Deleting code that "doesn't work"** — without understanding why it was there.
+7. ❌ **Console.log without removing** — debugging in prod = log noise.
+8. ❌ **Not writing a regression test** — bug comes back in 3 months.
+9. ❌ **Merge fix without review** — critical bugs deserve review even if urgent.
+10. ❌ **Not documenting root cause** — team repeats the same debugging later.
 
 ## Logging best practices
 
 ```typescript
-// ✅ Estructurado
+// ✅ Structured
 logger.info({
   event: 'user_login',
   userId: user.id,
@@ -238,24 +238,24 @@ logger.info({
   success: true,
 }, 'user logged in');
 
-// ❌ Unstructured (imposible de query/parse)
+// ❌ Unstructured (impossible to query/parse)
 logger.info(`User ${user.id} logged in in 234ms successfully`);
 ```
 
 ```typescript
-// ✅ Niveles apropiados
+// ✅ Appropriate levels
 logger.debug('detailed flow', { step: 'parsing input' });
 logger.info('significant events', { event: 'user_login' });
 logger.warn('recoverable issues', { retry: 2, error: 'timeout' });
 logger.error('failures', { err, context });
 logger.fatal('app-crashing issues');
 
-// ❌ Todo como console.log o logger.error
-console.log('everything');  // imposible filtrar
+// ❌ Everything as console.log or logger.error
+console.log('everything');  // impossible to filter
 ```
 
 ```typescript
-// ✅ Correlation IDs para tracing
+// ✅ Correlation IDs for tracing
 const correlationId = crypto.randomUUID();
 req.correlationId = correlationId;
 
@@ -265,10 +265,10 @@ logger.info({ correlationId }, 'request end');
 ```
 
 ```typescript
-// ✅ NUNCA loguear secrets
-logger.info({ apiKey, password, ssn });  // NUNCA
+// ✅ NEVER log secrets
+logger.info({ apiKey, password, ssn });  // NEVER
 
-// ✅ Redact automático
+// ✅ Automatic redaction
 const REDACT_KEYS = ['password', 'token', 'apiKey', 'ssn'];
 function redact(obj) {
   // ... redaction logic
@@ -286,7 +286,7 @@ node --prof app.js
 # Process signal: kill -SIGUSR2 <pid>
 # Process profile: node --prof-process isolate-*.log > processed.txt
 
-# Clinic.js (más legible)
+# Clinic.js (more readable)
 clinic doctor -- node app.js
 clinic flame -- node app.js
 clinic heap -- node app.js
@@ -311,46 +311,46 @@ heapdump.writeSnapshot('/tmp/heap-' + Date.now() + '.heapsnapshot');
 
 ```typescript
 // Common leaks:
-// 1. Event listeners no removidos
+// 1. Event listeners not removed
 emitter.on('event', handler);  // ❌ never removed
 emitter.on('event', handler);  // ✅ with cleanup
 //   return () => emitter.off('event', handler);
 
-// 2. Closures sobre variables grandes
+// 2. Closures over large variables
 function outer() {
   const huge = new Array(1e6);
-  return () => huge.length;  // ❌ huge queda en memoria
+  return () => huge.length;  // ❌ huge stays in memory
 }
 
-// 3. Timers no clear
-setInterval(() => {...}, 1000);  // ❌ nunca cleared
+// 3. Timers not cleared
+setInterval(() => {...}, 1000);  // ❌ never cleared
 const id = setInterval(...); clearInterval(id);  // ✅
 
-// 4. Cache sin eviction
-cache.set(key, value);  // ❌ crece sin límite
-//   usar LRU: new LRU({ max: 1000 });
+// 4. Cache without eviction
+cache.set(key, value);  // ❌ grows without limit
+//   use LRU: new LRU({ max: 1000 });
 ```
 
 ## Async debugging
 
 ```typescript
 // Race conditions
-// ❌ MAL: asume orden
+// ❌ WRONG: assumes order
 let data;
 fetchA().then(a => { data = a; });
-fetchB().then(b => { console.log(data, b); });  // data puede ser undefined
+fetchB().then(b => { console.log(data, b); });  // data may be undefined
 
-// ✅ BIEN: usar Promise.all o await
+// ✅ RIGHT: use Promise.all or await
 const [a, b] = await Promise.all([fetchA(), fetchB()]);
 
 // Async stack traces
 node --async-stack-traces app.js  # (default in modern Node)
 
-// Named async functions para mejor stack
-async function loginUser(email) {  // ✓ nombre claro
+// Named async functions for better stack
+async function loginUser(email) {  // ✓ clear name
   // ...
 }
-const loginUser = async (email) => {  // ✗ anonymous en stack
+const loginUser = async (email) => {  // ✗ anonymous in stack
   // ...
 };
 ```
@@ -398,10 +398,10 @@ What went well? What could be improved?
 - [ ] Update runbook with this scenario
 ```
 
-## Recursos
+## Resources
 
 - [Debug It! (Paul Butcher)](https://pragprog.com/titles/pdbg/debug-it/)
 - [Node debugging guide](https://nodejs.org/en/docs/guides/debugging-getting-started/)
 - [Chrome DevTools docs](https://developer.chrome.com/docs/devtools/)
-- Skill relacionada: `systematic-debugging` (workspace)
-- Skill relacionada: `prod-deploy-verification` (pre-deploy checks)
+- Related skill: `systematic-debugging` (workspace)
+- Related skill: `prod-deploy-verification` (pre-deploy checks)

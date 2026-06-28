@@ -1,28 +1,28 @@
 ---
 name: react-patterns
-description: Patrones avanzados de React 18+ — hooks, Suspense, Server Components, composición, performance. Aplica a cualquier proyecto React moderno (Vite, Next.js, Remix).
+description: Advanced React 18+ patterns — hooks, Suspense, Server Components, composition, performance. Applies to any modern React project (Vite, Next.js, Remix).
 license: MIT
 ---
 
 # React Patterns (18+)
 
-## Cuándo usar
+## When to use
 
-Cualquier proyecto React 18+ que use hooks, TypeScript, y quiera patrones modernos de composición, data fetching y performance.
+Any React 18+ project that uses hooks, TypeScript, and wants modern composition, data fetching and performance patterns.
 
-## Principios fundamentales
+## Fundamental principles
 
-1. **Composición sobre configuración** — preferir componentes pequeños y compuestos.
-2. **Colocation** — lo que cambia junto, vive junto (hook + componente en mismo archivo si es exclusivo).
-3. **Server-first** (cuando aplica) — preferir Server Components/Routes sobre Client.
-4. **TypeScript estricto** — `strict: true`, `noUncheckedIndexedAccess: true`.
+1. **Composition over configuration** — prefer small, composed components.
+2. **Colocation** — what changes together, lives together (hook + component in same file if exclusive).
+3. **Server-first** (when applicable) — prefer Server Components/Routes over Client.
+4. **Strict TypeScript** — `strict: true`, `noUncheckedIndexedAccess: true`.
 
-## Patrones de composición
+## Composition patterns
 
 ### Compound components
 
 ```tsx
-// ✅ Para UI kits con partes que siempre se usan juntas
+// ✅ For UI kits with parts that are always used together
 function Card({ children }: { children: React.ReactNode }) {
   return <div className="card">{children}</div>;
 }
@@ -35,7 +35,7 @@ Card.Body = function CardBody({ children }: { children: React.ReactNode }) {
   return <div className="card-body">{children}</div>;
 };
 
-// Uso:
+// Usage:
 <Card>
   <Card.Header>Title</Card.Header>
   <Card.Body>Content</Card.Body>
@@ -45,7 +45,7 @@ Card.Body = function CardBody({ children }: { children: React.ReactNode }) {
 ### Render props / Function as children
 
 ```tsx
-// ✅ Para componentes que exponen data/acciones al consumer
+// ✅ For components that expose data/actions to the consumer
 interface DataLoaderProps<T> {
   query: () => Promise<T>;
   children: (data: T) => React.ReactNode;
@@ -61,7 +61,7 @@ function DataLoader<T>({ query, children }: DataLoaderProps<T>) {
 ### Children variants (slot pattern)
 
 ```tsx
-// ✅ Más explícito que "children only"
+// ✅ More explicit than "children only"
 interface LayoutProps {
   header: React.ReactNode;
   sidebar?: React.ReactNode;
@@ -79,16 +79,16 @@ function Layout({ header, sidebar, children }: LayoutProps) {
 }
 ```
 
-## Hooks — Custom hooks patterns
+## Hooks — Custom hook patterns
 
-### Reglas de oro
+### Golden rules
 
-1. **Siempre empezar con `use`** (linter lo requiere).
-2. **NO llamar hooks condicionalmente** (regla de los hooks).
-3. **Un hook = una responsabilidad**.
-4. **Retornar objeto con nombres semánticos**, no array (a menos que sea tupla estable).
+1. **Always start with `use`** (linter requires it).
+2. **Do NOT call hooks conditionally** (rules of hooks).
+3. **One hook = one responsibility**.
+4. **Return object with semantic names**, not array (unless it's a stable tuple).
 
-### Hook con cleanup
+### Hook with cleanup
 
 ```tsx
 function useEventListener<K extends keyof WindowEventMap>(
@@ -102,7 +102,7 @@ function useEventListener<K extends keyof WindowEventMap>(
 }
 ```
 
-### Hook con reducer interno
+### Hook with internal reducer
 
 ```tsx
 type State = { count: number; history: number[] };
@@ -127,7 +127,7 @@ function useCounter(initial = 0) {
 }
 ```
 
-### Hook con context
+### Hook with context
 
 ```tsx
 const ThemeContext = createContext<Theme | null>(null);
@@ -139,9 +139,9 @@ export function useTheme(): Theme {
 }
 ```
 
-## Data fetching — Patrones
+## Data fetching — Patterns
 
-### TanStack Query (preferido)
+### TanStack Query (preferred)
 
 ```tsx
 export function useUser(id: string) {
@@ -154,7 +154,7 @@ export function useUser(id: string) {
 }
 ```
 
-### SWR (alternativa)
+### SWR (alternative)
 
 ```tsx
 import useSWR from 'swr';
@@ -202,28 +202,28 @@ function UserPage() {
 
 ## Performance
 
-### Memoización (usar con cuidado)
+### Memoization (use with care)
 
 ```tsx
-// ✅ Solo cuando:
-// 1. Componente recibe props que cambian con frecuencia
-// 2. Componente renderiza caro (lista larga, cálculos)
-// 3. React DevTools Profiler muestra que vale la pena
+// ✅ Only when:
+// 1. Component receives props that change frequently
+// 2. Component renders expensively (long list, calculations)
+// 3. React DevTools Profiler shows it's worth it
 
 const ExpensiveList = memo(function ExpensiveList({ items }: Props) {
   return items.map(item => <Item key={item.id} {...item} />);
 });
 
-// Para callbacks:
+// For callbacks:
 const handleClick = useCallback((id: string) => {
   setItems(prev => prev.filter(i => i.id !== id));
 }, []);
 ```
 
 **Anti-patterns:**
-- ❌ `useMemo` en operaciones triviales (suma de dos números).
-- ❌ `memo` en componentes que SIEMPRE re-renderizan por parent.
-- ❌ `useCallback` sin dependencies correctas → bugs sutiles.
+- ❌ `useMemo` on trivial operations (sum of two numbers).
+- ❌ `memo` on components that ALWAYS re-render due to parent.
+- ❌ `useCallback` without correct dependencies → subtle bugs.
 
 ### Virtualization
 
@@ -276,7 +276,7 @@ function Dashboard() {
 
 ## Forms
 
-Ver `react-hook-form-zod` (skill instalada) — patrón preferido.
+See `react-hook-form-zod` (installed skill) — preferred pattern.
 
 ## Testing (Vitest + React Testing Library)
 
@@ -300,46 +300,46 @@ describe('UserCard', () => {
 });
 ```
 
-**Reglas:**
-- Test behavior, no implementación.
-- Queries por `getByRole`, `getByLabelText` (accesibilidad-friendly).
-- Mockear `fetch` con MSW, no `vi.fn()` para API calls.
+**Rules:**
+- Test behavior, not implementation.
+- Queries by `getByRole`, `getByLabelText` (accessibility-friendly).
+- Mock `fetch` with MSW, not `vi.fn()` for API calls.
 
-## Accesibilidad
+## Accessibility
 
 ```tsx
-// ✅ Usar elementos semánticos
+// ✅ Use semantic elements
 <button onClick={handleClick}>Click me</button>
 // ❌ NO
 <div onClick={handleClick}>Click me</div>
 
-// ✅ Labels asociados
+// ✅ Associated labels
 <label htmlFor="email">Email</label>
 <input id="email" type="email" />
 
-// ✅ aria-* solo cuando el HTML semántico no alcanza
+// ✅ aria-* only when semantic HTML is not enough
 <button aria-label="Close modal" aria-expanded={isOpen}>X</button>
 ```
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ `useEffect` para data fetching → ✅ TanStack Query / SWR / RSC.
-2. ❌ `useEffect` para derivar state → ✅ cálculo directo o `useMemo`.
-3. ❌ `props drilling` > 3 niveles → ✅ Context, Zustand, o composición.
-4. ❌ `index` como key en listas → ✅ ID estable (`item.id`).
-5. ❌ `setState` directo en render → ✅ `useEffect` o evento handler.
-6. ❌ `any` en types → ✅ `unknown` + type guard.
-7. ❌ Mutación directa de state → ✅ siempre nuevo objeto/array.
-8. ❌ Olvidar `key` en listas → ✅ siempre key estable.
-9. ❌ Side effects en render puro → ✅ dentro de `useEffect`.
-10. ❌ Mezclar server y client state sin separar → ✅ query (server) ≠ useState (UI local).
+1. ❌ `useEffect` for data fetching → ✅ TanStack Query / SWR / RSC.
+2. ❌ `useEffect` to derive state → ✅ direct calculation or `useMemo`.
+3. ❌ `props drilling` > 3 levels → ✅ Context, Zustand, or composition.
+4. ❌ `index` as key in lists → ✅ stable ID (`item.id`).
+5. ❌ `setState` directly in render → ✅ `useEffect` or event handler.
+6. ❌ `any` in types → ✅ `unknown` + type guard.
+7. ❌ Direct state mutation → ✅ always new object/array.
+8. ❌ Forgetting `key` in lists → ✅ always stable key.
+9. ❌ Side effects in pure render → ✅ inside `useEffect`.
+10. ❌ Mixing server and client state without separation → ✅ query (server) ≠ useState (local UI).
 
-## Stack complementario recomendado
+## Recommended complementary stack
 
-- **Routing:** TanStack Router o Next.js App Router.
+- **Routing:** TanStack Router or Next.js App Router.
 - **Forms:** react-hook-form + Zod.
-- **State server:** TanStack Query.
-- **State client:** Zustand.
+- **Server state:** TanStack Query.
+- **Client state:** Zustand.
 - **UI:** shadcn/ui (Radix + Tailwind).
 - **Tables:** TanStack Table.
 - **Testing:** Vitest + React Testing Library + MSW + Playwright.

@@ -1,8 +1,8 @@
 # setup/install-windows.dry-run.ps1
-# Simula install-windows.ps1 sin tocar el sistema. Para CI.
+# Simulates install-windows.ps1 without touching the system. For CI.
 #
-# Uso: $env:DRY_RUN = "1"; powershell -File install-windows.ps1
-# (install-windows.ps1 detecta DRY_RUN=1 y redirige a este script)
+# Usage: $env:DRY_RUN = "1"; powershell -File install-windows.ps1
+# (install-windows.ps1 detects DRY_RUN=1 and redirects to this script)
 
 $ErrorActionPreference = "Stop"
 
@@ -48,26 +48,26 @@ $requiredFiles = @(
 
 foreach ($f in $requiredFiles) {
     if (-not (Test-Path (Join-Path $AIOSRoot $f))) {
-        Err "Falta: $f"
+        Err "Missing: $f"
         $fail++
     }
 }
 
 if ($fail -eq 0) {
-    Ok "Estructura AI-OS completa"
+    Ok "AI-OS structure complete"
 } else {
     Err "$fail missing files"
     exit 1
 }
 
 # ─── 1. Validate packages files ───
-Log "1. Validando archivos de packages..."
+Log "1. Validating packages files..."
 $brewfile = Get-Content "$AIOSRoot\dev-env\packages\Brewfile" -ErrorAction SilentlyContinue
 if ($brewfile) {
     $brewCount = ($brewfile | Where-Object { $_ -match '^(brew|cask|tap)\s' }).Count
     Ok "Brewfile: $brewCount entries"
 } else {
-    Err "Brewfile no existe"
+    Err "Brewfile does not exist"
     exit 1
 }
 
@@ -83,7 +83,7 @@ if ($pipPackages) {
     Ok "pip-packages: $pipCount packages"
 }
 
-# ─── 2. Simular symlinks de dotfiles (en TMP) ───
+# ─── 2. Simulate dotfiles symlinks (in TMP) ───
 Log "2. Simulating dotfiles symlinks..."
 $dotfiles = @(
     @{File = ".gitignore_global"; Source = "dev-env/dotfiles/git/.gitignore_global"}
@@ -94,18 +94,18 @@ foreach ($df in $dotfiles) {
     if (Test-Path $source) {
         New-Item -ItemType SymbolicLink -Path $target -Target $source -Force | Out-Null
         if (Test-Path $target) {
-            Ok "  $($df.File) → $($df.Source) (simulado)"
+            Ok "  $($df.File) → $($df.Source) (simulated)"
         } else {
-            Err "  $($df.File) falló al crear symlink"
+            Err "  $($df.File) failed to create symlink"
             exit 1
         }
     } else {
-        Err "  Source no existe: $source"
+        Err "  Source does not exist: $source"
         exit 1
     }
 }
 
-# ─── 3. Simular propagación de skills ───
+# ─── 3. Simulate skills propagation ───
 Log "3. Simulating skills propagation to 5 CLIs..."
 $cliDirs = @(
     "$TempHome\.claude\skills",
@@ -131,14 +131,14 @@ foreach ($cliDir in $cliDirs) {
     }
     $cliCount = (Get-ChildItem $cliDir -Force | Where-Object { $_.Name -ne "READMEDD.md" -and $_.Name -ne "taste-skill-llms.txt" -and $_.Name -ne ".system" }).Count
     if ($cliCount -gt 50) {
-        Ok "  $cliDir`: $cliCount skills (simulado)"
+        Ok "  $cliDir`: $cliCount skills (simulated)"
     } else {
-        Err "  $cliDir`: solo $cliCount skills"
+        Err "  $cliDir`: only $cliCount skills"
         exit 1
     }
 }
 
-# ─── 4. Simular MCP config generation ───
+# ─── 4. Simulate MCP config generation ───
 Log "4. Simulating MCP config generation..."
 $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
 if ($pythonCmd) {
@@ -152,24 +152,24 @@ if ($pythonCmd) {
     if (Test-Path $tempConfig) {
         $content = Get-Content $tempConfig -Raw
         if ($content -match "mcp_servers:") {
-            # Parsear con regex simple
+            # Parse with simple regex
             $mcpCount = ([regex]::Matches($content, "^\s+[a-z-]+:\s*$", "Multiline") | Where-Object { $_.Value.Trim() -in @("time:","filesystem:","pdf:","sequential-thinking:","memory:","chrome:","agent-browser:") }).Count
             if ($mcpCount -ge 7) {
-                Ok "MCP config: $mcpCount servers generados"
+                Ok "MCP config: $mcpCount servers generated"
             } else {
-                Err "MCP config: solo $mcpCount servers (esperado >=7)"
+                Err "MCP config: only $mcpCount servers (expected >=7)"
                 exit 1
             }
         } else {
-            Err "MCP config no tiene mcp_servers section"
+            Err "MCP config has no mcp_servers section"
             exit 1
         }
     } else {
-        Err "Script generate-mcp-config.py no creó output"
+        Err "Script generate-mcp-config.py did not create output"
         exit 1
     }
 } else {
-    Warn "Python no disponible, saltando MCP check"
+    Warn "Python not available, skipping MCP check"
 }
 
 # ─── 5. Validate skills frontmatter (sample) ───
@@ -177,10 +177,10 @@ Log "5. Validating skills frontmatter (sample of 10)..."
 $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Get-Random -Count 10
 $fmErrors = 0
 foreach ($skillDir in $skillDirs) {
-    # Buscar SKILL.md en cualquier nivel
+    # Look for SKILL.md at any level
     $skillMd = Get-ChildItem -Path $skillDir.FullName -Recurse -Filter "SKILL.md" -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $skillMd) {
-        # No es skill real, es categoría
+        # Not a real skill, it's a category
         continue
     }
     # Extract frontmatter (everything between the two --- delimiters)
@@ -213,19 +213,19 @@ foreach ($skillDir in $skillDirs) {
 }
 
 if ($fmErrors -eq 0) {
-    Ok "Frontmatter de skills OK (10 sampled)"
+    Ok "Skills frontmatter OK (10 sampled)"
 } else {
-    Err "$fmErrors errores de frontmatter"
+    Err "$fmErrors frontmatter errors"
     exit 1
 }
 
 # ─── 6. Cleanup ───
-Log "6. Cleanup temporal..."
+Log "6. Cleanup temporary..."
 Remove-Item -Path $TempHome -Recurse -Force -ErrorAction SilentlyContinue
 Ok "Cleanup OK"
 
 Write-Host ""
 Log "═══════════════════════════════════════════════════════════"
-Ok "DRY-RUN exitoso. El setup funcionaría sin errores en Windows real."
-Log "Para instalación real: powershell -File .\setup\install-windows.ps1 (sin DRY_RUN=1)"
+Ok "DRY-RUN successful. The setup would work without errors on a real Windows."
+Log "For real installation: powershell -File .\setup\install-windows.ps1 (without DRY_RUN=1)"
 Log "═══════════════════════════════════════════════════════════"
