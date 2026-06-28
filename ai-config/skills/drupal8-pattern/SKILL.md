@@ -1,18 +1,18 @@
 ---
 name: drupal8-pattern
-description: Convenciones y patrones de Drupal 8/9/10 — módulos, theming, hooks, services, plugins. Aplica al trabajar en /Users/edd/Projects/eddremonts86/Drupal8-* o cualquier proyecto Drupal moderno.
+description: Conventions and patterns for Drupal 8/9/10 — modules, theming, hooks, services, plugins. Applies when working on /Users/edd/Projects/eddremonts86/Drupal8-* or any modern Drupal project.
 license: Internal
 ---
 
 # Drupal 8+ Development Patterns
 
-## Estructura de proyecto (Composer-based)
+## Project structure (Composer-based)
 
 ```
 project/
 ├── composer.json          # Drupal core + deps
 ├── composer.lock
-├── drush/                 # Drush commands custom
+├── drush/                 # Custom Drush commands
 ├── config/
 │   ├── sync/              # Config export (committed)
 │   └── default/           # Active config (gitignored)
@@ -20,11 +20,11 @@ project/
 │   ├── deploy.sh
 │   └── update.sh
 ├── vendor/                # Composer deps (gitignored)
-├── web/                   # Drupal root (en setups Bedrock)
+├── web/                   # Drupal root (in Bedrock setups)
 │   ├── core/              # Drupal core
 │   ├── modules/
 │   │   ├── contrib/       # Vendor modules (composer require)
-│   │   └── custom/        # Módulos propios
+│   │   └── custom/        # Custom modules
 │   ├── themes/
 │   │   ├── contrib/
 │   │   └── custom/
@@ -33,19 +33,19 @@ project/
 └── .gitignore
 ```
 
-**Reglas críticas:**
-- Drupal core SIEMPRE vía Composer. Nunca descargar manualmente.
-- Configuración exportada a `config/sync/` y committed al repo.
-- `web/sites/default/files/` y `settings.php` con secrets → gitignored.
+**Critical rules:**
+- Drupal core ALWAYS via Composer. Never download manually.
+- Configuration exported to `config/sync/` and committed to the repo.
+- `web/sites/default/files/` and `settings.php` with secrets → gitignored.
 
-## Módulo custom — Estructura
+## Custom module — Structure
 
 ```
 web/modules/custom/my_module/
 ├── my_module.info.yml
 ├── my_module.module              # Hooks
 ├── my_module.routing.yml         # Routes
-├── my_module.permissions.yml     # Permisos
+├── my_module.permissions.yml     # Permissions
 ├── my_module.links.menu.yml      # Menu links
 ├── my_module.links.task.yml      # Local tasks
 ├── my_module.services.yml        # Services
@@ -62,7 +62,7 @@ web/modules/custom/my_module/
 │   │   └── MyService.php
 │   └── EventSubscriber/
 ├── config/
-│   └── install/                  # Config defaults (al instalar)
+│   └── install/                  # Config defaults (on install)
 │   └── schema/                   # Schema definitions
 ├── templates/                    # Twig templates
 │   └── my-template.html.twig
@@ -73,7 +73,7 @@ web/modules/custom/my_module/
     └── src/
 ```
 
-## .info.yml (módulo)
+## .info.yml (module)
 
 ```yaml
 name: 'My Module'
@@ -134,10 +134,10 @@ class MyController extends ControllerBase {
 }
 ```
 
-**Convenciones:**
+**Conventions:**
 - Namespace: `Drupal\<module_name>\<Type>`.
-- Tipo de retorno tipado en PHP 7.4+.
-- Usar parameter converters (`UserInterface $user`) en lugar de cargar manualmente.
+- Typed return type in PHP 7.4+.
+- Use parameter converters (`UserInterface $user`) instead of loading manually.
 
 ## Services & Dependency Injection
 
@@ -174,10 +174,10 @@ class MyService {
 }
 ```
 
-**Reglas:**
-- SIEMPRE dependency injection, nunca `\Drupal::service()` en clases (excepto estáticas).
-- Type hints en todos los parámetros del constructor.
-- `protected readonly` para dependencies que no se reassignan.
+**Rules:**
+- ALWAYS dependency injection, never `\Drupal::service()` in classes (except statics).
+- Type hints on all constructor parameters.
+- `protected readonly` for dependencies that aren't reassigned.
 
 ## Forms (ConfigFormBase / FormBase)
 
@@ -222,12 +222,12 @@ class MySettingsForm extends ConfigFormBase {
 }
 ```
 
-**Reglas:**
-- Extender `ConfigFormBase` para config forms, `FormBase` para entity forms.
-- Validación en `validateForm()`, NO en `buildForm()`.
-- Submit debe llamar `parent::submitForm()` al final.
+**Rules:**
+- Extend `ConfigFormBase` for config forms, `FormBase` for entity forms.
+- Validation in `validateForm()`, NOT in `buildForm()`.
+- Submit must call `parent::submitForm()` at the end.
 
-## Hooks — Naming y firma
+## Hooks — Naming and signature
 
 **my_module.module:**
 ```php
@@ -267,11 +267,11 @@ function my_module_theme($existing, $type, $theme, $path) {
 }
 ```
 
-**Reglas:**
-- Hooks SIEMPRE en `.module` file (NO en clases).
-- Cada hook documentado con `@implementes hook_NAME()`.
-- `hook_theme()` registra templates. Template en `templates/<name>.html.twig`.
-- `hook_form_alter()` con `$form_id` check antes de modificar.
+**Rules:**
+- Hooks ALWAYS in `.module` file (NOT in classes).
+- Each hook documented with `@implements hook_NAME()`.
+- `hook_theme()` registers templates. Template in `templates/<name>.html.twig`.
+- `hook_form_alter()` with `$form_id` check before modifying.
 
 ## Twig templates
 
@@ -288,10 +288,10 @@ function my_module_theme($existing, $type, $theme, $path) {
 </div>
 ```
 
-**Reglas:**
-- Output automático escapado (XSS safe). Usar `{{ }}` siempre.
-- `{% raw %}` solo para bloques con sintaxis Twig literal.
-- Macros en `templates/_macros/`.
+**Rules:**
+- Output auto-escaped (XSS safe). Always use `{{ }}`.
+- `{% raw %}` only for blocks with literal Twig syntax.
+- Macros in `templates/_macros/`.
 
 ## Plugin system (Block example)
 
@@ -322,7 +322,7 @@ class MyInfoBlock extends BlockBase implements ContainerFactoryPluginInterface {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+  public static function create(ContainerInterface $container, array $configuration, string $plugin_id, array $plugin_definition): self {
     return new self(
       $configuration,
       $plugin_id,
@@ -355,7 +355,7 @@ view my content:
 
 ## Theming
 
-**Sub-tema (de classy/stable):**
+**Sub-theme (from classy/stable):**
 
 ```
 themes/custom/my_theme/
@@ -363,7 +363,7 @@ themes/custom/my_theme/
 ├── my_theme.libraries.yml
 ├── css/
 ├── js/
-├── templates/             # Override de templates del parent
+├── templates/             # Override parent templates
 └── logo.svg
 ```
 
@@ -382,7 +382,7 @@ regions:
   footer: 'Footer'
 ```
 
-## Drush commands custom
+## Custom Drush commands
 
 **drush.services.yml:**
 ```yaml
@@ -437,16 +437,16 @@ class MyModuleTest extends BrowserTestBase {
 }
 ```
 
-**Reglas:**
-- `BrowserTestBase` para functional tests (full Drupal boot).
-- `KernelTestBase` para kernel-level (más rápido, sin browser).
-- `UnitTestBase` para unit tests puros.
-- `setUp()` para fixtures pesadas, `provider()` para data providers.
+**Rules:**
+- `BrowserTestBase` for functional tests (full Drupal boot).
+- `KernelTestBase` for kernel-level (faster, no browser).
+- `UnitTestBase` for pure unit tests.
+- `setUp()` for heavy fixtures, `provider()` for data providers.
 
-## Setup local
+## Local setup
 
 ```bash
-# Requisitos
+# Requirements
 php >= 8.1
 composer
 drush (composer global require drush/drush)
@@ -458,36 +458,36 @@ composer install
 drush site:install --existing-config
 drush cr              # cache rebuild
 
-# Workflow diario
-drush cr              # SIEMPRE después de cambios en .yml
-drush updb           # si hay updates pendientes
-drush config:export   # ANTES de commit
+# Daily workflow
+drush cr              # ALWAYS after .yml changes
+drush updb           # if pending updates
+drush config:export   # BEFORE commit
 
-# Verificar antes de commit
+# Verify before commit
 composer validate
 drush status
 phpcs --standard=Drupal web/modules/custom/
 ```
 
-## Errores comunes a evitar
+## Common errors to avoid
 
-1. ❌ `\Drupal::service()` en clases → ✅ dependency injection.
-2. ❌ `drupal_get_user()` (Drupal 7 function) → ✅ `\Drupal::currentUser()` o DI.
-3. ❌ Hardcoded HTML en `render arrays` → ✅ `#markup` solo para texto plano, `#theme` para HTML.
-4. ❌ Olvidar `drush cr` después de cambios en .yml → ✅ cache rebuild siempre.
-5. ❌ Modificar `web/core/` directamente → ✅ usar hooks/plugins.
-6. ❌ `db_query()` con concatenación → ✅ `db_select()` con placeholders (SQL injection).
-7. ❌ No exportar config después de cambios en admin → ✅ `drush config:export` siempre.
-8. ❌ `var_dump`/`dpm` en código production → ✅ `\Drupal::logger()` o kint en dev.
-9. ❌ Cambiar `core_version_requirement` para forzar version → ✅ usar composer constraints.
-10. ❌ No limpiar cache después de update → ✅ `drush cr` post-`composer update`.
+1. ❌ `\Drupal::service()` in classes → ✅ dependency injection.
+2. ❌ `drupal_get_user()` (Drupal 7 function) → ✅ `\Drupal::currentUser()` or DI.
+3. ❌ Hardcoded HTML in `render arrays` → ✅ `#markup` only for plain text, `#theme` for HTML.
+4. ❌ Forgetting `drush cr` after .yml changes → ✅ always rebuild cache.
+5. ❌ Modifying `web/core/` directly → ✅ use hooks/plugins.
+6. ❌ `db_query()` with concatenation → ✅ `db_select()` with placeholders (SQL injection).
+7. ❌ Not exporting config after admin changes → ✅ `drush config:export` always.
+8. ❌ `var_dump`/`dpm` in production code → ✅ `\Drupal::logger()` or kint in dev.
+9. ❌ Changing `core_version_requirement` to force a version → ✅ use composer constraints.
+10. ❌ Not clearing cache after update → ✅ `drush cr` post-`composer update`.
 
 ## Security checklist
 
-- ✅ User input via Form API (no `$_GET`/`$_POST` directos).
-- ✅ SQL queries con placeholders (`->condition()`, `->fields()`).
-- ✅ Output en Twig (auto-escape) o `Html::escape()`.
-- ✅ Permisos en routes, NO check manual en controller.
-- ✅ `check_access` en entity operations.
-- ✅ CSRF token en forms (Form API lo hace auto).
-- ✅ Secrets en `settings.php` (no committed), nunca en code.
+- ✅ User input via Form API (no direct `$_GET`/`$_POST`).
+- ✅ SQL queries with placeholders (`->condition()`, `->fields()`).
+- ✅ Output in Twig (auto-escape) or `Html::escape()`.
+- ✅ Permissions on routes, NOT manual checks in controller.
+- ✅ `check_access` on entity operations.
+- ✅ CSRF token in forms (Form API does this automatically).
+- ✅ Secrets in `settings.php` (not committed), never in code.

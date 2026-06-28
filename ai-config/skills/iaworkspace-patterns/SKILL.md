@@ -1,22 +1,22 @@
 ---
 name: iaworkspace-patterns
-description: Convenciones del workspace iaWorkSpace (meta-repo multi-root VS Code, no monorepo) — apps independientes en apps/, skills committed en .agents/skills/, pre-deploy verification, container architecture (openclaw/opencode/open-design), seguridad OWASP, fleet deployment via Coolify/Traefik.
+description: Conventions of the iaWorkSpace workspace (multi-root VS Code meta-repo, not a monorepo) — independent apps in apps/, skills committed in .agents/skills/, pre-deploy verification, container architecture (openclaw/opencode/open-design), OWASP security, fleet deployment via Coolify/Traefik.
 license: Internal
 ---
 
 # iaWorkSpace Patterns
 
-Repo: `/Users/edd/Projects/eddremonts86/iaWorkSpace/`. NO es monorepo — es un multi-root VS Code workspace con apps independientes.
+Repo: `/Users/edd/Projects/eddremonts86/iaWorkSpace/`. NOT a monorepo — it is a multi-root VS Code workspace with independent apps.
 
-## Estructura crítica
+## Critical structure
 
 ```
 iaWorkSpace/
-├── apps/<app>/              # gitignored, cada app es repo independiente
+├── apps/<app>/              # gitignored, each app is an independent repo
 ├── .agents/
 │   ├── skills/
-│   │   ├── globals/         # 60+ skills transversales
-│   │   ├── wave/            # específicas de wave
+│   │   ├── globals/         # 60+ cross-cutting skills
+│   │   ├── wave/            # wave-specific
 │   │   ├── schilling/       # sch-*
 │   │   ├── tanstack-template/
 │   │   ├── accesPoint/
@@ -25,7 +25,7 @@ iaWorkSpace/
 │   ├── instructions/        # workspace.md (canonical)
 │   └── AGENTS.md
 ├── .github/
-│   ├── copilot-instructions.md   # ADAPTER (sync con .agents/instructions/workspace.md)
+│   ├── copilot-instructions.md   # ADAPTER (sync with .agents/instructions/workspace.md)
 │   ├── instructions/
 │   └── workflows/
 ├── docker/
@@ -33,10 +33,10 @@ iaWorkSpace/
 │   ├── opencode/
 │   └── open-design/
 ├── prod/
-│   ├── docker-compose.fleet.yml   # fleet completo
-│   ├── compose.d/                 # uno por app
+│   ├── docker-compose.fleet.yml   # full fleet
+│   ├── compose.d/                 # one per app
 │   ├── traefik/                   # reverse proxy
-│   └── stack.config.mjs           # config central
+│   └── stack.config.mjs           # central config
 ├── scripts/
 │   ├── prod/       # up, down, status, setup, logs, exec, psql, open, urls, verify
 │   ├── coolify/    # sync-env, set-post-deploy, add-deploy-key
@@ -51,24 +51,24 @@ iaWorkSpace/
 └── AGENTS.md                 # canonical workspace instructions
 ```
 
-## Reglas duras (de AGENTS.md)
+## Hard rules (from AGENTS.md)
 
-1. **English only** — todo el contenido generado (código, comentarios, docs, commits, files). Aunque el usuario chatee en español.
-2. **No hardcoded secrets** — `.env` (gitignored) + `.env.example` (placeholders). Frontend lee `import.meta.env.VITE_*`.
-3. **CORS:** nunca `Access-Control-Allow-Origin: *` en prod; nunca `credentials: true` + wildcard origin. Vite proxy es dev-only.
-4. **HTTP headers** — CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy obligatorios.
-5. **React XSS** — sanitizar con DOMPurify antes de `dangerouslySetInnerHTML`. No `eval`, `document.write`, raw `innerHTML`.
-6. **Pre-release gate** — `pnpm audit` con 0 Critical y 0 High.
-7. **Skills/MCP committed al workspace** — NO instalar en `~/.agents/skills/`. PR en `.agents/skills/<scope>/<name>/SKILL.md`.
+1. **English only** — all generated content (code, comments, docs, commits, files). Even if the user chats in Spanish.
+2. **No hardcoded secrets** — `.env` (gitignored) + `.env.example` (placeholders). Frontend reads `import.meta.env.VITE_*`.
+3. **CORS:** never `Access-Control-Allow-Origin: *` in prod; never `credentials: true` + wildcard origin. Vite proxy is dev-only.
+4. **HTTP headers** — CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy are mandatory.
+5. **React XSS** — sanitize with DOMPurify before `dangerouslySetInnerHTML`. No `eval`, `document.write`, raw `innerHTML`.
+6. **Pre-release gate** — `pnpm audit` with 0 Critical and 0 High.
+7. **Skills/MCP committed to the workspace** — DO NOT install in `~/.agents/skills/`. PR in `.agents/skills/<scope>/<name>/SKILL.md`.
 
-## Comandos del root
+## Root commands
 
 ```bash
-pnpm install            # root tooling (no app deps); también instala git hooks
-pnpm doctor          # verificar integridad (folders, scripts, .gitignore, skills index)
-pnpm audit           # audit de seguridad cross-app
+pnpm install            # root tooling (no app deps); also installs git hooks
+pnpm doctor          # verify integrity (folders, scripts, .gitignore, skills index)
+pnpm audit           # cross-app security audit
 pnpm audit:<app>     # single app
-pnpm suggest         # audit + diffs sugeridos
+pnpm suggest         # audit + suggested diffs
 pnpm fix             # audit + auto-apply LOW/MEDIUM fixes
 pnpm check:cors|secrets|headers|deps|xss|noir
 pnpm lint            # eslint + markdownlint-cli2
@@ -77,7 +77,7 @@ pnpm format          # prettier --write
 # Containers
 pnpm containers:up
 pnpm containers:status
-pnpm od:provider     # configurar open-design provider
+pnpm od:provider     # configure open-design provider
 pnpm od:link         # refresh designs/<slug>/ symlinks
 pnpm od:migrate      # one-time migrate legacy
 
@@ -86,45 +86,45 @@ node scripts/deploy/preflight-deploy.mjs --app <name>
 node scripts/deploy/preflight-deploy.mjs --all
 ```
 
-**App-specific** (build/test/dev) → `cd apps/<name>/`, nunca desde root.
+**App-specific** (build/test/dev) → `cd apps/<name>/`, never from root.
 
 ## Container architecture
 
-3 containers + shared infra (ver `containers-architecture` skill):
+3 containers + shared infra (see `containers-architecture` skill):
 
 - **openclaw** — port 8080, mounts `.:/workspace/repo` (upstream owns `/workspace`).
 - **opencode** — port 3000, mounts `.:/workspace`.
 - **open-design** — port 8081, mounts `.:/workspace`.
 
-Persistencia: `docker/openclaw/config/`, `docker/opencode/config/`, `docker/open-design/data/` (gitignored, host-visible).
+Persistence: `docker/openclaw/config/`, `docker/opencode/config/`, `docker/open-design/data/` (gitignored, host-visible).
 
-Pre-commit hook en `.githooks/pre-commit` rechaza commits a `docker/*/data/`.
+Pre-commit hook in `.githooks/pre-commit` rejects commits to `docker/*/data/`.
 
 ## Skills organization
 
-Skills committed al workspace, NO user-scope:
+Skills committed to the workspace, NOT user-scope:
 
 ```
 .agents/skills/
-├── globals/<name>/SKILL.md         # transversal
-├── <app-scope>/<prefix>-<name>/SKILL.md  # específica
+├── globals/<name>/SKILL.md         # cross-cutting
+├── <app-scope>/<prefix>-<name>/SKILL.md  # specific
 └── workspace/<name>/SKILL.md      # open-design integration
 ```
 
 **Naming convention:**
-- `globals/` — sin prefijo: `hetzner-cloud`, `coolify-env-sync`, `clean-architecture`
-- `<app>/` — prefijo de app: `wave-form-builder`, `sch-coding-standard`, `tt-docker-stack`, `ap-deployment`, `edd-ui-components`
+- `globals/` — no prefix: `hetzner-cloud`, `coolify-env-sync`, `clean-architecture`
+- `<app>/` — app prefix: `wave-form-builder`, `sch-coding-standard`, `tt-docker-stack`, `ap-deployment`, `edd-ui-components`
 
-**Index files** (actualizar al añadir skill):
+**Index files** (update when adding a skill):
 - `globals-index.md`
 - `project-skills-index.md`
 
 ## Adding a new app
 
-1. Clonar repo de la app en `apps/<name>/` (queda gitignored al root).
-2. Registrar en `projects.code-workspace` `folders[]`.
-3. `pnpm doctor` — valida folder + script paths + per-app `.gitignore`.
-4. Commit solo workspace-level (`projects.code-workspace`, skills index). Nunca `apps/<name>/` desde root.
+1. Clone the app repo into `apps/<name>/` (stays gitignored at the root).
+2. Register in `projects.code-workspace` `folders[]`.
+3. `pnpm doctor` — validates folder + script paths + per-app `.gitignore`.
+4. Commit only workspace-level changes (`projects.code-workspace`, skills index). Never `apps/<name>/` from root.
 
 ## Conventional commits (English)
 
@@ -137,43 +137,43 @@ test: add e2e test for login flow
 refactor: extract user validation into shared module
 ```
 
-Scopes comunes: `cli, gateway, tools, skills, agent, install, api, ui, db, deploy`.
+Common scopes: `cli, gateway, tools, skills, agent, install, api, ui, db, deploy`.
 
 ## Pre-commit hooks (Husky)
 
 ```bash
-# .husky/pre-commit (en cada app)
+# .husky/pre-commit (in each app)
 pnpm lint-staged
 node ../../scripts/deploy/preflight-deploy.mjs --app $(basename $PWD)
 ```
 
-`lint-staged`: prettier + eslint --fix en staged files.
+`lint-staged`: prettier + eslint --fix on staged files.
 
 ## Deploy workflow
 
 ```bash
-# 1. Branch y PR
+# 1. Branch and PR
 git checkout -b feat/my-feature
 git commit -m "feat: ..."
 git push origin feat/my-feature
 gh pr create
 
-# 2. Pre-merge: CI pasa (lint + test + audit + preflight)
+# 2. Pre-merge: CI passes (lint + test + audit + preflight)
 
-# 3. Merge a main → trigger webhook → Coolify auto-deploy
+# 3. Merge to main → trigger webhook → Coolify auto-deploy
 
-# 4. Verificación post-deploy
+# 4. Post-deploy verification
 node scripts/prod/status.sh
-curl https://mi-app.example.com/health
-ssh hetzner "docker logs --tail 100 mi-app-app-1"
+curl https://my-app.example.com/health
+ssh hetzner "docker logs --tail 100 my-app-app-1"
 
-# 5. Si falla → rollback via Coolify dashboard o:
-node scripts/prod/exec.sh mi-app pnpm db:migrate:rollback
+# 5. If it fails → rollback via Coolify dashboard or:
+node scripts/prod/exec.sh my-app pnpm db:migrate:rollback
 ```
 
 ## Security baseline
 
-Cada app debe tener:
+Each app must have:
 
 ```yaml
 # docker-compose labels (Traefik)
@@ -186,11 +186,11 @@ Cada app debe tener:
 
 **CSP pattern:**
 ```ts
-// _headers file (si Caddy) o middleware
+// _headers file (if Caddy) or middleware
 {
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",  // solo si usás inline scripts
+    "script-src 'self' 'unsafe-inline'",  // only if you use inline scripts
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "connect-src 'self' https://api.example.com",
@@ -201,55 +201,55 @@ Cada app debe tener:
 }
 ```
 
-## Scripts disponibles (resumen)
+## Available scripts (summary)
 
-| Script | Propósito |
+| Script | Purpose |
 |---|---|
-| `scripts/prod/up.sh` | Levantar fleet completo |
-| `scripts/prod/down.sh` | Bajar fleet |
-| `scripts/prod/status.sh` | Status de todos los servicios |
-| `scripts/prod/setup.sh` | Setup inicial (crear networks, volumes) |
+| `scripts/prod/up.sh` | Bring up the full fleet |
+| `scripts/prod/down.sh` | Bring down the fleet |
+| `scripts/prod/status.sh` | Status of all services |
+| `scripts/prod/setup.sh` | Initial setup (create networks, volumes) |
 | `scripts/prod/logs.sh [service]` | Tail logs |
-| `scripts/prod/exec.sh <svc> <cmd>` | Exec en container |
-| `scripts/prod/psql.sh` | Conectar a Postgres prod |
-| `scripts/prod/open.sh <svc>` | Abrir URL del service |
-| `scripts/prod/urls.sh` | Listar URLs activas |
-| `scripts/prod/verify.sh` | Verificar health checks |
+| `scripts/prod/exec.sh <svc> <cmd>` | Exec into container |
+| `scripts/prod/psql.sh` | Connect to prod Postgres |
+| `scripts/prod/open.sh <svc>` | Open service URL |
+| `scripts/prod/urls.sh` | List active URLs |
+| `scripts/prod/verify.sh` | Verify health checks |
 | `scripts/prod/reseed.sh <svc>` | Reset + seed DB |
-| `scripts/prod/register-app.mjs --name X --domain Y` | Registrar app nueva |
-| `scripts/prod/generate-compose.mjs` | Compilar fleet + compose.d/ → docker-compose.fleet.yml |
+| `scripts/prod/register-app.mjs --name X --domain Y` | Register a new app |
+| `scripts/prod/generate-compose.mjs` | Compile fleet + compose.d/ → docker-compose.fleet.yml |
 | `scripts/coolify/sync-env.mjs --app X` | Sync .env → Coolify dashboard |
 | `scripts/coolify/set-post-deploy.mjs --app X --command "..."` | Set post-deploy hook |
-| `scripts/coolify/add-deploy-key.sh <repo>` | Add deploy key SSH |
-| `scripts/deploy/preflight-deploy.mjs` | 12 checks pre-deploy |
-| `scripts/deploy/preflight-apply.sh` | Versión bash legacy |
+| `scripts/coolify/add-deploy-key.sh <repo>` | Add SSH deploy key |
+| `scripts/deploy/preflight-deploy.mjs` | 12 pre-deploy checks |
+| `scripts/deploy/preflight-apply.sh` | Legacy bash version |
 | `scripts/containers/backup.sh` | Tarball container state |
 | `scripts/containers/open-openclaw.sh` | Open OpenClaw UI |
 | `scripts/workspace/init.mjs` | Init workspace |
 | `scripts/workspace/doctor.mjs` | Verify workspace integrity |
 | `scripts/workspace/install-git-hooks.sh` | Install pre-commit hook |
 | `scripts/workspace/setup-git-credentials.sh` | Setup git identity |
-| `scripts/workspace/sync-pnpm-builds.mjs` | Sync builds cross-app |
+| `scripts/workspace/sync-pnpm-builds.mjs` | Sync cross-app builds |
 
-## Errores comunes (de AGENTS.md "Things agents commonly get wrong")
+## Common errors (from AGENTS.md "Things agents commonly get wrong")
 
-1. ❌ Build/test/lint app desde root → `cd apps/<name>`.
-2. ❌ Editar `apps/<name>/` esperando que root `git status` lo muestre.
-3. ❌ Tratar README "6 apps" como ground truth → leer `projects.code-workspace`.
-4. ❌ Escribir no-English porque el user chatea en otro idioma.
-5. ❌ Añadir skills a `~/.agents/skills/` en vez de commit en `.agents/skills/`.
-6. ❌ Olvidar actualizar skills index al añadir una skill.
-7. ❌ `docker compose up` desde root → no funciona, root compose es solo containers.
+1. ❌ Building/testing/linting an app from root → `cd apps/<name>`.
+2. ❌ Editing `apps/<name>/` expecting root `git status` to show it.
+3. ❌ Treating README "6 apps" as ground truth → read `projects.code-workspace`.
+4. ❌ Writing non-English because the user chats in another language.
+5. ❌ Adding skills to `~/.agents/skills/` instead of committing in `.agents/skills/`.
+6. ❌ Forgetting to update the skills index when adding a skill.
+7. ❌ `docker compose up` from root → does not work; root compose is containers-only.
 
 ## Package management
 
 - **pnpm 9.0.0+** (lockfile: `pnpm-lock.yaml`)
-- **Node >= 18** (`.nvmrc` lo pinea)
-- Scripts plain `node`/`bash`, no wrappers
+- **Node >= 18** (`.nvmrc` pins it)
+- Plain `node`/`bash` scripts, no wrappers
 - Prettier 2-space TS/JS/JSON
 - markdownlint-cli2
 
-## Stack típico por app
+## Typical stack per app
 
 | App | Stack |
 |---|---|
@@ -261,18 +261,18 @@ Cada app debe tener:
 | tanstack-template | TanStack Start + Drizzle |
 | eddremonts/* | Vite + React + Vite |
 
-## Cuando usar cada skill
+## When to use each skill
 
-| Tarea | Skill |
+| Task | Skill |
 |---|---|
-| Deploy a VPS | `hetzner-cloud`, `coolify-deploy`, `prod-deploy-verification` |
+| Deploy to VPS | `hetzner-cloud`, `coolify-deploy`, `prod-deploy-verification` |
 | Multi-service compose | `coolify-deploy`, `prod-deploy-verification` |
-| Sincronizar env | `coolify-deploy`, `env-config` |
-| Configurar containers | `containers-architecture` |
+| Sync env | `coolify-deploy`, `env-config` |
+| Configure containers | `containers-architecture` |
 | OpenClaw/OpenCode/OpenDesign | `containers-architecture`, `open-design-integration` |
-| Build de TanStack app | `tanstack-start-coolify-deploy`, `tanstack-template/tt-*` |
-| Crear nueva app | `new-app-setup`, `create-app` |
+| Build a TanStack app | `tanstack-start-coolify-deploy`, `tanstack-template/tt-*` |
+| Create a new app | `new-app-setup`, `create-app` |
 | Build feature | `wave/wave-feature-builder`, `wave/wave-form-builder` |
-| Audit de seguridad | `pnpm audit`, `security-and-hardening`, `owasp-security` |
+| Security audit | `pnpm audit`, `security-and-hardening`, `owasp-security` |
 | Code review | `code-review-and-quality`, `code-simplification` |
 | Release | `release-it`, `shipping-and-launch` |

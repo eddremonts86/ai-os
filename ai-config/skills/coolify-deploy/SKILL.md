@@ -1,70 +1,70 @@
 ---
 name: coolify-deploy
-description: Deploy de apps a Coolify (self-hosted PaaS) — compose multi-service, env sync, post-deploy hooks, health checks. Aplica al deploy de cualquier docker-compose app a un VPS gestionado por Coolify.
+description: Deploy apps to Coolify (self-hosted PaaS) — multi-service compose, env sync, post-deploy hooks, health checks. Applies to deploying any docker-compose app to a VPS managed by Coolify.
 license: Internal
 ---
 
 # Coolify Deploy
 
-Coolify es un PaaS self-hosted (alternativa a Vercel/Heroku) que corre sobre tu VPS. Soporta Docker compose, automatic HTTPS via Traefik, DBs (Postgres/Redis/MySQL), y deploys desde Git.
+Coolify is a self-hosted PaaS (alternative to Vercel/Heroku) that runs on your VPS. Supports Docker compose, automatic HTTPS via Traefik, DBs (Postgres/Redis/MySQL), and deploys from Git.
 
-## Arquitectura
+## Architecture
 
 ```
-Coolify Dashboard (UI web)
-   ↓ provisiona
-Docker Compose stacks en /data/coolify/
-   ↓ expuesto via
+Coolify Dashboard (web UI)
+   ↓ provisions
+Docker Compose stacks at /data/coolify/
+   ↓ exposed via
 Traefik (reverse proxy + Let's Encrypt)
-   ↓ resuelve a
+   ↓ resolves to
 <app>.<domain>.com
 ```
 
-## Setup inicial
+## Initial setup
 
 ```bash
-# Instalar Coolify en VPS Hetzner
-# (se hace una vez via SSH al server)
+# Install Coolify on Hetzner VPS
+# (done once via SSH to the server)
 curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
 
-# Acceder a dashboard
-# https://<server-ip>:8000  (cambiar password en primer login)
+# Access dashboard
+# https://<server-ip>:8000  (change password on first login)
 ```
 
-## Deploy de una app nueva
+## Deploying a new app
 
-### 1. Estructura esperada en repo
+### 1. Expected repo structure
 
 ```
-mi-app/
-├── docker-compose.yml          # servicios a deployar
-├── Dockerfile                  # si necesitás build custom
+my-app/
+├── docker-compose.yml          # services to deploy
+├── Dockerfile                  # if you need custom build
 ├── .env.example                # placeholders
 ├── .env                        # gitignored, real values
-└── coolify/                    # opcional, config específica
+└── coolify/                    # optional, app-specific config
     └── post-deploy.sh
 ```
 
-### 2. `docker-compose.yml` compatible Coolify
+### 2. Coolify-compatible `docker-compose.yml`
 
 ```yaml
-# Las imágenes pueden venir de registry o build local
+# Images can come from a registry or local build
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mi-app:latest
+    image: my-app:latest
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=${POSTGRES_URL}     # refs a secrets
+      - DATABASE_URL=${POSTGRES_URL}     # refs to secrets
       - REDIS_URL=${REDIS_URL}
     depends_on:
       - postgres
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`mi-app.example.com`)"
+      - "traefik.http.routers.app.rule=Host(`my-app.example.com`)"
       - "traefik.http.routers.app.entrypoints=websecure"
       - "traefik.http.routers.app.tls.certresolver=letsencrypt"
       - "traefik.http.services.app.loadbalancer.server.port=3000"
@@ -79,56 +79,57 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     labels:
-      - "traefik.enable=false"           # NO expuesto públicamente
+      - "traefik.enable=false"           # NOT exposed publicly
 
 volumes:
   postgres_data:
 ```
 
-**Reglas:**
-- `restart: unless-stopped` siempre.
-- Labels Traefik obligatorios para routing público.
-- DBs internas con `traefik.enable=false`.
-- Secrets solo via env vars referenciadas.
+**Rules:**
 
-### 3. Crear app en Coolify dashboard
+- `restart: unless-stopped` always.
+- Traefik labels required for public routing.
+- Internal DBs with `traefik.enable=false`.
+- Secrets only via referenced env vars.
 
-1. Dashboard → "+ New" → "Resource" → "Application" o "Docker Compose".
+### 3. Create app in Coolify dashboard
+
+1. Dashboard → "+ New" → "Resource" → "Application" or "Docker Compose".
 2. **Source:** Git repo (GitHub/GitLab/self-hosted) + branch.
-3. **Build Pack:** Dockerfile o `docker-compose`.
-4. **Port:** el interno del container (ej `3000`).
-5. **Domain:** configurar dominio + DNS A record al server.
+3. **Build Pack:** Dockerfile or `docker-compose`.
+4. **Port:** the internal container port (e.g. `3000`).
+5. **Domain:** configure domain + DNS A record pointing to the server.
 
 ### 4. Sync env vars
 
-**Manual via dashboard:** Application → Environment Variables → pegar de `.env.example` con valores reales.
+**Manually via dashboard:** Application → Environment Variables → paste from `.env.example` with real values.
 
-**Script automático (iaWorkSpace pattern):**
+**Automatic script (iaWorkSpace pattern):**
 
 ```bash
 # scripts/coolify/sync-env.mjs
-# Lee .env local y lo sube a Coolify via API
-node scripts/coolify/sync-env.mjs --app mi-app
+# Reads local .env and uploads to Coolify via API
+node scripts/coolify/sync-env.mjs --app my-app
 ```
 
-API endpoint: `POST /api/v1/applications/<uuid>/envs` con bearer token.
+API endpoint: `POST /api/v1/applications/<uuid>/envs` with bearer token.
 
 ### 5. Deploy
 
 ```bash
-# Manual desde dashboard: click "Deploy"
-# O via API:
+# Manual from dashboard: click "Deploy"
+# Or via API:
 curl -X POST https://coolify.example.com/api/v1/deploy?uuid=<app-uuid> \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}"
+  -H "Authorization: Bearer ***"
 
-# Auto-deploy en push: configurar webhook en GitHub
+# Auto-deploy on push: configure webhook in GitHub
 # Dashboard → Application → Webhooks → copy URL
 ```
 
-## Comandos útiles
+## Useful commands
 
 ```bash
-# Logs (via SSH al server)
+# Logs (via SSH to the server)
 docker logs -f <container-name>
 docker logs --tail 100 <container-name>
 
@@ -142,7 +143,7 @@ docker restart <container-name>
 # Stats
 docker stats
 
-# Coolify CLI (si está instalado en el server)
+# Coolify CLI (if installed on the server)
 coolify app list
 coolify app logs <name>
 coolify app restart <name>
@@ -150,10 +151,10 @@ coolify app restart <name>
 
 ## Post-deploy hooks
 
-Configurar comando que se ejecuta post-deploy (ej: DB migrations, cache clear):
+Configure a command that runs post-deploy (e.g. DB migrations, cache clear):
 
 ```yaml
-# coolify config o docker-compose healthcheck
+# coolify config or docker-compose healthcheck
 services:
   app:
     # ...
@@ -166,47 +167,47 @@ services:
 ```
 
 ```bash
-# Post-deploy manual (via iaWorkSpace script)
-node scripts/coolify/set-post-deploy.mjs --app mi-app --command "pnpm db:migrate"
+# Manual post-deploy (via iaWorkSpace script)
+node scripts/coolify/set-post-deploy.mjs --app my-app --command "pnpm db:migrate"
 ```
 
-## HTTPS automático
+## Automatic HTTPS
 
-Coolify configura Let's Encrypt automático via Traefik. Solo necesitás:
+Coolify configures Let's Encrypt automatically via Traefik. You only need:
 
-1. DNS A record apuntando al server.
-2. Domain configurado en la app.
-3. Puerto 80 abierto en firewall del VPS.
+1. DNS A record pointing to the server.
+2. Domain configured on the app.
+3. Port 80 open on the VPS firewall.
 
-Para wildcard certs (subdominios múltiples): `*.example.com` con DNS challenge.
+For wildcard certs (multiple subdomains): `*.example.com` with DNS challenge.
 
 ## Multi-service / compose fleet
 
-Para orquestar múltiples apps (iaWorkSpace pattern: `prod/docker-compose.fleet.yml`):
+To orchestrate multiple apps (iaWorkSpace pattern: `prod/docker-compose.fleet.yml`):
 
 ```yaml
-# docker-compose.fleet.yml en /prod/
+# docker-compose.fleet.yml in /prod/
 services:
   traefik:
     image: traefik:v3.0
-    # ... reverse proxy global
+    # ... global reverse proxy
 
   app1:
-    # ... expuesto en app1.example.com
+    # ... exposed at app1.example.com
 
   app2:
-    # ... expuesto en app2.example.com
+    # ... exposed at app2.example.com
 
   postgres:
-    # ... interno
+    # ... internal
 
   redis:
-    # ... interno
+    # ... internal
 ```
 
-Deploy con `docker compose -f docker-compose.fleet.yml up -d`.
+Deploy with `docker compose -f docker-compose.fleet.yml up -d`.
 
-## Backup y restore
+## Backup and restore
 
 ```bash
 # Backup DB
@@ -220,40 +221,40 @@ docker run --rm -v postgres_data:/data -v $(pwd):/backup alpine \
   tar czf /backup/postgres_data.tar.gz /data
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ Olvidar `traefik.enable=false` en DB → expuesta públicamente.
-2. ❌ Hardcodear secrets en compose → usar `${VAR}`.
-3. ❌ No configurar healthcheck → Coolify marca como "healthy" sin verificar.
-4. ❌ Port mismatch entre container y label Traefik → 404.
-5. ❌ DNS no propagado → cert Let's Encrypt falla.
-6. ❌ Coolify token leaked en commit → revocar y reemitir.
-7. ❌ No cleanup de imágenes dangling → disk full.
-8. ❌ Compose con `version: '3'` (deprecated) → usar compose spec v2 sin version.
+1. ❌ Forgetting `traefik.enable=false` on DB → exposed publicly.
+2. ❌ Hardcoding secrets in compose → use `${VAR}`.
+3. ❌ Not configuring healthcheck → Coolify marks as "healthy" without verifying.
+4. ❌ Port mismatch between container and Traefik label → 404.
+5. ❌ DNS not propagated → Let's Encrypt cert fails.
+6. ❌ Coolify token leaked in commit → revoke and reissue.
+7. ❌ No cleanup of dangling images → disk full.
+8. ❌ Compose with `version: '3'` (deprecated) → use compose spec v2 without version.
 
-## Patrones iaWorkSpace
+## iaWorkSpace patterns
 
-- **Stack config central:** `prod/stack.config.mjs` define TODOS los servicios del fleet.
-- **Apps individuales:** `prod/compose.d/<app>.yml` — uno por app, incluido por stack.
-- **Traefik routes:** `prod/traefik/dynamic/routes.yml` — routing declarativo.
-- **Register new app:** `node scripts/prod/register-app.mjs --name mi-app --domain mi-app.example.com`
-- **Generate compose:** `node scripts/prod/generate-compose.mjs` compila fleet + compose.d en `docker-compose.fleet.yml`.
+- **Central stack config:** `prod/stack.config.mjs` defines ALL fleet services.
+- **Individual apps:** `prod/compose.d/<app>.yml` — one per app, included by stack.
+- **Traefik routes:** `prod/traefik/dynamic/routes.yml` — declarative routing.
+- **Register new app:** `node scripts/prod/register-app.mjs --name my-app --domain my-app.example.com`
+- **Generate compose:** `node scripts/prod/generate-compose.mjs` compiles fleet + compose.d into `docker-compose.fleet.yml`.
 - **Status check:** `pnpm containers:status` + `node scripts/prod/status.sh`.
 
-## Variables de entorno típicas
+## Typical environment variables
 
 ```bash
 # .env
 POSTGRES_DB=myapp_prod
 POSTGRES_USER=myapp
-POSTGRES_PASSWORD=<generated-32-chars>
-COOLIFY_TOKEN=<from-dashboard>
+POSTGRES_PASSWORD=***
+COOLIFY_TOKEN=***
 COOLIFY_API_URL=https://coolify.example.com/api/v1
 DOMAIN=example.com
 LETSENCRYPT_EMAIL=admin@example.com
 ```
 
-## Recursos
+## Resources
 
 - [Coolify docs](https://coolify.io/docs)
 - [Coolify API reference](https://coolify.io/docs/api)

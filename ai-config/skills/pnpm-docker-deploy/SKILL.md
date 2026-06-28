@@ -1,33 +1,33 @@
 ---
 name: pnpm-docker-deploy
-description: Fix crítico para pnpm v11 que bloquea build scripts (ERR_PNPM_IGNORED_BUILDS) en Docker con --frozen-lockfile. Aplica a cualquier proyecto pnpm que use paquetes con native bindings (esbuild, sharp, onnxruntime-node, etc.) y se construya en Docker.
+description: Critical fix for pnpm v11 that blocks build scripts (ERR_PNPM_IGNORED_BUILDS) in Docker with --frozen-lockfile. Applies to any pnpm project that uses packages with native bindings (esbuild, sharp, onnxruntime-node, etc.) and builds in Docker.
 license: Internal
 ---
 
 # pnpm + Docker Deploy
 
-## El problema
+## The problem
 
-pnpm v11+ bloquea build scripts de dependencias por defecto (security feature). En Docker con `--frozen-lockfile`, los scripts de paquetes nativos como `esbuild`, `sharp`, `onnxruntime-node`, `@parcel/watcher` no corren → binarios nativos faltantes → app falla al iniciar.
+pnpm v11+ blocks dependency build scripts by default (security feature). In Docker with `--frozen-lockfile`, scripts of native packages such as `esbuild`, `sharp`, `onnxruntime-node`, `@parcel/watcher` do not run → missing native binaries → app fails to start.
 
-## Síntoma
+## Symptom
 
 ```bash
-$ docker build --target prod -t mi-app .
+$ docker build --target prod -t my-app .
 # ... build OK ...
-$ docker run mi-app
+$ docker run my-app
 Error: Cannot find module '/app/node_modules/esbuild/bin/esbuild'
-# o
+# or
 Error: Could not load sharp binding
-# o
+# or
 Error: dlopen(...onnxruntime_node.node...)
 ```
 
-`pnpm install` en local funciona porque interactivo permite aprobar builds. `--frozen-lockfile` no.
+`pnpm install` locally works because interactive mode lets you approve builds. `--frozen-lockfile` does not.
 
-## El fix (4 partes)
+## The fix (4 parts)
 
-### 1. `package.json` — declarar allowed builds
+### 1. `package.json` — declare allowed builds
 
 ```json
 {
@@ -46,61 +46,61 @@ Error: dlopen(...onnxruntime_node.node...)
 }
 ```
 
-### 2. `.npmrc` — habilitar pre/post scripts
+### 2. `.npmrc` — enable pre/post scripts
 
 ```ini
 enable-pre-post-scripts=true
 ```
 
-Belt-and-suspenders: por si `.npmrc` no se respeta en algún contexto.
+Belt-and-suspenders: in case `.npmrc` is not respected in some context.
 
-### 3. `pnpm-lock.yaml` — lockfile settings mandan
+### 3. `pnpm-lock.yaml` — lockfile settings win
 
-pnpm v11 con `--frozen-lockfile` lee los approvals **del lockfile**, no del `.npmrc`. El lockfile debe contener:
+pnpm v11 with `--frozen-lockfile` reads the approvals **from the lockfile**, not from `.npmrc`. The lockfile must contain:
 
 ```yaml
 settings:
   onlyBuiltDependencies:
     - "@clerk/shared"
     - "@parcel/watcher"
-    # ... resto
+    # ... rest
 ```
 
-Cómo regenerar el lockfile con estos settings:
+How to regenerate the lockfile with these settings:
 
 ```bash
 # Local
 pnpm install
 
-# Verificar
+# Verify
 grep -A 20 "^settings:" pnpm-lock.yaml | grep onlyBuiltDependencies
 ```
 
-### 4. `Dockerfile` — copiar `.npmrc` al contexto
+### 4. `Dockerfile` — copy `.npmrc` into the context
 
 ```dockerfile
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 
-# CRÍTICO: copiar .npmrc junto con package.json + lockfile
+# CRITICAL: copy .npmrc along with package.json + lockfile
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm install --frozen-lockfile
 
-# ... resto del build
+# ... rest of the build
 ```
 
-## Dockerfile multi-stage pattern (recomendado)
+## Multi-stage Dockerfile pattern (recommended)
 
 ```dockerfile
-# ─── BASE: instala deps (incluye devDeps para build) ───
+# ─── BASE: install deps (includes devDeps for build) ───
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 RUN pnpm install --frozen-lockfile
 
-# ─── BUILDER: compila la app ───
+# ─── BUILDER: compile the app ───
 FROM base AS builder
 WORKDIR /app
 COPY tsconfig.json ./
@@ -109,7 +109,7 @@ COPY drizzle ./drizzle
 COPY scripts ./scripts
 RUN pnpm build
 
-# ─── PROD: solo runtime deps (NO re-install) ───
+# ─── PROD: runtime deps only (NO re-install) ───
 FROM node:22-bookworm-slim AS prod
 WORKDIR /app
 RUN corepack enable
@@ -126,10 +126,10 @@ EXPOSE 3000
 CMD ["node", "dist/server.js"]
 ```
 
-**Reglas clave:**
-- `--from=base /app/node_modules` copia node_modules YA con scripts ejecutados.
-- `pnpm prune --prod` remueve devDeps.
-- **NO** hacer `pnpm install` en stage prod (re-descarga sin ejecutar scripts).
+**Key rules:**
+- `--from=base /app/node_modules` copies node_modules WITH scripts already executed.
+- `pnpm prune --prod` removes devDeps.
+- **DO NOT** run `pnpm install` in the prod stage (re-downloads without executing scripts).
 
 ## packageManager pin
 
@@ -139,9 +139,9 @@ CMD ["node", "dist/server.js"]
 }
 ```
 
-Para parity con corepack en server (devs y CI usan la misma versión).
+For parity with corepack on the server (devs and CI use the same version).
 
-## Listado completo de paquetes que suelen necesitar build
+## Full list of packages that usually need build
 
 ```json
 "onlyBuiltDependencies": [
@@ -166,46 +166,46 @@ Para parity con corepack en server (devs y CI usan la misma versión).
 ]
 ```
 
-Verificar con:
+Verify with:
 ```bash
 pnpm install 2>&1 | grep "Ignored build scripts"
-# Output ejemplo:
+# Example output:
 # │ esbuild   OK to build
 # │ sharp     OK to build
-# Después de aprobar, salen de la lista.
+# After approval, they leave the list.
 ```
 
-## Para aprobar interactivamente (dev local)
+## To approve interactively (local dev)
 
 ```bash
-pnpm approve-builds    # abre TTY interactivo
-# o
-pnpm install           # te pregunta si querés aprobar
+pnpm approve-builds    # opens interactive TTY
+# or
+pnpm install           # asks if you want to approve
 ```
 
-## Verificación
+## Verification
 
 ```bash
-# 1. Build local (debe pasar sin errores de missing bindings)
+# 1. Local build (must pass without missing binding errors)
 docker build --target prod -t test-app .
-docker run --rm test-app node -e "require('sharp')"  # OK si no throw
+docker run --rm test-app node -e "require('sharp')"  # OK if it does not throw
 
-# 2. Verificar que scripts corrieron
+# 2. Verify that scripts ran
 docker run --rm test-app ls node_modules/esbuild/bin/
-# Debe listar 'esbuild' (binario nativo)
+# Must list 'esbuild' (native binary)
 
-# 3. Verificar lockfile settings
+# 3. Verify lockfile settings
 grep -B 1 -A 15 "^settings:" pnpm-lock.yaml
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ Olvidar copiar `.npmrc` al Dockerfile → fall-back a defaults (sin build scripts).
-2. ❌ `pnpm install --frozen-lockfile` en stage prod sin haber ejecutado scripts antes → binaries faltantes.
-3. ❌ Agregar paquete a `onlyBuiltDependencies` pero NO regenerar lockfile → inconsistente.
-4. ❌ Olvidar `enable-pre-post-scripts=true` en `.npmrc` → pre/post install scripts ignorados.
-5. ❌ Hacer `pnpm install` (sin `--frozen-lockfile`) en CI/prod → drift entre lockfile y deps instaladas.
-6. ❌ No incluir el paquete nuevo en `onlyBuiltDependencies` al añadir dependencia → silent break en build.
+1. ❌ Forgetting to copy `.npmrc` to the Dockerfile → falls back to defaults (no build scripts).
+2. ❌ `pnpm install --frozen-lockfile` in the prod stage without having executed scripts earlier → missing binaries.
+3. ❌ Adding a package to `onlyBuiltDependencies` but NOT regenerating the lockfile → inconsistent.
+4. ❌ Forgetting `enable-pre-post-scripts=true` in `.npmrc` → pre/post install scripts ignored.
+5. ❌ Running `pnpm install` (without `--frozen-lockfile`) in CI/prod → drift between lockfile and installed deps.
+6. ❌ Not including the new package in `onlyBuiltDependencies` when adding a dependency → silent break in build.
 
 ## Pre-commit check
 
@@ -213,13 +213,13 @@ grep -B 1 -A 15 "^settings:" pnpm-lock.yaml
 # .husky/pre-commit
 ! grep -E '"(esbuild|sharp|onnx-runtime-node|@parcel/watcher)"' package.json && \
   ! grep -E '"(esbuild|sharp|onnx-runtime-node|@parcel/watcher)"' pnpm-lock.yaml
-# (warning si solo en package.json sin onlyBuiltDependencies)
+# (warning if only in package.json without onlyBuiltDependencies)
 ```
 
-## Referencia
+## Reference
 
 - [pnpm onlyBuiltDependencies](https://pnpm.io/package_json#pnpmonlybuiltdependencies)
 - [pnpm settings](https://pnpm.io/settings)
 - [pnpm ERR_PNPM_IGNORED_BUILDS](https://github.com/pnpm/pnpm/issues/7254)
-- Skill relacionada: `prod-deploy-verification` (check #1 lockfile, #3 Dockerfile)
-- Skill relacionada: `tanstack-start-coolify-deploy` (patrón completo)
+- Related skill: `prod-deploy-verification` (check #1 lockfile, #3 Dockerfile)
+- Related skill: `tanstack-start-coolify-deploy` (full pattern)
