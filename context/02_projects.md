@@ -1,96 +1,160 @@
 # 02 — Projects
 
-Inventory of active and archived projects. **Keep it updated** when starting new work.
+Inventory of active and archived projects. **All projects live under `/Users/edd/Projects/`.** Two scopes: `eddremonts86/` (personal) and `ei-schilling/` (work).
 
-Discovered by analyzing `/Users/edd/Projects` on 2026-06-28. There are 3 top-level project directories (`ai-os`, `eddremonts86`, `ei-schilling`). The directories below are real, with counts and last-modified dates verified via `stat` and `find`. Stack hints come from `package.json` / `composer.json` / directory name.
+> Discovered by analyzing `/Users/edd/Projects/` on 2026-06-28 via `ls -la`, `find -type f`, `stat -f '%Sm'`, and inspecting `package.json` for stack hints. Counts and dates verified.
 
-## Schilling (employment)
+## Root layout
 
-Work projects. All under `~/Projects/ei-schilling/`.
+```
+/Users/edd/Projects/
+├── ai-os/                          ← AI Operating System (this framework)
+├── eddremonts86/                    ← Personal scope
+└── ei-schilling/                    ← Work scope
+```
 
-| Project | Path | Stack | Status | Last modified | Notes |
-|---|---|---|---|---|---|
-| **wave-template** | `~/Projects/ei-schilling/wave-template/` | Vite + React 19 + TanStack Router + TanStack Query + shadcn/ui + Tailwind v4 + Convex + Netlify + Decap CMS | Active (primary) | Jun 26 13:08 | The Wave template. Headless CMS + Convex backend + Netlify deploy. Has README, .git, package.json. |
-| **kontrakt-manager** | `~/projects/ei-schilling/kontrakt-manager/` | (large repo, 63 files) | Archived candidate | Jun 26 13:08 | Inferred from name: contract management. Needs verification before declaring archived. |
-| **wave-tech-radar** | `~/projects/ei-schilling/wave-tech-radar/` | (medium repo, 20 files) | Active candidate | Jun 26 13:08 | Tech radar companion to wave-template. Smaller, may be auxiliary. |
-| **ia-royalty-validations** | `~/projects/ei-schilling/ia-royalty-validations/` | (medium repo, 35 files) | Active | Jun 26 13:08 | AI royalty validations. Work project. |
+The mapping is:
 
-## Personal — Edd's own repos
+- `eddremonts86/` corresponds to **personal identity** (GitHub: eddremonts86@gmail.com).
+- `ei-schilling/` corresponds to **work identity** (GitHub: ei@schilling.dk).
 
-Under `~/projects/eddremonts86/`.
+## Work — Schilling (employment)
 
-### ai-os (the framework)
+All under `~/Projects/ei-schilling/`.
 
-| Project | Path | Stack | Status | Last modified | Notes |
-|---|---|---|---|---|---|
-| **ai-os** | `~/projects/ai-os/` | Markdown + bash + Python + PowerShell + YAML | Active (this repo) | Jun 27 23:49 | The AI Operating System framework. 13 commits, 1363 files (102 skills, 7 MCP servers, 5 workflows, 3 verifiers, 3 rules, 3 CI workflows, setup for Mac + Windows + Linux). Private repo on GitHub. |
+| Project | Path | Stack (from package.json) | Status | Files | Last modified | Notes |
+|---|---|---|---|---|---|---|
+| **wave-template** | `~/Projects/ei-schilling/wave-template/` | Vite + React 19 + TanStack Router + TanStack Query + shadcn/ui + Tailwind v4 + Convex + Netlify + Decap CMS | **Active (primary)** | (large repo) | Jun 26 13:08 | The Wave template. Headless CMS + Convex backend + Netlify deploy. Has README, package.json, .git. |
+| **kontrakt-manager** | `~/Projects/ei-schilling/kontrakt-manager/` | (medium repo) | candidate | 63 files in root | Jun 26 13:08 | Contract management. Needs verification before declaring active. |
+| **wave-tech-radar** | `~/Projects/ei-schilling/wave-tech-radar/` | (smaller repo) | candidate | 20 files in root | Jun 26 13:08 | Tech radar companion to wave-template. Smaller. |
+| **ia-royalty-validations** | `~/Projects/ei-schilling/ia-royalty-validations/` | (medium repo) | candidate | 35 files in root | Jun 26 13:08 | AI royalty validations. Work project. |
 
-### Personal archive (mostly Drupal/PHP, pre-2024 work)
+To determine which of `kontrakt-manager` / `wave-tech-radar` / `ia-royalty-validations` is actively used vs archived, check git log activity or ask Edd.
 
-These are old personal projects under `~/projects/eddremonts86/`. They are **inactive / archived**: no recent commits, no recent modifications, no package.json (or legacy stack). They live here for historical reference, not for active development.
+## Personal — `eddremonts86/`
 
-| Project | Path | Stack (inferred) | Status | Files | Notes |
-|---|---|---|---|---|---|
-| **Drupal7-ModulesAndTemplates** | `~/projects/eddremonts86/Drupal7-ModulesAndTemplates/` | Drupal 7 + PHP | Archived | 2,295 | Drupal 7 custom modules and templates. Legacy. |
-| **Drupal8-ModulesAndTemplates** | `~/projects/eddremonts86/Drupal8-ModulesAndTemplates/` | Drupal 8 + PHP | archived | 2,781 | Drupal 8 modules and templates. Legacy. |
-| **Drupal8-ProjectManager** | `~/projects/eddremonts86/Drupal8-ProjectManager/` | Drupal 8 + PHP + Composer | archived | 44 | Drupal 8 project manager module. Has composer.json. Legacy. |
-| **ObtoberCMS-and-Laravel5** | `~/projects/eddremonts86/ObtoberCMS-and-Laravel5/` | October CMS + Laravel 5 + PHP | archived | 2,753 | October CMS + Laravel 5 learning projects. Legacy. |
-| **CubaProjects** | `~/projects/eddremonts86/CubaProjects/` | (106,661 files — large repo) | archived | 106,661 | Large legacy project. Worth investigating what it is before deleting. |
-| **Dashboard-** | `~/projects/eddremonts86/Dashboard-/` | (95 files) | archived | 95 | Dashboard project. Name is incomplete. |
-| **Dope-Template** | `~/projects/eddremonts86/Dope-Template/` | (49 files) | archived | 49 | Template project. |
-| **HBO-loginPages** | `~/projects/eddremonts86/HBO-loginPages/` | (69 files) | archived | 69 | HBO login pages — likely a clone/learning project. |
-| **HackerNews** | `~/projects/eddremonts86/HackerNews/` | Node.js + npm | archived | 176 | Hacker News clone. Node project. |
-| **MyXpaces** | `~/projects/eddremonts86/MyXpaces/` | (29 files) | archived | 29 | Small legacy project. |
-| **PHP-cookiesBar** | `~/projects/eddremonts86/PHP-cookiesBar/` | PHP | archived | 120 | Cookies bar implementation in PHP. |
-| **PWAs-wedding** | `~/projects/eddremonts86/PWAs-wedding/` | (182 files) | archived | 182 | Wedding PWA project. |
-| **SnapShots** | `~/projects/eddremonts86/SnapShots/` | Node.js | archived | 215 | Snapshots tool. |
-| **Templates-404Page** | `~/projects/eddremonts86/Templates-404Page/` | (36 files) | archived | 36 | 404 page templates. |
-| **Templete-HTML-CSS-PHP** | `~/projects/eddremonts86/Templete-HTML-CSS-PHP/` | HTML + CSS + PHP | archived | 176 | HTML/CSS/PHP templates. |
+All under `~/Projects/eddremonts86/`. **Mostly legacy (pre-2024).**
 
-### Top-level files in eddremonts86/
+### Active
+
+| Project | Path | Stack | Status | Files | Last modified | Notes |
+|---|---|---|---|---|---|---|
+| **anySolutions** | `~/Projects/eddremonts86/anySolutions/` | Vue 3 + Node + npm (Loyal_Solutions per package.json) | **Active** | 56,866 | Jun 27 19:01 | Last modified Jun 27 — clearly active. Vue/Node project. |
+| **SKILLS-RESEARCH-2026-06-27.md** | `~/Projects/eddremonts86/SKILLS-RESEARCH-2026-06-27.md` | (markdown document) | Active | 1 file | Jun 27 19:37 | Research document Edd created on Jun 27. 118 candidate skills → 20 recommendations. |
+
+### Legacy / archived candidates
+
+These are personal projects from before 2024. All have last-modified Jun 26 12:xx (which is a bulk-import timestamp, not real activity). They are **archived** unless Edd says otherwise.
+
+If any of these turns out to be active (e.g. someone else works on it, or it has unmerged changes), move it back to the "Active" section.
+
+| Project | Path | Stack (inferred) | Files | Notes |
+|---|---|---|---|---|
+| **Drupal7-ModulesAndTemplates** | `~/Projects/eddremonts86/Drupal7-ModulesAndTemplates/` | Drupal 7 + PHP | 2,295 | Drupal 7 modules. Legacy. |
+| **Drupal8-ModulesAndTemplates** | `~/Projects/eddremonts86/Drupal8-ModulesAndTemplates/` | Drupal 8 + PHP | 2,781 | Drupal 8 modules. Legacy. |
+| **Drupal8-ProjectManager** | `~/Projects/eddremonts86/Drupal8-ProjectManager/` | Drupal 8 + PHP + Composer | 44 | Drupal 8 project manager module. Legacy. |
+| **ObtoberCMS-and-Laravel5** | `~/Projects/eddremonts86/ObtoberCMS-and-Laravel5/` | October CMS + Laravel 5 + PHP | 2,753 | October CMS + Laravel 5. Legacy. |
+| **obtover-cms-portfolio** | `~/Projects/eddremonts86/obtover-cms-portfolio/` | (PHP) | 2,623 | October CMS portfolio. Legacy. |
+| **CubaProjects** | `~/Projects/eddremonts86/CubaProjects/` | (mixed) | 106,661 | Large legacy project (CubaProjects). Worth checking what it is. |
+| **bash-automaticGenerators** | `~/Projects/eddremonts86/bash-automaticGenerators/` | (bash) | 51 | Bash script generators. Legacy. |
+| **budget-app** | `~/Projects/eddremonts86/budget-app/` | (mixed) | 928 | Budget app. Legacy. |
+| **builderhunt** | `~/Projects/eddremonts86/builderhunt/` | (mixed) | 102 | Builder hunt project. Legacy. |
+| **chucknorris** | `~/Projects/eddremonts86/chucknorris/` | (mixed) | 92 | Chuck Norris API project. Legacy. |
+| **cloudinaryDemo** | `~/Projects/eddremonts86/cloudinaryDemo/` | (cloud) | 39 | Cloudinary demo. Legacy. |
+| **coolify-test** | `~/Projects/eddremonts86/coolify-test/` | (coolify) | 31 | Coolify test deployment. Legacy. |
+| **countdown-timer** | `~/Projects/eddremonts86/countdown-timer/` | (mixed) | 33 | Countdown timer. Legacy. |
+| **create-hermes-workspace** | `~/Projects/eddremonts86/create-hermes-workspace/` | (node) | 142 | Hermes workspace creator (uncompiled?). Legacy. |
+| **create-hermes-workspace-pkg** | `~/Projects/eddremonts86/create-hermes-workspace-pkg/` | (@edd_remonts/create-hermes-workspace) | 34 | Compiled npm package version of create-hermes-workspace. Legacy. |
+| **Dashboard-** | `~/Projects/eddremonts86/Dashboard-/` | (mixed) | 95 | Dashboard project (name truncated). Legacy. |
+| **damvad** | `~/Projects/eddremonts86/damvad/` | (mixed) | 88 | Damvad project. Legacy. |
+| **dc-multiverse** | `~/Projects/eddremonts86/dc-multiverse/` | (zunzun) | 173 | DC multiverse. Legacy. |
+| **desingSistem** | `~/Projects/eddremonts86/desingSistem/` | (mixed) | 55 | Design system project. Legacy. |
+| **docker-lando-services** | `~/Projects/eddremonts86/docker-lando-services/` | (mixed) | 44 | Docker/Lando services. Legacy. |
+| **Dope-Template** | `~/Projects/eddremonts86/Dope-Template/` | (mixed) | 49 | Dope template. Legacy. |
+| **edd-app-template** | `~/Projects/eddremonts86/edd-app-template/` | (mixed) | 1,007 | Edd's app template. Legacy. |
+| **edd-app-vite** | `~/Projects/eddremonts86/edd-app-vite/` | (edd-app-vite) | 110 | Edd's Vite app. Legacy. |
+| **edd-remonts-dashboard** | `~/Projects/eddremonts86/edd-remonts-dashboard/` | (edd-remonts-dashboard) | 1,024 | Edd's dashboard. Legacy. |
+| **eddremonts** | `~/Projects/eddremonts86/eddremonts/` | (mixed) | 375 | Eddremonts project (root files only). Legacy. |
+| **firstReactProject** | `~/Projects/eddremonts86/firstReactProject/` | (templatebase) | 42 | First React project. Legacy. |
+| **geoLocal** | `~/Projects/eddremonts86/geoLocal/` | (geo-dashboard) | 265 | Geo-localization project. Legacy. |
+| **gifted-perlman-h57dz3** | `~/Projects/eddremonts86/gifted-perlman-h57dz3/` | (lexical-rich-text-example) | 73 | Lexical editor playground. Legacy. |
+| **HackerNews** | `~/Projects/eddremonts86/HackerNews/` | Nuxt (nuxt-app) | 176 | Hacker News clone with Nuxt. Legacy. |
+| **HBO-loginPages** | `~/Projects/eddremonts86/HBO-loginPages/` | (mixed) | 69 | HBO login pages. Legacy. |
+| **hermes-agent** | `~/Projects/eddremonts86/hermes-agent/` | (hermes-agent) | 4,981 | Hermes agent. Legacy (overlaps with ai-os?). |
+| **hermes-flow-smoke-test** | `~/Projects/eddremonts86/hermes-flow-smoke-test/` | (hermes-flow-smoke-test) | 1,001 | Hermes flow smoke test. Legacy. |
+| **hermes-workspace-internal** | `~/Projects/eddremonts86/hermes-workspace-internal/` | (mixed) | 620 | Hermes workspace internal. Legacy. |
+| **hermes-workspace-tour** | `~/Projects/eddremonts86/hermes-workspace-tour/` | (hermes-workspace-tour) | 158 | Hermes workspace tour. Legacy. |
+| **hola-eduardo** | `~/Projects/eddremonts86/hola-eduardo/` | (hola-eduardo) | 740 | Hola Eduardo project. Legacy. |
+| **iaWorkSpace** | `~/Projects/eddremonts86/iaWorkSpace/` | (workspace-security-tools) | 3,302 | IA workspace security tools. Legacy. |
+| **invoiceCalc** | `~/Projects/eddremonts86/invoiceCalc/` | (invoice-calculator) | 76 | Invoice calculator. Legacy. |
+| **js-oddsCalculator** | `~/Projects/eddremonts86/js-oddsCalculator/` | (mixed) | 39 | JS odds calculator. Legacy. |
+| **letter_pilot** | `~/Projects/eddremonts86/letter_pilot/` | (letterpilot) | 61 | Letter pilot. Legacy. |
+| **mdxViewer** | `~/Projects/eddremonts86/mdxViewer/` | (mdxviewer) | 418 | MDX viewer. Legacy. |
+| **musicFilter** | `~/Projects/eddremonts86/musicFilter/` | (musicfilter) | 108 | Music filter. Legacy. |
+| **MyXpaces** | `~/Projects/eddremonts86/MyXpaces/` | (mixed) | 29 | MyXpaces project. Legacy. |
+| **next-clerck** | `~/Projects/eddremonts86/next-clerck/` | (clerk_example) | 73 | Next.js + Clerk example. Legacy. |
+| **npmPakage** | `~/Projects/eddremonts86/npmPakage/` | (schilling-widgets-system) | 9,186 | schilling-widgets-system npm package. Legacy. |
+| **nuxt-3-zunzun** | `~/Projects/eddremonts86/nuxt-3-zunzun/` | (?) | 42 | Nuxt 3 zunzun. Legacy. |
+| **PHP-cookiesBar** | `~/Projects/eddremonts86/PHP-cookiesBar/` | (PHP) | 120 | Cookies bar in PHP. Legacy. |
+| **pokemon-index** | `~/Projects/eddremonts86/pokemon-index/` | (pokemon-index) | 96 | Pokémon index. Legacy. |
+| **porfolio** | `~/Projects/eddremonts86/porfolio/` | (vite-project) | 457 | Portfolio (vite). Legacy. |
+| **portfolio** | `~/Projects/eddremonts86/portfolio/` | (portfolio) | 103 | Portfolio. Legacy. |
+| **project-proposal** | `~/Projects/eddremonts86/project-proposal/` | (schilling-new) | 257 | Project proposal (schilling-new). Legacy. |
+| **PWAs-wedding** | `~/Projects/eddremonts86/PWAs-wedding/` | (mixed) | 182 | Wedding PWA. Legacy. |
+| **react-landing-page** | `~/Projects/eddremonts86/react-landing-page/` | (test) | 51 | React landing page (test). Legacy. |
+| **react-query-plus-axios** | `~/Projects/eddremonts86/react-query-plus-axios/` | (react-query-example) | 53 | React Query + Axios example. Legacy. |
+| **react-table-reusable** | `~/Projects/eddremonts86/react-table-reusable/` | (react-table) | 58 | Reusable React table. Legacy. |
+| **register_example** | `~/Projects/eddremonts86/register_example/` | (interactive-table-mvp) | 161 | Register example (interactive-table-mvp). Legacy. |
+| **sass-template** | `~/Projects/eddremonts86/sass-template/` | (sass-edd-template-monorepo) | 762 | SASS template. Legacy. |
+| **schilling-widgets-demo-1** | `~/Projects/eddremonts86/schilling-widgets-demo-1/` | (schilling-widgets-demo) | 52 | Schilling widgets demo. Legacy. |
+| **select-date-infinite** | `~/Projects/eddremonts86/select-date-infinite/` | (my-v0-project) | 181 | Select date infinite (v0 project). Legacy. |
+| **SnapShots** | `~/Projects/eddremonts86/SnapShots/` | (snapshot) | 215 | Snapshots tool. Legacy. |
+| **supersonic-calculator** | `~/Projects/eddremonts86/supersonic-calculator/` | (supersonic-calculator) | 1,004 | Supersonic calculator. Legacy. |
+| **tanstack-base-project** | `~/Projects/eddremonts86/tanstack-base-project/` | (my-badget) | 101 | TanStack base project (my-badget). Legacy. |
+| **tanstack-template** | `~/Projects/eddremonts86/tanstack-template/` | (tanstack-template) | 920 | TanStack template. Legacy. |
+| **template-myWedding** | `~/Projects/eddremonts86/template-myWedding/` | (mixed) | 164 | Wedding template. Legacy. |
+| **Templates-404Page** | `~/Projects/eddremonts86/Templates-404Page/` | (mixed) | 36 | 404 page templates. Legacy. |
+| **Templete-HTML-CSS-PHP** | `~/Projects/eddremonts86/Templete-HTML-CSS-PHP/` | HTML + CSS + PHP | 176 | HTML/CSS/PHP templates. Legacy. |
+| **To-Do** | `~/Projects/eddremonts86/To-Do/` | (clerk-todo) | 86 | Clerk-powered todo. Legacy. |
+| **voice-prompt-cleaner** | `~/Projects/eddremonts86/voice-prompt-cleaner/` | (voice-prompt-cleaner) | 91 | Voice prompt cleaner. Legacy. |
+| **vue-AWSIntegration** | `~/Projects/eddremonts86/vue-AWSIntegration/` | (MterialD) | 62 | Vue + AWS integration. Legacy. |
+| **vue-Carrusel** | `~/Projects/eddremonts86/vue-Carrusel/` | (carrusell) | 71 | Vue carousel. Legacy. |
+| **vue-Memes** | `~/Projects/eddremonts86/vue-Memes/` | (memes-graphic-visualisation) | 62 | Vue memes generator. Legacy. |
+| **vue-monosolutiosapps** | `~/Projects/eddremonts86/vue-monosolutiosapps/` | (vue_plus_vuetify) | 57 | Vue + Vuetify monorepo. Legacy. |
+| **vue-NordsenseApp** | `~/Projects/eddremonts86/vue-NordsenseApp/` | (unitest) | 51 | Vue Nordsense app. Legacy. |
+| **WindowsTerminal-ConfigurationGenerator** | `~/Projects/eddremonts86/WindowsTerminal-ConfigurationGenerator/` | (terminal_ettings_generator) | 69 | Windows Terminal config generator. Legacy. |
+| **xpaces-nuxt-version** | `~/Projects/eddremonts86/xpaces-nuxt-version/` | (nuxt-app) | 161 | Xpaces Nuxt version. Legacy. |
+| **youtube-code-challenges** | `~/Projects/eddremonts86/youtube-code-challenges/` | (react-test-cases) | 74 | YouTube code challenges (React). Legacy. |
+
+### Top-level files in `eddremonts86/`
 
 | File | Notes |
 |---|---|
-| `SKILLS-RESEARCH-2026-06-27.md` | A research document Edd created on Jun 27 with the analysis of 118 candidate skills, narrowed to 20 recommendations. Reference for future skill curation. |
+| `SKILLS-RESEARCH-2026-06-27.md` | Active. Research document Edd created on Jun 27 with the analysis of 118 candidate skills, narrowed to 20 recommendations. Reference for future skill curation. |
 
-## Personal — Other locations
+## Conventions (CORRECTED)
 
-There are also projects under `~/code/personal/` (mentioned in the original `02_projects.md` draft) and `~/code/work/` (for Schilling). The current analysis only covered `/Users/edd/Projects/` (top-level). If Edd wants those included, run analysis on `~/code/personal/` and `~/code/work/`.
+- **All projects MUST live under `/Users/edd/Projects/`** (not `~/code/personal/` or `~/code/work/`).
+- **`eddremonts86/` = personal scope** (GitHub: eddremonts86@gmail.com).
+- **`ei-schilling/` = work scope** (GitHub: ei@schilling.dk).
+- New project creation:
+  1. `cd ~/Projects/<scope>/`
+  2. `git clone <repo> <name>/` or `mkdir <name>/ && git init`
+  3. Add row to this file (in the appropriate section).
+- Project deletion (carefully): see `rules/ask_before_doing.md`. The legacy projects above are candidates for archival but **NOT deleted yet** because that decision requires confirmation.
 
-## How to update this file
+## Notes
 
-When you start a new project:
+The `~/code/personal/` and `~/code/work/` directories mentioned in earlier AI-OS drafts do NOT exist or are empty (`/Users/edd/code/personal/` and `/Users/edd/code/work/` are empty placeholder dirs from earlier setup, last modified Jun 26 11:26 with 64 bytes each). All work happens in `/Users/edd/Projects/`.
 
-1. **Create the directory** under `~/Projects/<work-or-personal>/<name>/`.
-2. **Add a row** to the appropriate section above.
-3. **Set status** to `Active` if working on it, `Archived` if not.
-4. **Update `Last modified`** column when working on it (verify via `stat`).
+The git `includeIf` config in `~/.gitconfig` may still reference the old `~/code/work/` and `~/code/personal/` paths. **TODO:** update `.gitconfig` so that identity switching works for the actual paths (`/Users/edd/Projects/ei-schilling/*` → work, `/Users/edd/Projects/eddremonts86/*` → personal).
 
-When you archive a project:
+## How to keep this updated
 
-1. Move it to `~/Projects/<scope>/_archive/` (create `_archive/` if needed).
-2. Update the row's `Status` to `Archived`.
-3. Update the `Last modified` to the archive date.
+After creating or archiving a project:
 
-When you delete a project (be careful — git history matters):
-
-1. Confirm with the user (see `rules/ask_before_doing.md`).
-2. `git remote -v` to confirm no remote exists.
-3. `rm -rf` the directory.
-4. Remove the row from this file.
-
-## Notes for future analysis
-
-This file was populated by analyzing `/Users/edd/Projects/` with `ls -la`, `find -type d`, `find -type f`, `stat`, and inspecting `package.json` / `composer.json` for stack hints. If you need fresh data, re-run:
-
-```bash
-cd ~/Projects
-for d in $(find . -maxdepth 1 -type d ! -name '.*'); do
-  echo "=== $d ==="
-  cd "$d"
-  echo "  Git: $(test -d .git && echo YES || echo NO)"
-  echo "  Last: $(stat -f '%Sm' . | head -c 19)"
-  echo "  Pkg: $(test -f package.json && cat package.json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("name","?"))' || echo NO)"
-  echo "  Remote: $(git remote get-url origin 2>/dev/null || echo none)"
-done
-```
+1. Add a row to the appropriate section.
+2. Mark `Status` as `Active`, `Archived`, or `candidate`.
+3. Update `Files` count via `find <path> -type f | wc -l`.
+4. Update `Last modified` via `stat -f '%Sm' <path>`.
+5. Get `Stack` from `cat <path>/package.json | python3 -c 'import json,sys; print(json.load(sys.stdin)["name"])'`.
