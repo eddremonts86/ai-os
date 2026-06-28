@@ -1,14 +1,14 @@
 ---
 name: release-it-framework
-description: Framework production-ready inspirado en "Release It!" 2nd Edition (Michael Nygard). Cubre stability patterns (circuit breaker, bulkhead, timeout, retry), capacity planning, deployment strategies (blue-green, canary, feature flags), health/observability, chaos engineering.
+description: Production-ready framework inspired by "Release It!" 2nd Edition (Michael Nygard). Covers stability patterns (circuit breaker, bulkhead, timeout, retry), capacity planning, deployment strategies (blue-green, canary, feature flags), health/observability, chaos engineering.
 license: MIT
 ---
 
 # Release-It Framework
 
-Referencia compacta del libro "Release It! 2nd Edition" de Michael Nygard. Patrones de estabilidad para sistemas production-ready.
+Compact reference of the book "Release It! 2nd Edition" by Michael Nygard. Stability patterns for production-ready systems.
 
-## Estructura del framework (6 áreas)
+## Framework structure (6 areas)
 
 1. Stability Anti-patterns
 2. Stability Patterns
@@ -19,21 +19,21 @@ Referencia compacta del libro "Release It! 2nd Edition" de Michael Nygard. Patro
 
 ## 1. Stability Anti-patterns
 
-| Anti-pattern | Síntoma |
+| Anti-pattern | Symptom |
 |---|---|
-| **Integration points are the #1 cause of outages** | Llamadas a APIs externas, DBs, services. Fallan, son lentas, cambian formato. |
-| **Cascading failures** | Un componente lento hace que otros esperen → thread pool exhaustion → todo se cae. |
-| **Slow responses** | 1000ms en lugar de 100ms → users hacen más clicks → más requests → overload. |
-| **Unbounded result sets** | Query sin LIMIT → 10M records → OOM. |
-| **Blocked threads** | Sockets esperando, threads blocked → throughput cae a 0. |
-| **Self-denial attacks** | Tu propio código DoS-ea tu sistema (N+1 queries, recursive calls, hot loops). |
-| **Scaling effects** | Load balancer con sticky sessions → un nodo saturado. |
+| **Integration points are the #1 cause of outages** | Calls to external APIs, DBs, services. They fail, are slow, change format. |
+| **Cascading failures** | One slow component makes others wait → thread pool exhaustion → everything falls over. |
+| **Slow responses** | 1000ms instead of 100ms → users click more → more requests → overload. |
+| **Unbounded result sets** | Query without LIMIT → 10M records → OOM. |
+| **Blocked threads** | Sockets waiting, threads blocked → throughput drops to 0. |
+| **Self-denial attacks** | Your own code DoS-es your system (N+1 queries, recursive calls, hot loops). |
+| **Scaling effects** | Load balancer with sticky sessions → one saturated node. |
 | **Unbalanced capacities** | Frontend 100 RPS, backend 10 RPS. |
-| **Untested recovery** | Restart nunca probado, failover solo en disaster. |
+| **Untested recovery** | Restart never tested, failover only during disaster. |
 
 ## 2. Stability Patterns
 
-### Circuit Breaker (3 estados)
+### Circuit Breaker (3 states)
 
 ```
 CLOSED (normal) ──failures > threshold──> OPEN (block all)
@@ -64,7 +64,7 @@ const result = await breaker.fire(params);
 
 ### Bulkhead
 
-Aislar recursos para que un fallo no drene todo.
+Isolate resources so one failure doesn't drain everything.
 
 ```typescript
 // Thread pool separate per integration
@@ -85,22 +85,22 @@ const dbPools = {
 ### Timeout
 
 ```typescript
-// Connect timeout (más corto)
+// Connect timeout (shorter)
 const connectTimeout = 1000;
 
-// Read timeout (más largo)
+// Read timeout (longer)
 const readTimeout = 3000;
 
-// NUNCA sin timeout
-const response = await fetch(url);  // ❌ puede colgarse forever
+// NEVER without a timeout
+const response = await fetch(url);  // ❌ can hang forever
 
-// SIEMPRE con timeout
+// ALWAYS with a timeout
 const response = await fetch(url, { 
   signal: AbortSignal.timeout(readTimeout) 
 });
 ```
 
-### Retry con backoff
+### Retry with backoff
 
 ```typescript
 async function retry<T>(fn: () => Promise<T>, opts = {}): Promise<T> {
@@ -127,7 +127,7 @@ async function retry<T>(fn: () => Promise<T>, opts = {}): Promise<T> {
   throw new Error('unreachable');
 }
 
-// Retry budget: max retries en ventana de tiempo
+// Retry budget: max retries in a time window
 class RetryBudget {
   private remaining: number;
   
@@ -148,10 +148,10 @@ class RetryBudget {
 
 ### Steady State
 
-Asegurar que cada operación deja el sistema en estado consistente.
+Ensure every operation leaves the system in a consistent state.
 
 ```typescript
-// Saga pattern para distributed transactions
+// Saga pattern for distributed transactions
 async function createOrderSaga(data) {
   try {
     const order = await orders.create(data);
@@ -172,7 +172,7 @@ async function createOrderSaga(data) {
 
 ### Let It Crash
 
-Aceptar que van a fallar. Reiniciar rápido en vez de intentar recover.
+Accept that things will fail. Restart fast instead of trying to recover.
 
 ```typescript
 // Erlang-style supervisor
@@ -187,7 +187,7 @@ process.on('uncaughtException', (err) => {
 
 ### Handshaking
 
-El receiver le dice al sender "estoy listo para más".
+The receiver tells the sender "I'm ready for more".
 
 ```typescript
 // Client signals "I'm overwhelmed" via 503 + Retry-After header
@@ -202,15 +202,15 @@ app.use((req, res, next) => {
 
 ## 3. Capacity & Availability
 
-### Tipos de tests
+### Types of tests
 
-| Tipo | Propósito | Duración |
+| Type | Purpose | Duration |
 |---|---|---|
-| **Load test** | Medir performance bajo carga esperada | 30 min |
-| **Stress test** | Encontrar punto de quiebre | 1h |
-| **Soak test** | Detectar memory leaks, slow degradation | 24-72h |
-| **Spike test** | Validar respuesta a picos súbitos | 15 min |
-| **Capacity test** | Determinar max throughput sostenible | 1-2h |
+| **Load test** | Measure performance under expected load | 30 min |
+| **Stress test** | Find the breaking point | 1h |
+| **Soak test** | Detect memory leaks, slow degradation | 24-72h |
+| **Spike test** | Validate response to sudden spikes | 15 min |
+| **Capacity test** | Determine max sustainable throughput | 1-2h |
 
 ### Universal Scalability Law (USL)
 
@@ -218,21 +218,21 @@ app.use((req, res, next) => {
 Throughput(N) = N / (1 + α(N-1) + βN(N-1))
 ```
 
-- N = número de nodos
+- N = number of nodes
 - α = contention (locks, shared resources)
-- β = coherence (overhead de coordinación)
+- β = coherence (coordination overhead)
 
-Lección: doblar nodos NO duplica throughput. Hay punto óptimo.
+Lesson: doubling nodes does NOT double throughput. There is an optimal point.
 
 ### Connection pools
 
 ```typescript
-// Pool size basado en throughput, no en CPU cores
-// Regla: pool = (target_throughput × avg_query_time) × 1.5
+// Pool size based on throughput, not CPU cores
+// Rule: pool = (target_throughput × avg_query_time) × 1.5
 
 // PostgreSQL
 const pool = new Pool({
-  max: 20,                    // calculado, no default
+  max: 20,                    // calculated, not default
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
@@ -240,7 +240,7 @@ const pool = new Pool({
 // HTTP keep-alive agent
 const agent = new http.Agent({
   keepAlive: true,
-  maxSockets: 50,             // limitar concurrencia
+  maxSockets: 50,             // limit concurrency
   maxFreeSockets: 10,
 });
 ```
@@ -290,7 +290,7 @@ const agent = new http.Agent({
 
 ### Feature Flags
 
-Ver skill `shipping-and-launch` para detalle completo.
+See skill `shipping-and-launch` for full detail.
 
 ### Schema migrations (expand-contract)
 
@@ -310,17 +310,17 @@ UPDATE users SET new_email = email WHERE new_email IS NULL;
 ALTER TABLE users DROP COLUMN email;
 ```
 
-**Nunca** deployes destructive schema change en el mismo release que el código que la usa.
+**Never** deploy a destructive schema change in the same release as the code that uses it.
 
 ## 5. Health & Observability
 
 ### Deep vs Shallow health checks
 
 ```typescript
-// Shallow: solo "el proceso está vivo"
+// Shallow: only "the process is alive"
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-// Deep: verifica dependencias
+// Deep: verifies dependencies
 app.get('/health/deep', async (req, res) => {
   const checks = {
     app: { ok: true },
@@ -352,7 +352,7 @@ app.get('/health/deep', async (req, res) => {
 
 ### Three Pillars
 
-1. **Logs** — eventos discretos con timestamp + correlation ID
+1. **Logs** — discrete events with timestamp + correlation ID
 2. **Metrics** — counters, gauges, histograms (Prometheus, Datadog)
 3. **Traces** — request flow across services (OpenTelemetry, Jaeger)
 
@@ -371,24 +371,25 @@ app.get('/health/deep', async (req, res) => {
 ### SLIs, SLOs, SLAs
 
 ```yaml
-# SLI (Service Level Indicator) — la métrica
+# SLI (Service Level Indicator) — the metric
 availability_sli: "successful_requests / total_requests"
 
-# SLO (Service Level Objective) — el target
+# SLO (Service Level Objective) — the target
 availability_slo: 0.999   # 99.9% (three nines)
 
-# SLA (Service Level Agreement) — el contrato con consecuencias
-availability_sla: 0.99    # 99% (menor que SLO = headroom)
+# SLA (Service Level Agreement) — the contract with consequences
+availability_sla: 0.99    # 99% (lower than SLO = headroom)
 ```
 
 **Error budget:**
+
 - SLO = 99.9% → budget = 0.1% = 43.2 min downtime/month
-- Si se gasta el budget, freeze deploys hasta el próximo mes
+- If the budget is spent, freeze deploys until next month
 
 ### Alert on symptoms, not causes
 
 ```yaml
-# ✅ BIEN: alertar sobre user-facing
+# ✅ GOOD: alert on user-facing
 - alert: high_error_rate
   condition: 5xx_rate > 5% for 5min
   severity: page
@@ -397,15 +398,15 @@ availability_sla: 0.99    # 99% (menor que SLO = headroom)
   condition: p95_latency > 2s for 10min
   severity: page
 
-# ❌ MAL: alertar sobre causas internas
+# ❌ BAD: alert on internal causes
 - alert: high_cpu
   condition: cpu > 80%
-  severity: page  # causa, no síntoma
+  severity: page  # cause, not symptom
 ```
 
 ## 6. Chaos Engineering
 
-### Principios (Principles of Chaos)
+### Principles of Chaos
 
 1. **Build a hypothesis** around steady state behavior
 2. **Vary real-world events** (server crash, network latency, disk full)
@@ -413,7 +414,7 @@ availability_sla: 0.99    # 99% (menor que SLO = headroom)
 4. **Automate experiments** to run continuously
 5. **Minimize blast radius** (start small, canary the chaos)
 
-### Proceso
+### Process
 
 ```markdown
 ## Experiment: kill -9 one API node during peak load
@@ -451,26 +452,26 @@ availability_sla: 0.99    # 99% (menor que SLO = headroom)
 
 ### GameDays
 
-Scheduled chaos experiments con todo el equipo presente para aprender y mejorar respuesta.
+Scheduled chaos experiments with the whole team present to learn and improve response.
 
 ## Quick diagnostic table
 
-| Síntoma | Probable causa | Fix |
+| Symptom | Probable cause | Fix |
 |---|---|---|
-| Sudden slowdown | Memory leak, GC pressure, DB slow query | Heap snapshot, slow query log |
+| Sudden slowdown | Memory leak, GC pressure, slow DB query | Heap snapshot, slow query log |
 | Errors spiking | External API down, DB connection issues | Circuit breaker, check integration points |
 | Throughput plateaus | Connection pool exhaustion, thread blocking | Pool size, async I/O |
 | Crashes on deploy | Bad config, missing dependency | Smoke tests, health check |
 | Data inconsistency | Race condition, no transaction | Pessimistic lock, transaction |
 
-## Recursos
+## Resources
 
 - [Release It! 2nd Edition — Michael Nygard](https://pragprog.com/titles/mnee2/release-it-second-edition/)
-- [USL公式](https://en.wikipedia.org/wiki/Universal_scalability_law)
+- [USL formula](https://en.wikipedia.org/wiki/Universal_scalability_law)
 - [Opossum (Node circuit breaker)](https://nodeshift.dev/opossum/)
 - [Gremlin docs](https://www.gremlin.com/docs/)
 - [Google SRE Book](https://sre.google/sre-book/table-of-contents/)
-- Skill relacionada: `shipping-and-launch` (deploy + rollback)
-- Skill relacionada: `ci-cd-and-automation` (pipeline)
-- Skill relacionada: `prod-deploy-verification` (pre-deploy checks)
-- Skill relacionada: `owasp-security` (security patterns)
+- Related skill: `shipping-and-launch` (deploy + rollback)
+- Related skill: `ci-cd-and-automation` (pipeline)
+- Related skill: `prod-deploy-verification` (pre-deploy checks)
+- Related skill: `owasp-security` (security patterns)
