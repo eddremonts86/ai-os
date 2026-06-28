@@ -1,5 +1,5 @@
 # setup/verify-windows.ps1
-# Verifica AI-OS en Windows.
+# Verifies AI-OS on Windows.
 
 $ErrorActionPreference = "Stop"
 
@@ -20,10 +20,10 @@ $fail = 0
 # ─── 1. AI-OS path ───
 Section "1. AI-OS path"
 if ((Test-Path $AIOSRoot) -and (Test-Path "$AIOSRoot\CLAUDE.md")) {
-    Ok "AI-OS en $AIOSRoot"
+    Ok "AI-OS at $AIOSRoot"
     $pass++
 } else {
-    Err "AI-OS no encontrado en $AIOSRoot"
+    Err "AI-OS not found at $AIOSRoot"
     $fail++
 }
 
@@ -33,7 +33,7 @@ $dotfiles = @(".gitignore_global")
 foreach ($df in $dotfiles) {
     $path = "$HomeDir\$df"
     if ((Test-Path $path) -and (-not (Get-Item $path -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
-        Warn "  $df no es symlink"
+        Warn "  $df is not a symlink"
     } elseif (Test-Path $path) {
         $target = (Get-Item $path -Force).Target
         if ($target) {
@@ -46,8 +46,8 @@ foreach ($df in $dotfiles) {
     }
 }
 
-# ─── 3. Skills en 5 CLIs ───
-Section "3. Skills globales (5 CLIs)"
+# ─── 3. Skills in 5 CLIs ───
+Section "3. Global skills (5 CLIs)"
 $cliDirs = @(
     "$HomeDir\.claude\skills",
     "$HomeDir\.codex\skills",
@@ -62,7 +62,7 @@ foreach ($cliDir in $cliDirs) {
         Ok "  ~/$label : $count skills"
         $pass++
     } else {
-        Err "  $cliDir no existe"
+        Err "  $cliDir does not exist"
         $fail++
     }
 }
@@ -88,7 +88,7 @@ if ($actual -eq $expected) {
     Ok "$actual/$expected superpowers skills OK"
     $pass++
 } else {
-    Err "Solo $actual/$expected superpowers skills instaladas"
+    Err "Only $actual/$expected superpowers skills installed"
     $fail++
 }
 
@@ -96,21 +96,21 @@ if ($actual -eq $expected) {
 Section "5. PowerShell profile"
 $profilePath = $PROFILE.CurrentUserAllHosts
 if (Test-Path $profilePath) {
-    Ok "PowerShell profile existe"
+    Ok "PowerShell profile exists"
     $pass++
 } else {
-    Warn "PowerShell profile no creado (correr install-windows.ps1)"
+    Warn "PowerShell profile not created (run install-windows.ps1)"
 }
 
-# ─── Resumen ───
-Section "Resumen"
+# ─── Summary ───
+Section "Summary"
 Write-Host ""
-Log "Pasados: $pass"
+Log "Passed: $pass"
 if ($fail -gt 0) {
-    Err "Fallados: $fail"
+    Err "Failed: $fail"
     exit 1
 } else {
-    Ok "Fallados: 0"
+    Ok "Failed: 0"
     Write-Host ""
     Ok "AI-OS is correctly installed. 🎉"
     exit 0

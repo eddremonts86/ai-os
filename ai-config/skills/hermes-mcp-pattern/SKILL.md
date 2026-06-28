@@ -1,14 +1,14 @@
 ---
 name: hermes-mcp-pattern
-description: Patrones oficiales para desarrollar en hermes-agent — tools, MCP servers (manifest v1), plugins, skills (frontmatter completo con metadata.hermes), testing hermético con scripts/run_tests.sh. Aplica al contribuir al repo NousResearch/hermes-agent o al desarrollar MCP servers/plugins propios.
+description: Official patterns for developing in hermes-agent — tools, MCP servers (manifest v1), plugins, skills (full frontmatter with metadata.hermes), hermetic testing with scripts/run_tests.sh. Applies when contributing to the NousResearch/hermes-agent repo or developing own MCP servers/plugins.
 license: MIT
 ---
 
 # Hermes Agent — Development Patterns
 
-Repo: `/Users/edd/.hermes/hermes-agent/` (clonado, versión 0.17.0). Mantenedor: Nous Research. Esta skill refleja lo que el código real hace, no idealizaciones.
+Repo: `/Users/edd/.hermes/hermes-agent/` (cloned, version 0.17.0). Maintainer: Nous Research. This skill reflects what the actual code does, not idealizations.
 
-## Estructura del repo
+## Repo structure
 
 ```
 hermes-agent/
@@ -24,29 +24,29 @@ hermes-agent/
 │   ├── commands.py        # Slash command registry
 │   ├── config.py          # DEFAULT_CONFIG + env vars
 │   └── main.py            # Entry point argparse
-├── tools/                 # Un archivo por tool
-│   ├── registry.py        # Auto-discovery por AST
+├── tools/                 # One file per tool
+│   ├── registry.py        # Auto-discovery via AST
 │   └── <tool_name>.py
 ├── gateway/
 │   └── platforms/         # Telegram, Discord, etc.
 ├── cron/
 ├── plugins/
-│   ├── <plugin>/          # paquete Python
+│   ├── <plugin>/          # Python package
 │   └── plugin_utils.py    # lazy_singleton, SingletonSlot
-├── skills/                # Bundled (categorizadas)
+├── skills/                # Bundled (categorized)
 │   └── <category>/<skill>/SKILL.md
-├── optional-skills/       # Oficiales no bundled
-├── optional-mcps/         # Catálogo MCP (manifest v1)
-├── tests/                 # conftest.py hermético
+├── optional-skills/       # Official, not bundled
+├── optional-mcps/         # MCP catalog (manifest v1)
+├── tests/                 # hermetic conftest.py
 ├── website/               # Docusaurus
 └── ui-tui/                # Vitest + React 19
 ```
 
 ## Tools — Registry pattern (AST auto-discover)
 
-Hermes **descubre tools automáticamente** buscando `registry.register(...)` en top-level de archivos en `tools/*.py`. NO hay import list manual.
+Hermes **discovers tools automatically** by searching for `registry.register(...)` at top-level of files in `tools/*.py`. There is NO manual import list.
 
-**Patrón por archivo `tools/my_tool.py`:**
+**Pattern per file `tools/my_tool.py`:**
 
 ```python
 import json
@@ -57,12 +57,12 @@ logger = logging.getLogger(__name__)
 
 
 def check_my_tool_requirements() -> bool:
-    """TTL-cache 30s. Probe de deps externas. False → tool oculto."""
-    return bool(...)  # env vars, bins en PATH, daemons
+    """30s TTL-cache. Probe for external deps. False → tool hidden."""
+    return bool(...)  # env vars, bins in PATH, daemons
 
 
 def my_tool_impl(param: str, task_id: str | None = None) -> str:
-    """Handler. DEBE retornar JSON string."""
+    """Handler. MUST return JSON string."""
     try:
         return json.dumps({"result": f"processed {param}"})
     except Exception as e:
@@ -89,56 +89,56 @@ registry.register(
         param=args.get("param", ""), task_id=kw.get("task_id")
     ),
     check_fn=check_my_tool_requirements,
-    requires_env=["MY_API_KEY"],   # solo si aplica
-    is_async=False,                 # True si handler es async
-    description="Tooltip del tool",
+    requires_env=["MY_API_KEY"],   # only if applicable
+    is_async=False,                 # True if handler is async
+    description="Tooltip for the tool",
     emoji="🔧",
 )
 ```
 
-**Reglas duras:**
-- Handler retorna SIEMPRE `json.dumps(...)`. Nunca dict, nunca raise.
-- Errores como `{"error": "..."}` en el JSON.
-- Handler signature: `(args: dict, **kwargs)`. `task_id` viene en `**kwargs` para state per-session.
-- `check_fn` es callable 0-arg → bool. TTL 30s, thread-safe, swallow exceptions → False. `invalidate_check_fn_cache()` para forzar invalidación tras cambios de config.
-- Si `check_fn` retorna False → tool excluido silenciosamente.
-- Async tools: `is_async=True`. Registry bridgea transparente. NO usar `asyncio.run` dentro.
-- NO usar `__init__.py`, `registry.py`, o `mcp_tool.py` como archivos de tool.
+**Hard rules:**
+- Handler ALWAYS returns `json.dumps(...)`. Never dict, never raise.
+- Errors as `{"error": "..."}` in the JSON.
+- Handler signature: `(args: dict, **kwargs)`. `task_id` comes in `**kwargs` for per-session state.
+- `check_fn` is a 0-arg callable → bool. TTL 30s, thread-safe, swallows exceptions → False. `invalidate_check_fn_cache()` to force invalidation after config changes.
+- If `check_fn` returns False → tool excluded silently.
+- Async tools: `is_async=True`. Registry bridges transparently. Do NOT use `asyncio.run` inside.
+- Do NOT use `__init__.py`, `registry.py`, or `mcp_tool.py` as tool files.
 
-**Toolset membership en `toolsets.py`:**
-- `_HERMES_CORE_TOOLS` = bundle default-on para todas las plataformas.
+**Toolset membership in `toolsets.py`:**
+- `_HERMES_CORE_TOOLS` = default-on bundle for all platforms.
 - Standalone toolsets: `{name: {description, tools, includes}}`.
-- Plugins que reemplazan built-ins: `registry.register(override=True)` (opt-in explícito).
+- Plugins that replace built-ins: `registry.register(override=True)` (explicit opt-in).
 
-## Skills — Frontmatter completo
+## Skills — Complete frontmatter
 
-Skills viven en `skills/<category>/<skill-name>/SKILL.md` (bundled) o `optional-skills/<category>/<skill-name>/SKILL.md` (oficiales no incluidas por default). Categorías-multiskill usan `skills/<category>/DESCRIPTION.md` como índice.
+Skills live in `skills/<category>/<skill-name>/SKILL.md` (bundled) or `optional-skills/<category>/<skill-name>/SKILL.md` (official, not included by default). Multi-skill categories use `skills/<category>/DESCRIPTION.md` as index.
 
-**Frontmatter YAML entre `---`:**
+**YAML frontmatter between `---`:**
 
 ```yaml
 ---
-name: my-skill-name              # kebab-case, IGUAL al directorio
+name: my-skill-name              # kebab-case, EQUAL to directory
 description: "When to use this — be specific, drives auto-loading."
 version: 1.0.0                  # semver X.Y.Z
-author: "Jane Doe (jane-doe)"   # humano primero, o "Hermes Agent (adapted from ...)"
+author: "Jane Doe (jane-doe)"   # human first, or "Hermes Agent (adapted from ...)"
 license: MIT
-platforms: [linux, macos, windows]   # omitir = todos
+platforms: [linux, macos, windows]   # omit = all
 metadata:
   hermes:
     tags: [process, debugging]
     related_skills: [other-skill]
-    requires_toolsets: ["web"]      # activation condicional
+    requires_toolsets: ["web"]      # conditional activation
     requires_tools: ["browser_navigate"]
-    fallback_for_toolsets: ["safe"]  # se carga si los requires no están
+    fallback_for_toolsets: ["safe"]  # loaded if requires are missing
     fallback_for_tools: ["browser_navigate"]
-    config: {}                       # config opcional
+    config: {}                       # optional config
     blueprint:                       # automation blueprint
       schedule: "every 1h"
       deliver: telegram
       prompt: "..."
       no_agent: false
-required_environment_variables:      # top-level, opcional
+required_environment_variables:      # top-level, optional
   - name: MY_API_KEY
     prompt: "API Key for ..."
     help: "Get it from https://..."
@@ -146,22 +146,22 @@ required_environment_variables:      # top-level, opcional
 ---
 ```
 
-**Estructura recomendada del cuerpo:**
+**Recommended body structure:**
 1. `# Skill Title`
-2. `## When to Use` (trigger conditions específicas)
-3. `## Quick Reference` (tabla)
-4. `## Procedure` (pasos numerados)
-5. `## Pitfalls` (errores comunes)
-6. `## Verification` (cómo confirmar que funcionó)
+2. `## When to Use` (specific trigger conditions)
+3. `## Quick Reference` (table)
+4. `## Procedure` (numbered steps)
+5. `## Pitfalls` (common mistakes)
+6. `## Verification` (how to confirm it worked)
 
-**Recursos extra:**
-- `references/<topic>.md` — markdown de soporte (cargado on-demand)
-- `templates/<name>.md` — plantillas para output
-- `scripts/<helper>.py` — helpers python (shebang `#!/usr/bin/env python3`)
+**Extra resources:**
+- `references/<topic>.md` — support markdown (loaded on-demand)
+- `templates/<name>.md` — output templates
+- `scripts/<helper>.py` — Python helpers (shebang `#!/usr/bin/env python3`)
 
-## MCP Servers — manifest v1 (opcional-mcps)
+## MCP Servers — manifest v1 (optional-mcps)
 
-Catálogo MCP en `optional-mcps/<nombre>/manifest.yaml`. Presencia en este directorio = aprobación Nous (merge por PR). `manifest_version: 1` al inicio obligatorio.
+MCP catalog in `optional-mcps/<name>/manifest.yaml`. Presence in this directory = Nous approval (merge via PR). `manifest_version: 1` at the start required.
 
 **Schema:**
 
@@ -174,30 +174,30 @@ source: https://github.com/upstream/repo
 
 # Transport
 transport:
-  type: http              # o stdio
+  type: http              # or stdio
   url: https://api.example.com/mcp
-  # o:
+  # or:
   # type: stdio
   # command: npx
   # args: ["-y", "my-mcp"]
-  # (en stdio: ${INSTALL_DIR} se sustituye install-time)
+  # (in stdio: ${INSTALL_DIR} is substituted at install time)
 
 # Auth
 auth:
-  type: api_key           # o oauth, o none
+  type: api_key           # or oauth, or none
   env:
     - name: MY_API_KEY
       prompt: "Enter your API key"
       default: ""
       required: true
       secret: true
-  # o auth.type: oauth (sigue el flow OAuth del provider)
+  # or auth.type: oauth (follows the provider's OAuth flow)
 
-# Install (opcional)
+# Install (optional)
 install:
   type: git
   url: https://github.com/upstream/repo
-  ref: <commit-sha>        # PIN EXACTO — NO branches/tags mutables
+  ref: <commit-sha>        # EXACT PIN — NO mutable branches/tags
   bootstrap:
     - npm install
     - npm run build
@@ -207,34 +207,34 @@ tools:
   default_enabled:
     - search_docs
     - read_file
-  # omitir default_enabled = checklist completo pre-marcado al instalar
+  # omit default_enabled = full checklist pre-checked at install
 
-# Post-install (texto libre)
+# Post-install (free text)
 post_install: |
   Restart Hermes after install.
 ```
 
-**Reglas críticas:**
-- **Pin exacto de git ref** obligatorio (`ref: <sha>`). NO branches, NO tags flotantes.
-- Tags son mutable refs → siempre SHA completo.
-- `default_enabled` opcional. Si la superficie es amplia, dejar unset y curar después.
+**Critical rules:**
+- **Exact git ref pin** required (`ref: <sha>`). NO branches, NO floating tags.
+- Tags are mutable refs → always full SHA.
+- `default_enabled` optional. If the surface is wide, leave unset and curate later.
 
 ## Plugins
 
-Estructura por plugin: `plugins/<plugin-name>/` (paquete Python con `__init__.py`). Subcarpetas típicas: `dashboard/`.
+Structure per plugin: `plugins/<plugin-name>/` (Python package with `__init__.py`). Typical subfolders: `dashboard/`.
 
-**Dashboard plugin requiere:**
+**Dashboard plugin requires:**
 - `plugins/<name>/dashboard/manifest.json` — `{name, label, description, icon, version, tab: {path, position}, entry, css, api}`
-- `plugins/<name>/dashboard/plugin_api.py` — FastAPI `APIRouter()` en `/api/plugins/<name>/`
-- `plugins/<name>/dashboard/dist/index.js` + `dist/style.css` — bundle pre-built
-- Auth: session token middleware del dashboard core
+- `plugins/<name>/dashboard/plugin_api.py` — FastAPI `APIRouter()` at `/api/plugins/<name>/`
+- `plugins/<name>/dashboard/dist/index.js` + `dist/style.css` — pre-built bundle
+- Auth: session token middleware from dashboard core
 
-**Helpers obligatorios en `plugins/plugin_utils.py`:**
+**Required helpers in `plugins/plugin_utils.py`:**
 - `lazy_singleton` — thread-safe lazy singleton
-- `SingletonSlot` — evitar race TOCTOU
+- `SingletonSlot` — avoid TOCTOU race
 
-**Tipos de plugins:**
-- `plugins/memory/<provider>/` — backends de memoria (honcho, mem0, openviking, supermemory)
+**Plugin types:**
+- `plugins/memory/<provider>/` — memory backends (honcho, mem0, openviking, supermemory)
 - `plugins/cron_providers/`
 - `plugins/model-providers/`
 - `plugins/context_engine/`
@@ -243,38 +243,38 @@ Estructura por plugin: `plugins/<plugin-name>/` (paquete Python con `__init__.py
 - `plugins/observability/`
 - `plugins/security-guidance/`
 
-Regla: PR que añade nuevo directorio `plugins/memory/<x>/` se cierra; el provider debe ser repo propio primero.
+Rule: PRs adding a new directory `plugins/memory/<x>/` are closed; the provider must be its own repo first.
 
-## Testing — Patrón hermético
+## Testing — Hermetic pattern
 
-**Runner canónico (NO pytest directo):**
+**Canonical runner (NOT pytest directly):**
 
 ```bash
-scripts/run_tests.sh                    # toda la suite
-scripts/run_tests.sh tests/tools/       # un directorio
-scripts/run_tests.sh tests/tools/test_x.py    # un archivo
+scripts/run_tests.sh                    # full suite
+scripts/run_tests.sh tests/tools/       # one directory
+scripts/run_tests.sh tests/tools/test_x.py    # one file
 scripts/run_tests.sh -v --tb=long       # verbose
 ```
 
-Internamente ejecuta `scripts/run_tests_parallel.py`: **un subprocess `python -m pytest <file>` por archivo** (aislamiento entre archivos sin xdist). Garantiza `TZ=UTC`, `LANG=C.UTF-8`, `PYTHONHASHSEED=0`.
+Internally runs `scripts/run_tests_parallel.py`: **one `python -m pytest <file>` subprocess per file** (isolation between files without xdist). Guarantees `TZ=UTC`, `LANG=C.UTF-8`, `PYTHONHASHSEED=0`.
 
 **`pyproject.toml`:**
 - pytest 9.0.2 + pytest-asyncio 1.3.0
 - `testpaths = ["tests"]`
 - `markers = ["integration: ...", "real_concurrent_gate: ..."]`
-- `addopts = "-m 'not integration'"` (integration excluido por default)
+- `addopts = "-m 'not integration'"` (integration excluded by default)
 
-**`tests/conftest.py` — invariantes herméticas:**
-- Unset de env vars con sufijo credencial (`_API_KEY`, `_TOKEN`, `_SECRET`, `_PASSWORD`, `_CREDENTIALS`, `_ACCESS_KEY`, `_OAUTH_TOKEN`, `_WEBHOOK_SECRET`...) + nombres explícitos AWS/ANTHROPIC.
-- `HERMES_HOME` redirigido a tmpdir por-test.
+**`tests/conftest.py` — hermetic invariants:**
+- Unset env vars with credential suffix (`_API_KEY`, `_TOKEN`, `_SECRET`, `_PASSWORD`, `_CREDENTIALS`, `_ACCESS_KEY`, `_OAUTH_TOKEN`, `_WEBHOOK_SECRET`...) + explicit AWS/ANTHROPIC names.
+- `HERMES_HOME` redirected to tmpdir per-test.
 - `PYTHONHASHSEED=0`.
-- **Nunca** redirigir `HOME` (rompe subprocess en CI).
+- **Never** redirect `HOME` (breaks subprocess in CI).
 
 **Layout:**
 ```
 tests/
 ├── conftest.py
-├── fixtures/         # datos (plugins/, etc.)
+├── fixtures/         # data (plugins/, etc.)
 ├── fakes/            # stubs (fake_ha_server.py, etc.)
 ├── agent/
 ├── cli/
@@ -282,28 +282,28 @@ tests/
 ├── tools/
 ├── gateway/
 ├── plugins/
-├── integration/      # excluido por default
+├── integration/      # excluded by default
 ├── e2e/
 ├── ci/
 └── stress/
 ```
 
-Naming: `test_*.py`. Bugfix tests con issue number: `test_delegate_cascade_49148.py`.
+Naming: `test_*.py`. Bugfix tests with issue number: `test_delegate_cascade_49148.py`.
 
 **Linters:**
-- ruff==0.15.10 con `select = ["PLW1514"]` (preview enabled)
+- ruff==0.15.10 with `select = ["PLW1514"]` (preview enabled)
 - ty==0.0.21 (Astral type-checker)
 - `per-file-ignores = {tests/** = ["PLW1514"]}`
 
-**Vitest para TS:**
-- `ui-tui/` con `npm test` = `vitest run`
+**Vitest for TS:**
+- `ui-tui/` with `npm test` = `vitest run`
 
-**Windows portabilidad:**
-- `scripts/check-windows-footguns.py` — lint pre-push
+**Windows portability:**
+- `scripts/check-windows-footguns.py` — pre-push lint
 
 ## Slash commands
 
-`hermes_cli/commands.py` → `COMMAND_REGISTRY` (lista de `CommandDef`). Todos los consumers (help, autocomplete, Telegram menu, Discord mapping) derivan del registry automáticamente.
+`hermes_cli/commands.py` → `COMMAND_REGISTRY` (list of `CommandDef`). All consumers (help, autocomplete, Telegram menu, Discord mapping) derive from the registry automatically.
 
 ```python
 COMMAND_REGISTRY.append(CommandDef(
@@ -314,27 +314,27 @@ COMMAND_REGISTRY.append(CommandDef(
 ))
 ```
 
-Handler en `cli.py → process_command()`. Gateway handler en `gateway/run.py` si aplica.
+Handler in `cli.py → process_command()`. Gateway handler in `gateway/run.py` if applicable.
 
 ## Docs (Docusaurus 3.9.2 + i18n)
 
 Stack: Docusaurus 3.9.2 + `@docusaurus/preset-classic` + `@docusaurus/theme-mermaid` + `@easyops-cn/docusaurus-search-local`. Node ≥20. React 19.
 
-**i18n:** locales `en` (default) + `zh-Hans` en `website/i18n/zh-Hans/`.
+**i18n:** locales `en` (default) + `zh-Hans` in `website/i18n/zh-Hans/`.
 
-**Frontmatter por página:**
+**Frontmatter per page:**
 ```yaml
 ---
 sidebar_position: 1
 title: "My Page Title"
 description: "SEO + preview text."
-sidebar_label: "Short label"  # opcional
-hide_title: false              # opcional
-hide_table_of_contents: false # opcional
+sidebar_label: "Short label"  # optional
+hide_title: false              # optional
+hide_table_of_contents: false # optional
 ---
 ```
 
-**Sidebar en `website/sidebars.ts`** (declarativo, no autogenerado):
+**Sidebar in `website/sidebars.ts`** (declarative, not autogenerated):
 ```ts
 {
   type: 'category',
@@ -344,67 +344,67 @@ hide_table_of_contents: false # opcional
 }
 ```
 
-**Categorías con `_category_.json`** para autogenerar índice:
+**Categories with `_category_.json`** to autogenerate index:
 ```json
 {"label": "Getting Started", "position": 1, "link": {"type": "generated-index", "description": "..."}, "collapsible": true, "collapsed": false}
 ```
 
-Secciones: `getting-started/` (pos 1), `guides/` (pos 2), `developer-guide/` (pos 3), `reference/` (pos 4).
+Sections: `getting-started/` (pos 1), `guides/` (pos 2), `developer-guide/` (pos 3), `reference/` (pos 4).
 
-Auto-generados:
-- `reference/skills-catalog.md` (de `website/scripts/generate-skill-docs.py`)
+Auto-generated:
+- `reference/skills-catalog.md` (from `website/scripts/generate-skill-docs.py`)
 - `reference/optional-skills-catalog.md`
-- `reference/automation-blueprints-catalog.mdx` (de `extract-automation-blueprints.py`)
+- `reference/automation-blueprints-catalog.mdx` (from `extract-automation-blueprints.py`)
 
-## Setup local
+## Local setup
 
 ```bash
-# Auto-setup (detecta Termux vs desktop)
+# Auto-setup (detects Termux vs desktop)
 ./setup-hermes.sh
 
 # Manual
 uv venv venv --python 3.11
 export VIRTUAL_ENV="$(pwd)/venv"
 uv pip install -e ".[all,dev]"
-npm install   # para browser tools
+npm install   # for browser tools
 
 # Config
 mkdir -p ~/.hermes/{cron,sessions,logs,memories,skills}
 cp cli-config.yaml.example ~/.hermes/config.yaml
 touch ~/.hermes/.env
 
-# Verificar
+# Verify
 hermes doctor
 hermes chat -q "Hello"
-hermes model         # picker interactivo
+hermes model         # interactive picker
 hermes setup         # wizard
 ```
 
-Python: 3.11+ (`requires-python = ">=3.11,<3.14"`). Cap <3.14 por wheels Rust.
+Python: 3.11+ (`requires-python = ">=3.11,<3.14"`). Cap <3.14 due to Rust wheels.
 
-**Perfiles multi-instancia:** `~/.hermes/profiles/<name>/` con skills/plugins/cron/memories aislados. Usar `get_hermes_home()` de `hermes_constants` en code paths; `display_hermes_home()` para mensajes user-facing. **Nunca hardcodear `~/.hermes`.**
+**Multi-instance profiles:** `~/.hermes/profiles/<name>/` with isolated skills/plugins/cron/memories. Use `get_hermes_home()` from `hermes_constants` in code paths; `display_hermes_home()` for user-facing messages. **Never hardcode `~/.hermes`.**
 
 ## Git / CI / Releases
 
-**Commits: Conventional Commits estricto.**
+**Commits: strict Conventional Commits.**
 
-Formato: `<type>(<scope>): <description>`. Types: `fix`, `feat`, `docs`, `test`, `refactor`, `chore`. Scopes comunes: `cli`, `gateway`, `tools`, `skills`, `agent`, `install`, `whatsapp`, `security`.
+Format: `<type>(<scope>): <description>`. Types: `fix`, `feat`, `docs`, `test`, `refactor`, `chore`. Common scopes: `cli`, `gateway`, `tools`, `skills`, `agent`, `install`, `whatsapp`, `security`.
 
-Ejemplos reales:
+Real examples:
 - `fix(cli): prevent crash in save_config_value when model is a string`
 - `feat(gateway): add WhatsApp multi-user session isolation`
 
-**Branches:** prefijo por tipo — `fix/description`, `feat/description`. Crear con `git checkout -b fix/description` antes de tests.
+**Branches:** prefix by type — `fix/description`, `feat/description`. Create with `git checkout -b fix/description` before tests.
 
-**PR template** (`.github/PULL_REQUEST_TEMPLATE.md`): secciones `What does this PR do?`, `Related Issue`, `How to test`. **Un cambio lógico por PR** (no mezclar fix + refactor + feat).
+**PR template** (`.github/PULL_REQUEST_TEMPLATE.md`): sections `What does this PR do?`, `Related Issue`, `How to test`. **One logical change per PR** (don't mix fix + refactor + feat).
 
-**Regla pin exacto:** Git URLs → SHA completo. GitHub Actions → `uses: owner/action@<sha>  # vX.Y.Z` con comentario de versión. Tags son mutable refs.
+**Exact pin rule:** Git URLs → full SHA. GitHub Actions → `uses: owner/action@<sha>  # vX.Y.Z` with version comment. Tags are mutable refs.
 
-**Prioridades de contribución (orden):** bug fixes → cross-platform → security → performance/robustness → new skills → new tools → docs.
+**Contribution priorities (order):** bug fixes → cross-platform → security → performance/robustness → new skills → new tools → docs.
 
-**CI workflows** (orquestador `ci.yml` con `detect-changes` + sub-workflows):
-- `tests.yml` — pytest paralelo (slice_count=8)
-- `lint.yml` — ruff + ty (advisory + bloqueante PLW1514)
+**CI workflows** (orchestrator `ci.yml` with `detect-changes` + sub-workflows):
+- `tests.yml` — parallel pytest (slice_count=8)
+- `lint.yml` — ruff + ty (advisory + blocking PLW1514)
 - `typecheck.yml` — TS matrix ui-tui/web/apps
 - `docker-lint.yml`, `docker.yml`, `deploy-site.yml`
 - `docs-site-checks.yml`
@@ -413,43 +413,43 @@ Ejemplos reales:
 - `uv-lockfile-check.yml`, `history-check.yml`, `contributor-check.yml`
 - `upload_to_pypi.yml`
 
-Concurrency groups con `cancel-in-progress: true`.
+Concurrency groups with `cancel-in-progress: true`.
 
-**Releases:** `scripts/release.py`. Versionado semver en `pyproject.toml` (`version = "0.17.0"`). Bump version + `uv lock` coordinados.
+**Releases:** `scripts/release.py`. Semver versioning in `pyproject.toml` (`version = "0.17.0"`). Bump version + `uv lock` coordinated.
 
-## Convenciones de código
+## Code conventions
 
-| Aspecto | Convención |
+| Aspect | Convention |
 |---|---|
-| Python style | Ruff (PLW1514 + preview), line length default |
-| Type hints | Obligatorios en funciones públicas |
-| Logger | `logger = logging.getLogger(__name__)` per module, nunca `print()` |
-| Paths | `get_hermes_home()` de `hermes_constants`, nunca `~/.hermes` |
-| Async | `is_async=True` en registry, NO `asyncio.run` interno |
-| Errors | `{"error": "..."}` en JSON, nunca raise desde handler |
+| Python style | Ruff (PLW1514 + preview), default line length |
+| Type hints | Required on public functions |
+| Logger | `logger = logging.getLogger(__name__)` per module, never `print()` |
+| Paths | `get_hermes_home()` from `hermes_constants`, never `~/.hermes` |
+| Async | `is_async=True` in registry, NO `asyncio.run` internal |
+| Errors | `{"error": "..."}` in JSON, never raise from handler |
 | Plugin singletons | `lazy_singleton` / `SingletonSlot` (thread-safe) |
-| Frontmatter `name:` | kebab-case, IGUAL al directorio |
+| Frontmatter `name:` | kebab-case, EQUAL to directory |
 | Conventional Commits | `<type>(<scope>): <description>` |
-| Git deps | SHA completo, no branches/tags |
+| Git deps | Full SHA, no branches/tags |
 
-## Invariantes críticas
+## Critical invariants
 
-1. **Prompt caching** — no cambiar contexto/tools/system prompt mid-conversation.
-2. **Message alternation** — nunca dos assistant o dos user consecutivos.
-3. **Tool output** — siempre JSON string (success/error).
-4. **Config** — valores en `config.yaml`, secrets en `.env`.
-5. **Tool registry** — auto-discover por AST, no import manual.
-6. **`check_fn`** — TTL 30s, swallow exceptions, retornar False oculta tool.
-7. **MCP manifest** — pin exacto de git refs (SHA, no tag).
-8. **Tests** — `scripts/run_tests.sh`, no pytest directo. Conftest unset credentials.
-9. **Perfiles** — `get_hermes_home()` para paths, nunca hardcoded.
-10. **i18n** — Docs en `en` + `zh-Hans`. Variantes `*.es.md`, `*.zh-CN.md` para READMEs.
+1. **Prompt caching** — don't change context/tools/system prompt mid-conversation.
+2. **Message alternation** — never two consecutive assistant or two user messages.
+3. **Tool output** — always JSON string (success/error).
+4. **Config** — values in `config.yaml`, secrets in `.env`.
+5. **Tool registry** — auto-discover via AST, no manual import.
+6. **`check_fn`** — TTL 30s, swallow exceptions, returning False hides the tool.
+7. **MCP manifest** — exact git ref pin (SHA, not tag).
+8. **Tests** — `scripts/run_tests.sh`, not pytest directly. Conftest unsets credentials.
+9. **Profiles** — `get_hermes_home()` for paths, never hardcoded.
+10. **i18n** — Docs in `en` + `zh-Hans`. Variants `*.es.md`, `*.zh-CN.md` for READMEs.
 
-## Recursos del repo
+## Repo resources
 
-- `CONTRIBUTING.md` — proceso de contribución
-- `SECURITY.md` — reportar vulnerabilidades
-- `website/docs/developer-guide/` — guías autorales (adding-tools, adding-skills, build-a-hermes-plugin)
-- `scripts/run_tests.sh` — testing canónico
+- `CONTRIBUTING.md` — contribution process
+- `SECURITY.md` — report vulnerabilities
+- `website/docs/developer-guide/` — authorial guides (adding-tools, adding-skills, build-a-hermes-plugin)
+- `scripts/run_tests.sh` — canonical testing
 - `scripts/release.py` — release tooling
-- `scripts/check-windows-footguns.py` — portabilidad Windows
+- `scripts/check-windows-footguns.py` — Windows portability

@@ -9,6 +9,7 @@
 [![Test Windows](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Skills: 99+](https://img.shields.io/badge/skills-99+-green.svg)](ai-config/skills/)
+[![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
 
 ---
 
@@ -17,6 +18,7 @@
 AI-OS is the **single source of truth** for everything AI in your dev workflow:
 
 - **99+ global skills** propagated to 5 AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes).
+- **+271 optional ECC skills** (vendored at `vendor/ecc/`, opt-in via `bash setup/install-ecc.sh`).
 - **14 required superpowers skills** (the framework that powers all workflows).
 - **5 recurring workflows** (daily_start, project_start, coding, research, content_creation).
 - **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
@@ -252,6 +254,32 @@ ai-os/
     ├── test-linux.yml             #   ubuntu-latest
     └── test-windows.yml           #   windows-latest
 ```
+
+### ECC Integration (optional layer)
+
+AI-OS can optionally vendor **[Everything Claude Code (ECC)](https://github.com/affaan-m/ECC)** — the largest publicly available Claude Code skill corpus (271 skills, 67 agents, 28 hooks) — as a **read-only subtree** at `vendor/ecc/`. It propagates to the 5 CLIs via symlinks, same as the AI-OS native skills, but with its own installer:
+
+```bash
+# One-time: vendor ECC
+git clone --depth=1 https://github.com/affaan-m/everything-claude-code.git vendor/ecc
+
+# Install (idempotent)
+bash setup/install-ecc.sh
+
+# Verify only (CI mode)
+bash setup/install-ecc.sh --check
+```
+
+Why two skill sources of truth?
+
+| Source | Owner | What |
+|---|---|---|
+| `ai-config/skills/` (99) | AI-OS (you) | Hand-curated, evolve with your workflows |
+| `vendor/ecc/skills/` (271) | ECC upstream | Community-maintained, update with `git pull` |
+
+The two never conflict in practice because ECC and AI-OS use different naming conventions (ECC: `tdd-workflow`, AI-OS: `test-driven-development`). In Claude Code specifically, ECC also loads as a **plugin** (`~/.claude/plugins/ecc → vendor/ecc/`), exposing hooks and slash commands that the AI-OS installer doesn't manage.
+
+Full architecture, hook policy, and update procedure: [`docs/ecc-integration.md`](docs/ecc-integration.md). CI validates the ECC integration in [`test-mac.yml`](.github/workflows/test-mac.yml), [`test-linux.yml`](.github/workflows/test-linux.yml), and [`test-windows.yml`](.github/workflows/test-windows.yml) — the `--check` step is non-fatal and skips if `vendor/ecc/` is absent.
 
 ---
 

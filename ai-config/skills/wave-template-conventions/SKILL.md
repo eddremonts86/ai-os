@@ -1,42 +1,42 @@
 ---
 name: wave-template-conventions
-description: Convenciones oficiales del template Wave (Schilling) — Vite + React 19 + TanStack Router/Query/Table + shadcn/Radix + Tailwind v4 + FormContainer+IData[] + Playwright + MSW + Percy + Sentry. Aplica al trabajar en /Users/edd/Projects/ei-schilling/wave-template/ y forks (kontrakt-manager, ia-royalty-validations, etc.).
+description: Official conventions of the Wave template (Schilling) — Vite + React 19 + TanStack Router/Query/Table + shadcn/Radix + Tailwind v4 + FormContainer+IData[] + Playwright + MSW + Percy + Sentry. Applies when working in /Users/edd/Projects/ei-schilling/wave-template/ and forks (kontrakt-manager, ia-royalty-validations, etc.).
 license: Internal
 ---
 
 # Wave Template Conventions
 
-Repo: `/Users/edd/Projects/ei-schilling/wave-template/`. Mantenedor: Schilling. Documentación oficial: `web-docs/` (Docusaurus). Esta skill refleja el código real, no idealizaciones.
+Repo: `/Users/edd/Projects/ei-schilling/wave-template/`. Maintainer: Schilling. Official documentation: `web-docs/` (Docusaurus). This skill reflects the actual code, not idealizations.
 
-## Stack obligatorio
+## Required stack
 
-| Capa | Tecnología |
+| Layer | Technology |
 |---|---|
-| Build | Vite 5 (NO Webpack/Next.js) |
+| Build | Vite 5 (NOT Webpack/Next.js) |
 | Runtime | React 19 |
-| Lenguaje | TypeScript strict + `tsconfig.app/node/spec.json` separados |
-| Routing | TanStack Router file-based (`@tanstack/router-plugin` genera `routeTree.gen.ts`) |
-| Data | TanStack Query (NO SWR, NO Redux Query) |
+| Language | TypeScript strict + separate `tsconfig.app/node/spec.json` |
+| Routing | TanStack Router file-based (`@tanstack/router-plugin` generates `routeTree.gen.ts`) |
+| Data | TanStack Query (NOT SWR, NOT Redux Query) |
 | Tables | TanStack Table 8.21 + TanStack Virtual 3.13 |
-| Forms | **FormContainer + IData[]** (NO react-hook-form directo en features) |
-| Validación | Zod + `@hookform/resolvers` (en components/globals/form/validations/) |
-| UI kit | shadcn/Radix en `components/ui/` |
-| Estilos | Tailwind v4 + SCSS para tokens globales |
-| State | Zustand (en `services/store/`) |
+| Forms | **FormContainer + IData[]** (NOT react-hook-form directly in features) |
+| Validation | Zod + `@hookform/resolvers` (in components/globals/form/validations/) |
+| UI kit | shadcn/Radix in `components/ui/` |
+| Styles | Tailwind v4 + SCSS for global tokens |
+| State | Zustand (in `services/store/`) |
 | API client | `swagger-typescript-api` 13.2.13 (--axios) |
-| i18n | Backend-driven + custom (NO i18next/react-intl) |
-| Testing | Playwright 1.55 (E2E + unit + componente, NO jest/vitest) |
-| Mocks | MSW (siempre activo en dev vía `VITE_ENABLE_MSW`) + JSON server legacy |
+| i18n | Backend-driven + custom (NOT i18next/react-intl) |
+| Testing | Playwright 1.55 (E2E + unit + component, NOT jest/vitest) |
+| Mocks | MSW (always active in dev via `VITE_ENABLE_MSW`) + legacy JSON server |
 | Visual regressions | Percy |
 | Profiling | React Scan |
-| Monitoring | Sentry (init con doble guard DSN+production) |
+| Monitoring | Sentry (init with double guard DSN+production) |
 | Package manager | pnpm 9.0.0+ |
 
-## Estructura del proyecto
+## Project structure
 
 ```
 wave-template/
-├── appConfig.ts              # config central (NO src/)
+├── appConfig.ts              # central config (NOT src/)
 ├── index.html
 ├── package.json              # name: "wave-template", version sync
 ├── pnpm-lock.yaml
@@ -44,25 +44,25 @@ wave-template/
 ├── tsconfig.{app,node,spec}.json
 ├── playwright.config.ts      # + playwright.percy.config.ts
 ├── .cspell.config.yaml
-├── .gitattributes            # LF en todo, CRLF solo .bat/.cmd/.ps1
+├── .gitattributes            # LF everywhere, CRLF only .bat/.cmd/.ps1
 ├── src/
 │   ├── main.tsx              # StrictMode + Sentry.ErrorBoundary + ThemeProvider + QueryClientProvider + RouterProvider + MSW init
 │   ├── routes/               # file-based (TanStack Router)
 │   ├── layouts/              # BaseLayout, DefaultLayout, EntitiesLayout, InitLayout, PublicLayout, WizardLayout
 │   ├── pages/                # entry pages
 │   ├── features/
-│   │   ├── globals/          # framework compartido: auth, auth-ws, sideBar, topBar, breadcrumb, search, dynamicFilters, filters, language, theme, common, table, actionBar, documents
-│   │   └── products/         # feature CRUD de referencia
+│   │   ├── globals/          # shared framework: auth, auth-ws, sideBar, topBar, breadcrumb, search, dynamicFilters, filters, language, theme, common, table, actionBar, documents
+│   │   └── products/         # reference CRUD feature
 │   ├── components/
-│   │   ├── ui/               # shadcn/Radix (excluidos del linter)
-│   │   ├── globals/          # FormContainer, FormItemContainer, tablas, navegación, html (SafeHtml)
+│   │   ├── ui/               # shadcn/Radix (excluded from linter)
+│   │   ├── globals/          # FormContainer, FormItemContainer, tables, navigation, html (SafeHtml)
 │   │   ├── common/           # ErrorBoundary, utils
-│   │   └── containers/       # contenedores de página
+│   │   └── containers/       # page containers
 │   ├── services/
 │   │   ├── api/              # axiosClient, sentryInterceptor, schilling-api/, template-api/
 │   │   ├── msw/              # browser.ts, handlers.ts (barrel), handlers/<feature>.handlers.ts, data/, factories/, utils/
-│   │   ├── locales/          # i18n (auto-generado), translations/, countryConfigData.ts (SINGLE SOURCE OF TRUTH)
-│   │   ├── sentry/           # index.ts (Sentry.init con doble guard)
+│   │   ├── locales/          # i18n (auto-generated), translations/, countryConfigData.ts (SINGLE SOURCE OF TRUTH)
+│   │   ├── sentry/           # index.ts (Sentry.init with double guard)
 │   │   ├── providers/        # ThemeProvider, NetworkProvider
 │   │   ├── store/            # Zustand
 │   │   ├── types/
@@ -72,46 +72,46 @@ wave-template/
 │   │   ├── const/, lib/
 │   ├── assets/
 │   │   ├── icons/
-│   │   └── styles/           # config/, globals/ (primitives.scss + tokens-light/dark.scss autogenerados)
+│   │   └── styles/           # config/, globals/ (primitives.scss + tokens-light/dark.scss autogenerated)
 │   └── tests/
 │       ├── config/           # testConfig.ts + playwrightConstants.ts (SINGLE SOURCE OF TRUTH)
 │       ├── e2e/, unit/
 │       ├── fixtures/, utils/, types/
-├── web-docs/                 # documentación oficial Docusaurus
+├── web-docs/                 # official Docusaurus documentation
 └── public/
 ```
 
-## Componentes
+## Components
 
-**Path alias `@/` → `./src/` (obligatorio para imports absolutos).**
+**Path alias `@/` → `./src/` (required for absolute imports).**
 
-**Tres niveles de componentes:**
-1. `src/components/ui/` — primitivos atómicos (shadcn/Radix). Excluidos del linter.
-2. `src/components/globals/` — abstracciones framework: `FormContainer`, `FormItemContainer`, tablas (`actions, container, content, filters, structure, tables`), navegación, `SafeHtml`.
-3. `src/features/<feature>/components/` — UI específica de dominio.
+**Three levels of components:**
+1. `src/components/ui/` — atomic primitives (shadcn/Radix). Excluded from linter.
+2. `src/components/globals/` — framework abstractions: `FormContainer`, `FormItemContainer`, tables (`actions, container, content, filters, structure, tables`), navigation, `SafeHtml`.
+3. `src/features/<feature>/components/` — domain-specific UI.
 
-**Patrón shadcn/Radix:**
-- Componentes polimórficos con `Slot` (Radix `asChild`)
-- Variantes con `cva` (class-variance-authority)
+**shadcn/Radix pattern:**
+- Polymorphic components with `Slot` (Radix `asChild`)
+- Variants with `cva` (class-variance-authority)
 - `forwardRef` + `ButtonHTMLAttributes`
-- Types separados en `Component.types.ts` o `ComponentProps.ts`
+- Separate types in `Component.types.ts` or `ComponentProps.ts`
 
-**JSX props (reglas eslint react/jsx-*):**
-- Una prop por línea cuando hay 3+
-- Orden alfabético (callbacks/children al final)
-- Cierre alineado con apertura
-- Self-closing si no hay children
+**JSX props (eslint react/jsx-* rules):**
+- One prop per line when 3+
+- Alphabetical order (callbacks/children at the end)
+- Closing aligned with opening
+- Self-closing if no children
 - 2-space indent
-- `className` con una clase por línea cuando hay 3+ (`className-formatting.mdx`)
+- `className` with one class per line when 3+ (`className-formatting.mdx`)
 
-**Prohibiciones explícitas:**
-- ❌ `dangerouslySetInnerHTML` **FUERA de `SafeHtml.tsx`**. ESLint `no-restricted-syntax` lo bloquea con override solo en `SafeHtml`. Todo lo demás pasa por DOMPurIFY.
-- ❌ `console.*` en feature code. Usar `logInfo/logWarn/logError/logDebug` de `@/services/utils/logger`.
-- ❌ `any` (usar interfaces, discriminated unions, generics).
-- ❌ React Hook Form directo en features (siempre `FormContainer + IData[]`).
-- ❌ `options` en selects (usar `items`).
+**Explicit prohibitions:**
+- ❌ `dangerouslySetInnerHTML` **OUTSIDE of `SafeHtml.tsx`**. ESLint `no-restricted-syntax` blocks it with override only in `SafeHtml`. Everything else goes through DOMPurIFY.
+- ❌ `console.*` in feature code. Use `logInfo/logWarn/logError/logDebug` from `@/services/utils/logger`.
+- ❌ `any` (use interfaces, discriminated unions, generics).
+- ❌ React Hook Form directly in features (always `FormContainer + IData[]`).
+- ❌ `options` in selects (use `items`).
 
-## Forms (FormContainer + IData[] — patrón no negociable)
+## Forms (FormContainer + IData[] — non-negotiable pattern)
 
 ```tsx
 // src/features/products/const/products.const.ts
@@ -129,7 +129,7 @@ export const PRODUCT_FORM_DATA: IData[] = [
     type: InputsTypes.select,
     name: 'category',
     label: 'Category',
-    items: CATEGORY_OPTIONS,  // SIEMPRE 'items', nunca 'options'
+    items: CATEGORY_OPTIONS,  // ALWAYS 'items', never 'options'
     required: true,
   },
   {
@@ -157,24 +157,24 @@ export function ProductsView() {
   const { form, handleSubmit, products, isLoading } = useProducts();
   return (
     <FormContainer data={PRODUCT_FORM_DATA} form={form} onSubmit={handleSubmit}>
-      {/* renderizado automático por FormContainer */}
+      {/* automatic rendering by FormContainer */}
     </FormContainer>
   );
 }
 ```
 
-**`InputsTypes` enum (whitelist completa):**
-- Básicos: `text, number, password, email, checkbox, radio, select, textarea, date, dateRange, toggle, label, separator, file, combobox`
-- Específicos: `roleManager, contactMethodTable, selectPlusImage`
-- Compuestos: `checkboxPlusDate, checkboxPlusSelect, dateSelect, radioGroup`
+**`InputsTypes` enum (complete whitelist):**
+- Basic: `text, number, password, email, checkbox, radio, select, textarea, date, dateRange, toggle, label, separator, file, combobox`
+- Specific: `roleManager, contactMethodTable, selectPlusImage`
+- Compound: `checkboxPlusDate, checkboxPlusSelect, dateSelect, radioGroup`
 
-**Hooks de form:**
-- `useForms` — estado + deepEqual change detection
-- `useInputsFields` — mapea `IData[]` → componentes
+**Form hooks:**
+- `useForms` — state + deepEqual change detection
+- `useInputsFields` — maps `IData[]` → components
 - `useTrackUnsavedChanges` — beforeunload guard
 - `useDisableSaveButton`
 
-**Estructura de feature:**
+**Feature structure:**
 ```
 feature/
 ├── const/feature.const.ts          # IData[] array
@@ -184,80 +184,80 @@ feature/
 └── index.ts
 ```
 
-**Convenciones:**
-- `data-test-id="input-<name>"` en inputs.
+**Conventions:**
+- `data-test-id="input-<name>"` on inputs.
 - `FormItemContainer` = label + required indicator (*) + description + error message.
-- Validaciones Zod centralizadas en `components/globals/form/validations/`.
+- Zod validations centralized in `components/globals/form/validations/`.
 
 ## API / Swagger
 
-**Generación de tipos desde OpenAPI:**
+**Type generation from OpenAPI:**
 
 ```bash
 pnpm run generate:types         # master
 pnpm run generate:types:test    # test env
 pnpm run generate:types:demo    # demo
 pnpm run generate:types:dynamic # dynamic
-pnpm run generate:mocks         # Faker para MSW
+pnpm run generate:mocks         # Faker for MSW
 ```
 
-**Cliente en `src/services/api/clients/schilling-api/Api.ts`** (generado, NO editar, excluido de ESLint + prettier).
+**Client in `src/services/api/clients/schilling-api/Api.ts`** (generated, do NOT edit, excluded from ESLint + prettier).
 
-**Axios instances separadas:**
-- `axiosClient` — producción, con Sentry interceptor
+**Separate Axios instances:**
+- `axiosClient` — production, with Sentry interceptor
 - `axiosClientTest` — test env
-- `axiosClientFakeApi` — json-server mock (NO instrumentado con Sentry)
+- `axiosClientFakeApi` — json-server mock (NOT instrumented with Sentry)
 
-**Auth headers per-request vía interceptor:**
+**Auth headers per-request via interceptor:**
 - `X-Schilling-Token`
 - `X-Schilling-language`
-- **NO** en module load (evitar token stale)
+- **NOT** on module load (avoid stale token)
 
-**Headers default:**
+**Default headers:**
 ```
 Content-Type: application/json; charset=utf-8
 Accept: application/json;enums=expand
 ```
 
-**MSW handlers** en `src/services/msw/handlers/<feature>.handlers.ts`, auto-registrados en `handlers.ts` barrel. MSW siempre activo en dev (`VITE_ENABLE_MSW=true`).
+**MSW handlers** in `src/services/msw/handlers/<feature>.handlers.ts`, auto-registered in `handlers.ts` barrel. MSW always active in dev (`VITE_ENABLE_MSW=true`).
 
-**URLs en `appConfig.ts`:** `API_URL`, `API_URL_FAKE_API`, `API_URL_TEST`, `BASE_URL`, `APP_URL`, `SCHILLING_APP_REDIRECT_EXTERNAL/INTERNAL`.
+**URLs in `appConfig.ts`:** `API_URL`, `API_URL_FAKE_API`, `API_URL_TEST`, `BASE_URL`, `APP_URL`, `SCHILLING_APP_REDIRECT_EXTERNAL/INTERNAL`.
 
-## Estilos (Tailwind v4 + SCSS tokens)
+## Styles (Tailwind v4 + SCSS tokens)
 
 **Tailwind v4** (4.2.4) + PostCSS + `@tailwindcss/postcss`. `darkMode: ['class']`.
 
-**SCSS globals en `src/assets/styles/`:**
-- `globals.scss` genera CSS vars en `:root` desde `tokens.json` (Figma tokens via `scripts/extract-figma-tokens.js`)
-- `primitives.scss` + `tokens-light.scss` + `tokens-dark.scss` (auto-generados, en `.prettierignore`)
+**Global SCSS in `src/assets/styles/`:**
+- `globals.scss` generates CSS vars in `:root` from `tokens.json` (Figma tokens via `scripts/extract-figma-tokens.js`)
+- `primitives.scss` + `tokens-light.scss` + `tokens-dark.scss` (auto-generated, in `.prettierignore`)
 - Scripts: `tokens:extract`, `tokens:generate`, `tokens:sync`
 
 **Naming convention (Tailwind theme):**
-El nombre de clase ES el nombre de la variable:
+The class name IS the variable name:
 - `bg-surface-background-page` → `var(--surface-background-page)`
 - `text-text-high` → `var(--text-high)`
 - `border-border-*` → `var(--border-*)`
 - `text-h1`, `text-h2`, etc.
 
-**Namespaces de color:** `surface, text, border, icon, status, brand, aux, chart`.
+**Color namespaces:** `surface, text, border, icon, status, brand, aux, chart`.
 
 **Spacing tokens:** `button, search-input, field-horizontal-gap, field-vertical-gap, page-padding` (`h-button, w-button, gap-field-horizontal`).
 
 **Width tokens:** `field-label, field-f1..f6` (`max-w-field-f3 = max-w-[var(--field-width-f3)]`).
 
-**Border radius:** derivado de `--radius` (xl/lg/md/sm).
+**Border radius:** derived from `--radius` (xl/lg/md/sm).
 
 **Plugins:** `tailwindcss-animate` + `@tailwindcss/typography` + `.scrollbar-hide`.
 
 **Class composition:** `clsx` + `tailwind-merge` (`twMerge`).
 
-**Prettier:** `prettier-plugin-tailwindcss` ordena clases automáticamente.
+**Prettier:** `prettier-plugin-tailwindcss` automatically orders classes.
 
-**Dark mode:** vía class `.dark` sobre `:root` (`next-themes` + ThemeProvider custom).
+**Dark mode:** via class `.dark` on `:root` (`next-themes` + custom ThemeProvider).
 
-## Tablas (TanStack Table 8.21 + Virtual)
+## Tables (TanStack Table 8.21 + Virtual)
 
-**Estructura en `src/components/globals/table/`:**
+**Structure in `src/components/globals/table/`:**
 ```
 components/
 ├── actions/        # row actions, bulk actions
@@ -270,10 +270,10 @@ components/
 ```
 
 **Hooks:**
-- `useTable` — encapsula `useReactTable` con state completo
-- `useHierarchicalTable` — tablas jerárquicas genéricas (`IHierarchicalItem` requiere solo `Id: string`)
+- `useTable` — encapsulates `useReactTable` with full state
+- `useHierarchicalTable` — generic hierarchical tables (`IHierarchicalItem` requires only `Id: string`)
 
-**State gestionado:** `rowSelection, sorting, expanded, columnFilters, columnVisibility, pagination`.
+**Managed state:** `rowSelection, sorting, expanded, columnFilters, columnVisibility, pagination`.
 
 **`TUHeader` interface:**
 ```ts
@@ -295,11 +295,11 @@ interface TUHeader {
 
 **Grouping config:** `groupingConfig.primaryField` + `defaultExpanded`.
 
-**Virtualización:** `TanStack Virtual` 3.13 + `react-window` 2.2 para datasets grandes.
+**Virtualization:** `TanStack Virtual` 3.13 + `react-window` 2.2 for large datasets.
 
-**Exportaciones agrupadas** en `components/globals/table/index.ts`.
+**Grouped exports** in `components/globals/table/index.ts`.
 
-## Testing (Playwright 1.55 — único framework)
+## Testing (Playwright 1.55 — only framework)
 
 **`playwright.config.ts`:**
 - `testDir: ./src/tests`, `testMatch: **/*.spec.ts`
@@ -308,15 +308,15 @@ interface TUHeader {
 - `retries` per-project
 - `reporter: list + html + json + junit`
 
-**Proyectos:**
+**Projects:**
 - `MSW-Chrome` — retries 2, `--disable-web-security`
 - `API-Chrome` — retries 3
 - `Safari` — WebKit
-- `MCP Chrome` — solo si `USE_MCP=true`
+- `MCP Chrome` — only if `USE_MCP=true`
 
-**`src/tests/config/playwrightConstants.ts`** — SINGLE SOURCE OF TRUTH para timeouts/URLs.
+**`src/tests/config/playwrightConstants.ts`** — SINGLE SOURCE OF TRUTH for timeouts/URLs.
 
-**WebServer condicional:** `dev:msw` si `USE_MSW`, `dev` normal si `USE_API`, `undefined` si no.
+**Conditional WebServer:** `dev:msw` if `USE_MSW`, `dev` normal if `USE_API`, `undefined` otherwise.
 
 **Trace/screenshot/video:**
 - `trace: on-first-retry`
@@ -324,7 +324,7 @@ interface TUHeader {
 - `video: retain-on-failure`
 - `ignoreHTTPSErrors: true`
 - `locale: en-US`
-- `storageState: undefined` (sin estado compartido)
+- `storageState: undefined` (no shared state)
 
 **Scripts:**
 ```bash
@@ -338,10 +338,10 @@ pnpm test:app:msw      # MSW mode
 pnpm test:app:api      # API mode
 pnpm test:ci           # sharded
 pnpm test:mcp          # Playwright MCP
-pnpm test:percy        # Percy con playwright.percy.config.ts
+pnpm test:percy        # Percy with playwright.percy.config.ts
 ```
 
-**Patrón de test:**
+**Test pattern:**
 ```ts
 import { test, expect } from '@playwright/test';
 
@@ -355,17 +355,17 @@ test('user can create product', async ({ page }) => {
 });
 ```
 
-## Setup local
+## Local setup
 
 ```bash
-# Requisitos
+# Requirements
 node >= 22.x
 pnpm >= 9.0.0
 git
 
 # Setup
 pnpm install                       # postinstall: .vscode/post-install.cjs
-pnpm dev                           # vite --port 3000 (predev: regenera SCSS desde tokens)
+pnpm dev                           # vite --port 3000 (predev: regenerates SCSS from tokens)
 pnpm dev:msw                       # cross-env VITE_ENABLE_MSW=true vite --port 3000
 pnpm dev:sentry                    # vite --port 3000 --mode production
 pnpm dev:share                     # ngrok http 3000
@@ -389,34 +389,34 @@ pnpm run translate:scan-hardcoded
 pnpm run translate:fix-hardcoded
 
 # Scaffolding
-pnpm run create:home-overview <name> <Icon>    # scaffoldea feature copiando products/
+pnpm run create:home-overview <name> <Icon>    # scaffolds a feature by copying products/
 
 # Legacy
-pnpm run fake:api                  # json-server en :3001
+pnpm run fake:api                  # json-server on :3001
 pnpm run sync:report               # drift report vs wave1
 ```
 
-**Variables VITE_ (en `.env`):**
+**VITE_ variables (in `.env`):**
 
-| Variable | Default | Notas |
+| Variable | Default | Notes |
 |---|---|---|
-| `VITE_BASE_PATH` | `/schweb` | base path configurable |
+| `VITE_BASE_PATH` | `/schweb` | configurable base path |
 | `VITE_APP_URL` | `http://localhost:3000` | |
 | `VITE_API_URL` | | prod API |
-| `VITE_API_SERVER` | | tunnel mode si vacío |
+| `VITE_API_SERVER` | | tunnel mode if empty |
 | `VITE_API_SERVER_TEST` | | test env |
 | `VITE_API_SERVER_FAKE_API` | | legacy json-server |
 | `VITE_CONFIG_THEME` | `system` | `light/dark/system` |
 | `VITE_CONFIG_DEF_COMPANY` | `4` | |
 | `VITE_CONFIG_DEF_LANGUAGE` | `en` | |
-| `VITE_CONFIG_MODE` | `development` | gate Sentry |
-| `VITE_SENTRY_DSN` | | solo producción |
+| `VITE_CONFIG_MODE` | `development` | Sentry gate |
+| `VITE_SENTRY_DSN` | | production only |
 | `VITE_SCHILLING_APP_REDIRECT_EXTERNAL` | | |
 | `VITE_SCHILLING_APP_REDIRECT_INTERNAL` | | |
 | `VITE_FEATURE_NEW_ACTION_BAR` | | feature flag |
-| `VITE_ENABLE_MSW` | | toggle MSW |
+| `VITE_ENABLE_MSW` | | MSW toggle |
 
-**Tunnel mode:** si `VITE_API_SERVER` vacío, vite proxy `/ws` → `VITE_API_SERVER_TEST` (bypass CORS para ngrok).
+**Tunnel mode:** if `VITE_API_SERVER` is empty, vite proxy `/ws` → `VITE_API_SERVER_TEST` (CORS bypass for ngrok).
 
 **Vite config:**
 - `publicDir: public`, `assetsDir build: schweb-assets`, `chunkSizeWarningLimit: 800`
@@ -425,83 +425,76 @@ pnpm run sync:report               # drift report vs wave1
 
 ## Naming conventions
 
-**Archivos:**
+**Files:**
 
-| Tipo | Convención | Ejemplo |
+| Type | Convention | Example |
 |---|---|---|
-| Componente | PascalCase.tsx | `Button.tsx`, `FormContainer.tsx` |
-| Tipos separados | Component.types.ts | `Button.types.ts` |
+| Component | PascalCase.tsx | `Button.tsx`, `FormContainer.tsx` |
+| Separate types | Component.types.ts | `Button.types.ts` |
 | Hooks | useCamelCase.tsx | `useForms.tsx`, `useTable.ts` |
 | Utils | camelCase.ts | `getCountryConfig.ts` |
-| Constantes/datos | camelCase.const.ts | `countryConfigData.ts`, `sideBarItems.tsx` |
+| Constants/data | camelCase.const.ts | `countryConfigData.ts`, `sideBarItems.tsx` |
 | Tests | *.spec.ts | `product.spec.ts` |
-| Auto-generados (NO editar) | | `routeTree.gen.ts`, `Api.ts`, `swagger.json`, `translation.ts`, `i18n.ts`, `primitives.scss`, `tokens-*.scss` |
+| Auto-generated (do NOT edit) | | `routeTree.gen.ts`, `Api.ts`, `swagger.json`, `translation.ts`, `i18n.ts`, `primitives.scss`, `tokens-*.scss` |
 
-Magic prefixes: `use*` (hooks), `get*` (selectores).
+Magic prefixes: `use*` (hooks), `get*` (selectors).
 
 **Variables:**
 
-| Tipo | Convención | Ejemplo |
+| Type | Convention | Example |
 |---|---|---|
-| Variables/funciones | camelCase | `userName`, `handleSubmit` |
-| Constantes module-level | UPPER_SNAKE_CASE | `MAX_PAGE_SIZE` |
+| Variables/functions | camelCase | `userName`, `handleSubmit` |
+| Module-level constants | UPPER_SNAKE_CASE | `MAX_PAGE_SIZE` |
 | Types/interfaces/enums | PascalCase | `User`, `FormState` |
 | Interfaces | I prefix | `IData`, `IHierarchicalItem`, `IGroupingConfig` |
 | Generics | T prefix | `TFieldValues`, `TData` |
-| Props interface | ComponentNameProps o en Component.types.ts | `ButtonProps` |
-| Booleanas | is/has/can/should prefix | `isLoading`, `hasAnyChange`, `canSubmit`, `isDirty` |
+| Props interface | ComponentNameProps or in Component.types.ts | `ButtonProps` |
+| Booleans | is/has/can/should prefix | `isLoading`, `hasAnyChange`, `canSubmit`, `isDirty` |
 
-**Props destructuring con type readonly:**
+**Props destructuring with readonly type:**
 ```ts
 function FormContainer({ ... }: Readonly<FormContainerProps>) { ... }
 ```
 
 **Exports:**
 
-- **Named exports preferidos** (`export const Button`, `export function useTable`).
-- `index.ts` barrels por carpeta.
-- **Default export** solo en entry points de páginas.
-- `export type { ... }` cuando aplica.
-- Wildcard imports deshabilitados (eslint `no-duplicate-imports`).
-- Imports ordenados vía `@ianvs/prettier-plugin-sort-imports`:
+- **Named exports preferred** (`export const Button`, `export function useTable`).
+- `index.ts` barrels per folder.
+- **Default export** only in page entry points.
+- `export type { ... }` when applicable.
+- Wildcard imports disabled (eslint `no-duplicate-imports`).
+- Imports ordered via `@ianvs/prettier-plugin-sort-imports`:
   ```
   react, next, third-party, blank,
   @/types, @/services/types, @/config, @/lib, @/hooks,
   @/components/ui, @/components, @/registry, @/styles, @/app, blank,
-  relativos
+  relative
   ```
 
 ## Git workflow
 
-**Husky 9 hooks en `.husky/`:** `commit-msg, pre-commit, pre-push, prepare-commit-msg`.
-**Actualmente desactivados** (exit 0) — comentario: "Wave Starter: ticket enforcement removed (standalone product)".
+**Husky 9 hooks in `.husky/`:** `commit-msg, pre-commit, pre-push, prepare-commit-msg`.
+**Currently disabled** (exit 0) — comment: "Wave Starter: ticket enforcement removed (standalone product)".
 
 **Commitlint:** `@commitlint/config-conventional` (Conventional Commits).
 
-**lint-staged en package.json:**
-- `prettier --write` en todo
-- `cspell` + `eslint --fix --report-unused-disable-directives --max-warnings 5` en `*.ts/tsx/jsx`
+**lint-staged in package.json:**
+- `prettier --write` on everything
+- `cspell` + `eslint --fix --report-unused-disable-directives --max-warnings 5` on `*.ts/tsx/jsx`
 
-**Branch naming:** `SCH-<ticket>-<description>` (legacy), o `feature/<name>` para standalone.
+**Branch naming:** `SCH-<ticket>-<description>` (legacy), or `feature/<name>` for standalone.
 
-**PR template:** no documentado en repo (no existe `.github/PULL_REQUEST_TEMPLATE.md`).
+**PR template:** not documented in repo (no `.github/PULL_REQUEST_TEMPLATE.md` exists).
 
-**CI:** solo `security.yml` en `.github/workflows/`. `bitbucket-pipelines.yml` legacy presente pero no usado en standalone.
+**CI:** only `security.yml` in `.github/workflows/`. `bitbucket-pipelines.yml` legacy present but not used in standalone.
 
-**AI agent workflow:** documentado en `.github/AI_AGENT_WORKFLOW.md` y `PLAYWRIGHT-AGENTS.md`. Wave skills locales en `.agents/skills/wave/` (form-building, tables, forms, API, permissions, translations, UI, testing, wizard, state).
+**AI agent workflow:** documented in `.github/AI_AGENT_WORKFLOW.md` and `PLAYWRIGHT-AGENTS.md`. Wave local skills in `.agents/skills/wave/` (form-building, tables, forms, API, permissions, translations, UI, testing, wizard, state).
 
-## Auto-generados (NO editar)
+## Auto-generated (do NOT edit)
 
 `routeTree.gen.ts`, `Api.ts`, `swagger.json`, `translation.ts`, `ITranslation.ts`, `i18n.ts`, `primitives.scss`, `tokens-light/dark.scss`.
 
-## Referencias clave
+## Key references
 
 - `web-docs/01-getting-started/` — setup, project overview
 - `web-docs/02-tools-and-config/` — vite, ts, eslint, prettier, husky, folder-structure
-- `web-docs/03-libraries/` — guías por librería
-- `web-docs/04-ui-components/` — patrones de componentes
-- `web-docs/05-features/` — features cross-cutting (i18n, theme, indexed-db, figma)
-- `web-docs/06-best-practices/` — naming, estructura, className, jsx
-- `web-docs/07-architecture/` — decisions (react-query, playwright parallel, form-pattern)
-- `web-docs/08-testing/` — testing completo
-- `web-docs/09-troubleshooting/` — blank-page, etc.
