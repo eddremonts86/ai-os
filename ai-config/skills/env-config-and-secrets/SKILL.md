@@ -1,35 +1,35 @@
 ---
 name: env-config-and-secrets
-description: Gestión de configuración por entorno (.env, .env.example, varlock) + secrets type-safe. Patrón iaWorkSpace para evitar secrets hardcoded, sincronizar env vars con Coolify/Hetzner, y validar tipos en runtime.
+description: Per-environment configuration management (.env, .env.example, varlock) + type-safe secrets. iaWorkSpace pattern for avoiding hardcoded secrets, syncing env vars with Coolify/Hetzner, and validating types at runtime.
 license: Internal
 ---
 
 # Env Config & Secrets
 
-## Principios
+## Principles
 
-1. **Nunca secrets en código.** `git grep -E "(api[_-]?key|token|password)\s*[:=]\s*['\"][a-zA-Z0-9]" --include="*.ts"` debería dar 0.
-2. **`.env` real es gitignored.** `.env.example` con placeholders sí está committed.
-3. **Frontend solo `VITE_*`** — lo demás es server-only.
-4. **Type-safe en runtime** con varlock o zod schemas.
-5. **Validar en startup** — fallar fast si falta env required.
+1. **Never secrets in code.** `git grep -E "(api[_-]?key|token|password)\s*[:=]\s*['\"][a-zA-Z0-9]" --include="*.ts"` should return 0.
+2. **Real `.env` is gitignored.** `.env.example` with placeholders is committed.
+3. **Frontend only `VITE_*`** — everything else is server-only.
+4. **Type-safe at runtime** with varlock or zod schemas.
+5. **Validate at startup** — fail fast if a required env var is missing.
 
-## Estructura estándar
+## Standard structure
 
 ```
 project/
 ├── .env                  # gitignored, real values
 ├── .env.example          # committed, placeholders + docs
-├── .env.development      # gitignored, dev-specific (opcional)
-├── .env.production       # gitignored, prod-specific (opcional)
+├── .env.development      # gitignored, dev-specific (optional)
+├── .env.production       # gitignored, prod-specific (optional)
 ├── .env.test             # gitignored, test fixtures
 └── src/config/env.ts     # type-safe loader
 ```
 
-## .env.example — el template
+## .env.example — the template
 
 ```bash
-# .env.example — committed al repo
+# .env.example — committed to repo
 
 # ─── App ───
 NODE_ENV=development
@@ -38,7 +38,7 @@ APP_URL=http://localhost:3000
 LOG_LEVEL=info
 
 # ─── Database ───
-DATABASE_URL=postgresql://user:pass@localhost:5432/dbname
+DATABASE_URL=postgresql://user:***@localhost:5432/dbname
 DATABASE_POOL_SIZE=10
 
 # ─── Redis ───
@@ -46,18 +46,22 @@ REDIS_URL=redis://localhost:6379
 
 # ─── Auth ───
 JWT_SECRET=replace-with-random-32-chars-min
-JWT_EXPIRES_IN=7d
-SESSION_COOKIE_DOMAIN=localhost
+SESSION_COOKIE_SECRET=replace-with-random-32-chars-min
 
 # ─── External APIs ───
-STRIPE_SECRET_KEY=sk_test_replace
-STRIPE_WEBHOOK_SECRET=whsec_replace
-SENDGRID_API_KEY=SG.replace
-CLOUDINARY_API_KEY=replace
-CLOUDINARY_API_SECRET=replace
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+SENDGRID_API_KEY=SG.xxx
+OPENAI_API_KEY=sk-xxx
 
-# ─── Observability ───
-SENTRY_DSN=https://replace@sentry.io/123
+# ─── OAuth ───
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+# ─── Monitoring ───
+SENTRY_DSN=https://***@sentry.io/123
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
 
 # ─── Feature flags ───
@@ -65,9 +69,9 @@ FEATURE_NEW_DASHBOARD=false
 FEATURE_BETA_ACCESS=false
 ```
 
-## Carga type-safe
+## Type-safe loading
 
-### Opción 1: zod (simple, ubiquitous)
+### Option 1: zod (simple, ubiquitous)
 
 ```ts
 // src/config/env.ts
@@ -108,7 +112,7 @@ app.listen(env.APP_PORT);
 // env.STRIPE_SECRET_KEY is `string` (not `string | undefined` because required)
 ```
 
-### Opción 2: varlock (más seguro, runtime injection)
+### Option 2: varlock (more secure, runtime injection)
 
 ```bash
 # Install
@@ -116,7 +120,7 @@ pnpm add @varlock/secret-loader
 
 # .env.schema (varlock format)
 # @defaultServerSecret=false
-DATABASE_URL=postgresql://user:pass@localhost:5432/dbname
+DATABASE_URL=postgresql://user:***@localhost:5432/dbname
 JWT_SECRET=replace-with-random-32-chars-min # @type=secret, @minLength=32
 STRIPE_SECRET_KEY=sk_test_xxx               # @type=secret
 ```
@@ -130,20 +134,21 @@ export { env };
 ```
 
 Varlock benefits:
-- Schema validation antes de que el código corra.
-- Encrypts secrets at rest.
-- Auto-injects en build time.
-- Detecta `.env` no commiteados.
 
-## Sincronización con Coolify
+- Schema validation before code runs.
+- Encrypts secrets at rest.
+- Auto-injects at build time.
+- Detects uncommitted `.env`.
+
+## Syncing with Coolify
 
 ```bash
-# Subir .env a Coolify dashboard
-node scripts/coolify/sync-env.mjs --app mi-app
+# Upload .env to Coolify dashboard
+node scripts/coolify/sync-env.mjs --app my-app
 
-# O via API directamente
+# Or via API directly
 curl -X POST https://coolify.example.com/api/v1/applications/<uuid>/envs \
-  -H "Authorization: Bearer $COOLIFY_TOKEN" \
+  -H "Authorization: Bearer *** \
   -H "Content-Type: application/json" \
   -d "$(cat .env | jq -R -s 'split("\n") | map(select(length > 0) | split("=") | {(.[0]): .[1:] | join("=")}) | add')"
 ```
@@ -161,7 +166,7 @@ const COOLIFY_API = process.env.COOLIFY_API_URL;
 const COOLIFY_TOKEN = process.env.COOLIFY_TOKEN;
 
 // Get app UUID from Coolify
-const apps = JSON.parse(execSync(`curl -fsS ${COOLIFY_API}/applications -H "Authorization: Bearer ${COOLIFY_TOKEN}"`));
+const apps = JSON.parse(execSync(`curl -fsS ${COOLIFY_API}/applications -H "Authorization: Bearer ${COOL...`));
 const app = apps.find(a => a.name === APP);
 if (!app) {
   console.error(`App ${APP} not found in Coolify`);
@@ -197,36 +202,37 @@ console.log(`✓ Synced ${Object.keys(envVars).length} env vars to ${APP}`);
 ## Frontend (Vite)
 
 ```ts
-// Acceder SOLO a VITE_* vars en client code
+// Access ONLY VITE_* vars in client code
 const apiUrl = import.meta.env.VITE_API_URL;
 const isDev = import.meta.env.DEV;
 const mode = import.meta.env.MODE;  // 'development' | 'production'
 
-// Type-safety para custom vars
+// Type-safety for custom vars
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;
   readonly VITE_SENTRY_DSN?: string;
-  readonly VITE_FEATURE_NEW_DASHBOARD: string;  // Vite siempre las lee como string
+  readonly VITE_FEATURE_NEW_DASHBOARD: string;  // Vite always reads them as string
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-// Helper para booleanos
+// Helper for booleans
 const isNewDashboardEnabled = import.meta.env.VITE_FEATURE_NEW_DASHBOARD === 'true';
 ```
 
-`.env` para Vite:
+`.env` for Vite:
+
 ```bash
 VITE_API_URL=http://localhost:3000
 VITE_SENTRY_DSN=
 VITE_FEATURE_NEW_DASHBOARD=false
 ```
 
-## Generación de secrets
+## Secrets generation
 
 ```bash
 # Random secrets
@@ -243,13 +249,13 @@ node -e "console.log(require('bcrypt').hashSync('mypassword', 12))"
 
 ## Rotation policy
 
-| Secret type | Frecuencia | Cómo |
+| Secret type | Frequency | How |
 |---|---|---|
-| `JWT_SECRET` | Cada 90 días (forzar logout all) | Manual via Coolify |
-| `DATABASE_PASSWORD` | Cada 180 días | `ALTER USER ... WITH PASSWORD '...'` |
-| API keys (Stripe, etc.) | Cada 365 días o ante breach | Dashboard del provider |
-| `SESSION_COOKIE_SECRET` | Cada 180 días | Manual |
-| SSH deploy keys | Cada 365 días | `ssh-keygen` + update |
+| `JWT_SECRET` | Every 90 days (force logout all) | Manual via Coolify |
+| `DATABASE_PASSWORD` | Every 180 days | `ALTER USER ... WITH PASSWORD '...'` |
+| API keys (Stripe, etc.) | Every 365 days or on breach | Provider dashboard |
+| `SESSION_COOKIE_SECRET` | Every 180 days | Manual |
+| SSH deploy keys | Every 365 days | `ssh-keygen` + update |
 
 ## Secret storage best practices
 
@@ -257,9 +263,9 @@ node -e "console.log(require('bcrypt').hashSync('mypassword', 12))"
 2. **CI/CD secrets:** GitHub Actions secrets (encrypted, scoped).
 3. **Local dev:** `.env` gitignored.
 4. **Never:** Slack/Discord/email/Slack-channel.
-5. **Audit:** `git log -p | grep -iE "secret|api[_-]?key|password"` antes de cada release.
+5. **Audit:** `git log -p | grep -iE "secret|api[_-]?key|password"` before each release.
 
-## Detección de secrets en código
+## Secrets detection in code
 
 ```bash
 # gitleaks (recommended)
@@ -270,7 +276,7 @@ gitleaks detect --source . --verbose
 pip install trufflehog
 trufflehog filesystem .
 
-# grep simple
+# Simple grep
 grep -rE "(api[_-]?key|token|password|secret)\s*[:=]\s*['\"][a-zA-Z0-9_\-]{20,}" --include="*.ts" --include="*.js" --include="*.py" .
 
 # Pre-commit hook
@@ -278,29 +284,29 @@ grep -rE "(api[_-]?key|token|password|secret)\s*[:=]\s*['\"][a-zA-Z0-9_\-]{20,}"
 ! grep -rE "(api[_-]?key|token)\s*[:=]\s*['\"][a-zA-Z0-9_\-]{20,}" src/
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ Commit `.env` por error → rotar TODOS los secrets inmediatamente.
-2. ❌ Hardcodear fallback `'dev-secret-key'` → usar `if (env.NODE_ENV === 'production') throw`.
-3. ❌ `process.env.X!` (non-null assertion) → no-validates, falla en runtime tardío.
-4. ❌ Secrets en logs (`logger.info('Connecting with', { password })`) → redact.
-5. ❌ Frontend expone secret sin prefijo `VITE_` → Vite filtra automáticamente, pero cuidado.
-6. ❌ `.env.example` con valores reales → usar placeholders (`replace-with-xxx`).
-7. ❌ Sync manual de env a prod → automatizar con `sync-env.mjs`.
-8. ❌ Rotar secret sin invalidar sesiones activas → force logout en auth.
+1. ❌ Committing `.env` by mistake → rotate ALL secrets immediately.
+2. ❌ Hardcoding fallback `'dev-secret-key'` → use `if (env.NODE_ENV === 'production') throw`.
+3. ❌ `process.env.X!` (non-null assertion) → no validation, fails late at runtime.
+4. ❌ Secrets in logs (`logger.info('Connecting with', { password })`) → redact.
+5. ❌ Frontend exposing secret without `VITE_` prefix → Vite filters automatically, but be careful.
+6. ❌ `.env.example` with real values → use placeholders (`replace-with-xxx`).
+7. ❌ Manual env sync to prod → automate with `sync-env.mjs`.
+8. ❌ Rotating a secret without invalidating active sessions → force logout on auth.
 
-## Checklist pre-deploy
+## Pre-deploy checklist
 
-- [ ] `.env.example` actualizado con TODAS las vars nuevas
-- [ ] `.env` real NO en git (`git ls-files | grep -E "\.env$"` debe ser vacío)
-- [ ] Secrets scan pasa (`gitleaks detect`)
-- [ ] Type-safe loader funciona (`loadEnv()` exits 1 si falta required)
-- [ ] Vars de prod sincronizadas con Coolify
-- [ ] Vars de frontend solo `VITE_*`
-- [ ] No secrets en logs (redact mode)
-- [ ] Rotation policy documentada
+- [ ] `.env.example` updated with ALL new vars
+- [ ] Real `.env` NOT in git (`git ls-files | grep -E "\.env$"` should be empty)
+- [ ] Secrets scan passes (`gitleaks detect`)
+- [ ] Type-safe loader works (`loadEnv()` exits 1 if a required var is missing)
+- [ ] Prod vars synced with Coolify
+- [ ] Frontend vars only `VITE_*`
+- [ ] No secrets in logs (redact mode)
+- [ ] Rotation policy documented
 
-## Recursos
+## Resources
 
 - [Varlock](https://varlock.dev/)
 - [zod](https://zod.dev/)

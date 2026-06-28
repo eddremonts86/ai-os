@@ -14,7 +14,7 @@ Cualquier proyecto con shadcn/ui instalado — basado en Radix UI primitives + T
 
 - **NO es un npm package.** Componentes se copian a tu repo.
 - **Totalmente customizable** — son TUYOS una vez copiados.
-- **Composición sobre configuración** — variantes via `cva`.
+- **Composition over configuration** — variants via `cva`.
 - **Accesible por default** — basado en Radix UI.
 - **Tailwind nativo** — no CSS-in-JS.
 

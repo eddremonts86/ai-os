@@ -1,6 +1,6 @@
 ---
 name: hetzner-cloud-cli
-description: Patrones para gestionar infraestructura Hetzner Cloud desde la CLI (hcloud). Aplica al trabajar con servidores VPS Hetzner (CX/CCX/CPX), volúmenes, redes privadas, firewalls y SSH keys para proyectos iaWorkSpace y self-hosted apps.
+description: Patterns for managing Hetzner Cloud infrastructure from the CLI (hcloud). Applies when working with Hetzner VPS servers (CX/CCX/CPX), volumes, private networks, firewalls, and SSH keys for iaWorkSpace projects and self-hosted apps.
 license: Internal
 ---
 
@@ -10,27 +10,27 @@ license: Internal
 
 ```bash
 brew install hcloud                      # macOS
-# o Linux: https://github.com/hetznercloud/cli/releases
+# or Linux: https://github.com/hetznercloud/cli/releases
 hcloud context create prod               # interactive: API token
-hcloud context active                    # confirma
+hcloud context active                    # confirms
 ```
 
 API token: Hetzner Cloud Console → Security → API Tokens. Scope: Read & Write.
 
-## Conceptos
+## Concepts
 
-- **Server lifecycle states:** `CREATED` → `STARTING` → `RUNNING` → `OFF` → `DELETING`. En `OFF` se cobra storage pero no CPU.
+- **Server lifecycle states:** `CREATED` → `STARTING` → `RUNNING` → `OFF` → `DELETING`. In `OFF` you are charged for storage but not CPU.
 - **Server types:** CX (shared), CCX (dedicated), CPX (shared AMD), CAX (Arm).
-- **Server naming:** kebab-case, prefijo de proyecto (`edd-prod-01`, `wave-staging-01`).
-- **Labels:** k=v para filtering. Convención iaWorkSpace: `project=`, `env=`, `role=`, `managed-by=`.
+- **Server naming:** kebab-case, project prefix (`edd-prod-01`, `wave-staging-01`).
+- **Labels:** k=v for filtering. iaWorkSpace convention: `project=`, `env=`, `role=`, `managed-by=`.
 
-## Comandos esenciales
+## Essential commands
 
 ```bash
-# Listar
+# List
 hcloud server list -o columns=id,name,status,public_ipv4,datacenter,labels
 
-# Crear
+# Create
 hcloud server create \
   --name edd-prod-01 \
   --type cpx31 \
@@ -43,23 +43,23 @@ hcloud server create \
 hcloud server poweron <id>
 hcloud server poweroff <id>
 hcloud server reboot <id>
-hcloud server shutdown <id>     # ACPI, más limpio que poweroff
+hcloud server shutdown <id>     # ACPI, cleaner than poweroff
 hcloud server reset <id>         # hard reset
 
-# SSH directo
-hcloud ssh <id>                  # o hcloud ssh <name>
+# Direct SSH
+hcloud ssh <id>                  # or hcloud ssh <name>
 hcloud ssh --command "uptime" <id>
 
 # Snapshots / backups
-hcloud server enable-backup <id>           # backup automático 30% costo
+hcloud server enable-backup <id>           # automatic backup at 30% cost
 hcloud server create-image --type snapshot <id>
 hcloud image list
 
-# Volúmenes
+# Volumes
 hcloud volume create --name edd-data --size 50 --location nbg1
 hcloud volume attach edd-data <server-id>
 
-# Redes privadas
+# Private networks
 hcloud network create --name edd-net --ip-range 10.0.0.0/16
 hcloud network add-subnet edd-net --type server --network-zone eu-central --ip-range 10.0.1.0/24
 hcloud server attach-to-network <server-id> --network edd-net
@@ -73,11 +73,11 @@ hcloud firewall apply-to-resource edd-fw --type server --resource <server-id>
 hcloud floating-ip create --type ipv4 --home-location nbg1
 hcloud floating-ip assign <fip-id> <server-id>
 
-# Limpieza
+# Cleanup
 hcloud server delete <id>
 ```
 
-## Configuración de contexto
+## Context configuration
 
 ```bash
 # ~/.config/hcloud/cli.toml
@@ -117,17 +117,17 @@ for s in $(hcloud server list -o json | jq -r '.[].name'); do
   hcloud ssh "$s" --command "uptime"
 done
 
-# Con xargs
+# With xargs
 hcloud server list -o json | jq -r '.[] | .name' | xargs -I{} hcloud ssh {} --command "df -h"
 
-# Parallel con gnu parallel (instalar: brew install parallel)
+# Parallel with gnu parallel (install: brew install parallel)
 hcloud server list -o json | jq -r '.[] | .name' | parallel -j 5 'hcloud ssh {} --command "uptime"'
 ```
 
 ## Disaster recovery
 
 ```bash
-# Reconstruir desde snapshot
+# Rebuild from snapshot
 SNAP_ID=$(hcloud image list -o json | jq -r '.[] | select(.name | startswith("edd-prod-01-snap")) | .id' | head -1)
 hcloud server create \
   --name edd-prod-01-restored \
@@ -136,7 +136,7 @@ hcloud server create \
   --location nbg1 \
   --ssh-key work-laptop
 
-# O desde backup automático (se ve como imagen)
+# Or from automatic backup (appears as an image)
 ```
 
 ## Pricing watch
@@ -147,31 +147,31 @@ hcloud server-type list -o json | jq '.[] | {name, cores, memory, price_hourly: 
 
 CX31 (4 vCPU, 8GB): ~€15/mo. CCX23 (8 dedicated vCPU): ~€45/mo. CPX41 (8 vCPU, 16GB AMD): ~€35/mo.
 
-## Errores comunes
+## Common errors
 
-1. ❌ Crear server sin SSH key → no se puede entrar.
-2. ❌ `poweroff` sin `shutdown` previo → data loss si DB corriendo.
-3. ❌ Olvidar `--location` matching con subnet → network attach falla.
-4. ❌ API token con scope Read en script que escribe → 403.
-5. ❌ No cleanup de snapshots huérfanos → cost creep.
-6. ❌ Firewall con `0.0.0.0/0` en port 22 sin fail2ban → brute force.
-7. ❌ Floating IP asignada pero route en server no configurado → IP inaccesible.
-8. ❌ Borrar server antes de detach volumes → volume huérfano.
+1. ❌ Creating a server without an SSH key → cannot log in.
+2. ❌ `poweroff` without prior `shutdown` → data loss if DB is running.
+3. ❌ Forgetting `--location` matching with subnet → network attach fails.
+4. ❌ API token with Read scope in a script that writes → 403.
+5. ❌ No cleanup of orphaned snapshots → cost creep.
+6. ❌ Firewall with `0.0.0.0/0` on port 22 without fail2ban → brute force.
+7. ❌ Floating IP assigned but route on server not configured → IP unreachable.
+8. ❌ Deleting a server before detaching volumes → orphan volume.
 
-## Patrones iaWorkSpace
+## iaWorkSpace patterns
 
-- **Naming:** `<proyecto>-<env>-<num>`, ej `edd-prod-01`, `wave-staging-01`.
-- **Location default:** `nbg1` (Nuremberg) para EU.
-- **Image base:** `ubuntu-24.04` LTS.
-- **Backups:** habilitado en prod, deshabilitado en staging/dev.
-- **Networks:** una private network por proyecto (`10.0.0.0/16`).
-- **SSH:** solo con keys pre-registradas, password auth deshabilitada.
-- **Firewall:** default-deny, allow 22 solo desde IPs conocidas (o VPN).
+- **Naming:** `<project>-<env>-<num>`, e.g. `edd-prod-01`, `wave-staging-01`.
+- **Default location:** `nbg1` (Nuremberg) for EU.
+- **Base image:** `ubuntu-24.04` LTS.
+- **Backups:** enabled in prod, disabled in staging/dev.
+- **Networks:** one private network per project (`10.0.0.0/16`).
+- **SSH:** only with pre-registered keys, password auth disabled.
+- **Firewall:** default-deny, allow 22 only from known IPs (or VPN).
 
-## Setup con Ansible-style hcloud_context
+## Setup with Ansible-style hcloud_context
 
 ```bash
-# Script reusable: scripts/hetzner-bootstrap.sh
+# Reusable script: scripts/hetzner-bootstrap.sh
 #!/bin/bash
 set -euo pipefail
 hcloud server create \
@@ -186,7 +186,7 @@ hcloud server create \
 echo "Server $1 created: $(hcloud server list -o columns=id,public_ipv4 | grep $1)"
 ```
 
-## Recursos
+## Resources
 
 - [Hetzner Cloud CLI repo](https://github.com/hetznercloud/cli)
 - [Hetzner Cloud API docs](https://docs.hetzner.cloud/)

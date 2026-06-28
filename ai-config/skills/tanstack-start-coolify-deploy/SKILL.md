@@ -1,17 +1,17 @@
 ---
 name: tanstack-start-coolify-deploy
-description: Deploy de apps TanStack Start (Vite plugin con SSR) a Coolify. Cubre wrapper server.prod.mjs, Dockerfile multi-stage con target=prod, fqdn bug fix, isSsrBuild server-only imports. Aplica a cualquier app TanStack Start que se deploye a Coolify o cualquier Docker host.
+description: Deploy TanStack Start apps (Vite plugin with SSR) to Coolify. Covers server.prod.mjs wrapper, multi-stage Dockerfile with target=prod, fqdn bug fix, isSsrBuild server-only imports. Applies to any TanStack Start app deployed to Coolify or any Docker host.
 license: Internal
 ---
 
 # TanStack Start → Coolify Deploy
 
-## El problema
+## The problem
 
-TanStack Start con Vite plugin genera `dist/server/server.js` que es **ESM con Web Fetch API handler**, NO un server HTTP tradicional:
+TanStack Start with the Vite plugin generates `dist/server/server.js` which is **ESM with a Web Fetch API handler**, NOT a traditional HTTP server:
 
 ```js
-// dist/server/server.js (generado, NO editar)
+// dist/server/server.js (generated, do NOT edit)
 export default {
   fetch(request: Request): Promise<Response> {
     return start.handler(request);
@@ -19,14 +19,14 @@ export default {
 };
 ```
 
-Coolify (y la mayoría de PaaS) esperan un container que **binde un puerto TCP**. El server.js sale con exit 0 inmediato si lo corrés directo → "container started but port not listening" → healthcheck fails → deploy fails.
+Coolify (and most PaaS) expect a container that **binds a TCP port**. server.js exits with code 0 immediately if you run it directly → "container started but port not listening" → healthcheck fails → deploy fails.
 
-## La solución: wrapper HTTP
+## The solution: HTTP wrapper
 
-Crear `server.prod.mjs` que envuelve el handler con un HTTP server:
+Create `server.prod.mjs` that wraps the handler with an HTTP server:
 
 ```javascript
-// server.prod.mjs (en repo root, commited)
+// server.prod.mjs (in repo root, committed)
 import { createServer } from 'node:http';
 import { createReadStream, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
@@ -138,7 +138,7 @@ process.on('SIGTERM', () => server.close(() => process.exit(0)));
 process.on('SIGINT', () => server.close(() => process.exit(0)));
 ```
 
-## Dockerfile multi-stage
+## Multi-stage Dockerfile
 
 ```dockerfile
 # ─── BASE: install deps ───
@@ -178,7 +178,7 @@ COPY --from=builder /app/drizzle ./drizzle
 COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
 COPY --from=builder /app/scripts ./scripts
 
-RUN touch .env  # stub para tsx --env-file
+RUN touch .env  # stub for tsx --env-file
 
 ENV NODE_ENV=production
 ENV PORT=3000
@@ -207,83 +207,84 @@ CMD ["node", "server.prod.mjs"]
 }
 ```
 
-## Server-only imports (CRÍTICO)
+## Server-only imports (CRITICAL)
 
-**Problema:** TanStack Start Vite plugin NO setea `isSsrBuild` para imports de `@/shared/lib/db` cuando se hace `import { db } from '@/shared/lib/db'`.
+**Problem:** The TanStack Start Vite plugin does NOT set `isSsrBuild` for imports from `@/shared/lib/db` when you do `import { db } from '@/shared/lib/db'`.
 
-Si `db.ts` (top-level) importa `pg` o `drizzle-orm/pg-core`, se mete en el **client bundle** → `process is not defined` o `Cannot find module 'pg'` en el browser.
+If `db.ts` (top-level) imports `pg` or `drizzle-orm/pg-core`, it ends up in the **client bundle** → `process is not defined` or `Cannot find module 'pg'` in the browser.
 
-**Solución: subpath explícito**
+**Solution: explicit subpath**
 
 ```typescript
-// ❌ MAL — se mete en client bundle
+// ❌ BAD — ends up in client bundle
 import { db } from '@/shared/lib/db';
 
-// ✅ BIEN — server-only, bypassea el alias regex
+// ✅ GOOD — server-only, bypasses the alias regex
 import { db } from '@/shared/lib/db/index';
 
-// ✅ MEJOR — barrel con re-export
+// ✅ BETTER — barrel with re-export
 // @/shared/lib/db/index.ts
 export { db, schema } from './server/db';
 export type { Db } from './server/db';
 ```
 
-Regla: cualquier import que use Node.js APIs (fs, pg, redis, child_process) **debe** usar subpath explícito o barrel.
+Rule: any import that uses Node.js APIs (fs, pg, redis, child_process) **must** use an explicit subpath or barrel.
 
 ## Coolify setup
 
-### 1. Crear app via API
+### 1. Create app via API
 
 ```bash
 # Get project + server UUIDs
 curl -fsS http://<server-ip>:8000/api/v1/projects \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
   | jq '.[] | {uuid, name}'
 
 curl -fsS http://<server-ip>:8000/api/v1/servers \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
   | jq '.[] | {uuid, name}'
 
 # Create Postgres DB
 curl -X POST http://<server-ip>:8000/api/v1/databases/postgresql \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "server_uuid": "<server-uuid>",
     "project_uuid": "<project-uuid>",
     "environment_name": "production",
-    "name": "mi-app-db",
-    "postgres_user": "mi_app",
+    "name": "my-app-db",
+    "postgres_user": "my_app",
     "postgres_password": "<openssl rand -hex 16>",
-    "postgres_db": "mi_app"
+    "postgres_db": "my_app"
   }'
 
 # Create application
 curl -X POST http://<server-ip>:8000/api/v1/applications/public \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "server_uuid": "<server-uuid>",
     "project_uuid": "<project-uuid>",
     "environment_name": "production",
-    "git_repository": "https://github.com/user/mi-app",
+    "git_repository": "https://github.com/user/my-app",
     "git_branch": "main",
     "build_pack": "dockerfile",
     "dockerfile_target_build": "prod",
-    "fqdn": "https://mi-app.example.com"
+    "fqdn": "https://my-app.example.com"
   }'
 ```
 
 ### 2. Sync env vars
 
 ```bash
-node scripts/coolify/sync-env.mjs --app mi-app
+node scripts/coolify/sync-env.mjs --app my-app
 ```
 
-Env vars críticas:
+Critical env vars:
+
 ```bash
-DATABASE_URL=postgresql://mi_app:***@mi-app-db:5432/mi_app
-BETTER_AUTH_URL=https://mi-app.example.com
+DATABASE_URL=postgresql://my_app:<password>@my-app-db:5432/my_app
+BETTER_AUTH_URL=https://my-app.example.com
 NODE_ENV=production
 PORT=3000
 ```
@@ -291,7 +292,7 @@ PORT=3000
 ### 3. Set post-deploy command
 
 ```bash
-node scripts/coolify/set-post-deploy.mjs --app mi-app \
+node scripts/coolify/set-post-deploy.mjs --app my-app \
   --command "pnpm db:migrate && (pnpm db:seed:admin || true)"
 ```
 
@@ -300,44 +301,44 @@ node scripts/coolify/set-post-deploy.mjs --app mi-app \
 ```bash
 APP_UUID=<from-step-1>
 curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}"
 ```
 
 ## fqdn bug fix (Coolify caching Traefik labels)
 
-**Síntoma:** cambias `fqdn` en el dashboard de la app pero Traefik sigue resolviendo al container viejo.
+**Symptom:** you change `fqdn` in the app dashboard but Traefik still routes to the old container.
 
-**Causa:** Coolify cachea los Traefik labels en `custom_labels` (JSON en la DB). Cambiar fqdn en UI no actualiza custom_labels.
+**Cause:** Coolify caches Traefik labels in `custom_labels` (JSON in the DB). Changing fqdn in the UI does not update `custom_labels`.
 
-**Solución:**
+**Solution:**
 
 ```bash
-# SSH al server Coolify
+# SSH into Coolify server
 ssh root@<server-ip>
 
-# Listar apps con custom_labels
+# List apps with custom_labels
 docker exec coolify php artisan tinker --execute='foreach (App\Models\Application::all() as $a) { echo $a->name . ": " . json_encode($a->custom_labels) . "\n"; }'
 
-# Limpiar custom_labels de una app específica
+# Clear custom_labels for a specific app
 docker exec coolify php artisan tinker --execute='
-$a = App\Models\Application::where("name", "mi-app")->first();
+$a = App\Models\Application::where("name", "my-app")->first();
 $a->custom_labels = null;
 $a->save();
 echo "Cleared\n";
 '
 
-# Redeploy (esto regenera Traefik labels correctamente)
+# Redeploy (this regenerates Traefik labels correctly)
 curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
+  -H "Authorization: Bearer ${COOLIFY_TOKEN}"
 ```
 
-Alternativa: borrar la app y crearla de nuevo con el fqdn correcto.
+Alternative: delete the app and recreate it with the correct fqdn.
 
-## Token generation (si createToken falla)
+## Token generation (if createToken fails)
 
-**Síntoma:** `POST /api/v1/tokens` devuelve 500 con "team_id cannot be null".
+**Symptom:** `POST /api/v1/tokens` returns 500 with "team_id cannot be null".
 
-**Solución:** insertar directo via tinker:
+**Solution:** insert directly via tinker:
 
 ```bash
 docker exec coolify php artisan tinker --execute='
@@ -357,62 +358,63 @@ echo "Token: <user_id>|<token>\n";
 '
 ```
 
-Formato: `<user_id>|<plain_token>` (no solo `<plain_token>`).
+Format: `<user_id>|<plain_token>` (not just `<plain_token>`).
 
 ## DNS + port setup
 
 ```bash
-# DNS wildcard
+# Wildcard DNS
 *.example.com  A  <server-ip>
 @              A  <server-ip>     # apex domain
 
-# Port 8000 (Coolify UI/API) abierto en firewall
+# Port 8000 (Coolify UI/API) open in firewall
 sudo ufw allow 8000/tcp
 ```
 
-Coolify ocupa:
+Coolify uses:
+
 - `:80` (HTTP → redirect)
 - `:443` (HTTPS)
 - `:8000` (dashboard + API)
 
-## Verificación post-deploy
+## Post-deploy verification
 
 ```bash
 # 1. Health
-curl -fsS https://mi-app.example.com/api/health
+curl -fsS https://my-app.example.com/api/health
 # → {"status":"ok"}
 
 # 2. Logs
-ssh root@<server-ip> "docker logs --tail 100 mi-app-app-1"
+ssh root@<server-ip> "docker logs --tail 100 my-app-app-1"
 
 # 3. Container status
-ssh root@<server-ip> "docker ps | grep mi-app"
+ssh root@<server-ip> "docker ps | grep my-app"
 
-# 4. Traefik labels correctos
-ssh root@<server-ip> "docker inspect mi-app-app-1 | jq '.[0].Config.Labels' | grep traefik"
+# 4. Traefik labels correct
+ssh root@<server-ip> "docker inspect my-app-app-1 | jq '.[0].Config.Labels' | grep traefik"
 
-# 5. DB migrations aplicadas
-docker exec mi-app-app-1 pnpm db:migrate:status
+# 5. DB migrations applied
+docker exec my-app-app-1 pnpm db:migrate:status
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ `dist/server/server.js` se ejecuta directo → exit 0 inmediato, port no listening → usar `server.prod.mjs` wrapper.
-2. ❌ Server-only imports sin subpath → `process is not defined` en browser.
-3. ❌ `isSsrBuild` flag no seteado por Vite plugin → bundle client incluye server code.
-4. ❌ `dockerfile_target_build` no especificado en Coolify → build usa último stage (= puede no ser el correcto).
-5. ❌ `fqdn` con http:// en vez de https:// → cert Let's Encrypt falla.
-6. ❌ DNS no propagado → cert issuance timeout.
-7. ❌ Custom_labels stale en Coolify → Traefik no actualiza.
-8. ❌ Post-deploy command no idempotente → segundo deploy rompe DB.
-9. ❌ `BETTER_AUTH_URL` apunta a localhost → cookies no se setean en prod domain.
-10. ❌ Port 8000 cerrado en firewall → dashboard/API inaccesible.
+1. ❌ Running `dist/server/server.js` directly → exits immediately, port not listening → use the `server.prod.mjs` wrapper.
+2. ❌ Server-only imports without subpath → `process is not defined` in browser.
+3. ❌ `isSsrBuild` flag not set by Vite plugin → client bundle includes server code.
+4. ❌ `dockerfile_target_build` not specified in Coolify → build uses the last stage (= may not be the right one).
+5. ❌ `fqdn` with `http://` instead of `https://` → Let's Encrypt cert fails.
+6. ❌ DNS not propagated → cert issuance timeout.
+7. ❌ Stale `custom_labels` in Coolify → Traefik doesn't update.
+8. ❌ Non-idempotent post-deploy command → second deploy breaks DB.
+9. ❌ `BETTER_AUTH_URL` pointing to localhost → cookies not set on prod domain.
+10. ❌ Port 8000 closed in firewall → dashboard/API inaccessible.
 
-## Recursos
+## Resources
 
 - [TanStack Start docs](https://tanstack.com/start)
 - [Coolify API](https://coolify.io/docs/api)
 - [Coolify fqdn bug discussion](https://github.com/coollabsio/coolify/issues)
-- Skill relacionada: `coolify-deploy` (overview)
-- Skill relacionada: `pnpm-docker-deploy` (lockfile + builds scripts)
-- Skill relacionada: `prod-deploy-verification` (pre-flight checks)
+- Related skill: `coolify-deploy` (overview)
+- Related skill: `pnpm-docker-deploy` (lockfile + build scripts)
+- Related skill: `prod-deploy-verification` (pre-flight checks)

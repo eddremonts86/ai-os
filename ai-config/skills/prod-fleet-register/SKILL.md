@@ -1,52 +1,52 @@
 ---
 name: prod-fleet-register
-description: Patrón para registrar apps en fleet Traefik + mkcert + /etc/hosts local. Aplica cuando añadís una nueva app al meta-repo iaWorkSpace o cualquier setup multi-app con reverse proxy local Traefik.
+description: Pattern for registering apps in Traefik + mkcert + /etc/hosts local fleet. Applies when adding a new app to the iaWorkSpace meta-repo or any multi-app setup with local Traefik reverse proxy.
 license: Internal
 ---
 
 # Prod Fleet Register
 
-## Cuándo usar
+## When to use
 
-- Añadir nueva app a un fleet local con Traefik + certs mkcert.
-- Generar `compose.d/<app>.yml` desde `stack.config.mjs`.
-- Setup de `/etc/hosts` con marcadores idempotentes.
-- Configurar wildcard cert + DNS local.
+- Add a new app to a local fleet with Traefik + mkcert certs.
+- Generate `compose.d/<app>.yml` from `stack.config.mjs`.
+- Setup `/etc/hosts` with idempotent markers.
+- Configure wildcard cert + local DNS.
 
-## Setup inicial (una vez por máquina)
+## Initial setup (once per machine)
 
-### 1. Instalar mkcert + root CA
+### 1. Install mkcert + root CA
 
 ```bash
 brew install mkcert
-mkcert -install    # instala root CA local en system trust store
+mkcert -install    # installs root CA locally in the system trust store
 ```
 
-Esto permite que el browser confíe en `*.eduardoinerarte.local` sin warnings.
+This lets the browser trust `*.eduardoinerarte.local` without warnings.
 
-### 2. Generar wildcard cert
+### 2. Generate wildcard cert
 
 ```bash
 cd prod/certs/
 mkcert "*.eduardoinerarte.local" "eduardoinerarte.local"
-# Genera: _wildcard.eduardoinerarte.local.pem + -key.pem
+# Generates: _wildcard.eduardoinerarte.local.pem + -key.pem
 ```
 
-Renombrar a lo que Traefik espera:
+Rename to what Traefik expects:
 ```bash
 mv _wildcard.eduardoinerarte.local.pem wildcard.eduardoinerarte.local.pem
 mv _wildcard.eduardoinerarte.local-key.pem wildcard.eduardoinerarte.local-key.pem
 ```
 
-### 3. Setup de /etc/hosts (idempotente)
+### 3. /etc/hosts setup (idempotent)
 
 ```bash
 # scripts/prod/setup.sh
-# Marcadores >>> iaworkspace-prod >>> y <<< iaworkspace-prod <<<
+# Markers >>> iaworkspace-prod >>> and <<< iaworkspace-prod <<<
 HOSTS_MARKER_START=">>> iaworkspace-prod >>>"
 HOSTS_MARKER_END="<<< iaworkspace-prod <<<"
 
-# Genera bloque nuevo
+# Generates new block
 generate_hosts_block() {
   cat <<EOF
 $HOSTS_MARKER_START
@@ -57,11 +57,11 @@ $HOSTS_MARKER_END
 EOF
 }
 
-# Si ya existe, reemplaza solo entre marcadores
-# Si no existe, append
+# If it already exists, replace only between markers
+# If it does not exist, append
 sudo /bin/bash -c "
   if grep -q '$HOSTS_MARKER_START' /etc/hosts; then
-    # Reemplazar bloque entre marcadores
+    # Replace block between markers
     sed -i '' '/$HOSTS_MARKER_START/,/$HOSTS_MARKER_END/c\\
 $(generate_hosts_block | sed 's/$/\\/')
 ' /etc/hosts
@@ -74,15 +74,15 @@ EOF2
 "
 ```
 
-### 4. Red externa de Docker
+### 4. External Docker network
 
 ```bash
-docker network create iaws-prod   # externa, persistente
+docker network create iaws-prod   # external, persistent
 ```
 
-## Registrar nueva app
+## Register a new app
 
-### Paso 1: Generar secrets
+### Step 1: Generate secrets
 
 ```bash
 # BETTER_AUTH_SECRET (32 bytes base64)
@@ -92,7 +92,7 @@ openssl rand -base64 32
 openssl rand -hex 16
 ```
 
-### Paso 2: Editar `prod/stack.config.mjs`
+### Step 2: Edit `prod/stack.config.mjs`
 
 ```javascript
 // prod/stack.config.mjs
@@ -108,21 +108,21 @@ export default {
     dashboard: true,
   },
   apps: [
-    // ... apps existentes ...
+    // ... existing apps ...
     {
-      name: 'mi-nueva-app',
-      host: 'mi-app',  // → mi-app.eduardoinerarte.local
+      name: 'my-new-app',
+      host: 'my-app',  // → my-app.eduardoinerarte.local
       port: 3000,
       db: {
-        user: 'mi_app',
+        user: 'my_app',
         password: '<openssl rand -hex 16>',
-        name: 'mi_app',
+        name: 'my_app',
       },
       auth: {
-        mode: 'local',  // o 'clerk' | 'hybrid'
+        mode: 'local',  // or 'clerk' | 'hybrid'
         secret: '<openssl rand -base64 32>',
       },
-      migratorTarget: 'builder',  // o 'build' | 'prod'
+      migratorTarget: 'builder',  // or 'build' | 'prod'
       migratorCmd: 'pnpm db:migrate && (pnpm db:seed:admin || true)',
       deployable: true,
     },
@@ -130,58 +130,58 @@ export default {
 };
 ```
 
-### Paso 3: Generar compose overlay
+### Step 3: Generate compose overlay
 
 ```bash
 node scripts/prod/generate-compose.mjs
-# Genera prod/compose.d/mi-nueva-app.yml con:
-#   - servicio mi-nueva-app
-#   - servicio mi-nueva-app-migrator (one-shot)
-#   - servicio mi-nueva-app-db-init (one-shot, crea role/db)
+# Generates prod/compose.d/my-new-app.yml with:
+#   - my-new-app service
+#   - my-new-app-migrator service (one-shot)
+#   - my-new-app-db-init service (one-shot, creates role/db)
 
-# Genera prod/traefik/dynamic/routes.yml con:
-#   - router para mi-app.eduardoinerarte.local → mi-nueva-app:3000
+# Generates prod/traefik/dynamic/routes.yml with:
+#   - router for my-app.eduardoinerarte.local → my-new-app:3000
 ```
 
-### Paso 4: Crear `.env.production.local.example` en app
+### Step 4: Create `.env.production.local.example` in app
 
 ```bash
-# apps/mi-nueva-app/.env.production.local.example
-DATABASE_URL=postgresql://mi_app:<db_password>@postgres:5432/mi_app
+# apps/my-new-app/.env.production.local.example
+DATABASE_URL=postgresql://my_app:***@postgres:5432/my_app
 NODE_ENV=production
 PORT=3000
 BETTER_AUTH_SECRET=<generated>
-BETTER_AUTH_URL=https://mi-app.eduardoinerarte.local
-VITE_BETTER_AUTH_URL=https://mi-app.eduardoinerarte.local
+BETTER_AUTH_URL=https://my-app.eduardoinerarte.local
+VITE_BETTER_AUTH_URL=https://my-app.eduardoinerarte.local
 ```
 
-El usuario copia a `.env.production.local` (gitignored) con valores reales.
+The user copies it to `.env.production.local` (gitignored) with real values.
 
-### Paso 5: Levantar
+### Step 5: Bring it up
 
 ```bash
-node scripts/prod/up.sh mi-nueva-app
-# o todos
+node scripts/prod/up.sh my-new-app
+# or all
 node scripts/prod/up.sh
 
-# Verificar
+# Verify
 node scripts/prod/status.sh
 node scripts/prod/urls.sh
-open https://mi-app.eduardoinerarte.local
+open https://my-app.eduardoinerarte.local
 ```
 
-## Estructura del overlay generado
+## Structure of the generated overlay
 
 ```yaml
-# prod/compose.d/mi-nueva-app.yml (generado)
+# prod/compose.d/my-new-app.yml (generated)
 services:
-  mi-nueva-app:
-    build: ../apps/mi-nueva-app
+  my-new-app:
+    build: ../apps/my-new-app
     target: prod
-    container_name: iaws-prod-mi-nueva-app
+    container_name: iaws-prod-my-new-app
     restart: unless-stopped
     env_file:
-      - ../apps/mi-nueva-app/.env.production.local
+      - ../apps/my-new-app/.env.production.local
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1))"]
       interval: 30s
@@ -191,32 +191,32 @@ services:
     networks:
       - iaws-prod
     depends_on:
-      mi-nueva-app-migrator:
+      my-new-app-migrator:
         condition: service_completed_successfully
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mi-nueva-app.rule=Host(`mi-app.eduardoinerarte.local`)"
-      - "traefik.http.routers.mi-nueva-app.entrypoints=websecure"
-      - "traefik.http.routers.mi-nueva-app.tls=true"
-      - "traefik.http.services.mi-nueva-app.loadbalancer.server.port=3000"
+      - "traefik.http.routers.my-new-app.rule=Host(`my-app.eduardoinerarte.local`)"
+      - "traefik.http.routers.my-new-app.entrypoints=websecure"
+      - "traefik.http.routers.my-new-app.tls=true"
+      - "traefik.http.services.my-new-app.loadbalancer.server.port=3000"
 
-  mi-nueva-app-migrator:
-    build: ../apps/mi-nueva-app
+  my-new-app-migrator:
+    build: ../apps/my-new-app
     target: builder
-    container_name: iaws-prod-mi-nueva-app-migrator
+    container_name: iaws-prod-my-new-app-migrator
     restart: no
     env_file:
-      - ../apps/mi-nueva-app/.env.production.local
+      - ../apps/my-new-app/.env.production.local
     command: ["sh", "-c", "touch .env && pnpm db:migrate && (pnpm db:seed:admin || true)"]
     networks:
       - iaws-prod
     depends_on:
-      mi-nueva-app-db-init:
+      my-new-app-db-init:
         condition: service_completed_successfully
 
-  mi-nueva-app-db-init:
+  my-new-app-db-init:
     image: postgres:16-alpine
-    container_name: iaws-prod-mi-nueva-app-db-init
+    container_name: iaws-prod-my-new-app-db-init
     restart: no
     networks:
       - iaws-prod
@@ -224,10 +224,10 @@ services:
       PGPASSWORD: postgreslocal
     command: >
       sh -c "
-        psql -h postgres -U postgres -tc \"SELECT 1 FROM pg_roles WHERE rolname='mi_app'\" | grep -q 1 ||
-          psql -h postgres -U postgres -c \"CREATE ROLE mi_app LOGIN PASSWORD 'mi_app_pwd'\";
-        psql -h postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname='mi_app'\" | grep -q 1 ||
-          psql -h postgres -U postgres -c \"CREATE DATABASE mi_app OWNER mi_app\";
+        psql -h postgres -U postgres -tc \"SELECT 1 FROM pg_roles WHERE rolname='my_app'\" | grep -q 1 ||
+          psql -h postgres -U postgres -c \"CREATE ROLE my_app LOGIN PASSWORD 'my_app_pwd'\";
+        psql -h postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname='my_app'\" | grep -q 1 ||
+          psql -h postgres -U postgres -c \"CREATE DATABASE my_app OWNER my_app\";
       "
     depends_on:
       postgres:
@@ -238,67 +238,67 @@ networks:
     external: true
 ```
 
-## Patrones y reglas
+## Patterns and rules
 
-- **Naming determinista:** `iaws-prod-<app>` para containers.
-- **migratorTarget:** `builder` (full deps con tsx/drizzle-kit) o `build` (lean con solo deps runtime). Determinar según qué scripts corren las migrations.
-- **Migrations idempotentes:** `pnpm db:migrate && (pnpm db:seed:admin || true)` — seeds opcionales con `|| true` para no romper deploy.
-- **`exclude_from_hc: true`** para workers/scrapers que no exponen HTTP (evita que cuenten como unhealthy).
+- **Deterministic naming:** `iaws-prod-<app>` for containers.
+- **migratorTarget:** `builder` (full deps with tsx/drizzle-kit) or `build` (lean with only runtime deps). Determine based on which scripts run the migrations.
+- **Idempotent migrations:** `pnpm db:migrate && (pnpm db:seed:admin || true)` — optional seeds with `|| true` to avoid breaking deploys.
+- **`exclude_from_hc: true`** for workers/scrapers that don't expose HTTP (prevents them from being counted as unhealthy).
 - **depends_on chain:** app → migrator (completed_successfully) → db-init (service_completed_successfully) → postgres (service_healthy).
-- **Cert wildcard:** un solo cert cubre todos los subdominios.
-- **/etc/hosts con marcadores:** permite re-correr setup sin duplicar entradas.
+- **Wildcard cert:** a single cert covers all subdomains.
+- **/etc/hosts with markers:** allows re-running setup without duplicating entries.
 
-## Verificación post-register
+## Post-register verification
 
 ```bash
 # Containers
-docker ps --filter "name=iaws-prod-mi-nueva-app" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+docker ps --filter "name=iaws-prod-my-new-app" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
 # Logs
-node scripts/prod/logs.sh mi-nueva-app
+node scripts/prod/logs.sh my-new-app
 
 # Smoke test
-node scripts/prod/verify.sh mi-nueva-app
-# o
-curl -fsS https://mi-app.eduardoinerarte.local/api/health
+node scripts/prod/verify.sh my-new-app
+# or
+curl -fsS https://my-app.eduardoinerarte.local/api/health
 
-# URL accesible
-open https://mi-app.eduardoinerarte.local
+# Accessible URL
+open https://my-app.eduardoinerarte.local
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ Host duplicado en `stack.config.mjs` → `verify.sh` falla con "host already registered".
-2. ❌ Olvidar `docker network create iaws-prod` → "network not found".
-3. ❌ Cert wildcard no regenerado tras añadir dominio → browser warning.
-4. ❌ `BETTER_AUTH_SECRET` en `.env.production.local` pero no commiteado `.env.production.local.example` → próximo dev no puede replicar.
-5. ❌ `migratorTarget: prod` pero migrations usan `tsx` que solo está en devDeps → migrator falla.
-6. ❌ DB password en stack.config.mjs pero `db-init` tiene otro hardcoded → role creation falla.
-7. ❌ No commitear `prod/compose.d/<app>.yml` generado → tras rebuild, app no aparece.
+1. ❌ Duplicate host in `stack.config.mjs` → `verify.sh` fails with "host already registered".
+2. ❌ Forgetting `docker network create iaws-prod` → "network not found".
+3. ❌ Wildcard cert not regenerated after adding a domain → browser warning.
+4. ❌ `BETTER_AUTH_SECRET` in `.env.production.local` but `.env.production.local.example` not committed → next dev cannot replicate.
+5. ❌ `migratorTarget: prod` but migrations use `tsx` which is only in devDeps → migrator fails.
+6. ❌ DB password in stack.config.mjs but `db-init` has a different hardcoded one → role creation fails.
+7. ❌ Not committing generated `prod/compose.d/<app>.yml` → after rebuild, app does not appear.
 
 ## Rollback
 
 ```bash
-# 1. Quitar de stack.config.mjs
-# 2. Regenerar
+# 1. Remove from stack.config.mjs
+# 2. Regenerate
 node scripts/prod/generate-compose.mjs
-# 3. (borra prod/compose.d/mi-nueva-app.yml y su entry en routes.yml)
+# 3. (deletes prod/compose.d/my-new-app.yml and its entry in routes.yml)
 
-# 4. Bajar containers
-node scripts/prod/down.sh mi-nueva-app --clean
+# 4. Bring down containers
+node scripts/prod/down.sh my-new-app --clean
 
-# 5. Limpiar DB (opcional)
-docker exec iaws-prod-postgres psql -U postgres -c "DROP DATABASE mi_app;"
-docker exec iaws-prod-postgres psql -U postgres -c "DROP ROLE mi_app;"
+# 5. Clean up DB (optional)
+docker exec iaws-prod-postgres psql -U postgres -c "DROP DATABASE my_app;"
+docker exec iaws-prod-postgres psql -U postgres -c "DROP ROLE my_app;"
 
-# 6. Quitar /etc/hosts entry
-node scripts/prod/setup.sh  # regenera sin mi-nueva-app
+# 6. Remove /etc/hosts entry
+node scripts/prod/setup.sh  # regenerates without my-new-app
 ```
 
-## Recursos
+## Resources
 
 - [mkcert](https://github.com/FiloSottile/mkcert)
 - [Traefik file provider](https://doc.traefik.io/traefik/providers/file/)
 - [Docker external networks](https://docs.docker.com/compose/networking/)
-- Skill relacionada: `iaworkspace-patterns` (overview)
-- Skill relacionada: `coolify-deploy` (mismo patrón pero en cloud)
+- Related skill: `iaworkspace-patterns` (overview)
+- Related skill: `coolify-deploy` (same pattern but in the cloud)

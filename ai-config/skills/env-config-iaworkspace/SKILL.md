@@ -1,16 +1,16 @@
 ---
 name: env-config-iaworkspace
-description: Patrón de configuración de entorno del workspace iaWorkSpace — Port Allocation Map, AUTH_MODE local/clerk/hybrid, 7 secciones canónicas de .env, default admin credentials, DB compartido workspace-postgres, profiles standalone/docker. Aplica a apps del workspace o cualquier setup multi-app con shared infra.
+description: Environment configuration pattern for the iaWorkSpace workspace — Port Allocation Map, local/clerk/hybrid AUTH_MODE, 7 canonical sections of .env, default admin credentials, shared workspace-postgres DB, standalone/docker profiles. Applies to workspace apps or any multi-app setup with shared infra.
 license: Internal
 ---
 
 # Env Config — iaWorkSpace Pattern
 
-Convención de `.env` y configuración de servicios para apps del workspace iaWorkSpace. Single source of truth para naming, defaults y ports.
+`.env` convention and service configuration for iaWorkSpace workspace apps. Single source of truth for naming, defaults, and ports.
 
-## 7 secciones canónicas de `.env`
+## 7 canonical sections of `.env`
 
-Orden obligatorio (de izquierda a derecha en el archivo):
+Mandatory order (left to right in the file):
 
 ### 1. Application
 
@@ -24,7 +24,7 @@ LOG_LEVEL=info
 ### 2. Database
 
 ```bash
-DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<dbname>
+DATABASE_URL=postgresql://<user>:***@localhost:5432/<dbname>
 DATABASE_POOL_SIZE=10
 DB_USER=geo
 DB_PASSWORD=geolocal
@@ -36,14 +36,14 @@ DB_NAME=geo_dashboard
 ```bash
 # local | clerk | hybrid
 AUTH_MODE=local
-VITE_AUTH_MODE=local                  # mirror obligatorio para frontend
-SHOULD_USE_CLERK_PROVIDER=             # deprecated, usar AUTH_MODE
+VITE_AUTH_MODE=local                  # mandatory mirror for frontend
+SHOULD_USE_CLERK_PROVIDER=             # deprecated, use AUTH_MODE
 
 # Better Auth
 BETTER_AUTH_SECRET=<openssl rand -base64 32>
 BETTER_AUTH_URL=http://localhost:3000
 
-# Clerk (si AUTH_MODE=clerk)
+# Clerk (if AUTH_MODE=clerk)
 CLERK_PUBLISHABLE_KEY=pk_test_xxx
 CLERK_SECRET_KEY=sk_test_xxx
 ```
@@ -52,11 +52,11 @@ CLERK_SECRET_KEY=sk_test_xxx
 
 ```bash
 DEFAULT_ADMIN_EMAIL=edd_admin@local.com
-DEFAULT_ADMIN_PASSWORD=Passw0rd!234   # ⚠️ solo dev; rotar en prod
+DEFAULT_ADMIN_PASSWORD=Passw0rd!234   # ⚠️ dev only; rotate in prod
 DEFAULT_ADMIN_NAME=Edd Admin
 ```
 
-**Importante:** estos valores también en `iaWorkSpace/.env` raíz, no solo en cada app.
+**Important:** these values are also in the root `iaWorkSpace/.env`, not only in each app.
 
 ### 5. AI Local
 
@@ -72,8 +72,8 @@ LMSTUDIO_BASE_URL=http://localhost:1234/v1
 ```bash
 MINIMAX_API_KEY=*** key>
 MINIMAX_BASE_URL=https://api.minimaxi.chat/v1
-OPENAI_API_KEY=sk-...                  # opcional
-ANTHROPIC_API_KEY=sk-ant-...           # opcional
+OPENAI_API_KEY=sk-...                  # optional
+ANTHROPIC_API_KEY=sk-ant-...           # optional
 ```
 
 ### 7. Observability
@@ -84,27 +84,27 @@ SENTRY_ENVIRONMENT=development
 SENTRY_TRACES_SAMPLE_RATE=0.1
 ```
 
-### App-specific (después de las 7)
+### App-specific (after the 7)
 
 ```bash
-# ej: geo-dashboard
+# e.g.: geo-dashboard
 SCRAPE_SCHEDULE=true
 SCRAPE_INTERVAL_HOURS=6
 PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
-# ej: builderhunt
+# e.g.: builderhunt
 GITHUB_TOKEN=
 REDDIT_CLIENT_ID=
 RESEND_API_KEY=
 
-# ej: budget-app
+# e.g.: budget-app
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 ```
 
 ## Port Allocation Map
 
-| App | Puerto | Dominio local |
+| App | Port | Local domain |
 |---|---|---|
 | edd-remonts-dashboard | 3000 | `profile.eduardoinerarte.local` |
 | geo-dashboard | 3001 | `geo.eduardoinerarte.local` |
@@ -126,17 +126,17 @@ STRIPE_WEBHOOK_SECRET=
 | chromadb | 8000 | `127.0.0.1:8000` |
 | Traefik dashboard | 8080 | `traefik.eduardoinerarte.local` |
 
-**Reglas:**
-- Apps web usan 3000 default, incrementan solo si hay conflicto.
-- Servicios compartidos (postgres, ollama) tienen puertos fijos.
-- Traefik dashboard en 8080 (mismo que llama-cpp host-side, pero Traefik en fleet prod, llama-cpp en dev local — distinto compose file).
+**Rules:**
+- Web apps use 3000 by default, and only increment when there is a conflict.
+- Shared services (postgres, ollama) have fixed ports.
+- Traefik dashboard on 8080 (same as llama-cpp host-side, but Traefik in prod fleet, llama-cpp in local dev — different compose file).
 
-## DB compartido: workspace-postgres
+## Shared DB: workspace-postgres
 
-**Single Postgres container para todas las apps del workspace.**
+**Single Postgres container for all workspace apps.**
 
 ```yaml
-# docker-compose.yml (raíz)
+# docker-compose.yml (root)
 services:
   workspace-postgres:
     image: imresamu/postgis:16-3.4-alpine
@@ -155,10 +155,10 @@ services:
       retries: 5
 ```
 
-Cada app crea su propia DB + role:
+Each app creates its own DB + role:
 
 ```sql
--- db-init en compose.d/<app>.yml
+-- db-init in compose.d/<app>.yml
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='geo') THEN
@@ -171,15 +171,15 @@ GRANT ALL PRIVILEGES ON DATABASE geo_dashboard TO geo;
 ```
 
 **Naming convention:**
-- DB name: `snake_case` (ej. `geo_dashboard`, `edd_remonts_dashboard`, `budget_app`)
-- Role: `snake_case` (ej. `geo`, `budget`, `template`)
-- Password: `<name>local` (ej. `geolocal`, `budgetlocal`, `templatelocal`) — solo dev
+- DB name: `snake_case` (e.g. `geo_dashboard`, `edd_remonts_dashboard`, `budget_app`)
+- Role: `snake_case` (e.g. `geo`, `budget`, `template`)
+- Password: `<name>local` (e.g. `geolocal`, `budgetlocal`, `templatelocal`) — dev only
 
 ## AUTH_MODE variants
 
 ### local (default)
 
-Usa Better Auth con DB propia. Default admin seeded al boot.
+Uses Better Auth with its own DB. Default admin seeded on boot.
 
 ```bash
 AUTH_MODE=local
@@ -189,7 +189,7 @@ BETTER_AUTH_SECRET=<openssl rand -base64 32>
 
 ### clerk
 
-Usa Clerk para todo (sign-up, sign-in, session, user mgmt). Backend solo valida JWT.
+Uses Clerk for everything (sign-up, sign-in, session, user mgmt). Backend only validates the JWT.
 
 ```bash
 AUTH_MODE=clerk
@@ -200,7 +200,7 @@ CLERK_SECRET_KEY=sk_test_xxx
 
 ### hybrid
 
-Mejor Auth para app users + Clerk para admin users. Necesita lógica custom en middleware.
+Better Auth for app users + Clerk for admin users. Requires custom logic in middleware.
 
 ```bash
 AUTH_MODE=hybrid
@@ -211,46 +211,46 @@ CLERK_SECRET_KEY=sk_test_xxx
 DEFAULT_ADMIN_PROVIDER=clerk        # vs 'local'
 ```
 
-**Importante:** `VITE_AUTH_MODE` mirror de `AUTH_MODE` — el frontend lee `VITE_*` para mostrar/ocultar UI elements.
+**Important:** `VITE_AUTH_MODE` mirrors `AUTH_MODE` — the frontend reads `VITE_*` to show/hide UI elements.
 
 ## Auth file naming (variable)
 
-Cada app puede tener su archivo de auth setup con nombre distinto:
+Each app may have its own auth setup file with a different name:
 
-| App | Archivo | DB tables |
+| App | File | DB tables |
 |---|---|---|
 | edd-remonts-dashboard | `src/lib/better-auth.ts` | `auth_users`, `auth_accounts` |
 | geo-dashboard | `src/lib/server.ts` | `users`, `accounts` |
 | others | `src/lib/auth.ts` | `user`, `account` |
 
-Convención iaWorkSpace:
-- File: `<feature>/auth.ts` o `<feature>/better-auth.ts` o `<feature>/server.ts`
-- Tables: `<app>_users/<app>_accounts` o `users/accounts`
+iaWorkSpace convention:
+- File: `<feature>/auth.ts` or `<feature>/better-auth.ts` or `<feature>/server.ts`
+- Tables: `<app>_users/<app>_accounts` or `users/accounts`
 
-Mantener consistencia **dentro** de la app, no cross-app.
+Maintain consistency **within** the app, not cross-app.
 
 ## Docker profiles
 
-El `docker-compose.yml` raíz soporta 2 profiles:
+The root `docker-compose.yml` supports 2 profiles:
 
 ### standalone (default)
 
 ```bash
 docker compose --profile standalone up -d
-# Levanta: postgres + openclaw + opencode + open-design
-# NO: ollama, llama-cpp, lmstudio, open-webui, chromadb
+# Brings up: postgres + openclaw + opencode + open-design
+# NOT: ollama, llama-cpp, lmstudio, open-webui, chromadb
 ```
 
-Usa el container workspace-postgres + AI runtimes nativos (Ollama Desktop, LM Studio, etc.) instalados en Mac.
+Uses the workspace-postgres container + native AI runtimes (Ollama Desktop, LM Studio, etc.) installed on the Mac.
 
 ### ai
 
 ```bash
 docker compose --profile ai up -d
-# Levanta TODO incluyendo AI runtimes en containers
+# Brings up EVERYTHING including AI runtimes in containers
 ```
 
-Para cuando querés AI 100% containerizado (CI, demos).
+For when you want 100% containerized AI (CI, demos).
 
 ```bash
 # Default (no profile)
@@ -261,32 +261,32 @@ docker compose up -d
 ## Setup scripts
 
 ```bash
-# Inicializar DB + seed admin (cross-app)
+# Initialize DB + seed admin (cross-app)
 node scripts/db/create-db.ts geo_dashboard geo geolocal
 pnpm db:up
 pnpm db:migrate
 pnpm db:seed:admin
 
-# O para una app específica
+# Or for a specific app
 cd apps/geo-dashboard
 pnpm db:migrate
 pnpm db:seed:admin
 ```
 
-## Variables requeridas por provider
+## Required variables per provider
 
-| Provider | Vars | Notas |
+| Provider | Vars | Notes |
 |---|---|---|
 | Postgres | `DATABASE_URL` | Required |
-| Ollama | `OLLAMA_BASE_URL` | `http://ollama:11434` (compose DNS) o `http://localhost:11435` (host) |
-| LM Studio | `LMSTUDIO_BASE_URL` | `http://host.docker.internal:1234/v1` desde container |
+| Ollama | `OLLAMA_BASE_URL` | `http://ollama:11434` (compose DNS) or `http://localhost:11435` (host) |
+| LM Studio | `LMSTUDIO_BASE_URL` | `http://host.docker.internal:1234/v1` from container |
 | llama.cpp | `LLAMA_CPP_BASE_URL` | `http://llama-cpp:8080/v1` |
 | ChromaDB | `CHROMADB_URL` | `http://chromadb:8000` |
-| Clerk | `CLERK_PUBLISHABLE_KEY` + `CLERK_SECRET_KEY` | Ambos requeridos |
+| Clerk | `CLERK_PUBLISHABLE_KEY` + `CLERK_SECRET_KEY` | Both required |
 | Better Auth | `BETTER_AUTH_SECRET` + `BETTER_AUTH_URL` | `SECRET` min 32 chars |
-| Sentry | `SENTRY_DSN` | Solo producción |
+| Sentry | `SENTRY_DSN` | Production only |
 | Stripe | `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` | |
-| GitHub | `GITHUB_TOKEN` o `GH_TOKEN` | scope: `repo` |
+| GitHub | `GITHUB_TOKEN` or `GH_TOKEN` | scope: `repo` |
 
 ## Network access matrix
 
@@ -302,14 +302,14 @@ pnpm db:seed:admin
 | open-webui | LAN:3010 | hostname: `open-webui` | YES ⚠️ |
 | chromadb | LAN:8000 | hostname: `chromadb` | YES ⚠️ |
 
-**Reglas:**
-- DB y AI runtimes: solo 127.0.0.1.
+**Rules:**
+- DB and AI runtimes: only 127.0.0.1.
 - Agents (openclaw, opencode, open-design): 127.0.0.1.
-- Web UIs (open-webui, chromadb): accesibles en LAN por diseño (collaboration features).
+- Web UIs (open-webui, chromadb): accessible on LAN by design (collaboration features).
 
-## Naming de volumes
+## Volume naming
 
-| Volume | Mount | Servicio |
+| Volume | Mount | Service |
 |---|---|---|
 | `workspace_postgres_data` | `/var/lib/postgresql/data` | postgres |
 | `workspace_open_webui_data` | `/app/backend/data` | open-webui |
@@ -321,27 +321,27 @@ pnpm db:seed:admin
 | `./docker/opencode/config` (bind) | `/root/.config/opencode` | opencode |
 | `./docker/open-design/data` (bind) | `/var/lib/open-design` | open-design |
 
-**Convención:**
-- Named volumes para DB engines (persistentes, easier backup).
-- Bind mounts para configs y modelos (host-visible, easy edit).
+**Convention:**
+- Named volumes for DB engines (persistent, easier to back up).
+- Bind mounts for configs and models (host-visible, easy to edit).
 
-## Errores comunes
+## Common errors
 
-1. ❌ Olvidar `VITE_AUTH_MODE` mirror → frontend no muestra UI correcta.
-2. ❌ DB name sin snake_case → queries con quoting fallan.
-3. ❌ DB password sin sufijo `local` → no matches el patrón de `db-init`.
-4. ❌ Puerto 3001 ocupado por otra app → cambiar `APP_PORT`.
-5. ❌ `OLLAMA_BASE_URL=http://localhost:11434` desde container → usar `http://ollama:11434` (compose DNS) o `http://host.docker.internal:11435` (host).
-6. ❌ Postgres creds cambiadas pero no regeneradas las DBs de apps → connection refused.
-7. ❌ Frontend lee `process.env.X` → debe ser `import.meta.env.VITE_X`.
-8. ❌ `BETTER_AUTH_SECRET` < 32 chars → app falla al boot.
-9. ❌ DBs sin owner correcto → app no puede crear tablas.
-10. ❌ Multi-profile activado por error → conflictos de port.
+1. ❌ Forgetting `VITE_AUTH_MODE` mirror → frontend does not show correct UI.
+2. ❌ DB name without snake_case → queries with quoting fail.
+3. ❌ DB password without `local` suffix → does not match the `db-init` pattern.
+4. ❌ Port 3001 occupied by another app → change `APP_PORT`.
+5. ❌ `OLLAMA_BASE_URL=http://localhost:11434` from inside a container → use `http://ollama:11434` (compose DNS) or `http://host.docker.internal:11435` (host).
+6. ❌ Postgres creds changed but app DBs not regenerated → connection refused.
+7. ❌ Frontend reads `process.env.X` → must be `import.meta.env.VITE_X`.
+8. ❌ `BETTER_AUTH_SECRET` < 32 chars → app fails on boot.
+9. ❌ DBs without correct owner → app cannot create tables.
+10. ❌ Multi-profile accidentally enabled → port conflicts.
 
-## Verificación
+## Verification
 
 ```bash
-# Validar config completa
+# Validate full config
 pnpm doctor                # workspace root
 
 # DB connectivity
@@ -349,22 +349,22 @@ docker exec workspace-postgres pg_isready -U postgres
 
 # App-specific
 cd apps/geo-dashboard
-pnpm doctor                # si existe
+pnpm doctor                # if it exists
 
-# Env vars cargadas
+# Env vars loaded
 node -e "console.log(Object.keys(process.env).filter(k => k.includes('DATABASE') || k.includes('AUTH') || k.includes('MINIMAX')).sort())"
 
-# Bind mount correcto
+# Bind mount correct
 docker exec openclaw ls /workspace/repo | head
 docker exec opencode ls /workspace | head
 docker exec open-design ls /workspace | head
 ```
 
-## Recursos
+## Resources
 
-- Skill relacionada: `containers-architecture` — setup de containers
-- Skill relacionada: `env-config-and-secrets` — patterns generales de .env
-- Skill relacionada: `iaworkspace-patterns` — overview
-- `.env.example` raíz — template canónico
-- `prod/stack.config.mjs` — referencia de apps con DB
-- [iaWorkSpace AGENTS.md](../eddremonts86/iaWorkSpace/AGENTS.md) — reglas duras
+- Related skill: `containers-architecture` — container setup
+- Related skill: `env-config-and-secrets` — general .env patterns
+- Related skill: `iaworkspace-patterns` — overview
+- Root `.env.example` — canonical template
+- `prod/stack.config.mjs` — apps reference with DB
+- [iaWorkSpace AGENTS.md](../eddremonts86/iaWorkSpace/AGENTS.md) — hard rules

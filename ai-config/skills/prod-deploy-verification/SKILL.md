@@ -1,93 +1,93 @@
 ---
 name: prod-deploy-verification
-description: Pre-flight verification de 12 checks antes de deployar a producción (Coolify, Hetzner, cualquier VPS). Patrón iaWorkSpace via scripts/deploy/preflight-deploy.mjs. Aplica antes de CUALQUIER deploy a prod.
+description: Pre-flight verification of 12 checks before deploying to production (Coolify, Hetzner, any VPS). iaWorkSpace pattern via scripts/deploy/preflight-deploy.mjs. Apply before ANY deploy to prod.
 license: Internal
 ---
 
 # Prod Deploy Verification
 
-## Por qué
+## Why
 
-Deploys a producción fallan por las mismas 12 razones. Detectarlas ANTES evita:
-- Downtime innecesario
-- Rollbacks manuales a las 3am
-- DB migrations rotas
-- Secrets filtrados
+Production deploys fail for the same 12 reasons. Detecting them EARLY avoids:
+- Unnecessary downtime
+- Manual rollbacks at 3am
+- Broken DB migrations
+- Leaked secrets
 
-## Los 12 checks (orden de ejecución)
+## The 12 checks (execution order)
 
-### 1. **lockfile** — package manager consistente
+### 1. **lockfile** — consistent package manager
 ```bash
-# Verifica que el lockfile existe y está commited
+# Verify the lockfile exists and is committed
 test -f pnpm-lock.yaml || test -f package-lock.json || test -f yarn.lock
 git ls-files --error-unmatch pnpm-lock.yaml >/dev/null 2>&1
 ```
 
-### 2. **deps** — dependencias instaladas sin vulns críticas
+### 2. **deps** — installed dependencies without critical vulns
 ```bash
 pnpm install --frozen-lockfile
 pnpm audit --prod --audit-level=high  # 0 high/critical required
 ```
 
-### 3. **Dockerfile** — build context válido
+### 3. **Dockerfile** — valid build context
 ```bash
 test -f Dockerfile
 docker build --no-cache -t test-build .   # dry run
 ```
 
-### 4. **env** — variables requeridas presentes
+### 4. **env** — required variables present
 ```bash
-# Compare .env.example vs .env (sin valores, solo keys)
+# Compare .env.example vs .env (values not, just keys)
 diff <(grep -oE '^[A-Z_]+' .env.example | sort) \
      <(grep -oE '^[A-Z_]+' .env | sort)
 ```
 
-### 5. **compose** — docker-compose syntax válido
+### 5. **compose** — valid docker-compose syntax
 ```bash
 docker compose config --quiet    # exit 0 = OK
 ```
 
-### 6. **health** — endpoint de healthcheck responde
+### 6. **health** — healthcheck endpoint responds
 ```bash
 curl -fsS http://localhost:3000/health || exit 1
 ```
 
-### 7. **db-migrations** — migrations pendientes o rotas
+### 7. **db-migrations** — pending or broken migrations
 ```bash
-pnpm prisma migrate status       # o equivalente
-# No debe haber "drift" o migrations sin aplicar
+pnpm prisma migrate status       # or equivalent
+# No "drift" or unapplied migrations should exist
 ```
 
-### 8. **secrets** — no secrets hardcoded
+### 8. **secrets** — no hardcoded secrets
 ```bash
-# Scan con trufflehog, gitleaks, o grep
+# Scan with trufflehog, gitleaks, or grep
 grep -rE "(api[_-]?key|token|password)\s*[:=]\s*['\"][a-zA-Z0-9]" --include="*.ts" --include="*.js" src/
 ```
 
-### 9. **headers** — security headers en config
+### 9. **headers** — security headers in config
 ```bash
-# Verificar CSP, X-Frame-Options, etc. en nginx/traefik/Caddy config
+# Verify CSP, X-Frame-Options, etc. in nginx/traefik/Caddy config
 grep -E "Content-Security-Policy|X-Frame-Options|X-Content-Type-Options" prod/traefik/dynamic/
 ```
 
-### 10. **cors** — CORS config sin wildcards
+### 10. **cors** — CORS config without wildcards
 ```bash
-# No debe haber Access-Control-Allow-Origin: *
+# Must not contain Access-Control-Allow-Origin: *
 grep -rE "Access-Control-Allow-Origin.*\*" src/ nginx.conf
 ```
 
-### 11. **build** — build pasa sin warnings críticos
+### 11. **build** — build passes without critical warnings
 ```bash
 pnpm build 2>&1 | tee build.log
 test -f dist/index.html
 ```
 
-### 12. **size** — bundle size dentro de límites
+### 12. **size** — bundle size within limits
 ```bash
 test $(stat -f%z dist/index.js 2>/dev/null || stat -c%s dist/index.js) -lt 500000  # 500KB
 ```
 
-## Script completo (iaWorkSpace pattern)
+## Complete script (iaWorkSpace pattern)
 
 ```javascript
 // scripts/deploy/preflight-deploy.mjs
@@ -146,33 +146,33 @@ function runChecks() {
       throw new Error('high/critical vulns');
     }
   });
-  // ... resto
+  // ... rest
 }
 ```
 
-## Uso
+## Usage
 
 ```bash
 # Single app, all checks
-node scripts/deploy/preflight-deploy.mjs --app mi-app
+node scripts/deploy/preflight-deploy.mjs --app my-app
 
-# Solo algunos checks
-node scripts/deploy/preflight-deploy.mjs --app mi-app --check lockfile,deps,compose
+# Only some checks
+node scripts/deploy/preflight-deploy.mjs --app my-app --check lockfile,deps,compose
 
-# Todas las apps
+# All apps
 node scripts/deploy/preflight-deploy.mjs --all
 
 # Pre-commit hook
 # .husky/pre-commit: ! node scripts/deploy/preflight-deploy.mjs --app $(basename $PWD)
 ```
 
-## Gate de release
+## Release gate
 
-**Regla iaWorkSpace:** Pre-release gate es `pnpm audit` con 0 Critical y 0 High. Aplicar antes de:
+**iaWorkSpace rule:** Pre-release gate is `pnpm audit` with 0 Critical and 0 High. Apply before:
 
 ```bash
 pnpm audit              # root, cross-app
-pnpm audit:mi-app       # single app
+pnpm audit:my-app       # single app
 pnpm suggest            # audit + suggested diffs
 pnpm fix                # audit + auto-apply LOW/MEDIUM
 ```
@@ -208,54 +208,54 @@ export const Route = createFileRoute('/health')({
 });
 ```
 
-## Errores comunes detectados
+## Common errors detected
 
-| Check | Error típico | Fix |
+| Check | Typical error | Fix |
 |---|---|---|
-| lockfile | `pnpm-lock.yaml` no commited | `git add pnpm-lock.yaml && git commit` |
-| deps | `axios@0.20.0` con CVE | `pnpm update axios` |
-| Dockerfile | `COPY . .` antes de `pnpm install` (context grande) | Multi-stage + `.dockerignore` |
-| env | Falta `DATABASE_URL` en prod | Agregar a `.env` + sync a Coolify |
-| compose | `version: '3'` (deprecated) | Quitar field `version` |
-| health | `/health` no responde 200 | Agregar endpoint |
+| lockfile | `pnpm-lock.yaml` not committed | `git add pnpm-lock.yaml && git commit` |
+| deps | `axios@0.20.0` with CVE | `pnpm update axios` |
+| Dockerfile | `COPY . .` before `pnpm install` (large context) | Multi-stage + `.dockerignore` |
+| env | Missing `DATABASE_URL` in prod | Add to `.env` + sync to Coolify |
+| compose | `version: '3'` (deprecated) | Remove `version` field |
+| health | `/health` not returning 200 | Add endpoint |
 | db-migrations | Drift detected | `pnpm prisma migrate deploy` |
-| secrets | `API_KEY = 'sk-...'` en código | Mover a `.env` + `import.meta.env.VITE_*` |
-| headers | Falta CSP | Agregar middleware |
-| cors | `Access-Control-Allow-Origin: *` | Usar origin whitelist |
+| secrets | `API_KEY = 'sk-...'` in code | Move to `.env` + `import.meta.env.VITE_*` |
+| headers | Missing CSP | Add middleware |
+| cors | `Access-Control-Allow-Origin: *` | Use origin whitelist |
 | build | `TS2304: Cannot find name 'X'` | Fix types |
 | size | Bundle > 1MB | Code-split + lazy load |
 
-## Checklist manual pre-deploy
+## Manual pre-deploy checklist
 
-- [ ] Branch actualizado con `main`
-- [ ] Tests pasando (`pnpm test`)
-- [ ] Lint sin errores (`pnpm lint`)
+- [ ] Branch up to date with `main`
+- [ ] Tests passing (`pnpm test`)
+- [ ] Lint without errors (`pnpm lint`)
 - [ ] Typecheck (`pnpm typecheck`)
-- [ ] Audit limpio (`pnpm audit`)
-- [ ] Pre-flight 12 checks pasan
-- [ ] DB migrations probadas en staging
-- [ ] Env vars sincronizadas con Coolify
-- [ ] DNS configurado (si es dominio nuevo)
-- [ ] Slack/Discord notif configurada para post-deploy
-- [ ] Rollback plan claro (último tag estable)
+- [ ] Audit clean (`pnpm audit`)
+- [ ] Pre-flight 12 checks pass
+- [ ] DB migrations tested in staging
+- [ ] Env vars synchronized with Coolify
+- [ ] DNS configured (if new domain)
+- [ ] Slack/Discord notification configured for post-deploy
+- [ ] Clear rollback plan (last stable tag)
 
 ## Post-deploy verification
 
 ```bash
 # Smoke tests
-curl -fsS https://mi-app.example.com/health
-curl -fsS https://mi-app.example.com/api/version
+curl -fsS https://my-app.example.com/health
+curl -fsS https://my-app.example.com/api/version
 
 # Check logs
-ssh hetzner "docker logs --tail 100 mi-app-app-1"
+ssh hetzner "docker logs --tail 100 my-app-app-1"
 
 # Check metrics
 # Grafana / Sentry / Uptime Kuma
 ```
 
-## Recursos
+## Resources
 
-- `scripts/deploy/preflight-deploy.mjs` — script canónico
-- `scripts/deploy/preflight-apply.sh` — versión bash legacy
-- `.githooks/pre-commit` — auto-run en commit
-- [iaWorkSpace AGENTS.md](../eddremonts86/iaWorkSpace/AGENTS.md) sección "Pre-deploy verification"
+- `scripts/deploy/preflight-deploy.mjs` — canonical script
+- `scripts/deploy/preflight-apply.sh` — legacy bash version
+- `.githooks/pre-commit` — auto-runs on commit
+- [iaWorkSpace AGENTS.md](../eddremonts86/iaWorkSpace/AGENTS.md) "Pre-deploy verification" section

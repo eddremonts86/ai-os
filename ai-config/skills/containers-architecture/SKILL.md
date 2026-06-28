@@ -1,6 +1,6 @@
 ---
 name: containers-architecture
-description: Arquitectura de los 3 agent containers (openclaw + opencode + open-design) + infra compartida (postgres, chromadb, ollama, llama-cpp, open-webui). Aplica al setup local de iaWorkSpace en Mac con Docker Desktop.
+description: Architecture of the 3 agent containers (openclaw + opencode + open-design) + shared infra (postgres, chromadb, ollama, llama-cpp, open-webui). Applies to local iaWorkSpace setup on Mac with Docker Desktop.
 license: Internal
 ---
 
@@ -8,7 +8,7 @@ license: Internal
 
 ## Overview
 
-Setup local en Mac con Docker Desktop. Stack de IA personal + herramientas de desarrollo + base de datos. Orquestado por `docker-compose.yml` raíz (project name: `iaws-dev`).
+Local setup on Mac with Docker Desktop. Personal AI stack + dev tools + database. Orchestrated by root `docker-compose.yml` (project name: `iaws-dev`).
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -32,92 +32,92 @@ Setup local en Mac con Docker Desktop. Stack de IA personal + herramientas de de
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Convenciones de naming
+## Naming conventions
 
-- **Project name:** `iaws-dev` (fijo, en `docker-compose.yml`).
-- **Container names:** `workspace-{tools|ia|db}-{name}` o nombres simples.
+- **Project name:** `iaws-dev` (fixed, in `docker-compose.yml`).
+- **Container names:** `workspace-{tools|ia|db}-{name}` or simple names.
 - **Bind mounts:** `./docker/<service>/data/` (gitignored, host-visible).
-- **Named volumes:** solo para DB engines (`workspace_postgres_data`, etc.).
+- **Named volumes:** only for DB engines (`workspace_postgres_data`, etc.).
 
-## Bind mount convention (crítico)
+## Bind mount convention (critical)
 
-| Container | Mount | Razón |
+| Container | Mount | Reason |
 |---|---|---|
 | `opencode` | `.:/workspace` | Standard |
 | `open-design` | `.:/workspace` | Standard |
 | `noir` | `.:/workspace` | Standard |
 | `openclaw` | `.:/workspace/repo` | **Upstream image owns `/workspace`** |
 
-Regla: si la imagen upstream usa `/workspace`, montar el repo en `/workspace/repo` (sub-path).
+Rule: if the upstream image uses `/workspace`, mount the repo at `/workspace/repo` (sub-path).
 
-## Servicios — resumen
+## Services — summary
 
 ### Agent containers (3)
 
-**openclaw** — asistente personal "Lúa" con UI web + Telegram. Build propio extendiendo `ghcr.io/openclaw/openclaw:2026.4.29`. Incluye: hcloud CLI, Docker CLI, sudo NOPASSWD.
-- Puerto: `127.0.0.1:18789:18789`
-- Mounts: `.:/workspace/repo`, `~/.ssh:/home/node/.ssh:ro`, `/var/run/docker.sock` (¡root-equivalente!), `docker/openclaw/config:/home/node/.openclaw`
-- Env crítica: `OPENCLAW_GATEWAY_TOKEN`, `TELEGRAM_BOT_TOKEN`, `MINIMAX_API_KEY`, `COOLIFY_API_URL/TOKEN`, `HETZNER_API_TOKEN`, `GH_TOKEN`, `CONDUCTOR_IP`
-- Trade-off documentado: docker socket + sudo es aceptable para asistente personal local, **NO en multi-tenant prod**.
+**openclaw** — personal assistant "Lúa" with web UI + Telegram. Custom build extending `ghcr.io/openclaw/openclaw:2026.4.29`. Includes: hcloud CLI, Docker CLI, sudo NOPASSWD.
+- Port: `127.0.0.1:18789:18789`
+- Mounts: `.:/workspace/repo`, `~/.ssh:/home/node/.ssh:ro`, `/var/run/docker.sock` (root-equivalent!), `docker/openclaw/config:/home/node/.openclaw`
+- Critical env: `OPENCLAW_GATEWAY_TOKEN`, `TELEGRAM_BOT_TOKEN`, `MINIMAX_API_KEY`, `COOLIFY_API_URL/TOKEN`, `HETZNER_API_TOKEN`, `GH_TOKEN`, `CONDUCTOR_IP`
+- Documented trade-off: docker socket + sudo is acceptable for local personal assistant, **NOT in multi-tenant prod**.
 
-**opencode** — agente headless de coding (OpenAI-compatible API).
-- Puerto: `127.0.0.1:4096:4096`
+**opencode** — headless coding agent (OpenAI-compatible API).
+- Port: `127.0.0.1:4096:4096`
 - Image: `node:22-bookworm-slim` + `npx opencode-ai@latest serve`
 - Mounts: `.:/workspace`, `docker/opencode/config:/root/.config/opencode`
-- Env crítica: `MINIMAX_API_KEY`, `GH_TOKEN`, `COOLIFY_*`
+- Critical env: `MINIMAX_API_KEY`, `GH_TOKEN`, `COOLIFY_*`
 
-**open-design** — generador visual de design systems (daemon + Next.js UI).
-- Puerto: `127.0.0.1:${OD_PORT:-7456}:${OD_PORT:-7456}` (default 7456)
-- Build multi-stage que clona upstream de GitHub en build-time
+**open-design** — visual design system generator (daemon + Next.js UI).
+- Port: `127.0.0.1:${OD_PORT:-7456}:${OD_PORT:-7456}` (default 7456)
+- Multi-stage build that clones upstream from GitHub at build time
 - Mounts: `.:/workspace`, `docker/open-design/data:/var/lib/open-design` (gitignored), `.:/.agents:/workspace/.agents:ro`
-- Env crítica: `OD_API_TOKEN` (requerido, fail-fast), `MINIMAX_API_KEY`, `OPENCODE_BIN=/usr/local/bin/opencode`
+- Critical env: `OD_API_TOKEN` (required, fail-fast), `MINIMAX_API_KEY`, `OPENCODE_BIN=/usr/local/bin/opencode`
 
 ### LLM runtimes (3)
 
-**ollama** — LLM local (llama3, mistral, etc.).
-- Puerto: `127.0.0.1:11435:11434` (puerto host 11435 evita colisión con ollama nativo)
+**ollama** — local LLM (llama3, mistral, etc.).
+- Port: `127.0.0.1:11435:11434` (host port 11435 avoids collision with native ollama)
 - Mount: `./docker/models/ollama:/root/.ollama`
-- **⚠️ OLLAMA_ORIGINS=*** — aceptable local, riesgo en LAN.
+- **⚠️ OLLAMA_ORIGINS=*** — acceptable locally, risky on LAN.
 
-**llama-cpp** — servidor GGUF.
-- Puerto: `127.0.0.1:8080:8080`
-- Mount: `./docker/models/llama:/models` (si no hay .gguf, sleep infinity)
+**llama-cpp** — GGUF server.
+- Port: `127.0.0.1:8080:8080`
+- Mount: `./docker/models/llama:/models` (if no .gguf, sleep infinity)
 - Platform: linux/amd64 only
 
-**lmstudio** — alias funcional de LocalAI (OpenAI-compatible).
-- Puerto: `127.0.0.1:1234:8080`
+**lmstudio** — functional alias of LocalAI (OpenAI-compatible).
+- Port: `127.0.0.1:1234:8080`
 - Mount: `./docker/models/lmstudio:/models` + reuse read-only `./docker/models/llama:/models/gguf:ro`
 
 ### Frontend (1)
 
-**open-webui** — chat UI para Ollama.
-- Puerto: `3010:8080` (**⚠️ sin bind 127.0.0.1** — accesible en LAN)
+**open-webui** — chat UI for Ollama.
+- Port: `3010:8080` (**⚠️ no 127.0.0.1 bind** — accessible on LAN)
 - Image: `ghcr.io/open-webui/open-webui:main`
-- Vol named: `workspace_open_webui_data`
+- Named vol: `workspace_open_webui_data`
 - **⚠️ WEBUI_SECRET_KEY=open-webui-dev-secret** — hardcoded dev.
 
 ### Storage (2)
 
 **workspace-postgres** — Postgres 16 + PostGIS multi-arch.
-- Puerto: `127.0.0.1:5432:5432`
+- Port: `127.0.0.1:5432:5432`
 - Image: `imresamu/postgis:16-3.4-alpine`
-- Vol named: `workspace_postgres_data`
-- Default creds dev: `postgres/postgres/postgres` — cambiar en prod
+- Named vol: `workspace_postgres_data`
+- Default dev creds: `postgres/postgres/postgres` — change in prod
 
 **chromadb** — vector DB.
-- Puerto: `8000:8000` (**⚠️ sin bind 127.0.0.1** — accesible en LAN)
-- Vol named: `workspace_chroma_data`
+- Port: `8000:8000` (**⚠️ no 127.0.0.1 bind** — accessible on LAN)
+- Named vol: `workspace_chroma_data`
 - `ANONYMIZED_TELEMETRY=FALSE`
 
 ### Security (1)
 
-**noir** — escáner OWASP Noir (CLI, sin daemon).
-- No expone puertos, se invoca: `docker compose run --rm noir <args>`
+**noir** — OWASP Noir scanner (CLI, no daemon).
+- No exposed ports, invoked as: `docker compose run --rm noir <args>`
 
-## Comandos principales
+## Main commands
 
 ```bash
-# Levantar todo
+# Bring everything up
 pnpm containers:up
 
 # Status
@@ -131,47 +131,46 @@ docker compose logs -f open-design
 # Restart individual
 docker compose restart opencode
 
-# Re-build tras cambios en Dockerfile
+# Rebuild after Dockerfile changes
 docker compose build --pull openclaw
 docker compose up -d openclaw
 
-# Backup completo
+# Full backup
 pnpm backup
 
-# Open OpenClaw UI con token
+# Open OpenClaw UI with token
 pnpm containers:openclaw
-
-# Configurar open-design provider
-pnpm od:provider ollama       # o 'opencode'
-pnpm od:link                  # symlinks designs/<slug>/ → proyectos
-pnpm od:migrate               # one-time migrate legacy
+# Configure open-design provider
+pnpm od:provider ollama       # or 'opencode'
+pnpm od:link                  # symlinks designs/<slug>/ → projects
+pnpm od:migrate               # one-time legacy migrate
 ```
 
-## Setup inicial
+## Initial setup
 
 ```bash
-# 1. Clonar repo
+# 1. Clone repo
 git clone <repo>
 cd iaWorkSpace
 
-# 2. Init completo
+# 2. Full init
 pnpm install                  # root tooling
 node scripts/workspace/init.mjs
 #   ↓ git submodule update --init
-#   ↓ pnpm install en cada app
-#   ↓ docker compose pull (o build fallback)
+#   ↓ pnpm install in each app
+#   ↓ docker compose pull (or build fallback)
 #   ↓ docker compose up -d --build
 
-# 3. Configurar .env
+# 3. Configure .env
 cp .env.example .env
-# Editar:
+# Edit:
 #   OPENCLAW_GATEWAY_TOKEN=<openssl rand -hex 32>
 #   OD_API_TOKEN=<openssl rand -hex 32>
-#   MINIMAX_API_KEY=<tu key>
-#   COOLIFY_API_URL/TOKEN=<tu coolify>
-#   GH_TOKEN=<tu github token>
+#   MINIMAX_API_KEY=<your key>
+#   COOLIFY_API_URL/TOKEN=<your coolify>
+#   GH_TOKEN=<your github token>
 
-# 4. Verificar
+# 4. Verify
 pnpm doctor
 
 # 5. Open services
@@ -201,13 +200,13 @@ RUN install -m 0755 -d /etc/apt/keyrings \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list \
     && apt-get update && apt-get install -y docker-ce-cli
 
-# Sudo NOPASSWD (trade-off documentado)
+# Sudo NOPASSWD (documented trade-off)
 RUN echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node && chmod 0440 /etc/sudoers.d/node
 
 USER node
 ```
 
-### Dockerfile open-design (multi-stage con clone upstream)
+### Dockerfile open-design (multi-stage with upstream clone)
 
 ```dockerfile
 # Stage 1: builder
@@ -246,56 +245,56 @@ CMD ["node", "/opt/open-design/apps/daemon/dist/cli.js", "--no-open"]
 ## Backup
 
 ```bash
-# Backup completo de state de containers
+# Full backup of container state
 pnpm backup
-# Equivalente a:
+# Equivalent to:
 sh scripts/containers/backup.sh --include-secrets
 
 # Restore
 tar -xzf .backups/containers-<timestamp>.tar.gz -C .
 ```
 
-Excluye (vía `.backupignore`):
+Excludes (via `.backupignore`):
 - `docker/*/data/secrets/`
 - `*.log`
 - `node_modules/`
 - `.git/`
 
-Incluye:
+Includes:
 - `docker/openclaw/config/`
 - `docker/opencode/config/`
-- `docker/open-design/data/` (sin secrets)
-- Volumes nombrados (postgres, chromadb, open-webui)
+- `docker/open-design/data/` (without secrets)
+- Named volumes (postgres, chromadb, open-webui)
 
-## Errores comunes
+## Common errors
 
-1. ❌ Montar repo en `/workspace` cuando la image upstream usa ese path → conflicto con archivos del container.
-2. ❌ `docker compose up` antes de `pnpm install` → módulos faltantes.
-3. ❌ `OD_API_TOKEN` vacío → open-design falla con "OD_API_TOKEN required".
-4. ❌ `docker/openclaw/config` no en `.gitignore` → commit accidental de tokens.
-5. ❌ No liberar puerto 5432 antes de levantar → conflicto con Postgres nativo.
-6. ❌ `docker compose build` sin `--pull` → imagen base desactualizada.
-7. ❌ Reusar `ollama` nativo y container simultáneamente → port conflict en 11434.
-8. ❌ Backup sin `--include-secrets` → restore pierde config crítica.
-9. ❌ `OLLAMA_ORIGINS=*` en LAN → CSRF risk.
-10. ❌ open-webui accesible en `0.0.0.0:3010` en red pública → leak de conversaciones.
+1. ❌ Mounting repo at `/workspace` when upstream image uses that path → conflict with container files.
+2. ❌ `docker compose up` before `pnpm install` → missing modules.
+3. ❌ Empty `OD_API_TOKEN` → open-design fails with "OD_API_TOKEN required".
+4. ❌ `docker/openclaw/config` not in `.gitignore` → accidental commit of tokens.
+5. ❌ Not freeing port 5432 before bringing up → conflict with native Postgres.
+6. ❌ `docker compose build` without `--pull` → outdated base image.
+7. ❌ Reusing native `ollama` and container simultaneously → port conflict on 11434.
+8. ❌ Backup without `--include-secrets` → restore loses critical config.
+9. ❌ `OLLAMA_ORIGINS=*` on LAN → CSRF risk.
+10. ❌ open-webui accessible on `0.0.0.0:3010` on public network → conversation leaks.
 
 ## Troubleshooting
 
 ```bash
-# Container no arranca
+# Container won't start
 docker compose logs <service>
 docker compose ps -a
 
-# Puerto ocupado
+# Port in use
 lsof -i :<port>
-# Liberar o cambiar en docker-compose.yml
+# Free or change in docker-compose.yml
 
-# Disk full (volumes crecen)
+# Disk full (volumes growing)
 docker system df
-docker system prune -a --volumes  # ⚠️ borra todo, backup primero
+docker system prune -a --volumes  # ⚠️ deletes everything, backup first
 
-# Network issue entre containers
+# Network issue between containers
 docker compose exec <service> ping <other-service>
 
 # Rebuild from scratch
@@ -304,11 +303,11 @@ docker compose build --pull --no-cache
 docker compose up -d
 ```
 
-## Recursos
+## Resources
 
 - Docker Compose v2 docs
 - openclaw image: `ghcr.io/openclaw/openclaw:2026.4.29`
 - open-design repo: github.com/nexu-io/open-design
-- mkcert para certs locales
-- Skill relacionada: `iaworkspace-patterns` (overview)
-- Skill relacionada: `hetzner-cloud-cli` (para deploy en VPS real)
+- mkcert for local certs
+- Related skill: `iaworkspace-patterns` (overview)
+- Related skill: `hetzner-cloud-cli` (for real VPS deploy)
