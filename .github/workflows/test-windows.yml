@@ -51,6 +51,21 @@ jobs:
             Write-Host "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
           }
 
+      - name: Verify claude.tools / gstack integration (--check)
+        # Non-fatal: vendor/codex-plugin-cc/ may not be cloned on every PR.
+        # The 12 individual skills live in ai-config/skills/ (checked in), so
+        # the frontmatter checks always run; the plugin-level check is conditional.
+        run: |
+          if (Test-Path vendor/codex-plugin-cc) {
+            Write-Host "vendor/codex-plugin-cc/ present, running bash setup/install-claude-tools.sh --check..."
+            bash setup/install-claude-tools.sh --check
+            if ($LASTEXITCODE -ne 0) { Write-Host "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)" }
+          } else {
+            Write-Host "::warning::vendor/codex-plugin-cc/ not present; running --check anyway (12 individual skills are in ai-config/skills/)"
+            bash setup/install-claude-tools.sh --check
+            if ($LASTEXITCODE -ne 0) { Write-Host "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)" }
+          }
+
       - name: Run verify-windows.ps1 (DRY_RUN)
         env:
           DRY_RUN: '1'
@@ -62,4 +77,5 @@ jobs:
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Test Summary"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Install dry-run: ✅"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Verify: ⚠️ (some checks expected to fail in CI)"
