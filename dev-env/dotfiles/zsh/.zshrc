@@ -186,3 +186,8 @@ alias hermes-agent="cd ~/Projects/eddremonts86/hermes-agent"
 alias iaworkspace="cd ~/Projects/eddremonts86/iaWorkSpace"
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/edd/.lmstudio/bin"
+# End of LM Studio CLI section
+
