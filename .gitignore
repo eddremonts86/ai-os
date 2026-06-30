@@ -56,6 +56,9 @@ Thumbs.db
 *.local
 *.log
 
+# Project-local Hermes runtime (may contain real secrets, e.g. desktop-attachments/env.ts)
+.hermes/
+
 # AI-OS: NO ignorar el resto del AI-OS (solo los outputs/archive)
 # Si querés excluir algo específico del repo, agregalo aquí
 

@@ -111,7 +111,16 @@ Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel w
 
 ## 9. Memory
 
-Save durable facts to `~/.hermes/memory.json` (per Hermes profile) when:
+Canonical identity/preferences live in `context/` (this repo) — that is the source
+of truth, shared into every CLI via the global bridge (`ai-config/clis/GLOBAL_BRIDGE.md`).
+
+Save durable per-CLI facts to that CLI's own memory store when (see below for when):
+
+- **Claude Code** → the project memory dir (`MEMORY.md` index + one file per fact).
+- **Hermes** → `~/.hermes/memories/` (`MEMORY.md` + `USER.md`).
+- **Codex** → built-in memory store (sqlite, managed by the CLI).
+
+Sync notable, cross-CLI facts back into `context/` so every tool benefits. Save when:
 
 - User states a preference or correction.
 - Environment fact discovered (OS quirk, path, tool version).
