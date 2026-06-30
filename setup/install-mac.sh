@@ -162,36 +162,76 @@ ok "Oh My Zsh + plugins OK"
 echo ""
 
 # ─── 5. Global skills (symlinks) ───
-log "5. Setting global skills in 5 CLIs..."
-
-for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
+log "5. Setting global skills in 6 CLIs..."
+# Only flat skills (a dir with a top-level SKILL.md) are symlinked here. Plugin
+# bundles in ai-config/skills/ that have a NESTED layout (claude.tools, ECC) are
+# installed by their own scripts (install-claude-tools.sh, install-ecc.sh).
+#   Claude ~/.claude/skills | Codex ~/.codex/skills | Gemini ~/.gemini/skills
+#   Antigravity ~/.agents/skills | Hermes ~/.hermes/skills/imported
+#   MiniMax Code ~/.minimax/skills (global skills.paths entry in opencode.json)
+for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported" "$HOME_DIR/.minimax/skills"; do
   mkdir -p "$cli_dir"
+  # Prune stale ai-os symlinks whose target no longer has a top-level SKILL.md
+  # (e.g. a plugin bundle wrongly linked by an older run). Keeps re-runs clean.
+  for link in "$cli_dir"/*; do
+    [ -L "$link" ] || continue
+    tgt=$(readlink "$link")
+    case "$tgt" in
+      *"/ai-config/skills/"*) [ -f "${tgt%/}/SKILL.md" ] || rm -f "$link" ;;
+    esac
+  done
   for skill_dir in "$AI_OS_ROOT/ai-config/skills"/*/; do
-    [ -d "$skill_dir" ] || continue
+    [ -f "$skill_dir/SKILL.md" ] || continue
     name=$(basename "$skill_dir")
-    [ "$name" = "READMEDD.md" ] && continue
-    [ "$name" = "taste-skill-llms.txt" ] && continue
     [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ] && mv "$cli_dir/$name" "$cli_dir/$name.pre-aios.bak"
-    ln -sf "$skill_dir" "$cli_dir/$name"
+    ln -sfn "$skill_dir" "$cli_dir/$name"
   done
 done
 # READMEDD and llms only in claude/
 ln -sf "$AI_OS_ROOT/ai-config/skills/READMEDD.md" "$HOME_DIR/.claude/skills/READMEDD.md" 2>/dev/null || true
 ln -sf "$AI_OS_ROOT/ai-config/skills/taste-skill-llms.txt" "$HOME_DIR/.claude/skills/taste-skill-llms.txt" 2>/dev/null || true
 
-# Hermes imported
-mkdir -p "$HOME_DIR/.hermes/skills/imported"
-for skill_dir in "$AI_OS_ROOT/ai-config/skills"/*/; do
-  [ -d "$skill_dir" ] || continue
-  name=$(basename "$skill_dir")
-  [ "$name" = "READMEDD.md" ] && continue
-  [ "$name" = "taste-skill-llms.txt" ] && continue
-  [ -e "$HOME_DIR/.hermes/skills/imported/$name" ] && [ ! -L "$HOME_DIR/.hermes/skills/imported/$name" ] && mv "$HOME_DIR/.hermes/skills/imported/$name" "$HOME_DIR/.hermes/skills/imported/$name.pre-aios.bak"
-  ln -sf "$skill_dir" "$HOME_DIR/.hermes/skills/imported/$name"
-done
+SKILL_COUNT=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l | tr -d ' ')
+ok "Skills propagated to 6 CLIs ($SKILL_COUNT flat skills in source)"
+echo ""
 
-SKILL_COUNT=$(ls "$AI_OS_ROOT/ai-config/skills/" | wc -l | tr -d ' ')
-ok "Skills propagated to 5 CLIs ($SKILL_COUNT files in source)"
+# ─── 5b. Global instruction bridge (loads AI-OS into every project, every CLI) ───
+log "5b. Wiring global instruction bridge..."
+BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
+# Symlink the bridge to each CLI's global instruction file.
+#   Claude Code: ~/.claude/CLAUDE.md   | Codex: ~/.codex/AGENTS.md
+#   Gemini: ~/.gemini/GEMINI.md        | Antigravity: ~/.agents/AGENTS.md
+for target in "$HOME_DIR/.claude/CLAUDE.md" "$HOME_DIR/.codex/AGENTS.md" "$HOME_DIR/.gemini/GEMINI.md" "$HOME_DIR/.agents/AGENTS.md"; do
+  mkdir -p "$(dirname "$target")"
+  # Back up a real (non-symlink) file once, then link.
+  [ -e "$target" ] && [ ! -L "$target" ] && mv "$target" "$target.pre-aios.bak"
+  ln -sfn "$BRIDGE" "$target"
+done
+# Hermes: ensure SOUL.md carries the AI-OS bridge block (idempotent append).
+SOUL="$HOME_DIR/.hermes/SOUL.md"
+if [ -f "$SOUL" ] && ! grep -q "AI-OS BRIDGE" "$SOUL"; then
+  cat >> "$SOUL" <<'AIOS_SOUL'
+
+<!-- AI-OS BRIDGE — managed by ~/Projects/ai-os; remove this block to unlink -->
+## AI-OS (operating context)
+Single source of truth: `/Users/edd/Projects/ai-os`. At the start of meaningful
+work read `context/00_profile.md`, `context/03_preferences.md`, and `CLAUDE.md`.
+Non-negotiables: chat in Spanish (lowercase, terse); ALL files in English; verify
+with runtime evidence; confirm before irreversible actions. Durable facts →
+`~/.hermes/memories/`; keep `context/` as the canonical identity.
+<!-- /AI-OS BRIDGE -->
+AIOS_SOUL
+fi
+# MiniMax Code (mavis, opencode-based): each agent's agent.md is appended to the
+# system prompt at runtime. Overwrite the stub with the AI-OS overlay (real file,
+# not a symlink — mavis re-seeds this path).
+MM_OVERLAY="$AI_OS_ROOT/ai-config/clis/minimax-overlay.md"
+if [ -d "$HOME_DIR/.minimax/agents" ] && [ -f "$MM_OVERLAY" ]; then
+  for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
+    [ -d "$agent_dir" ] && cp "$MM_OVERLAY" "$agent_dir/agent.md"
+  done
+fi
+ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md)"
 echo ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───

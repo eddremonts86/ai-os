@@ -47,13 +47,14 @@ for dotfile in ".zshrc" ".p10k.zsh" ".gitignore_global"; do
 done
 
 # ─── 3. Skills in 5 CLIs ───
-section "3. Global skills (5 CLIs)"
+section "3. Global skills (6 CLIs)"
 CLI_DIRS=(
   "$HOME_DIR/.claude/skills"
   "$HOME_DIR/.codex/skills"
   "$HOME_DIR/.gemini/skills"
   "$HOME_DIR/.agents/skills"
   "$HOME_DIR/.hermes/skills/imported"
+  "$HOME_DIR/.minimax/skills"
 )
 for cli_dir in "${CLI_DIRS[@]}"; do
   if [ -d "$cli_dir" ]; then
@@ -68,6 +69,57 @@ for cli_dir in "${CLI_DIRS[@]}"; do
     FAIL=$((FAIL+1))
   fi
 done
+
+# ─── 3b. Global instruction bridge (loads AI-OS in every project) ───
+section "3b. Global instruction bridge"
+BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
+if [ ! -f "$BRIDGE" ]; then
+  err "  bridge source missing: $BRIDGE"
+  FAIL=$((FAIL+1))
+else
+  ok "  bridge source: $BRIDGE"
+  PASS=$((PASS+1))
+fi
+# Each CLI's global instruction file must point at the bridge.
+declare -a BRIDGE_TARGETS=(
+  "$HOME_DIR/.claude/CLAUDE.md"
+  "$HOME_DIR/.codex/AGENTS.md"
+  "$HOME_DIR/.gemini/GEMINI.md"
+  "$HOME_DIR/.agents/AGENTS.md"
+)
+for target in "${BRIDGE_TARGETS[@]}"; do
+  label="~/${target#$HOME_DIR/}"
+  if [ -L "$target" ] && [ "$(readlink "$target")" = "$BRIDGE" ] && [ -e "$target" ]; then
+    ok "  $label → bridge"
+    PASS=$((PASS+1))
+  else
+    err "  $label not linked to bridge (run setup/install-mac.sh)"
+    FAIL=$((FAIL+1))
+  fi
+done
+# Hermes carries the bridge block inside SOUL.md.
+if [ -f "$HOME_DIR/.hermes/SOUL.md" ] && grep -q "AI-OS BRIDGE" "$HOME_DIR/.hermes/SOUL.md"; then
+  ok "  ~/.hermes/SOUL.md carries AI-OS bridge block"
+  PASS=$((PASS+1))
+else
+  warn "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
+fi
+# MiniMax Code carries the overlay inside each agent.md.
+if [ -d "$HOME_DIR/.minimax/agents" ]; then
+  mm_ok=0; mm_total=0
+  for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
+    [ -d "$agent_dir" ] || continue
+    mm_total=$((mm_total+1))
+    grep -q "AI-OS operating context" "$agent_dir/agent.md" 2>/dev/null && mm_ok=$((mm_ok+1))
+  done
+  if [ "$mm_ok" -eq "$mm_total" ] && [ "$mm_total" -gt 0 ]; then
+    ok "  ~/.minimax: AI-OS overlay in $mm_ok/$mm_total agent.md"
+    PASS=$((PASS+1))
+  else
+    err "  ~/.minimax: overlay only in $mm_ok/$mm_total agent.md (run setup/install-mac.sh)"
+    FAIL=$((FAIL+1))
+  fi
+fi
 
 # ─── 4. Superpowers (14 required) ───
 section "4. Superpowers skills (REQUIRED = 14)"
