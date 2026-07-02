@@ -35,7 +35,7 @@ The script:
 1. Installs Homebrew packages (Mac) or Chocolatey packages (Windows).
 2. Installs Oh My Zsh + Powerlevel10k + plugins (Mac).
 3. Creates dotfile symlinks (zsh, git, ssh).
-4. Configures global skills in 5 CLIs via symlinks.
+4. Configures global flat skills via symlinks.
 5. Installs the 14 required superpowers skills.
 6. Generates `~/.hermes/config.yaml` from the MCP YAMLs.
 7. Configures Warp (Mac).
@@ -57,22 +57,22 @@ bash setup/verify.sh
 
 **Expected output:**
 ```
-[ai-os verify] ✅ AI-OS en /Users/edd/Projects/ai-os
+[ai-os verify] ✅ AI-OS at /Users/edd/Projects/ai-os
 [ai-os verify] ✅   .zshrc → /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc
 [ai-os verify] ✅   .p10k.zsh → ...
 [ai-os verify] ✅   .gitignore_global → ...
-[ai-os verify] ✅   ~/.claude/skills: 99 skills
-[ai-os verify] ✅   ~/.codex/skills: 99 skills
-[ai-os verify] ✅   ~/.gemini/skills: 99 skills
-[ai-os verify] ✅   ~/.agents/skills: 99 skills
-[ai-os verify] ✅   ~/.hermes/skills/imported: 99 skills
+[ai-os verify] ✅   ~/.claude/skills: <count> skills
+[ai-os verify] ✅   ~/.codex/skills: <count> skills
+[ai-os verify] ✅   ~/.gemini/skills: <count> skills
+[ai-os verify] ✅   ~/.agents/skills: <count> skills
+[ai-os verify] ✅   ~/.hermes/skills/imported: <count> skills
 [ai-os verify] ✅ 14/14 superpowers skills OK
-[ai-os verify] ✅ MCP servers configurados: 7
-[ai-os verify] ✅ Oh My Zsh instalado
-[ai-os verify] ✅ Powerlevel10k instalado
-[ai-os verify] ✅ Warp con CaskaydiaCove Nerd Font
-[ai-os verify] Pasados: 14
-[ai-os verify] ✅ Fallados: 0
+[ai-os verify] ✅ MCP servers configured: 7
+[ai-os verify] ✅ Oh My Zsh installed
+[ai-os verify] ✅ Powerlevel10k installed
+[ai-os verify] ✅ Warp with CaskaydiaCove Nerd Font
+[ai-os verify] Passed: <count>
+[ai-os verify] ✅ Failed: 0
 ```
 
 ## Step 5: Try AI-OS
@@ -114,10 +114,13 @@ hermes gateway restart
 /reload-skills
 ```
 
-### PyYAML doesn't install (generate-mcp-config.py script)
+### PyYAML is unavailable
 ```bash
 pip3 install pyyaml --user
 ```
+
+`setup/generate-mcp-config.py` has a built-in fallback for the simple MCP YAML
+files in this repo, so PyYAML is preferred but no longer required for dry-runs.
 
 ### Fonts don't show in Warp/Terminal
 1. Verify installation: `ls ~/Library/Fonts/ | grep -i nerd`

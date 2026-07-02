@@ -1,6 +1,6 @@
 # ~/.ssh/config — SSH client configuration
-# Template version: copia este archivo a ~/.ssh/config (permisos 600).
-# NO commitear keys privadas (id_rsa, id_ed25519) — solo este config.
+# Template version: copy this file to ~/.ssh/config with 600 permissions.
+# Do not commit private keys (id_rsa, id_ed25519); only commit this config.
 
 # ─── Defaults ───
 Host *
@@ -19,9 +19,9 @@ Host *
     AddKeysToAgent yes
     # Use specific identity file per host
     UseKeychain yes  # macOS only
-    # Forward agent (cuidado: solo para servers de confianza)
+    # Forward agent only to trusted servers
     ForwardAgent no
-    # Verbose logging (descomenta para debug)
+    # Verbose logging for debugging
     # LogLevel DEBUG3
 
 # ─── GitHub ───
@@ -34,20 +34,20 @@ Host github.com
     # UseKeychain yes
 
 # ─── GitHub Work (Schilling) ───
-# Si tenés cuenta separada de work:
+# If you use a separate work account:
 # Host github-work
 #     HostName github.com
 #     User git
 #     IdentityFile ~/.ssh/id_ed25519_github_work
 #     IdentitiesOnly yes
 
-# ─── Hetzner Cloud (si usás SSH en lugar de hcloud CLI) ───
+# ─── Hetzner Cloud (if you use SSH instead of the hcloud CLI) ───
 # Host hetzner-*
 #     User root
 #     IdentityFile ~/.ssh/id_ed25519_hetzner
 #     Port 22
 
-# ─── Otros hosts específicos ───
+# ─── Other specific hosts ───
 # Host staging
 #     HostName staging.example.com
 #     User deploy

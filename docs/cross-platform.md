@@ -7,7 +7,7 @@
 | Feature | Mac (native) | Windows (PowerShell) | Notes |
 |---|---|---|---|
 | **AI-OS core (CLAUDE.md, workflows, rules)** | ✅ | ✅ | Identical |
-| **Global skills (99)** | ✅ | ✅ | Symlinks work the same |
+| **Global flat skills** | ✅ | ✅ | Symlinks work across supported CLI targets |
 | **MCP servers (7)** | ✅ | ✅ | stdio works on both |
 | **Oh My Zsh + Powerlevel10k** | ✅ | ❌ | Unix only. Windows uses PowerShell. |
 | **Warp terminal** | ✅ | ✅ (Windows version) | Warp has a Windows build. |
@@ -35,9 +35,9 @@ Includes:
 
 - Homebrew packages (Brewfile).
 - Oh My Zsh + Powerlevel10k.
-- 99 global skills (5 CLIs).
+- Flat global skills across the Mac CLI targets.
 - 14 superpowers skills.
-- 7MCP servers.
+- 7 MCP servers.
 - Warp config.
 - Terminal.app config (Pro theme, zsh shell).
 
@@ -51,9 +51,9 @@ Includes:
 
 - Chocolatey packages (git, node, python, gh, fzf, etc.).
 - PowerShell custom profile.
-- 99 global skills (5 CLIs).
+- Flat global skills across the Windows core CLI targets.
 - 14 superpowers skills.
-- 7MCP servers.
+- 7 MCP servers.
 - (Does NOT include shell like Oh My Zsh — uses PowerShell natively.)
 
 **Windows limitations:**

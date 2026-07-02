@@ -36,7 +36,7 @@ You have discovered that you (or the AI) repeat this task frequently:
 
 6. After creating, test it by running a scenario that should trigger it.
 
-7. If global, run `setup/install-mac.sh` to distribute it to the 5 CLIs.
+7. If global, run `setup/install-mac.sh` to distribute it to supported CLIs.
 
 ## Example
 

@@ -20,7 +20,7 @@ err() { echo "$LOG_PREFIX ❌ $*"; }
 # Create temporary HOME to not touch the real one
 TMP_HOME=$(mktemp -d -t aios-dryrun-XXXX)
 export HOME="$TMP_HOME"
-mkdir -p "$HOME"/.claude/skills "$HOME"/.codex/skills "$HOME"/.gemini/skills "$HOME"/.agents/skills "$HOME"/.hermes/skills/imported "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
+mkdir -p "$HOME"/.claude/skills "$HOME"/.codex/skills "$HOME"/.gemini/skills "$HOME"/.agents/skills "$HOME"/.hermes/skills/imported "$HOME"/.minimax/skills "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
 
 log "═══════════════════════════════════════════════════════════"
 log "  AI-OS Setup DRY-RUN (Mac simulation)"
@@ -104,24 +104,23 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
 done
 
 # ─── 5. Simulate skills propagation (symlinks) ───
-log "5. Simulating skills propagation to 5 CLIs..."
+log "5. Simulating flat skills propagation to 6 CLIs..."
 CLI_DIRS=(
   "$HOME/.claude/skills"
   "$HOME/.codex/skills"
   "$HOME/.gemini/skills"
   "$HOME/.agents/skills"
   "$HOME/.hermes/skills/imported"
+  "$HOME/.minimax/skills"
 )
 
-skill_count=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null | wc -l | tr -d ' ')
-ok "Skills source of truth: $skill_count"
+skill_count=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l | tr -d ' ')
+ok "Flat skills source of truth: $skill_count"
 
 for cli_dir in "${CLI_DIRS[@]}"; do
   for skill_dir in "$AI_OS_ROOT/ai-config/skills"/*/; do
-    [ -d "$skill_dir" ] || continue
+    [ -f "$skill_dir/SKILL.md" ] || continue
     name=$(basename "$skill_dir")
-    [ "$name" = "READMEDD.md" ] && continue
-    [ "$name" = "taste-skill-llms.txt" ] && continue
     ln -sf "$skill_dir" "$cli_dir/$name"
   done
   cli_count=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
@@ -133,39 +132,39 @@ for cli_dir in "${CLI_DIRS[@]}"; do
   fi
 done
 
+# ─── 5b. Simulate vendored gstack skills (optional) ───
+if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
+  log "5b. Simulating vendored gstack skills to 6 CLIs..."
+  gstack_count=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" | wc -l | tr -d ' ')
+  ok "Vendored gstack source of truth: $gstack_count"
+  for cli_dir in "${CLI_DIRS[@]}"; do
+    for skill_dir in "$AI_OS_ROOT/vendor/gstack"/*/; do
+      [ -f "$skill_dir/SKILL.md" ] || continue
+      name=$(basename "$skill_dir")
+      ln -sf "$skill_dir" "$cli_dir/$name"
+    done
+    # gstack skills don't change the count meaningfully; just confirm presence.
+    cli_count=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+    ok "  $cli_dir: $cli_count skills after gstack (simulated)"
+  done
+else
+  log "5b. vendor/gstack/ absent, skipping"
+fi
+
 # ─── 6. Simulate MCP config generation ───
 log "6. Simulating MCP config generation..."
-
-# Ensure PyYAML is available
-if ! python3 -c "import yaml" 2>/dev/null; then
-  warn "PyYAML not available, installing..."
-  python3 -m pip install --quiet --user pyyaml 2>&1 | tail -3 || {
-    err "Could not install PyYAML"
-    exit 1
-  }
-fi
 
 # Create test config
 TEMP_CONFIG="$TMP_HOME/hermes-config-test.yaml"
 
 if python3 "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$TEMP_CONFIG" >/dev/null 2>&1; then
-  if command -v yq >/dev/null 2>&1; then
-    mcp_count=$(yq '.mcp_servers | keys | length' "$TEMP_CONFIG" 2>/dev/null || echo 0)
-    if [ "$mcp_count" -ge 7 ]; then
-      ok "MCP config: $mcp_count servers generated"
-    else
-      err "MCP config: only $mcp_count servers (expected >=7)"
-      exit 1
-    fi
+  # Count generated server keys without requiring yq or PyYAML.
+  mcp_count=$(grep -cE '^  [A-Za-z0-9_-]+:$' "$TEMP_CONFIG" 2>/dev/null || echo 0)
+  if [ "$mcp_count" -ge 7 ]; then
+    ok "MCP config: $mcp_count servers generated"
   else
-    # yq not available, parse with python
-    mcp_count=$(python3 -c "import yaml; d=yaml.safe_load(open('$TEMP_CONFIG')); print(len(d.get('mcp_servers', {})))" 2>/dev/null || echo 0)
-    if [ "$mcp_count" -ge 7 ]; then
-      ok "MCP config: $mcp_count servers generated (verified with python)"
-    else
-      err "MCP config: only $mcp_count servers (expected >=7)"
-      exit 1
-    fi
+    err "MCP config: only $mcp_count servers (expected >=7)"
+    exit 1
   fi
 else
   err "Script generate-mcp-config.py failed"
@@ -173,16 +172,18 @@ else
 fi
 
 # ─── 7. Validate skills syntax ───
-log "7. Validating skills frontmatter (sample of 10)..."
-# macOS has no shuf, use sort -R (random sort) or shuf (Linux)
-if command -v shuf >/dev/null 2>&1; then
-  sample_skills=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null | shuf -n 10 | head)
-else
-  sample_skills=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null | sort -R | head -10)
+log "7. Validating skills frontmatter (all flat skills + gstack)..."
+# Validate every flat skill in ai-config/skills/ + vendor/gstack/.
+# A sample-based check leaves ~95% of skills unverified and is not worth it
+# now that the corpus is large enough.
+all_skill_dirs=$(ls -1d "$AI_OS_ROOT/ai-config/skills"/*/ 2>/dev/null)
+if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
+  all_skill_dirs="$all_skill_dirs $(ls -1d "$AI_OS_ROOT/vendor/gstack"/*/ 2>/dev/null)"
 fi
 # Verify basic frontmatter (robust: check the whole frontmatter, not just first 5 lines)
 fm_errors=0
-for skill_dir in $sample_skills; do
+fm_checked=0
+for skill_dir in $all_skill_dirs; do
   # Look for SKILL.md at any level
   skill_md=$(find "$skill_dir" -maxdepth 3 -name "SKILL.md" -type f 2>/dev/null | head -1)
 
@@ -191,6 +192,7 @@ for skill_dir in $sample_skills; do
     # Skip without error
     continue
   fi
+  fm_checked=$((fm_checked+1))
 
   # Extract only the frontmatter (between the two ---)
   fm_content=$(awk '/^---$/{f=!f; if(f==1 && c>0) exit; c++} f' "$skill_md" 2>/dev/null)
@@ -212,9 +214,9 @@ for skill_dir in $sample_skills; do
 done
 
 if [ $fm_errors -eq 0 ]; then
-  ok "Skills frontmatter OK (10 sampled, excluding categories)"
+  ok "Skills frontmatter OK ($fm_checked skills checked, excluding categories)"
 else
-  err "$fm_errors errors in frontmatter sample"
+  err "$fm_errors errors in $fm_checked checked skills"
   exit 1
 fi
 
