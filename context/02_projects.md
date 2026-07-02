@@ -25,11 +25,11 @@ All under `~/Projects/ei-schilling/`.
 | Project | Path | Stack (from package.json) | Status | Files | Last modified | Notes |
 |---|---|---|---|---|---|---|
 | **wave-template** | `~/Projects/ei-schilling/wave-template/` | Vite + React 19 + TanStack Router + TanStack Query + shadcn/ui + Tailwind v4 + Convex + Netlify + Decap CMS | **Active (primary)** | (large repo) | Jun 26 13:08 | The Wave template. Headless CMS + Convex backend + Netlify deploy. Has README, package.json, .git. |
-| **kontrakt-manager** | `~/Projects/ei-schilling/kontrakt-manager/` | (medium repo) | candidate | 63 files in root | Jun 26 13:08 | Contract management. Needs verification before declaring active. |
+| **kontrakt-manager** | `~/Projects/ei-schilling/kontrakt-manager/` | PHP/Drupal | **Active** | 63 files in root | Jun 30 (PR #10 merged) | Contract management. Confirmed active 2026-07-02 via git log (PR merged 2026-06-30). |
 | **wave-tech-radar** | `~/Projects/ei-schilling/wave-tech-radar/` | (smaller repo) | candidate | 20 files in root | Jun 26 13:08 | Tech radar companion to wave-template. Smaller. |
 | **ia-royalty-validations** | `~/Projects/ei-schilling/ia-royalty-validations/` | (medium repo) | candidate | 35 files in root | Jun 26 13:08 | AI royalty validations. Work project. |
 
-To determine which of `kontrakt-manager` / `wave-tech-radar` / `ia-royalty-validations` is actively used vs archived, check git log activity or ask Edd.
+To determine which of `wave-tech-radar` / `ia-royalty-validations` is actively used vs archived, check git log activity or ask Edd (kontrakt-manager already confirmed Active, 2026-07-02).
 
 ## Personal — `eddremonts86/`
 
@@ -85,7 +85,7 @@ If any of these turns out to be active (e.g. someone else works on it, or it has
 | **hermes-workspace-internal** | `~/Projects/eddremonts86/hermes-workspace-internal/` | (mixed) | 620 | Hermes workspace internal. Legacy. |
 | **hermes-workspace-tour** | `~/Projects/eddremonts86/hermes-workspace-tour/` | (hermes-workspace-tour) | 158 | Hermes workspace tour. Legacy. |
 | **hola-eduardo** | `~/Projects/eddremonts86/hola-eduardo/` | (hola-eduardo) | 740 | Hola Eduardo project. Legacy. |
-| **iaWorkSpace** | `~/Projects/eddremonts86/iaWorkSpace/` | (workspace-security-tools) | 3,302 | IA workspace security tools. Legacy. |
+| **iaWorkSpace** | `~/Projects/eddremonts86/iaWorkSpace/` | (workspace-security-tools) | 3,302 | IA workspace meta-repo. Listed as an active personal project in `01_business_or_work.md`; last commit 2026-06-25. Treat as Active, not legacy. |
 | **invoiceCalc** | `~/Projects/eddremonts86/invoiceCalc/` | (invoice-calculator) | 76 | Invoice calculator. Legacy. |
 | **js-oddsCalculator** | `~/Projects/eddremonts86/js-oddsCalculator/` | (mixed) | 39 | JS odds calculator. Legacy. |
 | **letter_pilot** | `~/Projects/eddremonts86/letter_pilot/` | (letterpilot) | 61 | Letter pilot. Legacy. |
@@ -147,7 +147,7 @@ If any of these turns out to be active (e.g. someone else works on it, or it has
 
 The `~/code/personal/` and `~/code/work/` directories mentioned in earlier AI-OS drafts do NOT exist or are empty (`/Users/edd/code/personal/` and `/Users/edd/code/work/` are empty placeholder dirs from earlier setup, last modified Jun 26 11:26 with 64 bytes each). All work happens in `/Users/edd/Projects/`.
 
-The git `includeIf` config in `~/.gitconfig` may still reference the old `~/code/work/` and `~/code/personal/` paths. **TODO:** update `.gitconfig` so that identity switching works for the actual paths (`/Users/edd/Projects/ei-schilling/*` → work, `/Users/edd/Projects/eddremonts86/*` → personal).
+The git `includeIf` config in `~/.gitconfig` was already updated to the actual paths (`gitdir:/Users/edd/Projects/ei-schilling/` → `~/.gitconfig-work`). Verified 2026-07-02; no action needed.
 
 ## How to keep this updated
 

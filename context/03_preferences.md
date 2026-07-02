@@ -41,6 +41,6 @@
 
 ## AI-OS files (this repo)
 
-- ALL files in `CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`, `archive/`, `outputs/`, `promps/` must be in **English**.
+- ALL files in `CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`, `archive/`, `outputs/`, `prompts/` must be in **English**.
 - The chat with the user can be in Spanish.
 - Reason: the repo is public/shared with other devs and CLIs that default to English.

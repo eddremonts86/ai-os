@@ -1,24 +1,24 @@
 ---
 name: vue-patterns
-description: Patrones modernos de Vue 3 — Composition API, reactivity, Pinia, Vue Router. Aplica a proyectos Vue 3, Nuxt 3+.
+description: Modern Vue 3 patterns — Composition API, reactivity, Pinia, Vue Router. Applies to Vue 3 projects, Nuxt 3+.
 license: MIT
 ---
 
 # Vue 3 Patterns
 
-## Cuándo usar
+## When to use
 
-Cualquier proyecto Vue 3 o Nuxt 3+. NO aplica a Vue 2 (que tiene Options API y patterns distintos).
+Any Vue 3 or Nuxt 3+ project. Does NOT apply to Vue 2 (which has Options API and different patterns).
 
-## Principios
+## Principles
 
-1. **Composition API por defecto** (no Options API).
-2. **`<script setup>` siempre** (no `setup()` function).
+1. **Composition API by default** (not Options API).
+2. **`<script setup>` always** (not `setup()` function).
 3. **TypeScript** (`<script setup lang="ts">`).
-4. **Reactivity explícita** — `ref()` para primitivos, `reactive()` para objetos.
-5. **Composables** para lógica reutilizable (análogo a React hooks).
+4. **Explicit reactivity** — `ref()` for primitives, `reactive()` for objects.
+5. **Composables** for reusable logic (analogous to React hooks).
 
-## Script setup básico
+## Basic script setup
 
 ```vue
 <script setup lang="ts">
@@ -62,23 +62,23 @@ watch(() => props.userId, loadUser, { immediate: true });
 ## Ref vs Reactive
 
 ```ts
-// ✅ ref() para primitivos Y objetos (recomendado consistente)
+// ✅ ref() for primitives AND objects (consistent recommendation)
 const count = ref(0);
 const user = ref<User | null>(null);
 const items = ref<Item[]>([]);
 
-// ⚠️ reactive() solo para objetos (perdón por reactividad al destructurar)
+// ⚠️ reactive() only for objects (loses reactivity on destructuring)
 const state = reactive({ count: 0, user: null });
 
-// ✅ Siempre .value al usar ref en script
+// ✅ Always .value when using ref in script
 count.value++;
 user.value = await fetchUser();
 
-// ✅ En template, NO .value (auto-unwrap)
+// ✅ In template, NO .value (auto-unwrap)
 {{ count }}
 ```
 
-## Composables (custom hooks de Vue)
+## Composables (Vue's custom hooks)
 
 ```ts
 // composables/useUser.ts
@@ -110,30 +110,30 @@ export function useUser(id: Ref<string> | string) {
 }
 ```
 
-**Reglas:**
-- Nombre siempre `use*`.
-- Retornar objeto con nombres semánticos.
-- Aceptar `Ref<T> | T` para flexibilidad.
+**Rules:**
+- Name always `use*`.
+- Return an object with semantic names.
+- Accept `Ref<T> | T` for flexibility.
 
 ## Computed vs Watch
 
 ```ts
-// ✅ Computed: derivar valores (cached, lazy)
+// ✅ Computed: derive values (cached, lazy)
 const fullName = computed(() => `${user.value.firstName} ${user.value.lastName}`);
 const isAdmin = computed(() => user.value?.role === 'admin');
 
-// ✅ Watch: side effects cuando algo cambia
+// ✅ Watch: side effects when something changes
 watch(user, (newUser) => {
   if (newUser) localStorage.setItem('lastUser', newUser.id);
 }, { deep: true });
 
-// ✅ watchEffect: side effect con deps automáticas
+// ✅ watchEffect: side effect with automatic deps
 watchEffect(() => {
   if (user.value) document.title = user.value.name;
 });
 ```
 
-## Provide / Inject (en lugar de prop drilling)
+## Provide / Inject (instead of prop drilling)
 
 ```vue
 <!-- Parent -->
@@ -144,7 +144,7 @@ const theme = ref<'light' | 'dark'>('light');
 provide('theme', theme);
 </script>
 
-<!-- Child (cualquier nivel) -->
+<!-- Child (any level) -->
 <script setup lang="ts">
 import { inject } from 'vue';
 
@@ -175,24 +175,24 @@ export const useUserStore = defineStore('user', () => {
 ```
 
 ```vue
-<!-- Componente -->
+<!-- Component -->
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();
 const { currentUser, isAuthenticated } = storeToRefs(userStore);
-// Actions sin storeToRefs
+// Actions without storeToRefs
 const { login, logout } = userStore;
 </script>
 ```
 
-**Reglas:**
-- Setup syntax (no Options syntax).
-- `storeToRefs` para reactivity preservada.
-- Actions destructurados directo del store.
+**Rules:**
+- Setup syntax (not Options syntax).
+- `storeToRefs` to preserve reactivity.
+- Actions destructured directly from the store.
 
-## Vue Router (composición)
+## Vue Router (composition)
 
 ```ts
 import { useRoute, useRouter } from 'vue-router';
@@ -213,7 +213,7 @@ function goToProfile(id: string) {
 
 ```vue
 <script setup lang="ts">
-// ✅ With type-only declaration (recomendado)
+// ✅ With type-only declaration (recommended)
 const props = defineProps<{
   user: User;
   size?: 'sm' | 'md' | 'lg';
@@ -234,7 +234,7 @@ const props = withDefaults(defineProps<{
 </script>
 ```
 
-## v-model custom
+## Custom v-model
 
 ```vue
 <!-- CustomInput.vue -->
@@ -251,11 +251,11 @@ function onInput(e: Event) {
   <input :value="modelValue" @input="onInput" />
 </template>
 
-<!-- Uso -->
+<!-- Usage -->
 <CustomInput v-model="searchQuery" />
 ```
 
-## Templates — Directivas comunes
+## Templates — Common directives
 
 ```vue
 <!-- v-if / v-else-if / v-else -->
@@ -263,24 +263,24 @@ function onInput(e: Event) {
 <div v-else-if="error">Error: {{ error.message }}</div>
 <div v-else>{{ data }}</div>
 
-<!-- v-for con key -->
+<!-- v-for with key -->
 <li v-for="item in items" :key="item.id">
   {{ item.name }}
 </li>
 
-<!-- v-bind:class (objeto) -->
+<!-- v-bind:class (object) -->
 <div :class="{ active: isActive, disabled: !enabled }">
 
 <!-- v-bind:class (array) -->
 <div :class="[baseClass, { active: isActive }]">
 
-<!-- v-bind:style (objeto) -->
+<!-- v-bind:style (object) -->
 <div :style="{ color: textColor, fontSize: `${size}px` }">
 
-<!-- v-on abreviado -->
+<!-- v-on shorthand -->
 <button @click="handleClick">
 
-<!-- v-model con modificadores -->
+<!-- v-model with modifiers -->
 <input v-model.trim="name" />
 <form @submit.prevent="onSubmit">
 ```
@@ -292,7 +292,7 @@ function onInput(e: Event) {
 import { onMounted, onBeforeUnmount, onUpdated } from 'vue';
 
 onMounted(() => {
-  // Componente montado, DOM listo
+  // Component mounted, DOM ready
 });
 
 onBeforeUnmount(() => {
@@ -300,7 +300,7 @@ onBeforeUnmount(() => {
 });
 
 onUpdated(() => {
-  // Después de re-render
+  // After re-render
 });
 </script>
 ```
@@ -322,12 +322,12 @@ onUpdated(() => {
 
 ## Nuxt 3 — Auto-imports
 
-Nuxt auto-importa: composables, components, utils. No necesitas importarlos.
+Nuxt auto-imports: composables, components, utils. You don't need to import them.
 
 ```vue
 <script setup lang="ts">
-// No hace falta: import { ref, computed } from 'vue';
-// No hace falta: import CustomButton from '~/components/CustomButton.vue';
+// Not needed: import { ref, computed } from 'vue';
+// Not needed: import CustomButton from '~/components/CustomButton.vue';
 
 const count = ref(0);  // auto-imported from vue
 </script>
@@ -341,10 +341,10 @@ const count = ref(0);  // auto-imported from vue
 
 ```vue
 <script setup lang="ts">
-// useFetch: automático en SSR
+// useFetch: automatic in SSR
 const { data: user, error, pending, refresh } = await useFetch(`/api/users/${id}`);
 
-// useAsyncData: control total
+// useAsyncData: full control
 const { data, error } = await useAsyncData('users', () => $fetch('/api/users'));
 </script>
 ```
@@ -386,23 +386,23 @@ describe('UserCard', () => {
 });
 ```
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ Olvidar `.value` en script → ✅ `count.value++` (no `count++`).
-2. ❌ Destructurar reactive object (pierde reactividad) → ✅ `storeToRefs` para Pinia, `toRefs` para reactive.
-3. ❌ Mutación directa de reactive object → ✅ siempre reemplazar.
-4. ❌ `v-if` con `v-for` en mismo elemento → ✅ usar `template` wrapper o computed.
-5. ❌ `index` como key → ✅ ID estable.
-6. ❌ Olvidar `<Suspense>` con async components → ✅ wrappear siempre.
-7. ❌ Usar Options API → ✅ siempre `<script setup>` + Composition API.
-8. ❌ Watch sin `immediate` cuando necesita valor inicial → ✅ `immediate: true`.
-9. ❌ Provide sin default value → ✅ provide default para type safety.
-10. ❌ Mutations reactivas fuera de actions de Pinia → ✅ mutaciones en actions.
+1. ❌ Forgetting `.value` in script → ✅ `count.value++` (not `count++`).
+2. ❌ Destructuring a reactive object (loses reactivity) → ✅ `storeToRefs` for Pinia, `toRefs` for reactive.
+3. ❌ Directly mutating a reactive object → ✅ always replace.
+4. ❌ `v-if` with `v-for` on the same element → ✅ use a `template` wrapper or computed.
+5. ❌ `index` as key → ✅ stable ID.
+6. ❌ Forgetting `<Suspense>` with async components → ✅ always wrap.
+7. ❌ Using Options API → ✅ always `<script setup>` + Composition API.
+8. ❌ Watch without `immediate` when the initial value is needed → ✅ `immediate: true`.
+9. ❌ Provide without a default value → ✅ provide a default for type safety.
+10. ❌ Reactive mutations outside Pinia actions → ✅ mutations in actions.
 
-## Stack complementario
+## Complementary stack
 
-- **Routing:** Vue Router 4 o Nuxt 3 file-based.
+- **Routing:** Vue Router 4 or Nuxt 3 file-based.
 - **State:** Pinia.
-- **Forms:** VeeValidate + Zod, o VueUse + manual.
+- **Forms:** VeeValidate + Zod, or VueUse + manual.
 - **UI:** Nuxt UI, shadcn-vue, PrimeVue, Naive UI.
 - **Testing:** Vitest + Vue Test Utils + Playwright.

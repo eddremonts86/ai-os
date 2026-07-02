@@ -24,8 +24,8 @@ Software company. Role: full-stack developer.
 
 | Project | Stack | Path |
 |---|---|---|
-| **hermes-agent** (Nous Research) | Python 3.11 + Hermes | `~/.hermes` |
-| **iaWorkSpace** (meta-repo) | Multi-repo orchestration | `~/Projects/iaWorkSpace` |
+| **hermes-agent** (Nous Research) | Python 3.11 + Hermes | `~/Projects/eddremonts86/hermes-agent` (source repo; `~/.hermes` is the CLI config/data dir, not the repo) |
+| **iaWorkSpace** (meta-repo) | Multi-repo orchestration | `~/Projects/eddremonts86/iaWorkSpace` |
 | **ai-os** (this repo) | AI Operating System | `~/Projects/ai-os` |
 
 ## Personal (other)

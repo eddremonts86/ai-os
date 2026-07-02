@@ -1,14 +1,14 @@
 ---
 name: tanstack-patterns
-description: Patrones de TanStack ecosystem — Query, Router, Table, Start. Guía unificada para proyectos que usan el stack completo de TanStack (como wave-template).
+description: TanStack ecosystem patterns — Query, Router, Table, Start. Unified guide for projects using the full TanStack stack (like wave-template).
 license: MIT
 ---
 
 # TanStack Patterns (Unified)
 
-## Cuándo usar
+## When to use
 
-Proyectos que usan el ecosistema TanStack: Query (data), Router (file-based routing), Table (headless tables), Form (forms), Start (SSR/SSG). Particularmente proyectos basados en `wave-template`.
+Projects using the TanStack ecosystem: Query (data), Router (file-based routing), Table (headless tables), Form (forms), Start (SSR/SSG). Particularly projects based on `wave-template`.
 
 ## TanStack Query — Data fetching
 
@@ -41,10 +41,10 @@ function App() {
 }
 ```
 
-### Queries — Convenciones
+### Queries — Conventions
 
 ```ts
-// ✅ Query key jerárquico (entity, filter, pagination)
+// ✅ Hierarchical query key (entity, filter, pagination)
 export function useUsers(filter?: UserFilter) {
   return useQuery({
     queryKey: ['users', filter],
@@ -94,7 +94,7 @@ export function useInfiniteUsers() {
   });
 }
 
-// Uso
+// Usage
 const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteUsers();
 ```
 
@@ -138,11 +138,11 @@ export function useUserProjects(userId: string | undefined) {
 
 ## TanStack Router — File-based routing
 
-### Estructura
+### Structure
 
 ```
 src/routes/
-├── __root.tsx                    # Layout root
+├── __root.tsx                    # Root layout
 ├── index.tsx                     # /
 ├── about.tsx                     # /about
 ├── users/
@@ -152,13 +152,13 @@ src/routes/
 │       ├── edit.tsx              # /users/:userId/edit
 │       └── projects/
 │           └── index.tsx         # /users/:userId/projects
-└── _authed/                      # Layout group (no afecta URL)
+└── _authed/                      # Layout group (does not affect URL)
     ├── route.tsx                 # Auth check layout
     └── dashboard/
-        └── index.tsx             # /dashboard (con auth guard)
+        └── index.tsx             # /dashboard (with auth guard)
 ```
 
-### Loader pattern (data fetching en route)
+### Loader pattern (data fetching in route)
 
 ```tsx
 // routes/users/$userId/index.tsx
@@ -226,10 +226,10 @@ export const Route = createFileRoute('/_authed')({
 ### Type-safe navigation
 
 ```tsx
-// Link automático type-safe
+// Automatic type-safe Link
 <Link to="/users/$userId" params={{ userId: '123' }}>Profile</Link>
 
-// Navigate programáticamente
+// Navigate programmatically
 const navigate = useNavigate();
 navigate({ to: '/users/$userId', params: { userId: '123' } });
 
@@ -373,7 +373,7 @@ function UsersTable({ data }: { data: User[] }) {
 }
 ```
 
-## Integración con shadcn/ui (DataTable pattern)
+## Integration with shadcn/ui (DataTable pattern)
 
 ```tsx
 // components/ui/data-table.tsx
@@ -432,23 +432,23 @@ function DataTable<TData, TValue>({
 }
 ```
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ Olvidar `queryKey` jerárquico → ✅ siempre `[entity, ...filters]`.
-2. ❌ `staleTime: 0` (default) → ✅ explícito según caso de uso.
-3. ❌ Mutation sin `onSuccess` invalidation → ✅ siempre invalidar.
-4. ❌ Path param sin type validation → ✅ Zod en `validateSearch`.
-5. ❌ `useNavigate` sin type safety → ✅ import de `useNavigate` del router.
-6. ❌ Table sin `getRowId` cuando hay reorder/editable → ✅ siempre definir.
-7. ❌ `accessorKey` con dot notation sin config → ✅ usar `accessorFn` para nested.
-8. ❌ Query que depende de otra sin `enabled` → ✅ siempre dependent queries con enabled.
-9. ❌ No usar `placeholderData: keepPreviousData` en paginated → ✅ smooth UX.
-10. ❌ Infinite query sin `getNextPageParam` → ✅ siempre definir.
+1. ❌ Forgetting hierarchical `queryKey` → ✅ always `[entity, ...filters]`.
+2. ❌ `staleTime: 0` (default) → ✅ explicit based on use case.
+3. ❌ Mutation without `onSuccess` invalidation → ✅ always invalidate.
+4. ❌ Path param without type validation → ✅ Zod in `validateSearch`.
+5. ❌ `useNavigate` without type safety → ✅ import `useNavigate` from the router.
+6. ❌ Table without `getRowId` when there's reorder/editable → ✅ always define it.
+7. ❌ `accessorKey` with dot notation without config → ✅ use `accessorFn` for nested.
+8. ❌ Query that depends on another without `enabled` → ✅ always use dependent queries with enabled.
+9. ❌ Not using `placeholderData: keepPreviousData` in paginated → ✅ smooth UX.
+10. ❌ Infinite query without `getNextPageParam` → ✅ always define it.
 
 ## Performance tips
 
 ```tsx
-// Keep previous data mientras carga nueva página
+// Keep previous data while loading new page
 const { data } = useQuery({
   queryKey: ['users', page],
   queryFn: () => api.users.getPage(page),
@@ -472,10 +472,10 @@ function UserCard({ userId }: { userId: string }) {
   );
 }
 
-// Selectors para evitar re-renders
+// Selectors to avoid re-renders
 const userName = useQuery({
   queryKey: ['user', id],
   queryFn: () => api.users.get(id),
-  select: (user) => user.name,  // Solo re-render si cambia name
+  select: (user) => user.name,  // Only re-render if name changes
 });
 ```

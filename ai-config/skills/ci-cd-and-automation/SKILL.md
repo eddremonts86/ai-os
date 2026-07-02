@@ -1,17 +1,17 @@
 ---
 name: ci-cd-and-automation
-description: Pipeline CI/CD con quality gates no-skippables (lint→type→unit→build→integration→e2e→security→bundle), preview deployments por PR, feature flags, staged rollouts. Aplica a cualquier proyecto con GitHub Actions y necesidad de deploy seguro.
+description: CI/CD pipeline with non-skippable quality gates (lint→type→unit→build→integration→e2e→security→bundle), per-PR preview deployments, feature flags, staged rollouts. Applies to any project with GitHub Actions and a need for safe deploys.
 license: Internal
 ---
 
 # CI/CD & Automation
 
-## Filosofía
+## Philosophy
 
-- **Quality gate no-skippable** — todos los checks deben pasar antes de merge a `main`.
-- **Faster is Safer** — pipelines < 10 min, batches pequeños, releases frecuentes.
-- **Shift Left** — security, performance, accessibility desde PR, no post-merge.
-- **Failures re-alimentan al agente** — error → fix → re-push, no "rebuild sin pensar".
+- **Non-skippable quality gate** — all checks must pass before merging to `main`.
+- **Faster is Safer** — pipelines < 10 min, small batches, frequent releases.
+- **Shift Left** — security, performance, accessibility from PR time, not post-merge.
+- **Failures feed back to the agent** — error → fix → re-push, not "rebuild without thinking".
 
 ## Pipeline (8 stages)
 
@@ -26,7 +26,7 @@ PR opened/updated
    ↓ pass
 [4] Build (vite build, next build)
    ↓ pass
-[5] Integration tests (con DB service)
+[5] Integration tests (with DB service)
    ↓ pass
 [6] E2E tests (playwright)
    ↓ pass
@@ -42,7 +42,7 @@ Merge to main → Auto-deploy staging
 Manual approval → Deploy prod (canary → full)
 ```
 
-## GitHub Actions workflow canónico
+## Canonical GitHub Actions workflow
 
 ```yaml
 # .github/workflows/ci.yml
@@ -211,9 +211,9 @@ jobs:
 - uses: actions/setup-node@v4
   with:
     node-version: '22'
-    cache: 'pnpm'  # automático si hay pnpm-lock.yaml
+    cache: 'pnpm'  # automatic if pnpm-lock.yaml is present
 
-# Cache adicional para node_modules entre runs
+# Additional cache for node_modules across runs
 - name: Cache node_modules
   uses: actions/cache@v4
   with:
@@ -230,18 +230,18 @@ jobs:
 ```yaml
 # Settings → Branches → Branch protection rules → main
 - ✅ Require a pull request before merging
-- ✅ Require approvals: 1 (2 para prod-critical)
+- ✅ Require approvals: 1 (2 for prod-critical)
 - ✅ Dismiss stale pull request approvals when new commits are pushed
 - ✅ Require status checks to pass before merging
   - lint, typecheck, unit, build, integration, e2e, security, bundle-size
 - ✅ Require conversation resolution before merging
-- ✅ Require signed commits (opcional)
+- ✅ Require signed commits (optional)
 - ✅ Require linear history (rebase, no merge commits)
 - ❌ Allow force pushes: NO
 - ❌ Allow deletions: NO
 ```
 
-## Preview deployments por PR
+## Per-PR preview deployments
 
 ```yaml
 # .github/workflows/preview.yml
@@ -275,16 +275,16 @@ jobs:
             Removed when PR closed.
 ```
 
-## Feature flags en CI
+## Feature flags in CI
 
 ```yaml
-# Test con flag ON
+# Test with flag ON
 - name: Test with feature flag
   env:
     FF_NEW_DASHBOARD: 'true'
   run: pnpm test:e2e --grep "new dashboard"
 
-# Test con flag OFF
+# Test with flag OFF
 - name: Test without feature flag
   env:
     FF_NEW_DASHBOARD: 'false'
@@ -368,23 +368,23 @@ jobs:
 
 ## Pipeline < 10 min
 
-Cómo mantenerlo rápido:
-- **Cache pnpm + node_modules** (ahorra 1-2 min)
-- **Jobs paralelos** (lint y typecheck pueden correr simultáneo)
-- **Path filters** (no correr e2e si solo cambió docs)
-- **Matrix strategy** para tests cross-OS (opcional)
-- **Self-hosted runners** para proyectos grandes
-- **Skip opcional jobs** con `if:` condition
+How to keep it fast:
+- **Cache pnpm + node_modules** (saves 1-2 min)
+- **Parallel jobs** (lint and typecheck can run simultaneously)
+- **Path filters** (don't run e2e if only docs changed)
+- **Matrix strategy** for cross-OS tests (optional)
+- **Self-hosted runners** for large projects
+- **Skip optional jobs** with an `if:` condition
 
 ```yaml
-# Skip e2e si solo docs cambiaron
+# Skip e2e if only docs changed
 e2e:
   if: |
     contains(github.event.pull_request.changes.*.files.*.filename, '.ts') ||
     contains(github.event.pull_request.changes.*.files.*.filename, '.tsx')
 ```
 
-## Notificaciones Slack
+## Slack notifications
 
 ```yaml
 - name: Notify success
@@ -415,25 +415,25 @@ e2e:
       {"text": "❌ CI failed for ${{ github.head_ref }} by @${{ github.actor }}\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs>"}
 ```
 
-## Errores comunes
+## Common errors
 
-1. ❌ Pipeline > 15 min → devs skipean checks.
-2. ❌ Sin cache → 2-3 min extra por run.
-3. ❌ Tests flaky → false negatives, devs pierden confianza.
-4. ❌ Sin branch protection → cualquiera mergea directo.
-5. ❌ Secrets en logs → leak.
-6. ❌ Sin retry en steps de network → falsos failures.
-7. ❌ Jobs sin `if:` condition → corren innecesariamente.
-8. ❌ Version pinning ausente (`@v4` en vez de SHA) → rotura al actualizar action.
-9. ❌ Sin timeout en jobs → job colgado corre forever.
-10. ❌ Matrix sin límite de parallelism → agotar runners de GitHub.
+1. ❌ Pipeline > 15 min → devs skip checks.
+2. ❌ No cache → 2-3 min extra per run.
+3. ❌ Flaky tests → false negatives, devs lose confidence.
+4. ❌ No branch protection → anyone merges directly.
+5. ❌ Secrets in logs → leak.
+6. ❌ No retry on network steps → false failures.
+7. ❌ Jobs without an `if:` condition → run unnecessarily.
+8. ❌ Missing version pinning (`@v4` instead of a SHA) → breaks when the action updates.
+9. ❌ No timeout on jobs → a hung job runs forever.
+10. ❌ Matrix without a parallelism limit → exhausts GitHub runners.
 
-## Recursos
+## Resources
 
 - [GitHub Actions docs](https://docs.github.com/en/actions)
 - [Size limit](https://github.com/ai/size-limit)
 - [Vercel CLI](https://vercel.com/docs/cli)
 - [Gitleaks](https://github.com/gitleaks/gitleaks)
-- Skill relacionada: `shipping-and-launch` (qué hacer después del CI)
-- Skill relacionada: `prod-deploy-verification` (checks pre-deploy)
-- Skill relacionada: `code-review-and-quality` (workspace)
+- Related skill: `shipping-and-launch` (what to do after CI)
+- Related skill: `prod-deploy-verification` (pre-deploy checks)
+- Related skill: `code-review-and-quality` (workspace)

@@ -3,6 +3,11 @@
 > ⚠️ **CRITICAL:** This AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to work correctly. Without them, the workflows in `~/Projects/ai-os/workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`).
 >
 > If the user is on a fresh Mac or another profile, run this prompt FIRST before using AI-OS.
+>
+> **Note (2026-07):** the 14 superpowers are now vendored in `ai-config/skills/`
+> (committed to the ai-os repo) and `setup/install-mac.sh` links them from there —
+> no network fetch needed. The `gh repo clone obra/superpowers` flow below is only
+> the fallback for updating the vendored copies from upstream.
 
 ---
 

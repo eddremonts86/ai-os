@@ -105,7 +105,7 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 | 7 | Installs the 14 required superpowers skills (if missing). |
 | 8 | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers). |
 | 9 | Configures Warp (Mac) + Terminal.app. |
-| 13 | Runs verification (8 sections). |
+| 10 | Runs verification (12 sections). |
 
 ---
 
@@ -191,7 +191,7 @@ ai-os/
 │   ├── sharing.md                 # How to contribute
 │   └── architecture.md            # Internal organization
 │
-├── promps/                       # Original Karpathy prompts (8 files)
+├── prompts/                       # Original Karpathy prompts (8 files)
 │   ├── README.md
 │   ├── setup/                     # Run once (3 files)
 │   ├── daily-use/                 # Run daily (1 file)
@@ -378,26 +378,28 @@ Full list: [`rules/ask_before_doing.md`](rules/ask_before_doing.md).
 
 ## The 14 required superpowers skills
 
-These come from [obra/superpowers](https://github.com/obra/superpowers). AI-OS workflows invoke them explicitly. Without them, workflows fail.
+These come from [obra/superpowers](https://github.com/obra/superpowers). AI-OS workflows invoke them explicitly. Without them, workflows fail. This is the exact set checked by `setup/verify.sh`.
 
 | Skill | When loaded |
 |---|---|
 | `using-superpowers` | Router for all skills (load at session start) |
 | `brainstorming` | When the idea is vague |
-| `spec` | When starting a new project or clarifying an underspecified task |
 | `writing-plans` | After Spec, before execution |
+| `writing-skills` | Creating or improving skills |
 | `executing-plans` | During execution (block by block) |
 | `verification-before-completion` | Before claiming done |
 | `test-driven-development` | Writing tests |
 | `systematic-debugging` | Bug or unexpected behavior |
-| `code-review-and-quality` | Before PR |
 | `finishing-a-development-branch` | At the end of work |
 | `requesting-code-review` | Asking for review |
 | `receiving-code-review` | Receiving review |
 | `dispatching-parallel-agents` | Multi-task work |
 | `subagent-driven-development` | Executing implementation plans |
+| `using-git-worktrees` | Large feature work or parallel branches |
 
-If any is missing, run [`promps/setup/03-required-skills.md`](promps/setup/03-required-skills.md).
+Not part of this set but also required by AI-OS workflows: `code-review-and-quality` (before PR). Not part of this set and explicitly optional/third-party: the gstack-vendored `spec` skill (see `vendor/gstack/`) — AI-OS's own Spec flow is `workflows/project_start.md`.
+
+If any is missing, run [`prompts/setup/03-required-skills.md`](prompts/setup/03-required-skills.md).
 
 ---
 
@@ -591,7 +593,7 @@ AI-OS is successful if:
 - **Cross-platform:** [docs/cross-platform.md](docs/cross-platform.md)
 - **Sharing & Contributing:** [docs/sharing.md](docs/sharing.md)
 - **Architecture:** [docs/architecture.md](docs/architecture.md)
-- **Required superpowers:** [promps/setup/03-required-skills.md](promps/setup/03-required-skills.md)
+- **Required superpowers:** [prompts/setup/03-required-skills.md](prompts/setup/03-required-skills.md)
 - **obra/superpowers:** https://github.com/obra/superpowers
 - **Karpathy's method:** Search for "Karpathy AI Operating System" on YouTube.
 
