@@ -58,7 +58,7 @@ Plus AI-OS internal:
 
 ## 6. Autonomy + max runtime evidence
 
-- Multi-step tasks (research/install/migration): dispatch subagents in parallel via `delegate_task tasks=[...]` (max 3 concurrent) as default.
+- Multi-step tasks (research/install/migration): dispatch subagents in parallel (max 3 concurrent) as default, using this CLI's own mechanism (see "How to dispatch" below).
 - "luce como funciona, continua con la otra" = accept partial, keep going (do not ask "should I continue?").
 - For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime (browser nav, smoke test) and report concrete evidence.
 - Always finish on URL + status for any started service.
@@ -75,17 +75,15 @@ Concrete patterns where parallelism wins:
 - **Multi-repo work**: changes in 2+ repos at once.
 - **Multi-CLI verification**: run the same check across Claude Code + Hermes + Codex + Gemini in parallel.
 
-How to dispatch:
+How to dispatch (each CLI has its own mechanism — use the native one):
 
-```python
-delegate_task(tasks=[
-    {"goal": "...", "toolsets": ["terminal", "file"]},
-    {"goal": "...", "toolsets": ["web"]},
-    {"goal": "...", "toolsets": ["terminal"]}
-])
-```
+| CLI | Mechanism |
+|---|---|
+| Claude Code | `Task`/`Agent` tool — launch multiple agents in one message |
+| Hermes | `delegate_task(tasks=[{"goal": "...", "toolsets": [...]}, ...])` |
+| Codex / Gemini / Antigravity / MiniMax | No native parallel subagents — run independent steps as background shells, or sequentially |
 
-Max 3 concurrent per user (configured via `delegation.max_concurrent_children`).
+Max 3 concurrent (in Hermes configured via `delegation.max_concurrent_children`; in Claude Code just cap yourself at 3).
 
 When NOT to dispatch: tasks <2 min, tightly coupled steps, interactive tasks, or when you don't know what the subagent would do.
 
@@ -149,7 +147,7 @@ See `rules/never_do.md`. In short:
 ```
 ai-os/
 ├── CLAUDE.md                    # this file (master instructions)
-├── context/                     # persistent context (perfil, prefs, projects, tools)
+├── context/                     # persistent context (profile, prefs, projects, tools)
 ├── rules/                       # hard rules (always/ask/never)
 ├── specs/                       # active Specs
 ├── verifiers/                   # quality gates (post-task)
@@ -157,10 +155,12 @@ ai-os/
 ├── workflows/                   # recurring processes
 ├── archive/                     # completed Specs
 ├── outputs/                     # generated artifacts
-├── promps/                      # original Karpathy prompts (English)
+├── prompts/                      # original Karpathy prompts (English)
 ├── ai-config/                   # AI config: skills, MCP, commands
 ├── dev-env/                     # dev env: dotfiles, Brewfile, packages
 ├── setup/                       # install scripts (Mac + Windows + dry-run)
+├── vendor/                      # third-party vendored skills (gstack, ecc, codex-plugin-cc)
+├── .github/                     # CI workflows (test-mac/linux/windows)
 └── docs/                        # documentation (README + guides)
 ```
 
@@ -214,7 +214,7 @@ hermes chat   # skills already loaded from imported:
 
 Categories:
 
-- **superpowers (14 required)**: using-superpowers, brainstorming, writing-plans, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, code-review-and-quality, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees.
+- **superpowers (14 required, see section 16)**: using-superpowers, brainstorming, writing-plans, writing-skills, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees. Plus `code-review-and-quality` (required, but separate from the 14).
 - **AI-OS workflow skills (native)**: ai-os-karpathy, ai-os-quickstart.
 - **Vendored from gstack (optional, third-party)**: spec, context-save, context-restore — see `vendor/gstack/`. The native Spec/Plan workflow remains `workflows/project_start.md`.
 - **antfu (19)**: vite, vue, nuxt, nitro, pinia, pnpm, vitest, unocss, etc.
@@ -235,9 +235,9 @@ AI-OS is the single source of truth for the AI setup:
 
 To replicate on another Mac: `git clone + bash setup/install-mac.sh`. To replicate on Windows: `git clone + powershell -File setup/install-windows.ps1`.
 
-## 16. ⚠️ REQUIREMENT: superpowers skills (MANDatory)
+## 16. ⚠️ REQUIREMENT: superpowers skills (MANDATORY)
 
-AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function. Without them, workflows in `workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`).
+AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function. Without them, workflows in `workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`). This is the exact set checked by `setup/verify.sh` and `setup/install-mac.dry-run.sh` — treat those scripts as the source of truth for this list.
 
 ### Required superpowers skills
 
@@ -252,12 +252,13 @@ AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function
 | `verification-before-completion` | Before claiming done |
 | `test-driven-development` | Writing tests |
 | `systematic-debugging` | Bug or unexpected behavior |
-| `code-review-and-quality` | Before PR |
 | `finishing-a-development-branch` | At the end of work |
 | `requesting-code-review` | Asking for review |
 | `receiving-code-review` | Receiving review |
 | `dispatching-parallel-agents` | Multi-task work |
 | `subagent-driven-development` | Executing implementation plans |
+
+`code-review-and-quality` is a separate, equally-required skill (loaded "before PR", see section 4) but is not part of the obra/superpowers 14 and is not checked by `verify.sh` — don't conflate it with this list.
 
 AI-OS also ships 3 gstack-vendored skills (`spec`, `context-save`, `context-restore`) under `vendor/gstack/`. They are **not** part of the 14 required superpowers and follow gstack's own workflow (5-phase AskUserQuestion spec + GitHub issue filing). For AI-OS's Karpathy-style Spec → Plan → Execute → Verify, use `workflows/project_start.md` instead.
 
@@ -271,27 +272,23 @@ done
 
 ### Setup on a new Mac (required for AI-OS to work)
 
+The 14 superpowers are vendored in `ai-config/skills/` (committed to this repo) and
+distributed by `setup/install-mac.sh` along with every other skill — no separate
+download needed:
+
 ```bash
-# 1. Install 4 missing superpowers (most are pre-installed)
-gh repo clone obra/superpowers /tmp/superpowers -- --depth=1
-for skill in /tmp/superpowers/skills/*/; do
-  name=$(basename "$skill")
-  if [ ! -d "$HOME/.claude/skills/$name" ]; then
-    cp -R "$skill" "$HOME/.claude/skills/$name"
-    # Re-symlink to other CLIs
-    for cli in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills" "$HOME/.hermes/skills/imported"; do
-      [ -d "$cli" ] && ln -sf "$HOME/.claude/skills/$name" "$cli/$name"
-    done
-  fi
-done
-rm -rf /tmp/superpowers
+# 1. Install (links all skills, including the 14 superpowers, into every CLI)
+bash ~/Projects/ai-os/setup/install-mac.sh
 
 # 2. Verify
 bash ~/Projects/ai-os/setup/verify.sh
 # → Section 4 should show: 14/14 superpowers skills OK
 ```
 
-Or use the comprehensive script `promps/setup-required-skills.md` which automates the full setup.
+To update the vendored superpowers from upstream, diff against
+https://github.com/obra/superpowers and copy changes into `ai-config/skills/`.
+
+Or use the comprehensive script `prompts/setup/03-required-skills.md` which automates the full setup.
 
 ## 17. SKILLS.md locations (do not confuse)
 

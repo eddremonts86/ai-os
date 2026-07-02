@@ -272,6 +272,53 @@ else
   warn "Python not available or pip-packages.txt missing — skipping pip check"
 fi
 
+# ─── 11. English-only rule (skill frontmatter) ───
+section "11. English-only rule (skill descriptions)"
+# Rule #1 of AI-OS: ALL files in English. Catch Spanish leaking into the
+# frontmatter descriptions that CLIs use for skill auto-loading.
+SPANISH_HITS=$(grep -l -E '^description:.*\b(aplica|cuándo|según|código|despliegue|patrones|proyecto que|cualquier|avanzado|módulos)\b' "$AI_OS_ROOT"/ai-config/skills/*/SKILL.md 2>/dev/null || true)
+if [ -z "$SPANISH_HITS" ]; then
+  ok "No Spanish detected in skill frontmatter descriptions"
+  PASS=$((PASS+1))
+else
+  err "Spanish detected in skill descriptions (rule #1: all files in English):"
+  echo "$SPANISH_HITS" | while read -r f; do err "  $f"; done
+  FAIL=$((FAIL+1))
+fi
+
+# ─── 12. Global bridge (6 CLIs) ───
+section "12. Global bridge wiring"
+BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
+for target in "$HOME_DIR/.claude/CLAUDE.md" "$HOME_DIR/.codex/AGENTS.md" "$HOME_DIR/.gemini/GEMINI.md" "$HOME_DIR/.agents/AGENTS.md"; do
+  if [ -L "$target" ] && [ "$(readlink "$target")" = "$BRIDGE" ]; then
+    ok "  $target → bridge"
+    PASS=$((PASS+1))
+  else
+    err "  $target is not a symlink to GLOBAL_BRIDGE.md"
+    FAIL=$((FAIL+1))
+  fi
+done
+if [ -f "$HOME_DIR/.hermes/SOUL.md" ] && grep -q "AI-OS BRIDGE" "$HOME_DIR/.hermes/SOUL.md"; then
+  ok "  ~/.hermes/SOUL.md carries the AI-OS bridge block"
+  PASS=$((PASS+1))
+else
+  warn "  ~/.hermes/SOUL.md missing the AI-OS bridge block (run install-mac.sh)"
+fi
+MM_OK=0
+if [ -d "$HOME_DIR/.minimax/agents" ]; then
+  for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
+    [ -f "$agent_dir/agent.md" ] && grep -qi "ai-os" "$agent_dir/agent.md" && MM_OK=$((MM_OK+1))
+  done
+  if [ "$MM_OK" -gt 0 ]; then
+    ok "  MiniMax overlay present in $MM_OK agent(s)"
+    PASS=$((PASS+1))
+  else
+    warn "  MiniMax agents exist but no AI-OS overlay found (run install-mac.sh)"
+  fi
+else
+  warn "  MiniMax not installed (OK if unused)"
+fi
+
 # ─── Summary ───
 section "Summary"
 echo ""

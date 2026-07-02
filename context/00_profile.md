@@ -10,22 +10,10 @@
 ## Style
 
 - Terse, direct, no over-formatting.
-- "go" = execute without asking. "ok" = continue without asking.
-- "luce como que funciona" = accept partial, continue.
-- "no pares hasta el final" = execute the complete plan.
-- "no quiero tener que intervenir para nada" = autonomy end-to-end.
-- "dame la url" = URL only, no status, no extras.
+- Chat in Spanish (lowercase); everything written to files in English.
 
-## Autonomy
+## Autonomy, triggers, output format
 
-- Max autonomy + runtime evidence.
-- Multi-step tasks → dispatch subagents in parallel (max 3).
-- For bugfixes/features → exercise runtime, do not rely on build/lint/tests alone.
-- URL + 1-line status on every started service.
-
-## Triggers
-
-- "no pares" → execute all the way through.
-- "haslo todo" → execute all the way through.
-- "dame la url" → URL only.
-- "obviamente usa todos los sub-agentes que necesites" → max 3 in parallel.
+Canonical source: `context/03_preferences.md`. Do not duplicate those rules here —
+read that file for the trigger phrases ("go", "no pares hasta el final", "dame la
+url", ...), autonomy level, subagent parallelism, and verification requirements.

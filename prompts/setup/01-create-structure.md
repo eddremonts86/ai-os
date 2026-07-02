@@ -4,7 +4,7 @@
 
 ```bash
 # Create the AI-OS directory structure
-mkdir -p ~/Projects/ai-os/{context,specs,verifiers,skills,rules,workflows,outputs,archive,promps/{setup,daily-use,verifiers-specs,skill-creation}}
+mkdir -p ~/Projects/ai-os/{context,specs,verifiers,skills,rules,workflows,outputs,archive,prompts/{setup,daily-use,verifiers-specs,skill-creation}}
 
 # Create empty files (touch)
 touch ~/Projects/ai-os/CLAUDE.md
@@ -36,7 +36,7 @@ git config user.email "tu@email.com"
 ├── workflows/          # 5 files: daily_start, project_start, coding, research, content_creation
 ├── archive/            # empty
 ├── outputs/            # empty
-└── promps/             # 7 files (this directory)
+└── prompts/             # 7 files (this directory)
 ```
 
 ## Next step
