@@ -28,7 +28,7 @@ vendor/ecc/                          ← git clone of ECC (depth=1, see VENDORED
 └── VENDORED_FROM.md                 ← ECC's own record of upstream provenance
 ```
 
-We vendor ECC as a **read-only subtree** at `vendor/ecc/`. AI-OS does not modify it in place. We propagate it to the 5 CLIs via symlinks (see below).
+We vendor ECC as a **read-only subtree** at `vendor/ecc/`. AI-OS does not modify it in place. We propagate it to the core CLIs via symlinks (see below).
 
 ---
 
@@ -64,7 +64,7 @@ The integration follows the same single-source-of-truth pattern as AI-OS's nativ
 | Source | Owner | How propagated | What lives there |
 |---|---|---|---|
 | `vendor/ecc/skills/` | ECC upstream | `install-ecc.sh` (this script) | The 271 ECC skills |
-| `ai-config/skills/` | AI-OS (you) | `install-mac.sh` step 5 | The 99 AI-OS native skills |
+| `ai-config/skills/` | AI-OS (you) | `install-mac.sh` flat-skill step | The hand-curated AI-OS native skills |
 
 They are **separate on purpose**:
 
@@ -100,7 +100,7 @@ cd ~/Projects/ai-os
 # Run the standard AI-OS install first (sets up skills, MCP, dotfiles)
 bash setup/install-mac.sh
 
-# Then wire ECC into the 5 CLIs + Claude Code plugin runtime
+# Then wire ECC into the core CLIs + Claude Code plugin runtime
 bash setup/install-ecc.sh
 ```
 
@@ -108,7 +108,7 @@ You can run `setup/install-ecc.sh` **before** `install-mac.sh` — it's idempote
 
 ### 2. Use ECC skills (existing workflows)
 
-Once installed, every CLI sees the 271 ECC skills next to the 99 AI-OS skills. There is no separate CLI command — skills are loaded by name:
+Once installed, every core CLI sees the 271 ECC skills next to the AI-OS flat skills. There is no separate CLI command — skills are loaded by name:
 
 ```text
 Claude Code:    ask the model to "load the tdd-workflow skill"
@@ -151,7 +151,7 @@ cd ../..
 bash setup/install-ecc.sh   # refreshes symlinks
 ```
 
-That's it. The symlinks point at `vendor/ecc/`, so once you `git pull` the new skill files are immediately visible to all 5 CLIs. The hook config in `hooks/hooks.json` is also picked up on the next Claude Code restart.
+That's it. The symlinks point at `vendor/ecc/`, so once you `git pull` the new skill files are immediately visible to the core CLIs. The hook config in `hooks/hooks.json` is also picked up on the next Claude Code restart.
 
 If you want to pin to a specific ECC version:
 

@@ -2,13 +2,13 @@
 
 > **Personal AI work system based on Andrej Karpathy's method** (Spec + Verifier + Environment), extended with a reproducible dev environment setup that works across Macs and Windows.
 >
-> **One command setup. 111 skills. 5 CLIs. 1 repo.**
+> **One command setup. Flat skills + plugin bundles. Core CLIs. 1 repo.**
 
 [![Test macOS](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-mac.yml)
 [![Test Linux](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-linux.yml)
 [![Test Windows](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Skills: 111](https://img.shields.io/badge/skills-111-green.svg)](ai-config/skills/)
+[![Skills: dynamic](https://img.shields.io/badge/skills-dynamic-green.svg)](ai-config/skills/)
 [![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
 [![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
 
@@ -18,7 +18,7 @@
 
 AI-OS is the **single source of truth** for everything AI in your dev workflow:
 
-- **111 global skills** propagated to 5 AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes).
+- **Flat global skills** propagated to the supported AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes, plus MiniMax on Mac).
 - **+271 optional ECC skills** (vendored at `vendor/ecc/`, opt-in via `bash setup/install-ecc.sh`).
 - **+12 optional claude.tools / gstack skills** (4 from claude.tools, 8 cherry-picked from gstack, plus the OpenAI Codex plugin at `vendor/codex-plugin-cc/`).
 - **14 required superpowers skills** (the framework that powers all workflows).
@@ -48,7 +48,7 @@ Most devs who use AI assistants daily end up with the same problems:
 AI-OS solves all of this with **a single git repo** that contains:
 
 1. The **method** (Spec → Verifier → Environment) as workflows and templates.
-2. The **skills** as a single source of truth, symlinked to 5 CLIs.
+2. The **skills** as a single source of truth, symlinked to the supported CLIs.
 3. The **MCP config** as declarative YAML, generated at install time.
 4. The **dev env** (shell, terminal, packages) as install scripts.
 5. The **CI** that validates everything works on Mac, Linux, and Windows.
@@ -97,15 +97,15 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 | Step | What happens |
 |---|---|
 | 1 | Installs Homebrew packages from `dev-env/packages/Brewfile` (60+ packages). |
-| 2 | Installs npm globals from `dev-env/packages/npm-globals.txt` (50+ packages). |
-| 3 | Installs pip packages from `dev-env/packages/pip-packages.txt` (26+ packages). |
+| 2 | Installs npm globals from `dev-env/packages/npm-globals.txt`. |
+| 3 | Installs Python user packages from `dev-env/packages/pip-packages.txt`. |
 | 4 | Installs Oh My Zsh + Powerlevel10k + custom plugins. |
 | 5 | Creates dotfile symlinks (`~/.zshrc`, `~/.gitconfig`, `~/.ssh/config`, etc.) from `dev-env/dotfiles/`. |
-| 6 | Symlinks 99 skills from `ai-config/skills/` to 5 CLIs (`~/.claude/`, `~/.codex/`, `~/.gemini/`, `~/.agents/`, `~/.hermes/skills/imported/`). |
+| 6 | Symlinks flat skills from `ai-config/skills/` to supported CLI skill directories. |
 | 7 | Installs the 14 required superpowers skills (if missing). |
 | 8 | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers). |
 | 9 | Configures Warp (Mac) + Terminal.app. |
-| 10 | Runs verification (15 health checks). |
+| 13 | Runs verification (8 sections). |
 
 ---
 
@@ -119,7 +119,7 @@ AI-OS is structured in **3 layers**, each with a clear responsibility:
 │  • Method: Spec → Verifier → Environment (Karpathy)             │
 │  • 18 master instructions in CLAUDE.md                            │
 │  • 5 workflows, 3 rules, 3 verifiers                            │
-│  • 102 skills (99 global + 2 AI-OS + 1 system)                   │
+│  • Flat global skills + optional plugin bundles                  │
 │  • 7 declarative MCP servers in YAML                             │
 │  • Replicable dev-env (zsh, Warp, Brewfile, packages)           │
 └──────────────────────────────────────────────────────────────────┘
@@ -202,7 +202,7 @@ ai-os/
 ├── outputs/                      # Generated artifacts (gitignored content)
 │
 ├── ai-config/                    # AI config (replicable, 1297 files)
-│   ├── skills/                    #   99 skills (single source of truth)
+│   ├── skills/                    #   flat skills + nested plugin bundles
 │   │   ├── ai-os-karpathy/        #   AI-OS router skill (own)
 │   │   ├── ai-os-quickstart/      #   Bootstrap skill (own)
 │   │   ├── brainstorming/         #   14 superpowers skills
@@ -246,7 +246,7 @@ ai-os/
 │   ├── install-mac.dry-run.sh     #   CI-mode simulation
 │   ├── install-windows.ps1        #   1-command Windows setup
 │   ├── install-windows.dry-run.ps1
-│   ├── verify.sh                  #   15 health checks (Mac)
+│   ├── verify.sh                  #   8 health checks + npm/pip checks
 │   ├── verify-windows.ps1         #   Windows health checks
 │   └── generate-mcp-config.py     #   Auto-install PyYAML + generate config
 │
@@ -259,7 +259,7 @@ ai-os/
 
 ### ECC Integration (optional layer)
 
-AI-OS can optionally vendor **[Everything Claude Code (ECC)](https://github.com/affaan-m/ECC)** — the largest publicly available Claude Code skill corpus (271 skills, 67 agents, 28 hooks) — as a **read-only subtree** at `vendor/ecc/`. It propagates to the 5 CLIs via symlinks, same as the AI-OS native skills, but with its own installer:
+AI-OS can optionally vendor **[Everything Claude Code (ECC)](https://github.com/affaan-m/ECC)** — the largest publicly available Claude Code skill corpus (271 skills, 67 agents, 28 hooks) — as a **read-only subtree** at `vendor/ecc/`. It propagates to the core CLIs via symlinks, same as the AI-OS native skills, but with its own installer:
 
 ```bash
 # One-time: vendor ECC
@@ -276,7 +276,7 @@ Why two skill sources of truth?
 
 | Source | Owner | What |
 |---|---|---|
-| `ai-config/skills/` (99) | AI-OS (you) | Hand-curated, evolve with your workflows |
+| `ai-config/skills/` | AI-OS (you) | Hand-curated, evolve with your workflows |
 | `vendor/ecc/skills/` (271) | ECC upstream | Community-maintained, update with `git pull` |
 
 The two never conflict in practice because ECC and AI-OS use different naming conventions (ECC: `tdd-workflow`, AI-OS: `test-driven-development`). In Claude Code specifically, ECC also loads as a **plugin** (`~/.claude/plugins/ecc → vendor/ecc/`), exposing hooks and slash commands that the AI-OS installer doesn't manage.
@@ -303,7 +303,7 @@ What gets vendored:
 |---|---|---|
 | claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`) | `ai-config/skills/` | 4 skills |
 | gstack (`careful`, `context-save`, `context-restore`, `diagram`, `freeze`, `guard`, `spec`, `unfreeze`) | `ai-config/skills/` | 8 skills |
-| OpenAI Codex plugin for Claude Code | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to all 5 CLIs | 1 plugin + 3 skills |
+| OpenAI Codex plugin for Claude Code | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
 Why a separate installer (instead of folding into `install-mac.sh`)?
 
@@ -384,7 +384,7 @@ These come from [obra/superpowers](https://github.com/obra/superpowers). AI-OS w
 |---|---|
 | `using-superpowers` | Router for all skills (load at session start) |
 | `brainstorming` | When the idea is vague |
-| `spec-driven-development` | When starting a new project (similar to AI-OS Spec) |
+| `spec` | When starting a new project or clarifying an underspecified task |
 | `writing-plans` | After Spec, before execution |
 | `executing-plans` | During execution (block by block) |
 | `verification-before-completion` | Before claiming done |
@@ -489,7 +489,7 @@ Differences:
 | Feature | Mac | Windows | Linux |
 |---|---|---|---|
 | **AI-OS core** | ✅ | ✅ | ✅ |
-| **99 skills** | ✅ | ✅ | ✅ |
+| **Flat skills** | ✅ | ✅ | ✅ |
 | **7 MCP servers** | ✅ | ✅ | ✅ |
 | **Oh My Zsh + p10k** | ✅ | ❌ (use Oh-My-Posh or Starship) | ✅ |
 | **Warp** | ✅ |✅ (Windows version) |❌ (use Wezterm) |
@@ -532,7 +532,7 @@ The repo is currently **private** on GitHub. To share with other devs:
 
 To contribute back:
 
-- New skills: add to `ai-config/skills/<name>/SKILL.md`. They get distributed to all 5 CLIs automatically.
+- New flat skills: add to `ai-config/skills/<name>/SKILL.md`. They get distributed to supported CLIs automatically.
 - New MCP server: add `ai-config/mcp/<name>.yaml`. It gets generated to `~/.hermes/config.yaml` automatically.
 - New workflow: add `workflows/<name>.md`. It gets loaded by `daily_start.md` automatically.
 - Improvements: PRs welcome. CI will validate.
@@ -547,7 +547,7 @@ AI-OS is successful if:
 
 - ✅ Setup on a new Mac completes in <30 min.
 - ✅ Setup on Windows completes in <60 min.
-- ✅ All 99 skills invokable from 5 CLIs.
+- ✅ All flat skills invokable from supported CLIs.
 - ✅ All 14/14 superpowers skills present.
 - ✅ All 7 MCP servers auto-connect in Hermes.
 - ✅ Zero secrets in the repo (`git log -p | grep -iE "secret|api[_-]?key|password"` returns nothing).
@@ -558,7 +558,7 @@ AI-OS is successful if:
 ## State (current)
 
 - **Files:** 1363
-- **Skills:** 102 (14 superpowers + 2 AI-OS + 86 third-party).
+- **Skills:** dynamic; count with `find ai-config/skills -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l`.
 - **MCP servers:** 7 (declarative YAML).
 - **Workflows:** 5.
 - **Rules:** 3.

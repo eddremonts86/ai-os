@@ -11,6 +11,7 @@
 # Options (env vars):
 #   SKIP_BREW=1      → skip brew packages
 #   SKIP_NPM=1       → skip npm packages
+#   SKIP_PIP=1       → skip Python user packages
 #   SKIP_DOTFILES=1  → skip dotfile symlinks
 #   SKIP_MCP=1       → skip MCP config regeneration
 #   SKIP_VERIFY=1    → skip verification at the end
@@ -70,8 +71,54 @@ else
 fi
 echo ""
 
-# ─── 2. Fonts ───
-log "2. Verifying Nerd Fonts..."
+# ─── 2. npm global packages ───
+if [ "${SKIP_NPM:-0}" != "1" ]; then
+  log "2. Installing npm globals from dev-env/packages/npm-globals.txt..."
+  if command -v npm >/dev/null 2>&1; then
+    while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
+      pkg="${raw_pkg%%#*}"
+      pkg="$(printf '%s' "$pkg" | xargs)"
+      [ -z "$pkg" ] && continue
+      npm install -g "$pkg"
+    done < "$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
+    ok "npm globals installed"
+  else
+    warn "npm not found; skipping npm globals"
+  fi
+else
+  log "2. SKIP_NPM=1, skipping npm globals"
+fi
+echo ""
+
+# ─── 3. Python user packages ───
+if [ "${SKIP_PIP:-0}" != "1" ]; then
+  log "3. Installing Python user packages from dev-env/packages/pip-packages.txt..."
+  if command -v python3 >/dev/null 2>&1; then
+    PYTHON_CMD=python3
+  elif command -v python >/dev/null 2>&1; then
+    PYTHON_CMD=python
+  else
+    PYTHON_CMD=""
+  fi
+
+  if [ -n "$PYTHON_CMD" ]; then
+    while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
+      pkg="${raw_pkg%%#*}"
+      pkg="$(printf '%s' "$pkg" | xargs)"
+      [ -z "$pkg" ] && continue
+      "$PYTHON_CMD" -m pip install --user "$pkg"
+    done < "$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
+    ok "Python user packages installed"
+  else
+    warn "Python not found; skipping Python user packages"
+  fi
+else
+  log "3. SKIP_PIP=1, skipping Python user packages"
+fi
+echo ""
+
+# ─── 4. Fonts ───
+log "4. Verifying Nerd Fonts..."
 CASKE_FONT="$HOME/Library/Fonts/CaskaydiaCoveNerdFont-Regular.ttf"
 if [ ! -f "$CASKE_FONT" ]; then
   warn "CaskaydiaCove Nerd Font not installed. Installing..."
@@ -81,9 +128,9 @@ else
 fi
 echo ""
 
-# ─── 3. Symlinks for dotfiles ───
+# ─── 5. Symlinks for dotfiles ───
 if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
-  log "3. Creating dotfiles symlinks..."
+  log "5. Creating dotfiles symlinks..."
 
   # zsh
   if [ -f "$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc" ]; then
@@ -130,13 +177,13 @@ if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
     ok "  .ssh/config → ai-os"
   fi
 else
-  log "3. SKIP_DOTFILES=1, skipping dotfiles"
+  log "5. SKIP_DOTFILES=1, skipping dotfiles"
 fi
 echo ""
 
-# ─── 4. Oh My Zsh + Powerlevel10k ───
+# ─── 6. Oh My Zsh + Powerlevel10k ───
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
-  log "4. Installing Oh My Zsh..."
+  log "6. Installing Oh My Zsh..."
   RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 2>&1 | tail -3
   ok "Oh My Zsh installed"
 else
@@ -161,8 +208,8 @@ done
 ok "Oh My Zsh + plugins OK"
 echo ""
 
-# ─── 5. Global skills (symlinks) ───
-log "5. Setting global skills in 6 CLIs..."
+# ─── 7. Global skills (symlinks) ───
+log "7. Setting global skills in 6 CLIs..."
 # Only flat skills (a dir with a top-level SKILL.md) are symlinked here. Plugin
 # bundles in ai-config/skills/ that have a NESTED layout (claude.tools, ECC) are
 # installed by their own scripts (install-claude-tools.sh, install-ecc.sh).
@@ -195,8 +242,39 @@ SKILL_COUNT=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -pa
 ok "Skills propagated to 6 CLIs ($SKILL_COUNT flat skills in source)"
 echo ""
 
-# ─── 5b. Global instruction bridge (loads AI-OS into every project, every CLI) ───
-log "5b. Wiring global instruction bridge..."
+# ─── 7c. Vendored gstack skills (read-only subtree at vendor/gstack/) ───
+# Mirrors the ECC pattern: optional, third-party, propagated to the same 6 CLIs.
+# Currently inlines 3 skills (spec, context-save, context-restore). Refresh with:
+#   git -C "$AI_OS_ROOT/vendor/gstack" pull  (when an upstream is configured)
+if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
+  log "7c. Setting vendored gstack skills in 6 CLIs..."
+  GSTACK_COUNT=0
+  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported" "$HOME_DIR/.minimax/skills"; do
+    mkdir -p "$cli_dir"
+    # Prune stale gstack symlinks whose target is gone.
+    for link in "$cli_dir"/*; do
+      [ -L "$link" ] || continue
+      tgt=$(readlink "$link")
+      case "$tgt" in
+        *"/vendor/gstack/"*) [ -f "${tgt%/}/SKILL.md" ] || rm -f "$link" ;;
+      esac
+    done
+    for skill_dir in "$AI_OS_ROOT/vendor/gstack"/*/; do
+      [ -f "$skill_dir/SKILL.md" ] || continue
+      name=$(basename "$skill_dir")
+      [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ] && mv "$cli_dir/$name" "$cli_dir/$name.pre-aios.bak"
+      ln -sfn "$skill_dir" "$cli_dir/$name"
+    done
+  done
+  GSTACK_COUNT=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" | wc -l | tr -d ' ')
+  ok "Vendored gstack skills propagated ($GSTACK_COUNT skills in source)"
+else
+  log "7c. vendor/gstack/ absent, skipping"
+fi
+echo ""
+
+# ─── 7b. Global instruction bridge (loads AI-OS into every project, every CLI) ───
+log "7b. Wiring global instruction bridge..."
 BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
 # Symlink the bridge to each CLI's global instruction file.
 #   Claude Code: ~/.claude/CLAUDE.md   | Codex: ~/.codex/AGENTS.md
@@ -234,8 +312,8 @@ fi
 ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md)"
 echo ""
 
-# ─── 6. Superpowers skills (REQUIRED) ───
-log "6. Verifying superpowers skills (REQUIRED)..."
+# ─── 8. Superpowers skills (REQUIRED) ───
+log "8. Verifying superpowers skills (REQUIRED)..."
 EXPECTED=14
 ACTUAL=0
 for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
@@ -262,9 +340,9 @@ else
 fi
 echo ""
 
-# ─── 7. MCP servers (regenerate ~/.hermes/config.yaml) ───
+# ─── 9. MCP servers (regenerate ~/.hermes/config.yaml) ───
 if [ "${SKIP_MCP:-0}" != "1" ]; then
-  log "7. Configuring MCP servers from ai-config/mcp/*.yaml..."
+  log "9. Configuring MCP servers from ai-config/mcp/*.yaml..."
 
   # Generate mcp_servers block for ~/.hermes/config.yaml
   MCP_YAMLS=()
@@ -290,9 +368,9 @@ if [ "${SKIP_MCP:-0}" != "1" ]; then
 fi
 echo ""
 
-# ─── 8. Warp defaults (Mac only) ───
+# ─── 10. Warp defaults (Mac only) ───
 if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
-  log "8. Configuring Warp defaults..."
+  log "10. Configuring Warp defaults..."
   defaults write dev.warp.Warp-Stable font_family -string "CaskaydiaCove Nerd Font"
   defaults write dev.warp.Warp-Stable font_size -int 14
   defaults write dev.warp.Warp-Stable line_height -float 1.4
@@ -302,13 +380,13 @@ if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
   defaults write dev.warp.Warp-Stable cursor_shape -string "beam"
   ok "Warp configured (theme dark, font CaskaydiaCove Nerd 14)"
 else
-  log "8. SKIP_WARP=1 or Warp not installed, skipping"
+  log "10. SKIP_WARP=1 or Warp not installed, skipping"
 fi
 echo ""
 
-# ─── 9. Terminal.app defaults (Mac only) ───
+# ─── 11. Terminal.app defaults (Mac only) ───
 if [ -d "/Applications/Utilities/Terminal.app" ]; then
-  log "9. Configuring Terminal.app defaults..."
+  log "11. Configuring Terminal.app defaults..."
   plutil -replace "Default Window Settings" -string "Pro" "$HOME_DIR/Library/Preferences/com.apple.Terminal.plist" 2>/dev/null || true
   plutil -replace "Startup Window Settings" -string "Pro" "$HOME_DIR/Library/Preferences/com.apple.Terminal.plist" 2>/dev/null || true
   defaults write com.apple.Terminal Shell -string "/bin/zsh"
@@ -316,8 +394,8 @@ if [ -d "/Applications/Utilities/Terminal.app" ]; then
 fi
 echo ""
 
-# ─── 10. Reload shell ───
-log "10. Reload zsh..."
+# ─── 12. Reload shell ───
+log "12. Reload zsh..."
 # Reload shell only if interactive
 if [ -n "${PS1:-}" ]; then
   exec zsh
@@ -326,9 +404,9 @@ else
 fi
 echo ""
 
-# ─── 11. Final verification ───
+# ─── 13. Final verification ───
 if [ "${SKIP_VERIFY:-0}" != "1" ]; then
-  log "11. Final verification..."
+  log "13. Final verification..."
   bash "$SCRIPT_DIR/verify.sh"
 fi
 

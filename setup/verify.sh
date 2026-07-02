@@ -209,6 +209,69 @@ else
   warn "no brew package detected — but it may be OK if you use system packages"
 fi
 
+# ─── 9. npm globals ───
+section "9. npm globals (matches dev-env/packages/npm-globals.txt)"
+if command -v npm >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" ]; then
+  NPM_LIST_FILE="$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
+  EXPECTED_NPM=$(grep -vE '^\s*#|^\s*$' "$NPM_LIST_FILE" | wc -l | tr -d ' ')
+  INSTALLED_NPM=$(npm ls -g --depth=0 --parseable 2>/dev/null | xargs -I{} basename {} | sort -u | wc -l | tr -d ' ')
+  MISSING_NPM=0
+  missing_pkgs=""
+  while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
+    pkg="${raw_pkg%%#*}"
+    pkg="$(printf '%s' "$pkg" | xargs)"
+    [ -z "$pkg" ] && continue
+    if ! npm ls -g "$pkg" >/dev/null 2>&1; then
+      MISSING_NPM=$((MISSING_NPM+1))
+      missing_pkgs="$missing_pkgs $pkg"
+    fi
+  done < "$NPM_LIST_FILE"
+  if [ "$MISSING_NPM" -eq 0 ]; then
+    ok "All $EXPECTED_NPM npm globals present ($INSTALLED_NPM total installed)"
+    PASS=$((PASS+1))
+  else
+    warn "$MISSING_NPM npm globals missing:$missing_pkgs"
+    warn "Run install-mac.sh to install (or set SKIP_NPM=1 if intentionally skipped)"
+  fi
+else
+  warn "npm not available or npm-globals.txt missing — skipping npm check"
+fi
+
+# ─── 10. Python user packages ───
+section "10. Python user packages (matches dev-env/packages/pip-packages.txt)"
+if command -v python3 >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" ]; then
+  PY_CMD=python3
+elif command -v python >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" ]; then
+  PY_CMD=python
+else
+  PY_CMD=""
+fi
+if [ -n "$PY_CMD" ]; then
+  PIP_LIST_FILE="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
+  MISSING_PIP=0
+  missing_pkgs=""
+  while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
+    pkg="${raw_pkg%%#*}"
+    pkg="$(printf '%s' "$pkg" | xargs)"
+    # strip version specifiers for the import check (e.g. "mcp[cli]" or "ruff>=1.0")
+    import_name="$(printf '%s' "$pkg" | sed -E 's/^([A-Za-z0-9._-]+).*/\1/' | tr '[:upper:]' '[:lower:]' | tr -d -- '-_')"
+    [ -z "$pkg" ] && continue
+    if ! "$PY_CMD" -c "import importlib, sys; sys.exit(0 if importlib.util.find_spec('$import_name') else 1)" 2>/dev/null; then
+      MISSING_PIP=$((MISSING_PIP+1))
+      missing_pkgs="$missing_pkgs $pkg"
+    fi
+  done < "$PIP_LIST_FILE"
+  if [ "$MISSING_PIP" -eq 0 ]; then
+    ok "All pip user packages importable"
+    PASS=$((PASS+1))
+  else
+    warn "$MISSING_PIP pip user packages missing:$missing_pkgs"
+    warn "Run install-mac.sh to install (or set SKIP_PIP=1 if intentionally skipped)"
+  fi
+else
+  warn "Python not available or pip-packages.txt missing — skipping pip check"
+fi
+
 # ─── Summary ───
 section "Summary"
 echo ""

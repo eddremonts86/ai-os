@@ -35,7 +35,7 @@ When the user says a task:
 
 ## Tools available
 
-- 99 global skills in `~/.claude/skills/`.
+- Flat global skills in `ai-config/skills/`, symlinked into CLI skill directories.
 - 14 superpowers skills (REQUIRED).
 - 7 MCP servers (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser).
 

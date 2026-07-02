@@ -245,7 +245,9 @@ foreach ($cliDir in $cliDirs) {
     if (-not (Test-Path $cliDir)) {
         New-Item -ItemType Directory -Path $cliDir -Force | Out-Null
     }
-    $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory
+    $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
+        Test-Path (Join-Path $_.FullName "SKILL.md")
+    }
     foreach ($skillDir in $skillDirs) {
         $linkPath = Join-Path $cliDir $skillDir.Name
         if (-not (Test-Path $linkPath)) {
@@ -259,7 +261,9 @@ $hermesImportedDir = "$HomeDir\.hermes\skills\imported"
 if (-not (Test-Path $hermesImportedDir)) {
     New-Item -ItemType Directory -Path $hermesImportedDir -Force | Out-Null
 }
-$skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory
+$skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+}
 foreach ($skillDir in $skillDirs) {
     $linkPath = Join-Path $hermesImportedDir $skillDir.Name
     if (-not (Test-Path $linkPath)) {
@@ -267,8 +271,10 @@ foreach ($skillDir in $skillDirs) {
     }
 }
 
-$skillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory).Count
-Ok "Skills propagated to 5 CLIs ($skillCount skills in source)"
+$skillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+}).Count
+Ok "Flat skills propagated to 5 CLIs ($skillCount skills in source)"
 Write-Host ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───
