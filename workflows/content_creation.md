@@ -44,7 +44,7 @@ Show the goal to the user. They must approve.
 | Release notes | What's new, breaking changes, upgrade guide | 50-300 lines |
 | Spec | Metadata, objective, criteria, plan, risks | 50-300 lines |
 
-### 3. For ADRs: → Load skill `documentation-and-adrs` (load skill)
+### 3. For ADRs: use the standard ADR template
 
 If the content is an ADR:
 

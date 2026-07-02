@@ -1,22 +1,22 @@
 ---
 name: shadcn-patterns
-description: Patrones de shadcn/ui — componentes Radix + Tailwind, cva, theming, customization. Aplica a cualquier proyecto que use shadcn/ui (incluido wave-template).
+description: shadcn/ui patterns — Radix + Tailwind components, cva, theming, customization. Applies to any project using shadcn/ui (including wave-template).
 license: MIT
 ---
 
 # shadcn/ui Patterns
 
-## Cuándo usar
+## When to use
 
-Cualquier proyecto con shadcn/ui instalado — basado en Radix UI primitives + Tailwind + class-variance-authority. El usuario copy-pastea componentes en `components/ui/`, no usa npm install.
+Any project with shadcn/ui installed — based on Radix UI primitives + Tailwind + class-variance-authority. The user copy-pastes components into `components/ui/`, not npm install.
 
-## Filosofía
+## Philosophy
 
-- **NO es un npm package.** Componentes se copian a tu repo.
-- **Totalmente customizable** — son TUYOS una vez copiados.
+- **NOT an npm package.** Components are copied into your repo.
+- **Fully customizable** — they're YOURS once copied.
 - **Composition over configuration** — variants via `cva`.
-- **Accesible por default** — basado en Radix UI.
-- **Tailwind nativo** — no CSS-in-JS.
+- **Accessible by default** — based on Radix UI.
+- **Native Tailwind** — no CSS-in-JS.
 
 ## Setup
 
@@ -29,7 +29,7 @@ npx shadcn@latest add button
 npx shadcn@latest add dialog form input
 ```
 
-**components.json** (config raíz):
+**components.json** (root config):
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
@@ -64,12 +64,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 ```
 
-**Uso:**
+**Usage:**
 ```tsx
 <div className={cn('base-class', isActive && 'active-class', className)} />
 ```
 
-## Componentes — Patrón estructural
+## Components — Structural pattern
 
 ### Button
 
@@ -129,12 +129,12 @@ Button.displayName = 'Button';
 export { Button, buttonVariants };
 ```
 
-**Reglas clave:**
-- `React.forwardRef` SIEMPRE — componentes necesitan refs.
-- `displayName` para debugging.
-- `asChild` pattern via Slot (Radix) — permite composición con Link.
-- Exportar `buttonVariants` para usar en otros componentes.
-- `cn()` para combinar className externo + variantes.
+**Key rules:**
+- `React.forwardRef` ALWAYS — components need refs.
+- `displayName` for debugging.
+- `asChild` pattern via Slot (Radix) — allows composition with Link.
+- Export `buttonVariants` to use in other components.
+- `cn()` to combine external className + variants.
 
 ### Card
 
@@ -166,11 +166,11 @@ CardTitle.displayName = 'CardTitle';
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };
 ```
 
-### Dialog (con Radix)
+### Dialog (with Radix)
 
 ```tsx
 // components/ui/dialog.tsx
-'use client'; // Solo Next.js App Router
+'use client'; // Next.js App Router only
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
@@ -282,30 +282,30 @@ module.exports = {
 };
 ```
 
-**Uso:**
+**Usage:**
 ```tsx
 <div className="bg-background text-foreground border border-border">
   <Button className="bg-primary text-primary-foreground">Click me</Button>
 </div>
 ```
 
-## Composición avanzada
+## Advanced composition
 
 ### asChild pattern
 
 ```tsx
-// Button como Link (Next.js, TanStack Router)
+// Button as Link (Next.js, TanStack Router)
 <Button asChild>
   <Link to="/users/$userId" params={{ userId: '123' }}>View Profile</Link>
 </Button>
 
-// Dialog trigger como custom element
+// Dialog trigger as custom element
 <DialogTrigger asChild>
   <Button variant="outline">Open</Button>
 </DialogTrigger>
 ```
 
-### Form patterns (con react-hook-form)
+### Form patterns (with react-hook-form)
 
 ```tsx
 'use client';
@@ -357,7 +357,7 @@ export function ProfileForm() {
 }
 ```
 
-### Custom components (wrapper de Radix)
+### Custom components (Radix wrapper)
 
 ```tsx
 // components/ui/alert.tsx
@@ -393,9 +393,9 @@ AlertTitle.displayName = 'AlertTitle';
 export { Alert, AlertTitle };
 ```
 
-## Iconos — lucide-react
+## Icons — lucide-react
 
-shadcn/ui usa `lucide-react` por default:
+shadcn/ui uses `lucide-react` by default:
 
 ```tsx
 import { ChevronRight, Mail, User } from 'lucide-react';
@@ -405,24 +405,24 @@ import { ChevronRight, Mail, User } from 'lucide-react';
 </Button>
 ```
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ Importar de `@/components/ui/button/index` (algunos setups) → ✅ import default del archivo.
-2. ❌ Olvidar `forwardRef` → ✅ siempre en componentes UI primitives.
-3. ❌ Hardcodear colores Tailwind (`bg-blue-500`) → ✅ tokens semánticos (`bg-primary`).
-4. ❌ Modificar archivos en `components/ui/` directamente para customizar → ✅ mejor wrapper propio encima o duplicar el componente.
-5. ❌ No definir `displayName` → ✅ siempre en forwardRef.
-6. ❌ `asChild` sin Slot → ✅ Slot de Radix disponible en deps.
-7. ❌ Olvidar variants default → ✅ `defaultVariants` en cva.
-8. ❌ Usar `cn()` mal (sin `twMerge`) → ✅ `cn()` con `clsx + twMerge`.
-9. ❌ Theme provider ausente → ✅ `<ThemeProvider>` (next-themes) en root.
-10. ❌ No usar `data-[state]` para animations → ✅ estados Radix accesibles para CSS.
+1. ❌ Importing from `@/components/ui/button/index` (some setups) → ✅ default import from the file.
+2. ❌ Forgetting `forwardRef` → ✅ always on UI primitive components.
+3. ❌ Hardcoding Tailwind colors (`bg-blue-500`) → ✅ semantic tokens (`bg-primary`).
+4. ❌ Modifying files in `components/ui/` directly to customize → ✅ better to wrap on top or duplicate the component.
+5. ❌ Not defining `displayName` → ✅ always on forwardRef.
+6. ❌ `asChild` without Slot → ✅ Radix Slot available in deps.
+7. ❌ Forgetting default variants → ✅ `defaultVariants` in cva.
+8. ❌ Using `cn()` wrong (without `twMerge`) → ✅ `cn()` with `clsx + twMerge`.
+9. ❌ Missing theme provider → ✅ `<ThemeProvider>` (next-themes) at root.
+10. ❌ Not using `data-[state]` for animations → ✅ Radix states accessible for CSS.
 
-## Customización — Estrategia
+## Customization — Strategy
 
-Si necesitas algo más allá de las props:
+If you need something beyond the props:
 
-1. **Wrappers**: crea tu componente en `components/` (no en `components/ui/`):
+1. **Wrappers**: create your component in `components/` (not in `components/ui/`):
 ```tsx
 // components/submit-button.tsx
 import { Button, ButtonProps } from '@/components/ui/button';
@@ -436,14 +436,14 @@ export function SubmitButton({ children, ...props }: ButtonProps) {
 }
 ```
 
-2. **Overrides locales**: pasa `className` para extender:
+2. **Local overrides**: pass `className` to extend:
 ```tsx
 <Button className="bg-brand-primary hover:bg-brand-primary/90">Special CTA</Button>
 ```
 
-3. **Nuevos variants**: agrega al cva del componente:
+3. **New variants**: add to the component's cva:
 ```tsx
-// Editar components/ui/button.tsx (es TUYO)
+// Edit components/ui/button.tsx (it's YOURS)
 const buttonVariants = cva(/* ... */, {
   variants: {
     variant: {
@@ -454,12 +454,12 @@ const buttonVariants = cva(/* ... */, {
 });
 ```
 
-## Stack complementario
+## Complementary stack
 
-- **Forms:** react-hook-form + zod (con `<Form>` wrapper de shadcn).
+- **Forms:** react-hook-form + zod (with shadcn's `<Form>` wrapper).
 - **Toasts:** sonner.
 - **Date pickers:** react-day-picker.
 - **Charts:** recharts.
 - **Icons:** lucide-react.
-- **Theme:** next-themes (Next.js) o implementación manual.
-- **Animation:** tailwindcss-animate (incluido por default).
+- **Theme:** next-themes (Next.js) or manual implementation.
+- **Animation:** tailwindcss-animate (included by default).

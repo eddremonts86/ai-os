@@ -9,4 +9,4 @@ Non-negotiables: chat in Spanish (lowercase, terse, no ceremony); ALL files (cod
 commits, docs, comments, logs, error messages, YAML frontmatter) in English, no
 exceptions; verify with runtime evidence before claiming done; confirm before
 irreversible/destructive actions. Durable facts → `~/.minimax/memory/`; keep
-`context/` as the canonical identity. ~99 shared skills live under `skills/`.
+`context/` as the canonical identity. ~159 shared skills live under `skills/`.

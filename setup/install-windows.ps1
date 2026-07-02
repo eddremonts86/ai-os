@@ -186,6 +186,10 @@ if (-not (Test-Path $profileDir)) {
     New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
 }
 $customProfile = "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
+$customProfileDir = Split-Path -Parent $customProfile
+if (-not (Test-Path $customProfileDir)) {
+    New-Item -ItemType Directory -Path $customProfileDir -Force | Out-Null
+}
 $customProfileContent = @'
 # AI-OS PowerShell profile (Edd)
 # Load Oh-My-Posh or Starship if installed (theme + git info)

@@ -182,14 +182,14 @@ After running this skill, the agent should have:
 
 - **If no active Spec:** ask the user "What task are we working on today?".
 - **If active Spec:** continue executing the next block.
-- **If workflows are missing superpowers:** run `promps/setup/03-required-skills.md` first.
+- **If workflows are missing superpowers:** run `prompts/setup/03-required-skills.md` first.
 
 ## Related
 
 - **Skill:** `ai-os-karpathy` (loaded after this skill).
 - **Workflow:** `~/Projects/ai-os/workflows/project_start.md` — Spec + execution.
 - **Verify:** `bash ~/Projects/ai-os/setup/verify.sh` — 14 health checks.
-- **Setup:** `promps/setup/03-required-skills.md` — install missing superpowers.
+- **Setup:** `prompts/setup/03-required-skills.md` — install missing superpowers.
 
 ## Anti-patterns (extended)
 

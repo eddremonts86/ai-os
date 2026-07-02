@@ -25,15 +25,11 @@ When a task has 2+ independent workstreams, **dispatch them as sub-agents in par
 
 ### How to dispatch
 
-Use `delegate_task` with `tasks=[...]` array. **Max 3 concurrent** per user (default config).
+Use this CLI's native subagent mechanism. **Max 3 concurrent** per user (default config).
 
-```python
-delegate_task(tasks=[
-    {"goal": "Research X", "toolsets": ["web"]},
-    {"goal": "Implement Y", "toolsets": ["terminal", "file"]},
-    {"goal": "Verify Z", "toolsets": ["terminal"]}
-])
-```
+- **Claude Code**: the `Task`/`Agent` tool — send multiple agents in a single message so they run concurrently.
+- **Hermes**: `delegate_task(tasks=[{"goal": "Research X", "toolsets": ["web"]}, ...])`.
+- **Codex / Gemini / Antigravity / MiniMax**: no native parallel subagents — use background shells for independent commands, otherwise run sequentially.
 
 Each subagent gets:
 - Isolated context and terminal.

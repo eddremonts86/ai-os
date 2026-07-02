@@ -288,15 +288,15 @@ done
 # Hermes: ensure SOUL.md carries the AI-OS bridge block (idempotent append).
 SOUL="$HOME_DIR/.hermes/SOUL.md"
 if [ -f "$SOUL" ] && ! grep -q "AI-OS BRIDGE" "$SOUL"; then
-  cat >> "$SOUL" <<'AIOS_SOUL'
+  cat >> "$SOUL" <<AIOS_SOUL
 
-<!-- AI-OS BRIDGE — managed by ~/Projects/ai-os; remove this block to unlink -->
+<!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
 ## AI-OS (operating context)
-Single source of truth: `/Users/edd/Projects/ai-os`. At the start of meaningful
-work read `context/00_profile.md`, `context/03_preferences.md`, and `CLAUDE.md`.
+Single source of truth: \`$AI_OS_ROOT\`. At the start of meaningful
+work read \`context/00_profile.md\`, \`context/03_preferences.md\`, and \`CLAUDE.md\`.
 Non-negotiables: chat in Spanish (lowercase, terse); ALL files in English; verify
 with runtime evidence; confirm before irreversible actions. Durable facts →
-`~/.hermes/memories/`; keep `context/` as the canonical identity.
+\`~/.hermes/memories/\`; keep \`context/\` as the canonical identity.
 <!-- /AI-OS BRIDGE -->
 AIOS_SOUL
 fi
@@ -320,21 +320,21 @@ for skill in brainstorming dispatching-parallel-agents executing-plans finishing
   [ -d "$HOME_DIR/.claude/skills/$skill" ] && ACTUAL=$((ACTUAL + 1))
 done
 if [ "$ACTUAL" -ne "$EXPECTED" ]; then
-  warn "Only $ACTUAL/$EXPECTED superpowers skills installed. Installing..."
-  TMP_SP="/tmp/superpowers-aios-$$"
-  trap "rm -rf '$TMP_SP'" EXIT
-  gh repo clone obra/superpowers "$TMP_SP" -- --depth=1 2>&1 | tail -1
-  for skill in "$TMP_SP"/skills/*/; do
-    name=$(basename "$skill")
-    if [ -d "$skill" ] && [ ! -d "$HOME_DIR/.claude/skills/$name" ]; then
-      cp -R "$skill" "$HOME_DIR/.claude/skills/$name"
-      # Re-symlink to other CLIs
-      for cli_dir in "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported"; do
-        ln -sf "$HOME_DIR/.claude/skills/$name" "$cli_dir/$name"
-      done
+  warn "Only $ACTUAL/$EXPECTED superpowers skills installed. Linking from local source..."
+  # The 14 superpowers are vendored in ai-config/skills/ (committed to this repo),
+  # so link from there — no network dependency on obra/superpowers.
+  for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
+    src="$AI_OS_ROOT/ai-config/skills/$skill"
+    if [ ! -d "$src" ]; then
+      err "Superpower '$skill' missing from $AI_OS_ROOT/ai-config/skills — repo is incomplete, re-clone it"
+      exit 1
     fi
+    for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported"; do
+      mkdir -p "$cli_dir"
+      [ -e "$cli_dir/$skill" ] || ln -sfn "$src" "$cli_dir/$skill"
+    done
   done
-  ok "Superpowers installed ($EXPECTED/$EXPECTED)"
+  ok "Superpowers linked ($EXPECTED/$EXPECTED)"
 else
   ok "Superpowers OK ($ACTUAL/$EXPECTED)"
 fi

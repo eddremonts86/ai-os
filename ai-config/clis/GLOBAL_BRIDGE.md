@@ -3,7 +3,9 @@
 > This file is the single bridge that loads the AI Operating System into **every
 > project, in every CLI**. It is symlinked to each CLI's global instruction file:
 > `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.gemini/GEMINI.md`,
-> `~/.agents/AGENTS.md`. Hermes loads the same context via `~/.hermes/SOUL.md`.
+> `~/.agents/AGENTS.md`. Hermes is not symlinked: it gets a managed "AI-OS BRIDGE"
+> block appended to `~/.hermes/SOUL.md` by `setup/install-mac.sh` (idempotent).
+> MiniMax gets `ai-config/clis/minimax-overlay.md` copied into each agent's `agent.md`.
 >
 > Single source of truth: `/Users/edd/Projects/ai-os`. Edit the files there; every
 > CLI sees the change. Do not duplicate content here — only point and inline the
@@ -26,7 +28,7 @@ read every file listed above now, plus the full operating manual:
 ## Read on demand
 
 - `/Users/edd/Projects/ai-os/CLAUDE.md` — full operating method, project structure, commands
-- `/Users/edd/Projects/ai-os/rules/` — always_do / ask_first / never_do
+- `/Users/edd/Projects/ai-os/rules/` — always_do / ask_before_doing / never_do
 
 ## Non-negotiable rules (inline, so they apply even before any file is read)
 
@@ -51,5 +53,5 @@ read every file listed above now, plus the full operating manual:
 
 ## Skills
 
-~99 shared skills live in `/Users/edd/Projects/ai-os/ai-config/skills` and are
+~159 shared skills live in `/Users/edd/Projects/ai-os/ai-config/skills` and are
 symlinked into this CLI's skills dir. Prefer them over ad-hoc solutions.

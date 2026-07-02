@@ -164,7 +164,7 @@ At the end of this workflow, you should have:
 - ❌ Mixing refactor with new feature in the same PR.
 - ❌ Not running `verification-before-completion` at the end.
 - ❌ Not archiving the Spec.
-- ❌ Running lint + type check + tests sequentially → dispatch in parallel via `delegate_task`.
+- ❌ Running lint + type check + tests sequentially → dispatch in parallel (subagents or background shells, see `rules/always_do.md`).
 
 ## Quick reference
 

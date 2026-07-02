@@ -124,10 +124,10 @@ for cli_dir in "${CLI_DIRS[@]}"; do
     ln -sf "$skill_dir" "$cli_dir/$name"
   done
   cli_count=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$cli_count" -gt 50 ]; then
+  if [ "$cli_count" -eq "$skill_count" ]; then
     ok "  $cli_dir: $cli_count skills (simulated)"
   else
-    err "  $cli_dir: only $cli_count skills"
+    err "  $cli_dir: $cli_count skills, expected $skill_count"
     exit 1
   fi
 done

@@ -1,19 +1,19 @@
 ---
 name: typescript-advanced
-description: TypeScript avanzado — generics, conditional types, satisfies, template literals, utility types. Para proyectos con `strict: true` que quieren exprimir el type system.
+description: Advanced TypeScript — generics, conditional types, satisfies, template literals, utility types. For projects with `strict: true` that want to squeeze the type system.
 license: MIT
 ---
 
 # TypeScript Advanced Patterns
 
-## Cuándo usar
+## When to use
 
-Cualquier proyecto con TypeScript strict que quiera patrones avanzados para mejor type safety, menos `any`, y APIs más expresivas.
+Any TypeScript strict project that wants advanced patterns for better type safety, less `any`, and more expressive APIs.
 
 ## `satisfies` (TypeScript 4.9+)
 
 ```ts
-// ✅ Valida estructura SIN perder tipos literales
+// ✅ Validates structure WITHOUT losing literal types
 const config = {
   apiUrl: 'https://api.example.com',
   retries: 3,
@@ -23,11 +23,11 @@ const config = {
   },
 } satisfies AppConfig;
 
-// Acceso con tipos literales preservados
-config.features.darkMode  // boolean (no `boolean | undefined`)
+// Access with literal types preserved
+config.features.darkMode  // boolean (not `boolean | undefined`)
 ```
 
-**vs `as const`:** `satisfies` valida estructura, `as const` hace readonly + literales. Combinables:
+**vs `as const`:** `satisfies` validates structure, `as const` makes it readonly + literal. Combinable:
 
 ```ts
 const config = {
@@ -36,9 +36,9 @@ const config = {
 } as const satisfies AppConfig;
 ```
 
-## Generics — Patrones
+## Generics — Patterns
 
-### Básico
+### Basic
 
 ```ts
 function identity<T>(value: T): T {
@@ -49,7 +49,7 @@ const num = identity(42);      // number
 const str = identity('hello'); // string
 ```
 
-### Con constraints
+### With constraints
 
 ```ts
 function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
@@ -60,7 +60,7 @@ const user = { name: 'John', age: 30 };
 const name = getProperty(user, 'name'); // string
 ```
 
-### Con default
+### With default
 
 ```ts
 interface ApiResponse<T = unknown, E = ApiError> {
@@ -69,7 +69,7 @@ interface ApiResponse<T = unknown, E = ApiError> {
 }
 ```
 
-### Múltiples type params
+### Multiple type params
 
 ```ts
 function merge<T extends object, U extends object>(a: T, b: U): T & U {
@@ -77,43 +77,43 @@ function merge<T extends object, U extends object>(a: T, b: U): T & U {
 }
 ```
 
-## Utility types built-in
+## Built-in utility types
 
 ```ts
-// Partial: todas las props opcionales
+// Partial: all props optional
 type UpdateUserInput = Partial<User>;
 
-// Required: todas las props requeridas
+// Required: all props required
 type CompleteUser = Required<User>;
 
-// Pick: subset de props
+// Pick: subset of props
 type UserPreview = Pick<User, 'id' | 'name'>;
 
-// Omit: todas excepto
+// Omit: all except
 type UserWithoutPassword = Omit<User, 'password'>;
 
-// Record: mapa de keys a values
+// Record: map of keys to values
 type UserMap = Record<string, User>;
 
-// Readonly: no se puede mutar
+// Readonly: cannot be mutated
 type FrozenUser = Readonly<User>;
 ```
 
 ## Conditional types
 
 ```ts
-// Tipo que depende de otro
+// Type that depends on another
 type IsString<T> = T extends string ? true : false;
 
 type A = IsString<'hello'>; // true
 type B = IsString<42>;      // false
 
-// Inferir tipo de array
+// Infer array element type
 type ElementOf<T> = T extends (infer U)[] ? U : never;
 
 type E = ElementOf<string[]>; // string
 
-// Distribuir sobre unions
+// Distribute over unions
 type ToArray<T> = T extends unknown ? T[] : never;
 
 type A = ToArray<string | number>; // string[] | number[]
@@ -122,33 +122,33 @@ type A = ToArray<string | number>; // string[] | number[]
 ## Mapped types
 
 ```ts
-// Hacer todas las props readonly
+// Make all props readonly
 type Readonly<T> = {
   readonly [K in keyof T]: T[K];
 };
 
-// Hacer todas las props opcionales
+// Make all props optional
 type Optional<T> = {
   [K in keyof T]?: T[K];
 };
 
-// Remover readonly
+// Remove readonly
 type Mutable<T> = {
   -readonly [K in keyof T]: T[K];
 };
 
-// Remover optional
+// Remove optional
 type Required<T> = {
   [K in keyof T]-?: T[K];
 };
 
-// Remover keys específicas
+// Remove specific keys
 type OmitByType<T, V> = {
   [K in keyof T as T[K] extends V ? never : K]: T[K];
 };
 
 type UserWithoutDates = OmitByType<User, Date>;
-// { id: string, name: string }  (excluye createdAt: Date)
+// { id: string, name: string }  (excludes createdAt: Date)
 ```
 
 ## Template literal types
@@ -170,7 +170,7 @@ type UserRoute = ApiRoute<'users'>; // '/api/users'
 ## Branded types (nominal typing)
 
 ```ts
-// Evitar pasar UserId donde se espera OrderId
+// Avoid passing UserId where OrderId is expected
 type UserId = string & { readonly __brand: 'UserId' };
 type OrderId = string & { readonly __brand: 'OrderId' };
 
@@ -211,7 +211,7 @@ function getLabel(status: Status): string {
     case 'pending': return 'Pending';
     case 'approved': return 'Approved';
     case 'rejected': return 'Rejected';
-    default: return assertNever(status); // Si agregas un case, esto falla
+    default: return assertNever(status); // If you add a case, this fails
   }
 }
 ```
@@ -256,7 +256,7 @@ function assertDefined<T>(value: T | undefined | null, msg = 'Required'): assert
 
 function processUser(user: User | undefined) {
   assertDefined(user, 'User must be provided');
-  // Ahora `user` es User (no undefined)
+  // Now `user` is User (not undefined)
   console.log(user.name);
 }
 ```
@@ -264,7 +264,7 @@ function processUser(user: User | undefined) {
 ## Function overloads
 
 ```ts
-// Overloads: diferentes signatures según args
+// Overloads: different signatures depending on args
 function createDate(timestamp: number): Date;
 function createDate(year: number, month: number, day: number): Date;
 function createDate(a: number, b?: number, c?: number): Date {
@@ -281,23 +281,23 @@ const d2 = createDate(2024, 1, 15);
 ## `infer` keyword
 
 ```ts
-// Extraer tipo de retorno
+// Extract return type
 type ReturnTypeOf<T> = T extends (...args: any[]) => infer R ? R : never;
 
 type A = ReturnTypeOf<() => string>; // string
 
-// Extraer tipo de Promise
+// Extract Promise type
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
 type A = UnwrapPromise<Promise<string>>; // string
 type B = UnwrapPromise<string>;          // string
 
-// Extraer elementos de tuple
+// Extract tuple elements
 type First<T extends any[]> = T extends [infer F, ...any[]] ? F : never;
 type A = First<[string, number, boolean]>; // string
 ```
 
-## `as const` y readonly arrays
+## `as const` and readonly arrays
 
 ```ts
 const colors = ['red', 'green', 'blue'] as const;
@@ -338,13 +338,13 @@ const userSchema = z.object({
 type User = z.infer<typeof userSchema>;
 // { id: string, name: string, email: string, age?: number }
 
-// Schema-driven validation + types sincronizados
+// Schema-driven validation + synchronized types
 const user = userSchema.parse(inputData);
 ```
 
-## TypeScript con React
+## TypeScript with React
 
-### Component props genéricos
+### Generic component props
 
 ```tsx
 interface SelectProps<T> {
@@ -367,7 +367,7 @@ function Select<T>({ options, value, onChange, getLabel }: SelectProps<T>) {
   );
 }
 
-// Uso:
+// Usage:
 <Select<User>
   options={users}
   value={currentUser}
@@ -376,7 +376,7 @@ function Select<T>({ options, value, onChange, getLabel }: SelectProps<T>) {
 />
 ```
 
-### forwardRef con generics
+### forwardRef with generics
 
 ```tsx
 import { forwardRef, ComponentPropsWithoutRef } from 'react';
@@ -406,20 +406,20 @@ function Box<T extends AsProp = 'div'>({ as, children, ...props }: BoxProps<T>) 
 }
 ```
 
-## Errores comunes
+## Common mistakes
 
-1. ❌ Usar `any` → ✅ `unknown` + type guard.
-2. ❌ `as` para fix rápido → ✅ `satisfies` o narrowing real.
-3. ❌ `// @ts-ignore` → ✅ `// @ts-expect-error` con comentario explicativo.
-4. ❌ Optional chaining en types → ✅ `T extends undefined ? never : T`.
-5. ❌ Función genérica sin constraint → ✅ `T extends SomeType` cuando uses métodos.
-6. ❌ Union no exhaustivo en switch → ✅ `assertNever(x)` en default.
-7. ❌ Destructurar pierde narrowing → ✅ check primero, luego destructurar.
-8. ❌ `null` vs `undefined` mezclados → ✅ usar uno consistente (TS config: `strictNullChecks`).
-9. ❌ `enum` (no tree-shakable) → ✅ string literal unions.
-10. ❌ Tipos circulares sin lazy → ✅ `type X = Y | string; interface Y { x?: X }`.
+1. ❌ Using `any` → ✅ `unknown` + type guard.
+2. ❌ `as` as a quick fix → ✅ `satisfies` or real narrowing.
+3. ❌ `// @ts-ignore` → ✅ `// @ts-expect-error` with an explanatory comment.
+4. ❌ Optional chaining in types → ✅ `T extends undefined ? never : T`.
+5. ❌ Generic function without constraint → ✅ `T extends SomeType` when using methods.
+6. ❌ Non-exhaustive union in switch → ✅ `assertNever(x)` in default.
+7. ❌ Destructuring loses narrowing → ✅ check first, then destructure.
+8. ❌ `null` vs `undefined` mixed → ✅ use one consistently (TS config: `strictNullChecks`).
+9. ❌ `enum` (not tree-shakable) → ✅ string literal unions.
+10. ❌ Circular types without laziness → ✅ `type X = Y | string; interface Y { x?: X }`.
 
-## tsconfig.json recomendado
+## Recommended tsconfig.json
 
 ```json
 {
@@ -447,17 +447,17 @@ function Box<T extends AsProp = 'div'>({ as, children, ...props }: BoxProps<T>) 
 ## Performance tip — `import type`
 
 ```ts
-// ✅ Solo runtime
+// ✅ Runtime only
 import { useState } from 'react';
 
-// ✅ Solo types (eliminado en build, más rápido)
+// ✅ Types only (removed at build time, faster)
 import type { User } from './types';
 
-// ✅ Combined (default de TS)
+// ✅ Combined (TS default)
 import { useState, type Dispatch } from 'react';
 ```
 
-## Recursos externos
+## External resources
 
 - TypeScript Handbook: https://www.typescriptlang.org/docs/handbook/
 - Type Challenges: https://github.com/type-challenges/type-challenges
