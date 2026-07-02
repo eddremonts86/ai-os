@@ -106,7 +106,7 @@ foreach ($df in $dotfiles) {
 }
 
 # ─── 3. Simulate skills propagation ───
-Log "3. Simulating skills propagation to 5 CLIs..."
+Log "3. Simulating flat skills propagation to 5 CLIs..."
 $cliDirs = @(
     "$TempHome\.claude\skills",
     "$TempHome\.codex\skills",
@@ -115,14 +115,16 @@ $cliDirs = @(
     "$TempHome\.hermes\skills\imported"
 )
 
-$skillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory).Count
-Ok "Skills source of truth: $skillCount"
+$skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
+    Test-Path (Join-Path $_.FullName "SKILL.md")
+}
+$skillCount = $skillDirs.Count
+Ok "Flat skills source of truth: $skillCount"
 
 foreach ($cliDir in $cliDirs) {
     if (-not (Test-Path $cliDir)) {
         New-Item -ItemType Directory -Path $cliDir -Force | Out-Null
     }
-    $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory
     foreach ($skillDir in $skillDirs) {
         $linkPath = Join-Path $cliDir $skillDir.Name
         if (-not (Test-Path $linkPath)) {

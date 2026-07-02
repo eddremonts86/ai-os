@@ -100,7 +100,7 @@ for cli_dir in "${CLI_DIRS[@]}"; do
   done
 done
 
-echo "✅ Skills distributed to 5 CLIs"
+echo "✅ Skills distributed to supported CLIs"
 ```
 
 ### 4. Verify in each CLI
@@ -135,7 +135,7 @@ done
 |---|---|
 | `using-superpowers` | Daily router for all skills |
 | `brainstorming` | Project Start step 1 |
-| `spec-driven-development` | Equivalent to AI-OS Spec |
+| `spec` | Equivalent to AI-OS Spec |
 | `writing-plans` | Project Start step 3 |
 | `executing-plans` | Project Start step 5 |
 | `verification-before-completion` | Daily end + Coding step 9 |
@@ -155,7 +155,7 @@ Without these, the AI-OS workflows will fail at the `Load skill` steps.
 After running this prompt:
 
 - 14/14 superpowers skills installed in `~/.claude/skills/`.
-- Distributed via symlinks to 5 CLIs.
+- Distributed via symlinks to supported CLIs.
 - Verified with `bash ~/Projects/ai-os/setup/verify.sh`.
 
 ## Next step

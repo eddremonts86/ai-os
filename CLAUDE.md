@@ -33,7 +33,7 @@ Before doing any non-trivial task:
 
 1. **`using-superpowers`** (router) — at the start of every task.
 2. **`brainstorming`** — if the idea is vague.
-3. **`spec-driven-development`** — if the project is new.
+3. **`workflows/project_start.md`** (AI-OS native) — for new tasks or underspecified objectives. Produces a Spec in `specs/current_spec.md`. The gstack-vendored `spec` skill is an alternative 5-phase issue-filing flow, not part of AI-OS's Karpathy loop.
 4. **`writing-plans`** — after Spec, to break into blocks.
 5. **`executing-plans`** — execute block by block.
 6. **`verification-before-completion`** — between blocks.
@@ -158,7 +158,7 @@ ai-os/
 ├── archive/                     # completed Specs
 ├── outputs/                     # generated artifacts
 ├── promps/                      # original Karpathy prompts (English)
-├── ai-config/                   # AI config: skills, MCP,commands (5 CLIs)
+├── ai-config/                   # AI config: skills, MCP, commands
 ├── dev-env/                     # dev env: dotfiles, Brewfile, packages
 ├── setup/                       # install scripts (Mac + Windows + dry-run)
 └── docs/                        # documentation (README + guides)
@@ -207,14 +207,16 @@ hermes chat   # skills already loaded from imported:
 
 ## 14. Skills already installed (quick reference)
 
-**99 global skills** in `~/.claude/skills/`, distributed to:
+**Flat global skills** in `ai-config/skills/`, distributed to:
 
-- Claude Code, Codex, Gemini, Antigravity, Hermes (via symlinks).
+- Claude Code, Codex, Gemini, Antigravity, Hermes, and MiniMax on Mac (via symlinks).
 - Workspace-scoped: `~/Projects/<project>/.agents/skills/`.
 
 Categories:
 
-- **superpowers (14 required)**: using-superpowers, brainstorming, spec-driven-development, writing-plans, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, code-review-and-quality, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development.
+- **superpowers (14 required)**: using-superpowers, brainstorming, writing-plans, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, code-review-and-quality, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees.
+- **AI-OS workflow skills (native)**: ai-os-karpathy, ai-os-quickstart.
+- **Vendored from gstack (optional, third-party)**: spec, context-save, context-restore — see `vendor/gstack/`. The native Spec/Plan workflow remains `workflows/project_start.md`.
 - **antfu (19)**: vite, vue, nuxt, nitro, pinia, pnpm, vitest, unocss, etc.
 - **anthropics (skills)**: claude-code, claude-api, frontend-design, mcp-builder, claude-best-practices, webapp-testing.
 - **taste-skill (v1, v2)**: anti-slop frontend design.
@@ -225,7 +227,7 @@ Categories:
 
 AI-OS is the single source of truth for the AI setup:
 
-- **Skills** → `ai-config/skills/` (99 source of truth) → symlinks to 5 CLIs.
+- **Skills** → `ai-config/skills/` (source of truth) → symlinks to supported CLIs.
 - **MCP servers** → `ai-config/mcp/*.yaml` → generated to `~/.hermes/config.yaml`.
 - **Dotfiles** → `dev-env/dotfiles/` → symlinks to `~/`.
 - **Setup scripts** → `setup/install-{mac,windows}.sh/ps1` (1-command per OS).
@@ -243,8 +245,9 @@ AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function
 |---|---|
 | `using-superpowers` | At the start of every task (router) |
 | `brainstorming` | Idea is vague |
-| `spec-driven-development` | Project is new (similar to AI-OS Spec) |
+| `using-git-worktrees` | Large feature work or parallel branches |
 | `writing-plans` | After Spec, before execution |
+| `writing-skills` | Creating or improving skills |
 | `executing-plans` | During execution (block by block) |
 | `verification-before-completion` | Before claiming done |
 | `test-driven-development` | Writing tests |
@@ -255,6 +258,8 @@ AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function
 | `receiving-code-review` | Receiving review |
 | `dispatching-parallel-agents` | Multi-task work |
 | `subagent-driven-development` | Executing implementation plans |
+
+AI-OS also ships 3 gstack-vendored skills (`spec`, `context-save`, `context-restore`) under `vendor/gstack/`. They are **not** part of the 14 required superpowers and follow gstack's own workflow (5-phase AskUserQuestion spec + GitHub issue filing). For AI-OS's Karpathy-style Spec → Plan → Execute → Verify, use `workflows/project_start.md` instead.
 
 ### Verify that all 14 are installed
 
@@ -292,7 +297,7 @@ Or use the comprehensive script `promps/setup-required-skills.md` which automate
 
 There are TWO levels of skills:
 
-1. **Global** (`~/.claude/skills/<name>/`) — 99 skills, propagated via symlinks to 5 CLIs.
+1. **Global** (`ai-config/skills/<name>/`) — flat skills propagated via symlinks to supported CLIs.
 2. **Workspace** (`~/Projects/<project>/.agents/skills/<name>/`) — project-specific, NOT propagated.
 
 When a skill is `imported:` in Hermes, it comes from `~/.hermes/skills/imported/` (a symlink to `~/.claude/skills/`).

@@ -15,7 +15,7 @@ This is the **lightweight counterpart** to [ECC Integration](ecc-integration.md)
 
 Both ship as **single-file skills** (no plugins, no hooks) so they integrate with AI-OS's existing `ai-config/skills/` propagation pipeline with zero extra plumbing. AI-OS only adds a thin installer that wires them into the 5 non-Claude CLIs (Claude Code's `~/.claude/skills/` is already populated by `install-mac.sh` step 5).
 
-The one exception is **codex-plugin-cc** — a full Claude Code plugin from OpenAI that exposes 3 internal skills (`codex-cli-runtime`, `codex-result-handling`, `gpt-5-4-prompting`). We vendor it as a plugin like ECC, and the installer creates the plugin-level symlink as well as wiring its internal skills to all 5 CLIs.
+The one exception is **codex-plugin-cc** — a full Claude Code plugin from OpenAI that exposes 3 internal skills (`codex-cli-runtime`, `codex-result-handling`, `gpt-5-4-prompting`). We vendor it as a plugin like ECC, and the installer creates the plugin-level symlink as well as wiring its internal skills to the core CLIs.
 
 ---
 
@@ -42,7 +42,7 @@ These are checked directly into `ai-config/skills/` and treated like any other A
 
 ### Plugin (1 from OpenAI)
 
-`vendor/codex-plugin-cc/` — the official OpenAI Codex plugin for Claude Code. Uses Codex from inside Claude Code to review code or delegate tasks. Exposes the `/codex:review`, `/codex:adversarial-review`, `/codex:rescue`, `/codex:transfer`, `/codex:status`, `/codex:result`, and `/codex:cancel` slash commands, plus 3 internal skills that are also propagated to all 5 CLIs as standalone skills.
+`vendor/codex-plugin-cc/` — the official OpenAI Codex plugin for Claude Code. Uses Codex from inside Claude Code to review code or delegate tasks. Exposes the `/codex:review`, `/codex:adversarial-review`, `/codex:rescue`, `/codex:transfer`, `/codex:status`, `/codex:result`, and `/codex:cancel` slash commands, plus 3 internal skills that are also propagated to the core CLIs as standalone skills.
 
 ---
 
@@ -88,7 +88,7 @@ Same reasoning as [ECC Integration](ecc-integration.md): we want updates to be a
 |---|---|---|---|
 | `vendor/codex-plugin-cc/` | OpenAI | `install-claude-tools.sh` (plugin link + internal skills) | The Codex plugin + 3 internal skills |
 | `ai-config/skills/{12 new dirs}/` | AI-OS (cherry-picked) | `install-mac.sh` step 5 (Claude) + `install-claude-tools.sh` (other 4 CLIs) | The 12 individual skills |
-| `ai-config/skills/{remaining 99+ dirs}/` | AI-OS (native) | `install-mac.sh` step 5 | The hand-curated AI-OS skills |
+| `ai-config/skills/*/SKILL.md` | AI-OS (native) | `install-mac.sh` flat-skill step | The hand-curated AI-OS flat skills |
 
 ### How is this different from ECC?
 
@@ -222,7 +222,7 @@ The script:
 2. Verifies all 12 expected skill directories are present under `ai-config/skills/`.
 3. Symlinks `vendor/codex-plugin-cc/` → `~/.claude/plugins/codex-plugin-cc` (if vendored).
 4. Symlinks the 12 individual skills into `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`, and `~/.hermes/skills/imported/`. (Claude is handled by `install-mac.sh`.)
-5. Symlinks the 3 codex-plugin-cc internal skills into all 5 CLIs.
+5. Symlinks the 3 codex-plugin-cc internal skills into the core CLIs.
 6. In `--check` mode, validates structure only: package.json present, every `SKILL.md` has `---` delimiters and `name:` + `description:` fields.
 
 ### Comparison with `install-ecc.sh`

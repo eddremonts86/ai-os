@@ -4,7 +4,7 @@
 
 ## Design principles
 
-1. **Single source of truth.** Skills live in `ai-config/skills/` and are symlinked to 5 CLIs. No duplication.
+1. **Single source of truth.** Skills live in `ai-config/skills/` and are symlinked to supported CLIs. No duplication.
 2. **declarative > imperative.** MCP servers are defined in YAML, not hardcoded in `~/.hermes/config.yaml`. The config is generated from the YAMLs.
 3. **idempotent.** The setup script runs multiple times without breaking anything (kills old symlinks, recreates, does not fail).
 4. **cross-platform best-effort.** Mac and Windows work, with documented differences. Mac is the premium experience.
@@ -16,7 +16,7 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │  Layer 0: AI-OS (Karpathy method)                                │
 │  - CLAUDE.md, context/, rules/, workflows/, specs/, verifiers/   │
-│  - 99 global skills (5 CLIs via symlinks)                       │
+│  - Flat global skills + optional plugin bundles                 │
 │  - 14 superpowers skills (REQUIRED)                             │
 │  - 7 declarative MCP servers                                    │
 │  - Prompt: ai-os-quickstart                                      │
@@ -51,14 +51,14 @@
 ### Why symlinks and not copy?
 
 **Pro symlinks:**
-- Single source of truth (one change propagates to 5 CLIs).
+- Single source of truth (one change propagates to supported CLIs).
 - Lower total size.
 - Easy to sync with git (you only modify the source of truth).
 
 **Con symlinks:**
 - On Windows they require admin or Developer Mode.
 - Harder to debug (is it a real file or a symlink?).
-- If you delete the source, you break 5 destinations at once.
+- If you delete the source, you break every symlinked destination at once.
 
 **Decision:** symlinks for skills (clear win, they're read-only). Files for configs that are modified per-CLI (rare).
 
@@ -79,8 +79,8 @@
 
 ### Why global skills in `~/.claude/skills/` and not in `~/Projects/ai-os/ai-config/skills/`?
 
-- **Compatibility:** 5 CLIs expect skills in `~/.{claude,codex,gemini,agents}/skills/`. Changing the path requires modifying the CLIs.
-- **Source of truth:** AI-OS keeps the canonical copy in `ai-config/skills/` and symlinks to 5 destinations.
+- **Compatibility:** CLIs expect skills in their own user-level skill directories. Changing the path requires modifying each CLI.
+- **Source of truth:** AI-OS keeps the canonical copy in `ai-config/skills/` and symlinks to supported destinations.
 - **Single user assumption:** the `~/` path is unique per user. If you have multi-user, you need to change.
 
 ### Why not Nix/Home Manager?
@@ -97,7 +97,7 @@
 1. author writes SKILL.md in ai-config/skills/<name>/
 2. Commit + push
 3. install-mac.sh / install-windows.ps1 run on Mac/Windows
-4. Symlinks are created in 5 CLIs
+4. Symlinks are created in supported CLIs
 5. Skill auto-loads based on description (frontmatter)
 6. When it changes, re-run setup (or symlink manually)
 7. When it's deprecated, move to ai-config/skills/.deprecated/ (with timestamp)
@@ -149,7 +149,7 @@ AI-OS is successful if:
 - ✅ Complete setup on a new Mac in < 30 min.
 - ✅ Complete setup on Windows in < 60 min.
 - ✅ Zero secrets in the repo (verifiable with `git log -p | grep -iE "secret|api[_-]?key|password"`).
-- ✅ All skills invokable from 5 CLIs.
+- ✅ All flat skills invokable from supported CLIs.
 - ✅ 14/14 superpowers skills verified in `bash setup/verify.sh`.
 
 ## References

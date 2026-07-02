@@ -83,7 +83,7 @@ chore: bump superpowers version
 
 Path: `ai-config/skills/<name>/SKILL.md`
 
-Distributed via symlinks to 5 CLIs:
+Distributed via symlinks to the core CLIs:
 
 - `~/.claude/skills/<name>/`
 - `~/.codex/skills/<name>/`

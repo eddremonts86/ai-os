@@ -18,7 +18,7 @@ Inventory of installed tools. Update when something changes.
 - **Terminal.app (Mac native):** theme "Pro" (true black), shell `/bin/zsh`.
 - **Oh My Zsh + Powerlevel10k** (preset lean).
 
-## CLI tools (5 used)
+## CLI tools
 
 | CLI | Path | Notes |
 |---|---|---|
@@ -27,6 +27,7 @@ Inventory of installed tools. Update when something changes.
 | **Gemini CLI** | `~/.gemini/` | Google |
 | **Antigravity** | `~/.agents/` | VSCode fork |
 | **Hermes Agent** | `~/.hermes/` | Nous Research |
+| **MiniMax Code** | `~/.minimax/` | Mac-only overlay support |
 
 ## Languages
 
@@ -40,9 +41,11 @@ Inventory of installed tools. Update when something changes.
 - **uv, yq, warp:** via brew.
 - **fzf, ripgrep, fd, hcloud, mkcert:** in Brewfile.
 
-## Hermes skills
+## Global skills
 
-- **99 skills** in `~/.claude/skills/`, distributed via symlinks to 5 CLIs.
+- Flat skills live in `~/Projects/ai-os/ai-config/skills/`.
+- Mac setup distributes flat skills via symlinks to 6 CLI targets.
+- Windows setup distributes flat skills to the 5 core CLI targets.
 - **14 superpowers skills** (REQUIRED for AI-OS).
 - **Source of truth:** `~/Projects/ai-os/ai-config/skills/`.
 
