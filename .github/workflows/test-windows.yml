@@ -66,16 +66,24 @@ jobs:
             if ($LASTEXITCODE -ne 0) { Write-Host "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)" }
           }
 
-      - name: Run verify-windows.ps1 (DRY_RUN)
-        env:
-          DRY_RUN: '1'
-        run: pwsh -File ./setup/verify-windows.ps1 || true
+      - name: Run setup unit tests (required, fail-closed)
+        # setup/verify-windows.ps1 validates a fully-installed real machine
+        # (live CLI binaries, dotfiles, bridge symlinks). A bare CI runner never
+        # has that, so running it here previously needed `|| true` (which is not
+        # even valid pwsh 7 syntax for this pattern) and hid real bugs (P0-4:
+        # CI suppressed verifier failures). install-windows.ps1 above already
+        # exercises the manifest/skill/adapter logic and fails closed with no
+        # suppression. This step adds the other required, fail-closed gate: the
+        # generate-mcp-config.py unit tests (PyYAML-required parsing,
+        # config preservation, idempotency), which run the same on Windows.
+        run: python -m unittest discover -s setup/tests -v
 
       - name: Summary
         if: always()
         run: |
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Test Summary"
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Install dry-run: ✅"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Install dry-run: ✅ (required)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)"
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Verify: ⚠️ (some checks expected to fail in CI)"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- setup unit tests: ✅ (required)"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Note: setup/verify-windows.ps1 validates a live installed machine and is not run against the bare CI runner; run it locally after setup/install-windows.ps1."
