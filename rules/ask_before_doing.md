@@ -40,7 +40,10 @@ OK? (y/n)
 - Sending a message on behalf of the user (email, Slack, Discord, SMS).
 - Creating a webhook or token with external services.
 - Deploying to production.
-- Pushing to main without a PR.
+- `git push` to any branch (not only main) — confirm before every push,
+  regardless of whether a PR follows.
+- Opening a pull request.
+- Commenting on or reviewing an existing PR/issue.
 
 ### State-impact
 

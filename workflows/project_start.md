@@ -123,15 +123,17 @@ This skill has:
 
 If the review finds issues, fix them in the same PR.
 
-### 7. → Load skill `finishing-a-development-branch` (load skill)
+### 7. Commit locally, then stop for authorization (load skill)
 
 At the end:
 
-- → Load skill `finishing-a-development-branch` to:
-  - Commit with conventional message.
-  - Push to remote.
-  - Open PR (if applicable).
-  - Update Spec status to "complete".
+- → Load skill `finishing-a-development-branch` to commit with a conventional
+  message locally.
+- **Do not push or open a PR automatically.** Per
+  `rules/ask_before_doing.md`, both require explicit user confirmation —
+  present the diff/commit summary and ask before either action.
+- Update Spec status to "complete" locally; that part does not need
+  confirmation.
 
 ### 8. Archive the completed Spec (move file)
 
@@ -153,7 +155,7 @@ At the end of this workflow, you should have:
 
 - A complete Spec in `archive/`.
 - All blocks executed and verified.
-- A clean git commit (or PR open).
+- A clean local git commit (push/PR pending your explicit go-ahead).
 - A new empty `specs/current_spec.md` ready for the next task.
 
 ## Anti-patterns

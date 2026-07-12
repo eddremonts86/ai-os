@@ -130,14 +130,17 @@ This skill has:
 - Size limits for PRs.
 - Anti-patterns to look for.
 
-### 11. Commit and finish (load skill)
+### 11. Commit locally, then stop for authorization (load skill)
 
-→ Load skill `finishing-a-development-branch` to:
+→ Load skill `finishing-a-development-branch` to commit with a conventional
+message locally.
 
-- Commit with conventional message.
-- Push to remote.
-- Open PR.
-- Update Spec status to "complete".
+**Do not push or open a PR as an automatic continuation of this workflow.**
+Per `rules/ask_before_doing.md`, pushing code and opening a PR both require
+explicit user confirmation — present the diff/commit summary and ask before
+either action, the same way any other external-impact action is gated.
+Update the Spec status to "complete" locally; that part does not need
+confirmation.
 
 ### 12. Archive the completed Spec (move file)
 
@@ -156,7 +159,7 @@ printf '%s\n' '# Current Spec' '' '*No active Spec. Create one from `specs/spec_
 
 At the end of this workflow, you should have:
 
-- Code committed (or PR open).
+- Code committed locally (push/PR pending your explicit go-ahead).
 - Tests passing.
 - Lint passing.
 - Type check passing.
