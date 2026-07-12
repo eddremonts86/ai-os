@@ -89,6 +89,7 @@ CLIENTS=(
   "codex:.codex/skills:true:codex"
   "gemini:.gemini/skills:true:gemini"
   "antigravity:.agents/skills:true:agy"
+  "antigravity-global:.gemini/config/skills:false:agy"
   "minimax:.minimax/skills:false:mavis"
 )
 for entry in "${CLIENTS[@]}"; do

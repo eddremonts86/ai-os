@@ -85,7 +85,8 @@ $clients = @(
     @{ Id = "claude"; Path = ".claude\skills"; Required = $true; Bin = "claude" },
     @{ Id = "codex"; Path = ".codex\skills"; Required = $true; Bin = "codex" },
     @{ Id = "gemini"; Path = ".gemini\skills"; Required = $true; Bin = "gemini" },
-    @{ Id = "antigravity"; Path = ".agents\skills"; Required = $true; Bin = "agy" }
+    @{ Id = "antigravity"; Path = ".agents\skills"; Required = $true; Bin = "agy" },
+    @{ Id = "antigravity-global"; Path = ".gemini\config\skills"; Required = $false; Bin = "agy" }
 )
 foreach ($client in $clients) {
     $cliDir = Join-Path $HomeDir $client.Path

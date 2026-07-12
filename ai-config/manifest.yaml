@@ -25,6 +25,17 @@ platforms:
         - { id: gemini, path: .gemini/skills, required: true }
         - { id: antigravity, path: .agents/skills, required: true }
         - { id: minimax, path: .minimax/skills, required: false }
+        # Antigravity's real GLOBAL (all-workspaces) skill path per its own docs
+        # (https://antigravity.google/docs/skills, confirmed 2026-07-12): the
+        # table there lists `~/.gemini/config/skills/` as global and
+        # `<workspace-root>/.agents/skills/` as workspace-scoped. `.agents/skills`
+        # above is still deployed too (many other consumers — Hermes
+        # external_dirs, VS Code Copilot Chat, this very install's own docs
+        # convention — already treat it as a shared global location), so this
+        # is additive, not a replacement. Marked optional since it has not been
+        # field-verified against a real Antigravity install (no binary
+        # available in this dev environment).
+        - { id: antigravity-global, path: .gemini/config/skills, required: false }
       # Hermes natively supports `skills.external_dirs` in config.yaml (confirmed
       # against https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
       # on 2026-07-12, whose own example uses this exact path). It scans the
@@ -45,6 +56,7 @@ platforms:
         - { id: codex, path: .codex/skills, required: true }
         - { id: gemini, path: .gemini/skills, required: true }
         - { id: antigravity, path: .agents/skills, required: true }
+        - { id: antigravity-global, path: .gemini/config/skills, required: false }
       external_dirs:
         - { id: hermes, path: .agents/skills }
     adapters:

@@ -235,7 +235,7 @@ for skill in "${ALL_NEW_SKILLS[@]}"; do
     continue
   fi
 
-  # Other 3 CLIs with their own skill dirs (Codex, Gemini, Antigravity).
+  # Other CLIs with their own skill dirs (Codex, Gemini, Antigravity workspace path).
   # ~/.claude/skills/<skill> is already created by install-mac.sh step 5
   # for anything in ai-config/skills/, so we do not re-create it here. Hermes
   # reads ~/.agents/skills via skills.external_dirs instead of a separate
@@ -243,12 +243,15 @@ for skill in "${ALL_NEW_SKILLS[@]}"; do
   for cli_dir in "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
     do_link "$cli_dir/$skill" "$src" "$(basename "$cli_dir")/$skill"
   done
+  # Antigravity's real GLOBAL path per https://antigravity.google/docs/skills
+  # (confirmed 2026-07-12) — additive, optional (P1-2 remainder).
+  do_link "$HOME_DIR/.gemini/config/skills/$skill" "$src" ".gemini/config/skills/$skill"
 done
 
 if [ "$CHECK_MODE" = "1" ]; then
-  ok "Would propagate $LINKED_COUNT skills to 4 CLI dirs, usable by 5 CLIs (check mode: skipped writes)"
+  ok "Would propagate $LINKED_COUNT skills to 4 CLI dirs + Antigravity's global dir, usable by 5+ CLIs (check mode: skipped writes)"
 else
-  ok "Propagated $LINKED_COUNT skills across 3 non-Claude CLI dirs (Claude handled by install-mac.sh; Hermes reads ~/.agents/skills)"
+  ok "Propagated $LINKED_COUNT skills across 3 non-Claude CLI dirs + Antigravity's global dir (Claude handled by install-mac.sh; Hermes reads ~/.agents/skills)"
 fi
 echo ""
 
@@ -261,21 +264,23 @@ if [ "$HAS_PLUGIN" = "1" ]; then
     src="$CODEX_PLUGIN_INNER_SRC/skills/$skill"
     [ -d "$src" ] || { warn "  Plugin skill $skill not found at expected path"; continue; }
 
-    # All 4 CLI dirs this time (the plugin skills are NOT in ai-config/skills/).
-    # Hermes reads ~/.agents/skills via skills.external_dirs, so it's covered
-    # without a separate symlink under ~/.hermes/skills/imported/ (P1-2).
+    # All 4 CLI dirs + Antigravity's global dir this time (the plugin skills
+    # are NOT in ai-config/skills/). Hermes reads ~/.agents/skills via
+    # skills.external_dirs, so it's covered without a separate symlink under
+    # ~/.hermes/skills/imported/ (P1-2).
     INNER_LINKED=$((INNER_LINKED + 1))
     if [ "$CHECK_MODE" = "1" ]; then continue; fi
     do_link "$HOME_DIR/.claude/skills/$skill" "$src" "~/.claude/skills/$skill"
     for cli_dir in "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
       do_link "$cli_dir/$skill" "$src" "$(basename "$cli_dir")/$skill"
     done
+    do_link "$HOME_DIR/.gemini/config/skills/$skill" "$src" ".gemini/config/skills/$skill"
   done
 
   if [ "$CHECK_MODE" = "1" ]; then
-    ok "Would propagate $INNER_LINKED plugin skills to 4 CLI dirs (check mode: skipped writes)"
+    ok "Would propagate $INNER_LINKED plugin skills to 4 CLI dirs + Antigravity's global dir (check mode: skipped writes)"
   else
-    ok "Propagated $INNER_LINKED plugin skills to 4 CLI dirs, usable by 5 CLIs (Hermes reads ~/.agents/skills)"
+    ok "Propagated $INNER_LINKED plugin skills to 4 CLI dirs + Antigravity's global dir, usable by 5+ CLIs (Hermes reads ~/.agents/skills)"
   fi
   echo ""
 fi
@@ -382,7 +387,7 @@ else
 
   # Per-CLI count of correctly-pointing skill symlinks (Hermes is covered via
   # skills.external_dirs, not a symlinked copy — checked separately if needed).
-  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
+  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.gemini/config/skills"; do
     count=0
     broken=0
     # 12 ai-config skills
@@ -435,7 +440,7 @@ if [ "$fail" -eq 0 ]; then
   log ""
   log "What got wired:"
   log "  • ~/.claude/plugins/codex-plugin-cc → vendor/codex-plugin-cc/"
-  log "  • 12 new skills propagated to ~/.codex/skills/, ~/.gemini/skills/, ~/.agents/skills/"
+  log "  • 12 new skills propagated to ~/.codex/skills/, ~/.gemini/skills/, ~/.agents/skills/, ~/.gemini/config/skills/"
   log "    (Hermes reads ~/.agents/skills via skills.external_dirs, no separate copy)"
   log "  • ~/.claude/skills/ already has them via install-mac.sh step 5"
   log "  • 3 codex-plugin-cc internal skills propagated to 4 CLI dirs, usable by 5 CLIs"

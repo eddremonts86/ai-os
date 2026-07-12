@@ -6,8 +6,9 @@
 #   1. Verifies that vendor/ecc/ exists (the vendored copy is the source of truth).
 #   2. Symlinks vendor/ecc/ -> ~/.claude/plugins/ecc (so Claude Code sees it as a plugin).
 #   3. Symlinks every ECC skill from ai-config/skills/ (which is already propagated
-#      by install-mac.sh step 5) into ~/.codex/skills, ~/.gemini/skills, and
-#      ~/.agents/skills. Hermes reads ~/.agents/skills via skills.external_dirs
+#      by install-mac.sh step 5) into ~/.codex/skills, ~/.gemini/skills,
+#      ~/.agents/skills, and ~/.gemini/config/skills (Antigravity's real global
+#      path). Hermes reads ~/.agents/skills via skills.external_dirs
 #      (config.yaml) instead of a separate symlinked copy (P1-2).
 #      NOTE: This script does NOT re-propagate ai-config/skills/ -> ~/.claude/skills
 #      because that is already done by install-mac.sh. We only top up the other 3 CLI dirs.
@@ -147,8 +148,8 @@ do_link() {
 
 do_link "$CLAUDE_ECC_LINK" "$ECC_SRC" "~/.claude/plugins/ecc"
 
-# ─── 2. Propagate ECC skills to the 5 CLIs ───
-log "2. Propagating ECC skills to 5 CLIs..."
+# ─── 2. Propagate ECC skills to the 5 CLI dirs + Antigravity's global dir ───
+log "2. Propagating ECC skills to 5 CLI dirs + Antigravity's global dir..."
 
 # ~/.claude/skills/<name> -> vendor/ecc/skills/<name>
 # (install-mac.sh already symlinks ai-config/skills/ here, but ECC skills live in
@@ -170,19 +171,22 @@ for skill_dir in "$ECC_SKILLS_SRC"/*/; do
 
   # ~/.claude/skills/<name> (Claude Code uses these as the canonical plugin skills)
   do_link "$HOME_DIR/.claude/skills/$name" "$skill_dir" "~/.claude/skills/$name"
-  # Other 3 CLIs with their own skill dirs (Codex, Gemini, Antigravity).
+  # Other CLIs with their own skill dirs (Codex, Gemini, Antigravity workspace path).
   # Hermes reads ~/.agents/skills via skills.external_dirs (config.yaml) instead
   # of a separate symlinked copy under ~/.hermes/skills/imported/ (P1-2).
   for cli_dir in "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
     do_link "$cli_dir/$name" "$skill_dir" "$(basename "$cli_dir")/$name"
   done
+  # Antigravity's real GLOBAL path per https://antigravity.google/docs/skills
+  # (confirmed 2026-07-12) — additive, optional (P1-2 remainder).
+  do_link "$HOME_DIR/.gemini/config/skills/$name" "$skill_dir" ".gemini/config/skills/$name"
   SKILL_LINK_COUNT=$((SKILL_LINK_COUNT + 1))
 done
 
 if [ "$CHECK_MODE" = "1" ]; then
-  ok "Would propagate $SKILL_LINK_COUNT ECC skills across 5 CLIs (check mode: skipped writes)"
+  ok "Would propagate $SKILL_LINK_COUNT ECC skills across 5 CLI dirs + Antigravity's global dir (check mode: skipped writes)"
 else
-  ok "Propagated $SKILL_LINK_COUNT ECC skills across 5 CLIs"
+  ok "Propagated $SKILL_LINK_COUNT ECC skills across 5 CLI dirs + Antigravity's global dir"
 fi
 echo ""
 
@@ -316,7 +320,7 @@ else
 
   # Per-CLI count of correctly-pointing ECC skill symlinks (Hermes is covered
   # via skills.external_dirs, not a symlinked copy — checked separately if needed).
-  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
+  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.gemini/config/skills"; do
     count=0
     broken=0
     for skill_dir in "$ECC_SKILLS_SRC"/*/; do
