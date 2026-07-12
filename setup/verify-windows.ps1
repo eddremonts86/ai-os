@@ -102,15 +102,15 @@ foreach ($client in $clients) {
         Where-Object { $_.Name -ne "READMEDD.md" -and $_.Name -ne "taste-skill-llms.txt" -and $_.Name -ne ".system" }).Count
     if ($deployed -eq $expectedSkillCount) {
         if ($client.Required) {
-            ReqOk "  [$($client.Id)] $label: $deployed/$expectedSkillCount skills (exact match)"
+            ReqOk "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills (exact match)"
         } else {
-            OptOk "  [$($client.Id)] $label: $deployed/$expectedSkillCount skills (exact match)"
+            OptOk "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills (exact match)"
         }
     } else {
         if ($client.Required) {
-            ReqFail "  [$($client.Id)] $label: $deployed/$expectedSkillCount skills — MISMATCH (rerun setup/install-windows.ps1)"
+            ReqFail "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills — MISMATCH (rerun setup/install-windows.ps1)"
         } else {
-            OptMiss "  [$($client.Id)] $label: $deployed/$expectedSkillCount skills — mismatch (optional client)"
+            OptMiss "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills — mismatch (optional client)"
         }
     }
 }

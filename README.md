@@ -595,6 +595,7 @@ AI-OS is successful if:
 - **Cross-platform:** [docs/cross-platform.md](docs/cross-platform.md)
 - **Sharing & Contributing:** [docs/sharing.md](docs/sharing.md)
 - **Architecture:** [docs/architecture.md](docs/architecture.md)
+- **Model routing & platform support:** [docs/model-routing.md](docs/model-routing.md)
 - **Required superpowers:** [prompts/setup/03-required-skills.md](prompts/setup/03-required-skills.md)
 - **obra/superpowers:** https://github.com/obra/superpowers
 - **Karpathy's method:** Search for "Karpathy AI Operating System" on YouTube.
