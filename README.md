@@ -25,7 +25,7 @@ AI-OS is the **single source of truth** for everything AI in your dev workflow:
 - **5 recurring workflows** (daily_start, project_start, coding, research, content_creation).
 - **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
 - **3 verifiers** (quality_checklist, critic_prompt, source_check_prompt) — applied after every task.
-- **10 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai; graphiti is present but disabled until it has a real smoke test — see `ai-config/mcp/graphiti.yaml`).
+- **10 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai, graphiti — graphiti's Docker deployment passed a structural smoke test 2026-07-12, but real knowledge-graph operations need a real `OPENAI_API_KEY`; see `ai-config/mcp/graphiti.yaml`).
 - **Replicable dev env** (zsh + Oh My Zsh + p10k, Warp, Brewfile, git/ssh config templates).
 - **1-command setup** on Mac, Linux, and Windows.
 - **CI** (macOS, Linux, Windows runners) that validates the install scripts on every PR.
@@ -120,7 +120,7 @@ AI-OS is structured in **3 layers**, each with a clear responsibility:
 │  • 18 master instructions in CLAUDE.md                            │
 │  • 5 workflows, 3 rules, 3 verifiers                            │
 │  • Flat global skills + optional plugin bundles                  │
-│  • 10 declarative MCP servers in YAML (9 enabled)                │
+│  • 10 declarative MCP servers in YAML (all enabled)              │
 │  • Replicable dev-env (zsh, Warp, Brewfile, packages)           │
 └──────────────────────────────────────────────────────────────────┘
                               ▲ symlinks
@@ -221,7 +221,7 @@ ai-os/
 │   │   ├── writing-skills/
 │   │   ├── code-review-and-quality/
 │   │   └── ... 84+ third-party skills (antfu, tanstack, react, shadcn, etc.)
-│   └── mcp/                       #   10 declarative MCP servers (YAML, 9 enabled)
+│   └── mcp/                       #   10 declarative MCP servers (YAML, all enabled)
 │       ├── README.md
 │       ├── time.yaml
 │       ├── filesystem.yaml
@@ -494,7 +494,7 @@ Differences:
 |---|---|---|---|
 | **AI-OS core** | ✅ | ✅ | ✅ |
 | **Flat skills** | ✅ | ✅ | ✅ |
-| **10 MCP servers (9 enabled)** | ✅ | ✅ | ✅ |
+| **10 MCP servers (all enabled)** | ✅ | ✅ | ✅ |
 | **Oh My Zsh + p10k** | ✅ | ❌ (use Oh-My-Posh or Starship) | ✅ |
 | **Warp** | ✅ |✅ (Windows version) |❌ (use Wezterm) |
 | **Homebrew** | ✅ |❌ (Chocolatey) |❌ (apt) |
@@ -553,7 +553,7 @@ AI-OS is successful if:
 - ✅ Setup on Windows completes in <60 min.
 - ✅ All flat skills invokable from supported CLIs.
 - ✅ All 14/14 superpowers skills present.
-- ✅ All 9 enabled MCP servers auto-connect in Hermes.
+- ✅ All 10 enabled MCP servers auto-connect in Hermes.
 - ✅ Zero secrets in the repo (`git log -p | grep -iE "secret|api[_-]?key|password"` returns nothing).
 - ✅ CI: 3/3 success on PRs to main.
 
