@@ -1,230 +1,111 @@
-# AI-OS Remediation Implementation Plan
+# Unified Config Playground for ai-schadcn-chat demo
 
 **Date:** 2026-07-12
-**Status:** 🔄 In progress — Tasks 1-4 done; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done; Graphiti MCP architecture decision made, wired, and structural deployment smoke-tested (enabled: true) — actual entity-extraction test with a real OPENAI_API_KEY still pending
-**Owner:** Edd
-**See:** `outputs/2026-07-12-ai-os-full-audit.md` for the full audit findings this plan resolves.
+**Status:** draft
+**Blocks:** 5 (each <= 30 min)
+**Author:** Edd
+**Reviewer:** Edd
 
-> **For agentic workers:** Use `subagent-driven-development` for independent tasks and verify every claim with a fresh command.
+## Objective
 
-**Goal:** Turn the audit findings into a truthful, secure, and platform-native AI-OS installation.
+Collapse the two duplicated live-chat sections (`#live-demo` "Try it live" and `#config-reference` "Try the config before you read it") into a single two-column playground that combines the persona-driven defaults of the Coding Buddy with a comprehensive, multi-expandable form that lets the user mutate **all** documented `ChatConfig` / `UiConfig` fields in real time.
 
-**Architecture:** Keep `ai-config/` as the repository source of truth, but generate a compact bridge and platform-specific adapter locations from one manifest. Make setup fail only for required capabilities, report optional capabilities honestly, and remove broken memory integrations until they have executable smoke tests.
+## Context
 
-**Constraints:** All repository files in English. Preserve user configuration and existing non-AI-OS files. Never execute downloads, Docker startup, package installation, or external writes from verification. Do not claim support that is not configured and tested.
+In the previous session we shipped a `ConfigReferenceSection` with a live `<ChatPanel />` above the documentation grid. The landing page now renders two near-identical chat panels (`#live-demo` and the playground inside `#config-reference`), both backed by different `ChatConfig` objects — visual duplication, two `ChatEngine` instances mounted at the same time, and the form only exposed 4 fields (provider kind/baseUrl/apiKey/model).
 
-## Task 1: Safety and canonical policy
+The user wants one section, one chat, and a form that covers every documented knob. The Coding Buddy persona (system prompt, personality, suggestion chips, always-on demo document) is the one that earned its place — we keep that, drop the other, and rebuild the form to expose the 72 fields grouped by the same 6 sections the reference doc uses (Provider, Model, Behavior, Resilience, Personality & tools, UI). The form lives in a right-hand column when there's room (desktop), collapses to a footer-drawer on mobile — and uses collapsible sections (one per config section) so it doesn't become an unusable wall.
 
-**Files:** `rules/ask_before_doing.md`, `rules/always_do.md`, `CLAUDE.md`, `context/01_business_or_work.md`, `context/02_projects.md`, `.gitignore`, `workflows/*.md`, `docs/*.md*`.
+## Acceptance criteria
 
-- [x] Make `go` reversible-only and preserve action-specific approval (already correct in `rules/ask_before_doing.md`).
-- [x] Correct stale subagent, workflow, archive, project-status, language, and path references (`CLAUDE.md`, `docs/ai-os-overview.mdx` bridge references fixed this session).
-- [x] Version completed specs and reserve `current_spec.md` for one active task (archived `2026-07-02-persistent-memory-research.md` and `2026-07-03-persistent-memory-phase-1.md`; this file is now the single active spec).
-- [x] Reconciled `context/02_projects.md` vs `context/01_business_or_work.md` (P1 medium #11): moved `hermes-agent` and `iaWorkSpace` into the Active table in `02_projects.md` to match `01_business_or_work.md`, with a note explaining why an older mtime doesn't mean unused.
+- [ ] Only one `<ChatPanel />` is mounted in the demo page; the second instance is removed without breaking the rest of the landing.
+- [ ] The single panel uses the **Coding Buddy** config (`buildCodingBuddyConfig()` in `demo/src/lib/chat-configs.ts`) as its starting state — system prompt, personality, suggestions, always-on document, persistKey all preserved.
+- [ ] The playground form exposes controls for every documented field on `ChatConfig` / `UiConfig` (72 fields across 6 sections), grouped under 6 collapsible expand sections that mirror the reference doc.
+- [ ] Each field control calls `useChat().updateConfig(partial)` on commit (debounced for text/number fields, instant for toggles and selects). The panel reflects the change without remounting.
+- [ ] The playground renders in a two-column layout on desktop (`lg:` breakpoint): `<ChatPanel />` left, form right, both at full content height. On mobile it collapses to a stacked layout with a button to toggle the form.
+- [ ] `pnpm typecheck` and `pnpm build` both pass with zero new errors. `pnpm test:unit` passes (existing tests untouched).
+- [ ] Browser smoke test: open `http://127.0.0.1:5173/#live-demo`, confirm only one `<ChatPanel />` is on the page, mutate 5+ different fields across at least 3 sections (provider, model, UI), confirm each mutation visibly affects the panel state without remounting. Screenshot captured for the report.
 
-## Task 2: Manifest, native adapters, and skill validation
+## Non-goals (explicit)
 
-**Files:** `ai-config/manifest.yaml`, `ai-config/templates/*`, `setup/install-mac.sh`, `setup/install-windows.ps1`, `setup/verify.sh`, `setup/verify-windows.ps1`, dry-run scripts.
+- No changes to the package source (`src/**` is the published npm package — we only touch `demo/**`).
+- No new dependencies. We only use shadcn primitives already vendored in `src/components/ui/**` (Tabs, Select, Input, Switch, Slider, Collapsible, Badge, ScrollArea).
+- No refactor of `demo/src/lib/chat-configs.ts` — we keep `buildCodingBuddyConfig()` as-is and just consume it from the new playground.
+- No persistence UI changes — `persistKey` is exposed as a field in the form but the persistence behavior itself is unchanged.
+- No changes to the reference doc cards themselves (`ConfigField.tsx`, `ConfigReference.tsx`) — those keep working. The playground becomes a sibling, not a replacement for the reference.
 
-- [x] Define platform locations and required/optional components once (`ai-config/manifest.yaml`).
-- [x] Generate bridges from the discovered AI-OS root rather than committing a user path (`~/.ai-os/adapters/global-bridge.md`, rendered from `ai-config/templates/global-bridge.md.tmpl`). Removed the stale, hardcoded-path `ai-config/clis/GLOBAL_BRIDGE.md` that was no longer used by install but still committed.
-- [x] Deploy skills to native client locations and verify exact expected sets — rewrote `setup/verify.sh` section 3 to do an exact skill-count comparison per client instead of existence-only (this caught and we fixed a real gap: `ai-os-loop` and `ai-os-memory` were not deployed to any CLI's skills dir).
-- [x] Add duplicate skill-name validation (already present in `install-mac.dry-run.sh` step 5).
-- [x] `setup/verify.sh` now distinguishes required vs. optional checks (separate counters, exit code depends only on required failures) and no longer double-checks the bridge wiring (removed the duplicate "section 12").
-- [x] `setup/verify-windows.ps1`: fixed a real parenthesis-mismatch syntax bug in the dotfiles check, added the same required/optional split, exact skill-count comparison, and CLI executable checks, and fixed the bridge check to match the templated-adapter architecture.
-- [x] Fixed a real bug in `setup/install-mac.dry-run.sh` (step 5b referenced an undefined `CLI_DIRS` array — `unbound variable` under `set -u`, made the dry-run always exit 1). Now iterates the manifest-driven client list like step 5.
+## Plan (blocks)
 
-## Task 3: Secure and correct MCP/memory stack
+### Block 1: De-duplicate the chat panels (estimated: 10 min)
 
-**Files:** `ai-config/mcp/*.yaml`, `setup/generate-mcp-config.py`, `memory/*.sh`, `memory/falkordb/docker-compose.yml`, setup and verifier scripts, tests.
+- [ ] Delete `demo/src/components/LiveConfigPlayground.tsx` (replaced by new file in block 2).
+- [ ] Update `demo/src/components/ConfigReferenceSection.tsx` to no longer render `<LiveConfigPlayground />` — it only renders `<ConfigReference />` (the doc grid).
+- [ ] Keep the existing `LiveDemoSection` for now (will be its replacement).
+- [ ] **Verify:** `pnpm typecheck` passes; only one `<ChatPanel />` left in the source tree (grep for `<ChatPanel` returns 2: one in `LiveDemoSection.tsx`, one in the new file we'll create in block 2). Page still loads on the dev server.
 
-- [x] Correct grepai contracts and make unimplemented session sync unavailable (already done in this branch — `ai-config/mcp/grepai.yaml`, `memory/ai-os-memory.sh`, `memory/cron-reindex.sh`).
-- [x] Require PyYAML for merge-preserving MCP generation; test config preservation (`setup/generate-mcp-config.py` rewritten, `setup/tests/test_generate_mcp_config.py` added, 3/3 passing).
-- [x] Bind local services to loopback (`memory/falkordb/docker-compose.yml` already updated in this branch; also fixed a stale comment in `install-mac.sh` still claiming the image was `:latest` when it's pinned to `v4.18.11`).
-- [x] Graphiti MCP launch configuration (P0-3): fetched the official `mcp_server/README.md` and confirmed the previous config (`uv run --with graphiti-core[falkordb] python -m graphiti_mcp_server`) was definitely wrong — no such installable module exists. Rewrote `ai-config/mcp/graphiti.yaml` with the real launch shape (`uv run main.py` from inside a `graphiti` checkout, or the `zepai/knowledge-graph-mcp` Docker image over HTTP) and a detailed comment. Still `enabled: false` — actually enabling it needs a real architecture decision (vendor the repo vs. Docker HTTP transport) plus HTTP transport support in `generate-mcp-config.py`, which doesn't exist yet. Not attempted this session; tracked below.
-- [x] Pin versions/digests and validate checksums where binaries are downloaded (P1-4):
-  - `setup/install-mac.sh`: Oh My Zsh now installs from a pinned commit SHA instead of `master`; Powerlevel10k and the 3 zsh plugins (`zsh-autosuggestions`, `zsh-syntax-highlighting`, `zsh-completions`) clone pinned tags instead of the default branch; `grepai` installs a pinned `go install ...@v0.35.0` instead of `@latest`; `codebase-memory-mcp` now downloads `checksums.txt` from the same pinned release tag and verifies the tarball's sha256 before extracting (refuses to install on mismatch).
-  - `ai-config/mcp/*.yaml`: pinned `chrome-devtools-mcp@1.5.0`, `agent-browser-mcp-server@0.14.2`, `@modelcontextprotocol/server-filesystem@2026.7.10`, `@modelcontextprotocol/server-memory@2026.7.4`, `@modelcontextprotocol/server-sequential-thinking@2026.7.4`, `mcp-pdf==2.3.0`, `mcp-server-time==2026.7.10` (all previously `@latest` or unversioned).
-  - Not pinned yet: `install-windows.ps1` doesn't install Oh My Zsh/grepai/memory stack at all (separate cross-platform-parity gap, P1-5, not attempted this session).
+### Block 2: Create `UnifiedPlayground.tsx` with Coding Buddy defaults + two-column layout (estimated: 25 min)
 
-## Task 4: Test and documentation gates
+- [ ] New file `demo/src/components/UnifiedPlayground.tsx`:
+  - Renders the same shape as `LiveDemoSection` but internally uses a two-column `lg:grid-cols-[1fr_360px]` grid: left column = `<ChatPanel config={codingBuddyConfig} layout="panel" className="shadow-2xl" />`; right column = placeholder for the form (filled in block 3).
+  - Imports `buildCodingBuddyConfig` from `demo/src/lib/chat-configs.ts` so the persona, system prompt, suggestions, and always-on document are exactly what shipped before.
+  - Wraps everything in a single `<ChatProvider>` so the form can call `useChat()`.
+- [ ] Wire `UnifiedPlayground` into `LiveDemoSection.tsx` (replace the inline `<ChatPanel />` with `<UnifiedPlayground />`).
+- [ ] Remove the `<ConfigReferenceSection />` from `App.tsx` (its form is gone, the reference doc cards remain accessible via the doc page).
+- [ ] **Verify:** `pnpm typecheck && pnpm build` pass; browser shows the Coding Buddy panel on the left and an empty card on the right at `lg` viewport; `ChatHeader` shows "Coding buddy" persona; form side has no content yet but layout is solid.
 
-**Files:** `.github/workflows/*`, `setup/tests/*`, `README.md`, `docs/*`.
+### Block 3: Form — Provider + Model sections (estimated: 30 min)
 
-- [x] Add unit/integration tests for MCP generation (`setup/tests/test_generate_mcp_config.py`, 3 tests, all passing).
-- [x] Make required CI checks fail closed; retain explicit optional skips — replaced the `bash setup/verify.sh || true` / `pwsh ... || true` steps in `test-mac.yml`, `test-linux.yml`, `test-windows.yml` with a required `python -m unittest discover -s setup/tests` gate (verify.sh/verify-windows.ps1 validate a live installed machine and are documented as not meaningful against a bare CI runner; the dry-run installers already cover the structural/adapter/MCP logic and fail closed with no suppression).
-- [x] Generate or validate counts and paths instead of documenting snapshots (README/docs finding #10): confirmed the "271 ECC skills" and "12 claude.tools/gstack skills" badges/claims are accurate against the real source directories. Found and fixed one genuinely stale count: "7 declarative MCP servers" (actual: 10 total, 9 enabled) across `README.md` (4 places), `docs/architecture.md`, `ai-config/skills/ai-os-karpathy/SKILL.md`, and `prompts/daily-use/01-daily-start.md`.
-- [ ] Publish the model-routing and platform-support matrix based on official current capabilities (P1-1, roadmap Phase 2/3 item) — **done**: `docs/model-routing.md` added and linked from README, explicitly framed as an eval-driven hypothesis (per the audit's own recommendation) rather than a hardcoded default, with the two known platform gaps (MCP config Hermes-only, Antigravity's real skill path unresolved) called out instead of glossed over.
+- [ ] In `UnifiedPlayground.tsx`, add a `<Form />` component on the right column that calls `useChat()` and renders 2 collapsible sections: **Provider** (10 fields) and **Model** (8 fields).
+- [ ] Field controls: `Select` for enums (`provider.kind`, `authHeader`, `model.provider`), `Input` for strings (`baseUrl`, `apiKey`, `model.id`, `model.label`), `Input type="number"` for numbers (`contextWindow`, `maxOutput`), `Switch` for booleans (`vision`, `tools`).
+- [ ] On any change: `updateConfig({ provider: { ...current, kind: next } })` (shallow merge, debounce 250ms for text fields).
+- [ ] **Verify:** Browser smoke test — change `provider.kind` to `openai`, confirm `Select` updates the value, the "unsaved" badge appears, click Apply → panel header model info updates without remount. Change `model.id` from `MiniMax-M3` to `gpt-4o` → same. Console clean (no React warnings about controlled/uncontrolled inputs).
 
-## Acceptance Tests
+### Block 4: Form — Behavior + Resilience + Personality & tools sections (estimated: 30 min)
 
-1. `bash setup/install-mac.dry-run.sh` exits 0 in an isolated home and validates every generated adapter. **Verified this session** (was failing with `CLI_DIRS[@]: unbound variable`; fixed; re-ran to a clean full pass including MCP generation, both before and after the P1-4 pinning edits).
-2. `python3 -m unittest discover -s setup/tests -v` passes. **Verified this session: 3/3 passing**, including after all the MCP-pinning edits.
-3. `bash setup/verify.sh` distinguishes required failures from optional missing CLIs/services and does not report a false all-green state. **Verified this session** against this real machine: it caught a real gap (2 skills not deployed to any CLI), reported exit 1 with `Required: 12 passed, 5 failed`; after re-syncing skills it reported `Required: 17 passed, 0 failed` / exit 0 with optional gaps still visible as warnings (npm/pip packages, Docker/Ollama, VS Code bridge).
-4. `python3 -S setup/generate-mcp-config.py ...` fails clearly rather than producing a lossy config. **Verified this session** (`test_requires_pyyaml_without_writing_output` passes; direct run without PyYAML on `PATH` prints a clear error and exits 1, no partial file written).
-5. Markdown/path and skill-name checks pass in CI. **Not independently re-verified this session** beyond what `install-mac.dry-run.sh` step 7 already covers (frontmatter `name:`/`description:` presence for all flat + gstack skills).
+- [ ] Add 3 more collapsible sections to the right-column form: **Behavior** (systemPrompt as Textarea, temperature/topP as number Input sliders, maxContextTokens as number, stopSequences as comma-separated string), **Resilience** (retry.attempts/initialDelayMs/maxDelayMs as number Inputs, persistKey as string Input with a "disable persistence" Switch, onResponse/onError left as read-only code chips because they require closures), **Personality & tools** (personality.name/avatar/locale as Inputs, personality.tone as Select, personality.customTone as Textarea).
+- [ ] Tools array: render a single-line summary ("3 tools registered" or "no tools") and a Button "Add sample tool" that pushes a weather tool into `config.tools` for demo purposes (handler is a stub `async () => ({})`).
+- [ ] **Verify:** Smoke test — change `systemPrompt` from "Edd's friendly coding buddy..." to "You are a pirate." and confirm the assistant's next response reflects the new system prompt. Toggle persistKey to `false` and confirm the conversation is no longer saved. Browser console clean.
 
-## Remaining work (not done yet, in priority order)
+### Block 5: Form — UI section + mobile responsiveness + final verification (estimated: 30 min)
 
-1. Graphiti MCP real functional test: the architecture decision is made, wired, and its **structural deployment passed a real smoke test** (see Round 6 below) — Docker running, `docker compose up -d` in both `memory/falkordb/` and `memory/graphiti/`, confirmed `aios-graphiti-mcp` connects to FalkorDB and `curl -sf http://127.0.0.1:8021/health` returns healthy. `ai-config/mcp/graphiti.yaml` is now `enabled: true`. **Still not done**: an actual `add_memory`/`search` call with a real `OPENAI_API_KEY` to confirm entity extraction genuinely works (the smoke test used a placeholder key, which proves connectivity but not correctness of graph operations).
-2. P1-1/P1-3/P1-8 remainder (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, operational rules out of Hermes `SOUL.md` (research in Round 4 found `AGENTS.md`/`.hermes.md` are Hermes's project-scoped context mechanism, cwd-based; `SOUL.md` remains the only *global, cwd-independent* mechanism Hermes has, so the current minimal pointer block there is likely staying).
-3. Antigravity's real global-skill path (`~/.gemini/config/skills` per the audit) — deliberately NOT changed, same reasoning as before: would risk breaking every machine currently relying on `~/.agents/skills` without a first-party doc check first.
+- [ ] Add the **UI** section to the form: 35 toggles/inputs grouped in sub-categories (text: title/subtitle/placeholder/greeting; toggles: 14 booleans for show/enable flags; attachments: maxFileSizeMb number + acceptedFileTypes comma string; theming: theme Select, accentColor Input, fontFamily Input, density Select; layout: layout Select, height/width Inputs, position Select).
+- [ ] Add a small `<media>` query (Tailwind `lg:` breakpoint already used) — on mobile, the right column collapses to a `<Collapsible>` drawer triggered from a button above the panel ("Open config").
+- [ ] **Verify:** End-to-end smoke test (acceptance criteria #6): mutate fields in Provider + Model + UI sections, confirm each applies, screenshot, attach to report. `pnpm typecheck && pnpm build && pnpm test:unit` all pass. Browser console clean across the full smoke run.
 
-## Round 3 additions (continuing "todo lo pendiente")
+## Risks and mitigation
 
-- **P1-5 Windows memory-stack parity**: `setup/install-windows.ps1` now installs the same memory stack as Mac (Ollama + nomic-embed-text, FalkorDB via Docker Compose, `codebase-memory-mcp` with sha256 checksum verification against the same pinned release, `grepai` via a pinned `go install`), gated by the new `$env:SKIP_MEMORY`. Added `ollama` and `golang` to the chocolatey package list.
-- **Real bug found and fixed via `pwsh` parser** (installed via `brew install powershell` specifically to get real syntax validation, since the prior session's verify-windows.ps1 bug was only caught by manual review): `setup/verify-windows.ps1` had 4 instances of `"$label: ..."` inside double-quoted strings, which PowerShell parses as an ambiguous drive/scope reference (`':' was not followed by a valid variable name character`) — a real parse error, not a style nit. Fixed with `${label}:`. All 3 `setup/*.ps1` files now parse cleanly with `[System.Management.Automation.Language.Parser]::ParseFile`.
-- **New CI gate**: `.github/workflows/test-windows.yml` now parses every `setup/*.ps1` file with the real PowerShell parser as a required, fail-closed step — this is exactly what would have caught the bug above before it shipped, and nothing else in that workflow exercises `verify-windows.ps1`'s syntax at all.
-- **Stale skill doc fixed**: `ai-config/skills/ai-os-memory/SKILL.md` advertised a `sync-sessions` subcommand that was removed from `memory/ai-os-memory.sh` in an earlier fix (P0-2) but never removed from the skill doc; also missing the real `visualize`/`search` subcommands, presenting Graphiti as a working layer instead of disabled, and pointing at the pre-archive spec path. All fixed.
-- **`docs/model-routing.md`** added (see Task 4 above) and linked from README.
+| Risk | Probability | Impact | Mitigation |
+|---|---|---|---|
+| 72 inputs in one form causes React re-render storms / laggy typing | medium | medium | Use `useDeferredValue` for the draft state; commit `updateConfig` debounced (250ms for text, instant for selects/toggles). Memoize per-section subcomponents. |
+| Updating `systemPrompt` mid-conversation breaks the engine's pending stream | low | medium | The engine reads `config` on each new turn, so mid-stream changes don't affect the in-flight response. We document this in a one-line comment near the field. |
+| Two-column layout breaks on smaller `lg` viewports (laptops 1024-1280px) | medium | low | Use `lg:grid-cols-[1fr_360px]` only above 1280px; below that the form stacks under the panel via `lg:flex` + `order-` utilities. Verified manually after block 2. |
+| Form fields desync from `config` (controlled inputs going stale) | medium | medium | All field values are derived from `config` via `useMemo`; reset on `config` change (already a known pattern from the existing `PlaygroundFooter`). |
+| Mixing `useChat().updateConfig()` (partial) with the Playwright test fixtures | low | low | No new tests for the form (acceptance is browser smoke test); existing tests in `tests/` are package-level and don't touch the demo. |
 
-## Round 4 additions (continuing "todo lo pendiente"): Hermes skills.external_dirs (P1-2, real bugs found)
+## Verification (end-to-end)
 
-Researched Hermes's actual current capabilities against its official docs
-(`hermes-agent.nousresearch.com/docs`, 2026-07-12) instead of guessing, per the
-audit's own P1-8 recommendation. Confirmed, current findings:
+- [ ] `pnpm typecheck` exits 0
+- [ ] `pnpm build` exits 0
+- [ ] `pnpm test:unit` exits 0
+- [ ] Browser: `http://127.0.0.1:5173/#live-demo` shows one `<ChatPanel />`, left column on `lg` viewport
+- [ ] Browser: mutate 5+ fields across Provider / Model / UI, each applies without remount
+- [ ] Browser: console has 0 errors and 0 React warnings during the smoke run
+- [ ] Screenshot of the unified playground in its final state attached to the final report
+- [ ] `grep -r "<ChatPanel" demo/src/` returns exactly 1 hit (in `LiveDemoSection.tsx`)
 
-- **`skills.external_dirs` is real and current** (`~/.hermes/config.yaml`), and
-  Hermes's own docs use `~/.agents/skills` as the literal example path. This
-  directly resolves P1-2 ("duplicating all skills under `imported/`"): Hermes
-  can scan `~/.agents/skills` (already populated for Antigravity/VS Code)
-  natively instead of getting its own symlinked copy.
-- **`SOUL.md` is confirmed identity/personality-only by Hermes's own design**
-  (loaded only from `HERMES_HOME`, never probes cwd). `AGENTS.md`/`.hermes.md`
-  are Hermes's project-context mechanism, but they're cwd-based/per-project,
-  not a global always-on mechanism the way `SOUL.md` is — so there is currently
-  no idiomatic way to make AI-OS's bridge apply in every Hermes session
-  regardless of working directory other than the existing minimal SOUL.md
-  pointer block. Not changed; documented as a real constraint, not an oversight.
-- **Implemented the external_dirs fix**: `setup/generate-mcp-config.py` now
-  takes an optional 3rd arg (`external_skills_dir`) and merges it into
-  `skills.external_dirs` (dedup, preserves existing user entries, idempotent;
-  2 new unit tests). `ai-config/manifest.yaml`, `setup/install-mac.sh`,
-  `setup/install-windows.ps1`, `setup/install-ecc.sh`,
-  `setup/install-claude-tools.sh` no longer symlink into
-  `~/.hermes/skills/imported/`; both installers now clean up that superseded
-  tree on next run (only if every entry is still an AI-OS-made symlink — never
-  touches real user content). `setup/verify.sh` / `verify-windows.ps1` check
-  `~/.hermes/config.yaml` for the `external_dirs` entry instead of a symlink
-  count. **Verified end-to-end on this real machine**: old `imported/` tree
-  removed, `~/.hermes/config.yaml` correctly gained `external_dirs: [~/.agents/skills]`
-  while preserving the pre-existing `template_vars: true` setting.
-- **Real bug found: bash 3.2 incompatibility.** The first attempt used
-  `declare -A` (associative arrays, bash 4+) for the zsh plugin tag lookup
-  added in Round 2. macOS ships bash 3.2.57 as `/bin/bash` (last GPLv2
-  release; Apple never upgraded) and this script's `#!/usr/bin/env bash`
-  shebang resolves to it on any Mac without a newer bash earlier on PATH —
-  confirmed this is genuinely the case on this machine. bash 3.2 has no
-  associative arrays; it silently falls back to arithmetic indexed-array
-  subscripts, so `[zsh-autosuggestions]` parsed as `zsh - autosuggestions` and
-  crashed with `zsh: unbound variable` under `set -u`. Fixed with a `case`
-  statement (works on every bash version). **This meant `install-mac.sh` was
-  broken on stock macOS bash from Round 2 until this session** — caught only
-  because I ran the real (non-dry-run, non-venv-only) installer end-to-end.
-- **Real bug found: count-based skill verification breaks with optional
-  bundles installed.** After fixing the above and running `install-ecc.sh` +
-  `install-claude-tools.sh` for real (needed to test the Hermes fix
-  end-to-end), `setup/verify.sh` started reporting `370/164 skills — MISMATCH`
-  as a **required failure** for every core CLI, because ECC (271 skills) and
-  claude.tools/gstack legitimately add more names on top of the flat+gstack
-  baseline, and symlink name collisions make the net delta unpredictable. The
-  exact-count check from Round 2 never anticipated this common, documented,
-  supported configuration. Rewrote section 3 in both `verify.sh` and
-  `verify-windows.ps1` to check the exact **set of expected skill names**
-  (not a count) is present, regardless of what else is also deployed —
-  verified this both passes correctly with ECC+claude.tools installed *and*
-  still catches a real gap (tested by hiding one required skill; correctly
-  reported `missing 1 expected skill(s): brainstorming` and failed).
-- All changes verified with real command execution on this machine: `bash -n`
-  on every edited shell script, `pwsh` parser on every edited `.ps1` file (0
-  errors), 5/5 unit tests (2 new), `install-mac.dry-run.sh` and
-  `install-windows.dry-run.ps1` (run for real via `pwsh` on macOS with `$env:TEMP`
-  set manually, since that var is Windows-only) both exit 0 end-to-end
-  including the new `skills.external_dirs` check, and `verify.sh` on this real
-  machine: `Required: 17 passed, 0 failed`.
-- Also fixed while in these files: a regex-scoping bug in
-  `install-mac.dry-run.sh`'s MCP-server counter (the new `skills:` block's
-  `external_dirs:` line matched the same 2-space-indent `key:` pattern used to
-  count MCP servers, inflating the count by 1 — rescoped to only count lines
-  between `mcp_servers:` and the next top-level key). Updated ~15 stale doc/
-  comment references to `~/.hermes/skills/imported/` across `CLAUDE.md`,
-  `docs/*.md`, `ai-config/skills/READMEDD.md`, `ai-config/skills/ai-os-quickstart/SKILL.md`,
-  `prompts/setup/03-required-skills.md`, and `docs/model-routing.md`.
+## References
 
-## Round 5 additions (continuing "todo lo pendiente"): Graphiti MCP architecture decision
+- Previous chat playground: `demo/src/components/LiveConfigPlayground.tsx` (to be deleted in block 1)
+- Catalog of 72 fields: `demo/src/content/config-reference.ts`
+- Field card component: `demo/src/components/ConfigField.tsx` (we mirror its visual style for the form controls)
+- Persona config: `demo/src/lib/chat-configs.ts` — `buildCodingBuddyConfig()`
+- `useChat().updateConfig` signature: `src/components/chat/ChatProvider.tsx:114-116`
+- Spec template: `specs/spec_template.md`
+- AI-OS workflow: `workflows/project_start.md`
 
-- **Decision made**: run the pre-built `zepai/knowledge-graph-mcp:1.0.2-standalone`
-  Docker image (pinned tag, not `:latest`) over HTTP transport against the
-  FalkorDB container AI-OS already manages, rather than vendoring
-  `getzep/graphiti` under `vendor/graphiti/`. Rationale: vendoring would add a
-  second language toolchain (uv/Python) and a git-submodule-style dependency
-  just to run one MCP server; the versioned Docker image is pinned exactly the
-  same way FalkorDB itself already is (checked available tags on Docker Hub —
-  `1.0.2-standalone` is the current stable "no bundled database" variant meant
-  for exactly this "bring your own FalkorDB/Neo4j" case).
-- **Implemented**: `memory/falkordb/docker-compose.yml` now declares a shared
-  `aios-memory` Docker network (was previously using an implicit
-  project-default network, unreachable-by-name from other compose projects).
-  New `memory/graphiti/docker-compose.yml` runs `aios-graphiti-mcp` on that
-  network, reaching FalkorDB at `redis://aios-falkordb:6379` (container name,
-  not the loopback-only published port), HTTP published on
-  `127.0.0.1:8021` → `/mcp/`, requires `OPENAI_API_KEY` (fails fast via
-  Compose's `${VAR:?message}` syntax if unset — cannot silently start
-  half-configured). `ai-config/mcp/graphiti.yaml` updated to
-  `transport: http`, `url: http://127.0.0.1:8021/mcp/`; confirmed
-  `setup/generate-mcp-config.py`'s existing HTTP-transport branch renders this
-  correctly with no code changes needed. `memory/ai-os-memory.sh`'s `status`
-  subcommand now also reports the Graphiti container/health passively (never
-  starts or stops it — stays out of `ai-os memory start`/`stop` since it needs
-  a secret and hasn't been smoke-tested).
-- **Explicitly NOT done**: actually starting the container. This session had
-  Docker not running and no `OPENAI_API_KEY` available — starting it blind
-  would violate this plan's own constraint ("Do not claim support that is not
-  configured and tested"). `enabled: false` stays until someone runs the 4
-  documented activation steps and confirms the health check for real.
-- **Verified this session**: both edited/new YAML files parse cleanly with
-  PyYAML; `bash -n memory/ai-os-memory.sh` passes; re-ran
-  `install-mac.dry-run.sh` end-to-end (with PyYAML available via a throwaway
-  venv on `PATH`, matching what the real installer already ensures via
-  `pip-packages.txt`) — full pass, `MCP config: 9 servers generated` (Graphiti
-  correctly excluded while disabled); 5/5 unit tests still passing.
+## Notes
 
-## Round 6 additions (continuing "todo lo pendiente"): Graphiti MCP real smoke test — PASSED
-
-- Docker was running this time (it wasn't in Round 5). Ran the actual
-  activation steps documented in `memory/graphiti/docker-compose.yml`:
-  1. `cd memory/falkordb && docker compose up -d` — recreated `aios-falkordb`
-     so it joined the new `aios-memory` network (it had been running on the
-     old implicit `falkordb_default` network from before this session's
-     changes); confirmed `Up ... (healthy)` and `redis-cli PING` → `PONG`.
-  2. `cd memory/graphiti && OPENAI_API_KEY=<placeholder> docker compose up -d`
-     — pulled `zepai/knowledge-graph-mcp:1.0.2-standalone` for real, container
-     came up healthy.
-  3. Logs confirmed a genuine connection: `Successfully initialized Graphiti
-     client`, multiple `graphiti_core.driver.falkordb_driver` index checks
-     against the real FalkorDB instance, `Running MCP server with streamable
-     HTTP transport on 0.0.0.0:8000`.
-  4. `curl -sf http://127.0.0.1:8021/health` → `{"status":"healthy","service":
-     "graphiti-mcp"}`.
-  5. Torn down the test container afterward (`docker compose down`) since its
-     `OPENAI_API_KEY` was a placeholder, not a real credential — did not leave
-     a bogus-keyed service running unattended.
-- **This proves the deployment path** (pinned image pulls, joins the shared
-  Docker network, reaches FalkorDB by container name, HTTP transport starts
-  and serves `/health`) **genuinely works**, which is what the Round 5 caveat
-  was blocked on. It does **not** prove actual knowledge-graph tool calls
-  (`add_memory`/`search`, which need a real OpenAI key for entity extraction)
-  — that remains explicitly flagged as unverified in both
-  `ai-config/mcp/graphiti.yaml` and the compose file's header comment.
-- On the strength of this evidence, flipped `ai-config/mcp/graphiti.yaml`'s
-  `enabled` from `false` to `true`. Re-ran `install-mac.dry-run.sh` and the
-  unit tests: `MCP config: 10 servers generated` (up from 9), 5/5 unit tests
-  still passing.
-- Fixed the now-stale "10 declarative MCP servers (9 enabled)" / "graphiti
-  disabled" claims across `README.md` (4 places), `docs/architecture.md`,
-  `ai-config/skills/ai-os-karpathy/SKILL.md`,
-  `ai-config/skills/ai-os-memory/SKILL.md`, and
-  `prompts/daily-use/01-daily-start.md` to say all 10 are enabled, with the
-  real-API-key caveat spelled out.
-- `memory/ai-os-memory.sh`'s Graphiti status line reworded from "optional,
-  disabled" to "opt-in — export a real OPENAI_API_KEY" to match reality.
+- We keep `ConfigReference.tsx` and `ConfigField.tsx` because the doc grid below the playground still uses them — they're not duplicated by the new form, they complement it.
+- The user's decision "todos los posibles" (all possible fields) drove the 72-field scope. The collapsible-section pattern keeps the form usable at that scale.
+- The previously shipped `LiveConfigPlayground.tsx` was 258 lines and exposed only 4 fields. The replacement is one file but ~600-700 lines because the field count demands explicit control elements per field.
+- Branching: this is `main`, same as the previous session's commits. No branch isolation needed (no `design-v3-definition` sandbox pattern here — this is the public npm demo).
