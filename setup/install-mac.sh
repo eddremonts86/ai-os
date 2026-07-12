@@ -482,8 +482,11 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     fi
 
     # Pull nomic-embed-text (274MB, one-time)
-    OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text 2>&1 | tail -3 || warn "  ollama pull failed (will retry on first use)"
-    ok "  nomic-embed-text ready"
+    if OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text 2>&1 | tail -3; then
+      ok "  nomic-embed-text ready"
+    else
+      warn "  ollama pull failed (will retry on first use)"
+    fi
   else
     warn "  ollama not installed (run: brew install ollama) — embedding features disabled"
   fi
@@ -495,12 +498,20 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
       mkdir -p data
     fi
     if docker compose version >/dev/null 2>&1; then
-      docker compose up -d 2>&1 | tail -3 || warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory/falkordb && docker compose up -d)"
+      if docker compose up -d 2>&1 | tail -3; then
+        ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
+        ok "    image: falkordb/falkordb:v4.18.11 (pinned, container_name: aios-falkordb)"
+      else
+        warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory/falkordb && docker compose up -d)"
+      fi
     else
-      docker-compose up -d 2>&1 | tail -3 || warn "  docker-compose up failed"
+      if docker-compose up -d 2>&1 | tail -3; then
+        ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
+        ok "    image: falkordb/falkordb:v4.18.11 (pinned, container_name: aios-falkordb)"
+      else
+        warn "  docker-compose up failed"
+      fi
     fi
-    ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
-  ok "    image: falkordb/falkordb:v4.18.11 (pinned, container_name: aios-falkordb)"
   else
     warn "  docker not running (start Docker Desktop) — graph memory disabled until then"
   fi
@@ -560,9 +571,12 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   # grepai via go install (pinned: bump this tag deliberately, not @latest — P1-4)
   GREPAI_VERSION="v0.35.0"
   if command -v go >/dev/null 2>&1; then
-    go install "github.com/yoanbernabeu/grepai/cmd/grepai@${GREPAI_VERSION}" 2>&1 | tail -2 || warn "  go install grepai failed (will retry on first use)"
-    [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
-    ok "  grepai ${GREPAI_VERSION} installed via go install"
+    if go install "github.com/yoanbernabeu/grepai/cmd/grepai@${GREPAI_VERSION}" 2>&1 | tail -2; then
+      [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
+      ok "  grepai ${GREPAI_VERSION} installed via go install"
+    else
+      warn "  go install grepai failed (will retry on first use)"
+    fi
   else
     warn "  go not installed (grepai skipped; install: brew install go)"
   fi
