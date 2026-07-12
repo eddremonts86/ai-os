@@ -56,27 +56,36 @@ foreach ($df in $dotfiles) {
     }
 }
 
-# ─── 3. Global skills + CLI executables (exact-count check, not existence-only) ───
+# ─── 3. Global skills + CLI executables (exact name-set check, not count-only) ───
 # Previously this only checked that a directory existed, so a client missing
-# 1+ skills still counted as a pass. Compare against the exact source count.
+# 1+ skills still counted as a pass. A plain count comparison also breaks the
+# moment ECC or claude.tools/gstack are installed (they legitimately add more
+# names on top of the baseline). Compare against the exact set of expected
+# skill NAMES instead — catches a real gap no matter what optional bundles are
+# also installed.
 Section "3. Global skills + CLI executables"
-$flatSkillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory -ErrorAction SilentlyContinue |
-    Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") }).Count
-$gstackSkillCount = 0
+$expectedSkillNames = @()
+$expectedSkillNames += Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory -ErrorAction SilentlyContinue |
+    Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object { $_.Name }
 if (Test-Path "$AIOSRoot\vendor\gstack") {
-    $gstackSkillCount = (Get-ChildItem "$AIOSRoot\vendor\gstack" -Directory -ErrorAction SilentlyContinue |
-        Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") }).Count
+    $expectedSkillNames += Get-ChildItem "$AIOSRoot\vendor\gstack" -Directory -ErrorAction SilentlyContinue |
+        Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object { $_.Name }
 }
-$expectedSkillCount = $flatSkillCount + $gstackSkillCount
-Log "  Source of truth: $flatSkillCount flat skills + $gstackSkillCount gstack skills = $expectedSkillCount expected per client"
+$expectedSkillNames = $expectedSkillNames | Sort-Object -Unique
+$expectedSkillCount = $expectedSkillNames.Count
+Log "  Source of truth: $expectedSkillCount expected skill names per client (flat + gstack)"
 
 # id, relative path, required, executable name
+# Hermes is intentionally absent here: it natively supports skills.external_dirs
+# (confirmed against https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
+# on 2026-07-12) and reads ~/.agents/skills directly instead of getting a
+# symlinked copy under ~/.hermes/skills/imported/ (P1-2). See the dedicated
+# check right after this loop.
 $clients = @(
     @{ Id = "claude"; Path = ".claude\skills"; Required = $true; Bin = "claude" },
     @{ Id = "codex"; Path = ".codex\skills"; Required = $true; Bin = "codex" },
     @{ Id = "gemini"; Path = ".gemini\skills"; Required = $true; Bin = "gemini" },
-    @{ Id = "antigravity"; Path = ".agents\skills"; Required = $true; Bin = "agy" },
-    @{ Id = "hermes"; Path = ".hermes\skills\imported"; Required = $true; Bin = "hermes" }
+    @{ Id = "antigravity"; Path = ".agents\skills"; Required = $true; Bin = "agy" }
 )
 foreach ($client in $clients) {
     $cliDir = Join-Path $HomeDir $client.Path
@@ -98,21 +107,39 @@ foreach ($client in $clients) {
         }
         continue
     }
-    $deployed = (Get-ChildItem $cliDir -Force -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -ne "READMEDD.md" -and $_.Name -ne "taste-skill-llms.txt" -and $_.Name -ne ".system" }).Count
-    if ($deployed -eq $expectedSkillCount) {
+    $deployedNames = @(Get-ChildItem $cliDir -Force -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -ne "READMEDD.md" -and $_.Name -ne "taste-skill-llms.txt" -and $_.Name -ne ".system" } |
+        ForEach-Object { $_.Name })
+    $missingNames = @($expectedSkillNames | Where-Object { $deployedNames -notcontains $_ })
+    if ($missingNames.Count -eq 0) {
         if ($client.Required) {
-            ReqOk "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills (exact match)"
+            ReqOk "  [$($client.Id)] ${label}: $($deployedNames.Count)/$expectedSkillCount+ skills (all expected names present)"
         } else {
-            OptOk "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills (exact match)"
+            OptOk "  [$($client.Id)] ${label}: $($deployedNames.Count)/$expectedSkillCount+ skills (all expected names present)"
         }
     } else {
+        $missingList = $missingNames -join ", "
         if ($client.Required) {
-            ReqFail "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills — MISMATCH (rerun setup/install-windows.ps1)"
+            ReqFail "  [$($client.Id)] ${label}: missing $($missingNames.Count) expected skill(s) (rerun setup/install-windows.ps1): $missingList"
         } else {
-            OptMiss "  [$($client.Id)] ${label}: $deployed/$expectedSkillCount skills — mismatch (optional client)"
+            OptMiss "  [$($client.Id)] ${label}: missing $($missingNames.Count) expected skill(s) (optional client): $missingList"
         }
     }
+}
+
+# Hermes: executable presence (informational) + skills.external_dirs check
+# (required only when Hermes is actually installed, mirroring the MCP check).
+if (Get-Command hermes -ErrorAction SilentlyContinue) {
+    Ok "  [hermes] executable 'hermes' found in PATH"
+    $hermesConfig = "$HomeDir\.hermes\config.yaml"
+    if ((Test-Path $hermesConfig) -and (Select-String -Path $hermesConfig -SimpleMatch "$HomeDir\.agents\skills" -Quiet)) {
+        ReqOk "  [hermes] ~/.hermes/config.yaml declares ~/.agents/skills under skills.external_dirs"
+    } else {
+        ReqFail "  [hermes] ~/.hermes/config.yaml missing ~/.agents/skills under skills.external_dirs (run setup/install-windows.ps1)"
+    }
+} else {
+    Warn "  [hermes] executable 'hermes' not found in PATH (skills stay available for when it's installed)"
+    OptMiss "  [hermes] not installed, skipping skills.external_dirs check"
 }
 
 # ─── 3b. Global instruction bridge ───

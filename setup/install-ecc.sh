@@ -6,10 +6,11 @@
 #   1. Verifies that vendor/ecc/ exists (the vendored copy is the source of truth).
 #   2. Symlinks vendor/ecc/ -> ~/.claude/plugins/ecc (so Claude Code sees it as a plugin).
 #   3. Symlinks every ECC skill from ai-config/skills/ (which is already propagated
-#      by install-mac.sh step 5) into ~/.codex/skills, ~/.gemini/skills,
-#      ~/.agents/skills and ~/.hermes/skills/imported.
+#      by install-mac.sh step 5) into ~/.codex/skills, ~/.gemini/skills, and
+#      ~/.agents/skills. Hermes reads ~/.agents/skills via skills.external_dirs
+#      (config.yaml) instead of a separate symlinked copy (P1-2).
 #      NOTE: This script does NOT re-propagate ai-config/skills/ -> ~/.claude/skills
-#      because that is already done by install-mac.sh. We only top up the other 4 CLIs.
+#      because that is already done by install-mac.sh. We only top up the other 3 CLI dirs.
 #      If you ran install-ecc.sh BEFORE install-mac.sh, the ~/.claude/ link is also
 #      handled here (idempotent overwrite).
 #   4. Optionally installs the chrome-devtools-mcp server (the MCP ECC depends on).
@@ -169,11 +170,12 @@ for skill_dir in "$ECC_SKILLS_SRC"/*/; do
 
   # ~/.claude/skills/<name> (Claude Code uses these as the canonical plugin skills)
   do_link "$HOME_DIR/.claude/skills/$name" "$skill_dir" "~/.claude/skills/$name"
-  # Other 4 CLIs (Codex, Gemini, Antigravity, Hermes)
+  # Other 3 CLIs with their own skill dirs (Codex, Gemini, Antigravity).
+  # Hermes reads ~/.agents/skills via skills.external_dirs (config.yaml) instead
+  # of a separate symlinked copy under ~/.hermes/skills/imported/ (P1-2).
   for cli_dir in "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
     do_link "$cli_dir/$name" "$skill_dir" "$(basename "$cli_dir")/$name"
   done
-  do_link "$HOME_DIR/.hermes/skills/imported/$name" "$skill_dir" "~/.hermes/skills/imported/$name"
   SKILL_LINK_COUNT=$((SKILL_LINK_COUNT + 1))
 done
 
@@ -312,8 +314,9 @@ else
     fail=$((fail + 1))
   fi
 
-  # Per-CLI count of correctly-pointing ECC skill symlinks
-  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported"; do
+  # Per-CLI count of correctly-pointing ECC skill symlinks (Hermes is covered
+  # via skills.external_dirs, not a symlinked copy — checked separately if needed).
+  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills"; do
     count=0
     broken=0
     for skill_dir in "$ECC_SKILLS_SRC"/*/; do

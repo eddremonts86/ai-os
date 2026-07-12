@@ -106,13 +106,12 @@ foreach ($df in $dotfiles) {
 }
 
 # ─── 3. Simulate skills propagation ───
-Log "3. Simulating flat skills propagation to 5 CLIs..."
+Log "3. Simulating flat skills propagation to 4 CLIs (Hermes reads ~/.agents/skills via skills.external_dirs)..."
 $cliDirs = @(
     "$TempHome\.claude\skills",
     "$TempHome\.codex\skills",
     "$TempHome\.gemini\skills",
-    "$TempHome\.agents\skills",
-    "$TempHome\.hermes\skills\imported"
+    "$TempHome\.agents\skills"
 )
 
 $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
@@ -148,7 +147,8 @@ if ($pythonCmd) {
     $pythonArgs = @(
         (Join-Path $AIOSRoot "setup\generate-mcp-config.py"),
         (Join-Path $AIOSRoot "ai-config\mcp"),
-        $tempConfig
+        $tempConfig,
+        (Join-Path $TempHome ".agents\skills")
     )
     & $pythonCmd.Source $pythonArgs 2>&1 | Out-Null
     if (Test-Path $tempConfig) {
@@ -164,6 +164,12 @@ if ($pythonCmd) {
             }
         } else {
             Err "MCP config has no mcp_servers section"
+            exit 1
+        }
+        if ($content -match "external_dirs:") {
+            Ok "  skills.external_dirs present (Hermes skill delivery, P1-2)"
+        } else {
+            Err "  MCP config missing skills.external_dirs"
             exit 1
         }
     } else {

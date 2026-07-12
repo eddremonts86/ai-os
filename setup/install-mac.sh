@@ -224,21 +224,56 @@ if [ ! -d "$HOME_DIR/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
   ok "   Powerlevel10k installed"
 fi
 
-# Additional plugins (pinned tags, not the default branch)
-declare -A ZSH_PLUGIN_TAGS=(
-  [zsh-autosuggestions]="$ZSH_AUTOSUGGESTIONS_TAG"
-  [zsh-syntax-highlighting]="$ZSH_SYNTAX_HIGHLIGHTING_TAG"
-  [zsh-completions]="$ZSH_COMPLETIONS_TAG"
-)
+# Additional plugins (pinned tags, not the default branch).
+# NOTE: macOS ships bash 3.2 as /bin/bash (Apple never upgraded past the last
+# GPLv2 release) and this script's `#!/usr/bin/env bash` shebang resolves to
+# that on any Mac without a newer bash earlier on PATH. bash 3.2 has no
+# associative arrays (`declare -A`) — it silently falls back to arithmetic
+# indexed-array subscripts, so `[zsh-autosuggestions]` gets parsed as
+# `zsh - autosuggestions` and fails with "zsh: unbound variable" under
+# `set -u`. Use a case statement instead; it works on every bash version.
 for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-completions; do
   if [ ! -d "$HOME_DIR/.oh-my-zsh/custom/plugins/$plugin" ]; then
-    plugin_tag="${ZSH_PLUGIN_TAGS[$plugin]}"
+    case "$plugin" in
+      zsh-autosuggestions) plugin_tag="$ZSH_AUTOSUGGESTIONS_TAG" ;;
+      zsh-syntax-highlighting) plugin_tag="$ZSH_SYNTAX_HIGHLIGHTING_TAG" ;;
+      zsh-completions) plugin_tag="$ZSH_COMPLETIONS_TAG" ;;
+    esac
     log "   Installing plugin: $plugin (${plugin_tag})"
     git clone --depth=1 --branch "$plugin_tag" "https://github.com/zsh-users/$plugin" \
       "${ZSH_CUSTOM:-$HOME_DIR/.oh-my-zsh/custom}/plugins/$plugin" 2>&1 | tail -1
   fi
 done
 ok "Oh My Zsh + plugins OK"
+echo ""
+
+# ─── 6b. Clean up the superseded Hermes symlink tree (P1-2) ───
+# Hermes now reads ~/.agents/skills via skills.external_dirs (step 9 below)
+# instead of getting a symlinked copy under ~/.hermes/skills/imported/. Remove
+# that old tree, but only if AI-OS made it (every entry is still a symlink
+# into ai-config/skills or vendor/gstack) — never touch real user content.
+OLD_HERMES_IMPORTED="$HOME_DIR/.hermes/skills/imported"
+if [ -d "$OLD_HERMES_IMPORTED" ]; then
+  safe_to_remove=1
+  for entry in "$OLD_HERMES_IMPORTED"/*; do
+    [ -e "$entry" ] || continue
+    if [ ! -L "$entry" ]; then
+      safe_to_remove=0
+      break
+    fi
+    tgt=$(readlink "$entry")
+    case "$tgt" in
+      *"/ai-config/skills/"*|*"/vendor/gstack/"*) ;;
+      *) safe_to_remove=0; break ;;
+    esac
+  done
+  if [ "$safe_to_remove" = "1" ]; then
+    rm -rf "$OLD_HERMES_IMPORTED"
+    ok "Removed superseded ~/.hermes/skills/imported/ (Hermes now reads ~/.agents/skills directly)"
+  else
+    warn "~/.hermes/skills/imported/ contains non-AI-OS content; leaving it in place (Hermes also reads ~/.agents/skills now, so skills may appear twice)"
+  fi
+fi
 echo ""
 
 # ─── 7. Global skills (native destinations from manifest) ───
@@ -248,7 +283,7 @@ log "7. Setting global skills in native client destinations..."
 # bundles in ai-config/skills/ that have a NESTED layout (claude.tools, ECC) are
 # installed by their own scripts (install-claude-tools.sh, install-ecc.sh).
 #   Claude ~/.claude/skills | Codex ~/.codex/skills | Gemini ~/.gemini/skills
-#   Antigravity ~/.agents/skills | Hermes ~/.hermes/skills/imported
+#   Antigravity ~/.agents/skills | Hermes reads ~/.agents/skills via skills.external_dirs (no copy)
 #   MiniMax Code ~/.minimax/skills (global skills.paths entry in opencode.json)
 while IFS=$'\t' read -r client_id client_path client_required; do
   cli_dir="$HOME_DIR/$client_path"
@@ -277,11 +312,13 @@ ok "Skills propagated to manifest client destinations ($SKILL_COUNT flat skills 
 echo ""
 
 # ─── 7c. Vendored gstack skills (read-only subtree at vendor/gstack/) ───
-# Mirrors the ECC pattern: optional, third-party, propagated to the same 6 CLIs.
+# Mirrors the ECC pattern: optional, third-party, propagated to the same 5 CLIs
+# that get flat-skill symlinks (Hermes reads these via skills.external_dirs —
+# ~/.agents/skills already includes them once Antigravity's copy is updated).
 # Currently inlines 3 skills (spec, context-save, context-restore). Refresh with:
 #   git -C "$AI_OS_ROOT/vendor/gstack" pull  (when an upstream is configured)
 if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
-  log "7c. Setting vendored gstack skills in 6 CLIs..."
+  log "7c. Setting vendored gstack skills in 5 CLIs..."
   GSTACK_COUNT=0
   while IFS=$'\t' read -r client_id client_path client_required; do
     cli_dir="$HOME_DIR/$client_path"
@@ -338,7 +375,7 @@ if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && [ -d "$HOME_DIR/.minimax/ag
     [ -d "$agent_dir" ] && cp "$MM_OVERLAY" "$agent_dir/agent.md"
   done
 fi
-# VS Code (GitHub Copilot Chat): unlike the 6 CLIs above, Copilot Chat already
+# VS Code (GitHub Copilot Chat): unlike the CLIs above, Copilot Chat already
 # discovers ~/.agents/skills on this Mac by whatever mechanism backs its custom
 # chat mode, so no skill-symlink step is needed here. It only needs the bridge
 # block, appended (idempotent) to its global custom-instructions file — the
@@ -401,9 +438,9 @@ else
 fi
 echo ""
 
-# ─── 9. MCP servers (regenerate ~/.hermes/config.yaml) ───
+# ─── 9. MCP servers + Hermes external skills dir (regenerate ~/.hermes/config.yaml) ───
 if [ "${SKIP_MCP:-0}" != "1" ]; then
-  log "9. Configuring MCP servers from ai-config/mcp/*.yaml..."
+  log "9. Configuring MCP servers + skills.external_dirs from ai-config/mcp/*.yaml..."
 
   # Generate mcp_servers block for ~/.hermes/config.yaml
   MCP_YAMLS=()
@@ -420,9 +457,9 @@ if [ "${SKIP_MCP:-0}" != "1" ]; then
 
   # Generate mcp_servers block with standalone python script (also works on Windows)
   if command -v python3 >/dev/null 2>&1; then
-    python3 "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml"
+    python3 "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml" "$HOME_DIR/.agents/skills"
   elif command -v python >/dev/null 2>&1; then
-    python "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml"
+    python "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml" "$HOME_DIR/.agents/skills"
   else
     warn "Python not found, cannot generate MCP config automatically"
   fi

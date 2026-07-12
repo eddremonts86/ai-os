@@ -221,7 +221,7 @@ The script:
 1. Verifies `vendor/codex-plugin-cc/` exists (warns and continues if not).
 2. Verifies all 12 expected skill directories are present under `ai-config/skills/`.
 3. Symlinks `vendor/codex-plugin-cc/` → `~/.claude/plugins/codex-plugin-cc` (if vendored).
-4. Symlinks the 12 individual skills into `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`, and `~/.hermes/skills/imported/`. (Claude is handled by `install-mac.sh`.)
+4. Symlinks the 12 individual skills into `~/.codex/skills/`, `~/.gemini/skills/`, and `~/.agents/skills/`. (Claude is handled by `install-mac.sh`; Hermes reads `~/.agents/skills/` natively via `skills.external_dirs` — no separate symlink.)
 5. Symlinks the 3 codex-plugin-cc internal skills into the core CLIs.
 6. In `--check` mode, validates structure only: package.json present, every `SKILL.md` has `---` delimiters and `name:` + `description:` fields.
 

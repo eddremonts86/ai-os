@@ -48,10 +48,13 @@ class GenerateMcpConfigTests(unittest.TestCase):
     def write_definition(self, filename, definition):
         (self.mcp_dir / filename).write_text(json.dumps(definition), encoding="utf-8")
 
-    def run_generator(self):
+    def run_generator(self, external_skills_dir=None):
+        argv = [str(GENERATOR_PATH), str(self.mcp_dir), str(self.config_path)]
+        if external_skills_dir is not None:
+            argv.append(external_skills_dir)
         output = io.StringIO()
         with patch.object(self.generator, "yaml", JsonYaml), patch.object(
-            sys, "argv", [str(GENERATOR_PATH), str(self.mcp_dir), str(self.config_path)]
+            sys, "argv", argv
         ), contextlib.redirect_stdout(output):
             exit_code = self.generator.main()
         return exit_code, output.getvalue()
@@ -123,6 +126,39 @@ class GenerateMcpConfigTests(unittest.TestCase):
         config = json.loads(self.config_path.read_text(encoding="utf-8"))
         self.assertNotIn("managed", config["mcp_servers"])
         self.assertIn("personal", config["mcp_servers"])
+
+    def test_adds_external_skills_dir_to_fresh_config(self):
+        self.config_path.parent.mkdir()
+
+        exit_code, _ = self.run_generator(external_skills_dir="/home/user/.agents/skills")
+
+        self.assertEqual(exit_code, 0)
+        config = json.loads(self.config_path.read_text(encoding="utf-8"))
+        self.assertEqual(config["skills"]["external_dirs"], ["/home/user/.agents/skills"])
+
+    def test_preserves_existing_external_dirs_and_does_not_duplicate(self):
+        self.config_path.parent.mkdir()
+        self.config_path.write_text(
+            json.dumps({"skills": {"external_dirs": ["/home/shared/team-skills"]}}),
+            encoding="utf-8",
+        )
+
+        exit_code, _ = self.run_generator(external_skills_dir="/home/user/.agents/skills")
+        self.assertEqual(exit_code, 0)
+        config = json.loads(self.config_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            config["skills"]["external_dirs"],
+            ["/home/shared/team-skills", "/home/user/.agents/skills"],
+        )
+
+        # Idempotent: running it again does not duplicate the entry.
+        exit_code, _ = self.run_generator(external_skills_dir="/home/user/.agents/skills")
+        self.assertEqual(exit_code, 0)
+        config = json.loads(self.config_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            config["skills"]["external_dirs"],
+            ["/home/shared/team-skills", "/home/user/.agents/skills"],
+        )
 
 
 if __name__ == "__main__":

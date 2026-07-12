@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""Generate a merge-preserving Hermes MCP configuration from AI-OS definitions.
+"""Generate a merge-preserving Hermes config from AI-OS definitions.
 
 Usage:
-  python3 setup/generate-mcp-config.py ai-config/mcp ~/.hermes/config.yaml
+  python3 setup/generate-mcp-config.py ai-config/mcp ~/.hermes/config.yaml [external_skills_dir]
+
+The optional third argument is added to `skills.external_dirs` (deduplicated,
+existing user entries preserved) so Hermes scans it natively instead of AI-OS
+symlinking every skill into `~/.hermes/skills/imported/`. See
+https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
+("External Skill Directories") — confirmed current as of 2026-07-12.
 
 PyYAML is required because this command must preserve arbitrary user YAML safely.
 """
@@ -40,6 +46,32 @@ def load_yaml_mapping(path, label):
 
 def expand_home(value, home):
     return str(value).replace("${HOME}", home).replace("${USERPROFILE}", home)
+
+
+def merge_external_skill_dir(existing, external_dir):
+    """Ensure `external_dir` is present in existing['skills']['external_dirs'].
+
+    Preserves any other entries the user already configured (order, exact
+    strings) and is idempotent — running it twice never duplicates the entry.
+    """
+    skills_section = existing.get("skills")
+    if skills_section is None:
+        skills_section = {}
+    elif not isinstance(skills_section, dict):
+        raise ValueError("existing config skills must be a mapping")
+
+    external_dirs = skills_section.get("external_dirs")
+    if external_dirs is None:
+        external_dirs = []
+    elif not isinstance(external_dirs, list):
+        raise ValueError("existing config skills.external_dirs must be a list")
+
+    if external_dir not in external_dirs:
+        external_dirs = external_dirs + [external_dir]
+
+    skills_section["external_dirs"] = external_dirs
+    existing["skills"] = skills_section
+    return existing
 
 
 def render_server(definition, home):
@@ -100,11 +132,12 @@ def write_yaml_atomically(path, data):
 def main():
     if yaml is None:
         return fail("PyYAML is required for merge-preserving MCP generation. Install PyYAML and retry.")
-    if len(sys.argv) != 3:
-        return fail("Usage: python3 generate-mcp-config.py <mcp_dir> <config_path>")
+    if len(sys.argv) not in (3, 4):
+        return fail("Usage: python3 generate-mcp-config.py <mcp_dir> <config_path> [external_skills_dir]")
 
     mcp_dir = Path(sys.argv[1])
     config_path = Path(sys.argv[2])
+    external_skills_dir = sys.argv[3] if len(sys.argv) == 4 else None
     if not mcp_dir.is_dir():
         return fail(f"MCP directory does not exist: {mcp_dir}")
 
@@ -137,6 +170,12 @@ def main():
         merged_servers.pop(name, None)
     merged_servers.update(generated_servers)
     existing["mcp_servers"] = merged_servers
+
+    if external_skills_dir:
+        try:
+            existing = merge_external_skill_dir(existing, external_skills_dir)
+        except ValueError as error:
+            return fail(str(error))
 
     try:
         if config_path.exists():

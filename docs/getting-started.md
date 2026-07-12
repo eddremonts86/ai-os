@@ -55,24 +55,21 @@ git config --global user.email "you@email.com"
 bash setup/verify.sh
 ```
 
-**Expected output:**
+**Expected output (abridged; exact skill/MCP counts vary by checkout):**
 ```
 [ai-os verify] ✅ AI-OS at /Users/edd/Projects/ai-os
 [ai-os verify] ✅   .zshrc → /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc
-[ai-os verify] ✅   .p10k.zsh → ...
-[ai-os verify] ✅   .gitignore_global → ...
-[ai-os verify] ✅   ~/.claude/skills: <count> skills
-[ai-os verify] ✅   ~/.codex/skills: <count> skills
-[ai-os verify] ✅   ~/.gemini/skills: <count> skills
-[ai-os verify] ✅   ~/.agents/skills: <count> skills
-[ai-os verify] ✅   ~/.hermes/skills/imported: <count> skills
+[ai-os verify]   Source of truth: <N> flat skills + <N> gstack skills = <N> expected per client
+[ai-os verify] ✅   [claude] ~/.claude/skills: <N>/<N> skills (exact match)
+[ai-os verify] ✅   [codex] ~/.codex/skills: <N>/<N> skills (exact match)
+[ai-os verify] ✅   [gemini] ~/.gemini/skills: <N>/<N> skills (exact match)
+[ai-os verify] ✅   [antigravity] ~/.agents/skills: <N>/<N> skills (exact match)
+[ai-os verify] ✅   [hermes] ~/.hermes/config.yaml declares ~/.agents/skills under skills.external_dirs
 [ai-os verify] ✅ 14/14 superpowers skills OK
-[ai-os verify] ✅ MCP servers configured: 7
-[ai-os verify] ✅ Oh My Zsh installed
-[ai-os verify] ✅ Powerlevel10k installed
-[ai-os verify] ✅ Warp with CaskaydiaCove Nerd Font
-[ai-os verify] Passed: <count>
-[ai-os verify] ✅ Failed: 0
+[ai-os verify] ✅ MCP servers configured: <N>
+[ai-os verify] Required: <N> passed, 0 failed
+[ai-os verify] Optional/best-effort: <N> present, <N> missing or not configured (does not block install)
+[ai-os verify] ✅ AI-OS is correctly installed. 🎉
 ```
 
 ## Step 5: Try AI-OS

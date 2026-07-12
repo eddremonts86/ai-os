@@ -53,28 +53,42 @@ for dotfile in ".zshrc" ".p10k.zsh" ".gitignore_global"; do
   fi
 done
 
-# ─── 3. Global skills + CLI executables (exact-set check, not existence-only) ───
+# ─── 3. Global skills + CLI executables (exact name-set check, not count-only) ───
 # P0-4 fix: previously this only checked that a directory existed, so a client
 # missing 1+ skills (or an absent CLI executable) still counted as a pass. Each
-# client now gets an exact-count comparison against the source of truth, and
-# the CLI executable is checked and reported separately so "skills deployed"
-# and "CLI installed" are never conflated into one misleading green check.
+# client now gets checked against the exact set of expected skill NAMES (not
+# just a count) — a plain count comparison breaks the moment a client also has
+# ECC (271 skills) or claude.tools/gstack installed, since those legitimately
+# add more names on top of the baseline and can even net-change the total via
+# symlink name collisions. Checking names catches a real missing skill no
+# matter what optional bundles are also installed. The CLI executable is
+# checked and reported separately so "skills deployed" and "CLI installed" are
+# never conflated into one misleading green check.
 section "3. Global skills + CLI executables"
-FLAT_SKILL_COUNT=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
-GSTACK_SKILL_COUNT=0
-if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
-  GSTACK_SKILL_COUNT=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
-fi
-EXPECTED_SKILL_COUNT=$((FLAT_SKILL_COUNT + GSTACK_SKILL_COUNT))
-log "  Source of truth: $FLAT_SKILL_COUNT flat skills + $GSTACK_SKILL_COUNT gstack skills = $EXPECTED_SKILL_COUNT expected per client"
+EXPECTED_SKILL_NAMES=$(
+  {
+    find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" 2>/dev/null \
+      | sed -E 's#.*/([^/]+)/SKILL\.md$#\1#'
+    if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
+      find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" 2>/dev/null \
+        | sed -E 's#.*/([^/]+)/SKILL\.md$#\1#'
+    fi
+  } | sort -u
+)
+EXPECTED_SKILL_COUNT=$(echo "$EXPECTED_SKILL_NAMES" | grep -c .)
+log "  Source of truth: $EXPECTED_SKILL_COUNT expected skill names per client (flat + gstack)"
 
 # id:relative_path:required:executable
+# Hermes is intentionally absent here: it natively supports skills.external_dirs
+# (confirmed against https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
+# on 2026-07-12) and reads ~/.agents/skills directly instead of getting a
+# symlinked copy under ~/.hermes/skills/imported/ (P1-2). See the dedicated
+# check right after this loop.
 CLIENTS=(
   "claude:.claude/skills:true:claude"
   "codex:.codex/skills:true:codex"
   "gemini:.gemini/skills:true:gemini"
   "antigravity:.agents/skills:true:agy"
-  "hermes:.hermes/skills/imported:true:hermes"
   "minimax:.minimax/skills:false:mavis"
 )
 for entry in "${CLIENTS[@]}"; do
@@ -98,21 +112,41 @@ for entry in "${CLIENTS[@]}"; do
     fi
     continue
   fi
-  deployed=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$deployed" -eq "$EXPECTED_SKILL_COUNT" ]; then
+  deployed_names=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" 2>/dev/null -exec basename {} \; | sort -u)
+  missing_names=$(comm -23 <(echo "$EXPECTED_SKILL_NAMES") <(echo "$deployed_names"))
+  missing_count=$(echo "$missing_names" | grep -c . || true)
+  deployed_count=$(echo "$deployed_names" | grep -c . || true)
+  if [ -z "$missing_names" ]; then
     if [ "$c_required" = "true" ]; then
-      req_ok "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills (exact match)"
+      req_ok "  [$c_id] $label: $deployed_count/$EXPECTED_SKILL_COUNT+ skills (all expected names present)"
     else
-      opt_ok "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills (exact match)"
+      opt_ok "  [$c_id] $label: $deployed_count/$EXPECTED_SKILL_COUNT+ skills (all expected names present)"
     fi
   else
     if [ "$c_required" = "true" ]; then
-      req_fail "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills — MISMATCH (rerun setup/install-mac.sh)"
+      req_fail "  [$c_id] $label: missing $missing_count expected skill(s) (rerun setup/install-mac.sh): $(echo "$missing_names" | tr '\n' ' ')"
     else
-      opt_miss "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills — mismatch (optional client)"
+      opt_miss "  [$c_id] $label: missing $missing_count expected skill(s) (optional client): $(echo "$missing_names" | tr '\n' ' ')"
     fi
   fi
 done
+
+# Hermes: executable presence (informational) + skills.external_dirs check
+# (required only when Hermes is actually installed, mirroring the MCP check).
+if command -v hermes >/dev/null 2>&1; then
+  ok "  [hermes] executable 'hermes' found in PATH"
+else
+  warn "  [hermes] executable 'hermes' not found in PATH (skills stay available for when it's installed)"
+fi
+if command -v hermes >/dev/null 2>&1; then
+  if [ -f "$HOME_DIR/.hermes/config.yaml" ] && grep -qF "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/config.yaml" 2>/dev/null; then
+    req_ok "  [hermes] ~/.hermes/config.yaml declares ~/.agents/skills under skills.external_dirs"
+  else
+    req_fail "  [hermes] ~/.hermes/config.yaml missing ~/.agents/skills under skills.external_dirs (run setup/install-mac.sh)"
+  fi
+else
+  opt_miss "  [hermes] not installed, skipping skills.external_dirs check"
+fi
 
 # ─── 3b. Global instruction bridge (loads AI-OS in every project) ───
 # install-mac.sh renders the bridge template into a per-machine adapter file

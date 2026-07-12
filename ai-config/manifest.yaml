@@ -24,8 +24,15 @@ platforms:
         - { id: codex, path: .codex/skills, required: true }
         - { id: gemini, path: .gemini/skills, required: true }
         - { id: antigravity, path: .agents/skills, required: true }
-        - { id: hermes, path: .hermes/skills/imported, required: true }
         - { id: minimax, path: .minimax/skills, required: false }
+      # Hermes natively supports `skills.external_dirs` in config.yaml (confirmed
+      # against https://hermes-agent.nousresearch.com/docs/user-guide/features/skills
+      # on 2026-07-12, whose own example uses this exact path). It scans the
+      # directory directly — no per-skill symlinking needed, unlike the other
+      # clients above. This replaces the old `.hermes/skills/imported` symlink
+      # tree (P1-2: "duplicating all skills under imported/").
+      external_dirs:
+        - { id: hermes, path: .agents/skills }
     adapters:
       - { id: claude, path: .claude/CLAUDE.md, required: true }
       - { id: codex, path: .codex/AGENTS.md, required: true }
@@ -38,7 +45,8 @@ platforms:
         - { id: codex, path: .codex/skills, required: true }
         - { id: gemini, path: .gemini/skills, required: true }
         - { id: antigravity, path: .agents/skills, required: true }
-        - { id: hermes, path: .hermes/skills/imported, required: true }
+      external_dirs:
+        - { id: hermes, path: .agents/skills }
     adapters:
       - { id: claude, path: .claude/CLAUDE.md, required: true }
       - { id: codex, path: .codex/AGENTS.md, required: true }

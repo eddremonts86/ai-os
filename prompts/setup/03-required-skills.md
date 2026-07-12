@@ -82,12 +82,13 @@ fi
 ### 3. Distribute to other CLIs
 
 ```bash
-# Symlinks to Codex, Gemini, Antigravity, Hermes
+# Symlinks to Codex, Gemini, Antigravity.
+# Hermes reads ~/.agents/skills natively via skills.external_dirs in
+# ~/.hermes/config.yaml — no separate symlinked copy (P1-2).
 CLI_DIRS=(
   "$HOME/.codex/skills"
   "$HOME/.gemini/skills"
   "$HOME/.agents/skills"
-  "$HOME/.hermes/skills/imported"
 )
 
 for cli_dir in "${CLI_DIRS[@]}"; do
@@ -128,8 +129,8 @@ gh repo clone obra/superpowers /tmp/superpowers -- --depth=1
 cp -R "/tmp/superpowers/skills/<skill-name>" "$HOME/.claude/skills/"
 rm -rf /tmp/superpowers
 
-# Re-symlink
-for cli_dir in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills" "$HOME/.hermes/skills/imported"; do
+# Re-symlink (Hermes reads ~/.agents/skills via skills.external_dirs, no separate copy)
+for cli_dir in "$HOME/.codex/skills" "$HOME/.gemini/skills" "$HOME/.agents/skills"; do
   [ -d "$cli_dir" ] && ln -sf "$HOME/.claude/skills/<skill-name>" "$cli_dir/<skill-name>"
 done
 ```

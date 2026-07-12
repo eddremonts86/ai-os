@@ -89,7 +89,9 @@ Distributed via symlinks to the core CLIs:
 - `~/.codex/skills/<name>/`
 - `~/.gemini/skills/<name>/`
 - `~/.agents/skills/<name>/`
-- `~/.hermes/skills/imported/<name>/`
+
+Hermes reads `~/.agents/skills/` natively via `skills.external_dirs` in
+`~/.hermes/config.yaml` — no separate symlinked copy.
 
 `setup/install-mac.sh` does this automatically.
 

@@ -230,7 +230,7 @@ The script:
 
 1. Verifies `vendor/ecc/` exists and contains `skills/` (fails fast with a vendoring hint if not).
 2. Symlinks `vendor/ecc/` → `~/.claude/plugins/ecc`.
-3. Symlinks every skill in `vendor/ecc/skills/` into `~/.claude/skills/`, `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`, and `~/.hermes/skills/imported/` (271 × 5 = 1,355 symlinks).
+3. Symlinks every skill in `vendor/ecc/skills/` into `~/.claude/skills/`, `~/.codex/skills/`, `~/.gemini/skills/`, and `~/.agents/skills/` (271 × 4 = 1,084 symlinks). Hermes reads `~/.agents/skills/` natively via `skills.external_dirs` — no separate symlink tree.
 4. Validates `vendor/ecc/hooks/hooks.json` parses (counted 28 hooks).
 5. Optionally installs `chrome-devtools-mcp` via `npm install -g` (skippable with `SKIP_MCP=1`).
 6. In `--check` mode, verifies structure only: plugin manifest exists, skill frontmatter is well-formed, hooks.json parses.
