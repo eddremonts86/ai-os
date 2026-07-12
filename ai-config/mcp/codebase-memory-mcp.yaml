@@ -1,0 +1,6 @@
+name: codebase-memory-mcp
+description: AST-aware code indexing (158 languages, sub-ms queries, single static binary)
+transport: stdio
+command: ${HOME}/.local/bin/codebase-memory-mcp
+args: []
+enabled: true
