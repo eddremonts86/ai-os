@@ -35,7 +35,11 @@ Re-checked every item in the archived "Remaining work" list against the current 
 ## Remaining work (genuinely open, in priority order)
 
 1. **Graphiti real functional test** — blocked on a real `OPENAI_API_KEY`. Cannot be closed by an agent session without that secret. Activation steps are fully documented in `memory/graphiti/docker-compose.yml`.
-2. **FalkorDB Redis `requirepass`** — optional defense-in-depth; loopback-only binding already mitigates the actual risk the audit flagged.
-3. **Workflow commit/push authorization language review** — broader wording pass across `workflows/*.md`, lower priority, not attempted this round.
+2. **FalkorDB Redis `requirepass`** — deliberately NOT done (round 8 decision): loopback-only binding already mitigates the real risk the audit flagged, and adding a password touches FalkorDB's compose file, the Graphiti compose file that also connects to it, `memory/ai-os-memory.sh`'s health checks, and `.env.example` — real breakage risk for a single-user local dev stack, for marginal defense-in-depth gain. Left as an intentional low-priority deferral, not an oversight.
 
-Everything else from the original audit (`outputs/2026-07-12-ai-os-full-audit.md`) that was tractable without a live secret has been addressed and re-verified as of this round.
+Everything else from the original audit (`outputs/2026-07-12-ai-os-full-audit.md`) — including medium-severity #6 (push/PR authorization language, closed in round 8, commit `2f95651`) — has been addressed and re-verified.
+
+## Round 8 (continuing "todo lo pendiente")
+
+- **Medium-severity #6 closed**: confirmed `workflows/coding.md` step 11 and `workflows/project_start.md` step 7 both told the agent to commit → push → open PR as one automatic sequence, and `rules/ask_before_doing.md`'s External-impact section only gated "push to main without a PR" (a plain push to a feature branch, or opening a PR against non-main, wasn't explicitly listed). Fixed all three: both workflows now commit locally then explicitly stop and point at `rules/ask_before_doing.md` before push/PR; the rule file now lists `git push` (any branch) and opening a PR as always requiring confirmation. Grepped all 6 `workflows/*.md` files to confirm no other file had the same unchecked pattern.
+- **FalkorDB Redis auth reconsidered and explicitly declined** (not just skipped): weighed the real cost (multi-file change touching 2 compose files + health-check script + env template) against the marginal benefit (defense-in-depth on an already loopback-only, single-user local service) and decided against it this round — documented as a deliberate call, not a gap.
