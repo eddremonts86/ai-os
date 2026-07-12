@@ -90,7 +90,7 @@ The `ai-os-quickstart` skill auto-loads from:
 
 ## Next steps
 
-1. **Create your first Spec:** `nano ~/Projects/ai-os/specs/current_spec.md` and follow the template.
+1. **Create your first Spec:** set `AI_OS_ROOT` to the repository root, then run `nano "$AI_OS_ROOT/specs/current_spec.md"` and follow the template.
 2. **Load context:** the `ai-os-quickstart` skill guides you step by step.
 3. **Personalize:** edit files in `ai-config/`, `dev-env/dotfiles/`, `context/` according to your preferences.
 4. **Sync to the repo:** `git add . && git commit -m "personalize" && git push`.

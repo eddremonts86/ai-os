@@ -1,5 +1,5 @@
 name: graphiti
-description: Temporal knowledge graph memory (FalkorDB-backed, bi-temporal, MCP server)
+description: Disabled until a pinned Graphiti MCP deployment has an executable smoke test
 transport: stdio
 command: uv
 args:
@@ -21,4 +21,4 @@ env:
   # GRAPHITI_LLM_PROVIDER: ollama
   # GRAPHITI_LLM_MODEL: qwen2.5-coder:7b
   # OLLAMA_URL: http://localhost:11500
-enabled: true
+enabled: false

@@ -8,7 +8,7 @@
 #   command: executable (stdio only)
 #   args: command args (stdio)
 #   url: server URL (http only)
-#   env: environment variables (auto-loaded from local .env if not set)
+#   env: environment variables passed to the server process
 #   enabled: true/false (default true)
 #   description: optional
 #   always_enabled_tools: list of tools to enable by default (optional)

@@ -27,8 +27,9 @@ Software company. Role: full-stack developer.
 | **hermes-agent** (Nous Research) | Python 3.11 + Hermes | `~/Projects/eddremonts86/hermes-agent` (source repo; `~/.hermes` is the CLI config/data dir, not the repo) |
 | **iaWorkSpace** (meta-repo) | Multi-repo orchestration | `~/Projects/eddremonts86/iaWorkSpace` |
 | **ai-os** (this repo) | AI Operating System | `~/Projects/ai-os` |
+| **anySolutions** | Vue 3 + Node | `~/Projects/eddremonts86/anySolutions` |
 
 ## Personal (other)
 
 - Pets, music, photography (offline).
-- No active personal coding projects outside AI-OS.
+- `anySolutions` is an active personal coding project. See `context/02_projects.md` for the maintained project inventory and status details.

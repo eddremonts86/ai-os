@@ -24,12 +24,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AI_OS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HOME_DIR="$HOME"
 LOG_PREFIX="[ai-os install]"
+MANIFEST="$AI_OS_ROOT/ai-config/manifest.yaml"
+ADAPTER_TEMPLATE="$AI_OS_ROOT/ai-config/templates/global-bridge.md.tmpl"
 
 # ─── Logging ───
 log() { echo "$LOG_PREFIX $*"; }
 err() { echo "$LOG_PREFIX ❌ $*" >&2; }
 ok() { echo "$LOG_PREFIX ✅ $*"; }
 warn() { echo "$LOG_PREFIX ⚠️  $*"; }
+
+require_manifest_tool() {
+  command -v yq >/dev/null 2>&1 || { err "yq is required to read $MANIFEST"; exit 1; }
+  [ -f "$MANIFEST" ] || { err "Manifest missing: $MANIFEST"; exit 1; }
+}
+
+preserve_or_replace() {
+  local target="$1"
+  if [ -e "$target" ] && [ ! -L "$target" ] && [ "${REPLACE_EXISTING:-0}" != "1" ]; then
+    warn "Preserving existing $target (set REPLACE_EXISTING=1 to replace it)"
+    return 1
+  fi
+  if [ -e "$target" ] && [ ! -L "$target" ]; then
+    mv "$target" "$target.pre-aios.bak"
+  fi
+  return 0
+}
 
 # ─── DRY_RUN mode (CI) ───
 if [ "${DRY_RUN:-0}" = "1" ]; then
@@ -208,15 +227,17 @@ done
 ok "Oh My Zsh + plugins OK"
 echo ""
 
-# ─── 7. Global skills (symlinks) ───
-log "7. Setting global skills in 6 CLIs..."
+# ─── 7. Global skills (native destinations from manifest) ───
+require_manifest_tool
+log "7. Setting global skills in native client destinations..."
 # Only flat skills (a dir with a top-level SKILL.md) are symlinked here. Plugin
 # bundles in ai-config/skills/ that have a NESTED layout (claude.tools, ECC) are
 # installed by their own scripts (install-claude-tools.sh, install-ecc.sh).
 #   Claude ~/.claude/skills | Codex ~/.codex/skills | Gemini ~/.gemini/skills
 #   Antigravity ~/.agents/skills | Hermes ~/.hermes/skills/imported
 #   MiniMax Code ~/.minimax/skills (global skills.paths entry in opencode.json)
-for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported" "$HOME_DIR/.minimax/skills"; do
+while IFS=$'\t' read -r client_id client_path client_required; do
+  cli_dir="$HOME_DIR/$client_path"
   mkdir -p "$cli_dir"
   # Prune stale ai-os symlinks whose target no longer has a top-level SKILL.md
   # (e.g. a plugin bundle wrongly linked by an older run). Keeps re-runs clean.
@@ -230,16 +251,15 @@ for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.
   for skill_dir in "$AI_OS_ROOT/ai-config/skills"/*/; do
     [ -f "$skill_dir/SKILL.md" ] || continue
     name=$(basename "$skill_dir")
-    [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ] && mv "$cli_dir/$name" "$cli_dir/$name.pre-aios.bak"
+    if [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ]; then
+      preserve_or_replace "$cli_dir/$name" || continue
+    fi
     ln -sfn "$skill_dir" "$cli_dir/$name"
   done
-done
-# READMEDD and llms only in claude/
-ln -sf "$AI_OS_ROOT/ai-config/skills/READMEDD.md" "$HOME_DIR/.claude/skills/READMEDD.md" 2>/dev/null || true
-ln -sf "$AI_OS_ROOT/ai-config/skills/taste-skill-llms.txt" "$HOME_DIR/.claude/skills/taste-skill-llms.txt" 2>/dev/null || true
+done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
 
 SKILL_COUNT=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l | tr -d ' ')
-ok "Skills propagated to 6 CLIs ($SKILL_COUNT flat skills in source)"
+ok "Skills propagated to manifest client destinations ($SKILL_COUNT flat skills in source)"
 echo ""
 
 # ─── 7c. Vendored gstack skills (read-only subtree at vendor/gstack/) ───
@@ -249,7 +269,8 @@ echo ""
 if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
   log "7c. Setting vendored gstack skills in 6 CLIs..."
   GSTACK_COUNT=0
-  for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported" "$HOME_DIR/.minimax/skills"; do
+  while IFS=$'\t' read -r client_id client_path client_required; do
+    cli_dir="$HOME_DIR/$client_path"
     mkdir -p "$cli_dir"
     # Prune stale gstack symlinks whose target is gone.
     for link in "$cli_dir"/*; do
@@ -262,10 +283,12 @@ if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
     for skill_dir in "$AI_OS_ROOT/vendor/gstack"/*/; do
       [ -f "$skill_dir/SKILL.md" ] || continue
       name=$(basename "$skill_dir")
-      [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ] && mv "$cli_dir/$name" "$cli_dir/$name.pre-aios.bak"
+      if [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ]; then
+        preserve_or_replace "$cli_dir/$name" || continue
+      fi
       ln -sfn "$skill_dir" "$cli_dir/$name"
     done
-  done
+  done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
   GSTACK_COUNT=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" | wc -l | tr -d ' ')
   ok "Vendored gstack skills propagated ($GSTACK_COUNT skills in source)"
 else
@@ -273,38 +296,30 @@ else
 fi
 echo ""
 
-# ─── 7b. Global instruction bridge (loads AI-OS into every project, every CLI) ───
-log "7b. Wiring global instruction bridge..."
-BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
-# Symlink the bridge to each CLI's global instruction file.
-#   Claude Code: ~/.claude/CLAUDE.md   | Codex: ~/.codex/AGENTS.md
-#   Gemini: ~/.gemini/GEMINI.md        | Antigravity: ~/.agents/AGENTS.md
-for target in "$HOME_DIR/.claude/CLAUDE.md" "$HOME_DIR/.codex/AGENTS.md" "$HOME_DIR/.gemini/GEMINI.md" "$HOME_DIR/.agents/AGENTS.md"; do
+# ─── 7b. Rendered instruction adapters ───
+log "7b. Rendering path-neutral instruction adapters..."
+[ -f "$ADAPTER_TEMPLATE" ] || { err "Adapter template missing: $ADAPTER_TEMPLATE"; exit 1; }
+ADAPTER_DIR="$HOME_DIR/.ai-os/adapters"
+mkdir -p "$ADAPTER_DIR"
+BRIDGE="$ADAPTER_DIR/global-bridge.md"
+sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$ADAPTER_TEMPLATE" > "$BRIDGE"
+while IFS=$'\t' read -r adapter_id adapter_path adapter_required; do
+  target="$HOME_DIR/$adapter_path"
   mkdir -p "$(dirname "$target")"
-  # Back up a real (non-symlink) file once, then link.
-  [ -e "$target" ] && [ ! -L "$target" ] && mv "$target" "$target.pre-aios.bak"
+  preserve_or_replace "$target" || continue
   ln -sfn "$BRIDGE" "$target"
-done
-# Hermes: ensure SOUL.md carries the AI-OS bridge block (idempotent append).
+done < <(yq -r '.platforms.macos.adapters[] | [.id, .path, .required] | @tsv' "$MANIFEST")
+# Hermes is optional: only amend an existing SOUL.md and never replace it.
 SOUL="$HOME_DIR/.hermes/SOUL.md"
+HERMES_TEMPLATE="$AI_OS_ROOT/ai-config/templates/hermes-soul-block.md.tmpl"
 if [ -f "$SOUL" ] && ! grep -q "AI-OS BRIDGE" "$SOUL"; then
-  cat >> "$SOUL" <<AIOS_SOUL
-
-<!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
-## AI-OS (operating context)
-Single source of truth: \`$AI_OS_ROOT\`. At the start of meaningful
-work read \`context/00_profile.md\`, \`context/03_preferences.md\`, and \`CLAUDE.md\`.
-Non-negotiables: chat in Spanish (lowercase, terse); ALL files in English; verify
-with runtime evidence; confirm before irreversible actions. Durable facts →
-\`~/.hermes/memories/\`; keep \`context/\` as the canonical identity.
-<!-- /AI-OS BRIDGE -->
-AIOS_SOUL
+  sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$HERMES_TEMPLATE" >> "$SOUL"
 fi
 # MiniMax Code (mavis, opencode-based): each agent's agent.md is appended to the
 # system prompt at runtime. Overwrite the stub with the AI-OS overlay (real file,
 # not a symlink — mavis re-seeds this path).
 MM_OVERLAY="$AI_OS_ROOT/ai-config/clis/minimax-overlay.md"
-if [ -d "$HOME_DIR/.minimax/agents" ] && [ -f "$MM_OVERLAY" ]; then
+if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && [ -d "$HOME_DIR/.minimax/agents" ] && [ -f "$MM_OVERLAY" ]; then
   for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
     [ -d "$agent_dir" ] && cp "$MM_OVERLAY" "$agent_dir/agent.md"
   done
@@ -324,7 +339,7 @@ VSCODE_INSTR_GLOBS=(
 VSCODE_WIRED=0
 for f in "${VSCODE_INSTR_GLOBS[@]}"; do
   [ -f "$f" ] || continue
-  if ! grep -q "AI-OS BRIDGE" "$f"; then
+  if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && ! grep -q "AI-OS BRIDGE" "$f"; then
     cat >> "$f" <<AIOS_VSCODE
 
 <!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
@@ -339,36 +354,33 @@ AIOS_VSCODE
   fi
   VSCODE_WIRED=$((VSCODE_WIRED + 1))
 done
-if [ "$VSCODE_WIRED" -gt 0 ]; then
-  ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md + vscode copilot chat x$VSCODE_WIRED)"
-else
-  ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md)"
-  warn "  VS Code Copilot Chat instructions file not found — skipped (OK if unused on this Mac)"
-fi
+ok "Required instruction adapters rendered from manifest"
+[ "$VSCODE_WIRED" -gt 0 ] || warn "VS Code Copilot Chat adapter skipped (optional integration absent)"
 echo ""
 
 # ─── 8. Superpowers skills (REQUIRED) ───
 log "8. Verifying superpowers skills (REQUIRED)..."
-EXPECTED=14
+EXPECTED=$(yq '.required_skills | length' "$MANIFEST")
 ACTUAL=0
-for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
+while IFS= read -r skill; do
   [ -d "$HOME_DIR/.claude/skills/$skill" ] && ACTUAL=$((ACTUAL + 1))
-done
+done < <(yq -r '.required_skills[]' "$MANIFEST")
 if [ "$ACTUAL" -ne "$EXPECTED" ]; then
   warn "Only $ACTUAL/$EXPECTED superpowers skills installed. Linking from local source..."
   # The 14 superpowers are vendored in ai-config/skills/ (committed to this repo),
   # so link from there — no network dependency on obra/superpowers.
-  for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
+  while IFS= read -r skill; do
     src="$AI_OS_ROOT/ai-config/skills/$skill"
     if [ ! -d "$src" ]; then
       err "Superpower '$skill' missing from $AI_OS_ROOT/ai-config/skills — repo is incomplete, re-clone it"
       exit 1
     fi
-    for cli_dir in "$HOME_DIR/.claude/skills" "$HOME_DIR/.codex/skills" "$HOME_DIR/.gemini/skills" "$HOME_DIR/.agents/skills" "$HOME_DIR/.hermes/skills/imported"; do
+    while IFS=$'\t' read -r client_id client_path client_required; do
+      cli_dir="$HOME_DIR/$client_path"
       mkdir -p "$cli_dir"
       [ -e "$cli_dir/$skill" ] || ln -sfn "$src" "$cli_dir/$skill"
-    done
-  done
+    done < <(yq -r '.platforms.macos.skills.clients[] | select(.required) | [.id, .path, .required] | @tsv' "$MANIFEST")
+  done < <(yq -r '.required_skills[]' "$MANIFEST")
   ok "Superpowers linked ($EXPECTED/$EXPECTED)"
 else
   ok "Superpowers OK ($ACTUAL/$EXPECTED)"
