@@ -339,15 +339,42 @@ if (-not $env:SKIP_MCP) {
     # Generate config.yaml with Python (works on Windows)
     $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
     if ($pythonCmd) {
+        # 3rd arg registers ~/.agents/skills under skills.external_dirs so Hermes
+        # reads it natively instead of a symlinked copy under
+        # ~/.hermes/skills/imported/ (P1-2; confirmed against
+        # https://hermes-agent.nousresearch.com/docs/user-guide/features/skills).
         $pythonArgs = @(
             $AIOSRoot + "\setup\generate-mcp-config.py",
             $AIOSRoot + "\ai-config\mcp",
-            $HomeDir + "\.hermes\config.yaml"
+            $HomeDir + "\.hermes\config.yaml",
+            $HomeDir + "\.agents\skills"
         )
         & $pythonCmd.Source $pythonArgs
-        Ok "MCP servers configured (Python: $($pythonCmd.Source))"
+        Ok "MCP servers + skills.external_dirs configured (Python: $($pythonCmd.Source))"
     } else {
         Warn "Python not found. MCP servers not configured automatically. Edit ~/.hermes/config.yaml manually."
+    }
+}
+Write-Host ""
+
+# \u2500\u2500\u2500 7a2. Clean up the superseded Hermes symlink tree (P1-2) \u2500\u2500\u2500
+# Hermes now reads ~/.agents/skills via skills.external_dirs instead of getting
+# a symlinked copy under ~/.hermes/skills/imported/. Remove that old tree, but
+# only if AI-OS made it (every entry is still a symlink/reparse point into
+# ai-config/skills) \u2014 never touch real user content.
+$oldHermesImported = "$HomeDir\.hermes\skills\imported"
+if (Test-Path $oldHermesImported) {
+    $safeToRemove = $true
+    Get-ChildItem $oldHermesImported -Force -ErrorAction SilentlyContinue | ForEach-Object {
+        if (-not $_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
+            $safeToRemove = $false
+        }
+    }
+    if ($safeToRemove) {
+        Remove-Item $oldHermesImported -Recurse -Force
+        Ok "Removed superseded ~/.hermes/skills/imported/ (Hermes now reads ~/.agents/skills directly)"
+    } else {
+        Warn "~/.hermes/skills/imported/ contains non-AI-OS content; leaving it in place (Hermes also reads ~/.agents/skills now, so skills may appear twice)"
     }
 }
 Write-Host ""

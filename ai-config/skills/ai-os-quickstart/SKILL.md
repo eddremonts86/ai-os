@@ -105,13 +105,14 @@ command -v yq >/dev/null && echo "✅ yq" || echo "❌ yq missing (brew install 
 [ -s ~/Projects/ai-os/specs/current_spec.md ] && echo "✅ Active Spec" || echo "ℹ️ No active Spec"
 ```
 
-### 7. Check skills in 5 CLIs
+### 7. Check skills in 4 CLI dirs (usable by 5 CLIs — Hermes reads ~/.agents/skills via skills.external_dirs)
 
 ```bash
-for cli_dir in ~/.claude/skills ~/.codex/skills ~/.gemini/skills ~/.agents/skills ~/.hermes/skills/imported; do
+for cli_dir in ~/.claude/skills ~/.codex/skills ~/.gemini/skills ~/.agents/skills; do
   count=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" 2>/dev/null | wc -l | tr -d ' ')
   echo "  $cli_dir: $count skills"
 done
+grep -q "\.agents/skills" ~/.hermes/config.yaml 2>/dev/null && echo "  hermes: reads ~/.agents/skills via skills.external_dirs"
 ```
 
 All should show 99 skills.

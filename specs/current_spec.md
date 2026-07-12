@@ -1,7 +1,7 @@
 # AI-OS Remediation Implementation Plan
 
 **Date:** 2026-07-12
-**Status:** 🔄 In progress — Tasks 1-2 done, Task 3 done except the Graphiti architecture decision, Task 4 done except detailed README count auditing beyond MCP servers; Windows memory-stack parity (P1-5) done
+**Status:** 🔄 In progress — Tasks 1-4 done except the Graphiti architecture decision; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done
 **Owner:** Edd
 **See:** `outputs/2026-07-12-ai-os-full-audit.md` for the full audit findings this plan resolves.
 
@@ -66,13 +66,87 @@
 
 ## Remaining work (not done yet, in priority order)
 
-1. Graphiti MCP real deployment decision: vendor `getzep/graphiti` under `vendor/graphiti/` and run `uv run main.py` from there, OR add HTTP transport support to `generate-mcp-config.py` and run the `zepai/knowledge-graph-mcp` Docker image against our existing FalkorDB on `:6390`. Either way, needs a real smoke test before setting `enabled: true`.
-2. P1-1/P1-2/P1-3/P1-8 (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, Antigravity's real skill path (`~/.gemini/config/skills`) — deliberately NOT changed this session since it would risk breaking every machine currently relying on `~/.agents/skills` without a first-party doc check first; operational rules out of Hermes `SOUL.md`.
+1. Graphiti MCP real deployment decision: vendor `getzep/graphiti` under `vendor/graphiti/` and run `uv run main.py` from there, OR run the `zepai/knowledge-graph-mcp` Docker image against our existing FalkorDB on `:6390` over HTTP transport (`generate-mcp-config.py` already supports `transport: http` — confirmed this session, no longer a blocker). Either way, needs a real smoke test before setting `enabled: true`.
+2. P1-1/P1-3/P1-8 remainder (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, operational rules out of Hermes `SOUL.md` (research this session found `AGENTS.md`/`.hermes.md` are Hermes's project-scoped context mechanism, cwd-based; `SOUL.md` remains the only *global, cwd-independent* mechanism Hermes has, so the current minimal pointer block there is likely staying — see Round 4 below for the full finding).
+3. Antigravity's real global-skill path (`~/.gemini/config/skills` per the audit) — deliberately NOT changed, same reasoning as before: would risk breaking every machine currently relying on `~/.agents/skills` without a first-party doc check first.
 
-## Round 3 additions (this session, continuing "todo lo pendiente")
+## Round 3 additions (continuing "todo lo pendiente")
 
 - **P1-5 Windows memory-stack parity**: `setup/install-windows.ps1` now installs the same memory stack as Mac (Ollama + nomic-embed-text, FalkorDB via Docker Compose, `codebase-memory-mcp` with sha256 checksum verification against the same pinned release, `grepai` via a pinned `go install`), gated by the new `$env:SKIP_MEMORY`. Added `ollama` and `golang` to the chocolatey package list.
 - **Real bug found and fixed via `pwsh` parser** (installed via `brew install powershell` specifically to get real syntax validation, since the prior session's verify-windows.ps1 bug was only caught by manual review): `setup/verify-windows.ps1` had 4 instances of `"$label: ..."` inside double-quoted strings, which PowerShell parses as an ambiguous drive/scope reference (`':' was not followed by a valid variable name character`) — a real parse error, not a style nit. Fixed with `${label}:`. All 3 `setup/*.ps1` files now parse cleanly with `[System.Management.Automation.Language.Parser]::ParseFile`.
 - **New CI gate**: `.github/workflows/test-windows.yml` now parses every `setup/*.ps1` file with the real PowerShell parser as a required, fail-closed step — this is exactly what would have caught the bug above before it shipped, and nothing else in that workflow exercises `verify-windows.ps1`'s syntax at all.
 - **Stale skill doc fixed**: `ai-config/skills/ai-os-memory/SKILL.md` advertised a `sync-sessions` subcommand that was removed from `memory/ai-os-memory.sh` in an earlier fix (P0-2) but never removed from the skill doc; also missing the real `visualize`/`search` subcommands, presenting Graphiti as a working layer instead of disabled, and pointing at the pre-archive spec path. All fixed.
 - **`docs/model-routing.md`** added (see Task 4 above) and linked from README.
+
+## Round 4 additions (continuing "todo lo pendiente"): Hermes skills.external_dirs (P1-2, real bugs found)
+
+Researched Hermes's actual current capabilities against its official docs
+(`hermes-agent.nousresearch.com/docs`, 2026-07-12) instead of guessing, per the
+audit's own P1-8 recommendation. Confirmed, current findings:
+
+- **`skills.external_dirs` is real and current** (`~/.hermes/config.yaml`), and
+  Hermes's own docs use `~/.agents/skills` as the literal example path. This
+  directly resolves P1-2 ("duplicating all skills under `imported/`"): Hermes
+  can scan `~/.agents/skills` (already populated for Antigravity/VS Code)
+  natively instead of getting its own symlinked copy.
+- **`SOUL.md` is confirmed identity/personality-only by Hermes's own design**
+  (loaded only from `HERMES_HOME`, never probes cwd). `AGENTS.md`/`.hermes.md`
+  are Hermes's project-context mechanism, but they're cwd-based/per-project,
+  not a global always-on mechanism the way `SOUL.md` is — so there is currently
+  no idiomatic way to make AI-OS's bridge apply in every Hermes session
+  regardless of working directory other than the existing minimal SOUL.md
+  pointer block. Not changed; documented as a real constraint, not an oversight.
+- **Implemented the external_dirs fix**: `setup/generate-mcp-config.py` now
+  takes an optional 3rd arg (`external_skills_dir`) and merges it into
+  `skills.external_dirs` (dedup, preserves existing user entries, idempotent;
+  2 new unit tests). `ai-config/manifest.yaml`, `setup/install-mac.sh`,
+  `setup/install-windows.ps1`, `setup/install-ecc.sh`,
+  `setup/install-claude-tools.sh` no longer symlink into
+  `~/.hermes/skills/imported/`; both installers now clean up that superseded
+  tree on next run (only if every entry is still an AI-OS-made symlink — never
+  touches real user content). `setup/verify.sh` / `verify-windows.ps1` check
+  `~/.hermes/config.yaml` for the `external_dirs` entry instead of a symlink
+  count. **Verified end-to-end on this real machine**: old `imported/` tree
+  removed, `~/.hermes/config.yaml` correctly gained `external_dirs: [~/.agents/skills]`
+  while preserving the pre-existing `template_vars: true` setting.
+- **Real bug found: bash 3.2 incompatibility.** The first attempt used
+  `declare -A` (associative arrays, bash 4+) for the zsh plugin tag lookup
+  added in Round 2. macOS ships bash 3.2.57 as `/bin/bash` (last GPLv2
+  release; Apple never upgraded) and this script's `#!/usr/bin/env bash`
+  shebang resolves to it on any Mac without a newer bash earlier on PATH —
+  confirmed this is genuinely the case on this machine. bash 3.2 has no
+  associative arrays; it silently falls back to arithmetic indexed-array
+  subscripts, so `[zsh-autosuggestions]` parsed as `zsh - autosuggestions` and
+  crashed with `zsh: unbound variable` under `set -u`. Fixed with a `case`
+  statement (works on every bash version). **This meant `install-mac.sh` was
+  broken on stock macOS bash from Round 2 until this session** — caught only
+  because I ran the real (non-dry-run, non-venv-only) installer end-to-end.
+- **Real bug found: count-based skill verification breaks with optional
+  bundles installed.** After fixing the above and running `install-ecc.sh` +
+  `install-claude-tools.sh` for real (needed to test the Hermes fix
+  end-to-end), `setup/verify.sh` started reporting `370/164 skills — MISMATCH`
+  as a **required failure** for every core CLI, because ECC (271 skills) and
+  claude.tools/gstack legitimately add more names on top of the flat+gstack
+  baseline, and symlink name collisions make the net delta unpredictable. The
+  exact-count check from Round 2 never anticipated this common, documented,
+  supported configuration. Rewrote section 3 in both `verify.sh` and
+  `verify-windows.ps1` to check the exact **set of expected skill names**
+  (not a count) is present, regardless of what else is also deployed —
+  verified this both passes correctly with ECC+claude.tools installed *and*
+  still catches a real gap (tested by hiding one required skill; correctly
+  reported `missing 1 expected skill(s): brainstorming` and failed).
+- All changes verified with real command execution on this machine: `bash -n`
+  on every edited shell script, `pwsh` parser on every edited `.ps1` file (0
+  errors), 5/5 unit tests (2 new), `install-mac.dry-run.sh` and
+  `install-windows.dry-run.ps1` (run for real via `pwsh` on macOS with `$env:TEMP`
+  set manually, since that var is Windows-only) both exit 0 end-to-end
+  including the new `skills.external_dirs` check, and `verify.sh` on this real
+  machine: `Required: 17 passed, 0 failed`.
+- Also fixed while in these files: a regex-scoping bug in
+  `install-mac.dry-run.sh`'s MCP-server counter (the new `skills:` block's
+  `external_dirs:` line matched the same 2-space-indent `key:` pattern used to
+  count MCP servers, inflating the count by 1 — rescoped to only count lines
+  between `mcp_servers:` and the next top-level key). Updated ~15 stale doc/
+  comment references to `~/.hermes/skills/imported/` across `CLAUDE.md`,
+  `docs/*.md`, `ai-config/skills/READMEDD.md`, `ai-config/skills/ai-os-quickstart/SKILL.md`,
+  `prompts/setup/03-required-skills.md`, and `docs/model-routing.md`.

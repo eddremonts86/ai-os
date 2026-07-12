@@ -308,7 +308,10 @@ There are TWO levels of skills:
 1. **Global** (`ai-config/skills/<name>/`) — flat skills propagated via symlinks to supported CLIs.
 2. **Workspace** (`~/Projects/<project>/.agents/skills/<name>/`) — project-specific, NOT propagated.
 
-When a skill is `imported:` in Hermes, it comes from `~/.hermes/skills/imported/` (a symlink to `~/.claude/skills/`).
+Hermes does not get a symlinked skill copy at all: it natively scans
+`~/.agents/skills/` via `skills.external_dirs` in `~/.hermes/config.yaml`
+(registered by `setup/generate-mcp-config.py`), confirmed against
+[Hermes's External Skill Directories docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills).
 
 When writing a new skill, ask: "is this workspace-specific or globally useful?". If global → put it in `ai-config/skills/`. If workspace → put it in `<project>/.agents/skills/`.
 

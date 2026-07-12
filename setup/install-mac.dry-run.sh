@@ -154,7 +154,7 @@ done < <(yq -r '.platforms.macos.adapters[] | [.id, .path, .required] | @tsv' "$
 
 # ─── 5b. Simulate vendored gstack skills (optional) ───
 if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
-  log "5b. Simulating vendored gstack skills to 6 CLIs..."
+  log "5b. Simulating vendored gstack skills to manifest clients..."
   gstack_count=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" | wc -l | tr -d ' ')
   ok "Vendored gstack source of truth: $gstack_count"
   while IFS=$'\t' read -r client_id client_path client_required; do
@@ -172,19 +172,33 @@ else
   log "5b. vendor/gstack/ absent, skipping"
 fi
 
-# ─── 6. Simulate MCP config generation ───
+# ─── 6. Simulate MCP config generation + Hermes skills.external_dirs ───
 log "6. Simulating MCP config generation..."
 
 # Create test config
 TEMP_CONFIG="$TMP_HOME/hermes-config-test.yaml"
 
-if python3 "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$TEMP_CONFIG" >/dev/null 2>&1; then
-  # Count generated server keys without requiring yq or PyYAML.
-  mcp_count=$(grep -cE '^  [A-Za-z0-9_-]+:$' "$TEMP_CONFIG" 2>/dev/null || echo 0)
+if python3 "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$TEMP_CONFIG" "$HOME/.agents/skills" >/dev/null 2>&1; then
+  # Count generated server keys without requiring yq or PyYAML. Scoped to the
+  # lines between "mcp_servers:" and the next top-level (0-indent) key, so the
+  # unrelated "skills: / external_dirs:" block added below it isn't miscounted
+  # as an extra server (both are 2-space-indented `key:` lines).
+  mcp_count=$(awk '
+    /^mcp_servers:$/ { in_block = 1; next }
+    in_block && /^[A-Za-z]/ { in_block = 0 }
+    in_block && /^  [A-Za-z0-9_-]+:$/ { count++ }
+    END { print count + 0 }
+  ' "$TEMP_CONFIG" 2>/dev/null || echo 0)
   if [ "$mcp_count" -ge 7 ]; then
     ok "MCP config: $mcp_count servers generated"
   else
     err "MCP config: only $mcp_count servers (expected >=7)"
+    exit 1
+  fi
+  if grep -q "external_dirs:" "$TEMP_CONFIG" 2>/dev/null; then
+    ok "  skills.external_dirs present (Hermes skill delivery, P1-2)"
+  else
+    err "  MCP config missing skills.external_dirs"
     exit 1
   fi
 else
