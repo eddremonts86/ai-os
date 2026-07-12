@@ -35,6 +35,29 @@ jobs:
       - name: Install PyYAML
         run: pip install pyyaml
 
+      - name: PowerShell syntax check (all setup/*.ps1, required, fail-closed)
+        # Parses every .ps1 under setup/ with the real PowerShell parser. This
+        # is what would have caught the verify-windows.ps1 "$label:" ambiguous
+        # variable-reference bug (PowerShell tries to read "label" as a drive/
+        # scope prefix) before it shipped — that file is never exercised for
+        # real by the DRY_RUN step below, so nothing else in this workflow
+        # checks its syntax.
+        run: |
+          $files = Get-ChildItem -Path setup -Filter *.ps1 -Recurse
+          $failed = $false
+          foreach ($f in $files) {
+            $tokens = $null; $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($f.FullName, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $failed = $true
+              Write-Host "::error file=$($f.FullName)::Parse errors:"
+              $errors | ForEach-Object { Write-Host "  Line $($_.Extent.StartLineNumber): $($_.Message)" }
+            } else {
+              Write-Host "OK: $($f.FullName)"
+            }
+          }
+          if ($failed) { exit 1 }
+
       - name: Run install-windows.ps1 (DRY_RUN)
         env:
           DRY_RUN: '1'
