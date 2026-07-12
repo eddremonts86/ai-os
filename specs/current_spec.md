@@ -1,7 +1,7 @@
 # AI-OS Remediation Implementation Plan
 
 **Date:** 2026-07-12
-**Status:** 🔄 In progress — Tasks 1-4 done; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done; Graphiti MCP architecture decision made and wired, activation smoke test still pending real Docker + OPENAI_API_KEY
+**Status:** 🔄 In progress — Tasks 1-4 done; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done; Graphiti MCP architecture decision made, wired, and structural deployment smoke-tested (enabled: true) — actual entity-extraction test with a real OPENAI_API_KEY still pending
 **Owner:** Edd
 **See:** `outputs/2026-07-12-ai-os-full-audit.md` for the full audit findings this plan resolves.
 
@@ -66,7 +66,7 @@
 
 ## Remaining work (not done yet, in priority order)
 
-1. Graphiti MCP activation smoke test: the architecture decision is now made and wired (see Round 5 below) — `memory/graphiti/docker-compose.yml` runs `zepai/knowledge-graph-mcp:1.0.2-standalone` against the existing FalkorDB over the shared `aios-memory` Docker network. **Not yet started on any machine** (this session had no running Docker daemon and no `OPENAI_API_KEY`). Someone with both needs to run the 4 activation steps in that compose file's header comment and confirm `curl -sf http://127.0.0.1:8021/health` before flipping `ai-config/mcp/graphiti.yaml`'s `enabled: false` to `true`.
+1. Graphiti MCP real functional test: the architecture decision is made, wired, and its **structural deployment passed a real smoke test** (see Round 6 below) — Docker running, `docker compose up -d` in both `memory/falkordb/` and `memory/graphiti/`, confirmed `aios-graphiti-mcp` connects to FalkorDB and `curl -sf http://127.0.0.1:8021/health` returns healthy. `ai-config/mcp/graphiti.yaml` is now `enabled: true`. **Still not done**: an actual `add_memory`/`search` call with a real `OPENAI_API_KEY` to confirm entity extraction genuinely works (the smoke test used a placeholder key, which proves connectivity but not correctness of graph operations).
 2. P1-1/P1-3/P1-8 remainder (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, operational rules out of Hermes `SOUL.md` (research in Round 4 found `AGENTS.md`/`.hermes.md` are Hermes's project-scoped context mechanism, cwd-based; `SOUL.md` remains the only *global, cwd-independent* mechanism Hermes has, so the current minimal pointer block there is likely staying).
 3. Antigravity's real global-skill path (`~/.gemini/config/skills` per the audit) — deliberately NOT changed, same reasoning as before: would risk breaking every machine currently relying on `~/.agents/skills` without a first-party doc check first.
 
@@ -188,3 +188,43 @@ audit's own P1-8 recommendation. Confirmed, current findings:
   venv on `PATH`, matching what the real installer already ensures via
   `pip-packages.txt`) — full pass, `MCP config: 9 servers generated` (Graphiti
   correctly excluded while disabled); 5/5 unit tests still passing.
+
+## Round 6 additions (continuing "todo lo pendiente"): Graphiti MCP real smoke test — PASSED
+
+- Docker was running this time (it wasn't in Round 5). Ran the actual
+  activation steps documented in `memory/graphiti/docker-compose.yml`:
+  1. `cd memory/falkordb && docker compose up -d` — recreated `aios-falkordb`
+     so it joined the new `aios-memory` network (it had been running on the
+     old implicit `falkordb_default` network from before this session's
+     changes); confirmed `Up ... (healthy)` and `redis-cli PING` → `PONG`.
+  2. `cd memory/graphiti && OPENAI_API_KEY=<placeholder> docker compose up -d`
+     — pulled `zepai/knowledge-graph-mcp:1.0.2-standalone` for real, container
+     came up healthy.
+  3. Logs confirmed a genuine connection: `Successfully initialized Graphiti
+     client`, multiple `graphiti_core.driver.falkordb_driver` index checks
+     against the real FalkorDB instance, `Running MCP server with streamable
+     HTTP transport on 0.0.0.0:8000`.
+  4. `curl -sf http://127.0.0.1:8021/health` → `{"status":"healthy","service":
+     "graphiti-mcp"}`.
+  5. Torn down the test container afterward (`docker compose down`) since its
+     `OPENAI_API_KEY` was a placeholder, not a real credential — did not leave
+     a bogus-keyed service running unattended.
+- **This proves the deployment path** (pinned image pulls, joins the shared
+  Docker network, reaches FalkorDB by container name, HTTP transport starts
+  and serves `/health`) **genuinely works**, which is what the Round 5 caveat
+  was blocked on. It does **not** prove actual knowledge-graph tool calls
+  (`add_memory`/`search`, which need a real OpenAI key for entity extraction)
+  — that remains explicitly flagged as unverified in both
+  `ai-config/mcp/graphiti.yaml` and the compose file's header comment.
+- On the strength of this evidence, flipped `ai-config/mcp/graphiti.yaml`'s
+  `enabled` from `false` to `true`. Re-ran `install-mac.dry-run.sh` and the
+  unit tests: `MCP config: 10 servers generated` (up from 9), 5/5 unit tests
+  still passing.
+- Fixed the now-stale "10 declarative MCP servers (9 enabled)" / "graphiti
+  disabled" claims across `README.md` (4 places), `docs/architecture.md`,
+  `ai-config/skills/ai-os-karpathy/SKILL.md`,
+  `ai-config/skills/ai-os-memory/SKILL.md`, and
+  `prompts/daily-use/01-daily-start.md` to say all 10 are enabled, with the
+  real-API-key caveat spelled out.
+- `memory/ai-os-memory.sh`'s Graphiti status line reworded from "optional,
+  disabled" to "opt-in — export a real OPENAI_API_KEY" to match reality.

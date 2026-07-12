@@ -12,20 +12,26 @@
 # Image tag pinned to a specific release (not `:latest`); see
 # https://hub.docker.com/r/zepai/knowledge-graph-mcp/tags to bump.
 #
-# STATUS: NOT YET SMOKE-TESTED. This compose file has not been started on any
-# machine yet — Docker was not running and no OPENAI_API_KEY was available when
-# this was written. Do not flip ai-config/mcp/graphiti.yaml's `enabled: false` to
-# true until someone has actually run the steps below and confirmed the health
-# check.
+# STATUS: structural smoke test PASSED on 2026-07-12 — started this alongside
+# FalkorDB on the shared `aios-memory` network with a placeholder
+# OPENAI_API_KEY, confirmed the server logs "Successfully initialized Graphiti
+# client" + FalkorDB index checks succeeded, and
+# `curl -sf http://127.0.0.1:8021/health` returned
+# `{"status":"healthy","service":"graphiti-mcp"}`. The test container was torn
+# down afterward (`docker compose down`) since its key was a placeholder.
+# ai-config/mcp/graphiti.yaml's `enabled` is now `true` on the strength of this.
+# This only proves the DEPLOYMENT path (Docker/network/FalkorDB/HTTP) works —
+# it does NOT prove actual knowledge-graph operations, which need a real
+# OPENAI_API_KEY to call OpenAI for entity extraction.
 #
-# To activate:
-#   1. export OPENAI_API_KEY=sk-...          # or edit environment: below for another provider
+# To activate for real use:
+#   1. export OPENAI_API_KEY=sk-...          # a REAL key — or edit environment: below for another provider
 #   2. cd ~/Projects/ai-os/memory/falkordb && docker compose up -d   # FalkorDB must be up first
 #   3. cd ~/Projects/ai-os/memory/graphiti && docker compose up -d
 #   4. curl -sf http://127.0.0.1:8021/health && echo OK
-#   5. Only after step 4 prints OK: set `enabled: true` in
-#      ai-config/mcp/graphiti.yaml and change its `transport`/`url` to match this
-#      file (already done — transport: http, url: http://127.0.0.1:8021/mcp/).
+#   5. Try a real add_memory/search call through an MCP client to confirm
+#      actual entity extraction works (the structural test above does not
+#      cover this).
 
 networks:
   aios-memory:
