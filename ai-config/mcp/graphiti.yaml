@@ -1,37 +1,21 @@
 name: graphiti
 description: >-
-  Disabled until a pinned Graphiti MCP deployment has an executable smoke test.
-  Verified against the official docs (2026-07-12,
-  https://github.com/getzep/graphiti/blob/main/mcp_server/README.md): there is
-  NO installable `graphiti_mcp_server` module inside the `graphiti-core` PyPI
-  package, so `uv run --with graphiti-core[falkordb] python -m
-  graphiti_mcp_server` (the previous value here) would fail even if enabled.
-  The real MCP server is a standalone app (`main.py`) that only exists inside
-  a checkout of https://github.com/getzep/graphiti (`mcp_server/` subdir), run
-  via `uv run main.py` from that directory, or via the pre-built
-  `zepai/knowledge-graph-mcp` Docker image over HTTP transport (not stdio).
-  Either path needs a real decision (vendor the repo under vendor/graphiti/ vs.
-  run the Docker image against our existing FalkorDB on :6390) plus HTTP
-  transport support in setup/generate-mcp-config.py, which does not exist yet.
-  Do not re-enable this without both of those and a real smoke test.
-transport: stdio
-command: uv
-args:
-  - run
-  - --directory
-  - "${AI_OS_ROOT}/vendor/graphiti/mcp_server"  # NOT YET VENDORED — placeholder path
-  - main.py
-  - --transport
-  - stdio
-  - --database-provider
-  - falkordb
-env:
-  FALKORDB_URI: redis://localhost:6390
-  GRAPHITI_TELEMETRY_ENABLED: "false"
-  OPENAI_API_KEY: ${OPENAI_API_KEY}
-  # To swap to local Ollama: set GRAPHITI_LLM_PROVIDER=ollama
-  # GRAPHITI_LLM_PROVIDER: ollama
-  # GRAPHITI_LLM_MODEL: qwen2.5-coder:7b
-  # OLLAMA_URL: http://localhost:11500
+  Architecture decision made (2026-07-12): run the pre-built
+  `zepai/knowledge-graph-mcp:1.0.2-standalone` Docker image against our
+  existing FalkorDB container over HTTP transport, instead of vendoring
+  https://github.com/getzep/graphiti under vendor/graphiti/ — this avoids a
+  second language toolchain (uv/Python) just to run one MCP server, and pins
+  a versioned image the same way FalkorDB itself already is. See
+  memory/graphiti/docker-compose.yml for the full compose definition and
+  activation steps. setup/generate-mcp-config.py already supports
+  `transport: http` (confirmed this session), so no generator change was
+  needed.
+  STILL DISABLED: this has not been smoke-tested on any machine — Docker was
+  not running and no OPENAI_API_KEY was available in the session that wrote
+  this. Do not set `enabled: true` until someone has actually run
+  memory/graphiti/docker-compose.yml and confirmed
+  `curl -sf http://127.0.0.1:8021/health` succeeds.
+transport: http
+url: http://127.0.0.1:8021/mcp/
 enabled: false
 
