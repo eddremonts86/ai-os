@@ -1,45 +1,164 @@
-# AI-OS Remediation — Round 7 (continuation, closing pass)
+# Configurable Markdown Typeset in ai-schadcn-chat
 
 **Date:** 2026-07-12
-**Status:** 🔄 In progress — essentially complete; 1 item genuinely blocked (needs a real secret), 2 items lower-priority/optional
-**Owner:** Edd
-**See:** `outputs/2026-07-12-ai-os-full-audit.md` (original findings), `archive/2026-07-12-ai-os-remediation-rounds-1-6.md` (rounds 1-6 history).
+**Status:** draft
+**Blocks:** 6 (each <= 30 min)
+**Author:** Edd
+**Reviewer:** Edd
 
-> This continues the remediation branch (`codex/task-3-mcp-memory-remediation`) after rounds 1-6 were archived. Two commits landed after that archive point, before this spec file was written (the branch was briefly borrowed by an unrelated task — `eaea1a6`/`26c8509` — which has since completed and archived cleanly):
-> - `7ef0636` — Antigravity's real global-skill path (`~/.gemini/config/skills`, confirmed via official docs), added as an additive optional manifest client.
-> - `030d1ab` — 2 real bugs from the audit's medium-severity findings: duplicate skill name (`frontend-design-alt` frontmatter collided with `frontend-design`), and silent-success-after-failure in `install-mac.sh`/`install-windows.ps1`'s Ollama/Docker/Go install steps.
+## Objective
 
-## Re-verified this session (status check before deciding what's actually left)
+Make the markdown rendering inside `<ChatPanel />` configurable per-instance by adopting shadcn's [typeset](https://ui.shadcn.com/docs/typeset) system. Each chat can pick a preset (`chat`, `docs`, `reading`, `compact`, `large`) or override the three rhythm controls (`--typeset-size`, `--typeset-leading`, `--typeset-flow`) directly — so a "Docs guide" panel can ship in `reading` mode while the "Coding buddy" stays in `chat`, both driven by the same `ChatConfig`.
 
-Re-checked every item in the archived "Remaining work" list against the current file contents (not just the archived note, which was written before some of it was fixed):
+## Context
 
-1. **P1-3 (always-on prompt too large)**: re-read `ai-config/templates/global-bridge.md.tmpl` (9 lines, 421 bytes) and `ai-config/templates/hermes-soul-block.md.tmpl` (6 lines) — both are already minimal identity/language/safety/routing pointers, not the 14.7 KB inventory dump the audit described. **Already fixed**, contrary to the archived note's implication that Phase 2 work here was still pending.
-2. **P1-8 (operational instructions mixed into identity surfaces)**: same two template files confirm `SOUL.md`/bridge content is identity-only; the skill directory is registered natively via Hermes's `skills.external_dirs` (Round 4, P1-2). **Already fixed.**
-3. **P1-1 (platform capability matrix)**: `docs/model-routing.md` exists, is linked from README, and was updated this round with the resolved Antigravity path. **Already fixed** (Round 3 + this round).
-4. **Antigravity's real global-skill path**: **Fixed this round** (`7ef0636`) — confirmed via https://antigravity.google/docs/skills that the true global path is `~/.gemini/config/skills`; wired as an additive optional manifest client (`ai-config/manifest.yaml`), propagated through `install-mac.sh`/`install-windows.ps1` (already manifest-driven), `install-mac.dry-run.sh`, `install-windows.dry-run.ps1`, `verify.sh`, `verify-windows.ps1`, `install-ecc.sh`, `install-claude-tools.sh`. Verified end-to-end with real installer runs on this machine (161→164→370 skills at each stage, matching every other CLI dir).
-5. **Graphiti MCP real functional test**: **Structural smoke test passed** (Round 6, `050958b`) — real Docker deployment verified (FalkorDB connection, HTTP health check). `enabled: true`. **Genuinely still blocked**: an actual `add_memory`/`search` call needs a real `OPENAI_API_KEY`, which is not available in this agent session. This is the one item that cannot be closed autonomously — it needs the user (or a session with the real key) to run the activation steps documented in `memory/graphiti/docker-compose.yml`'s header comment.
-6. **Medium-severity #4 (duplicate skill name)**: **Fixed this round** (`030d1ab`).
-7. **Medium-severity #2 (silent success after failed ops)**: **Fixed this round** (`030d1ab`), verified in isolation (success→ok, failure→warn) and via a real end-to-end `install-mac.sh` run.
-8. **Medium-severity #1 (unsafe YAML fallback parser)**, **#5** (nonexistent workflow/verifier references), **#7** (`daily_use/prompt.md` reference), **#8** (`docs/architecture.md` link depth): all checked this round via direct grep/read — **already fixed** in earlier rounds, no stale references found.
-9. **Medium-severity #3 (FalkorDB unauthenticated ports)**: partially addressed — both Redis and Web UI ports are already bound to `127.0.0.1` only (not exposed to the network), which is the primary risk the audit called out. Explicit Redis `requirepass` on top of loopback-only binding was NOT added — left as a genuine, low-priority remaining item (defense-in-depth on an already-non-networked service).
-10. **Medium-severity #6 (workflow commit/push authorization language)**: NOT reviewed this round — lower priority, broader scope (touches wording across multiple workflow docs), left for a future round if the user wants it.
+The package currently styles markdown with hardcoded Tailwind classes inside `Markdown.tsx` (a `p`, an `h1` with `text-lg`, a `ul` with `my-2.5`, etc.) plus an `ai-prose` container class. Every chat looks identical; there is no way for a consumer to ask for serif reading mode, denser chat bubbles, or larger accessibility text without shipping their own renderer.
 
-## Final re-verification (this session)
+shadcn/typeset solves exactly this with a single CSS file (`typeset.css`) that styles every markdown element through CSS variables. Three variables — `--typeset-size`, `--typeset-leading`, `--typeset-flow` — drive the entire rhythm. A consumer picks a preset class (`typeset-chat`, `typeset-docs`, etc.) or sets the variables inline. The system is container-aware (sizes scale with `1em`) and streaming-stable (a new block does not restyle earlier ones — critical for chat).
 
-- `bash -n` on `install-mac.sh`, `install-mac.dry-run.sh`, `install-ecc.sh`, `install-claude-tools.sh`, `verify.sh` — all pass.
-- `pwsh` parser on all 3 `setup/*.ps1` files — 0 errors.
-- `install-mac.dry-run.sh` — full pass, `MCP config: 10 servers generated`, all 6 skill destinations (including the new `.gemini/config/skills`) show matching counts.
-- `python3 -m unittest discover -s setup/tests` — 5/5 passing.
-- Real `bash setup/verify.sh` on this machine — `Required: 17 passed, 0 failed`.
+We adopt it wholesale: copy `typeset.css` into the package, expose it through the same `ai-schadcn-chat/styles.css` import consumers already use, extend `UiConfig` with a `typeset` block, and have `Markdown.tsx` apply the right class + variables from config. The 4 new fields join the existing `CONFIG_FIELDS` catalog and the playground form alongside `theme`, `density`, `accentColor`, etc.
 
-## Remaining work (genuinely open, in priority order)
+The chosen CSS delivery model is "bundle it once": consumers get typeset by importing `ai-schadcn-chat/styles.css` (which they already do) — no extra import step. Size cost is ~3 KB unminified, negligible.
 
-1. **Graphiti real functional test** — blocked on a real `OPENAI_API_KEY`. Cannot be closed by an agent session without that secret. Activation steps are fully documented in `memory/graphiti/docker-compose.yml`.
-2. **FalkorDB Redis `requirepass`** — deliberately NOT done (round 8 decision): loopback-only binding already mitigates the real risk the audit flagged, and adding a password touches FalkorDB's compose file, the Graphiti compose file that also connects to it, `memory/ai-os-memory.sh`'s health checks, and `.env.example` — real breakage risk for a single-user local dev stack, for marginal defense-in-depth gain. Left as an intentional low-priority deferral, not an oversight.
+## Acceptance criteria
 
-Everything else from the original audit (`outputs/2026-07-12-ai-os-full-audit.md`) — including medium-severity #6 (push/PR authorization language, closed in round 8, commit `2f95651`) — has been addressed and re-verified.
+- [ ] `src/styles/typeset.css` exists in the package and contains the official shadcn typeset rules, with a header comment crediting the source and version.
+- [ ] `pnpm build` copies `src/styles/typeset.css` → `dist/typeset.css` and `package.json` exposes `"./typeset.css": "./dist/typeset.css"` as an export.
+- [ ] `UiConfig` in `src/types/chat.ts` gains a `typeset?: TypesetConfig` block with fields `preset`, `size`, `leading`, `flow`, `fontBody`, `fontHeading`, `fontMono`, `enabled`. The new type is re-exported from `src/types/index.ts`.
+- [ ] `Markdown.tsx` applies `typeset` + the right preset class when `config.ui.typeset` is set, with CSS variables for the overrides; falls back to the existing `ai-prose` look when `config.ui.typeset` is undefined or `enabled === false`.
+- [ ] `CONFIG_FIELDS["ui"]` in the demo catalog gains 4 entries for the new typeset fields, each with a description and a copy-able example.
+- [ ] `form-labels.ts` maps the 4 new paths to human labels ("Markdown preset", "Markdown size override", etc.).
+- [ ] `FieldControl` in `UnifiedPlayground.tsx` renders the 4 new fields: a `SelectField` for `preset` and three `TextField`s for the optional overrides.
+- [ ] Browser smoke test: in the playground, change `preset` to `reading`, confirm the assistant's markdown in the chat switches to a serif/roomier style. Change it to `compact`, confirm the chat bubbles get denser.
+- [ ] `pnpm typecheck`, `pnpm build`, and `pnpm test:unit` (108/108) all pass. Browser console has zero errors and zero React warnings.
 
-## Round 8 (continuing "todo lo pendiente")
+## Non-goals (explicit)
 
-- **Medium-severity #6 closed**: confirmed `workflows/coding.md` step 11 and `workflows/project_start.md` step 7 both told the agent to commit → push → open PR as one automatic sequence, and `rules/ask_before_doing.md`'s External-impact section only gated "push to main without a PR" (a plain push to a feature branch, or opening a PR against non-main, wasn't explicitly listed). Fixed all three: both workflows now commit locally then explicitly stop and point at `rules/ask_before_doing.md` before push/PR; the rule file now lists `git push` (any branch) and opening a PR as always requiring confirmation. Grepped all 6 `workflows/*.md` files to confirm no other file had the same unchecked pattern.
-- **FalkorDB Redis auth reconsidered and explicitly declined** (not just skipped): weighed the real cost (multi-file change touching 2 compose files + health-check script + env template) against the marginal benefit (defense-in-depth on an already loopback-only, single-user local service) and decided against it this round — documented as a deliberate call, not a gap.
+- No new external dependencies. `typeset.css` is plain CSS, copied verbatim from shadcn into the package — no `npm install` needed.
+- No new markdown renderer. We keep `react-markdown` + the existing `components` map; typeset just replaces the per-element class names with a single container class.
+- No "auto-detect" of preset from context. The consumer picks the preset explicitly. (Auto-detection could come later; not in this round.)
+- No preset builder UI in the demo. The presets are documented in the doc grid with copy-able CSS snippets so consumers can build their own; we don't ship a builder.
+- No changes to the `Markdown` package public API (signature stays `{ children, className }`). The typeset styling is applied inside the component, not exposed as a prop.
+
+## Plan (blocks)
+
+### Block 1: Vendor `typeset.css` into the package (estimated: 10 min)
+
+- [ ] Fetch the latest `typeset.css` from `https://ui.shadcn.com/docs/typeset` (already downloaded to `/tmp/typeset.html` for reference; re-fetch the actual CSS via curl).
+- [ ] Save it to `src/styles/typeset.css` with a header comment crediting shadcn/ui and the source URL.
+- [ ] **Verify:** file exists, contains the canonical `.typeset`, `.typeset-docs`, etc. selectors, ~3 KB.
+
+### Block 2: Build pipeline + package.json export (estimated: 10 min)
+
+- [ ] Edit `scripts/postbuild.mjs` to copy `src/styles/typeset.css` to `dist/typeset.css` after the vite build.
+- [ ] Add `"./typeset.css": "./dist/typeset.css"` to the `exports` block in `package.json` (above the existing `"./styles.css"` entry).
+- [ ] **Verify:** `pnpm build` produces both `dist/styles.css` and `dist/typeset.css`. `node -e "console.log(require('./package.json').exports['./typeset.css'])"` prints `./dist/typeset.css`.
+
+### Block 3: Extend `UiConfig` with `TypesetConfig` (estimated: 15 min)
+
+- [ ] In `src/types/chat.ts`, define and export `TypesetConfig` interface:
+  ```ts
+  export interface TypesetConfig {
+    /** Master switch. Default true. When false, falls back to ai-prose. */
+    enabled?: boolean;
+    /** Preset class to apply. See TYPESET_PRESETS in src/index.ts. */
+    preset?: "default" | "chat" | "docs" | "reading" | "compact" | "large";
+    /** Override --typeset-size. Any CSS length. */
+    size?: string;
+    /** Override --typeset-leading (unitless multiplier). */
+    leading?: number;
+    /** Override --typeset-flow. Any CSS length. */
+    flow?: string;
+    fontBody?: string;
+    fontHeading?: string;
+    fontMono?: string;
+  }
+  ```
+- [ ] Add `typeset?: TypesetConfig;` to `UiConfig`.
+- [ ] In `src/types/index.ts`, re-export `TypesetConfig` and a new `TYPESET_PRESETS` tuple const.
+- [ ] In `src/index.ts`, export `TYPESET_PRESETS` so consumers can iterate the available presets without hardcoding strings.
+- [ ] **Verify:** `pnpm typecheck` passes; importing `TypesetConfig` and `TYPESET_PRESETS` from `ai-schadcn-chat` resolves.
+
+### Block 4: Wire `Markdown.tsx` to use typeset (estimated: 25 min)
+
+- [ ] Modify `src/components/chat/Markdown.tsx`:
+  - Remove the `ai-prose` hardcoded class. Replace with a computed `className`:
+    ```ts
+    const presetClass = typeset?.preset && typeset.preset !== "default" ? `typeset-${typeset.preset}` : "typeset";
+    const enabled = typeset?.enabled !== false;
+    const containerClass = enabled
+      ? `typeset ${presetClass}`
+      : "ai-prose"; // legacy fallback when disabled
+    ```
+  - When enabled, compute a `style` object from `typeset.size`, `typeset.leading`, `typeset.flow`, `typeset.fontBody`, `typeset.fontHeading`, `typeset.fontMono` and pass it to the outer `<div>`.
+  - Accept a new optional prop `typeset?: TypesetConfig` on `MarkdownProps` so parents that want to bypass `ChatConfig` plumbing can still apply typeset directly.
+- [ ] **Verify:** `pnpm typecheck` passes. Browser smoke: existing playground still renders markdown correctly with default `ai-prose` look (because the default config has no `typeset` block). No console errors.
+
+### Block 5: Catalog + form labels for the 4 new fields (estimated: 15 min)
+
+- [ ] In `demo/src/content/config-reference.ts`, add 4 entries to `CONFIG_FIELDS["ui"]`:
+  - `ui.typeset.enabled` (boolean, default `true`)
+  - `ui.typeset.preset` (enum: `default | chat | docs | reading | compact | large`, default `"default"`)
+  - `ui.typeset.size` (string, default unset — falls back to preset)
+  - `ui.typeset.leading` (number, default unset)
+  - `ui.typeset.flow` (string, default unset)
+- [ ] Each entry gets a description (1 paragraph) and an example (TS snippet). Include a "see typeset.dev" link in the preset's description.
+- [ ] In `demo/src/content/form-labels.ts`, add the 4 paths to `FormLabelKey` and `FORM_LABELS`:
+  - `ui.typeset.enabled` → "Markdown typeset"
+  - `ui.typeset.preset` → "Markdown preset"
+  - `ui.typeset.size` → "Markdown base size"
+  - `ui.typeset.leading` → "Markdown line height"
+  - `ui.typeset.flow` → "Markdown block spacing"
+- [ ] **Verify:** `pnpm typecheck` passes; browser smoke shows the new fields in the UI section of the playground.
+
+### Block 6: Form dispatch + final verification (estimated: 25 min)
+
+- [ ] In `demo/src/components/UnifiedPlayground.tsx`, add 5 cases to `FieldControl` for the new paths. Each one reads `config.ui?.typeset?.field`, calls `updateConfig` with the right merge shape.
+- [ ] Smoke test in browser:
+  - Default state: no `typeset` block → markdown uses `ai-prose` legacy styles.
+  - Toggle `Markdown typeset` ON → container now has `typeset` class + `typeset-default` preset class.
+  - Pick preset `reading` → container switches to `typeset-reading`. Verify by sending a long markdown answer and seeing the visual change.
+  - Switch back to `compact` → verify the chat bubbles get denser.
+  - Override `size` to `20px` with preset `chat` → verify the base text grows.
+  - Set `enabled` to `false` → verify the markdown reverts to `ai-prose` legacy styling.
+- [ ] Run `pnpm typecheck && pnpm build && pnpm test:unit` and confirm 108/108 tests pass, no new errors.
+- [ ] Take a screenshot of the playground with preset `reading` selected for the final report.
+- [ ] Archive the spec per project_start.md.
+
+## Risks and mitigation
+
+| Risk | Probability | Impact | Mitigation |
+|---|---|---|---|
+| Bundling shadcn typeset.css means we own its future bug fixes | medium | low | Header comment credits source + version. If shadcn ships a fix, `git diff` reveals it; we re-fetch and replace. The CSS is small (~3 KB) and stable. |
+| Existing `Markdown.tsx` styling hardcoded per element conflicts with `.typeset` | high | medium | When `config.ui.typeset?.enabled !== false`, the per-element class names from the `components` map (e.g. `p: ({children}) => <p className="my-2.5">`) coexist with typeset's container rules. Tailwind utilities win via specificity in our DOM, so visually it should be fine; if there's a regression, the fix is to drop the per-element classes and let typeset own them. |
+| Test fixture in `tests/components/` mocks `<Markdown>` and breaks when we add the new prop | low | low | New prop is optional with a default; existing tests that don't pass `typeset` keep working. |
+| `react-markdown` re-renders the whole tree when the `components` map identity changes | low | low | We don't change the map identity, only the conditional className derived from the prop. Memoization preserved. |
+| Playwright e2e fixtures (if any) have snapshots that include `ai-prose` class | low | low | Only unit tests exist (`tests/lib`, `tests/components`); no snapshot tests. |
+
+## Verification (end-to-end)
+
+- [ ] `pnpm typecheck` exits 0
+- [ ] `pnpm build` exits 0 and produces both `dist/styles.css` and `dist/typeset.css`
+- [ ] `pnpm test:unit` exits 0 with 108/108 tests passing
+- [ ] Browser: open `http://127.0.0.1:5173/#live-demo`, confirm the Coding Buddy chat renders with `ai-prose` (default look) — no regression on existing path.
+- [ ] Browser: open the UI section of the playground form, toggle "Markdown typeset" ON, change preset to `reading`. Send a long markdown answer and confirm the chat visually switches (larger base text, more vertical rhythm).
+- [ ] Browser: zero console errors and zero React warnings during the smoke run.
+- [ ] Screenshot of preset `reading` selected saved to `/tmp/typeset-integration.png`.
+- [ ] `grep -r "ai-prose" src/` returns at most 1 hit (the fallback in `Markdown.tsx`).
+
+## References
+
+- shadcn typeset spec: https://ui.shadcn.com/docs/typeset
+- Current `Markdown.tsx`: `src/components/chat/Markdown.tsx`
+- Current `ChatConfig` types: `src/types/chat.ts:106` (`ChatConfig`), `:137` (`UiConfig`)
+- Catalog of fields: `demo/src/content/config-reference.ts`
+- Form labels: `demo/src/content/form-labels.ts`
+- Playground dispatcher: `demo/src/components/UnifiedPlayground.tsx` (`FieldControl`)
+- Postbuild script: `scripts/postbuild.mjs`
+- Package exports: `package.json:38-69`
+
+## Notes
+
+- We do NOT remove the per-element class names in `Markdown.tsx`'s `components` map. They coexist with typeset; if the consumer disables typeset (`enabled: false`), they get the same look as today. This is the safest migration path.
+- The `ai-prose` class stays in `globals.css` as the opt-out look. Nothing changes for consumers who don't set `config.ui.typeset`.
+- If the consumer sets a `preset` other than `default`, we apply both `typeset` (base) and `typeset-{preset}` (override). Per shadcn docs, the cascade is intentional — the preset wins because it's later in the CSS.
