@@ -104,6 +104,22 @@ if [ -f "$HOME_DIR/.hermes/SOUL.md" ] && grep -q "AI-OS BRIDGE" "$HOME_DIR/.herm
 else
   warn "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
 fi
+# VS Code (GitHub Copilot Chat) carries the bridge block inside its global
+# custom-instructions file (path varies per account; glob for it).
+vscode_bridge_found=0
+for f in "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md" \
+         "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"; do
+  [ -f "$f" ] || continue
+  if grep -q "AI-OS BRIDGE" "$f"; then
+    vscode_bridge_found=$((vscode_bridge_found+1))
+  fi
+done
+if [ "$vscode_bridge_found" -gt 0 ]; then
+  ok "  VS Code Copilot Chat instructions carry AI-OS bridge block ($vscode_bridge_found file(s))"
+  PASS=$((PASS+1))
+else
+  warn "  VS Code Copilot Chat instructions missing AI-OS bridge block (OK if unused; run install-mac.sh)"
+fi
 # MiniMax Code carries the overlay inside each agent.md.
 if [ -d "$HOME_DIR/.minimax/agents" ]; then
   mm_ok=0; mm_total=0
@@ -156,6 +172,86 @@ if [ -f "$HOME_DIR/.hermes/config.yaml" ]; then
 else
   err "~/.hermes/config.yaml does not exist"
   FAIL=$((FAIL+1))
+fi
+
+# ─── 5b. Memory stack (FalkorDB + Ollama + code indexers, phase 1) ───
+# SKIP_MEMORY=1 lets users opt out of the memory stack section entirely
+# (mirrors SKIP_BREW, SKIP_NPM, SKIP_MCP, etc. in install-mac.sh)
+if [ "${SKIP_MEMORY:-0}" = "1" ]; then
+  section "5b. Memory stack (SKIPPED)"
+  log "SKIP_MEMORY=1, skipping memory stack verification"
+else
+  section "5b. Memory stack"
+
+# FalkorDB
+if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^aios-falkordb$'; then
+    ok "FalkorDB container running (aios-falkordb)"
+    PASS=$((PASS+1))
+    if curl -s -m 3 http://localhost:3300/ -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200\|302"; then
+      ok "  FalkorDB Web UI at http://localhost:3300 reachable"
+      PASS=$((PASS+1))
+    else
+      warn "  FalkorDB Web UI :3300 not reachable (give it 10s to start)"
+    fi
+    if command -v redis-cli >/dev/null 2>&1; then
+      if redis-cli -p 6390 PING 2>/dev/null | grep -q PONG; then
+        ok "  FalkorDB Redis protocol at :6390 returns PONG"
+        PASS=$((PASS+1))
+      else
+        warn "  FalkorDB Redis :6390 PING failed"
+      fi
+    elif command -v docker >/dev/null 2>&1; then
+      # Fallback: PING via docker exec (no host redis-cli required)
+      if docker exec aios-falkordb redis-cli -p 6379 PING 2>/dev/null | grep -q PONG; then
+        ok "  FalkorDB Redis protocol at :6390 returns PONG (via docker exec)"
+        PASS=$((PASS+1))
+      else
+        warn "  FalkorDB Redis :6390 PING via docker exec failed"
+      fi
+    fi
+  else
+    err "FalkorDB container 'aios-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
+    FAIL=$((FAIL+1))
+  fi
+else
+  warn "Docker not running (FalkorDB disabled)"
+fi
+
+# Ollama
+if command -v ollama >/dev/null 2>&1; then
+  if pgrep -f "ollama serve" >/dev/null 2>&1; then
+    ok "Ollama serve running"
+    PASS=$((PASS+1))
+    if curl -s -m 3 http://localhost:11500/api/tags -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
+      ok "  Ollama API at :11500 reachable"
+      PASS=$((PASS+1))
+    else
+      warn "  Ollama API :11500 not reachable (default port 11434 may be in use; OLLAMA_HOST env may be needed)"
+    fi
+    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
+      ok "  nomic-embed-text model available"
+      PASS=$((PASS+1))
+    else
+      warn "  nomic-embed-text not pulled (run: OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text)"
+    fi
+  else
+    err "Ollama installed but not running"
+    FAIL=$((FAIL+1))
+  fi
+else
+  warn "Ollama not installed (run: brew install ollama)"
+fi
+
+# code binaries
+for bin in codebase-memory-mcp grepai; do
+  if [ -x "$HOME_DIR/.local/bin/$bin" ]; then
+    ok "$bin binary at ~/.local/bin/"
+    PASS=$((PASS+1))
+  else
+    warn "$bin not installed (run install-mac.sh to retry)"
+  fi
+done
 fi
 
 # ─── 6. Oh My Zsh + Powerlevel10k ───
@@ -303,6 +399,17 @@ if [ -f "$HOME_DIR/.hermes/SOUL.md" ] && grep -q "AI-OS BRIDGE" "$HOME_DIR/.herm
   PASS=$((PASS+1))
 else
   warn "  ~/.hermes/SOUL.md missing the AI-OS bridge block (run install-mac.sh)"
+fi
+VSCODE_OK=0
+for f in "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md" \
+         "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"; do
+  [ -f "$f" ] && grep -q "AI-OS BRIDGE" "$f" && VSCODE_OK=$((VSCODE_OK+1))
+done
+if [ "$VSCODE_OK" -gt 0 ]; then
+  ok "  VS Code Copilot Chat bridge present ($VSCODE_OK file(s))"
+  PASS=$((PASS+1))
+else
+  warn "  VS Code Copilot Chat bridge not found (OK if unused; run install-mac.sh)"
 fi
 MM_OK=0
 if [ -d "$HOME_DIR/.minimax/agents" ]; then
