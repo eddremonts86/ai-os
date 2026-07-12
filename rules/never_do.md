@@ -96,7 +96,7 @@ Concrete forbidden patterns:
 - ❌ Researching 2+ topics one by one → dispatch in parallel.
 - ❌ Installing packages sequentially (brew + npm + pip) → dispatch in parallel.
 - ❌ Polling/loitering for a process that takes minutes → use `background=true` and `notify_on_complete=true`.
-- ❌ Asking the user "should I continue?" mid-task → if the user said "go", execute.
+- ❌ Asking the user "should I continue?" mid-task for approved reversible work. A "go" instruction never bypasses action-specific approval for protected actions.
 - ❌ Doing the same search query in 2+ tools → pick the best tool, do it once.
 
 **Threshold rule:** if a task has 2+ independent workstreams, dispatching is **mandatory** (not optional). Sequential execution is the exception that requires justification, not the default.

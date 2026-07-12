@@ -10,8 +10,9 @@ audience: "any AI agent (Hermes, Claude Code, Codex, Gemini, Antigravity, OpenCo
 
 The local AI Operating System that turns a Mac into a multi-agent
 research/workstation. Built on the **Spec → Verifier → Environment**
-method. This document is the canonical reference for everything in
-`/Users/edd/Projects/ai-os`.
+method. This is a detailed technical reference. `CLAUDE.md` is the master
+operating instruction, and the repository root should be referenced as
+`$AI_OS_ROOT` (typically `$HOME/Projects/ai-os`).
 
 ---
 
@@ -38,12 +39,12 @@ Hermes is reusable in Claude Code** without translation.
 ## 2. Top-level architecture
 
 ```
-/Users/edd/Projects/ai-os/
+$AI_OS_ROOT/
 ├── AGENTS.md                       # instructions for AI agents (read first)
 ├── CLAUDE.md                       # alias of AGENTS.md (Claude Code convention)
 ├── context/                        # durable per-user context (profile, prefs,projects,tools)
 ├── rules/                          # hard rules: always_do / ask / never_do / loop_safety
-├── specs/                          # active Specs + current_spec.md + archive
+├── specs/                          # one active Spec + current_spec.md
 ├── verifiers/                      # quality gates (post-task)
 ├── skills/                         # local skills (workspace-specific)
 ├── workflows/                      # recurring processes (project_start, daily_start, etc)
@@ -510,14 +511,12 @@ A Spec has:
 specs/
 ├── current_spec.md              # active (or empty)
 ├── spec_template.md              # starting point
-├── 2026-07-02-persistent-memory-phase-1.md
-├── 2026-07-02-persistent-memory-research.md
-└── archive/
-    └── YYYY-MM-DD-<slug>.md
+archive/
+└── YYYY-MM-DD-<slug>.md
 ```
 
-The archive is the source of truth for "what have we already done"
-in this repo.
+`specs/current_spec.md` is reserved for one active task. Completed task records
+are versioned in `archive/`; archive entries must not overwrite one another.
 
 ---
 
@@ -842,6 +841,5 @@ For loops:
 
 ---
 
-*This document is the canonical entry point. It will be updated as
-the system evolves. Any change to a file mentioned here should
-update the relevant section in the same commit.*
+*This document is a detailed reference. Update it when a documented behavior
+changes, and keep `CLAUDE.md` as the master operating instruction.*

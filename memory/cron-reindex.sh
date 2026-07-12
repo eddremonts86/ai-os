@@ -14,27 +14,10 @@ mkdir -p "$LOG_DIR"
   echo "== AI-OS memory reindex $(date -Iseconds) =="
   echo ""
 
-  # 1. Reindex active work projects
-  for proj in \
-      "$HOME/Projects/ei-schilling/wave-template" \
-      "$HOME/Projects/ei-schilling/kontrakt-manager" \
-      "$HOME/Projects/ei-schilling/wave-tech-radar" \
-      "$HOME/Projects/ei-schilling/ia-royalty-validations" \
-      "$HOME/Projects/ai-os" \
-      "$HOME/Projects/eddremonts86/anySolutions"
-  do
-    if [ -d "$proj" ]; then
-      echo "-- indexing: $proj"
-      cd "$proj" && grepai index 2>&1 || echo "  (grepai index skipped or failed)"
-    fi
-  done
+  # grepai indexing is owned by `grepai watch`; do not start a persistent daemon from cron.
+  echo "-- grepai indexing is not scheduled; use grepai watch per project or workspace --"
 
-  # 2. Sync last 30 days of sessions
-  echo ""
-  echo "-- syncing sessions (last 30 days) --"
-  bash "$HOME/Projects/ai-os/memory/ai-os-memory.sh" sync-sessions 30 2>&1 || echo "  (sync-sessions skipped or failed)"
-
-  # 3. Verify stack still healthy
+  # Verify stack still healthy.
   echo ""
   echo "-- status check --"
   bash "$HOME/Projects/ai-os/memory/ai-os-memory.sh" status 2>&1

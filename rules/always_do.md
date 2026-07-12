@@ -4,12 +4,12 @@ Actions that you MUST always do when working with me.
 
 ## At session start
 
-1. Read `~/Projects/ai-os/CLAUDE.md`.
-2. Read `~/Projects/ai-os/context/00_profile.md`, `02_projects.md`, `03_preferences.md`, `04_tools.md`.
-3. Read `~/Projects/ai-os/rules/never_do.md` and `ask_before_doing.md`.
-4. Read `~/Projects/ai-os/specs/current_spec.md`. If empty, no active Spec.
+1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md`.
+2. Read `$AI_OS_ROOT/context/00_profile.md`, `02_projects.md`, `03_preferences.md`, `04_tools.md`.
+3. Read `$AI_OS_ROOT/rules/never_do.md` and `ask_before_doing.md`.
+4. Read `$AI_OS_ROOT/specs/current_spec.md`. It must contain only the active Spec; an empty template means there is no active Spec.
 5. Load skill `using-superpowers` (router).
-6. → Load skill `workflows/daily_start.md` (AI-OS).
+6. Follow `workflows/daily_start.md` (AI-OS).
 
 ## ALWAYS: use sub-agents in parallel when possible
 
@@ -29,7 +29,7 @@ Use this CLI's native subagent mechanism. **Max 3 concurrent** per user (default
 
 - **Claude Code**: the `Task`/`Agent` tool — send multiple agents in a single message so they run concurrently.
 - **Hermes**: `delegate_task(tasks=[{"goal": "Research X", "toolsets": ["web"]}, ...])`.
-- **Codex / Gemini / Antigravity / MiniMax**: no native parallel subagents — use background shells for independent commands, otherwise run sequentially.
+- **Codex / Gemini / Antigravity / MiniMax**: use their native subagent or agent-team capability when it is available in the installed client. Otherwise use background shells for independent commands or run sequentially.
 
 Each subagent gets:
 - Isolated context and terminal.
@@ -74,7 +74,7 @@ When you find a useful parallel-dispatch pattern (e.g., "research + verify + imp
 
 ## When creating artifacts
 
-18. Save to the right place: project dir, `outputs/`, or `archive/`.
+18. Save active task planning only in `specs/current_spec.md`; save completed Specs in the versioned `archive/` directory.
 19. Use conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
 20. Cite sources for claims.
 21. Add examples for non-trivial code.
@@ -82,6 +82,6 @@ When you find a useful parallel-dispatch pattern (e.g., "research + verify + imp
 
 ## At session end
 
-23. Archive the Spec to `archive/YYYY-MM-DD-<slug>.md`.
-24. Clean `specs/current_spec.md` for the next task.
+23. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
+24. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
 25. Report final state with concrete evidence.

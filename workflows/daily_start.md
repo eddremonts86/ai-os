@@ -22,7 +22,7 @@ Workflow to start any work session with me.
 hermes chat --skills ai-os-karpathy
 
 # Or, in any CLI, read the master instructions at the start of the conversation:
-cat ~/Projects/ai-os/CLAUDE.md
+cat "$AI_OS_ROOT/CLAUDE.md"
 ```
 
 The skill `ai-os-karpathy` (or reading CLAUDE.md) provides:
@@ -59,7 +59,7 @@ This skill has 7 techniques:
 
 Skip this step if the user already has a clear Spec in `specs/current_spec.md` or a well-defined task.
 
-### 4. → Load skill `workflows/daily_start.md` (AI-OS internal)
+### 4. Follow this workflow
 
 The `daily_start` workflow of AI-OS has 7 steps:
 
@@ -68,14 +68,14 @@ The `daily_start` workflow of AI-OS has 7 steps:
 3. → Load `brainstorming` if the idea is vague (step 3 of this workflow).
 4. Read `context/` (profile, projects, preferences, tools).
 5. Read `rules/` (always_do, ask_before_doing, never_do).
-6. Read `specs/current_spec.md`. If empty → the user has no active Spec. If filled → continue execution.
-7. Start the task. → Load skill `workflows/project_start.md` if a new Spec is needed.
+6. Read `specs/current_spec.md`. If it contains the no-active-Spec template → there is no active Spec. Otherwise, continue the one active task.
+7. Start the task. Follow `workflows/project_start.md` if a new Spec is needed.
 
 ### 5. Read `context/` (read files)
 
 ```bash
 # Read all context in order
-for f in ~/Projects/ai-os/context/*.md; do
+for f in "$AI_OS_ROOT"/context/*.md; do
   echo "=== $f ==="
   cat "$f"
 done
@@ -93,7 +93,7 @@ These 6 files give you the durable context:
 ### 6. Read `rules/` (read files)
 
 ```bash
-for f in ~/Projects/ai-os/rules/*.md; do
+for f in "$AI_OS_ROOT"/rules/*.md; do
   echo "=== $f ==="
   cat "$f"
 done
@@ -113,11 +113,11 @@ After reading CLAUDE.md + context/ + rules/, ask the user:
 
 Possible paths:
 
-- **New task** → → Load skill `workflows/project_start.md` (AI-OS) to create a Spec.
+- **New task** → follow `workflows/project_start.md` to create a Spec.
 - **Existing Spec** → execute block by block.
-- **Quick task** (<15 min) → just do it, archive when done.
-- **Research** → → Load skill `workflows/research.md` (AI-OS).
-- **Code work** → → Load skill `workflows/coding.md` (AI-OS).
+- **Quick task** (<15 min) → do it directly; only create and archive a Spec when the task needs one.
+- **Research** → follow `workflows/research.md`.
+- **Code work** → follow `workflows/coding.md`.
 
 ## Output
 
@@ -134,4 +134,4 @@ At the end of this workflow, you should have:
 - ❌ Skipping step 5 (context/) → you'll forget preferences or project details.
 - ❌ Skipping step 6 (rules/) → you might violate `never_do.md`.
 - ❌ Starting a task without a Spec → use `workflows/project_start.md` first.
-- ❌ Asking "should I continue?" mid-task → if the user said "go", execute.
+- ❌ Asking "should I continue?" mid-task for approved reversible work. Protected actions still require action-specific approval.

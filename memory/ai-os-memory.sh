@@ -3,9 +3,8 @@
 #
 # Subcommands:
 #   status              — show FalkorDB + Ollama + MCPs + node/edge counts
-#   query "<question>"   — semantic search via grepai + ollama
+#   query "<question>"   — semantic search via grepai
 #   reindex [path]        — refresh codebase-memory-mcp index over a project
-#   sync-sessions [--days N] — ingest ~/.hermes/sessions/*.db into FalkorDB
 #   browse               — open FalkorDB Web UI in default browser
 #   start                — docker compose up -d
 #   stop                 — docker compose down
@@ -54,8 +53,8 @@ fi
 export AI_OS_ROOT
 MEMORY_DIR="$AI_OS_ROOT/memory/falkordb"
 OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}"
-FALKORDB_URL="${FALKORDB_URL:-redis://localhost:6390}"
-FALKORDB_WEB="${FALKORDB_WEB:-http://localhost:3300}"
+FALKORDB_URL="${FALKORDB_URL:-redis://127.0.0.1:6390}"
+FALKORDB_WEB="${FALKORDB_WEB:-http://127.0.0.1:3300}"
 
 # Colors
 if [ -t 1 ]; then
@@ -133,7 +132,7 @@ sub_status() {
   # MCPs in config
   if [ -f "$HOME/.hermes/config.yaml" ] && command -v yq >/dev/null 2>&1; then
     hdr "MCP servers (ai-os memory-related)"
-    for name in codebase-memory-mcp grepai graphiti memory; do
+    for name in codebase-memory-mcp grepai memory; do
       enabled=$(yq ".mcp_servers.${name}.command // \"\"" "$HOME/.hermes/config.yaml" 2>/dev/null)
       if [ -n "$enabled" ]; then
         ok "$name → $enabled"
@@ -290,8 +289,8 @@ sub_query() {
     exit 1
   fi
   cd "${2:-$HOME/Projects}"
-  if ! grepai query "$q" 2>&1; then
-    err "grepai query failed"
+  if ! grepai search "$q" 2>&1; then
+    err "grepai search failed"
     exit 1
   fi
 }
@@ -335,23 +334,6 @@ sub_reindex() {
   return 0
 }
 
-# (no compatibility shim — the original behavior was a stub anyway)
-
-sub_sync_sessions() {
-  local days="${1:-90}"
-  hdr "Syncing ~/.hermes/sessions/*.db into FalkorDB (last $days days)"
-  local session_dir="$HOME/.hermes/sessions"
-  if [ ! -d "$session_dir" ]; then
-    err "Sessions dir not found: $session_dir"
-    exit 1
-  fi
-  if ! command -v python3 >/dev/null 2>&1; then
-    err "python3 required for session sync"
-    exit 1
-  fi
-  warn "Session sync not yet implemented. See specs/2026-07-02-persistent-memory-phase-1.md Task 1.7"
-}
-
 # Main
 case "${1:-}" in
   status)        sub_status ;;
@@ -363,7 +345,6 @@ case "${1:-}" in
   query)         shift; sub_query "$@" ;;
   search)        shift; sub_search "$@" ;;
   reindex)        shift; sub_reindex "$@" ;;
-  sync-sessions)  shift; sub_sync_sessions "$@" ;;
   help|--help|-h|"")
     cat <<EOF
 ai-os memory — CLI for the AI-OS memory stack (phase 1)
@@ -380,11 +361,9 @@ Subcommands:
   query "<q>" [path]  Semantic search via grepai
   search "<q>" [path] Same as query, but falls back to cbm if grepai not running
   reindex [path]      Refresh codebase-memory-mcp index
-  sync-sessions [N]  Ingest last N days of ~/.hermes/sessions/*.db
-
 Environment (override via env):
-  FALKORDB_URL=redis://localhost:6390
-  FALKORDB_WEB=http://localhost:3300
+  FALKORDB_URL=redis://127.0.0.1:6390
+  FALKORDB_WEB=http://127.0.0.1:3300
   OLLAMA_URL=http://localhost:11500
 
 Ports are intentionally OUTSIDE 3000-3050 to avoid conflicts.

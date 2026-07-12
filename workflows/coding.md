@@ -139,11 +139,17 @@ This skill has:
 - Open PR.
 - Update Spec status to "complete".
 
-### 12. Archive the Spec (move file)
+### 12. Archive the completed Spec (move file)
+
+Archive only after the active Spec is completed. `specs/current_spec.md` must
+not retain completed work.
 
 ```bash
-mv ~/Projects/ai-os/specs/current_spec.md \
-   ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-<slug>.md
+mv "$AI_OS_ROOT/specs/current_spec.md" \
+   "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-<slug>.md"
+
+printf '%s\n' '# Current Spec' '' '*No active Spec. Create one from `specs/spec_template.md` when needed.*' \
+  > "$AI_OS_ROOT/specs/current_spec.md"
 ```
 
 ## Output

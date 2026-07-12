@@ -1,0 +1,62 @@
+version: 1
+
+# This file is the single source of truth for adapter destinations and setup
+# verification severity. Paths are relative to the target user's home directory.
+components:
+  skill_source:
+    required: true
+    path: ai-config/skills
+  native_adapters:
+    required: true
+    template: ai-config/templates/global-bridge.md.tmpl
+  optional_integrations:
+    required: false
+    names:
+      - hermes_soul
+      - minimax_overlay
+      - vscode_copilot_chat
+
+platforms:
+  macos:
+    skills:
+      clients:
+        - { id: claude, path: .claude/skills, required: true }
+        - { id: codex, path: .codex/skills, required: true }
+        - { id: gemini, path: .gemini/skills, required: true }
+        - { id: antigravity, path: .agents/skills, required: true }
+        - { id: hermes, path: .hermes/skills/imported, required: true }
+        - { id: minimax, path: .minimax/skills, required: false }
+    adapters:
+      - { id: claude, path: .claude/CLAUDE.md, required: true }
+      - { id: codex, path: .codex/AGENTS.md, required: true }
+      - { id: gemini, path: .gemini/GEMINI.md, required: true }
+      - { id: antigravity, path: .agents/AGENTS.md, required: true }
+  windows:
+    skills:
+      clients:
+        - { id: claude, path: .claude/skills, required: true }
+        - { id: codex, path: .codex/skills, required: true }
+        - { id: gemini, path: .gemini/skills, required: true }
+        - { id: antigravity, path: .agents/skills, required: true }
+        - { id: hermes, path: .hermes/skills/imported, required: true }
+    adapters:
+      - { id: claude, path: .claude/CLAUDE.md, required: true }
+      - { id: codex, path: .codex/AGENTS.md, required: true }
+      - { id: gemini, path: .gemini/GEMINI.md, required: true }
+      - { id: antigravity, path: .agents/AGENTS.md, required: true }
+
+required_skills:
+  - brainstorming
+  - dispatching-parallel-agents
+  - executing-plans
+  - finishing-a-development-branch
+  - receiving-code-review
+  - requesting-code-review
+  - subagent-driven-development
+  - systematic-debugging
+  - test-driven-development
+  - using-git-worktrees
+  - using-superpowers
+  - verification-before-completion
+  - writing-plans
+  - writing-skills

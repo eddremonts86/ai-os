@@ -1,19 +1,15 @@
 # .gitignore — AI-OS repo
 # Do not commit:
 # - Generated artifacts
-# - Archived specs (keep the directory, not the files)
+# - Generated outputs
 # - Dotfile backups
 # - User-specific outputs
 
 # Outputs
 outputs/*
 
-# Archive (keep the directory)
-archive/*
-
-# Keep .gitkeep
+# Keep output directory
 !outputs/.gitkeep
-!archive/.gitkeep
 
 # OS
 .DS_Store
@@ -62,7 +58,7 @@ Thumbs.db
 # Local CLI runtime state (settings.local.json, caches, etc.) — never commit
 .claude/
 
-# AI-OS: do not ignore the rest of the repo; only outputs/archive are ignored.
+# AI-OS: completed Specs in archive/ are versioned. Only generated outputs are ignored.
 # Add any repo-specific exclusions here.
 
 # Vendored ECC plugin — never commit upstream VCS / build artifacts that

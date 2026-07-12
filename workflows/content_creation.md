@@ -97,9 +97,9 @@ Write the content following the structure. Style:
 4. Are all code examples valid? (run them)
 5. Is the content up to date with the actual code? (compare with reality)
 
-### 8. Critical review (load skill)
+### 8. Critical review
 
-→ Load skill `verifiers/critic_prompt.md` (AI-OS internal) to review:
+Apply `verifiers/critic_prompt.md` to review:
 
 - Is the audience clear?
 - Is the goal achieved?

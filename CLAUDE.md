@@ -5,20 +5,24 @@
 
 ## 1. Method: Spec → Verifier → Environment
 
+Set `AI_OS_ROOT` to this repository root before running path-based commands. The
+examples below use `$AI_OS_ROOT`; a typical local default is
+`$HOME/Projects/ai-os`.
+
 Before doing any non-trivial task:
 
 1. **Read** the relevant `context/` files (00_profile, 02_projects, 03_preferences, 04_tools, 05_sources).
-2. **Check** `specs/current_spec.md`. If empty, the workflow `workflows/project_start.md` kicks in.
+2. **Check** `specs/current_spec.md`. It is reserved for one active task; if it contains the no-active-Spec template, use `workflows/project_start.md` when a Spec is needed.
 3. **Execute** in blocks of <=30 min each. Between blocks, run `verifiers/critic_prompt.md` against the output.
-4. **Archive** completed specs to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary.
+4. **Archive** completed Specs to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary, then reset `specs/current_spec.md` to the no-active-Spec template.
 
 ## 2. Daily workflow
 
 ```
 1. daily_start.md          # load context + skills
 2. project_start.md        # if new task, create Spec
-3. daily_use/prompt.md     # reuse for the second-and-on tasks of the day
-4. archive + clean
+3. execute and verify the active task
+4. archive completed Specs + reset current_spec.md
 ```
 
 ## 3. Always follow
@@ -81,7 +85,7 @@ How to dispatch (each CLI has its own mechanism — use the native one):
 |---|---|
 | Claude Code | `Task`/`Agent` tool — launch multiple agents in one message |
 | Hermes | `delegate_task(tasks=[{"goal": "...", "toolsets": [...]}, ...])` |
-| Codex / Gemini / Antigravity / MiniMax | No native parallel subagents — run independent steps as background shells, or sequentially |
+| Codex / Gemini / Antigravity / MiniMax | Use native subagents or agent teams when available in the installed client; otherwise run independent background shells or work sequentially |
 
 Max 3 concurrent (in Hermes configured via `delegation.max_concurrent_children`; in Claude Code just cap yourself at 3).
 
@@ -96,7 +100,7 @@ Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel w
 - **Chat**: Spanish (lowercase, terse, no ceremonies).
 - **Code/commits/docs/logs/comments**: English.
 - **Error messages**: English.
-- **AI-OS files** (`CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`): all in English, always.
+- **AI-OS files** (`CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`, `archive/`, `outputs/`, `prompts/`): all in English, always.
 
 ## 8. Priority order
 
@@ -167,21 +171,24 @@ ai-os/
 ## 12. Commands quick reference
 
 ```bash
+# Set once per shell; override it when the repository lives elsewhere.
+export AI_OS_ROOT="${AI_OS_ROOT:-$HOME/Projects/ai-os}"
+
 # Start session with AI-OS
 hermes chat --skills ai-os-quickstart
 
 # Or in any CLI
-cat ~/Projects/ai-os/CLAUDE.md
+cat "$AI_OS_ROOT/CLAUDE.md"
 # → paste at the start of the conversation
 
 # Verify
-bash ~/Projects/ai-os/setup/verify.sh
+bash "$AI_OS_ROOT/setup/verify.sh"
 
 # Create new Spec
-$EDITOR ~/Projects/ai-os/specs/current_spec.md
+$EDITOR "$AI_OS_ROOT/specs/current_spec.md"
 
 # Archive completed Spec
-mv ~/Projects/ai-os/specs/current_spec.md ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-slug.md
+mv "$AI_OS_ROOT/specs/current_spec.md" "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-slug.md"
 ```
 
 ## 13. How to invoke from each CLI
@@ -278,10 +285,10 @@ download needed:
 
 ```bash
 # 1. Install (links all skills, including the 14 superpowers, into every CLI)
-bash ~/Projects/ai-os/setup/install-mac.sh
+bash "$AI_OS_ROOT/setup/install-mac.sh"
 
 # 2. Verify
-bash ~/Projects/ai-os/setup/verify.sh
+bash "$AI_OS_ROOT/setup/verify.sh"
 # → Section 4 should show: 14/14 superpowers skills OK
 ```
 
@@ -309,4 +316,4 @@ If you're not sure what to do:
 2. Re-read `context/03_preferences.md`.
 3. Run `workflows/daily_start.md`.
 4. If the doubt persists, ask the user (with options).
-5. If the user says "go", execute without further questions.
+5. If the user says "go", execute approved reversible work without further questions; keep action-specific approval for protected actions.
