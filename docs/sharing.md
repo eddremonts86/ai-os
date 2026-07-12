@@ -29,7 +29,7 @@
 
 - **New skills** (`~/.claude/skills/<name>/SKILL.md`) that are reusable.
 - **Workspace skills** (project-specific, not in `~/.claude/skills/`).
-- **New workflows** in `~/Projects/ai-os/workflows/`.
+- **New workflows** in `<AI_OS_ROOT>/workflows/`.
 - **New verifiers**.
 - **Brewfile** packages (if useful for devs in general).
 - **Dotfiles** (only if generic, not personal).

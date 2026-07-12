@@ -172,7 +172,7 @@ ai-os/
 │   ├── research.md               # Research + summarize findings
 │   └── content_creation.md       # Docs, ADRs, READMEs
 │
-├── specs/                        # Active Specs (2 files)
+├── specs/                        # One active Spec + template
 │   ├── spec_template.md          # Template for new Specs
 │   └── current_spec.md           # Active Spec (reset between tasks)
 │
@@ -198,7 +198,7 @@ ai-os/
 │   ├── verifiers-specs/            # Per task (2 files)
 │   └── skill-creation/            # When discovering patterns (1 file)
 │
-├── archive/                      # Completed Specs (gitignored content)
+├── archive/                      # Versioned completed Specs
 ├── outputs/                      # Generated artifacts (gitignored content)
 │
 ├── ai-config/                    # AI config (replicable, 1297 files)
@@ -332,7 +332,9 @@ This is Karpathy's framework for AI-assisted work. Every non-trivial task follow
 3. **Execute**: Block by block. → Load skill `verification-before-completion` after each block.
 4. **Verify**: Apply the 3 verifiers (`quality_checklist`, `critic_prompt`, `source_check_prompt`). 6 gates per task.
 
-At the end: archive the Spec to `archive/`, clean `current_spec.md`, commit, push.
+At the end: after explicit authorization for any protected git action, archive a
+completed Spec to `archive/`, reset `current_spec.md`, then commit or push as
+appropriate.
 
 Full details: [`CLAUDE.md`](CLAUDE.md).
 
@@ -429,15 +431,15 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 1. Start CLI (Hermes / Claude Code / etc.)
 2. → Load skill `ai-os-karpathy` (or `ai-os-quickstart` for first-time setup)
 3. → Load skill `using-superpowers` (router)
-4. → Load skill `workflows/daily_start.md` (load context + rules + Spec)
-5. Check `specs/current_spec.md`. If empty → new task. If filled → execute.
-6. At the end → run verifiers → archive Spec → commit.
+4. Follow `workflows/daily_start.md` (load context + rules + Spec)
+5. Check `specs/current_spec.md`. The no-active-Spec template means a new task; otherwise execute the one active Spec.
+6. At the end → run verifiers → archive a completed Spec → reset `current_spec.md` → commit only when authorized.
 ```
 
 ### New task (>30 min)
 
 ```
-1. → Load skill `workflows/project_start.md`
+1. Follow `workflows/project_start.md`
 2. → Load skill `brainstorming` (if idea is vague)
 3. Create Spec in `specs/current_spec.md`
 4. Get user approval
@@ -446,13 +448,13 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 7. → Load skill `verification-before-completion` after each block
 8. → Load skill `code-review-and-quality` before final commit
 9. → Load skill `finishing-a-development-branch` at the end
-10. Archive Spec to `archive/`
+10. Archive the completed Spec to `archive/` and reset `current_spec.md`
 ```
 
 ### Code work (feature, bug, refactor)
 
 ```
-1. → Load skill `workflows/coding.md`
+1. Follow `workflows/coding.md`
 2. → Load skill `systematic-debugging` if it's a bug
 3. → Load skill `test-driven-development` for tests
 4. → Load skill `using-git-worktrees` for large features
@@ -463,7 +465,7 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 ### Research
 
 ```
-1. → Load skill `workflows/research.md`
+1. Follow `workflows/research.md`
 2. Search official docs
 3. Summarize with sources
 4. → Load skill `verifiers/source_check_prompt` to verify URLs
@@ -473,7 +475,7 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 ### Writing docs
 
 ```
-1. → Load skill `workflows/content_creation.md`
+1. Follow `workflows/content_creation.md`
 2. Define audience and goal
 3. Write first draft
 4. → Load skill `verification-before-completion`
@@ -579,7 +581,7 @@ AI-OS is successful if:
 - [x] v0.3.0: Full setup system (Mac + Windows) with Brewfile + MCP config generation.
 - [x] v0.4.0: Windows PowerShell install.
 - [x] v0.5.0: GitHub Actions CI for setup scripts.
-- [ ] v0.6.0: i18n complete (all files in English, including third-party skills).
+- [x] Documentation policy: repository-authored files are English; third-party vendored content retains its upstream language.
 - [ ] v1.0.0: Stable API for skills + workflows.
 - [ ] v1.1.0: WSL2 support as primary Windows workflow.
 - [ ] v2.0.0: Multi-tenant / team support (config layers).

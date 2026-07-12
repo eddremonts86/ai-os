@@ -9,6 +9,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AI_OS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+MANIFEST="$AI_OS_ROOT/ai-config/manifest.yaml"
 HOME_DIR="${HOME:-/tmp/aios-dryrun-$(date +%s)}"
 LOG_PREFIX="[ai-os install DRY-RUN]"
 
@@ -20,7 +21,7 @@ err() { echo "$LOG_PREFIX ❌ $*"; }
 # Create temporary HOME to not touch the real one
 TMP_HOME=$(mktemp -d -t aios-dryrun-XXXX)
 export HOME="$TMP_HOME"
-mkdir -p "$HOME"/.claude/skills "$HOME"/.codex/skills "$HOME"/.gemini/skills "$HOME"/.agents/skills "$HOME"/.hermes/skills/imported "$HOME"/.minimax/skills "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
+mkdir -p "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
 
 log "═══════════════════════════════════════════════════════════"
 log "  AI-OS Setup DRY-RUN (Mac simulation)"
@@ -33,7 +34,7 @@ echo ""
 log "0. Verifying AI-OS structure..."
 fail=0
 
-for f in CLAUDE.md ai-config/skills ai-config/mcp dev-env/dotfiles/zsh/.zshrc dev-env/dotfiles/zsh/.p10k.zsh dev-env/dotfiles/git/.gitconfig.template dev-env/dotfiles/ssh/config dev-env/packages/Brewfile setup/install-mac.sh setup/verify.sh setup/generate-mcp-config.py; do
+for f in CLAUDE.md ai-config/manifest.yaml ai-config/templates/global-bridge.md.tmpl ai-config/skills ai-config/mcp dev-env/dotfiles/zsh/.zshrc dev-env/dotfiles/zsh/.p10k.zsh dev-env/dotfiles/git/.gitconfig.template dev-env/dotfiles/ssh/config dev-env/packages/Brewfile setup/install-mac.sh setup/verify.sh setup/generate-mcp-config.py; do
   if [ ! -e "$AI_OS_ROOT/$f" ]; then
     err "Missing: $f"
     fail=$((fail+1))
@@ -46,6 +47,8 @@ else
   err "$fail missing files"
   exit 1
 fi
+
+command -v yq >/dev/null 2>&1 || { err "yq is required to validate $MANIFEST"; exit 1; }
 
 # ─── 1. Verify Brewfile is valid ───
 log "1. Validating Brewfile..."
@@ -103,21 +106,20 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
   fi
 done
 
-# ─── 5. Simulate skills propagation (symlinks) ───
-log "5. Simulating flat skills propagation to 6 CLIs..."
-CLI_DIRS=(
-  "$HOME/.claude/skills"
-  "$HOME/.codex/skills"
-  "$HOME/.gemini/skills"
-  "$HOME/.agents/skills"
-  "$HOME/.hermes/skills/imported"
-  "$HOME/.minimax/skills"
-)
+# ─── 5. Validate source skills and simulate native destinations ───
+log "5. Simulating flat skills propagation to manifest destinations..."
+duplicate_names=$(find "$AI_OS_ROOT/ai-config/skills" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort | uniq -d)
+if [ -n "$duplicate_names" ]; then
+  err "Duplicate source skill names: $duplicate_names"
+  exit 1
+fi
 
 skill_count=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l | tr -d ' ')
 ok "Flat skills source of truth: $skill_count"
 
-for cli_dir in "${CLI_DIRS[@]}"; do
+while IFS=$'\t' read -r client_id client_path client_required; do
+  cli_dir="$HOME/$client_path"
+  mkdir -p "$cli_dir"
   for skill_dir in "$AI_OS_ROOT/ai-config/skills"/*/; do
     [ -f "$skill_dir/SKILL.md" ] || continue
     name=$(basename "$skill_dir")
@@ -130,7 +132,25 @@ for cli_dir in "${CLI_DIRS[@]}"; do
     err "  $cli_dir: $cli_count skills, expected $skill_count"
     exit 1
   fi
-done
+done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
+
+# ─── 5a. Render and validate every required adapter ───
+log "5a. Rendering path-neutral instruction adapters..."
+adapter_dir="$HOME/.ai-os/adapters"
+mkdir -p "$adapter_dir"
+bridge="$adapter_dir/global-bridge.md"
+sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$AI_OS_ROOT/ai-config/templates/global-bridge.md.tmpl" > "$bridge"
+grep -Fq "$AI_OS_ROOT" "$bridge" || { err "Rendered bridge does not contain discovered root"; exit 1; }
+while IFS=$'\t' read -r adapter_id adapter_path adapter_required; do
+  target="$HOME/$adapter_path"
+  mkdir -p "$(dirname "$target")"
+  ln -s "$bridge" "$target"
+  if [ ! -L "$target" ] || [ "$(readlink "$target")" != "$bridge" ] || ! grep -Fq "$AI_OS_ROOT" "$target"; then
+    err "Adapter validation failed for $adapter_id"
+    exit 1
+  fi
+  ok "  $adapter_id adapter rendered and linked"
+done < <(yq -r '.platforms.macos.adapters[] | [.id, .path, .required] | @tsv' "$MANIFEST")
 
 # ─── 5b. Simulate vendored gstack skills (optional) ───
 if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
@@ -222,20 +242,19 @@ fi
 
 # ─── 8. Verify 14 superpowers skills in source ───
 log "8. Verifying 14 superpowers skills in source..."
-EXPECTED=14
+EXPECTED=$(yq '.required_skills | length' "$MANIFEST")
 ACTUAL=0
-for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
+while IFS= read -r skill; do
   if [ -d "$AI_OS_ROOT/ai-config/skills/$skill" ]; then
     ACTUAL=$((ACTUAL+1))
   fi
-done
+done < <(yq -r '.required_skills[]' "$MANIFEST")
 
 if [ "$ACTUAL" -eq "$EXPECTED" ]; then
   ok "14/14 superpowers skills present in source"
 else
-  err "Only $ACTUAL/14 superpowers in source (install via install-mac.sh)"
-  # Not a blocking fail in dry-run, just a warning
-  warn "The real install downloads them from obra/superpowers"
+  err "Only $ACTUAL/$EXPECTED required skills in source"
+  exit 1
 fi
 
 # ─── 9. Cleanup ───

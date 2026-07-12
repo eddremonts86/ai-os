@@ -3,21 +3,20 @@
 # Ports are intentionally OUTSIDE the 3000-3050 range (Edd's other apps use those).
 # Edit here only. Do NOT change ports from outside without updating:
 #   - this file
-#   - ai-config/mcp/graphiti.yaml
 #   - dev-env/.env.example
 #
-# Web UI:   http://localhost:3300  (browser, login not required by default)
-# Redis:   localhost:6390  (wire protocol, used by graphiti-core[falkordb])
+# Web UI:   http://127.0.0.1:3300  (browser, login not required by default)
+# Redis:   127.0.0.1:6390  (wire protocol)
 # Volume:  ./data  (persistent across `docker compose down && up`)
 
 services:
   falkordb:
-    image: falkordb/falkordb:latest
+    image: falkordb/falkordb:v4.18.11
     container_name: aios-falkordb
     restart: unless-stopped
     ports:
-      - "6390:6379"   # Redis protocol (used by graphiti, redis-cli, etc.)
-      - "3300:3000"   # Web UI / Browser (FalkorDB inspector)
+      - "127.0.0.1:6390:6379"   # Redis protocol
+      - "127.0.0.1:3300:3000"   # Web UI / Browser (FalkorDB inspector)
     volumes:
       - ./data:/data  # FalkorDB persists to /data by default
     healthcheck:

@@ -28,12 +28,28 @@ if ($env:DRY_RUN -eq "1") {
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $AIOSRoot = Split-Path -Parent $ScriptDir
 $HomeDir = $HOME
+$Manifest = Join-Path $AIOSRoot "ai-config\manifest.yaml"
+$AdapterTemplate = Join-Path $AIOSRoot "ai-config\templates\global-bridge.md.tmpl"
 $LogPrefix = "[ai-os install]"
 
 function Log($msg) { Write-Host "$LogPrefix $msg" }
 function Ok($msg) { Write-Host "$LogPrefix ✅ $msg" }
 function Warn($msg) { Write-Host "$LogPrefix ⚠️  $msg" -ForegroundColor Yellow }
 function Err($msg) { Write-Host "$LogPrefix ❌ $msg" -ForegroundColor Red }
+function Require-ManifestTool {
+    if (-not (Get-Command yq -ErrorAction SilentlyContinue)) { throw "yq is required to read $Manifest" }
+    if (-not (Test-Path $Manifest)) { throw "Manifest missing: $Manifest" }
+}
+function Preserve-OrReplace([string]$Target) {
+    if ((Test-Path $Target) -and -not (Get-Item $Target -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
+        if ($env:REPLACE_EXISTING -ne "1") {
+            Warn "Preserving existing $Target (set REPLACE_EXISTING=1 to replace it)"
+            return $false
+        }
+        Move-Item $Target "$Target.pre-aios.bak"
+    }
+    return $true
+}
 
 # ─── Header ───
 Log "═══════════════════════════════════════════════════════════"
@@ -235,15 +251,11 @@ if (-not (Test-Path $customProfile)) {
 }
 Write-Host ""
 
-# ─── 5. Global skills (symlinks) ───
-Log "5. Setting global skills in 5 CLIs..."
-
-$cliDirs = @(
-    "$HomeDir\.claude\skills",
-    "$HomeDir\.codex\skills",
-    "$HomeDir\.gemini\skills",
-    "$HomeDir\.agents\skills"
-)
+# ─── 5. Global skills (native destinations from manifest) ───
+Require-ManifestTool
+Log "5. Setting global skills in native client destinations..."
+$skillClients = (& yq -o=json '.platforms.windows.skills.clients' $Manifest | ConvertFrom-Json)
+$cliDirs = @($skillClients | ForEach-Object { Join-Path $HomeDir $_.path })
 
 foreach ($cliDir in $cliDirs) {
     if (-not (Test-Path $cliDir)) {
@@ -254,76 +266,56 @@ foreach ($cliDir in $cliDirs) {
     }
     foreach ($skillDir in $skillDirs) {
         $linkPath = Join-Path $cliDir $skillDir.Name
-        if (-not (Test-Path $linkPath)) {
+        if ((-not (Test-Path $linkPath)) -or (Preserve-OrReplace $linkPath)) {
             New-Item -ItemType SymbolicLink -Path $linkPath -Target $skillDir.FullName -Force | Out-Null
         }
-    }
-}
-
-# Hermes imported
-$hermesImportedDir = "$HomeDir\.hermes\skills\imported"
-if (-not (Test-Path $hermesImportedDir)) {
-    New-Item -ItemType Directory -Path $hermesImportedDir -Force | Out-Null
-}
-$skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
-    Test-Path (Join-Path $_.FullName "SKILL.md")
-}
-foreach ($skillDir in $skillDirs) {
-    $linkPath = Join-Path $hermesImportedDir $skillDir.Name
-    if (-not (Test-Path $linkPath)) {
-        New-Item -ItemType SymbolicLink -Path $linkPath -Target $skillDir.FullName -Force | Out-Null
     }
 }
 
 $skillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
     Test-Path (Join-Path $_.FullName "SKILL.md")
 }).Count
-Ok "Flat skills propagated to 5 CLIs ($skillCount skills in source)"
+Ok "Flat skills propagated to manifest client destinations ($skillCount skills in source)"
+Write-Host ""
+
+# ─── 5b. Rendered instruction adapters ───
+Log "5b. Rendering path-neutral instruction adapters..."
+if (-not (Test-Path $AdapterTemplate)) { throw "Adapter template missing: $AdapterTemplate" }
+$adapterDir = Join-Path $HomeDir ".ai-os\adapters"
+New-Item -ItemType Directory -Path $adapterDir -Force | Out-Null
+$bridge = Join-Path $adapterDir "global-bridge.md"
+(Get-Content $AdapterTemplate -Raw).Replace("{{AI_OS_ROOT}}", $AIOSRoot) | Set-Content -Path $bridge -NoNewline
+$adapters = (& yq -o=json '.platforms.windows.adapters' $Manifest | ConvertFrom-Json)
+foreach ($adapter in $adapters) {
+    $target = Join-Path $HomeDir $adapter.path
+    New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
+    if (Preserve-OrReplace $target) {
+        New-Item -ItemType SymbolicLink -Path $target -Target $bridge -Force | Out-Null
+    }
+}
+Ok "Required instruction adapters rendered from manifest"
 Write-Host ""
 
 # ─── 6. Superpowers skills (REQUIRED) ───
 Log "6. Verifying superpowers skills (REQUIRED)..."
-$expected = 14
+$superpowersSkills = @(& yq -r '.required_skills[]' $Manifest)
+$expected = $superpowersSkills.Count
 $actual = 0
-$superpowersSkills = @(
-    "brainstorming", "dispatching-parallel-agents", "executing-plans",
-    "finishing-a-development-branch", "receiving-code-review",
-    "requesting-code-review", "subagent-driven-development",
-    "systematic-debugging", "test-driven-development",
-    "using-git-worktrees", "using-superpowers",
-    "verification-before-completion", "writing-plans", "writing-skills"
-)
 foreach ($skill in $superpowersSkills) {
     if (Test-Path "$HomeDir\.claude\skills\$skill") {
         $actual++
     }
 }
 if ($actual -ne $expected) {
-    Warn "Only $actual/$expected superpowers skills installed. Installing..."
-    $tmpSp = "$env:TEMP\superpowers-aios-$PID"
-    if (Test-Path $tmpSp) { Remove-Item $tmpSp -Recurse -Force }
-    git clone --depth=1 https://github.com/obra/superpowers $tmpSp 2>&1 | Out-Null
-
-    $spSkills = Get-ChildItem "$tmpSp\skills" -Directory
-    foreach ($skillDir in $spSkills) {
-        $destPath = "$HomeDir\.claude\skills\$($skillDir.Name)"
-        if (-not (Test-Path $destPath)) {
-            Copy-Item $skillDir.FullName $destPath -Recurse -Force
-            # Re-symlink to other CLIs
-            foreach ($cliDir in $cliDirs) {
-                $linkPath = Join-Path $cliDir $skillDir.Name
-                if (-not (Test-Path $linkPath)) {
-                    New-Item -ItemType SymbolicLink -Path $linkPath -Target $destPath -Force | Out-Null
-                }
-            }
-            $hermesLinkPath = "$hermesImportedDir\$($skillDir.Name)"
-            if (-not (Test-Path $hermesLinkPath)) {
-                New-Item -ItemType SymbolicLink -Path $hermesLinkPath -Target $destPath -Force | Out-Null
-            }
+    foreach ($skill in $superpowersSkills) {
+        $source = Join-Path $AIOSRoot "ai-config\skills\$skill"
+        if (-not (Test-Path $source)) { throw "Required skill missing from source: $skill" }
+        foreach ($cliDir in $cliDirs) {
+            $linkPath = Join-Path $cliDir $skill
+            if (-not (Test-Path $linkPath)) { New-Item -ItemType SymbolicLink -Path $linkPath -Target $source -Force | Out-Null }
         }
     }
-    Remove-Item $tmpSp -Recurse -Force
-    Ok "Superpowers installed ($expected/$expected)"
+    Ok "Required skills linked from local source ($expected/$expected)"
 } else {
     Ok "Superpowers OK ($actual/$expected)"
 }

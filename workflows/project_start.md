@@ -35,7 +35,9 @@ If the user already has a clear idea, skip this step.
 
 ### 2. Create the Spec (write file)
 
-Copy `specs/spec_template.md` to `specs/current_spec.md`. Fill in each section:
+Confirm that `specs/current_spec.md` contains no active Spec, then copy
+`specs/spec_template.md` to `specs/current_spec.md`. This file is reserved for
+one active task only. Fill in each section:
 
 - **Metadata**: date, status, blocks.
 - **Objective**: what we want to achieve (1 sentence).
@@ -88,9 +90,9 @@ If any gate fails, the block is NOT complete. Fix before continuing.
 
 For each block in the Spec:
 
-1. → Load `workflows/coding.md` (if code) or `workflows/research.md` (if research) or `workflows/content_creation.md` (if docs).
+1. Follow `workflows/coding.md` (if code), `workflows/research.md` (if research), or `workflows/content_creation.md` (if docs).
 2. Execute the block.
-3. Run `verifiers/verification-before-completion` after each block.
+3. Apply the `verification-before-completion` skill after each block.
 4. If block is OK, move to the next.
 5. If block fails, fix and retry (don't move on).
 6. → Load skill `code-review-and-quality` before finishing.
@@ -131,15 +133,18 @@ At the end:
   - Open PR (if applicable).
   - Update Spec status to "complete".
 
-### 8. Archive the Spec (move file)
+### 8. Archive the completed Spec (move file)
+
+Archive only after the active Spec is completed. Archive names are immutable,
+versioned task records; do not overwrite an existing archive file.
 
 ```bash
-mv ~/Projects/ai-os/specs/current_spec.md \
-   ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-<slug>.md
+mv "$AI_OS_ROOT/specs/current_spec.md" \
+   "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-<slug>.md"
 
 # Reset for next task
 echo "# Current Spec\n\n*No active Spec.* Load a new Spec following \`specs/spec_template.md\` or run \`workflows/project_start.md\`." \
-  > ~/Projects/ai-os/specs/current_spec.md
+  > "$AI_OS_ROOT/specs/current_spec.md"
 ```
 
 ## Output

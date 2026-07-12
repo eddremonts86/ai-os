@@ -105,7 +105,7 @@ Length: 200-1000 words. Not too short (no value), not too long (no action).
 
 ### 5. Verify sources (execute)
 
-→ Load skill `verifiers/source_check_prompt.md` (AI-OS internal) to verify:
+Apply `verifiers/source_check_prompt.md` to verify:
 
 - All URLs are real (not invented).
 - Versions are current.
@@ -113,9 +113,9 @@ Length: 200-1000 words. Not too short (no value), not too long (no action).
 
 If any check fails, redo the search or remove the claim.
 
-### 6. Critical review (load skill)
+### 6. Critical review
 
-→ Load skill `verifiers/critic_prompt.md` (AI-OS internal) to review:
+Apply `verifiers/critic_prompt.md` to review:
 
 - Is the recommendation justified?
 - Are there missing options?

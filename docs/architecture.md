@@ -154,7 +154,7 @@ AI-OS is successful if:
 
 ## References
 
-- **Karpathy method:** [CLAUDE.md "Method" section](../../CLAUDE.md)
+- **Karpathy method:** [CLAUDE.md "Method" section](../CLAUDE.md)
 - **Setup scripts:** [setup/](../setup/)
 - **Skills:** [ai-config/skills/](../ai-config/skills/)
 - **MCP servers:** [ai-config/mcp/](../ai-config/mcp/)

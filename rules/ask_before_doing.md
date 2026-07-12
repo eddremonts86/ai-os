@@ -66,7 +66,10 @@ OK? (y/n)
 
 ## If the user says "go"
 
-- Execute without further questions.
+- Execute approved, reversible work without further questions.
+- Keep the approval boundary for destructive, production, financial, credential,
+  publishing, outbound, global-state, and otherwise hard-to-reverse actions.
+  Ask for action-specific confirmation before performing any of them.
 - If a doubt arises mid-execution, add it to the next "ask" instead of stopping.
 - If a plan changes (the user adds requirements), update the Spec, do not silently deviate.
 

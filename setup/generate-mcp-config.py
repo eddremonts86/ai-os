@@ -1,192 +1,155 @@
 #!/usr/bin/env python3
-"""
-setup/generate-mcp-config.py
-
-Generates ~/.hermes/config.yaml from the YAMLs in ai-config/mcp/.
-Works on Mac, Linux, Windows (if you have Python 3+).
-
-Dependency: PyYAML is preferred. If it is unavailable, this script falls back to
-the small YAML subset used by ai-config/mcp/*.yaml.
+"""Generate a merge-preserving Hermes MCP configuration from AI-OS definitions.
 
 Usage:
   python3 setup/generate-mcp-config.py ai-config/mcp ~/.hermes/config.yaml
+
+PyYAML is required because this command must preserve arbitrary user YAML safely.
 """
+
 import os
 import sys
+import tempfile
+from pathlib import Path
+from shutil import copy2
 
 try:
     import yaml
 except ImportError:
     yaml = None
 
-from pathlib import Path
-from shutil import copy2
+
+def fail(message):
+    print(f"Error: {message}", file=sys.stderr)
+    return 1
 
 
-def _parse_scalar(value):
-    value = value.strip()
-    if value in {"true", "True"}:
-        return True
-    if value in {"false", "False"}:
-        return False
-    if value in {"null", "None", "~"}:
-        return None
-    if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
-        return value[1:-1]
+def load_yaml_mapping(path, label):
+    try:
+        with path.open(encoding="utf-8") as stream:
+            value = yaml.safe_load(stream)
+    except (OSError, yaml.YAMLError) as error:
+        raise ValueError(f"could not parse {label} {path}: {error}") from error
+
+    if value is None:
+        return {}
+    if not isinstance(value, dict):
+        raise ValueError(f"{label} {path} must contain a YAML mapping")
     return value
 
 
-def _load_mcp_yaml(path):
-    if yaml is not None:
-        with open(path) as f:
-            return yaml.safe_load(f)
-
-    data = {}
-    current_list = None
-    with open(path) as f:
-        for raw_line in f:
-            line = raw_line.rstrip()
-            stripped = line.strip()
-            if not stripped or stripped.startswith("#"):
-                continue
-            if line.startswith("  - ") and current_list:
-                data[current_list].append(_parse_scalar(stripped[2:]))
-                continue
-            if ":" not in stripped:
-                continue
-            key, value = stripped.split(":", 1)
-            key = key.strip()
-            value = value.strip()
-            if value == "":
-                data[key] = []
-                current_list = key
-            else:
-                data[key] = _parse_scalar(value)
-                current_list = None
-    return data
+def expand_home(value, home):
+    return str(value).replace("${HOME}", home).replace("${USERPROFILE}", home)
 
 
-def _dump_yaml(data):
-    if yaml is not None:
-        return yaml.safe_dump(data, default_flow_style=False, sort_keys=False)
+def render_server(definition, home):
+    name = definition.get("name")
+    if not isinstance(name, str) or not name:
+        raise ValueError("MCP definition requires a non-empty string name")
 
-    def scalar(value):
-        if value is True:
-            return "true"
-        if value is False:
-            return "false"
-        if value is None:
-            return "null"
-        text = str(value)
-        if any(ch in text for ch in [":", "#", "{", "}", "[", "]"]) or text.strip() != text:
-            return "'" + text.replace("'", "''") + "'"
-        return text
+    transport = definition.get("transport", "stdio")
+    if transport == "stdio":
+        command = definition.get("command")
+        args = definition.get("args", [])
+        if not isinstance(command, str) or not command:
+            raise ValueError(f"MCP definition {name} requires a command")
+        if not isinstance(args, list):
+            raise ValueError(f"MCP definition {name} args must be a list")
 
-    lines = []
-    for key, value in data.items():
-        if isinstance(value, dict):
-            lines.append(f"{key}:")
-            for child_key, child_value in value.items():
-                if isinstance(child_value, dict):
-                    lines.append(f"  {child_key}:")
-                    for grand_key, grand_value in child_value.items():
-                        if isinstance(grand_value, list):
-                            lines.append(f"    {grand_key}:")
-                            for item in grand_value:
-                                lines.append(f"      - {scalar(item)}")
-                        elif isinstance(grand_value, dict):
-                            lines.append(f"    {grand_key}:")
-                            for item_key, item_value in grand_value.items():
-                                lines.append(f"      {item_key}: {scalar(item_value)}")
-                        else:
-                            lines.append(f"    {grand_key}: {scalar(grand_value)}")
-                else:
-                    lines.append(f"  {child_key}: {scalar(child_value)}")
-        else:
-            lines.append(f"{key}: {scalar(value)}")
-    return "\n".join(lines) + "\n"
+        server = {
+            "command": expand_home(command, home),
+            "args": [expand_home(argument, home) for argument in args],
+        }
+        env = definition.get("env")
+        if env is not None:
+            if not isinstance(env, dict):
+                raise ValueError(f"MCP definition {name} env must be a mapping")
+            server["env"] = env
+        return name, server
+
+    if transport == "http":
+        url = definition.get("url")
+        if not isinstance(url, str) or not url:
+            raise ValueError(f"MCP definition {name} requires a URL")
+        server = {"url": url}
+        headers = definition.get("headers")
+        if headers is not None:
+            if not isinstance(headers, dict):
+                raise ValueError(f"MCP definition {name} headers must be a mapping")
+            server["headers"] = headers
+        return name, server
+
+    raise ValueError(f"MCP definition {name} has unsupported transport {transport!r}")
+
+
+def write_yaml_atomically(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    rendered = yaml.safe_dump(data, default_flow_style=False, sort_keys=False)
+    with tempfile.NamedTemporaryFile(
+        mode="w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.", delete=False
+    ) as stream:
+        stream.write(rendered)
+        temporary_path = Path(stream.name)
+    try:
+        os.replace(temporary_path, path)
+    except OSError:
+        temporary_path.unlink(missing_ok=True)
+        raise
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: python3 generate-mcp-config.py <mcp_dir> <config_path>")
-        sys.exit(1)
+    if yaml is None:
+        return fail("PyYAML is required for merge-preserving MCP generation. Install PyYAML and retry.")
+    if len(sys.argv) != 3:
+        return fail("Usage: python3 generate-mcp-config.py <mcp_dir> <config_path>")
 
     mcp_dir = Path(sys.argv[1])
     config_path = Path(sys.argv[2])
+    if not mcp_dir.is_dir():
+        return fail(f"MCP directory does not exist: {mcp_dir}")
 
-    # Backup if exists
-    if config_path.exists():
-        backup = config_path.with_suffix(config_path.suffix + ".pre-aios.bak")
-        copy2(config_path, backup)
-        print(f"📦 Backup: {backup}")
+    try:
+        definitions = [load_yaml_mapping(path, "MCP definition") for path in sorted(mcp_dir.glob("*.yaml"))]
+        existing = load_yaml_mapping(config_path, "existing config") if config_path.exists() else {}
+        existing_servers = existing.get("mcp_servers", {})
+        if not isinstance(existing_servers, dict):
+            raise ValueError("existing config mcp_servers must be a mapping")
 
-    # Load existing config
-    existing = {}
-    if config_path.exists() and yaml is not None:
-        try:
-            with open(config_path) as f:
-                existing = yaml.safe_load(f) or {}
-        except Exception as e:
-            print(f"⚠️  Could not parse existing config: {e}")
-    elif config_path.exists():
-        print("⚠️  PyYAML unavailable; existing config will not be preserved")
+        home = os.environ.get("HOME") or os.environ.get("USERPROFILE") or str(Path.home())
+        managed_names = set()
+        generated_servers = {}
+        for definition in definitions:
+            name = definition.get("name")
+            if not isinstance(name, str) or not name:
+                raise ValueError("MCP definition requires a non-empty string name")
+            if name in managed_names:
+                raise ValueError(f"duplicate MCP definition name: {name}")
+            managed_names.add(name)
+            if definition.get("enabled", True) is False:
+                continue
+            name, server = render_server(definition, home)
+            generated_servers[name] = server
+    except ValueError as error:
+        return fail(str(error))
 
-    # Generate mcp_servers from YAMLs
-    mcp_servers = {}
-    for yaml_file in sorted(mcp_dir.glob("*.yaml")):
-        try:
-            server = _load_mcp_yaml(yaml_file)
-        except Exception as e:
-            print(f"⚠️  Skipping {yaml_file.name}: {e}")
-            continue
+    merged_servers = dict(existing_servers)
+    for name in managed_names:
+        merged_servers.pop(name, None)
+    merged_servers.update(generated_servers)
+    existing["mcp_servers"] = merged_servers
 
-        if not server or not server.get("name"):
-            continue
+    try:
+        if config_path.exists():
+            backup = config_path.with_suffix(config_path.suffix + ".pre-aios.bak")
+            copy2(config_path, backup)
+            print(f"Backup: {backup}")
+        write_yaml_atomically(config_path, existing)
+    except OSError as error:
+        return fail(f"could not write config {config_path}: {error}")
 
-        if server.get("enabled", True) is False:
-            continue
-
-        name = server["name"]
-        transport = server.get("transport", "stdio")
-
-        if transport == "stdio":
-            # Expand ${HOME} (and ${USERPROFILE} on Windows) in BOTH command and args
-            # so that Hermes/clients receive absolute paths rather than the literal
-            # ${HOME} placeholder. Fallback: getpwuid (POSIX) → USERPROFILE (Win).
-            _home = (
-                os.environ.get("HOME")
-                or os.environ.get("USERPROFILE")
-                or os.path.expanduser("~")
-            )
-            args = server.get("args", [])
-            args = [str(a).replace("${HOME}", _home).replace("${USERPROFILE}", _home) for a in args]
-            command = server.get("command", "") or ""
-            command = command.replace("${HOME}", _home).replace("${USERPROFILE}", _home)
-
-            mcp_servers[name] = {
-                "command": command,
-                "args": args,
-            }
-
-            if server.get("env"):
-                mcp_servers[name]["env"] = server["env"]
-
-        elif transport == "http":
-            mcp_servers[name] = {"url": server.get("url")}
-            if server.get("headers"):
-                mcp_servers[name]["headers"] = server["headers"]
-
-    # Update
-    existing["mcp_servers"] = mcp_servers
-
-    # Write
-    config_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(config_path, "w") as f:
-        f.write(_dump_yaml(existing))
-
-    print(f"✅ {len(mcp_servers)} MCP servers written to {config_path}")
+    print(f"Wrote {len(generated_servers)} AI-OS MCP servers to {config_path}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
