@@ -201,26 +201,40 @@ fi
 echo ""
 
 # ─── 6. Oh My Zsh + Powerlevel10k ───
+# Pinned refs (P1-4): Oh My Zsh has no version tags, so pin a specific commit
+# SHA instead of the mutable `master` branch. Bump deliberately after review,
+# e.g.: curl -s https://api.github.com/repos/ohmyzsh/ohmyzsh/commits/master
+OHMYZSH_REF="677a4592b18c08ddea737f8aca70bac0e9fc9313"
+P10K_TAG="v1.20.0"
+ZSH_AUTOSUGGESTIONS_TAG="v0.7.1"
+ZSH_SYNTAX_HIGHLIGHTING_TAG="0.8.0"
+ZSH_COMPLETIONS_TAG="0.36.0"
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
-  log "6. Installing Oh My Zsh..."
-  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 2>&1 | tail -3
+  log "6. Installing Oh My Zsh (pinned to commit ${OHMYZSH_REF:0:12})..."
+  RUNZSH=no CHSH=no sh -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/${OHMYZSH_REF}/tools/install.sh")" 2>&1 | tail -3
   ok "Oh My Zsh installed"
 else
   ok "Oh My Zsh already installed"
 fi
 
 if [ ! -d "$HOME_DIR/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
-  log "   Installing Powerlevel10k..."
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+  log "   Installing Powerlevel10k (${P10K_TAG})..."
+  git clone --depth=1 --branch "$P10K_TAG" https://github.com/romkatv/powerlevel10k.git \
     "${ZSH_CUSTOM:-$HOME_DIR/.oh-my-zsh/custom}/themes/powerlevel10k" 2>&1 | tail -2
   ok "   Powerlevel10k installed"
 fi
 
-# Additional plugins
+# Additional plugins (pinned tags, not the default branch)
+declare -A ZSH_PLUGIN_TAGS=(
+  [zsh-autosuggestions]="$ZSH_AUTOSUGGESTIONS_TAG"
+  [zsh-syntax-highlighting]="$ZSH_SYNTAX_HIGHLIGHTING_TAG"
+  [zsh-completions]="$ZSH_COMPLETIONS_TAG"
+)
 for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-completions; do
   if [ ! -d "$HOME_DIR/.oh-my-zsh/custom/plugins/$plugin" ]; then
-    log "   Installing plugin: $plugin"
-    git clone --depth=1 "https://github.com/zsh-users/$plugin" \
+    plugin_tag="${ZSH_PLUGIN_TAGS[$plugin]}"
+    log "   Installing plugin: $plugin (${plugin_tag})"
+    git clone --depth=1 --branch "$plugin_tag" "https://github.com/zsh-users/$plugin" \
       "${ZSH_CUSTOM:-$HOME_DIR/.oh-my-zsh/custom}/plugins/$plugin" 2>&1 | tail -1
   fi
 done
@@ -449,7 +463,7 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
       docker-compose up -d 2>&1 | tail -3 || warn "  docker-compose up failed"
     fi
     ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
-  ok "    image: falkordb/falkordb:latest (pinned to :latest tag, container_name: aios-falkordb)"
+  ok "    image: falkordb/falkordb:v4.18.11 (pinned, container_name: aios-falkordb)"
   else
     warn "  docker not running (start Docker Desktop) — graph memory disabled until then"
   fi
@@ -462,19 +476,42 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   CBM_ASSET="codebase-memory-mcp-${CBM_OS}-${CBM_ARCH}.tar.gz"
   CBM_VERSION="v0.8.1"  # pinned: last release with assets
   CBM_URL="https://github.com/deusdata/codebase-memory-mcp/releases/download/${CBM_VERSION}/${CBM_ASSET}"
+  # checksums.txt is published for the same pinned tag, so bumping CBM_VERSION
+  # automatically verifies against the matching release's hashes (P1-4).
+  CBM_SUMS_URL="https://github.com/deusdata/codebase-memory-mcp/releases/download/${CBM_VERSION}/checksums.txt"
   if [ ! -x "$HOME_DIR/.local/bin/codebase-memory-mcp" ]; then
     if command -v curl >/dev/null 2>&1 && command -v tar >/dev/null 2>&1; then
       tmp_tar="$(mktemp -t cbm-XXXXXX.tar.gz)"
+      tmp_sums="$(mktemp -t cbm-sums-XXXXXX.txt)"
       if curl -fsSL "$CBM_URL" -o "$tmp_tar" 2>/dev/null; then
-        # Extract the binary from the tarball
-        tar -xzf "$tmp_tar" -C "$HOME_DIR/.local/bin/" --strip-components=0 \
-          && chmod +x "$HOME_DIR/.local/bin/codebase-memory-mcp" 2>/dev/null \
-          && ok "  codebase-memory-mcp binary installed at ~/.local/bin/ (from $CBM_ASSET)" \
-          || warn "  codebase-memory-mcp extracted but chmod failed"
-        rm -f "$tmp_tar"
+        cbm_verified=0
+        if curl -fsSL "$CBM_SUMS_URL" -o "$tmp_sums" 2>/dev/null; then
+          expected_sum="$(grep -F "  ${CBM_ASSET}" "$tmp_sums" | awk '{print $1}' | head -1)"
+          if command -v shasum >/dev/null 2>&1; then
+            actual_sum="$(shasum -a 256 "$tmp_tar" | awk '{print $1}')"
+          elif command -v sha256sum >/dev/null 2>&1; then
+            actual_sum="$(sha256sum "$tmp_tar" | awk '{print $1}')"
+          else
+            actual_sum=""
+          fi
+          if [ -n "$expected_sum" ] && [ -n "$actual_sum" ] && [ "$expected_sum" = "$actual_sum" ]; then
+            cbm_verified=1
+          fi
+        fi
+        if [ "$cbm_verified" = "1" ]; then
+          # Extract the binary from the tarball
+          tar -xzf "$tmp_tar" -C "$HOME_DIR/.local/bin/" --strip-components=0 \
+            && chmod +x "$HOME_DIR/.local/bin/codebase-memory-mcp" 2>/dev/null \
+            && ok "  codebase-memory-mcp binary installed at ~/.local/bin/ (from $CBM_ASSET, sha256 verified)" \
+            || warn "  codebase-memory-mcp extracted but chmod failed"
+        else
+          err "  codebase-memory-mcp checksum verification failed for $CBM_ASSET — refusing to install (expected published checksums.txt to match; check for a tampered or stale mirror)"
+        fi
+        rm -f "$tmp_tar" "$tmp_sums"
       else
         warn "  codebase-memory-mcp download failed (HTTP error for $CBM_URL)"
         warn "  install manually from https://github.com/deusdata/codebase-memory-mcp/releases"
+        rm -f "$tmp_tar" "$tmp_sums"
       fi
     else
       warn "  curl + tar required for codebase-memory-mcp install"
@@ -483,11 +520,12 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     ok "  codebase-memory-mcp already installed"
   fi
 
-  # grepai via go install
+  # grepai via go install (pinned: bump this tag deliberately, not @latest — P1-4)
+  GREPAI_VERSION="v0.35.0"
   if command -v go >/dev/null 2>&1; then
-    go install github.com/yoanbernabeu/grepai/cmd/grepai@latest 2>&1 | tail -2 || warn "  go install grepai failed (will retry on first use)"
+    go install "github.com/yoanbernabeu/grepai/cmd/grepai@${GREPAI_VERSION}" 2>&1 | tail -2 || warn "  go install grepai failed (will retry on first use)"
     [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
-    ok "  grepai installed via go install"
+    ok "  grepai ${GREPAI_VERSION} installed via go install"
   else
     warn "  go not installed (grepai skipped; install: brew install go)"
   fi

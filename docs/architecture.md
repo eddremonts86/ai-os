@@ -18,7 +18,7 @@
 │  - CLAUDE.md, context/, rules/, workflows/, specs/, verifiers/   │
 │  - Flat global skills + optional plugin bundles                 │
 │  - 14 superpowers skills (REQUIRED)                             │
-│  - 7 declarative MCP servers                                    │
+│  - 10 declarative MCP servers (9 enabled)                        │
 │  - Prompt: ai-os-quickstart                                      │
 └─────────────────────────────────────────────────────────────────┘
                               ▲
