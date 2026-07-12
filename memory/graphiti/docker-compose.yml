@@ -1,0 +1,58 @@
+# Graphiti MCP server — AI-OS memory stack (Task 3, Graphiti architecture decision)
+#
+# Decision (2026-07-12, this session): run the pre-built `zepai/knowledge-graph-mcp`
+# image in its "-standalone" variant (no bundled database) against the FalkorDB
+# instance already managed by memory/falkordb/docker-compose.yml, connected over
+# the shared `aios-memory` Docker network. Chosen over vendoring
+# github.com/getzep/graphiti under vendor/graphiti/ because it avoids taking on a
+# second language toolchain (uv/Python) and a git-submodule-style dependency just
+# to run one MCP server — the versioned Docker image is pinned exactly the same
+# way FalkorDB itself already is.
+#
+# Image tag pinned to a specific release (not `:latest`); see
+# https://hub.docker.com/r/zepai/knowledge-graph-mcp/tags to bump.
+#
+# STATUS: NOT YET SMOKE-TESTED. This compose file has not been started on any
+# machine yet — Docker was not running and no OPENAI_API_KEY was available when
+# this was written. Do not flip ai-config/mcp/graphiti.yaml's `enabled: false` to
+# true until someone has actually run the steps below and confirmed the health
+# check.
+#
+# To activate:
+#   1. export OPENAI_API_KEY=sk-...          # or edit environment: below for another provider
+#   2. cd ~/Projects/ai-os/memory/falkordb && docker compose up -d   # FalkorDB must be up first
+#   3. cd ~/Projects/ai-os/memory/graphiti && docker compose up -d
+#   4. curl -sf http://127.0.0.1:8021/health && echo OK
+#   5. Only after step 4 prints OK: set `enabled: true` in
+#      ai-config/mcp/graphiti.yaml and change its `transport`/`url` to match this
+#      file (already done — transport: http, url: http://127.0.0.1:8021/mcp/).
+
+networks:
+  aios-memory:
+    external: true   # created by memory/falkordb/docker-compose.yml
+
+services:
+  graphiti-mcp:
+    image: zepai/knowledge-graph-mcp:1.0.2-standalone
+    container_name: aios-graphiti-mcp
+    restart: unless-stopped
+    networks:
+      - aios-memory
+    depends_on: []  # FalkorDB lives in a separate compose project; start it first manually
+    ports:
+      - "127.0.0.1:8021:8000"   # HTTP transport, MCP endpoint at /mcp/
+    environment:
+      DATABASE_PROVIDER: falkordb
+      FALKORDB_URI: redis://aios-falkordb:6379   # reach FalkorDB by container name on aios-memory
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?set OPENAI_API_KEY before starting this service}
+      GRAPHITI_TELEMETRY_ENABLED: "false"
+      SEMAPHORE_LIMIT: "5"   # conservative default; raise per the tuning table in graphiti's mcp_server/README.md
+
+# Usage:
+#   cd ~/Projects/ai-os/memory/graphiti
+#   docker compose up -d        # start (FalkorDB must already be running)
+#   docker compose down         # stop
+#   docker compose logs -f      # logs
+#
+# Quick check:
+#   curl -sf http://127.0.0.1:8021/health && echo OK

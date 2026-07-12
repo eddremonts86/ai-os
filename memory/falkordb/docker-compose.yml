@@ -9,11 +9,20 @@
 # Redis:   127.0.0.1:6390  (wire protocol)
 # Volume:  ./data  (persistent across `docker compose down && up`)
 
+networks:
+  aios-memory:
+    name: aios-memory   # shared with memory/graphiti/docker-compose.yml so the
+                        # Graphiti MCP container can reach FalkorDB by service
+                        # name over the internal Docker network (not the
+                        # loopback-only published port).
+
 services:
   falkordb:
     image: falkordb/falkordb:v4.18.11
     container_name: aios-falkordb
     restart: unless-stopped
+    networks:
+      - aios-memory
     ports:
       - "127.0.0.1:6390:6379"   # Redis protocol
       - "127.0.0.1:3300:3000"   # Web UI / Browser (FalkorDB inspector)

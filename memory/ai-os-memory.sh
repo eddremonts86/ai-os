@@ -99,6 +99,20 @@ sub_status() {
     else
       err "FalkorDB container NOT running (run: ai-os memory start)"
     fi
+
+    # Graphiti MCP (P0-3 decision: separate opt-in compose, not started by
+    # `ai-os memory start` — needs OPENAI_API_KEY and has not been
+    # smoke-tested yet; see memory/graphiti/docker-compose.yml)
+    if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^aios-graphiti-mcp$'; then
+      ok "Graphiti MCP container running (aios-graphiti-mcp)"
+      if curl -s -m 3 "http://127.0.0.1:8021/health" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
+        ok "  HTTP  http://127.0.0.1:8021/mcp/"
+      else
+        warn "  HTTP  http://127.0.0.1:8021/health not reachable"
+      fi
+    else
+      warn "Graphiti MCP container not running (optional, disabled — cd memory/graphiti && docker compose up -d)"
+    fi
   else
     warn "Docker not running"
   fi
