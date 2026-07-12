@@ -71,3 +71,7 @@ vendor/ecc/dist
 vendor/codex-plugin-cc/.git
 vendor/codex-plugin-cc/node_modules
 vendor/codex-plugin-cc/dist
+
+# Python bytecode cache (never intentionally committed)
+__pycache__/
+*.pyc
