@@ -16,13 +16,16 @@ symlink flat skills from here into the supported CLI skill directories.
 - `~/.claude/skills/` — Claude Code
 - `~/.codex/skills/` — Codex
 - `~/.gemini/skills/` — Gemini CLI
-- `~/.agents/skills/` — Antigravity / agents
+- `~/.agents/skills/` — Antigravity workspace-scoped path / shared by several other agents
+- `~/.gemini/config/skills/` — Antigravity's real GLOBAL (all-workspaces) path per
+  https://antigravity.google/docs/skills (confirmed 2026-07-12); optional/
+  best-effort, additive to `~/.agents/skills/` above
 - `~/.minimax/skills/` — MiniMax Code on Mac
 - Hermes reads `~/.agents/skills/` natively via `skills.external_dirs` in
   `~/.hermes/config.yaml` — no symlinked copy (previously
   `~/.hermes/skills/imported/`, removed; see P1-2 in the 2026-07-12 audit).
 
-Windows currently supports the four symlinked targets plus Hermes's
+Windows currently supports the five symlinked targets plus Hermes's
 `skills.external_dirs`, and does not wire MiniMax by default.
 
 ## Count Skills

@@ -106,12 +106,13 @@ foreach ($df in $dotfiles) {
 }
 
 # ─── 3. Simulate skills propagation ───
-Log "3. Simulating flat skills propagation to 4 CLIs (Hermes reads ~/.agents/skills via skills.external_dirs)..."
+Log "3. Simulating flat skills propagation to 5 CLI dirs (Hermes reads ~/.agents/skills via skills.external_dirs)..."
 $cliDirs = @(
     "$TempHome\.claude\skills",
     "$TempHome\.codex\skills",
     "$TempHome\.gemini\skills",
-    "$TempHome\.agents\skills"
+    "$TempHome\.agents\skills",
+    "$TempHome\.gemini\config\skills"
 )
 
 $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
