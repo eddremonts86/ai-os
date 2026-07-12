@@ -1,0 +1,847 @@
+---
+title: "AI-OS — The Karpathy Operating System for Your Mac"
+description: "Complete technical reference: architecture, installation, commands, skills, MCPs, loops, and the persistent-memory stack."
+date: 2026-07-07
+version: "phase 1 (memory) + phase 2 (loops)"
+audience: "any AI agent (Hermes, Claude Code, Codex, Gemini, Antigravity, OpenCode, Aider, Cursor, Zed)"
+---
+
+# AI-OS
+
+The local AI Operating System that turns a Mac into a multi-agent
+research/workstation. Built on the **Spec → Verifier → Environment**
+method. This document is the canonical reference for everything in
+`/Users/edd/Projects/ai-os`.
+
+---
+
+## 1. What AI-OS is
+
+AI-OS is **not** an agent. It is the **operating substrate** an agent
+runs on:
+
+- A folder structure (`CLAUDE.md`, `AGENTS.md`, `context/`, `specs/`,
+  `verifiers/`, `rules/`, `skills/`, `workflows/`, `outputs/`, `archive/`)
+- A persistent-memory stack (FalkorDB graph DB + Ollama embeddings +
+  codebase-memory-mcp + grepai)
+- A loop orchestration CLI (`ai-os loop`)
+- A memory sub-system CLI (`ai-os memory`)
+- A set of vendored skills + MCPs that any agent can load
+
+The agents (Claude Code, Hermes, Codex, Gemini, Antigravity, OpenCode,
+Aider, Cursor, Zed) all read `AGENTS.md` / `CLAUDE.md` and follow the
+same Spec→Verifier→Environment loop. This means **a Spec written for
+Hermes is reusable in Claude Code** without translation.
+
+---
+
+## 2. Top-level architecture
+
+```
+/Users/edd/Projects/ai-os/
+├── AGENTS.md                       # instructions for AI agents (read first)
+├── CLAUDE.md                       # alias of AGENTS.md (Claude Code convention)
+├── context/                        # durable per-user context (profile, prefs,projects,tools)
+├── rules/                          # hard rules: always_do / ask / never_do / loop_safety
+├── specs/                          # active Specs + current_spec.md + archive
+├── verifiers/                      # quality gates (post-task)
+├── skills/                         # local skills (workspace-specific)
+├── workflows/                      # recurring processes (project_start, daily_start, etc)
+├── archive/                        # completed Specs
+├── outputs/                        # generated artifacts (research reports, loop outputs)
+├── prompts/                        # original Karpathy prompts (English reference)
+├── ai-config/                      # AI config: skills/ (distributable), MCPs,commands
+│   ├── clis/                       # per-CLI overlays (GLOBAL_BRIDGE.md)
+│   ├── commands/                   # slash-command definitions
+│   ├── mcp/                        # MCP server YAML configs (10 servers)
+│   └── skills/                     # skill bundles (compatible with all agents)
+├── dev-env/                        # dev env: dotfiles, Brewfile, packages, .env.example
+├── setup/                          # install scripts (install-mac.sh, verify.sh, etc)
+├── vendor/                         # third-party vendored skills (gstack, ecc, codex-plugin-cc)
+├── .github/                        # CI workflows (test-mac/linux/windows)
+└── docs/                           # documentation (this file lives here)
+```
+
+The `~/.hermes/`, `~/.local/bin/`, and `~/.zshrc` are the runtime
+surface — they are **not** in the AI-OS repo on purpose. The repo
+contains the source-of-truth; the home directory contains the
+deployed artifacts.
+
+---
+
+## 3. The persistent-memory stack (phase 1)
+
+The memory stack is the most concrete deliverable in AI-OS. Four
+services, four ports, one CLI to manage them.
+
+### 3.1 What runs
+
+| Service | Port | Process | Purpose |
+|---|---|---|---|
+| **FalkorDB** (graph DB) | `3300` (Web UI), `6390` (Redis protocol) | `docker compose` | Stores entities + relationships (decisions, projects, components) |
+| **Ollama** (embeddings) | `11500` | `ollama serve` | Generates 768-dim vectors with `nomic-embed-text` |
+| **codebase-memory-mcp** | `9749` (UI), `9749` (REST API) | `~/.local/bin/codebase-memory-mcp` | Builds a knowledge graph of code (functions, calls, imports) via tree-sitter + Hybrid LSP |
+| **grepai** | n/a (CLI binary) | `~/.local/bin/grepai` | Privacy-first semantic code search (Nomic `nomic-embed-code` baked in) |
+
+**Port assignments are deliberate**: AI-OS reserves `3000-3050` for
+web apps. Memory services live in `3000-3999` (web), `6300-6900` (db),
+`11000-11999` (AI). `6390` (FalkorDB Redis) and `3300` (FalkorDB Web)
+and `11500` (Ollama) and `9749` (cbm UI) and `3990` (codebase-mcp TCP)
+are all in their reserved ranges.
+
+### 3.2 Installing the memory stack
+
+The `setup/install-mac.sh` script is idempotent. Re-run it any time.
+
+```bash
+# From a fresh Mac (or fresh shell):
+cd /Users/edd/Projects/ai-os
+bash setup/install-mac.sh
+
+# Verify:
+bash setup/verify.sh
+# Expected: 38 passed, 0 failed.
+# Banner: "AI-OS is correctly installed. 🎉"
+```
+
+The script:
+
+1. Installs Homebrew packages from `dev-env/packages/Brewfile` (docker, ollama, uv, etc.)
+2. Creates symlinks in `~/.local/bin/` for `codebase-memory-mcp`, `grepai`, `ai-os`, `ai-os-loop`
+3. Starts the FalkorDB container via `docker compose -f memory/falkordb/docker-compose.yml up -d`
+4. Starts `ollama serve` on `127.0.0.1:11500` (background, logs to `/tmp/ollama-server.log`)
+5. Pulls `nomic-embed-text` model (274 MB) into Ollama
+6. Downloads `codebase-memory-mcp` v0.8.1 (darwin-arm64) and `grepai` v0.35.0 to `~/.local/bin/`
+7. Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (10 MCPs total: 7 existing + 3 memory-related)
+8. Adds an `ai-os` alias to `~/.zshrc` so the CLI is on PATH
+9. Adds a self-healing PATH block to `~/.zshrc` so `codebase-memory-mcp` and `grepai` resolve even when `~/.local/bin` is missing from PATH (e.g. under `env -i` from MCP loaders)
+10. Registers a `cron-reindex.sh` (currently manual, cron creation is up to the user)
+
+### 3.3 Verifying the memory stack
+
+```bash
+# Status of all 4 services:
+ai-os memory status
+```
+
+Output:
+
+```
+== AI-OS Memory Stack Status ==
+  ✓ FalkorDB container running (aios-falkordb)
+  ✓   Web UI  http://localhost:3300
+  ✓   Redis  redis://localhost:6390 → PONG (via docker exec)
+  ✓ Ollama serve running
+  ✓   API  http://localhost:11500
+  ✓   model nomic-embed-text ready
+  ✓ codebase-memory-mcp binary
+  ✓ grepai binary
+
+== MCP servers (ai-os memory-related) ==
+  ✓ codebase-memory-mcp → /Users/edd/.local/bin/codebase-memory-mcp
+  ✓ grepai             → /Users/edd/.local/bin/grepai
+  ✓ graphiti           → uv
+```
+
+The `✓ codebase-memory-mcp → /Users/edd/.local/bin/codebase-memory-mcp`
+lines confirm the MCP servers are registered with Hermes AND have
+absolute paths in the config (no `${HOME}` placeholders that
+some clients don't expand).
+
+### 3.4 The `ai-os memory` CLI
+
+```
+ai-os memory <subcommand> [args]
+```
+
+| Subcommand | Purpose |
+|---|---|
+| `status` | Service health + node counts + MCP registration status |
+| `browse` | Open FalkorDB Web UI in default browser |
+| `visualize` | Open FalkorDB UI + cbm UI (if daemon running) + grepai status |
+| `start` / `stop` | FalkorDB container lifecycle |
+| `logs` | Tail FalkorDB logs |
+| `query "<q>" [path]` | Semantic search via grepai (requires `grepai watch` running) |
+| `search "<q>" [path]` | Same as `query`, but falls back to codebase-memory-mcp if grepai isn't running |
+| `reindex [path]` | Index a repo into codebase-memory-mcp (calls `index_repository` tool) |
+| `sync-sessions [N]` | Ingest last N days of Hermes session DBs into the graph |
+
+#### Subcommand behavior detail
+
+**`reindex`**: reindexes the AST of a directory. Example:
+
+```bash
+ai-os memory reindex /Users/edd/Projects
+# Output:
+#   index_status: nodes=568452 edges=2053993 size_bytes=1452998656
+# This is a 1.45 GB graph covering 4 top-level projects.
+```
+
+**`search`**: tier 1 (grepai live daemon) → tier 2 (codebase-memory-mcp).
+The CLI auto-detects which is available. Tier 2 returns structured
+JSON with qualified names, in_degree / out_degree, and full file
+paths. Deduplication ratio is typically ~10x (500 raw matches →
+50 functions).
+
+**`visualize`**: opens three things in your browser:
+1. FalkorDB UI (`http://localhost:3300`)
+2. codebase-memory-mcp UI (`http://localhost:9749`) — only if a daemon
+   with `--ui=true` is alive (usually only when Hermes chat is open)
+3. Reports `grepai` daemon status (not browser-accessible)
+
+**Note on the cbm UI**: this UI is **not** a static graph viewer. It's
+a single-page React app that fetches `/api/*` REST endpoints and
+renders a 3D graph. Requires the daemon to be running with
+`--ui=true`. Normally only when `hermes chat` is open.
+
+### 3.5 Working around the cbm "project not found" bug
+
+`codebase-memory-mcp` v0.8.1 has a known bug: tools like `search_code`
+and `search_graph` fail with `"project not found or not indexed"`
+even when `list_projects` shows the project. Workarounds:
+
+1. Use the daemon mode (start Hermes chat → cbm stays alive with
+   consistent state) instead of CLI-only mode
+2. Use `list_projects` first to confirm the project exists
+3. Run `ai-os memory reindex <path>` to refresh; this re-syncs the
+   graph state
+
+**The bug is in the binary, not in the CLI**. AI-OS works around
+it by surfacing `list_projects` output in `reindex` results so
+you always know what's indexed.
+
+### 3.6 Files in the memory stack
+
+| File | Purpose |
+|---|---|
+| `memory/falkordb/docker-compose.yml` | FalkorDB container definition |
+| `memory/ai-os-memory.sh` | The `ai-os memory` CLI |
+| `memory/ai-os-loop.sh` | The `ai-os loop` CLI (phase 2) |
+| `memory/cron-reindex.sh` | Helper for reindex via cron (manual wiring needed) |
+| `memory/dev-env/.env.example` | FALKORDB_URL, FALKORDB_WEB, OLLAMA_URL templates |
+| `ai-config/mcp/codebase-memory-mcp.yaml` | MCP server config (uses cbm binary) |
+| `ai-config/mcp/grepai.yaml` | MCP server config (uses grepai binary) |
+| `ai-config/mcp/graphiti.yaml` | Graphiti MCP (writes to FalkorDB via FALKORDB_HOST=localhost, FALKORDB_PORT=6390) |
+| `ai-config/skills/ai-os-memory/SKILL.md` | Skill loaded by `--skills ai-os-memory` |
+| `ai-config/skills/ai-os-loop/SKILL.md` | Skill loaded by `--skills ai-os-loop` (phase 2) |
+| `~/.hermes/config.yaml` | Generated by `setup/install-mac.sh` from the YAMLs above |
+
+---
+
+## 4. The loop system (phase 2)
+
+A **loop** is a reusable claude workflow that:
+
+- has a goal (`TASK.md`)
+- has a procedure (`LOOP_INSTRUCTIONS.md`)
+- has memory across runs (`PROGRESS.md`)
+- writes outputs to `outputs/`
+
+This is the pattern from Rahul (@sairahul1)'s "How to Create Loops
+with Claude Code" adapted to AI-OS conventions.
+
+### 4.1 The 4-file loop structure
+
+Every loop directory has these 4 files:
+
+```
+my-loop/
+├── TASK.md              # the goal — what this loop is trying to accomplish
+├── LOOP_INSTRUCTIONS.md  # operating procedure — how claude should run
+├── PROGRESS.md          # memory — what happened across runs
+└── outputs/             # where claude writes results
+```
+
+Templates are at `workflows/loop_template.md` (copy-paste-ready).
+
+### 4.2 The 6 blast-radius levels
+
+Defined in `rules/loop_safety.md`:
+
+| Level | Name | What it does | Examples |
+|---|---|---|---|
+| 1 | Read only | reads files / tickets / logs / issues | daily project review, CI log triage |
+| 2 | Draft outputs | writes to `outputs/` only | PR review draft, standup note |
+| 3 | Sandbox edits | modifies files inside a controlled sandbox | code refactor in feature branch |
+| 4 | Draft external actions | prepares but does NOT send | PR description, Slack draft |
+| 5 | Human-approved actions | applies changes only after explicit human approval | merge PR, send email |
+| 6 | Automated low-risk actions | completes narrowly scoped tasks automatically | daily backup, weekly housekeeping |
+
+**Rule: Level ≤ 3 by default.** Promotion requires 5+ successful
+manual runs at the prior level, recorded in `PROGRESS.md`.
+
+### 4.3 The `ai-os loop` CLI
+
+```
+ai-os loop <subcommand> [args]
+```
+
+| Subcommand | Purpose |
+|---|---|
+| `ls` | List registered loops |
+| `add <dir>` | Register a loop (requires TASK.md + LOOP_INSTRUCTIONS.md) |
+| `rm <id>` | Mark as removed (keeps the directory) |
+| `status <id>` | Show loop files state + level + last activity |
+| `show <id>` | Cat the loop's `PROGRESS.md` |
+| `show PROGRESS.md` | Cat the cross-loop `PROGRESS.md` |
+| `pause <id>` | Disable scheduling for a loop |
+| `run <id>` | Open Terminal at loop dir + print the run prompt |
+
+The loop registry is plain text at
+`memory/loop_state/registry.txt`:
+
+```
+# format: id|directory|level|status|created_at
+my-loop|/path/to/my-loop|2|active|2026-07-07T13:55:07Z
+```
+
+Pure text → grep-friendly → any CLI can read it.
+
+### 4.4 End-to-end flow
+
+```bash
+# 1. Create the loop directory + copy templates
+mkdir -p ~/my-loop/outputs
+cp /Users/edd/Projects/ai-os/workflows/loop_template.md /tmp/_ref.md
+# copy the 3 templates from there into TASK.md, LOOP_INSTRUCTIONS.md, PROGRESS.md
+
+# 2. Fill TASK.md and LOOP_INSTRUCTIONS.md (PROGRESS.md starts empty)
+
+# 3. Run manually 3-5 times
+cd ~/my-loop
+# paste the run prompt from LOOP_INSTRUCTIONS.md into hermes/claude/codex
+
+# 4. After 3-5 manual runs that work, register
+ai-os loop add ~/my-loop
+
+# 5. Schedule via Hermes
+hermes cronjob create --prompt "$(cat ~/my-loop/PROMPT.md)" \
+  --schedule "0 9 * * *" --workdir ~/my-loop --name "my-loop-daily"
+```
+
+### 4.5 Example loop shipped with AI-OS (template)
+
+The `workflows/loop_template.md` provides copy-paste templates for
+three file types. The "10 loops you can build this week" list
+from the original article is the starting point:
+
+- Daily project review
+- Meeting follow-up extractor
+- Folder cleanup planner
+- CI failure triage
+- GitHub issue summarizer
+- PR review assistant
+- Newsletter research loop
+- Documentation gap finder
+- Daily standup drafter
+- Weekly retrospective loop
+
+---
+
+## 5. Skills (loadable from any agent)
+
+Skills live in `ai-config/skills/<name>/SKILL.md`. Frontmatter is
+YAML + the description field is the trigger (≤1024 chars).
+
+### 5.1 Memory skills (phase 1)
+
+#### `ai-os-memory`
+
+**When it loads**: any time the user asks about persistent state,
+graph queries, indexing repos, or starting the memory stack.
+
+**What it does**:
+- Reports the four-service health (FalkorDB, Ollama, cbm, grepai)
+- Tells the agent which URL to open for which data
+- Walks the agent through `ai-os memory <sub>`
+- Triggers reindex when the user changes project code
+
+#### `ai-os-loop` (phase 2)
+
+**When it loads**: any time the user asks "create a loop", "automate
+this daily", "schedule this review", "make a recurring workflow", or
+mentions `PROGRESS.md` / `LOOP_INSTRUCTIONS.md` / "my-loop".
+
+**What it does**:
+- Asks the user which blast-radius level the loop should start at
+- Helps fill `TASK.md` and `LOOP_INSTRUCTIONS.md`
+- Runs the loop 3-5 times manually before scheduling
+- Registers via `ai-os loop add`
+
+### 5.2 AI-OS core skills (always available)
+
+| Skill | Purpose |
+|---|---|
+| `using-superpowers` | Router — at the start of every task |
+| `brainstorming` | If the idea is vague |
+| `writing-plans` | After Spec, to break into blocks |
+| `executing-plans` | Execute block by block |
+| `verification-before-completion` | Between blocks |
+| `code-review-and-quality` | Before PR |
+| `finishing-a-development-branch` | At the end |
+| `workflows/project_start.md` | AI-OS-native: produce a Spec in `specs/current_spec.md` |
+| `workflows/daily_start.md` | AI-OS-native: start-of-session loading |
+| `workflows/coding.md` | AI-OS-native: code work |
+| `workflows/research.md` | AI-OS-native: research tasks |
+| `workflows/content_creation.md` | AI-OS-native: docs / ADRs |
+
+### 5.3 Loading a skill in Hermes
+
+```bash
+# Load one skill in a session:
+hermes chat --skills ai-os-memory
+
+# Load multiple skills:
+hermes chat --skills ai-os-memory,ai-os-loop
+
+# In conversation:
+# "create a loop"  -> Hermes auto-loads ai-os-loop
+```
+
+### 5.4 Loading a skill in Claude Code
+
+Claude Code reads the same `ai-config/skills/<name>/SKILL.md`
+files. They're discoverable via the `skill` tool. No special
+configuration needed — just point Claude Code at the AI-OS repo.
+
+---
+
+## 6. MCPs (Model Context Protocol servers)
+
+MCP servers in `ai-config/mcp/*.yaml` are auto-discovered by
+`setup/install-mac.sh` and merged into `~/.hermes/config.yaml`.
+
+### 6.1 The 10MCPs (current as of 2026-07-07)
+
+| MCP | Command | Purpose |
+|---|---|---|
+| `agent-browser` | `npx -y @playwright/mcp` | Browser automation (Playwright) |
+| `chrome` | `npx -y chrome-devtools-mcp` | Chrome DevTools Protocol |
+| `codebase-memory-mcp` | `/Users/edd/.local/bin/codebase-memory-mcp` | AST knowledge graph of code |
+| `filesystem` | `npx -y @modelcontextprotocol/server-filesystem` | Local file ops |
+| `graphiti` | `uv run --with graphiti-core[falkordb] --python 3.11 python -m graphiti_mcp_server` | Temporal knowledge graph → FalkorDB |
+| `grepai` | `/Users/edd/.local/bin/grepai mcp` | Semantic code search |
+| `memory` | `npx -y @modelcontextprotocol/server-memory` | Built-in memory store |
+| `pdf` | Python-based PDF tooling | Read, fill, extract from PDFs |
+| `sequential-thinking` | `npx -y @modelcontextprotocol/server-sequential-thinking` | Multi-step reasoning |
+| `time` | `npx -y @modelcontextprotocol/server-time` | Time utilities |
+
+### 6.2 Generating the config
+
+```bash
+# Regenerate from YAMLs:
+python3 /Users/edd/Projects/ai-os/setup/generate-mcp-config.py \
+  /Users/edd/Projects/ai-os/ai-config/mcp \
+  /Users/edd/.hermes/config.yaml
+```
+
+The generator:
+
+- Walks every `*.yaml` in `ai-config/mcp/`
+- Expands `${HOME}` and `${USERPROFILE}` to absolute paths (so
+  Hermes, Claude Code, Codex, etc. don't have to handle env
+  expansion themselves)
+- Backs up the previous config to `~/.hermes/config.yaml.pre-aios.bak`
+- Writes the new config with all servers under `mcp_servers.<name>`
+
+### 6.3 MCP paths (canonical)
+
+All binary MCPs use **absolute paths** in the config:
+
+```yaml
+# ai-config/mcp/codebase-memory-mcp.yaml
+command: /Users/edd/.local/bin/codebase-memory-mcp
+args: []
+```
+
+The generator refuses to write `${HOME}` literals — `ai-os memory
+status` would show `! not in config` if any path failed to expand.
+If you see that, run the generator manually.
+
+### 6.4 Configuring `graphiti` (the FalkorDB writer)
+
+Graphiti is theMCP that actually populates FalkorDB with entities.
+`ai-config/mcp/graphiti.yaml` env block:
+
+```yaml
+env:
+  FALKORDB_HOST: localhost
+  FALKORDB_PORT: "6390"
+  FALKORDB_URL: redis://localhost:6390
+  GRAPHITI_GROUP_ID: aios
+  OPENAI_API_KEY: ${OPENAI_API_KEY}    # required: graphiti uses OpenAI embeddings
+```
+
+If `OPENAI_API_KEY` is unset, graphiti will fail at startup. Set
+it in `~/.env` (or pass via the env block after expansion).
+
+---
+
+## 7. The Spec → Verifier → Environment method
+
+This is the heart of AI-OS. It comes from Karpathy's
+[How to Get the Most Out of LLM Coding Agents](https://www.youtube.com/watch?v=VC6J7kkJM0s).
+
+### 7.1 The flow
+
+```
+1. Read  CLAUDE.md + relevant context/ files
+2. Check specs/current_spec.md
+   └─ If empty → workflows/project_start.md
+3. Execute in blocks of ≤30 min
+   └─ Between blocks → verifiers/critic_prompt.md
+4. Archive completed Specs to archive/YYYY-MM-DD-<slug>.md
+```
+
+### 7.2 Spec anatomy
+
+A Spec has:
+
+- **Goal** (one paragraph, what success looks like)
+- **Constraints** (what NOT to do, what the blast-radius is)
+- **Plan** (numbered blocks of ≤30 min)
+- **Per-block subtasks** (so you can resume mid-block)
+- **Verifiers** (what command to run between blocks)
+- **Archive summary** (1-line summary of outcome)
+
+### 7.3 Active Specs and archive
+
+```
+specs/
+├── current_spec.md              # active (or empty)
+├── spec_template.md              # starting point
+├── 2026-07-02-persistent-memory-phase-1.md
+├── 2026-07-02-persistent-memory-research.md
+└── archive/
+    └── YYYY-MM-DD-<slug>.md
+```
+
+The archive is the source of truth for "what have we already done"
+in this repo.
+
+---
+
+## 8. Compatibility matrix (which CLI does what)
+
+| Feature | Hermes | Claude Code | Codex | Gemini | Antigravity | OpenCode | Aider | Cursor | Zed |
+|---|---|---|---|---|---|---|---|---|---|
+| Read `AGENTS.md` / `CLAUDE.md` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Load skills from `ai-config/skills/` | ✓ (`--skills`) | ✓ (native) | ✓ | ✓ | ✓ | ✓ | via plugin | partial | partial |
+| Use `ai-os` CLI directly | ✓ | ✓ (subprocess) | ✓ (subprocess) | ✓ | ✓ | ✓ | ✓ | ✓ (terminal) | ✓ |
+| Run loops | ✓ (cron + ai-os loop) | ✓ (native `--loop`) | ✓ (via ai-os loop) | ✓ | ✓ | ✓ | manual | manual | manual |
+| Read `my-loop/*.md` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Use codebase-memory-mcp | ✓ (MCP) | ✓ (MCP) | ✓ (MCP) | ✓ (MCP) | ✓ (MCP) | ✓ (MCP) | via `mcp_servers` | via `mcp_servers` | via `mcp_servers` |
+| 4-file loop convention | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Blast-radius safety levels | ✓ (`rules/loop_safety.md`) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+The rule: **loop files are pure markdown + JSON. They work the same
+under every agent.**
+
+---
+
+## 9. Common commands (cheat sheet)
+
+```bash
+# ==== MEMORY ====
+ai-os memory status                       # health of all 4 services
+ai-os memory browse                       # open FalkorDB UI
+ai-os memory visualize                    # open FalkorDB + cbm UIs
+ai-os memory search "<q>" ~/Projects      # semantic code search (tier 1+2)
+ai-os memory reindex /Users/edd/Projects   # index AST of a repo
+ai-os memory query "<q>" ~/Projects       # grepai-only semantic search
+ai-os memory sync-sessions 90             # ingest last 90 days of Hermes sessions
+ai-os memory logs                         # tail FalkorDB logs
+ai-os memory start / stop                 # FalkorDB lifecycle
+
+# ==== LOOPS ====
+ai-os loop ls                             # list registered loops
+ai-os loop add <dir>                      # register a loop
+ai-os loop status <id>                    # show loop state + level
+ai-os loop show <id>                      # cat PROGRESS.md
+ai-os loop show PROGRESS.md               # cross-loop log
+ai-os loop pause <id>                     # disable scheduling
+ai-os loop rm <id>                        # mark as removed
+ai-os loop run <id>                       # open Terminal + print run prompt
+
+# ==== MCP / SERVICES ====
+docker ps --format '{{.Names}}\t{{.Status}}'  # all containers
+docker exec aios-falkordb redis-cli -p 6379 PING  # Redis ping
+curl -s -m 3 http://localhost:11500/api/tags | jq .  # Ollama models
+curl -sI -m 3 http://localhost:3300/ | head -1       # FalkorDB Web
+curl -sI -m 3 http://localhost:9749/ | head -1       # cbm UI
+
+# ==== INSTALL / VERIFY ====
+bash ~/Projects/ai-os/setup/install-mac.sh   # full install (idempotent)
+bash ~/Projects/ai-os/setup/verify.sh        # 38-check verifier
+python3 ~/Projects/ai-os/setup/generate-mcp-config.py \
+  ~/Projects/ai-os/ai-config/mcp \
+  ~/.hermes/config.yaml                      # regenerate MCPs
+
+# ==== AI-OS WORKFLOW ====
+cat ~/Projects/ai-os/AGENTS.md              # read agent instructions
+cat ~/Projects/ai-os/specs/current_spec.md  # active Spec (or empty)
+ls ~/Projects/ai-os/archive/                # completed Specs
+```
+
+---
+
+## 10. Troubleshooting
+
+### 10.1 `ai-os: command not found`
+
+```bash
+# Add to ~/.zshrc (already done by install-mac.sh):
+# if [ -x "$HOME/.local/bin/ai-os" ]; then
+#   alias ai-os="$HOME/.local/bin/ai-os"
+# fi
+source ~/.zshrc
+# or open a new Terminal
+```
+
+### 10.2 `FalkorDB container not running`
+
+```bash
+docker ps -a --format '{{.Names}}\t{{.Status}}' | grep falkor
+# If Exited, restart:
+docker compose -f /Users/edd/Projects/ai-os/memory/falkordb/docker-compose.yml up -d
+```
+
+### 10.3 `Ollama not running`
+
+```bash
+# Re-start in background:
+OLLAMA_HOST=127.0.0.1:11500 /opt/homebrew/opt/ollama/bin/ollama serve &
+# Or via brew services:
+brew services restart ollama
+```
+
+### 10.4 `MCP not in config`
+
+```bash
+# Regenerate:
+python3 ~/Projects/ai-os/setup/generate-mcp-config.py \
+  ~/Projects/ai-os/ai-config/mcp \
+  ~/.hermes/config.yaml
+# Verify:
+ai-os memory status
+# All 3 (codebase-memory-mcp, grepai, graphiti) should show "→" path lines, NOT "not in config"
+```
+
+### 10.5 `search_code: project not found or not indexed`
+
+Known bug in `codebase-memory-mcp` v0.8.1. Workarounds:
+
+1. Use `list_projects` to confirm the project exists
+2. Use the daemon mode (Hermes chat running, cbm alive) instead of CLI-only
+3. Run `ai-os memory reindex <path>` to refresh state
+
+### 10.6 `Loop state error` or `registry.txt` corruption
+
+```bash
+# Manually clean:
+rm -rf ~/Projects/ai-os/memory/loop_state
+# Re-register your loops:
+ai-os loop add ~/my-loop
+```
+
+### 10.7 `pgrep -f 'ollama serve' returns nothing`
+
+```bash
+# Kill zombie, restart:
+pkill -f 'ollama serve'
+OLLAMA_HOST=127.0.0.1:11500 /opt/homebrew/opt/ollama/bin/ollama serve &
+```
+
+### 10.8 `cd into AI-OS: zsh config is missing`
+
+The `.zshrc` is a symlink. To fix:
+
+```bash
+ls -la ~/.zshrc
+# If broken: ln -sf /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc ~/.zshrc
+exec zsh
+```
+
+---
+
+## 11. Security model
+
+### 11.1 No secrets in repo
+
+- `.env.example` documents the env shape
+- The real `~/.hermes/.env` lives in your home dir, never in the repo
+- `.gitignore` blocks `.env`, `node_modules/`, `dist/`, `build/`
+
+### 11.2 Blast-radius discipline
+
+- Every loop declares its level in `TASK.md`
+- Levels 4+ require explicit human promotion, recorded in `PROGRESS.md`
+- No loop can do `rm -rf` outside its own `outputs/` without
+  reaching the verification checklist first
+
+### 11.3 Dependency surface
+
+- `codebase-memory-mcp` reads your code, writes to your agent config
+  (that's its design — see its README)
+- `grepai` is privacy-first, all-embedding baked in, no API key
+- `graphiti` requires `OPENAI_API_KEY` (cost consideration)
+- `Ollama` runs locally, no data leaves your Mac
+- `FalkorDB` is a local Docker container, data stays in `./data/`
+
+### 11.4 What we DON'T do
+
+- No outbound telemetry
+- No third-party identifier tagging
+- No `.env` for non-secret config (see `rules/always_do.md` and
+  `rules/never_do.md`)
+- No "delete to clean up" workflows — all data has a clear lifecycle
+  (loop_state dir is in `memory/`; can be removed safely; does
+  not delete loop directories)
+
+---
+
+## 12. File-by-file index
+
+This is a deep reference. Use it to find files by purpose.
+
+### 12.1 Memory stack
+
+| File | Lines | Purpose |
+|---|---|---|
+| `memory/falkordb/docker-compose.yml` | 32 | FalkorDB container definition (port 3300/6390) |
+| `memory/ai-os-memory.sh` | 397 | `ai-os memory` CLI (10 sub-commands) |
+| `memory/ai-os-loop.sh` | 320 | `ai-os loop` CLI (7 sub-commands) |
+| `memory/cron-reindex.sh` | 30 | Helper for cron-based reindex |
+| `memory/dev-env/.env.example` | 12 | FALKORDB_URL, FALKORDB_WEB, OLLAMA_URL templates |
+| `ai-config/mcp/codebase-memory-mcp.yaml` | 8 | MCP server config for cbm |
+| `ai-config/mcp/grepai.yaml` | 8 |MCP server config for grepai |
+| `ai-config/mcp/graphiti.yaml` | 12 |MCP server config for graphiti (writes to FalkorDB) |
+| `ai-config/skills/ai-os-memory/SKILL.md` | 95 | Memory skill (loadable) |
+| `ai-config/skills/ai-os-loop/SKILL.md` | 95 | Loop skill (loadable) |
+| `setup/generate-mcp-config.py` | 180 | MCPs YAML → `~/.hermes/config.yaml` |
+| `setup/install-mac.sh` | 60 | Idempotent install script |
+| `setup/verify.sh` | 320 | 38-check verifier |
+| `dev-env/packages/Brewfile` | 60 | Homebrew packages (docker, ollama, uv, etc.) |
+
+### 12.2 Loop system
+
+| File | Lines | Purpose |
+|---|---|---|
+| `rules/loop_safety.md` | 95 | The 6 blast-radius levels + 5 failure modes |
+| `workflows/loop_template.md` | 120 | Copy-paste templates for TASK/INSTRUCTIONS/PROGRESS |
+| `ai-config/skills/ai-os-loop/references/quickstart.md` | 50 | 5-command quickstart |
+
+### 12.3 Core AI-OS
+
+| File | Purpose |
+|---|---|
+| `AGENTS.md` | Master instructions for AI agents |
+| `CLAUDE.md` | Same content, Claude Code convention |
+| `context/00_profile.md` | User profile (preferences, style, projects) |
+| `context/02_projects.md` | Active project list |
+| `context/03_preferences.md` | Output style, language rules |
+| `context/04_tools.md` | Tool inventory |
+| `context/05_sources.md` | Reference material sources |
+| `rules/always_do.md` | What to do (5+ rules) |
+| `rules/ask_before_doing.md` | What to confirm with the user |
+| `rules/never_do.md` | What never to do (5+ rules) |
+| `rules/loop_safety.md` | (phase 2) Loop safety levels |
+| `verifiers/critic_prompt.md` | Inter-block quality gate |
+| `verifiers/verification-loop.md` | Final verification before commit |
+| `workflows/daily_start.md` | Start of session |
+| `workflows/project_start.md` | New task → Spec |
+| `workflows/coding.md` | Code work |
+| `workflows/research.md` | Research |
+| `workflows/content_creation.md` | Docs / ADRs |
+| `workflows/loop_template.md` | (phase 2) Loop scaffolding |
+
+### 12.4 Vendored (read-only reference)
+
+| File | Source | Purpose |
+|---|---|---|
+| `vendor/gstack/` | https://github.com/garrytan/gstack | Karpathy-related skills (review, planning, etc.) |
+| `vendor/ecc/` | https://github.com/eyaltoledano/claude-task-manager | Task management |
+| `vendor/codex-plugin-cc/` | Codex CLI plugin | Cross-CLI bridge |
+
+---
+
+## 13. Versioning and history
+
+| Date | Version | What |
+|---|---|---|
+| 2026-06-28 | `0.1` | Initial AI-OS skeleton (Karpathy method + Hermes-friendly structure) |
+| 2026-07-02 | `0.2` | Phase 1 research: memory architectures, code indexing, knowledge graphs |
+| 2026-07-03 | `1.0` | Phase 1 spec: FalkorDB + Ollama + codebase-memory-mcp + grepai |
+| 2026-07-06 | `1.1` | Phase 1 implementation: install, verify, services up, MCPs registered |
+| 2026-07-07 | `1.2` | Phase 1.5: `ai-os memory` CLI polish (visualize, search, fallback tier), alias in `.zshrc`, MCP paths absolute |
+| 2026-07-07 | `2.0` | Phase 2: `rules/loop_safety.md`, `workflows/loop_template.md`, `ai-os-loop` CLI, `ai-os-loop` skill |
+
+---
+
+## 14. Quick start (90 seconds)
+
+```bash
+# 1. Install everything (idempotent):
+bash ~/Projects/ai-os/setup/install-mac.sh
+
+# 2. Verify:
+bash ~/Projects/ai-os/setup/verify.sh
+# Expected: 38 passed, 0 failed. Banner: "AI-OS is correctly installed. 🎉"
+
+# 3. Open new terminal so PATH updates apply:
+exec zsh
+
+# 4. Check memory stack:
+ai-os memory status
+
+# 5. Index your projects:
+ai-os memory reindex /Users/edd/Projects
+
+# 6. Search semantically:
+ai-os memory search "where is the Spec+Verifier loop" /Users/edd/Projects
+
+# 7. Open the browser:
+ai-os memory visualize
+
+# 8. Create your first loop:
+mkdir -p ~/my-loop/outputs
+cp ~/Projects/ai-os/workflows/loop_template.md /tmp/_ref.md
+# (fill TASK.md and LOOP_INSTRUCTIONS.md from the template)
+ai-os loop add ~/my-loop
+ai-os loop ls
+
+# 9. Talk to it:
+hermes chat --skills ai-os-memory,ai-os-loop
+```
+
+Done. You now have a fully spec-verifier-environment loop, a
+persistent-memory stack, and a loop orchestration CLI. All on
+your Mac, all vendor-neutral.
+
+---
+
+## 15. Pointers to other docs in this repo
+
+- `docs/getting-started.md` — bootstrap for new users
+- `docs/architecture.md` — high-level architecture
+- `docs/claude-tools-integration.md` — Claude Code specifics
+- `docs/cross-platform.md` — Linux + Windows install notes
+- `docs/ecc-integration.md` — Task manager integration
+- `docs/sharing.md` — How to share AI-OS with collaborators
+
+For the memory stack specifically:
+
+- `specs/2026-07-02-persistent-memory-phase-1.md` — phase 1 spec
+- `specs/2026-07-02-persistent-memory-research.md` — research findings
+
+For loops:
+
+- `rules/loop_safety.md` — blast-radius levels
+- `workflows/loop_template.md` — copy-paste templates
+- `ai-config/skills/ai-os-loop/SKILL.md` — when to load the loop skill
+
+---
+
+*This document is the canonical entry point. It will be updated as
+the system evolves. Any change to a file mentioned here should
+update the relevant section in the same commit.*

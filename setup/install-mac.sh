@@ -309,7 +309,42 @@ if [ -d "$HOME_DIR/.minimax/agents" ] && [ -f "$MM_OVERLAY" ]; then
     [ -d "$agent_dir" ] && cp "$MM_OVERLAY" "$agent_dir/agent.md"
   done
 fi
-ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md)"
+# VS Code (GitHub Copilot Chat): unlike the 6 CLIs above, Copilot Chat already
+# discovers ~/.agents/skills on this Mac by whatever mechanism backs its custom
+# chat mode, so no skill-symlink step is needed here. It only needs the bridge
+# block, appended (idempotent) to its global custom-instructions file — the
+# `applyTo: '**'` frontmatter makes it load on every request in every workspace,
+# same role as CLAUDE.md/AGENTS.md/GEMINI.md for the other CLIs. The file lives
+# under a per-account subfolder we can't predict, so glob for it; best-effort,
+# never fails the install if VS Code / Copilot Chat isn't set up on this Mac.
+VSCODE_INSTR_GLOBS=(
+  "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"
+  "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"
+)
+VSCODE_WIRED=0
+for f in "${VSCODE_INSTR_GLOBS[@]}"; do
+  [ -f "$f" ] || continue
+  if ! grep -q "AI-OS BRIDGE" "$f"; then
+    cat >> "$f" <<AIOS_VSCODE
+
+<!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
+- AI-OS (operating context): single source of truth is \`$AI_OS_ROOT\`. For non-trivial work, read \`context/00_profile.md\`, \`context/03_preferences.md\`, and \`CLAUDE.md\` from that repo before proceeding.
+- Method: Spec → Verifier → Environment (Karpathy loop). Use the \`using-superpowers\` skill as the router for EVERY task, even simple ones — check whether a skill applies before responding, not just for domain-specific work.
+- Chat in Spanish (lowercase, terse, no ceremony, no "espero que esto ayude"). Code, commits, docs, comments, and logs stay in English always.
+- Verify before claiming something is done: run the actual checks (tests/build/typecheck/browser) and report concrete evidence, never "looks fine" without proof.
+- Confirm before irreversible or outward-facing actions (force-push, prod changes, sending messages, spending money) unless already explicitly authorized.
+- Durable, cross-session facts go in this environment's own memory tool (\`/memories/\`); sync notable, cross-CLI-relevant facts back into \`context/\` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.
+<!-- /AI-OS BRIDGE -->
+AIOS_VSCODE
+  fi
+  VSCODE_WIRED=$((VSCODE_WIRED + 1))
+done
+if [ "$VSCODE_WIRED" -gt 0 ]; then
+  ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md + vscode copilot chat x$VSCODE_WIRED)"
+else
+  ok "Global bridge wired (claude/codex/gemini/antigravity + hermes SOUL.md + minimax agent.md)"
+  warn "  VS Code Copilot Chat instructions file not found — skipped (OK if unused on this Mac)"
+fi
 echo ""
 
 # ─── 8. Superpowers skills (REQUIRED) ───
@@ -357,7 +392,7 @@ if [ "${SKIP_MCP:-0}" != "1" ]; then
   fi
   mkdir -p "$HOME_DIR/.hermes"
 
-  # Generate mcp_servers block with standalone Python script (also works on Windows)
+  # Generate mcp_servers block with standalone python script (also works on Windows)
   if command -v python3 >/dev/null 2>&1; then
     python3 "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml"
   elif command -v python >/dev/null 2>&1; then
@@ -365,6 +400,87 @@ if [ "${SKIP_MCP:-0}" != "1" ]; then
   else
     warn "Python not found, cannot generate MCP config automatically"
   fi
+fi
+echo ""
+
+# ─── 9b. Memory stack (FalkorDB + Ollama + code indexers, phase 1) ───
+if [ "${SKIP_MEMORY:-0}" != "1" ]; then
+  log "9b. Setting up AI-OS memory stack (FalkorDB, Ollama, code indexers)..."
+
+  # 9b.1 — Ollama local server (for embeddings, free + private)
+  if command -v ollama >/dev/null 2>&1; then
+    # Start ollama serve in background if not already running
+    if ! pgrep -f "ollama serve" >/dev/null 2>&1; then
+      OLLAMA_HOST=127.0.0.1:11500 nohup ollama serve > "$HOME_DIR/.ollama.log" 2>&1 &
+      sleep 3
+      ok "  Ollama launched on 127.0.0.1:11500 (background, logs: ~/.ollama.log)"
+    else
+      ok "  Ollama already running"
+    fi
+
+    # Pull nomic-embed-text (274MB, one-time)
+    OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text 2>&1 | tail -3 || warn "  ollama pull failed (will retry on first use)"
+    ok "  nomic-embed-text ready"
+  else
+    warn "  ollama not installed (run: brew install ollama) — embedding features disabled"
+  fi
+
+  # 9b.2 — FalkorDB graph DB (Docker, ports 3300 web UI + 6390 redis)
+  if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+    cd "$AI_OS_ROOT/memory/falkordb"
+    if [ ! -d data ]; then
+      mkdir -p data
+    fi
+    if docker compose version >/dev/null 2>&1; then
+      docker compose up -d 2>&1 | tail -3 || warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory/falkordb && docker compose up -d)"
+    else
+      docker-compose up -d 2>&1 | tail -3 || warn "  docker-compose up failed"
+    fi
+    ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
+  ok "    image: falkordb/falkordb:latest (pinned to :latest tag, container_name: aios-falkordb)"
+  else
+    warn "  docker not running (start Docker Desktop) — graph memory disabled until then"
+  fi
+
+  # 9b.3 — Static binary downloads (codebase-memory-mcp + grepai)
+  mkdir -p "$HOME_DIR/.local/bin"
+  # GitHub release asset names are OS-specific; auto-detect via uname -m
+  CBM_ARCH="$(uname -m | sed 's/x86_64/amd64/; s/arm64/arm64/')"
+  CBM_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  CBM_ASSET="codebase-memory-mcp-${CBM_OS}-${CBM_ARCH}.tar.gz"
+  CBM_VERSION="v0.8.1"  # pinned: last release with assets
+  CBM_URL="https://github.com/deusdata/codebase-memory-mcp/releases/download/${CBM_VERSION}/${CBM_ASSET}"
+  if [ ! -x "$HOME_DIR/.local/bin/codebase-memory-mcp" ]; then
+    if command -v curl >/dev/null 2>&1 && command -v tar >/dev/null 2>&1; then
+      tmp_tar="$(mktemp -t cbm-XXXXXX.tar.gz)"
+      if curl -fsSL "$CBM_URL" -o "$tmp_tar" 2>/dev/null; then
+        # Extract the binary from the tarball
+        tar -xzf "$tmp_tar" -C "$HOME_DIR/.local/bin/" --strip-components=0 \
+          && chmod +x "$HOME_DIR/.local/bin/codebase-memory-mcp" 2>/dev/null \
+          && ok "  codebase-memory-mcp binary installed at ~/.local/bin/ (from $CBM_ASSET)" \
+          || warn "  codebase-memory-mcp extracted but chmod failed"
+        rm -f "$tmp_tar"
+      else
+        warn "  codebase-memory-mcp download failed (HTTP error for $CBM_URL)"
+        warn "  install manually from https://github.com/deusdata/codebase-memory-mcp/releases"
+      fi
+    else
+      warn "  curl + tar required for codebase-memory-mcp install"
+    fi
+  else
+    ok "  codebase-memory-mcp already installed"
+  fi
+
+  # grepai via go install
+  if command -v go >/dev/null 2>&1; then
+    go install github.com/yoanbernabeu/grepai/cmd/grepai@latest 2>&1 | tail -2 || warn "  go install grepai failed (will retry on first use)"
+    [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
+    ok "  grepai installed via go install"
+  else
+    warn "  go not installed (grepai skipped; install: brew install go)"
+  fi
+else
+  log "9b. SKIP_MEMORY=1, skipping memory stack"
 fi
 echo ""
 

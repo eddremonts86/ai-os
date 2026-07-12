@@ -47,6 +47,9 @@ brew "openjdk@17"
 brew "docker"
 brew "docker-compose"
 brew "kubernetes-cli"      # kubectl
+# AI-OS memory stack (phase 1) — Task 1.1
+# Ollama for local embeddings (nomic-embed-text, free, private)
+brew "ollama"
 brew "helm"
 brew "minikube"            # local k8s (optional)
 brew "k9s"                 # k8s TUI

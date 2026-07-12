@@ -1,0 +1,10 @@
+name: grepai
+description: Semantic code search (calls Ollama at localhost:11500 with nomic-embed-text, 100% local)
+transport: stdio
+command: ${HOME}/.local/bin/grepai
+args:
+  - mcp
+env:
+  OLLAMA_URL: http://localhost:11500
+  OLLAMA_EMBED_MODEL: nomic-embed-text
+enabled: true

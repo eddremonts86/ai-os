@@ -191,3 +191,16 @@ alias iaworkspace="cd ~/Projects/eddremonts86/iaWorkSpace"
 export PATH="$PATH:/Users/edd/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# AI-OS memory stack (phase 1) — quick access CLI
+if [ -x "$HOME/.local/bin/ai-os" ]; then
+  alias ai-os="$HOME/.local/bin/ai-os"
+fi
+
+
+# pnpm
+export PNPM_HOME="/Users/edd/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end

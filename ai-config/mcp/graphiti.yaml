@@ -1,0 +1,24 @@
+name: graphiti
+description: Temporal knowledge graph memory (FalkorDB-backed, bi-temporal, MCP server)
+transport: stdio
+command: uv
+args:
+  - run
+  - --with
+  - graphiti-core[falkordb]
+  - --python
+  - 3.11
+  - python
+  - -m
+  - graphiti_mcp_server
+env:
+  FALKORDB_HOST: localhost
+  FALKORDB_PORT: "6390"
+  FALKORDB_URL: redis://localhost:6390
+  GRAPHITI_GROUP_ID: aios
+  OPENAI_API_KEY: ${OPENAI_API_KEY}
+  # To swap to local Ollama: set GRAPHITI_LLM_PROVIDER=ollama
+  # GRAPHITI_LLM_PROVIDER: ollama
+  # GRAPHITI_LLM_MODEL: qwen2.5-coder:7b
+  # OLLAMA_URL: http://localhost:11500
+enabled: true

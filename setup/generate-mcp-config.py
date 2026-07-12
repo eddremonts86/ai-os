@@ -151,11 +151,21 @@ def main():
         transport = server.get("transport", "stdio")
 
         if transport == "stdio":
+            # Expand ${HOME} (and ${USERPROFILE} on Windows) in BOTH command and args
+            # so that Hermes/clients receive absolute paths rather than the literal
+            # ${HOME} placeholder. Fallback: getpwuid (POSIX) → USERPROFILE (Win).
+            _home = (
+                os.environ.get("HOME")
+                or os.environ.get("USERPROFILE")
+                or os.path.expanduser("~")
+            )
             args = server.get("args", [])
-            args = [str(a).replace("${HOME}", os.environ.get("HOME", os.environ.get("USERPROFILE", "~"))) for a in args]
+            args = [str(a).replace("${HOME}", _home).replace("${USERPROFILE}", _home) for a in args]
+            command = server.get("command", "") or ""
+            command = command.replace("${HOME}", _home).replace("${USERPROFILE}", _home)
 
             mcp_servers[name] = {
-                "command": server.get("command"),
+                "command": command,
                 "args": args,
             }
 
