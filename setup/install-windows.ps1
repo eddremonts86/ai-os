@@ -13,6 +13,7 @@
 #   $env:SKIP_NPM = "1"        → skip npm packages
 #   $env:SKIP_DOTFILES = "1"   → skip dotfile symlinks
 #   $env:SKIP_MCP = "1"        → skip MCP config regeneration
+#   $env:SKIP_MEMORY = "1"     → skip memory stack (FalkorDB, Ollama, code indexers)
 #   $env:SKIP_VERIFY = "1"     → skip verification tests at the end
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 
@@ -102,6 +103,8 @@ if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue))
         "yq",
         "mkcert",
         "docker-desktop",
+        "ollama",
+        "golang",
         "vscode",
         "windsurf",
         "googlechrome",
@@ -346,6 +349,105 @@ if (-not $env:SKIP_MCP) {
     } else {
         Warn "Python not found. MCP servers not configured automatically. Edit ~/.hermes/config.yaml manually."
     }
+}
+Write-Host ""
+
+# ─── 7b. Memory stack (FalkorDB + Ollama + code indexers, cross-platform parity with Mac) ───
+# Pinned versions are kept in sync with setup/install-mac.sh (P1-4): bump both
+# together, deliberately, not via @latest.
+if ($env:SKIP_MEMORY -ne "1") {
+    Log "7b. Setting up AI-OS memory stack (FalkorDB, Ollama, code indexers)..."
+
+    # 7b.1 — Ollama local server (for embeddings, free + private)
+    if (Get-Command ollama -ErrorAction SilentlyContinue) {
+        $ollamaRunning = Get-Process -Name "ollama" -ErrorAction SilentlyContinue
+        if (-not $ollamaRunning) {
+            $env:OLLAMA_HOST = "127.0.0.1:11500"
+            Start-Process -FilePath "ollama" -ArgumentList "serve" -WindowStyle Hidden -RedirectStandardOutput "$HomeDir\.ollama.log" -RedirectStandardError "$HomeDir\.ollama.log"
+            Start-Sleep -Seconds 3
+            Ok "  Ollama launched on 127.0.0.1:11500 (background, logs: ~/.ollama.log)"
+        } else {
+            Ok "  Ollama already running"
+        }
+        $env:OLLAMA_HOST = "127.0.0.1:11500"
+        try {
+            & ollama pull nomic-embed-text 2>&1 | Select-Object -Last 3
+            Ok "  nomic-embed-text ready"
+        } catch {
+            Warn "  ollama pull failed (will retry on first use)"
+        }
+    } else {
+        Warn "  ollama not installed (run: choco install ollama) — embedding features disabled"
+    }
+
+    # 7b.2 — FalkorDB graph DB (Docker, ports 3300 web UI + 6390 redis)
+    if (Get-Command docker -ErrorAction SilentlyContinue) {
+        Push-Location "$AIOSRoot\memory\falkordb"
+        try {
+            if (-not (Test-Path "data")) { New-Item -ItemType Directory -Path "data" | Out-Null }
+            docker compose up -d 2>&1 | Select-Object -Last 3
+            Ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300 (image: falkordb/falkordb:v4.18.11, pinned)"
+        } catch {
+            Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory\falkordb; docker compose up -d)"
+        } finally {
+            Pop-Location
+        }
+    } else {
+        Warn "  docker not installed/running (FalkorDB disabled; choco install docker-desktop)"
+    }
+
+    # 7b.3 — Static binary download (codebase-memory-mcp), sha256-verified against
+    # the checksums.txt published for the SAME pinned release tag (P1-4).
+    $localBin = "$HomeDir\.local\bin"
+    New-Item -ItemType Directory -Path $localBin -Force | Out-Null
+    $cbmVersion = "v0.8.1"  # pinned: last release with assets — bump deliberately, keep in sync with install-mac.sh
+    $cbmAsset = "codebase-memory-mcp-windows-amd64.zip"
+    $cbmUrl = "https://github.com/deusdata/codebase-memory-mcp/releases/download/$cbmVersion/$cbmAsset"
+    $cbmSumsUrl = "https://github.com/deusdata/codebase-memory-mcp/releases/download/$cbmVersion/checksums.txt"
+    $cbmExe = "$localBin\codebase-memory-mcp.exe"
+    if (-not (Test-Path $cbmExe)) {
+        $tmpZip = New-TemporaryFile
+        $tmpSums = New-TemporaryFile
+        try {
+            Invoke-WebRequest -Uri $cbmUrl -OutFile $tmpZip -UseBasicParsing
+            Invoke-WebRequest -Uri $cbmSumsUrl -OutFile $tmpSums -UseBasicParsing
+            $expectedLine = (Get-Content $tmpSums | Where-Object { $_ -match [regex]::Escape($cbmAsset) })
+            $expectedSum = ($expectedLine -split '\s+')[0]
+            $actualSum = (Get-FileHash -Path $tmpZip -Algorithm SHA256).Hash.ToLower()
+            if ($expectedSum -and ($expectedSum -eq $actualSum)) {
+                Expand-Archive -Path $tmpZip -DestinationPath $localBin -Force
+                Ok "  codebase-memory-mcp binary installed at ~/.local/bin/ (from $cbmAsset, sha256 verified)"
+            } else {
+                Err "  codebase-memory-mcp checksum verification failed for $cbmAsset — refusing to install (expected $expectedSum, got $actualSum)"
+            }
+        } catch {
+            Warn "  codebase-memory-mcp download failed: $_"
+            Warn "  install manually from https://github.com/deusdata/codebase-memory-mcp/releases"
+        } finally {
+            Remove-Item $tmpZip, $tmpSums -ErrorAction SilentlyContinue
+        }
+    } else {
+        Ok "  codebase-memory-mcp already installed"
+    }
+
+    # 7b.4 — grepai via go install (pinned tag, not @latest — P1-4, kept in sync with install-mac.sh)
+    $grepaiVersion = "v0.35.0"
+    if (Get-Command go -ErrorAction SilentlyContinue) {
+        try {
+            & go install "github.com/yoanbernabeu/grepai/cmd/grepai@$grepaiVersion" 2>&1 | Select-Object -Last 2
+            $goBinGrepai = "$HomeDir\go\bin\grepai.exe"
+            if (Test-Path $goBinGrepai) {
+                Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
+            }
+            Ok "  grepai $grepaiVersion installed via go install"
+        } catch {
+            Warn "  go install grepai failed (will retry on first use)"
+        }
+    } else {
+        Warn "  go not installed (grepai skipped; install: choco install golang)"
+    }
+} else {
+    Log "7b. SKIP_MEMORY=1, skipping memory stack"
 }
 Write-Host ""
 

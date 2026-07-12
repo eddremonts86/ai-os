@@ -1,7 +1,7 @@
 # AI-OS Remediation Implementation Plan
 
 **Date:** 2026-07-12
-**Status:** 🔄 In progress — Tasks 1-2 done, Task 3 done except the Graphiti architecture decision, Task 4 partially done
+**Status:** 🔄 In progress — Tasks 1-2 done, Task 3 done except the Graphiti architecture decision, Task 4 done except detailed README count auditing beyond MCP servers; Windows memory-stack parity (P1-5) done
 **Owner:** Edd
 **See:** `outputs/2026-07-12-ai-os-full-audit.md` for the full audit findings this plan resolves.
 
@@ -54,7 +54,7 @@
 - [x] Add unit/integration tests for MCP generation (`setup/tests/test_generate_mcp_config.py`, 3 tests, all passing).
 - [x] Make required CI checks fail closed; retain explicit optional skips — replaced the `bash setup/verify.sh || true` / `pwsh ... || true` steps in `test-mac.yml`, `test-linux.yml`, `test-windows.yml` with a required `python -m unittest discover -s setup/tests` gate (verify.sh/verify-windows.ps1 validate a live installed machine and are documented as not meaningful against a bare CI runner; the dry-run installers already cover the structural/adapter/MCP logic and fail closed with no suppression).
 - [x] Generate or validate counts and paths instead of documenting snapshots (README/docs finding #10): confirmed the "271 ECC skills" and "12 claude.tools/gstack skills" badges/claims are accurate against the real source directories. Found and fixed one genuinely stale count: "7 declarative MCP servers" (actual: 10 total, 9 enabled) across `README.md` (4 places), `docs/architecture.md`, `ai-config/skills/ai-os-karpathy/SKILL.md`, and `prompts/daily-use/01-daily-start.md`.
-- [ ] Publish the model-routing and platform-support matrix based on official current capabilities (P1-1, roadmap Phase 2/3 item) — not started.
+- [ ] Publish the model-routing and platform-support matrix based on official current capabilities (P1-1, roadmap Phase 2/3 item) — **done**: `docs/model-routing.md` added and linked from README, explicitly framed as an eval-driven hypothesis (per the audit's own recommendation) rather than a hardcoded default, with the two known platform gaps (MCP config Hermes-only, Antigravity's real skill path unresolved) called out instead of glossed over.
 
 ## Acceptance Tests
 
@@ -67,6 +67,12 @@
 ## Remaining work (not done yet, in priority order)
 
 1. Graphiti MCP real deployment decision: vendor `getzep/graphiti` under `vendor/graphiti/` and run `uv run main.py` from there, OR add HTTP transport support to `generate-mcp-config.py` and run the `zepai/knowledge-graph-mcp` Docker image against our existing FalkorDB on `:6390`. Either way, needs a real smoke test before setting `enabled: true`.
-2. `setup/install-windows.ps1` cross-platform parity (P1-5): doesn't install Oh My Zsh equivalents, grepai, or the memory stack at all — separate scope from the pinning done this session.
-3. P1-1/P1-2/P1-3/P1-8 (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, Antigravity's real skill path (`~/.gemini/config/skills`), operational rules out of Hermes `SOUL.md`.
-4. Model-routing and platform-support matrix (Phase 2/3 roadmap item).
+2. P1-1/P1-2/P1-3/P1-8 (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, Antigravity's real skill path (`~/.gemini/config/skills`) — deliberately NOT changed this session since it would risk breaking every machine currently relying on `~/.agents/skills` without a first-party doc check first; operational rules out of Hermes `SOUL.md`.
+
+## Round 3 additions (this session, continuing "todo lo pendiente")
+
+- **P1-5 Windows memory-stack parity**: `setup/install-windows.ps1` now installs the same memory stack as Mac (Ollama + nomic-embed-text, FalkorDB via Docker Compose, `codebase-memory-mcp` with sha256 checksum verification against the same pinned release, `grepai` via a pinned `go install`), gated by the new `$env:SKIP_MEMORY`. Added `ollama` and `golang` to the chocolatey package list.
+- **Real bug found and fixed via `pwsh` parser** (installed via `brew install powershell` specifically to get real syntax validation, since the prior session's verify-windows.ps1 bug was only caught by manual review): `setup/verify-windows.ps1` had 4 instances of `"$label: ..."` inside double-quoted strings, which PowerShell parses as an ambiguous drive/scope reference (`':' was not followed by a valid variable name character`) — a real parse error, not a style nit. Fixed with `${label}:`. All 3 `setup/*.ps1` files now parse cleanly with `[System.Management.Automation.Language.Parser]::ParseFile`.
+- **New CI gate**: `.github/workflows/test-windows.yml` now parses every `setup/*.ps1` file with the real PowerShell parser as a required, fail-closed step — this is exactly what would have caught the bug above before it shipped, and nothing else in that workflow exercises `verify-windows.ps1`'s syntax at all.
+- **Stale skill doc fixed**: `ai-config/skills/ai-os-memory/SKILL.md` advertised a `sync-sessions` subcommand that was removed from `memory/ai-os-memory.sh` in an earlier fix (P0-2) but never removed from the skill doc; also missing the real `visualize`/`search` subcommands, presenting Graphiti as a working layer instead of disabled, and pointing at the pre-archive spec path. All fixed.
+- **`docs/model-routing.md`** added (see Task 4 above) and linked from README.
