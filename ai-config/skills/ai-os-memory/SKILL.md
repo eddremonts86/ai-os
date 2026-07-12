@@ -1,6 +1,6 @@
 ---
 name: ai-os-memory
-description: Operate and inspect the AI-OS persistent memory stack (FalkorDB graph DB, Ollama embeddings, codebase-memory-mcp AST index, grepai semantic search). Use when the user asks about memory status, indexing a project, querying code semantically, or browsing the graph. Graphiti temporal memory is present but disabled pending a deployment decision — do not present it as working.
+description: Operate and inspect the AI-OS persistent memory stack (FalkorDB graph DB, Ollama embeddings, codebase-memory-mcp AST index, grepai semantic search). Use when the user asks about memory status, indexing a project, querying code semantically, or browsing the graph. Graphiti temporal memory is opt-in (separate compose file, not started by `ai-os memory start`) and requires a real OPENAI_API_KEY for actual knowledge-graph operations — its Docker deployment passed a structural smoke test but do not present it as fully verified with real data.
 version: 0.1.0
 ---
 
@@ -45,7 +45,7 @@ reference it.
 | Embeddings | Ollama + nomic-embed-text | 11500 | Cross-platform (Mac + Windows), free |
 | Code AST index | codebase-memory-mcp | (stdio) | 158 langs, sub-ms, checksum-verified download |
 | Semantic search | grepai | (stdio) | uses Ollama |
-| Graph memory | graphiti | — | **Disabled** (`ai-config/mcp/graphiti.yaml`, `enabled: false`) — the previous config referenced a Python module that doesn't exist; needs a real deployment decision (vendor the repo vs. Docker HTTP transport) before it can be enabled |
+| Graph memory | graphiti | HTTP 8021 | **Opt-in** (`ai-config/mcp/graphiti.yaml`, `enabled: true`) — runs `zepai/knowledge-graph-mcp:1.0.2-standalone` via `memory/graphiti/docker-compose.yml`, separate from `ai-os memory start`. Structural deployment passed a smoke test 2026-07-12 (container starts, connects to FalkorDB, HTTP health check OK); real knowledge-graph operations need a real `OPENAI_API_KEY` exported before `docker compose up -d` in that directory |
 
 **Ports are intentionally OUTSIDE 3000-3050** (Edd's other apps use that range).
 
@@ -53,6 +53,7 @@ reference it.
 
 - `~/Projects/ai-os/memory/ai-os-memory.sh` — the CLI (entry point)
 - `~/Projects/ai-os/memory/falkordb/docker-compose.yml` — FalkorDB
+- `~/Projects/ai-os/memory/graphiti/docker-compose.yml` — Graphiti MCP (opt-in, needs a real OPENAI_API_KEY)
 - `~/Projects/ai-os/ai-config/mcp/{codebase-memory-mcp,graphiti,grepai}.yaml` — MCPs
 - `~/Projects/ai-os/setup/install-mac.sh` — section 9b installs everything (Mac)
 - `~/Projects/ai-os/setup/install-windows.ps1` — section 7b installs the same stack (Windows)

@@ -7,15 +7,22 @@ description: >-
   second language toolchain (uv/Python) just to run one MCP server, and pins
   a versioned image the same way FalkorDB itself already is. See
   memory/graphiti/docker-compose.yml for the full compose definition and
-  activation steps. setup/generate-mcp-config.py already supports
-  `transport: http` (confirmed this session), so no generator change was
-  needed.
-  STILL DISABLED: this has not been smoke-tested on any machine — Docker was
-  not running and no OPENAI_API_KEY was available in the session that wrote
-  this. Do not set `enabled: true` until someone has actually run
-  memory/graphiti/docker-compose.yml and confirmed
-  `curl -sf http://127.0.0.1:8021/health` succeeds.
+  activation steps.
+  SMOKE-TESTED (2026-07-12): started `aios-falkordb` on the shared
+  `aios-memory` network and `aios-graphiti-mcp` against it with a placeholder
+  OPENAI_API_KEY. Confirmed real end-to-end deployment: image pulled, server
+  logs show "Successfully initialized Graphiti client" and connected to
+  FalkorDB (index checks passed), and `curl -sf http://127.0.0.1:8021/health`
+  returned `{"status":"healthy","service":"graphiti-mcp"}`. Container was
+  torn down afterward (`docker compose down`) since its key was a
+  placeholder, not left running.
+  REMAINING CAVEAT: the placeholder key only proves the deployment path
+  (Docker, network, FalkorDB wiring, HTTP transport) works — it does NOT
+  prove actual knowledge-graph operations (add_memory/search, which call the
+  OpenAI API for entity extraction). Whoever activates this for real use
+  must `export OPENAI_API_KEY=<real key>` before
+  `cd memory/graphiti && docker compose up -d`.
 transport: http
 url: http://127.0.0.1:8021/mcp/
-enabled: false
+enabled: true
 

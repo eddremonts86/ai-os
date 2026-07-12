@@ -20,7 +20,7 @@ Personal AI work system. Local, versioned, replicable.
 - **5 workflows** (`workflows/`): daily_start, project_start, coding, research, content_creation.
 - **99 global skills** distributed to 5 CLIs.
 - **14 superpowers skills (REQUIRED)** integrated into the workflows.
-- **10 declarative MCP servers** generated automatically (9 enabled; graphiti is disabled pending a smoke test).
+- **10 declarative MCP servers** generated automatically, all enabled (graphiti's Docker deployment passed a structural smoke test 2026-07-12; actual knowledge-graph operations still need a real `OPENAI_API_KEY` — see `ai-config/mcp/graphiti.yaml`).
 
 ## When to load
 

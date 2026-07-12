@@ -37,7 +37,7 @@ When the user says a task:
 
 - Flat global skills in `ai-config/skills/`, symlinked into CLI skill directories.
 - 14 superpowers skills (REQUIRED).
-- 10 MCP servers (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai; graphiti disabled pending a smoke test).
+- 10 MCP servers (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai, graphiti — all enabled; graphiti needs a real `OPENAI_API_KEY` exported before its container is started for actual use).
 
 ## Today's question
 
