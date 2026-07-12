@@ -20,7 +20,7 @@ Personal AI work system. Local, versioned, replicable.
 - **5 workflows** (`workflows/`): daily_start, project_start, coding, research, content_creation.
 - **99 global skills** distributed to 5 CLIs.
 - **14 superpowers skills (REQUIRED)** integrated into the workflows.
-- **7 declarative MCP servers** generated automatically.
+- **10 declarative MCP servers** generated automatically (9 enabled; graphiti is disabled pending a smoke test).
 
 ## When to load
 
