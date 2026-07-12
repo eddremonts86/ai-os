@@ -18,15 +18,24 @@ section() { echo ""; echo "$LOG_PREFIX ─── $* ───"; }
 
 PASS=0
 FAIL=0
+# Required checks gate the exit code. Optional checks are best-effort and are
+# reported separately so a partial setup never prints a false "correctly
+# installed" summary and a missing optional CLI never fails the whole run.
+REQ_PASS=0
+REQ_FAIL=0
+OPT_OK=0
+OPT_MISS=0
+req_ok() { ok "$*"; PASS=$((PASS+1)); REQ_PASS=$((REQ_PASS+1)); }
+req_fail() { err "$*"; FAIL=$((FAIL+1)); REQ_FAIL=$((REQ_FAIL+1)); }
+opt_ok() { ok "$*"; OPT_OK=$((OPT_OK+1)); }
+opt_miss() { warn "$*"; OPT_MISS=$((OPT_MISS+1)); }
 
-# ─── 1. AI-OS path ───
+# ─── 1. AI-OS path (required) ───
 section "1. AI-OS path"
 if [ -d "$AI_OS_ROOT" ] && [ -f "$AI_OS_ROOT/CLAUDE.md" ]; then
-  ok "AI-OS at $AI_OS_ROOT"
-  PASS=$((PASS+1))
+  req_ok "AI-OS at $AI_OS_ROOT"
 else
-  err "AI-OS not found at $AI_OS_ROOT"
-  FAIL=$((FAIL+1))
+  req_fail "AI-OS not found at $AI_OS_ROOT"
 fi
 
 # ─── 2. Dotfiles ───
@@ -35,52 +44,94 @@ for dotfile in ".zshrc" ".p10k.zsh" ".gitignore_global"; do
   if [ -L "$HOME_DIR/$dotfile" ]; then
     target=$(readlink "$HOME_DIR/$dotfile")
     if [ -e "$target" ]; then
-      ok "  $dotfile → $target"
-      PASS=$((PASS+1))
+      req_ok "  $dotfile → $target"
     else
-      err "  $dotfile → $target (BROKEN)"
-      FAIL=$((FAIL+1))
+      req_fail "  $dotfile → $target (BROKEN)"
     fi
   else
     warn "  $dotfile is not a symlink (may be OK if you have your own custom config)"
   fi
 done
 
-# ─── 3. Skills in 5 CLIs ───
-section "3. Global skills (6 CLIs)"
-CLI_DIRS=(
-  "$HOME_DIR/.claude/skills"
-  "$HOME_DIR/.codex/skills"
-  "$HOME_DIR/.gemini/skills"
-  "$HOME_DIR/.agents/skills"
-  "$HOME_DIR/.hermes/skills/imported"
-  "$HOME_DIR/.minimax/skills"
+# ─── 3. Global skills + CLI executables (exact-set check, not existence-only) ───
+# P0-4 fix: previously this only checked that a directory existed, so a client
+# missing 1+ skills (or an absent CLI executable) still counted as a pass. Each
+# client now gets an exact-count comparison against the source of truth, and
+# the CLI executable is checked and reported separately so "skills deployed"
+# and "CLI installed" are never conflated into one misleading green check.
+section "3. Global skills + CLI executables"
+FLAT_SKILL_COUNT=$(find "$AI_OS_ROOT/ai-config/skills" -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+GSTACK_SKILL_COUNT=0
+if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
+  GSTACK_SKILL_COUNT=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+fi
+EXPECTED_SKILL_COUNT=$((FLAT_SKILL_COUNT + GSTACK_SKILL_COUNT))
+log "  Source of truth: $FLAT_SKILL_COUNT flat skills + $GSTACK_SKILL_COUNT gstack skills = $EXPECTED_SKILL_COUNT expected per client"
+
+# id:relative_path:required:executable
+CLIENTS=(
+  "claude:.claude/skills:true:claude"
+  "codex:.codex/skills:true:codex"
+  "gemini:.gemini/skills:true:gemini"
+  "antigravity:.agents/skills:true:agy"
+  "hermes:.hermes/skills/imported:true:hermes"
+  "minimax:.minimax/skills:false:mavis"
 )
-for cli_dir in "${CLI_DIRS[@]}"; do
-  if [ -d "$cli_dir" ]; then
-    # Count skills: each skill is a directory or symlink-to-directory.
-    # Exclude meta files (READMEDD, llms, .system).
-    count=$(find "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" 2>/dev/null | wc -l | tr -d ' ')
-    label="~/${cli_dir#$HOME_DIR/}"
-    ok "  ${label}: $count skills"
-    PASS=$((PASS+1))
+for entry in "${CLIENTS[@]}"; do
+  IFS=':' read -r c_id c_path c_required c_bin <<< "$entry"
+  cli_dir="$HOME_DIR/$c_path"
+  label="~/${c_path}"
+
+  # CLI executable presence is informational only: users legitimately may not
+  # have every CLI installed, so this never fails the run on its own.
+  if command -v "$c_bin" >/dev/null 2>&1; then
+    ok "  [$c_id] executable '$c_bin' found in PATH"
   else
-    err "  $cli_dir does not exist"
-    FAIL=$((FAIL+1))
+    warn "  [$c_id] executable '$c_bin' not found in PATH (skills stay deployed for when it's installed)"
+  fi
+
+  if [ ! -d "$cli_dir" ]; then
+    if [ "$c_required" = "true" ]; then
+      req_fail "  [$c_id] $label does not exist (run setup/install-mac.sh)"
+    else
+      opt_miss "  [$c_id] $label does not exist (optional client)"
+    fi
+    continue
+  fi
+  deployed=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$deployed" -eq "$EXPECTED_SKILL_COUNT" ]; then
+    if [ "$c_required" = "true" ]; then
+      req_ok "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills (exact match)"
+    else
+      opt_ok "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills (exact match)"
+    fi
+  else
+    if [ "$c_required" = "true" ]; then
+      req_fail "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills — MISMATCH (rerun setup/install-mac.sh)"
+    else
+      opt_miss "  [$c_id] $label: $deployed/$EXPECTED_SKILL_COUNT skills — mismatch (optional client)"
+    fi
   fi
 done
 
 # ─── 3b. Global instruction bridge (loads AI-OS in every project) ───
+# install-mac.sh renders the bridge template into a per-machine adapter file
+# (path-neutral: substitutes the discovered AI_OS_ROOT, no committed user path)
+# and links each CLI's global instruction file to that rendered file, not to
+# the raw template. Check the same thing install actually produces.
 section "3b. Global instruction bridge"
-BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
-if [ ! -f "$BRIDGE" ]; then
-  err "  bridge source missing: $BRIDGE"
-  FAIL=$((FAIL+1))
+BRIDGE_TEMPLATE="$AI_OS_ROOT/ai-config/templates/global-bridge.md.tmpl"
+BRIDGE="$HOME_DIR/.ai-os/adapters/global-bridge.md"
+if [ ! -f "$BRIDGE_TEMPLATE" ]; then
+  req_fail "  bridge template missing: $BRIDGE_TEMPLATE"
+elif [ ! -f "$BRIDGE" ]; then
+  req_fail "  rendered bridge missing: $BRIDGE (run setup/install-mac.sh)"
+elif ! grep -Fq "$AI_OS_ROOT" "$BRIDGE"; then
+  req_fail "  rendered bridge does not reference the discovered AI_OS_ROOT (stale render; run setup/install-mac.sh)"
 else
-  ok "  bridge source: $BRIDGE"
-  PASS=$((PASS+1))
+  req_ok "  bridge rendered at $BRIDGE (from $BRIDGE_TEMPLATE)"
 fi
-# Each CLI's global instruction file must point at the bridge.
+# Each CLI's global instruction file must point at the rendered bridge.
 declare -a BRIDGE_TARGETS=(
   "$HOME_DIR/.claude/CLAUDE.md"
   "$HOME_DIR/.codex/AGENTS.md"
@@ -90,19 +141,16 @@ declare -a BRIDGE_TARGETS=(
 for target in "${BRIDGE_TARGETS[@]}"; do
   label="~/${target#$HOME_DIR/}"
   if [ -L "$target" ] && [ "$(readlink "$target")" = "$BRIDGE" ] && [ -e "$target" ]; then
-    ok "  $label → bridge"
-    PASS=$((PASS+1))
+    req_ok "  $label → bridge"
   else
-    err "  $label not linked to bridge (run setup/install-mac.sh)"
-    FAIL=$((FAIL+1))
+    req_fail "  $label not linked to bridge (run setup/install-mac.sh)"
   fi
 done
-# Hermes carries the bridge block inside SOUL.md.
+# Hermes carries the bridge block inside SOUL.md (optional: Hermes may be absent).
 if [ -f "$HOME_DIR/.hermes/SOUL.md" ] && grep -q "AI-OS BRIDGE" "$HOME_DIR/.hermes/SOUL.md"; then
-  ok "  ~/.hermes/SOUL.md carries AI-OS bridge block"
-  PASS=$((PASS+1))
+  opt_ok "  ~/.hermes/SOUL.md carries AI-OS bridge block"
 else
-  warn "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
+  opt_miss "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
 fi
 # VS Code (GitHub Copilot Chat) carries the bridge block inside its global
 # custom-instructions file (path varies per account; glob for it).
@@ -115,12 +163,11 @@ for f in "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.c
   fi
 done
 if [ "$vscode_bridge_found" -gt 0 ]; then
-  ok "  VS Code Copilot Chat instructions carry AI-OS bridge block ($vscode_bridge_found file(s))"
-  PASS=$((PASS+1))
+  opt_ok "  VS Code Copilot Chat instructions carry AI-OS bridge block ($vscode_bridge_found file(s))"
 else
-  warn "  VS Code Copilot Chat instructions missing AI-OS bridge block (OK if unused; run install-mac.sh)"
+  opt_miss "  VS Code Copilot Chat instructions missing AI-OS bridge block (OK if unused; run install-mac.sh)"
 fi
-# MiniMax Code carries the overlay inside each agent.md.
+# MiniMax Code carries the overlay inside each agent.md (optional client).
 if [ -d "$HOME_DIR/.minimax/agents" ]; then
   mm_ok=0; mm_total=0
   for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
@@ -129,11 +176,9 @@ if [ -d "$HOME_DIR/.minimax/agents" ]; then
     grep -q "AI-OS operating context" "$agent_dir/agent.md" 2>/dev/null && mm_ok=$((mm_ok+1))
   done
   if [ "$mm_ok" -eq "$mm_total" ] && [ "$mm_total" -gt 0 ]; then
-    ok "  ~/.minimax: AI-OS overlay in $mm_ok/$mm_total agent.md"
-    PASS=$((PASS+1))
+    opt_ok "  ~/.minimax: AI-OS overlay in $mm_ok/$mm_total agent.md"
   else
-    err "  ~/.minimax: overlay only in $mm_ok/$mm_total agent.md (run setup/install-mac.sh)"
-    FAIL=$((FAIL+1))
+    opt_miss "  ~/.minimax: overlay only in $mm_ok/$mm_total agent.md (run setup/install-mac.sh)"
   fi
 fi
 
@@ -147,31 +192,28 @@ for skill in brainstorming dispatching-parallel-agents executing-plans finishing
   fi
 done
 if [ "$ACTUAL" -eq "$EXPECTED" ]; then
-  ok "14/14 superpowers skills OK"
-  PASS=$((PASS+1))
+  req_ok "14/14 superpowers skills OK"
 else
-  err "Only $ACTUAL/14 superpowers skills installed"
-  FAIL=$((FAIL+1))
+  req_fail "Only $ACTUAL/14 superpowers skills installed"
 fi
 
-# ─── 5. MCP servers ───
+# ─── 5. MCP servers (required only when Hermes is installed) ───
 section "5. MCP servers"
-if [ -f "$HOME_DIR/.hermes/config.yaml" ]; then
+if ! command -v hermes >/dev/null 2>&1; then
+  warn "hermes not installed; MCP config check skipped (not required without Hermes)"
+elif [ -f "$HOME_DIR/.hermes/config.yaml" ]; then
   if command -v yq >/dev/null 2>&1; then
     mcp_count=$(yq '.mcp_servers | length' "$HOME_DIR/.hermes/config.yaml" 2>/dev/null || echo "0")
     if [ "$mcp_count" -gt 0 ]; then
-      ok "MCP servers configured: $mcp_count"
-      PASS=$((PASS+1))
+      req_ok "MCP servers configured: $mcp_count"
     else
-      err "MCP servers = 0 (regenerate config)"
-      FAIL=$((FAIL+1))
+      req_fail "MCP servers = 0 (regenerate config)"
     fi
   else
     warn "yq not installed, cannot count MCP servers"
   fi
 else
-  err "~/.hermes/config.yaml does not exist"
-  FAIL=$((FAIL+1))
+  req_fail "~/.hermes/config.yaml does not exist (hermes is installed; run setup/install-mac.sh)"
 fi
 
 # ─── 5b. Memory stack (FalkorDB + Ollama + code indexers, phase 1) ───
@@ -183,92 +225,78 @@ if [ "${SKIP_MEMORY:-0}" = "1" ]; then
 else
   section "5b. Memory stack"
 
-# FalkorDB
+# FalkorDB (best-effort: opt-out via SKIP_MEMORY=1, so never a required gate)
 if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
   if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^aios-falkordb$'; then
-    ok "FalkorDB container running (aios-falkordb)"
-    PASS=$((PASS+1))
+    opt_ok "FalkorDB container running (aios-falkordb)"
     if curl -s -m 3 http://localhost:3300/ -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200\|302"; then
-      ok "  FalkorDB Web UI at http://localhost:3300 reachable"
-      PASS=$((PASS+1))
+      opt_ok "  FalkorDB Web UI at http://localhost:3300 reachable"
     else
       warn "  FalkorDB Web UI :3300 not reachable (give it 10s to start)"
     fi
     if command -v redis-cli >/dev/null 2>&1; then
       if redis-cli -p 6390 PING 2>/dev/null | grep -q PONG; then
-        ok "  FalkorDB Redis protocol at :6390 returns PONG"
-        PASS=$((PASS+1))
+        opt_ok "  FalkorDB Redis protocol at :6390 returns PONG"
       else
         warn "  FalkorDB Redis :6390 PING failed"
       fi
     elif command -v docker >/dev/null 2>&1; then
       # Fallback: PING via docker exec (no host redis-cli required)
       if docker exec aios-falkordb redis-cli -p 6379 PING 2>/dev/null | grep -q PONG; then
-        ok "  FalkorDB Redis protocol at :6390 returns PONG (via docker exec)"
-        PASS=$((PASS+1))
+        opt_ok "  FalkorDB Redis protocol at :6390 returns PONG (via docker exec)"
       else
         warn "  FalkorDB Redis :6390 PING via docker exec failed"
       fi
     fi
   else
-    err "FalkorDB container 'aios-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
-    FAIL=$((FAIL+1))
+    opt_miss "FalkorDB container 'aios-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
   fi
 else
   warn "Docker not running (FalkorDB disabled)"
 fi
 
-# Ollama
+# Ollama (best-effort)
 if command -v ollama >/dev/null 2>&1; then
   if pgrep -f "ollama serve" >/dev/null 2>&1; then
-    ok "Ollama serve running"
-    PASS=$((PASS+1))
+    opt_ok "Ollama serve running"
     if curl -s -m 3 http://localhost:11500/api/tags -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
-      ok "  Ollama API at :11500 reachable"
-      PASS=$((PASS+1))
+      opt_ok "  Ollama API at :11500 reachable"
     else
       warn "  Ollama API :11500 not reachable (default port 11434 may be in use; OLLAMA_HOST env may be needed)"
     fi
     if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
-      ok "  nomic-embed-text model available"
-      PASS=$((PASS+1))
+      opt_ok "  nomic-embed-text model available"
     else
       warn "  nomic-embed-text not pulled (run: OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text)"
     fi
   else
-    err "Ollama installed but not running"
-    FAIL=$((FAIL+1))
+    opt_miss "Ollama installed but not running"
   fi
 else
   warn "Ollama not installed (run: brew install ollama)"
 fi
 
-# code binaries
+# code binaries (best-effort)
 for bin in codebase-memory-mcp grepai; do
   if [ -x "$HOME_DIR/.local/bin/$bin" ]; then
-    ok "$bin binary at ~/.local/bin/"
-    PASS=$((PASS+1))
+    opt_ok "$bin binary at ~/.local/bin/"
   else
     warn "$bin not installed (run install-mac.sh to retry)"
   fi
 done
 fi
 
-# ─── 6. Oh My Zsh + Powerlevel10k ───
-section "6. Shell (Oh My Zsh + Powerlevel10k)"
+# ─── 6. Shell (Oh My Zsh + Powerlevel10k, optional dev-env preference) ───
+section "6. Shell (Oh My Zsh + Powerlevel10k, optional)"
 if [ -d "$HOME_DIR/.oh-my-zsh" ]; then
-  ok "Oh My Zsh installed"
-  PASS=$((PASS+1))
+  opt_ok "Oh My Zsh installed"
 else
-  err "Oh My Zsh not installed"
-  FAIL=$((FAIL+1))
+  opt_miss "Oh My Zsh not installed"
 fi
 if [ -d "$HOME_DIR/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
-  ok "Powerlevel10k installed"
-  PASS=$((PASS+1))
+  opt_ok "Powerlevel10k installed"
 else
-  err "Powerlevel10k not installed"
-  FAIL=$((FAIL+1))
+  opt_miss "Powerlevel10k not installed"
 fi
 
 # ─── 7. Warp (optional) ───
@@ -374,67 +402,30 @@ section "11. English-only rule (skill descriptions)"
 # frontmatter descriptions that CLIs use for skill auto-loading.
 SPANISH_HITS=$(grep -l -E '^description:.*\b(aplica|cuándo|según|código|despliegue|patrones|proyecto que|cualquier|avanzado|módulos)\b' "$AI_OS_ROOT"/ai-config/skills/*/SKILL.md 2>/dev/null || true)
 if [ -z "$SPANISH_HITS" ]; then
-  ok "No Spanish detected in skill frontmatter descriptions"
-  PASS=$((PASS+1))
+  req_ok "No Spanish detected in skill frontmatter descriptions"
 else
   err "Spanish detected in skill descriptions (rule #1: all files in English):"
   echo "$SPANISH_HITS" | while read -r f; do err "  $f"; done
-  FAIL=$((FAIL+1))
+  req_fail "Spanish detected in $(echo "$SPANISH_HITS" | wc -l | tr -d ' ') skill description(s)"
 fi
 
-# ─── 12. Global bridge (6 CLIs) ───
-section "12. Global bridge wiring"
-BRIDGE="$AI_OS_ROOT/ai-config/clis/GLOBAL_BRIDGE.md"
-for target in "$HOME_DIR/.claude/CLAUDE.md" "$HOME_DIR/.codex/AGENTS.md" "$HOME_DIR/.gemini/GEMINI.md" "$HOME_DIR/.agents/AGENTS.md"; do
-  if [ -L "$target" ] && [ "$(readlink "$target")" = "$BRIDGE" ]; then
-    ok "  $target → bridge"
-    PASS=$((PASS+1))
-  else
-    err "  $target is not a symlink to GLOBAL_BRIDGE.md"
-    FAIL=$((FAIL+1))
-  fi
-done
-if [ -f "$HOME_DIR/.hermes/SOUL.md" ] && grep -q "AI-OS BRIDGE" "$HOME_DIR/.hermes/SOUL.md"; then
-  ok "  ~/.hermes/SOUL.md carries the AI-OS bridge block"
-  PASS=$((PASS+1))
-else
-  warn "  ~/.hermes/SOUL.md missing the AI-OS bridge block (run install-mac.sh)"
-fi
-VSCODE_OK=0
-for f in "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md" \
-         "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"; do
-  [ -f "$f" ] && grep -q "AI-OS BRIDGE" "$f" && VSCODE_OK=$((VSCODE_OK+1))
-done
-if [ "$VSCODE_OK" -gt 0 ]; then
-  ok "  VS Code Copilot Chat bridge present ($VSCODE_OK file(s))"
-  PASS=$((PASS+1))
-else
-  warn "  VS Code Copilot Chat bridge not found (OK if unused; run install-mac.sh)"
-fi
-MM_OK=0
-if [ -d "$HOME_DIR/.minimax/agents" ]; then
-  for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
-    [ -f "$agent_dir/agent.md" ] && grep -qi "ai-os" "$agent_dir/agent.md" && MM_OK=$((MM_OK+1))
-  done
-  if [ "$MM_OK" -gt 0 ]; then
-    ok "  MiniMax overlay present in $MM_OK agent(s)"
-    PASS=$((PASS+1))
-  else
-    warn "  MiniMax agents exist but no AI-OS overlay found (run install-mac.sh)"
-  fi
-else
-  warn "  MiniMax not installed (OK if unused)"
-fi
+# Note: the global-bridge wiring check lives in section 3b above. It used to
+# be duplicated here as "section 12", double-counting the same pass/fail and
+# inflating the summary (P0-4). Do not re-add it.
 
 # ─── Summary ───
 section "Summary"
 echo ""
-log "Passed: $PASS"
-if [ "$FAIL" -gt 0 ]; then
-  err "Failed: $FAIL"
+log "Required: $REQ_PASS passed, $REQ_FAIL failed"
+log "Optional/best-effort: $OPT_OK present, $OPT_MISS missing or not configured (does not block install)"
+if [ "$REQ_FAIL" -gt 0 ]; then
+  err "$REQ_FAIL required check(s) failed"
   exit 1
 else
-  ok "Failed: 0"
+  ok "All required checks passed"
+  if [ "$OPT_MISS" -gt 0 ]; then
+    warn "$OPT_MISS optional item(s) missing — see warnings above (not blocking)"
+  fi
   echo ""
   ok "AI-OS is correctly installed. 🎉"
   exit 0

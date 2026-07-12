@@ -157,7 +157,8 @@ if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
   log "5b. Simulating vendored gstack skills to 6 CLIs..."
   gstack_count=$(find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" | wc -l | tr -d ' ')
   ok "Vendored gstack source of truth: $gstack_count"
-  for cli_dir in "${CLI_DIRS[@]}"; do
+  while IFS=$'\t' read -r client_id client_path client_required; do
+    cli_dir="$HOME/$client_path"
     for skill_dir in "$AI_OS_ROOT/vendor/gstack"/*/; do
       [ -f "$skill_dir/SKILL.md" ] || continue
       name=$(basename "$skill_dir")
@@ -166,7 +167,7 @@ if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
     # gstack skills don't change the count meaningfully; just confirm presence.
     cli_count=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
     ok "  $cli_dir: $cli_count skills after gstack (simulated)"
-  done
+  done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
 else
   log "5b. vendor/gstack/ absent, skipping"
 fi

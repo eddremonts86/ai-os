@@ -114,7 +114,11 @@ Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel w
 ## 9. Memory
 
 Canonical identity/preferences live in `context/` (this repo) — that is the source
-of truth, shared into every CLI via the global bridge (`ai-config/clis/GLOBAL_BRIDGE.md`).
+of truth. `setup/install-mac.sh` and `setup/install-windows.ps1` render
+`ai-config/templates/global-bridge.md.tmpl` into a per-machine adapter
+(`~/.ai-os/adapters/global-bridge.md`, with the discovered AI-OS root
+substituted — no committed user path) and symlink each CLI's global
+instruction file to it.
 
 Save durable per-CLI facts to that CLI's own memory store when (see below for when):
 
