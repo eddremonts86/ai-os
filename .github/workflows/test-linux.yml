@@ -60,17 +60,24 @@ jobs:
             bash setup/install-claude-tools.sh --check || echo "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)"
           fi
 
-      - name: Run verify.sh (DRY_RUN on Linux)
-        env:
-          DRY_RUN: '1'
-        run: |
-          bash setup/verify.sh || true
+      - name: Run setup unit tests (required, fail-closed)
+        # setup/verify.sh validates a fully-installed real machine (live CLI
+        # binaries, dotfiles, MCP config, brew/npm/pip state). A bare CI runner
+        # never has that, so running it here would either always fail on
+        # required checks or need `|| true`, which previously hid real bugs
+        # (P0-4: CI suppressed verifier failures). install-mac.sh (DRY_RUN)
+        # above already exercises the manifest/skill/adapter/MCP logic against
+        # an isolated fake HOME and fails closed with no suppression. This step
+        # adds the other required, fail-closed gate: the generate-mcp-config.py
+        # unit tests (PyYAML-required parsing, config preservation, idempotency).
+        run: python3 -m unittest discover -s setup/tests -v
 
       - name: Summary
         if: always()
         run: |
           echo "## Linux Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Install dry-run: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- Install dry-run: ✅ (required)" >> $GITHUB_STEP_SUMMARY
           echo "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)" >> $GITHUB_STEP_SUMMARY
           echo "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)" >> $GITHUB_STEP_SUMMARY
-          echo "- Verify: ⚠️ (Linux-specific paths expected to differ)" >> $GITHUB_STEP_SUMMARY
+          echo "- setup unit tests: ✅ (required)" >> $GITHUB_STEP_SUMMARY
+          echo "- Note: setup/verify.sh validates a live installed machine and is not run against the bare CI runner; run it locally after setup/install-mac.sh." >> $GITHUB_STEP_SUMMARY
