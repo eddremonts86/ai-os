@@ -1,5 +1,5 @@
 ---
-name: frontend-design
+name: frontend-design-alt
 description: Build a frontend with a deliberate visual direction held through palette, typography, structure, and texture, with on-screen strings that name real information rather than fabricated demo data or filler labels. Use when building or restyling a frontend.
 ---
 

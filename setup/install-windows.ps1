@@ -399,6 +399,7 @@ if ($env:SKIP_MEMORY -ne "1") {
         $env:OLLAMA_HOST = "127.0.0.1:11500"
         try {
             & ollama pull nomic-embed-text 2>&1 | Select-Object -Last 3
+            if ($LASTEXITCODE -ne 0) { throw "ollama pull exited with code $LASTEXITCODE" }
             Ok "  nomic-embed-text ready"
         } catch {
             Warn "  ollama pull failed (will retry on first use)"
@@ -413,6 +414,7 @@ if ($env:SKIP_MEMORY -ne "1") {
         try {
             if (-not (Test-Path "data")) { New-Item -ItemType Directory -Path "data" | Out-Null }
             docker compose up -d 2>&1 | Select-Object -Last 3
+            if ($LASTEXITCODE -ne 0) { throw "docker compose up exited with code $LASTEXITCODE" }
             Ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300 (image: falkordb/falkordb:v4.18.11, pinned)"
         } catch {
             Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory\falkordb; docker compose up -d)"
@@ -462,6 +464,7 @@ if ($env:SKIP_MEMORY -ne "1") {
     if (Get-Command go -ErrorAction SilentlyContinue) {
         try {
             & go install "github.com/yoanbernabeu/grepai/cmd/grepai@$grepaiVersion" 2>&1 | Select-Object -Last 2
+            if ($LASTEXITCODE -ne 0) { throw "go install exited with code $LASTEXITCODE" }
             $goBinGrepai = "$HomeDir\go\bin\grepai.exe"
             if (Test-Path $goBinGrepai) {
                 Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
