@@ -3,5 +3,5 @@ description: PDF reading, extraction, OCR, form processing
 transport: stdio
 command: uvx
 args:
-  - mcp-pdf
+  - mcp-pdf==2.3.0
 enabled: true

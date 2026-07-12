@@ -4,5 +4,5 @@ transport: stdio
 command: npx
 args:
   - -y
-  - agent-browser-mcp-server
+  - agent-browser-mcp-server@0.14.2
 enabled: true

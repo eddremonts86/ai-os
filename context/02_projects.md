@@ -40,6 +40,8 @@ All under `~/Projects/eddremonts86/`. **Mostly legacy (pre-2024).**
 | Project | Path | Stack | Status | Files | Last modified | Notes |
 |---|---|---|---|---|---|---|
 | **anySolutions** | `~/Projects/eddremonts86/anySolutions/` | Vue 3 + Node + npm (Loyal_Solutions per package.json) | **Active** | 56,866 | Jun 27 19:01 | Last modified Jun 27 — clearly active. Vue/Node project. |
+| **iaWorkSpace** | `~/Projects/eddremonts86/iaWorkSpace/` | (workspace-security-tools) | **Active** | 3,302 | Jun 25 (last commit) | Meta-repo orchestrating multiple apps. Matches `01_business_or_work.md`. Kept active despite an older mtime because it's a low-churn orchestration repo, not because it's unused. |
+| **hermes-agent** | `~/Projects/eddremonts86/hermes-agent/` | Python 3.11 + Hermes (Nous Research) | **Active** | 4,981 | (source repo, not `~/.hermes` which is the CLI config/data dir) | Reference/contribution repo for the Hermes CLI this AI-OS supports (see `hermes-mcp-pattern` skill). Matches `01_business_or_work.md`; previously mislabeled Legacy here from a stale-mtime crawl. |
 | **SKILLS-RESEARCH-2026-06-27.md** | `~/Projects/eddremonts86/SKILLS-RESEARCH-2026-06-27.md` | (markdown document) | Active | 1 file | Jun 27 19:37 | Research document Edd created on Jun 27. 118 candidate skills → 20 recommendations. |
 
 ### Legacy / archived candidates
@@ -80,12 +82,10 @@ If any of these turns out to be active (e.g. someone else works on it, or it has
 | **gifted-perlman-h57dz3** | `~/Projects/eddremonts86/gifted-perlman-h57dz3/` | (lexical-rich-text-example) | 73 | Lexical editor playground. Legacy. |
 | **HackerNews** | `~/Projects/eddremonts86/HackerNews/` | Nuxt (nuxt-app) | 176 | Hacker News clone with Nuxt. Legacy. |
 | **HBO-loginPages** | `~/Projects/eddremonts86/HBO-loginPages/` | (mixed) | 69 | HBO login pages. Legacy. |
-| **hermes-agent** | `~/Projects/eddremonts86/hermes-agent/` | (hermes-agent) | 4,981 | Hermes agent. Legacy (overlaps with ai-os?). |
 | **hermes-flow-smoke-test** | `~/Projects/eddremonts86/hermes-flow-smoke-test/` | (hermes-flow-smoke-test) | 1,001 | Hermes flow smoke test. Legacy. |
 | **hermes-workspace-internal** | `~/Projects/eddremonts86/hermes-workspace-internal/` | (mixed) | 620 | Hermes workspace internal. Legacy. |
 | **hermes-workspace-tour** | `~/Projects/eddremonts86/hermes-workspace-tour/` | (hermes-workspace-tour) | 158 | Hermes workspace tour. Legacy. |
 | **hola-eduardo** | `~/Projects/eddremonts86/hola-eduardo/` | (hola-eduardo) | 740 | Hola Eduardo project. Legacy. |
-| **iaWorkSpace** | `~/Projects/eddremonts86/iaWorkSpace/` | (workspace-security-tools) | 3,302 | IA workspace meta-repo. Listed as an active personal project in `01_business_or_work.md`; last commit 2026-06-25. Treat as Active, not legacy. |
 | **invoiceCalc** | `~/Projects/eddremonts86/invoiceCalc/` | (invoice-calculator) | 76 | Invoice calculator. Legacy. |
 | **js-oddsCalculator** | `~/Projects/eddremonts86/js-oddsCalculator/` | (mixed) | 39 | JS odds calculator. Legacy. |
 | **letter_pilot** | `~/Projects/eddremonts86/letter_pilot/` | (letterpilot) | 61 | Letter pilot. Legacy. |
