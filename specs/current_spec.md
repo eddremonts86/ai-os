@@ -1,7 +1,7 @@
 # AI-OS Remediation Implementation Plan
 
 **Date:** 2026-07-12
-**Status:** 🔄 In progress — Tasks 1-4 done except the Graphiti architecture decision; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done
+**Status:** 🔄 In progress — Tasks 1-4 done; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done; Graphiti MCP architecture decision made and wired, activation smoke test still pending real Docker + OPENAI_API_KEY
 **Owner:** Edd
 **See:** `outputs/2026-07-12-ai-os-full-audit.md` for the full audit findings this plan resolves.
 
@@ -66,8 +66,8 @@
 
 ## Remaining work (not done yet, in priority order)
 
-1. Graphiti MCP real deployment decision: vendor `getzep/graphiti` under `vendor/graphiti/` and run `uv run main.py` from there, OR run the `zepai/knowledge-graph-mcp` Docker image against our existing FalkorDB on `:6390` over HTTP transport (`generate-mcp-config.py` already supports `transport: http` — confirmed this session, no longer a blocker). Either way, needs a real smoke test before setting `enabled: true`.
-2. P1-1/P1-3/P1-8 remainder (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, operational rules out of Hermes `SOUL.md` (research this session found `AGENTS.md`/`.hermes.md` are Hermes's project-scoped context mechanism, cwd-based; `SOUL.md` remains the only *global, cwd-independent* mechanism Hermes has, so the current minimal pointer block there is likely staying — see Round 4 below for the full finding).
+1. Graphiti MCP activation smoke test: the architecture decision is now made and wired (see Round 5 below) — `memory/graphiti/docker-compose.yml` runs `zepai/knowledge-graph-mcp:1.0.2-standalone` against the existing FalkorDB over the shared `aios-memory` Docker network. **Not yet started on any machine** (this session had no running Docker daemon and no `OPENAI_API_KEY`). Someone with both needs to run the 4 activation steps in that compose file's header comment and confirm `curl -sf http://127.0.0.1:8021/health` before flipping `ai-config/mcp/graphiti.yaml`'s `enabled: false` to `true`.
+2. P1-1/P1-3/P1-8 remainder (Phase 2 in the audit roadmap): native per-platform adapters beyond the shared bridge, tiered/reduced always-on context, operational rules out of Hermes `SOUL.md` (research in Round 4 found `AGENTS.md`/`.hermes.md` are Hermes's project-scoped context mechanism, cwd-based; `SOUL.md` remains the only *global, cwd-independent* mechanism Hermes has, so the current minimal pointer block there is likely staying).
 3. Antigravity's real global-skill path (`~/.gemini/config/skills` per the audit) — deliberately NOT changed, same reasoning as before: would risk breaking every machine currently relying on `~/.agents/skills` without a first-party doc check first.
 
 ## Round 3 additions (continuing "todo lo pendiente")
@@ -150,3 +150,41 @@ audit's own P1-8 recommendation. Confirmed, current findings:
   comment references to `~/.hermes/skills/imported/` across `CLAUDE.md`,
   `docs/*.md`, `ai-config/skills/READMEDD.md`, `ai-config/skills/ai-os-quickstart/SKILL.md`,
   `prompts/setup/03-required-skills.md`, and `docs/model-routing.md`.
+
+## Round 5 additions (continuing "todo lo pendiente"): Graphiti MCP architecture decision
+
+- **Decision made**: run the pre-built `zepai/knowledge-graph-mcp:1.0.2-standalone`
+  Docker image (pinned tag, not `:latest`) over HTTP transport against the
+  FalkorDB container AI-OS already manages, rather than vendoring
+  `getzep/graphiti` under `vendor/graphiti/`. Rationale: vendoring would add a
+  second language toolchain (uv/Python) and a git-submodule-style dependency
+  just to run one MCP server; the versioned Docker image is pinned exactly the
+  same way FalkorDB itself already is (checked available tags on Docker Hub —
+  `1.0.2-standalone` is the current stable "no bundled database" variant meant
+  for exactly this "bring your own FalkorDB/Neo4j" case).
+- **Implemented**: `memory/falkordb/docker-compose.yml` now declares a shared
+  `aios-memory` Docker network (was previously using an implicit
+  project-default network, unreachable-by-name from other compose projects).
+  New `memory/graphiti/docker-compose.yml` runs `aios-graphiti-mcp` on that
+  network, reaching FalkorDB at `redis://aios-falkordb:6379` (container name,
+  not the loopback-only published port), HTTP published on
+  `127.0.0.1:8021` → `/mcp/`, requires `OPENAI_API_KEY` (fails fast via
+  Compose's `${VAR:?message}` syntax if unset — cannot silently start
+  half-configured). `ai-config/mcp/graphiti.yaml` updated to
+  `transport: http`, `url: http://127.0.0.1:8021/mcp/`; confirmed
+  `setup/generate-mcp-config.py`'s existing HTTP-transport branch renders this
+  correctly with no code changes needed. `memory/ai-os-memory.sh`'s `status`
+  subcommand now also reports the Graphiti container/health passively (never
+  starts or stops it — stays out of `ai-os memory start`/`stop` since it needs
+  a secret and hasn't been smoke-tested).
+- **Explicitly NOT done**: actually starting the container. This session had
+  Docker not running and no `OPENAI_API_KEY` available — starting it blind
+  would violate this plan's own constraint ("Do not claim support that is not
+  configured and tested"). `enabled: false` stays until someone runs the 4
+  documented activation steps and confirms the health check for real.
+- **Verified this session**: both edited/new YAML files parse cleanly with
+  PyYAML; `bash -n memory/ai-os-memory.sh` passes; re-ran
+  `install-mac.dry-run.sh` end-to-end (with PyYAML available via a throwaway
+  venv on `PATH`, matching what the real installer already ensures via
+  `pip-packages.txt`) — full pass, `MCP config: 9 servers generated` (Graphiti
+  correctly excluded while disabled); 5/5 unit tests still passing.
