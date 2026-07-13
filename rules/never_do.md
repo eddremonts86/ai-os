@@ -49,6 +49,10 @@ ABSOLUTELY PROHIBITED actions. If you ever consider doing something on this list
 - Never use the user's personal API keys for non-personal tasks.
 - Never use the user's work API keys for non-work tasks.
 - Never share tokens in chat logs.
+- Never echo, `cat`, print, or paste the contents of `dev-env/env-config/.env` (real
+  secrets) into chat, a commit, a log, or any other file. Read it silently and use the
+  values in place; when you must show a variable, use the placeholder from
+  `dev-env/env-config/.env.example` instead.
 
 ## Other
 

@@ -49,6 +49,23 @@ Inventory of installed tools. Update when something changes.
 - **14 superpowers skills** (REQUIRED for AI-OS).
 - **Source of truth:** `~/Projects/ai-os/ai-config/skills/`.
 
+## Environment config (secrets)
+
+- **Master merged `.env`:** `dev-env/env-config/.env` — single source of truth for
+  local env values across all projects (DB URLs, ports, LLM endpoints/keys, auth
+  secrets, agent tokens, infra creds). Gitignored, holds real secrets.
+- **Safe template:** `dev-env/env-config/.env.example` — committed, placeholders only.
+  Use it when you need a variable name/shape without a real secret.
+- **Reference:** `dev-env/env-config/env-reference.html` (gitignored).
+- **Rule:** when a task needs an env value (DB URL, API key, port, LLM base URL,
+  service token), read the master `.env` first — do not invent, hardcode, or ask for
+  a value that is already there. Use values in place; never echo, print, log, or
+  commit the real secrets (see `rules/never_do.md` and `rules/always_do.md`).
+- Sections in the file: 1 App · 2 Database · 3 Auth (Better Auth + Clerk) · 4 Admin ·
+  5 LLM cloud (MiniMax/OpenAI/Anthropic) · 6 LLM local (Ollama/llama.cpp/LM Studio) ·
+  7 RAG/Embeddings · 8 Agents (OpenClaw/Telegram/open-design) · 9 Hermes ·
+  10 Infra (Hetzner/Coolify) · 11 GitHub · 12 Monitoring · 13 misc tokens.
+
 ## Dotfiles (symlinks)
 
 - `~/.zshrc` → `~/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc`
