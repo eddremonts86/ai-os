@@ -66,13 +66,13 @@ ARG MCP_SERVER_VERSION=1.0.2
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.title="Graphiti MCP Server (Standalone, AI-OS minimal build)" \
-      org.opencontainers.image.description="Standalone Graphiti MCP server, minimal deps (no torch/cuda), MiniMax-compatible base_url support" \
-      org.opencontainers.image.version="${MCP_SERVER_VERSION}" \
-      org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.vendor="AI-OS (custom build from getzep/graphiti main)" \
-      org.opencontainers.image.source="https://github.com/getzep/graphiti" \
-      graphiti.core.version="${GRAPHITI_CORE_VERSION}"
+    org.opencontainers.image.description="Standalone Graphiti MCP server, minimal deps (no torch/cuda), MiniMax-compatible base_url support" \
+    org.opencontainers.image.version="${MCP_SERVER_VERSION}" \
+    org.opencontainers.image.created="${BUILD_DATE}" \
+    org.opencontainers.image.revision="${VCS_REF}" \
+    org.opencontainers.image.vendor="AI-OS (custom build from getzep/graphiti main)" \
+    org.opencontainers.image.source="https://github.com/getzep/graphiti" \
+    graphiti.core.version="${GRAPHITI_CORE_VERSION}"
 
 EXPOSE 8000
 

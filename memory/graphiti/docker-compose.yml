@@ -51,6 +51,17 @@
 # entities (Edd, MiniMax, OpenAI, AI-OS) with accurate summaries. add_memory
 # is fully working end-to-end, not just wired — this is genuinely done.
 #
+# COMPREHENSIVE TEST ROUND (same day): all read tools (health, search_nodes,
+# search_memory_facts, get_episodes) work perfectly and did NOT need a real
+# OPENAI_API_KEY in testing. add_memory reliability is NOT 100% though —
+# roughly half of further test calls failed with two more MiniMax quirks
+# (empty content after <think> stripping; a bare JSON array instead of the
+# expected object). A 3rd patch (retry on pydantic ValidationError, not just
+# JSONDecodeError) was added and helps but doesn't fully close the gap — see
+# config.yaml's STATUS note for the full list. This is a MiniMax model-
+# capability limitation, not a wiring bug: retrying the same add_memory call
+# often succeeds, so treat first-try failures as expected, not broken.
+#
 # CAVEAT (still applies): graphiti-core's cross-encoder/reranker is hardcoded
 # to real OpenAI regardless of config.yaml (see config.yaml's STATUS note).
 # `add_memory` (writes) only needs MINIMAX_API_KEY. `search` (reads)

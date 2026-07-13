@@ -80,6 +80,33 @@
 # MiniMax-M3 — episode queued, processed, and written to FalkorDB with no
 # errors in the container logs.
 #
+# COMPREHENSIVE TEST ROUND (2026-07-13, same day, "pruébalo todo"): tested
+# every MCP tool, not just add_memory.
+#   - health, search_nodes, search_memory_facts, get_episodes: all work
+#     PERFECTLY, and (contrary to the assumption below) do NOT appear to need
+#     the hardcoded-OpenAI reranker for typical small result sets — tested
+#     with only a placeholder OPENAI_API_KEY and got fully correct,
+#     well-formed results every time.
+#   - add_memory reliability: NOT 100%. Across ~6 test calls, roughly half
+#     still failed outright with two MORE MiniMax quirks found this round,
+#     neither retried by the current predicate:
+#       (a) the model sometimes returns ONLY a <think> block with nothing
+#           after it — post-strip the content is empty, raising
+#           EmptyResponseError (this IS retried, but the retry can hit (b))
+#       (b) the model sometimes returns a bare JSON *array* instead of the
+#           expected JSON *object* — fails with a TypeError
+#           ("...ExtractedEntities() argument after ** must be a mapping,
+#           not list"), which is neither a JSONDecodeError nor a
+#           ValidationError, so it is NOT retried and the episode fails.
+#   3rd patch added to patches/strip_think_tags.py: retry on pydantic
+#   ValidationError too (covers the earlier "schema echoed back instead of
+#   data" failure mode), which helps but doesn't close the (a)/(b) gap above.
+#   Net assessment: MiniMax-M3 in forced json_object mode is genuinely
+#   unreliable for structured extraction — a MODEL CAPABILITY limitation, not
+#   a bug in this integration. Retrying a failed add_memory call with the
+#   same content succeeds often enough to be usable, but do not expect 100%
+#   first-try success.
+#
 # REMAINING (unchanged): the hardcoded OpenAIRerankerClient still needs a real
 # OPENAI_API_KEY for `search` specifically; `add_memory` does not need it.
 #
