@@ -1,6 +1,6 @@
 ---
 name: ai-os-memory
-description: Operate and inspect the AI-OS persistent memory stack (FalkorDB graph DB, Ollama embeddings, codebase-memory-mcp AST index, grepai semantic search). Use when the user asks about memory status, indexing a project, querying code semantically, or browsing the graph. Graphiti temporal memory is opt-in (separate compose file, not started by `ai-os memory start`) and requires a real OPENAI_API_KEY for actual knowledge-graph operations — its Docker deployment passed a structural smoke test but do not present it as fully verified with real data.
+description: Operate and inspect the AI-OS persistent memory stack (FalkorDB graph DB, Ollama embeddings, codebase-memory-mcp AST index, grepai semantic search). Use when the user asks about memory status, indexing a project, querying code semantically, or browsing the graph. Graphiti temporal memory is opt-in (separate compose file, not started by `ai-os memory start`), uses MiniMax (not OpenAI) as its LLM via a custom-built image (`ai-os/graphiti-mcp:minimax-standalone`), and is VERIFIED WORKING with real data as of 2026-07-13 — `add_memory`/`search_nodes`/`search_memory_facts`/`get_episodes` all confirmed against a live FalkorDB graph. Known caveat: `add_memory` has a non-trivial failure rate (MiniMax occasionally returns malformed/wrong-shape JSON during entity extraction) — retrying the same call usually succeeds. `search` reranking still needs a real `OPENAI_API_KEY` for the hardcoded cross-encoder, though testing found `search_nodes`/`search_memory_facts` work fine without one for typical result sizes.
 version: 0.1.0
 ---
 
@@ -45,7 +45,7 @@ reference it.
 | Embeddings | Ollama + nomic-embed-text | 11500 | Cross-platform (Mac + Windows), free |
 | Code AST index | codebase-memory-mcp | (stdio) | 158 langs, sub-ms, checksum-verified download |
 | Semantic search | grepai | (stdio) | uses Ollama |
-| Graph memory | graphiti | HTTP 8021 | **Opt-in** (`ai-config/mcp/graphiti.yaml`, `enabled: true`) — runs `zepai/knowledge-graph-mcp:1.0.2-standalone` via `memory/graphiti/docker-compose.yml`, separate from `ai-os memory start`. Structural deployment passed a smoke test 2026-07-12 (container starts, connects to FalkorDB, HTTP health check OK); real knowledge-graph operations need a real `OPENAI_API_KEY` exported before `docker compose up -d` in that directory |
+| Graph memory | graphiti | HTTP 8021 | **Opt-in** (`ai-config/mcp/graphiti.yaml`, `enabled: true`) — runs a custom-built `ai-os/graphiti-mcp:minimax-standalone` image (NOT the pinned `zepai/knowledge-graph-mcp` — that image lacks custom-`api_url` support needed for MiniMax) via `memory/graphiti/docker-compose.yml`, separate from `ai-os memory start`. LLM provider is MiniMax (not OpenAI), verified end-to-end with real data 2026-07-13: `add_memory` writes an episode + extracts entities/facts into FalkorDB; `search_nodes`/`search_memory_facts`/`get_episodes` all read back correctly. Caveat: `add_memory` fails outright on a meaningful fraction of calls (MiniMax occasionally returns malformed or wrong-shape JSON during extraction) — retry the same call if it doesn't show up. `search` reranking (a separate, hardcoded-OpenAI code path) needs a real `OPENAI_API_KEY` to fully succeed, though `search_nodes`/`search_memory_facts` worked fine without one in testing |
 
 **Ports are intentionally OUTSIDE 3000-3050** (Edd's other apps use that range).
 
@@ -53,7 +53,7 @@ reference it.
 
 - `~/Projects/ai-os/memory/ai-os-memory.sh` — the CLI (entry point)
 - `~/Projects/ai-os/memory/falkordb/docker-compose.yml` — FalkorDB
-- `~/Projects/ai-os/memory/graphiti/docker-compose.yml` — Graphiti MCP (opt-in, needs a real OPENAI_API_KEY)
+- `~/Projects/ai-os/memory/graphiti/docker-compose.yml` — Graphiti MCP (opt-in, MiniMax as LLM via custom image, real `MINIMAX_API_KEY` required — see `memory/graphiti/config.yaml`'s STATUS note for full history)
 - `~/Projects/ai-os/ai-config/mcp/{codebase-memory-mcp,graphiti,grepai}.yaml` — MCPs
 - `~/Projects/ai-os/setup/install-mac.sh` — section 9b installs everything (Mac)
 - `~/Projects/ai-os/setup/install-windows.ps1` — section 7b installs the same stack (Windows)
