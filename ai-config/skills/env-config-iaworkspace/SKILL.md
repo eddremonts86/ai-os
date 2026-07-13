@@ -360,6 +360,16 @@ docker exec opencode ls /workspace | head
 docker exec open-design ls /workspace | head
 ```
 
+## AI-OS canonical local env (source of truth)
+
+The merged master file for all projects is
+**`$AI_OS_ROOT/dev-env/env-config/.env`** (default root `~/Projects/ai-os`). Read it
+first whenever a task needs a real env value (DB URL, port, auth secret, LLM
+endpoint/key, agent or infra token) before inventing, hardcoding, or asking. Its
+committed placeholder twin is `$AI_OS_ROOT/dev-env/env-config/.env.example`. The real
+`.env` is gitignored: use values in place, never echo/print/log/commit them
+(see `rules/never_do.md`).
+
 ## Resources
 
 - Related skill: `containers-architecture` — container setup

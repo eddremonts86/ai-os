@@ -306,6 +306,19 @@ grep -rE "(api[_-]?key|token|password|secret)\s*[:=]\s*['\"][a-zA-Z0-9_\-]{20,}"
 - [ ] No secrets in logs (redact mode)
 - [ ] Rotation policy documented
 
+## AI-OS canonical local env (source of truth)
+
+Inside the AI-OS workspace, the merged local environment lives at
+**`$AI_OS_ROOT/dev-env/env-config/.env`** (default root `~/Projects/ai-os`). It
+unifies the env vars of every project (App, Database, Auth, Admin, LLM cloud/local,
+RAG, Agents, Hermes, Infra, GitHub, Monitoring, tokens).
+
+- When a task needs a value (DB URL, API key, port, LLM base URL, service token),
+  read this file first — do not invent, hardcode, or ask for a value already present.
+- Committed placeholder template: `$AI_OS_ROOT/dev-env/env-config/.env.example`.
+- The real `.env` is gitignored and holds live secrets: use values in place; never
+  echo, print, log, or commit them. See `rules/never_do.md` and `rules/always_do.md`.
+
 ## Resources
 
 - [Varlock](https://varlock.dev/)
