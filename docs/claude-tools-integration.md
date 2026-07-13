@@ -8,9 +8,9 @@ This is the **lightweight counterpart** to [ECC Integration](ecc-integration.md)
 
 ## What is claude.tools / gstack?
 
-| Source | What it is | How it's packaged |
-|---|---|---|
-| **[claude.tools](https://claude.tools)** | A curated catalog of small, focused Claude Code skills maintained by the community. Each skill is a single `SKILL.md` plus optional helpers. | Per-skill directories |
+| Source                                                 | What it is                                                                                                                                                              | How it's packaged     |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| **[claude.tools](https://claude.tools)**               | A curated catalog of small, focused Claude Code skills maintained by the community. Each skill is a single `SKILL.md` plus optional helpers.                            | Per-skill directories |
 | **[gstack](https://github.com/earendil-works/gstack)** | A stack of opinionated agent-helper skills (similar in spirit to obra/superpowers) — provides spec-writing, context-save/restore, freeze/guard, and similar primitives. | Per-skill directories |
 
 Both ship as **single-file skills** (no plugins, no hooks) so they integrate with AI-OS's existing `ai-config/skills/` propagation pipeline with zero extra plumbing. AI-OS only adds a thin installer that wires them into the 5 non-Claude CLIs (Claude Code's `~/.claude/skills/` is already populated by `install-mac.sh` step 5).
@@ -25,20 +25,20 @@ The one exception is **codex-plugin-cc** — a full Claude Code plugin from Open
 
 These are checked directly into `ai-config/skills/` and treated like any other AI-OS-native skill. The installer (`install-claude-tools.sh`) only handles propagation to the 4 non-Claude CLIs.
 
-| Skill | Source | One-line description |
-|---|---|---|
-| `humanizer` | claude.tools | Strip AI-writing tells from prose (Wikipedia "Signs of AI writing" patterns). |
-| `caveman` | claude.tools | Reduce text to minimal-token, imperative form for token-constrained contexts. |
-| `notebooklm-skill` | claude.tools | Query Google NotebookLM notebooks directly from a CLI session. |
-| `frontend-design-alt` | claude.tools | Build a frontend with a deliberate visual direction held through pages. |
-| `careful` | gstack | Safety guardrails for destructive commands. |
-| `context-restore` | gstack | Restore working context saved earlier by `context-save`. |
-| `context-save` | gstack | Save working context (paths, decisions, open threads) for later. |
-| `diagram` | gstack | Turn an English description (or mermaid source) into a diagram triple (mermaid + ASCII + image). |
-| `freeze` | gstack | Restrict file edits to a specific directory for the session. |
-| `guard` | gstack | Full safety mode: destructive-command warnings + directory-scoped edits. |
-| `spec` | gstack | Turn vague intent into a precise, executable spec in five phases. |
-| `unfreeze` | gstack | Clear the freeze boundary set by `freeze`. |
+| Skill                 | Source       | One-line description                                                                             |
+| --------------------- | ------------ | ------------------------------------------------------------------------------------------------ |
+| `humanizer`           | claude.tools | Strip AI-writing tells from prose (Wikipedia "Signs of AI writing" patterns).                    |
+| `caveman`             | claude.tools | Reduce text to minimal-token, imperative form for token-constrained contexts.                    |
+| `notebooklm-skill`    | claude.tools | Query Google NotebookLM notebooks directly from a CLI session.                                   |
+| `frontend-design-alt` | claude.tools | Build a frontend with a deliberate visual direction held through pages.                          |
+| `careful`             | gstack       | Safety guardrails for destructive commands.                                                      |
+| `context-restore`     | gstack       | Restore working context saved earlier by `context-save`.                                         |
+| `context-save`        | gstack       | Save working context (paths, decisions, open threads) for later.                                 |
+| `diagram`             | gstack       | Turn an English description (or mermaid source) into a diagram triple (mermaid + ASCII + image). |
+| `freeze`              | gstack       | Restrict file edits to a specific directory for the session.                                     |
+| `guard`               | gstack       | Full safety mode: destructive-command warnings + directory-scoped edits.                         |
+| `spec`                | gstack       | Turn vague intent into a precise, executable spec in five phases.                                |
+| `unfreeze`            | gstack       | Clear the freeze boundary set by `freeze`.                                                       |
 
 ### Plugin (1 from OpenAI)
 
@@ -84,22 +84,22 @@ These are checked directly into `ai-config/skills/` and treated like any other A
 
 Same reasoning as [ECC Integration](ecc-integration.md): we want updates to be a `git pull` away, but we also want to be able to pin / fork individual skills without re-cloning an entire upstream.
 
-| Source | Owner | How propagated | What lives there |
-|---|---|---|---|
-| `vendor/codex-plugin-cc/` | OpenAI | `install-claude-tools.sh` (plugin link + internal skills) | The Codex plugin + 3 internal skills |
-| `ai-config/skills/{12 new dirs}/` | AI-OS (cherry-picked) | `install-mac.sh` step 5 (Claude) + `install-claude-tools.sh` (other 4 CLIs) | The 12 individual skills |
-| `ai-config/skills/*/SKILL.md` | AI-OS (native) | `install-mac.sh` flat-skill step | The hand-curated AI-OS flat skills |
+| Source                            | Owner                 | How propagated                                                              | What lives there                     |
+| --------------------------------- | --------------------- | --------------------------------------------------------------------------- | ------------------------------------ |
+| `vendor/codex-plugin-cc/`         | OpenAI                | `install-claude-tools.sh` (plugin link + internal skills)                   | The Codex plugin + 3 internal skills |
+| `ai-config/skills/{12 new dirs}/` | AI-OS (cherry-picked) | `install-mac.sh` step 5 (Claude) + `install-claude-tools.sh` (other 4 CLIs) | The 12 individual skills             |
+| `ai-config/skills/*/SKILL.md`     | AI-OS (native)        | `install-mac.sh` flat-skill step                                            | The hand-curated AI-OS flat skills   |
 
 ### How is this different from ECC?
 
-| | ECC | claude.tools / gstack |
-|---|---|---|
-| Scale | 271 skills + 28 hooks + agents + plugin runtime | 12 individual skills + 1 plugin (3 internal skills) |
-| Plugin runtime | Yes — `~/.claude/plugins/ecc` | Yes for codex-plugin-cc only |
-| Hooks | 28 declarative hooks in `hooks/hooks.json` | None |
-| Installer | `install-ecc.sh` (271 × 5 symlinks + hooks) | `install-claude-tools.sh` (12 × 4 + 3 × 5 + 1 plugin link) |
-| Where do skills live? | `vendor/ecc/skills/` (read-only subtree) | `ai-config/skills/` (treated as AI-OS-native, fully editable) |
-| Updates | `cd vendor/ecc && git pull` | Individual skills are versioned with the repo; plugin updates via `cd vendor/codex-plugin-cc && git pull` |
+|                       | ECC                                             | claude.tools / gstack                                                                                     |
+| --------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Scale                 | 271 skills + 28 hooks + agents + plugin runtime | 12 individual skills + 1 plugin (3 internal skills)                                                       |
+| Plugin runtime        | Yes — `~/.claude/plugins/ecc`                   | Yes for codex-plugin-cc only                                                                              |
+| Hooks                 | 28 declarative hooks in `hooks/hooks.json`      | None                                                                                                      |
+| Installer             | `install-ecc.sh` (271 × 5 symlinks + hooks)     | `install-claude-tools.sh` (12 × 4 + 3 × 5 + 1 plugin link)                                                |
+| Where do skills live? | `vendor/ecc/skills/` (read-only subtree)        | `ai-config/skills/` (treated as AI-OS-native, fully editable)                                             |
+| Updates               | `cd vendor/ecc && git pull`                     | Individual skills are versioned with the repo; plugin updates via `cd vendor/codex-plugin-cc && git pull` |
 
 The claude.tools/gstack skills were deliberately promoted from "vendored read-only" to "AI-OS-native" by checking the `SKILL.md` files into `ai-config/skills/`. Reason: these skills are small, stable, and worth evolving alongside AI-OS's own skills.
 
@@ -144,18 +144,18 @@ Antigravity:    same — by name
 
 #### When to use which skill
 
-| Skill | When |
-|---|---|
-| `humanizer` | After drafting prose that reads "too AI" — strips em-dashes, AI vocabulary, rule-of-three, etc. |
-| `caveman` | When you need to squeeze a long context into a smaller window — token-efficient imperative restatement. |
-| `notebooklm-skill` | When you want to ground answers in your own uploaded Google NotebookLM notebooks. |
-| `frontend-design-alt` | Frontend builds where you want a deliberate visual direction held through pages, not generic "AI landing page" output. |
-| `careful` | Sessions where you'll run `rm`, `git reset`, `git push --force`, `kubectl delete`, etc. — confirms before each. |
-| `context-restore` / `context-save` | At the start/end of a long session: `context-save` snapshots paths/decisions; `context-restore` brings them back. |
-| `diagram` | When you need a Mermaid + ASCII + image triple from a verbal description. |
-| `freeze` / `unfreeze` | Pin edits to a single subdirectory for the session (e.g., only `src/api/`). |
-| `guard` | Full safety mode — combines `careful` warnings + `freeze`-style directory scoping. |
-| `spec` | Turn "make a thing that does X" into a 5-phase executable spec — similar to AI-OS's own `project_start` workflow. |
+| Skill                              | When                                                                                                                   |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `humanizer`                        | After drafting prose that reads "too AI" — strips em-dashes, AI vocabulary, rule-of-three, etc.                        |
+| `caveman`                          | When you need to squeeze a long context into a smaller window — token-efficient imperative restatement.                |
+| `notebooklm-skill`                 | When you want to ground answers in your own uploaded Google NotebookLM notebooks.                                      |
+| `frontend-design-alt`              | Frontend builds where you want a deliberate visual direction held through pages, not generic "AI landing page" output. |
+| `careful`                          | Sessions where you'll run `rm`, `git reset`, `git push --force`, `kubectl delete`, etc. — confirms before each.        |
+| `context-restore` / `context-save` | At the start/end of a long session: `context-save` snapshots paths/decisions; `context-restore` brings them back.      |
+| `diagram`                          | When you need a Mermaid + ASCII + image triple from a verbal description.                                              |
+| `freeze` / `unfreeze`              | Pin edits to a single subdirectory for the session (e.g., only `src/api/`).                                            |
+| `guard`                            | Full safety mode — combines `careful` warnings + `freeze`-style directory scoping.                                     |
+| `spec`                             | Turn "make a thing that does X" into a 5-phase executable spec — similar to AI-OS's own `project_start` workflow.      |
 
 #### Use codex-plugin-cc (plugin)
 
@@ -227,14 +227,14 @@ The script:
 
 ### Comparison with `install-ecc.sh`
 
-| | `install-ecc.sh` | `install-claude-tools.sh` |
-|---|---|---|
-| Skill source | `vendor/ecc/skills/` (read-only subtree) | `ai-config/skills/` + `vendor/codex-plugin-cc/` |
-| Per-CLI symlink count | 271 × 5 = 1,355 | 12 × 4 + 3 × 5 = 63 |
-| Plugin link | Yes (`~/.claude/plugins/ecc`) | Yes for codex-plugin-cc only |
-| Hooks | Validates `hooks/hooks.json` (28 hooks) | None |
-| `--check` behavior | Plugin manifest + skill frontmatter | Plugin manifest + skill frontmatter + `name:`/`description:` fields |
-| Idempotent | Yes | Yes |
+|                       | `install-ecc.sh`                         | `install-claude-tools.sh`                                           |
+| --------------------- | ---------------------------------------- | ------------------------------------------------------------------- |
+| Skill source          | `vendor/ecc/skills/` (read-only subtree) | `ai-config/skills/` + `vendor/codex-plugin-cc/`                     |
+| Per-CLI symlink count | 271 × 5 = 1,355                          | 12 × 4 + 3 × 5 = 63                                                 |
+| Plugin link           | Yes (`~/.claude/plugins/ecc`)            | Yes for codex-plugin-cc only                                        |
+| Hooks                 | Validates `hooks/hooks.json` (28 hooks)  | None                                                                |
+| `--check` behavior    | Plugin manifest + skill frontmatter      | Plugin manifest + skill frontmatter + `name:`/`description:` fields |
+| Idempotent            | Yes                                      | Yes                                                                 |
 
 ---
 
@@ -264,15 +264,15 @@ The step is **non-fatal** because the plugin clone is large and not every PR nee
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---|---|---|
-| `vendor/codex-plugin-cc/ does not exist` warning | Plugin not vendored yet | `git clone --depth=1 https://github.com/openai/codex-plugin-cc.git vendor/codex-plugin-cc && bash setup/install-claude-tools.sh` |
-| Skill missing in a CLI | Propagation step didn't run | `bash setup/install-claude-tools.sh` (refreshes symlinks) |
-| Permission errors on Windows | Symlinks need admin / Dev Mode | Enable Windows Developer Mode, or copy instead of symlink |
-| `/plugin list` doesn't show `codex-plugin-cc` | Plugin symlink missing | `bash setup/install-claude-tools.sh` |
-| `codex:review` not working | Codex CLI not installed | Install the Codex CLI; see `vendor/codex-plugin-cc/README.md` |
-| Skill exists but isn't loaded | CLI-specific skill loader doesn't see symlinks | Restart the CLI; some CLIs cache skill lists |
-| Frontmatter check fails in CI | `SKILL.md` missing `---` or `name:` / `description:` | Fix the offending `SKILL.md`, commit, push |
+| Symptom                                          | Cause                                                | Fix                                                                                                                              |
+| ------------------------------------------------ | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `vendor/codex-plugin-cc/ does not exist` warning | Plugin not vendored yet                              | `git clone --depth=1 https://github.com/openai/codex-plugin-cc.git vendor/codex-plugin-cc && bash setup/install-claude-tools.sh` |
+| Skill missing in a CLI                           | Propagation step didn't run                          | `bash setup/install-claude-tools.sh` (refreshes symlinks)                                                                        |
+| Permission errors on Windows                     | Symlinks need admin / Dev Mode                       | Enable Windows Developer Mode, or copy instead of symlink                                                                        |
+| `/plugin list` doesn't show `codex-plugin-cc`    | Plugin symlink missing                               | `bash setup/install-claude-tools.sh`                                                                                             |
+| `codex:review` not working                       | Codex CLI not installed                              | Install the Codex CLI; see `vendor/codex-plugin-cc/README.md`                                                                    |
+| Skill exists but isn't loaded                    | CLI-specific skill loader doesn't see symlinks       | Restart the CLI; some CLIs cache skill lists                                                                                     |
+| Frontmatter check fails in CI                    | `SKILL.md` missing `---` or `name:` / `description:` | Fix the offending `SKILL.md`, commit, push                                                                                       |
 
 ---
 

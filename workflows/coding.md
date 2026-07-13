@@ -31,15 +31,15 @@ If the Spec is empty or doesn't exist, run `workflows/project_start.md` first.
 
 Depending on the type of work:
 
-| Type | Load skill |
-|---|---|
-| New feature (with Spec) | `workflows/project_start.md` (AI-OS) |
-| New feature (without Spec) | `workflows/project_start.md` first, then this |
-| Bug | → Load skill `systematic-debugging` |
-| Refactor | → Load skill `code-simplification` (if available, else `code-review-and-quality`) |
-| Tests | → Load skill `test-driven-development` |
-| New skill | → Load skill `writing-skills` |
-| Hotfix (urgent) | Skip Spec, do it directly, document later |
+| Type                       | Load skill                                                                        |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| New feature (with Spec)    | `workflows/project_start.md` (AI-OS)                                              |
+| New feature (without Spec) | `workflows/project_start.md` first, then this                                     |
+| Bug                        | → Load skill `systematic-debugging`                                               |
+| Refactor                   | → Load skill `code-simplification` (if available, else `code-review-and-quality`) |
+| Tests                      | → Load skill `test-driven-development`                                            |
+| New skill                  | → Load skill `writing-skills`                                                     |
+| Hotfix (urgent)            | Skip Spec, do it directly, document later                                         |
 
 ### 3. For bugs: → Load skill `systematic-debugging` (load skill)
 

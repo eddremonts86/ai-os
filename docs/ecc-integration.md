@@ -61,10 +61,10 @@ The integration follows the same single-source-of-truth pattern as AI-OS's nativ
 
 ### The two skill sources of truth (and why)
 
-| Source | Owner | How propagated | What lives there |
-|---|---|---|---|
-| `vendor/ecc/skills/` | ECC upstream | `install-ecc.sh` (this script) | The 271 ECC skills |
-| `ai-config/skills/` | AI-OS (you) | `install-mac.sh` flat-skill step | The hand-curated AI-OS native skills |
+| Source               | Owner        | How propagated                   | What lives there                     |
+| -------------------- | ------------ | -------------------------------- | ------------------------------------ |
+| `vendor/ecc/skills/` | ECC upstream | `install-ecc.sh` (this script)   | The 271 ECC skills                   |
+| `ai-config/skills/`  | AI-OS (you)  | `install-mac.sh` flat-skill step | The hand-curated AI-OS native skills |
 
 They are **separate on purpose**:
 
@@ -120,17 +120,17 @@ Antigravity:    same — by name
 
 Examples of useful ECC skills now available:
 
-| Skill | Use it for |
-|---|---|
-| `tdd-workflow` | Test-driven development cycles |
-| `verification-loop` | Catch regressions before claiming done |
-| `code-review-and-quality` | Pre-PR review checklist |
-| `security-review` | Threat-model a change |
-| `mcp-builder` | Write a new MCP server |
-| `agent-harness-construction` | Build agent harnesses from scratch |
-| `scientific-thinking-literature-review` | Academic-style research |
-| `browser-qa` | End-to-end browser testing |
-| `verification-loop` | Pre-completion sanity checks |
+| Skill                                   | Use it for                             |
+| --------------------------------------- | -------------------------------------- |
+| `tdd-workflow`                          | Test-driven development cycles         |
+| `verification-loop`                     | Catch regressions before claiming done |
+| `code-review-and-quality`               | Pre-PR review checklist                |
+| `security-review`                       | Threat-model a change                  |
+| `mcp-builder`                           | Write a new MCP server                 |
+| `agent-harness-construction`            | Build agent harnesses from scratch     |
+| `scientific-thinking-literature-review` | Academic-style research                |
+| `browser-qa`                            | End-to-end browser testing             |
+| `verification-loop`                     | Pre-completion sanity checks           |
 
 ### 3. Use ECC as a Claude Code plugin
 
@@ -175,16 +175,16 @@ We counted **28 hooks** declared in `hooks.json`. They fall into these buckets:
 
 These are loaded by the plugin runtime as soon as Claude Code starts:
 
-| Hook ID | Matcher | Purpose |
-|---|---|---|
-| `pre:bash:dispatcher` | Bash | Consolidated Bash preflight (quality, tmux, push, GateGuard) |
-| `pre:write:doc-file-warning` | Write | Warn on non-standard documentation files |
-| `pre:edit-write:suggest-compact` | Edit/Write | Suggest manual compaction at intervals |
-| `pre:observe:continuous-learning` | `*` | Capture tool-use observations for learning |
-| `pre:governance-capture` | Bash/Write/Edit | Governance event capture (opt-in via env var) |
-| `pre:config-protection` | Write/Edit | Block modifications to linter/formatter configs |
-| `pre:mcp-health-check` | `*` | Sanity-check MCP servers on every tool use |
-| `post:*` mirrors | — | Pair with each pre:* hook |
+| Hook ID                           | Matcher         | Purpose                                                      |
+| --------------------------------- | --------------- | ------------------------------------------------------------ |
+| `pre:bash:dispatcher`             | Bash            | Consolidated Bash preflight (quality, tmux, push, GateGuard) |
+| `pre:write:doc-file-warning`      | Write           | Warn on non-standard documentation files                     |
+| `pre:edit-write:suggest-compact`  | Edit/Write      | Suggest manual compaction at intervals                       |
+| `pre:observe:continuous-learning` | `*`             | Capture tool-use observations for learning                   |
+| `pre:governance-capture`          | Bash/Write/Edit | Governance event capture (opt-in via env var)                |
+| `pre:config-protection`           | Write/Edit      | Block modifications to linter/formatter configs              |
+| `pre:mcp-health-check`            | `*`             | Sanity-check MCP servers on every tool use                   |
+| `post:*` mirrors                  | —               | Pair with each pre:* hook                                    |
 
 …and 20 more, covering things like desktop notifications, command-logging, cost tracking, statusline updates, and context monitoring.
 
@@ -252,14 +252,14 @@ This validates that the vendored ECC is structurally sound — that `plugin.json
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---|---|---|
-| `vendor/ecc/ does not exist` | ECC not vendored yet | `git clone --depth=1 https://github.com/affaan-m/everything-claude-code.git vendor/ecc` |
-| `/plugin list` doesn't show `ecc` | Plugin symlink missing | `bash setup/install-ecc.sh` |
-| Hooks not firing | Plugin symlink broken or stale | `rm ~/.claude/plugins/ecc && bash setup/install-ecc.sh` |
-| Skill not visible in a CLI | CLI-specific propagation step didn't run | Re-run `setup/install-mac.sh` step 5, then `setup/install-ecc.sh` |
-| Permission errors on Windows | Symlinks need admin / Dev Mode | Enable Windows Developer Mode, or copy instead of symlink |
-| `chrome-devtools-mcp` install fails | Node not installed | Install Node.js 18+ then re-run with `SKIP_MCP=0` (default) |
+| Symptom                             | Cause                                    | Fix                                                                                     |
+| ----------------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------- |
+| `vendor/ecc/ does not exist`        | ECC not vendored yet                     | `git clone --depth=1 https://github.com/affaan-m/everything-claude-code.git vendor/ecc` |
+| `/plugin list` doesn't show `ecc`   | Plugin symlink missing                   | `bash setup/install-ecc.sh`                                                             |
+| Hooks not firing                    | Plugin symlink broken or stale           | `rm ~/.claude/plugins/ecc && bash setup/install-ecc.sh`                                 |
+| Skill not visible in a CLI          | CLI-specific propagation step didn't run | Re-run `setup/install-mac.sh` step 5, then `setup/install-ecc.sh`                       |
+| Permission errors on Windows        | Symlinks need admin / Dev Mode           | Enable Windows Developer Mode, or copy instead of symlink                               |
+| `chrome-devtools-mcp` install fails | Node not installed                       | Install Node.js 18+ then re-run with `SKIP_MCP=0` (default)                             |
 
 ---
 

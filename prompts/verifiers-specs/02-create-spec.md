@@ -40,23 +40,28 @@ Spec:
 
 ```markdown
 ## Metadata
+
 - Date: 2026-06-27
 - Status: draft
 - Blocks: 3
 
 ## Objective
+
 Add dark mode toggle to the app that persists across sessions.
 
 ## Context
+
 Users have been asking for dark mode. The app is light-only now.
 
 ## Acceptance criteria
+
 - [ ] Toggle in the header switches theme.
 - [ ] Theme persists across sessions (localStorage).
 - [ ] No flash of wrong theme on load (FOUC).
 - [ ] Lighthouse score > 90 with dark theme.
 
 ## Non-goals
+
 - Multiple themes (just light/dark).
 - Custom color picker.
 - Auto-detect OS preference.
@@ -64,28 +69,34 @@ Users have been asking for dark mode. The app is light-only now.
 ## Plan
 
 ### Block 1: Add theme provider (15 min)
+
 - Create ThemeProvider with context.
 - Add toggle in Header.
 - Verify: toggle changes the theme visually.
 
 ### Block 2: Persist theme (15 min)
+
 - Save theme to localStorage.
 - Load on mount.
 - Verify: refresh page, theme persists.
 
 ### Block 3: Prevent FOUC (15 min)
+
 - Inject script in <head> before React hydrates.
 - Verify: Lighthouse score > 90.
 
 ## Risks and mitigation
+
 - Risk: localStorage unavailable in incognito.
   - Mitigation: fallback to in-memory state.
 
 ## Verification (end-to-end)
+
 - [ ] Lighthouse score > 90
 - [ ] Manual test: toggle, refresh, navigate, theme persists.
 
 ## References
+
 - https://web.dev/articles/building/a-dark-mode-mode-toggle/
 - https://github.com/eddremonts86/wave-template (similar pattern)
 ```

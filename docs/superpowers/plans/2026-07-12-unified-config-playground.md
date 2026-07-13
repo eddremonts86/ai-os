@@ -24,17 +24,21 @@
 ## File map
 
 **Create:**
+
 - `demo/src/components/UnifiedPlayground.tsx` — main two-column component (~700 lines).
 
 **Delete:**
+
 - `demo/src/components/LiveConfigPlayground.tsx` — superseded.
 
 **Modify:**
+
 - `demo/src/components/ConfigReferenceSection.tsx` — drop the `<LiveConfigPlayground />` import/render; keep `<ConfigReference />`.
 - `demo/src/components/LiveDemoSection.tsx` — replace inline `<ChatPanel />` with `<UnifiedPlayground />`.
 - `demo/src/App.tsx` — remove `<ConfigReferenceSection />` (its playground is gone; `<ConfigReference />` lives elsewhere if needed — see Block 1 step 1.4 for the final placement).
 
 **Untouched (read-only references):**
+
 - `demo/src/lib/chat-configs.ts` — `buildCodingBuddyConfig()`.
 - `demo/src/content/config-reference.ts` — `CONFIG_FIELDS`, `CONFIG_SECTIONS`, `TOTAL_FIELDS`.
 - `src/components/ui/**` — shadcn primitives.
@@ -45,11 +49,13 @@
 ### Task 1: De-duplicate the chat panels
 
 **Files:**
+
 - Delete: `demo/src/components/LiveConfigPlayground.tsx`
 - Modify: `demo/src/components/ConfigReferenceSection.tsx` (drop import + usage of `LiveConfigPlayground`)
 - Modify: `demo/src/App.tsx` (remove `<ConfigReferenceSection />` import + usage)
 
 **Interfaces:**
+
 - Consumes: existing `ConfigReference` component (unchanged).
 - Produces: a `demo/src/` tree with exactly one `<ChatPanel />` import site, located in `LiveDemoSection.tsx`.
 
@@ -80,6 +86,7 @@ export function ConfigReferenceSection(): ReactElement {
 - [ ] **Step 3: Edit `App.tsx` to drop `<ConfigReferenceSection />`**
 
 In `demo/src/App.tsx`:
+
 - Remove the `import { ConfigReferenceSection } from "./components/ConfigReferenceSection";` line.
 - Remove the `<ConfigReferenceSection />` JSX line inside `<main>`.
 
@@ -125,10 +132,12 @@ one place in the next commit."
 ### Task 2: Create `UnifiedPlayground.tsx` with Coding Buddy defaults + two-column layout
 
 **Files:**
+
 - Create: `demo/src/components/UnifiedPlayground.tsx`
 - Modify: `demo/src/components/LiveDemoSection.tsx` (replace inline `<ChatPanel>` with `<UnifiedPlayground>`)
 
 **Interfaces:**
+
 - Consumes: `buildCodingBuddyConfig()` from `demo/src/lib/chat-configs.ts`. `ChatPanel` from `ai-schadcn-chat`.
 - Produces: `<UnifiedPlayground />` component that takes no props. Left column = `<ChatPanel config={codingBuddyConfig} />`. Right column = empty `<aside>` placeholder (filled in Task 3+).
 
@@ -231,9 +240,11 @@ the next commits (Tasks 3-5)."
 ### Task 3: Form — Provider + Model sections
 
 **Files:**
+
 - Modify: `demo/src/components/UnifiedPlayground.tsx` (add `<ConfigForm>` with 2 collapsible sections + helpers)
 
 **Interfaces:**
+
 - Consumes: `useChat()` returning `{ config, updateConfig }`. `CONFIG_FIELDS` from `demo/src/content/config-reference.ts` for `path` strings + defaults.
 - Produces: `<ConfigForm />` component embedded in the right column of `<UnifiedPlayground />`. Renders 2 collapsible sections (Provider, Model) with the field controls listed below.
 
@@ -510,9 +521,11 @@ merge on the affected subtree."
 ### Task 4: Form — Behavior + Resilience + Personality & tools sections
 
 **Files:**
+
 - Modify: `demo/src/components/UnifiedPlayground.tsx` (add 3 more sections)
 
 **Interfaces:**
+
 - Consumes: existing `ConfigForm` rendering pattern.
 - Produces: 3 additional collapsible sections under `<ConfigForm />`. Total form sections: 5 (Provider + Model + Behavior + Resilience + Personality & tools). UI section comes in Task 5.
 
@@ -675,9 +688,11 @@ an enable/disable switch and a key string input."
 ### Task 5: UI section + mobile responsiveness + final verification
 
 **Files:**
+
 - Modify: `demo/src/components/UnifiedPlayground.tsx` (add UI section, mobile drawer)
 
 **Interfaces:**
+
 - Consumes: existing form pattern.
 - Produces: 1 more collapsible section (UI, 35 fields) + a mobile-only drawer toggle. Final form has 6 sections covering all 72 fields.
 
@@ -881,6 +896,7 @@ echo '# Current Spec\n\n*No active Spec.* Load a new Spec following `specs/spec_
 ## Self-Review
 
 **Spec coverage:**
+
 - ✅ Acceptance 1 (single panel) → Task 1 + Task 2
 - ✅ Acceptance 2 (Coding Buddy defaults) → Task 2 step 1 (imports `buildCodingBuddyConfig()`)
 - ✅ Acceptance 3 (all 72 fields across 6 collapsible sections) → Tasks 3, 4, 5

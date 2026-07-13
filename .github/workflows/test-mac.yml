@@ -18,12 +18,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Install yq
         run: brew install yq
@@ -33,7 +33,7 @@ jobs:
 
       - name: Run install-mac.sh (DRY_RUN)
         env:
-          DRY_RUN: '1'
+          DRY_RUN: "1"
         run: bash setup/install-mac.sh
 
       - name: Verify ECC integration (--check)

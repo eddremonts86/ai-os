@@ -137,22 +137,22 @@ done
 
 ### 6. Why are these 14 skills required?
 
-| Skill | Used in AI-OS workflow |
-|---|---|
-| `using-superpowers` | Daily router for all skills |
-| `brainstorming` | Project Start step 1 |
-| `spec` | Equivalent to AI-OS Spec |
-| `writing-plans` | Project Start step 3 |
-| `executing-plans` | Project Start step 5 |
-| `verification-before-completion` | Daily end + Coding step 9 |
-| `test-driven-development` | Coding step 4, 6 |
-| `systematic-debugging` | Coding step 3 (bugs) |
-| `code-review-and-quality` | Coding step 10 |
-| `finishing-a-development-branch` | Coding step 11 |
-| `requesting-code-review` | External reviews |
-| `receiving-code-review` | External reviews |
-| `dispatching-parallel-agents` | Multi-task work |
-| `subagent-driven-development` | Implementation plans |
+| Skill                            | Used in AI-OS workflow      |
+| -------------------------------- | --------------------------- |
+| `using-superpowers`              | Daily router for all skills |
+| `brainstorming`                  | Project Start step 1        |
+| `spec`                           | Equivalent to AI-OS Spec    |
+| `writing-plans`                  | Project Start step 3        |
+| `executing-plans`                | Project Start step 5        |
+| `verification-before-completion` | Daily end + Coding step 9   |
+| `test-driven-development`        | Coding step 4, 6            |
+| `systematic-debugging`           | Coding step 3 (bugs)        |
+| `code-review-and-quality`        | Coding step 10              |
+| `finishing-a-development-branch` | Coding step 11              |
+| `requesting-code-review`         | External reviews            |
+| `receiving-code-review`          | External reviews            |
+| `dispatching-parallel-agents`    | Multi-task work             |
+| `subagent-driven-development`    | Implementation plans        |
 
 Without these, the AI-OS workflows will fail at the `Load skill` steps.
 

@@ -60,7 +60,9 @@ When you complete a task with an active Spec.
 ### 1. Verify the Spec is complete
 
 \`\`\`bash
+
 # Check status
+
 grep "^Status:" ~/Projects/ai-os/specs/current_spec.md
 \`\`\`
 
@@ -77,6 +79,7 @@ mv specs/current_spec.md archive/$(date +%Y-%m-%d)-<slug>.md
 
 \`\`\`bash
 cat > ~/Projects/ai-os/specs/current_spec.md <<'EOF'
+
 # Current Spec
 
 *No active Spec.* Load a new Spec following \`specs/spec_template.md\` or run \`workflows/project_start.md\`.

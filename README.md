@@ -94,18 +94,18 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 
 ### What the install does
 
-| Step | What happens |
-|---|---|
-| 1 | Installs Homebrew packages from `dev-env/packages/Brewfile` (60+ packages). |
-| 2 | Installs npm globals from `dev-env/packages/npm-globals.txt`. |
-| 3 | Installs Python user packages from `dev-env/packages/pip-packages.txt`. |
-| 4 | Installs Oh My Zsh + Powerlevel10k + custom plugins. |
-| 5 | Creates dotfile symlinks (`~/.zshrc`, `~/.gitconfig`, `~/.ssh/config`, etc.) from `dev-env/dotfiles/`. |
-| 6 | Symlinks flat skills from `ai-config/skills/` to supported CLI skill directories. |
-| 7 | Installs the 14 required superpowers skills (if missing). |
-| 8 | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers). |
-| 9 | Configures Warp (Mac) + Terminal.app. |
-| 10 | Runs verification (12 sections). |
+| Step | What happens                                                                                           |
+| ---- | ------------------------------------------------------------------------------------------------------ |
+| 1    | Installs Homebrew packages from `dev-env/packages/Brewfile` (60+ packages).                            |
+| 2    | Installs npm globals from `dev-env/packages/npm-globals.txt`.                                          |
+| 3    | Installs Python user packages from `dev-env/packages/pip-packages.txt`.                                |
+| 4    | Installs Oh My Zsh + Powerlevel10k + custom plugins.                                                   |
+| 5    | Creates dotfile symlinks (`~/.zshrc`, `~/.gitconfig`, `~/.ssh/config`, etc.) from `dev-env/dotfiles/`. |
+| 6    | Symlinks flat skills from `ai-config/skills/` to supported CLI skill directories.                      |
+| 7    | Installs the 14 required superpowers skills (if missing).                                              |
+| 8    | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers).                             |
+| 9    | Configures Warp (Mac) + Terminal.app.                                                                  |
+| 10   | Runs verification (12 sections).                                                                       |
 
 ---
 
@@ -274,9 +274,9 @@ bash setup/install-ecc.sh --check
 
 Why two skill sources of truth?
 
-| Source | Owner | What |
-|---|---|---|
-| `ai-config/skills/` | AI-OS (you) | Hand-curated, evolve with your workflows |
+| Source                     | Owner        | What                                         |
+| -------------------------- | ------------ | -------------------------------------------- |
+| `ai-config/skills/`        | AI-OS (you)  | Hand-curated, evolve with your workflows     |
 | `vendor/ecc/skills/` (271) | ECC upstream | Community-maintained, update with `git pull` |
 
 The two never conflict in practice because ECC and AI-OS use different naming conventions (ECC: `tdd-workflow`, AI-OS: `test-driven-development`). In Claude Code specifically, ECC also loads as a **plugin** (`~/.claude/plugins/ecc → vendor/ecc/`), exposing hooks and slash commands that the AI-OS installer doesn't manage.
@@ -299,11 +299,11 @@ bash setup/install-claude-tools.sh --check
 
 What gets vendored:
 
-| Source | Where it lives | Count |
-|---|---|---|
-| claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`) | `ai-config/skills/` | 4 skills |
-| gstack (`careful`, `context-save`, `context-restore`, `diagram`, `freeze`, `guard`, `spec`, `unfreeze`) | `ai-config/skills/` | 8 skills |
-| OpenAI Codex plugin for Claude Code | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
+| Source                                                                                                  | Where it lives                                                                     | Count               |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------- |
+| claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`)                        | `ai-config/skills/`                                                                | 4 skills            |
+| gstack (`careful`, `context-save`, `context-restore`, `diagram`, `freeze`, `guard`, `spec`, `unfreeze`) | `ai-config/skills/`                                                                | 8 skills            |
+| OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
 Why a separate installer (instead of folding into `install-mac.sh`)?
 
@@ -382,22 +382,22 @@ Full list: [`rules/ask_before_doing.md`](rules/ask_before_doing.md).
 
 These come from [obra/superpowers](https://github.com/obra/superpowers). AI-OS workflows invoke them explicitly. Without them, workflows fail. This is the exact set checked by `setup/verify.sh`.
 
-| Skill | When loaded |
-|---|---|
-| `using-superpowers` | Router for all skills (load at session start) |
-| `brainstorming` | When the idea is vague |
-| `writing-plans` | After Spec, before execution |
-| `writing-skills` | Creating or improving skills |
-| `executing-plans` | During execution (block by block) |
-| `verification-before-completion` | Before claiming done |
-| `test-driven-development` | Writing tests |
-| `systematic-debugging` | Bug or unexpected behavior |
-| `finishing-a-development-branch` | At the end of work |
-| `requesting-code-review` | Asking for review |
-| `receiving-code-review` | Receiving review |
-| `dispatching-parallel-agents` | Multi-task work |
-| `subagent-driven-development` | Executing implementation plans |
-| `using-git-worktrees` | Large feature work or parallel branches |
+| Skill                            | When loaded                                   |
+| -------------------------------- | --------------------------------------------- |
+| `using-superpowers`              | Router for all skills (load at session start) |
+| `brainstorming`                  | When the idea is vague                        |
+| `writing-plans`                  | After Spec, before execution                  |
+| `writing-skills`                 | Creating or improving skills                  |
+| `executing-plans`                | During execution (block by block)             |
+| `verification-before-completion` | Before claiming done                          |
+| `test-driven-development`        | Writing tests                                 |
+| `systematic-debugging`           | Bug or unexpected behavior                    |
+| `finishing-a-development-branch` | At the end of work                            |
+| `requesting-code-review`         | Asking for review                             |
+| `receiving-code-review`          | Receiving review                              |
+| `dispatching-parallel-agents`    | Multi-task work                               |
+| `subagent-driven-development`    | Executing implementation plans                |
+| `using-git-worktrees`            | Large feature work or parallel branches       |
 
 Not part of this set but also required by AI-OS workflows: `code-review-and-quality` (before PR). Not part of this set and explicitly optional/third-party: the gstack-vendored `spec` skill (see `vendor/gstack/`) — AI-OS's own Spec flow is `workflows/project_start.md`.
 
@@ -409,15 +409,15 @@ If any is missing, run [`prompts/setup/03-required-skills.md`](prompts/setup/03-
 
 7 declarative servers in `ai-config/mcp/*.yaml`. Generated to `~/.hermes/config.yaml` at install time:
 
-| Server | Purpose |
-|---|---|
-| `time` | Time/date/timezone utilities |
-| `filesystem` | Read/write files outside cwd |
-| `pdf` | PDF reading, extraction, OCR |
-| `sequential-thinking` | Multi-step planning |
-| `memory` | Persistent knowledge graph |
-| `chrome` | Browser automation, screenshots |
-| `agent-browser` | Vercel agent-browser (token-efficient @ref) |
+| Server                | Purpose                                     |
+| --------------------- | ------------------------------------------- |
+| `time`                | Time/date/timezone utilities                |
+| `filesystem`          | Read/write files outside cwd                |
+| `pdf`                 | PDF reading, extraction, OCR                |
+| `sequential-thinking` | Multi-step planning                         |
+| `memory`              | Persistent knowledge graph                  |
+| `chrome`              | Browser automation, screenshots             |
+| `agent-browser`       | Vercel agent-browser (token-efficient @ref) |
 
 To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/generate-mcp-config.py`, commit.
 
@@ -490,16 +490,16 @@ AI-OS works on **Mac** (premium experience), **Windows** (PowerShell), and **Lin
 
 Differences:
 
-| Feature | Mac | Windows | Linux |
-|---|---|---|---|
-| **AI-OS core** | ✅ | ✅ | ✅ |
-| **Flat skills** | ✅ | ✅ | ✅ |
-| **10 MCP servers (all enabled)** | ✅ | ✅ | ✅ |
-| **Oh My Zsh + p10k** | ✅ | ❌ (use Oh-My-Posh or Starship) | ✅ |
-| **Warp** | ✅ |✅ (Windows version) |❌ (use Wezterm) |
-| **Homebrew** | ✅ |❌ (Chocolatey) |❌ (apt) |
-| **Symlinks** | ✅ |⚠️ (need admin or Dev Mode) | ✅ |
-| **CI** | ✅ |✅ | ✅ |
+| Feature                          | Mac | Windows                         | Linux            |
+| -------------------------------- | --- | ------------------------------- | ---------------- |
+| **AI-OS core**                   | ✅  | ✅                              | ✅               |
+| **Flat skills**                  | ✅  | ✅                              | ✅               |
+| **10 MCP servers (all enabled)** | ✅  | ✅                              | ✅               |
+| **Oh My Zsh + p10k**             | ✅  | ❌ (use Oh-My-Posh or Starship) | ✅               |
+| **Warp**                         | ✅  | ✅ (Windows version)            | ❌ (use Wezterm) |
+| **Homebrew**                     | ✅  | ❌ (Chocolatey)                 | ❌ (apt)         |
+| **Symlinks**                     | ✅  | ⚠️ (need admin or Dev Mode)      | ✅               |
+| **CI**                           | ✅  | ✅                              | ✅               |
 
 See [`docs/cross-platform.md`](docs/cross-platform.md) for full details.
 
@@ -516,6 +516,7 @@ See [`docs/cross-platform.md`](docs/cross-platform.md) for full details.
 Triggers: pull_request + push to main.
 
 Workflow:
+
 1. Checkout repo.
 2. Install `yq` (mikefarah/yq v4).
 3. Run `DRY_RUN=1 bash setup/install-mac.sh` (or windows equivalent).

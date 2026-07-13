@@ -81,10 +81,10 @@ Concrete patterns where parallelism wins:
 
 How to dispatch (each CLI has its own mechanism — use the native one):
 
-| CLI | Mechanism |
-|---|---|
-| Claude Code | `Task`/`Agent` tool — launch multiple agents in one message |
-| Hermes | `delegate_task(tasks=[{"goal": "...", "toolsets": [...]}, ...])` |
+| CLI                                    | Mechanism                                                                                                                                    |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code                            | `Task`/`Agent` tool — launch multiple agents in one message                                                                                  |
+| Hermes                                 | `delegate_task(tasks=[{"goal": "...", "toolsets": [...]}, ...])`                                                                             |
 | Codex / Gemini / Antigravity / MiniMax | Use native subagents or agent teams when available in the installed client; otherwise run independent background shells or work sequentially |
 
 Max 3 concurrent (in Hermes configured via `delegation.max_concurrent_children`; in Claude Code just cap yourself at 3).
@@ -198,12 +198,14 @@ mv "$AI_OS_ROOT/specs/current_spec.md" "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-sl
 ## 13. How to invoke from each CLI
 
 ### Claude Code
+
 ```bash
 # Auto-loads from ~/.claude/skills/
 # Manual: paste CLAUDE.md content at the start of the conversation
 ```
 
 ### Hermes
+
 ```bash
 hermes chat --skills ai-os-karpathy
 hermes chat --skills ai-os-quickstart
@@ -212,6 +214,7 @@ hermes chat   # skills already loaded from imported:
 ```
 
 ### Codex / Gemini / Antigravity
+
 ```bash
 # Auto-loads from ~/.codex/skills/, ~/.gemini/skills/, ~/.agents/skills/
 ```
@@ -252,22 +255,22 @@ AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function
 
 ### Required superpowers skills
 
-| Skill | Loaded when |
-|---|---|
-| `using-superpowers` | At the start of every task (router) |
-| `brainstorming` | Idea is vague |
-| `using-git-worktrees` | Large feature work or parallel branches |
-| `writing-plans` | After Spec, before execution |
-| `writing-skills` | Creating or improving skills |
-| `executing-plans` | During execution (block by block) |
-| `verification-before-completion` | Before claiming done |
-| `test-driven-development` | Writing tests |
-| `systematic-debugging` | Bug or unexpected behavior |
-| `finishing-a-development-branch` | At the end of work |
-| `requesting-code-review` | Asking for review |
-| `receiving-code-review` | Receiving review |
-| `dispatching-parallel-agents` | Multi-task work |
-| `subagent-driven-development` | Executing implementation plans |
+| Skill                            | Loaded when                             |
+| -------------------------------- | --------------------------------------- |
+| `using-superpowers`              | At the start of every task (router)     |
+| `brainstorming`                  | Idea is vague                           |
+| `using-git-worktrees`            | Large feature work or parallel branches |
+| `writing-plans`                  | After Spec, before execution            |
+| `writing-skills`                 | Creating or improving skills            |
+| `executing-plans`                | During execution (block by block)       |
+| `verification-before-completion` | Before claiming done                    |
+| `test-driven-development`        | Writing tests                           |
+| `systematic-debugging`           | Bug or unexpected behavior              |
+| `finishing-a-development-branch` | At the end of work                      |
+| `requesting-code-review`         | Asking for review                       |
+| `receiving-code-review`          | Receiving review                        |
+| `dispatching-parallel-agents`    | Multi-task work                         |
+| `subagent-driven-development`    | Executing implementation plans          |
 
 `code-review-and-quality` is a separate, equally-required skill (loaded "before PR", see section 4) but is not part of the obra/superpowers 14 and is not checked by `verify.sh` — don't conflate it with this list.
 
