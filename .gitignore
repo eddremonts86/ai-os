@@ -52,6 +52,10 @@ Thumbs.db
 *.local
 *.log
 
+# Unified env dossier with real secrets (generated locally, never versioned)
+dev-env/env-config/env.ts
+dev-env/env-config/env-reference.html
+
 # Project-local Hermes runtime (may contain real secrets, e.g. desktop-attachments/env.ts)
 .hermes/
 
@@ -59,10 +63,6 @@ Thumbs.db
 .claude/
 
 # AI-OS: completed Specs in archive/ are versioned. Only generated outputs are ignored.
-# Unified env dossier with real secrets (generated locally, never versioned)
-dev-env/env-config/env.ts
-dev-env/env-config/env-reference.html
-
 # Add any repo-specific exclusions here.
 
 # Vendored ECC plugin — never commit upstream VCS / build artifacts that
