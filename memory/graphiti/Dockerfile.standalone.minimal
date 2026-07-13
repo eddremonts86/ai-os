@@ -32,7 +32,7 @@ ENV UV_COMPILE_BYTECODE=1 \
 
 WORKDIR /app/mcp
 
-ARG GRAPHITI_CORE_VERSION=0.29.1
+ARG GRAPHITI_CORE_VERSION=0.29.2
 
 COPY pyproject.toml uv.lock ./
 
@@ -48,6 +48,13 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --no-group dev
 
 RUN echo "${GRAPHITI_CORE_VERSION}" > /app/mcp/.graphiti-core-version
+
+# AI-OS patch (2026-07-13): strip <think>...</think> reasoning blocks that
+# MiniMax-M2/M3 always prepend to LLM responses — see patches/strip_think_tags.py
+# for the full rationale. graphiti-core is pulled from PyPI above (not part of
+# this monorepo checkout), so the patch runs against the installed .venv copy.
+COPY patches/strip_think_tags.py /tmp/strip_think_tags.py
+RUN uv run --no-sync python3 /tmp/strip_think_tags.py && rm /tmp/strip_think_tags.py
 
 COPY main.py ./
 COPY src/ ./src/
