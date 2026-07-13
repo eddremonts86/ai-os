@@ -36,24 +36,29 @@
 # (MiniMax isn't one of Graphiti's supported embedder providers) via the same
 # openai-impersonation trick, reached over host.docker.internal.
 #
-# CAVEAT confirmed by a real (placeholder-key) test run on 2026-07-13:
-# graphiti-core 1.0.2's cross-encoder/reranker is hardcoded to real OpenAI
-# regardless of config.yaml (see the STATUS note atop config.yaml for why).
-# `add_memory` (writes) should work with just MINIMAX_API_KEY. `search`
-# (reads) additionally needs a real OPENAI_API_KEY for reranking, or it will
-# fail — there is no way to redirect that specific call to MiniMax in this
-# image version.
+# UPDATE 2026-07-13: the base_url routing to MiniMax is CONFIRMED WORKING —
+# tested with a real key, container logs show the request actually reaching
+# `https://api.minimaxi.chat/v1/chat/completions` via the correct generic
+# OpenAI-compatible client. The only remaining failure is MiniMax itself
+# rejecting that specific key (401 invalid api key) — a credentials issue,
+# not a config/wiring issue. See config.yaml's STATUS note for details.
+#
+# CAVEAT (still applies): graphiti-core's cross-encoder/reranker is hardcoded
+# to real OpenAI regardless of config.yaml (see config.yaml's STATUS note).
+# `add_memory` (writes) only needs MINIMAX_API_KEY. `search` (reads)
+# additionally needs a real OPENAI_API_KEY for reranking, or it will fail —
+# there is no way to redirect that specific call to MiniMax in this image.
 #
 # To activate for real use:
-#   1. export MINIMAX_API_KEY=...            # a REAL MiniMax API key
+#   1. export MINIMAX_API_KEY=...            # a REAL, VALID MiniMax API key (verify it works — the one tried 2026-07-13 was rejected with 401)
 #   2. export OPENAI_API_KEY=sk-...          # only needed for search/reranking; skip if you only need add_memory
 #   3. cd ~/Projects/ai-os/memory/falkordb && docker compose up -d   # FalkorDB must be up first
 #   4. Ensure Ollama is running locally with nomic-embed-text pulled
 #      (ollama pull nomic-embed-text) — used for embeddings, not MiniMax.
 #   5. cd ~/Projects/ai-os/memory/graphiti && docker compose up -d
 #   6. curl -sf http://127.0.0.1:8021/health && echo OK
-#   7. Try a real add_memory/search call through an MCP client to confirm
-#      actual entity extraction works (NOT YET TESTED with real credentials).
+#   7. Try a real add_memory call through an MCP client — this now reaches
+#      MiniMax correctly; only a valid key is needed for it to fully succeed.
 
 networks:
   aios-memory:
@@ -61,7 +66,20 @@ networks:
 
 services:
   graphiti-mcp:
-    image: zepai/knowledge-graph-mcp:1.0.2-standalone
+    # Custom local build from getzep/graphiti's main branch (2026-07-13), NOT the
+    # official zepai/knowledge-graph-mcp:1.0.2-standalone. Built because the pinned
+    # upstream image lacks the `is_non_openai_provider`/custom `api_url` support this
+    # MiniMax setup depends on (see config.yaml's STATUS note for the full root-cause).
+    # Built via Dockerfile.standalone.minimal (a trimmed copy of upstream's
+    # Dockerfile.standalone that skips the `providers`/`azure` extras — those pull in
+    # anthropic/gemini/groq/voyageai/sentence-transformers, and sentence-transformers
+    # alone drags in the full PyTorch+CUDA wheel set, ~3GB, unused here since MiniMax
+    # and Ollama are both reached through the base 'openai' client). Rebuild with:
+    #   git clone https://github.com/getzep/graphiti.git /tmp/graphiti-build/graphiti
+    #   cp memory/graphiti/Dockerfile.standalone.minimal /tmp/graphiti-build/graphiti/mcp_server/docker/
+    #   cd /tmp/graphiti-build/graphiti/mcp_server/docker
+    #   docker build -f Dockerfile.standalone.minimal -t ai-os/graphiti-mcp:minimax-standalone ..
+    image: ai-os/graphiti-mcp:minimax-standalone
     container_name: aios-graphiti-mcp
     restart: unless-stopped
     networks:

@@ -24,31 +24,30 @@
 # compatible API). Reached via `host.docker.internal` since Ollama runs as a
 # host process, not inside the `aios-memory` Docker network.
 #
-# STATUS (2026-07-13, tested with a REAL MiniMax key from
-# /Users/edd/Projects/configs/env.ts): config.yaml parses correctly — verified
-# via direct Python introspection inside the running container
-# (`GraphitiConfig().llm.providers.openai.api_url` == the real MiniMax URL).
-# But a REAL add_memory call still hit `https://api.openai.com/v1/responses`
-# and failed with a 401 using the MiniMax key. Root cause found by reading
-# the actual factories.py shipped in THIS pinned image
-# (zepai/knowledge-graph-mcp:1.0.2-standalone), not the upstream GitHub main
-# branch: v1.0.2's `LLMClientFactory.create()` for the 'openai' case builds
-# `CoreLLMConfig(...)` WITHOUT a `base_url` argument at all — it silently
-# ignores `providers.openai.api_url` from config.yaml and always hits real
-# OpenAI. Checked 'anthropic' too — same story, no base_url passed there
-# either. The "impersonate provider X via custom api_url" feature (the whole
-# mechanism this file relies on, and the one documented for Ollama) does NOT
-# exist yet in this pinned image version — it's a newer feature on graphiti's
-# main branch, added after 1.0.2 was cut.
+# STATUS (2026-07-13, UPDATE — WIRING CONFIRMED WORKING): Docker Hub has no
+# newer zepai/knowledge-graph-mcp tag (latest == 1.0.2, identical digest,
+# confirmed via Docker Hub's API) that includes the custom-`api_url` fix, so
+# the image was built FROM SOURCE instead — see docker-compose.yml's image
+# comment for the exact build recipe (uses memory/graphiti/Dockerfile.standalone.minimal,
+# a trimmed copy of getzep/graphiti main's Dockerfile.standalone that skips
+# the `providers`/`azure` extras to avoid a ~3GB unused PyTorch+CUDA download
+# from sentence-transformers).
 #
-# PRACTICAL CONSEQUENCE: with the CURRENTLY PINNED image, there is no way to
-# route the main LLM (or embedder/reranker) to MiniMax or any other custom
-# endpoint — real OpenAI is the only usable "openai" provider in this
-# version. Using MiniMax would require pulling a newer
-# zepai/knowledge-graph-mcp image tag once internet is available (not done
-# yet — no other image version is cached locally as of this writing). Until
-# then, this config.yaml documents the intended MiniMax setup for when that
-# image is available, but is NOT currently functional for that purpose.
+# Tested end-to-end with the real MiniMax key from
+# /Users/edd/Projects/configs/env.ts via manual MCP protocol calls
+# (initialize -> notifications/initialized -> tools/call add_memory over the
+# streamable-HTTP endpoint). Real container logs confirm the request now
+# genuinely reaches MiniMax: `POST https://api.minimaxi.chat/v1/chat/completions`
+# via `graphiti_core.llm_client.openai_generic_client` (the correct client for
+# custom endpoints — confirms `is_non_openai_provider()` correctly detected
+# the override and routed away from OpenAI's real Responses API). The
+# MiniMax → OpenAI wiring problem is FULLY RESOLVED.
+#
+# REMAINING BLOCKER (not a wiring issue): MiniMax's own API rejected the key
+# with `401 invalid api key (2049)`. This is a credentials/account issue on
+# MiniMax's side (expired/invalid key, wrong key type, or account balance),
+# not something fixable from this config. Edd needs to verify/refresh the key
+# in /Users/edd/Projects/configs/env.ts before add_memory can fully succeed.
 #
 # HARD LIMITATION FOUND (separate issue, same session): graphiti-core 1.0.2 (pinned in this image) also
 # instantiates a THIRD component — a cross-encoder/reranker
