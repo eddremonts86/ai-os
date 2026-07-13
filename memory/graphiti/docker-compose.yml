@@ -21,17 +21,39 @@
 # down afterward (`docker compose down`) since its key was a placeholder.
 # ai-config/mcp/graphiti.yaml's `enabled` is now `true` on the strength of this.
 # This only proves the DEPLOYMENT path (Docker/network/FalkorDB/HTTP) works —
-# it does NOT prove actual knowledge-graph operations, which need a real
-# OPENAI_API_KEY to call OpenAI for entity extraction.
+# it does NOT prove actual knowledge-graph operations, which need a real API
+# key to call an LLM for entity extraction.
+#
+# LLM provider (2026-07-13): switched from OpenAI to MiniMax. Confirmed MiniMax
+# exposes a real OpenAI-compatible /v1/chat/completions endpoint
+# (https://api.minimax.io/v1), so it can "impersonate" the openai provider via
+# config.yaml's `llm.providers.openai.api_url` override — the same documented
+# trick Graphiti's own docs use for local Ollama models. This needs a
+# config.yaml file (not just env vars — Graphiti's env-var support only covers
+# provider-specific keys, no generic base-URL override), so this compose file
+# now mounts memory/graphiti/config.yaml into the container via CONFIG_PATH.
+# Embeddings are routed to the Ollama instance AI-OS already runs locally
+# (MiniMax isn't one of Graphiti's supported embedder providers) via the same
+# openai-impersonation trick, reached over host.docker.internal.
+#
+# CAVEAT confirmed by a real (placeholder-key) test run on 2026-07-13:
+# graphiti-core 1.0.2's cross-encoder/reranker is hardcoded to real OpenAI
+# regardless of config.yaml (see the STATUS note atop config.yaml for why).
+# `add_memory` (writes) should work with just MINIMAX_API_KEY. `search`
+# (reads) additionally needs a real OPENAI_API_KEY for reranking, or it will
+# fail — there is no way to redirect that specific call to MiniMax in this
+# image version.
 #
 # To activate for real use:
-#   1. export OPENAI_API_KEY=sk-...          # a REAL key — or edit environment: below for another provider
-#   2. cd ~/Projects/ai-os/memory/falkordb && docker compose up -d   # FalkorDB must be up first
-#   3. cd ~/Projects/ai-os/memory/graphiti && docker compose up -d
-#   4. curl -sf http://127.0.0.1:8021/health && echo OK
-#   5. Try a real add_memory/search call through an MCP client to confirm
-#      actual entity extraction works (the structural test above does not
-#      cover this).
+#   1. export MINIMAX_API_KEY=...            # a REAL MiniMax API key
+#   2. export OPENAI_API_KEY=sk-...          # only needed for search/reranking; skip if you only need add_memory
+#   3. cd ~/Projects/ai-os/memory/falkordb && docker compose up -d   # FalkorDB must be up first
+#   4. Ensure Ollama is running locally with nomic-embed-text pulled
+#      (ollama pull nomic-embed-text) — used for embeddings, not MiniMax.
+#   5. cd ~/Projects/ai-os/memory/graphiti && docker compose up -d
+#   6. curl -sf http://127.0.0.1:8021/health && echo OK
+#   7. Try a real add_memory/search call through an MCP client to confirm
+#      actual entity extraction works (NOT YET TESTED with real credentials).
 
 networks:
   aios-memory:
@@ -45,12 +67,30 @@ services:
     networks:
       - aios-memory
     depends_on: []  # FalkorDB lives in a separate compose project; start it first manually
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # reach host-side Ollama for embeddings; no-op on Docker Desktop (already resolvable there), required on Linux Docker Engine
     ports:
       - "127.0.0.1:8021:8000"   # HTTP transport, MCP endpoint at /mcp/
+    volumes:
+      - ./config.yaml:/app/mcp/config/config.yaml:ro
     environment:
-      DATABASE_PROVIDER: falkordb
+      CONFIG_PATH: /app/mcp/config/config.yaml
+      MINIMAX_API_KEY: ${MINIMAX_API_KEY:?set MINIMAX_API_KEY before starting this service}
+      # MINIMAX_BASE_URL/MINIMAX_MODEL must be explicitly listed here to reach the
+      # container — docker compose does NOT pass through arbitrary host shell env vars,
+      # only ones named in this environment: block (confirmed by a real bug: without
+      # these, config.yaml's ${MINIMAX_BASE_URL:default} fell through to a null base_url,
+      # and the LLM client silently hit real api.openai.com instead of MiniMax).
+      MINIMAX_BASE_URL: ${MINIMAX_BASE_URL:-https://api.minimaxi.chat/v1}
+      MINIMAX_MODEL: ${MINIMAX_MODEL:-MiniMax-M3}
+      # The openai SDK's client constructor validates api_key is a non-empty string at
+      # *instantiation* time (not just when actually calling the API) — graphiti-core's
+      # hardcoded reranker (see config.yaml's STATUS note) crashes the whole server on boot
+      # without this, even though MiniMax + Ollama handle everything else. A placeholder is
+      # enough to let the container start; only `search` calls that trigger real reranking
+      # need this to be a genuine OpenAI key.
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-placeholder-reranker-only-not-wired-to-minimax}
       FALKORDB_URI: redis://aios-falkordb:6379   # reach FalkorDB by container name on aios-memory
-      OPENAI_API_KEY: ${OPENAI_API_KEY:?set OPENAI_API_KEY before starting this service}
       GRAPHITI_TELEMETRY_ENABLED: "false"
       SEMAPHORE_LIMIT: "5"   # conservative default; raise per the tuning table in graphiti's mcp_server/README.md
 
