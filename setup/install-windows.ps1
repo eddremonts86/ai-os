@@ -1,4 +1,4 @@
-# setup/install-windows.ps1
+﻿# setup/install-windows.ps1
 # Setup AI-OS on Windows from zero. 1-command PowerShell.
 #
 # Usage (PowerShell as Admin):
@@ -70,7 +70,8 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
     Warn "chocolatey not installed (recommended for Windows)"
     Log "Install with: Set-ExecutionPolicy Bypass; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-} else {
+}
+else {
     Ok "chocolatey OK"
 }
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
@@ -123,12 +124,14 @@ if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue))
         try {
             choco install -y $pkg --no-progress 2>&1 | Out-Null
             Ok "  $pkg"
-        } catch {
+        }
+        catch {
             Warn "  $pkg failed: $_"
         }
     }
     Ok "Chocolatey packages installed"
-} else {
+}
+else {
     Log "1. SKIP_CHOCO=1, skipping chocolatey"
 }
 Write-Host ""
@@ -166,7 +169,8 @@ if (-not $env:SKIP_DOTFILES) {
         if (-not (Test-Path "$HomeDir\.gitconfig")) {
             Copy-Item "$AIOSRoot\dev-env\dotfiles\git\.gitconfig.template" "$HomeDir\.gitconfig"
             Ok "  .gitconfig → template (customize: git config --global user.name/email)"
-        } else {
+        }
+        else {
             Ok "  .gitconfig already exists, not overwriting"
         }
     }
@@ -193,7 +197,8 @@ if (-not $env:SKIP_DOTFILES) {
         Copy-Item "$AIOSRoot\dev-env\dotfiles\ssh\config" "$sshDir\config" -Force
         Ok "  .ssh/config → ai-os"
     }
-} else {
+}
+else {
     Log "3. SKIP_DOTFILES=1, skipping dotfiles"
 }
 Write-Host ""
@@ -249,7 +254,8 @@ function work { Set-Location "$HOME\Projects\ei-schilling" }
 if (-not (Test-Path $customProfile)) {
     Set-Content -Path $customProfile -Value $customProfileContent
     Ok "PowerShell custom profile created at $customProfile"
-} else {
+}
+else {
     Ok "PowerShell custom profile already exists"
 }
 Write-Host ""
@@ -276,9 +282,38 @@ foreach ($cliDir in $cliDirs) {
 }
 
 $skillCount = (Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
-    Test-Path (Join-Path $_.FullName "SKILL.md")
-}).Count
+        Test-Path (Join-Path $_.FullName "SKILL.md")
+    }).Count
 Ok "Flat skills propagated to manifest client destinations ($skillCount skills in source)"
+Write-Host ""
+
+# ─── 5c. Vendored gstack skills (read-only subtree at vendor/gstack/) ───
+# Mirrors setup/install-mac.sh step 7c: propagates the gstack-vendored skills
+# (spec, context-save, context-restore) to the same CLI destinations as the
+# flat skills above. Without this step, verify-windows.ps1 reports them as
+# permanently missing since install-windows.ps1 never linked them.
+$gstackDir = Join-Path $AIOSRoot "vendor\gstack"
+if (Test-Path $gstackDir) {
+    Log "5c. Setting vendored gstack skills in native client destinations..."
+    $gstackSkillDirs = Get-ChildItem $gstackDir -Directory | Where-Object {
+        Test-Path (Join-Path $_.FullName "SKILL.md")
+    }
+    foreach ($cliDir in $cliDirs) {
+        if (-not (Test-Path $cliDir)) {
+            New-Item -ItemType Directory -Path $cliDir -Force | Out-Null
+        }
+        foreach ($skillDir in $gstackSkillDirs) {
+            $linkPath = Join-Path $cliDir $skillDir.Name
+            if ((-not (Test-Path $linkPath)) -or (Preserve-OrReplace $linkPath)) {
+                New-Item -ItemType SymbolicLink -Path $linkPath -Target $skillDir.FullName -Force | Out-Null
+            }
+        }
+    }
+    Ok "Vendored gstack skills propagated ($($gstackSkillDirs.Count) skills in source)"
+}
+else {
+    Log "5c. vendor/gstack/ absent, skipping"
+}
 Write-Host ""
 
 # ─── 5b. Rendered instruction adapters ───
@@ -319,7 +354,8 @@ if ($actual -ne $expected) {
         }
     }
     Ok "Required skills linked from local source ($expected/$expected)"
-} else {
+}
+else {
     Ok "Superpowers OK ($actual/$expected)"
 }
 Write-Host ""
@@ -344,14 +380,20 @@ if (-not $env:SKIP_MCP) {
         # ~/.hermes/skills/imported/ (P1-2; confirmed against
         # https://hermes-agent.nousresearch.com/docs/user-guide/features/skills).
         $pythonArgs = @(
-            $AIOSRoot + "\setup\generate-mcp-config.py",
-            $AIOSRoot + "\ai-config\mcp",
-            $HomeDir + "\.hermes\config.yaml",
-            $HomeDir + "\.agents\skills"
+            ($AIOSRoot + "\setup\generate-mcp-config.py"),
+            ($AIOSRoot + "\ai-config\mcp"),
+            ($HomeDir + "\.hermes\config.yaml"),
+            ($HomeDir + "\.agents\skills")
         )
-        & $pythonCmd.Source $pythonArgs
-        Ok "MCP servers + skills.external_dirs configured (Python: $($pythonCmd.Source))"
-    } else {
+        & $pythonCmd.Source @pythonArgs
+        if ($LASTEXITCODE -eq 0) {
+            Ok "MCP servers + skills.external_dirs configured (Python: $($pythonCmd.Source))"
+        }
+        else {
+            Warn "generate-mcp-config.py exited with code $LASTEXITCODE; check ~/.hermes/config.yaml manually"
+        }
+    }
+    else {
         Warn "Python not found. MCP servers not configured automatically. Edit ~/.hermes/config.yaml manually."
     }
 }
@@ -373,7 +415,8 @@ if (Test-Path $oldHermesImported) {
     if ($safeToRemove) {
         Remove-Item $oldHermesImported -Recurse -Force
         Ok "Removed superseded ~/.hermes/skills/imported/ (Hermes now reads ~/.agents/skills directly)"
-    } else {
+    }
+    else {
         Warn "~/.hermes/skills/imported/ contains non-AI-OS content; leaving it in place (Hermes also reads ~/.agents/skills now, so skills may appear twice)"
     }
 }
@@ -393,7 +436,8 @@ if ($env:SKIP_MEMORY -ne "1") {
             Start-Process -FilePath "ollama" -ArgumentList "serve" -WindowStyle Hidden -RedirectStandardOutput "$HomeDir\.ollama.log" -RedirectStandardError "$HomeDir\.ollama.log"
             Start-Sleep -Seconds 3
             Ok "  Ollama launched on 127.0.0.1:11500 (background, logs: ~/.ollama.log)"
-        } else {
+        }
+        else {
             Ok "  Ollama already running"
         }
         $env:OLLAMA_HOST = "127.0.0.1:11500"
@@ -401,10 +445,12 @@ if ($env:SKIP_MEMORY -ne "1") {
             & ollama pull nomic-embed-text 2>&1 | Select-Object -Last 3
             if ($LASTEXITCODE -ne 0) { throw "ollama pull exited with code $LASTEXITCODE" }
             Ok "  nomic-embed-text ready"
-        } catch {
+        }
+        catch {
             Warn "  ollama pull failed (will retry on first use)"
         }
-    } else {
+    }
+    else {
         Warn "  ollama not installed (run: choco install ollama) — embedding features disabled"
     }
 
@@ -416,12 +462,15 @@ if ($env:SKIP_MEMORY -ne "1") {
             docker compose up -d 2>&1 | Select-Object -Last 3
             if ($LASTEXITCODE -ne 0) { throw "docker compose up exited with code $LASTEXITCODE" }
             Ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300 (image: falkordb/falkordb:v4.18.11, pinned)"
-        } catch {
+        }
+        catch {
             Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory\falkordb; docker compose up -d)"
-        } finally {
+        }
+        finally {
             Pop-Location
         }
-    } else {
+    }
+    else {
         Warn "  docker not installed/running (FalkorDB disabled; choco install docker-desktop)"
     }
 
@@ -446,16 +495,20 @@ if ($env:SKIP_MEMORY -ne "1") {
             if ($expectedSum -and ($expectedSum -eq $actualSum)) {
                 Expand-Archive -Path $tmpZip -DestinationPath $localBin -Force
                 Ok "  codebase-memory-mcp binary installed at ~/.local/bin/ (from $cbmAsset, sha256 verified)"
-            } else {
+            }
+            else {
                 Err "  codebase-memory-mcp checksum verification failed for $cbmAsset — refusing to install (expected $expectedSum, got $actualSum)"
             }
-        } catch {
+        }
+        catch {
             Warn "  codebase-memory-mcp download failed: $_"
             Warn "  install manually from https://github.com/deusdata/codebase-memory-mcp/releases"
-        } finally {
+        }
+        finally {
             Remove-Item $tmpZip, $tmpSums -ErrorAction SilentlyContinue
         }
-    } else {
+    }
+    else {
         Ok "  codebase-memory-mcp already installed"
     }
 
@@ -470,13 +523,16 @@ if ($env:SKIP_MEMORY -ne "1") {
                 Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
             }
             Ok "  grepai $grepaiVersion installed via go install"
-        } catch {
+        }
+        catch {
             Warn "  go install grepai failed (will retry on first use)"
         }
-    } else {
+    }
+    else {
         Warn "  go not installed (grepai skipped; install: choco install golang)"
     }
-} else {
+}
+else {
     Log "7b. SKIP_MEMORY=1, skipping memory stack"
 }
 Write-Host ""
@@ -487,9 +543,11 @@ $wtInstalled = (Get-Command wt -ErrorAction SilentlyContinue) -ne $null
 $weztermInstalled = (Get-Command wezterm -ErrorAction SilentlyContinue) -ne $null
 if ($wtInstalled) {
     Ok "Windows Terminal detected"
-} elseif ($weztermInstalled) {
+}
+elseif ($weztermInstalled) {
     Ok "WezTerm detected"
-} else {
+}
+else {
     Warn "Neither Windows Terminal nor WezTerm detected. Install one:"
     Log "  choco install microsoft-windows-terminal"
     Log "  Or: choco install wezterm"

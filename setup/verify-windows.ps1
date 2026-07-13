@@ -1,4 +1,4 @@
-# setup/verify-windows.ps1
+﻿# setup/verify-windows.ps1
 # Verifies AI-OS on Windows.
 
 $ErrorActionPreference = "Stop"
@@ -30,7 +30,8 @@ function OptMiss($msg) { Warn $msg; $script:optMiss++ }
 Section "1. AI-OS path"
 if ((Test-Path $AIOSRoot) -and (Test-Path "$AIOSRoot\CLAUDE.md")) {
     ReqOk "AI-OS at $AIOSRoot"
-} else {
+}
+else {
     ReqFail "AI-OS not found at $AIOSRoot"
 }
 
@@ -51,7 +52,8 @@ foreach ($df in $dotfiles) {
     $target = $item.Target
     if ($target) {
         OptOk "  $df → $target"
-    } else {
+    }
+    else {
         OptMiss "  $df → broken symlink"
     }
 }
@@ -66,10 +68,10 @@ foreach ($df in $dotfiles) {
 Section "3. Global skills + CLI executables"
 $expectedSkillNames = @()
 $expectedSkillNames += Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory -ErrorAction SilentlyContinue |
-    Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object { $_.Name }
+Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object { $_.Name }
 if (Test-Path "$AIOSRoot\vendor\gstack") {
     $expectedSkillNames += Get-ChildItem "$AIOSRoot\vendor\gstack" -Directory -ErrorAction SilentlyContinue |
-        Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object { $_.Name }
+    Where-Object { Test-Path (Join-Path $_.FullName "SKILL.md") } | ForEach-Object { $_.Name }
 }
 $expectedSkillNames = $expectedSkillNames | Sort-Object -Unique
 $expectedSkillCount = $expectedSkillNames.Count
@@ -96,14 +98,16 @@ foreach ($client in $clients) {
     # not have every CLI installed, so this never fails the run on its own.
     if (Get-Command $client.Bin -ErrorAction SilentlyContinue) {
         Ok "  [$($client.Id)] executable '$($client.Bin)' found in PATH"
-    } else {
+    }
+    else {
         Warn "  [$($client.Id)] executable '$($client.Bin)' not found in PATH (skills stay deployed for when it's installed)"
     }
 
     if (-not (Test-Path $cliDir)) {
         if ($client.Required) {
             ReqFail "  [$($client.Id)] $label does not exist (run setup/install-windows.ps1)"
-        } else {
+        }
+        else {
             OptMiss "  [$($client.Id)] $label does not exist (optional client)"
         }
         continue
@@ -115,14 +119,17 @@ foreach ($client in $clients) {
     if ($missingNames.Count -eq 0) {
         if ($client.Required) {
             ReqOk "  [$($client.Id)] ${label}: $($deployedNames.Count)/$expectedSkillCount+ skills (all expected names present)"
-        } else {
+        }
+        else {
             OptOk "  [$($client.Id)] ${label}: $($deployedNames.Count)/$expectedSkillCount+ skills (all expected names present)"
         }
-    } else {
+    }
+    else {
         $missingList = $missingNames -join ", "
         if ($client.Required) {
             ReqFail "  [$($client.Id)] ${label}: missing $($missingNames.Count) expected skill(s) (rerun setup/install-windows.ps1): $missingList"
-        } else {
+        }
+        else {
             OptMiss "  [$($client.Id)] ${label}: missing $($missingNames.Count) expected skill(s) (optional client): $missingList"
         }
     }
@@ -135,10 +142,12 @@ if (Get-Command hermes -ErrorAction SilentlyContinue) {
     $hermesConfig = "$HomeDir\.hermes\config.yaml"
     if ((Test-Path $hermesConfig) -and (Select-String -Path $hermesConfig -SimpleMatch "$HomeDir\.agents\skills" -Quiet)) {
         ReqOk "  [hermes] ~/.hermes/config.yaml declares ~/.agents/skills under skills.external_dirs"
-    } else {
+    }
+    else {
         ReqFail "  [hermes] ~/.hermes/config.yaml missing ~/.agents/skills under skills.external_dirs (run setup/install-windows.ps1)"
     }
-} else {
+}
+else {
     Warn "  [hermes] executable 'hermes' not found in PATH (skills stay available for when it's installed)"
     OptMiss "  [hermes] not installed, skipping skills.external_dirs check"
 }
@@ -152,11 +161,14 @@ $bridgeTemplate = "$AIOSRoot\ai-config\templates\global-bridge.md.tmpl"
 $bridge = "$HomeDir\.ai-os\adapters\global-bridge.md"
 if (-not (Test-Path $bridgeTemplate)) {
     ReqFail "  bridge template missing: $bridgeTemplate"
-} elseif (-not (Test-Path $bridge)) {
+}
+elseif (-not (Test-Path $bridge)) {
     ReqFail "  rendered bridge missing: $bridge (run setup/install-windows.ps1)"
-} elseif (-not (Select-String -Path $bridge -SimpleMatch $AIOSRoot -Quiet)) {
+}
+elseif (-not (Select-String -Path $bridge -SimpleMatch $AIOSRoot -Quiet)) {
     ReqFail "  rendered bridge does not reference the discovered AI-OS root (stale render; run setup/install-windows.ps1)"
-} else {
+}
+else {
     ReqOk "  bridge rendered at $bridge (from $bridgeTemplate)"
 }
 $bridgeTargets = @(
@@ -176,13 +188,15 @@ foreach ($target in $bridgeTargets) {
     }
     if ($linked) {
         ReqOk "  $label → bridge"
-    } else {
+    }
+    else {
         ReqFail "  $label not linked to bridge (run setup/install-windows.ps1)"
     }
 }
 if ((Test-Path "$HomeDir\.hermes\SOUL.md") -and (Select-String -Path "$HomeDir\.hermes\SOUL.md" -SimpleMatch "AI-OS BRIDGE" -Quiet)) {
     OptOk "  ~/.hermes/SOUL.md carries AI-OS bridge block"
-} else {
+}
+else {
     OptMiss "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
 }
 
@@ -205,7 +219,8 @@ foreach ($skill in $superpowersSkills) {
 }
 if ($actual -eq $expected) {
     ReqOk "$actual/$expected superpowers skills OK"
-} else {
+}
+else {
     ReqFail "Only $actual/$expected superpowers skills installed"
 }
 
@@ -214,7 +229,8 @@ Section "5. PowerShell profile (optional)"
 $profilePath = $PROFILE.CurrentUserAllHosts
 if (Test-Path $profilePath) {
     OptOk "PowerShell profile exists"
-} else {
+}
+else {
     OptMiss "PowerShell profile not created (run install-windows.ps1)"
 }
 
@@ -226,12 +242,13 @@ Log "Optional/best-effort: $optOk present, $optMiss missing or not configured (d
 if ($reqFail -gt 0) {
     Err "$reqFail required check(s) failed"
     exit 1
-} else {
+}
+else {
     Ok "All required checks passed"
     if ($optMiss -gt 0) {
         Warn "$optMiss optional item(s) missing — see warnings above (not blocking)"
     }
     Write-Host ""
-    Ok "AI-OS is correctly installed. 🎉"
+    Ok "AI-OS is correctly installed."
     exit 0
 }
