@@ -43,11 +43,45 @@
 # the override and routed away from OpenAI's real Responses API). The
 # MiniMax → OpenAI wiring problem is FULLY RESOLVED.
 #
-# REMAINING BLOCKER (not a wiring issue): MiniMax's own API rejected the key
-# with `401 invalid api key (2049)`. This is a credentials/account issue on
-# MiniMax's side (expired/invalid key, wrong key type, or account balance),
-# not something fixable from this config. Edd needs to verify/refresh the key
-# in /Users/edd/Projects/configs/env.ts before add_memory can fully succeed.
+# UPDATE (2026-07-13, later same day): Edd provided a fresh MINIMAX_API_KEY.
+# Confirmed valid directly against MiniMax's endpoint (HTTP 200). The old
+# 401 is gone. TWO further compatibility issues then surfaced and were fixed
+# by patching the custom image (see Dockerfile.standalone.minimal +
+# patches/strip_think_tags.py for the full rationale/diffs):
+#
+# 1. MiniMax-M3 (and M2) are reasoning models that ALWAYS prepend a
+#    `<think>...</think>` block to their content, even under a JSON
+#    response_format (`usage.reasoning_tokens` is always present). graphiti-
+#    core's `OpenAIGenericClient._strip_code_fences` only strips ```json
+#    fences, not <think> blocks, so `json.loads()` failed with `Expecting
+#    value: line 1 column 1 (char 0)` despite the HTTP request itself
+#    succeeding (200 OK). FIX: patches/strip_think_tags.py patches the
+#    installed graphiti-core (pulled from PyPI, pinned to 0.29.2 — note 0.29.1
+#    predates the `_strip_code_fences` method entirely) to also strip a
+#    leading <think>...</think> block before parsing.
+#
+# 2. graphiti-core's default `structured_output_mode` is "json_schema", which
+#    sends `response_model.model_json_schema()` as-is. Pydantic emits nested
+#    models (e.g. `ExtractedEntities.extracted_entities: list[ExtractedEntity]`)
+#    as a `$ref`-only "items" schema with no explicit "type" key. MiniMax's
+#    json_schema validator is stricter than OpenAI's about this and rejects it
+#    with 400 "property 'extracted_entities[]' type '' invalid". FIX: patched
+#    mcp_server's `LLMClientFactory.create` (local project source, not PyPI —
+#    no image-layer patch needed) to force `structured_output_mode='json_object'`
+#    for any non-OpenAI provider (`use_generic_client=True`), which injects the
+#    schema into the prompt instead of enforcing it via the API.
+#
+# Non-reasoning model MiniMax-Text-01 was tried as a simpler alternative (no
+# <think> wrapping) but rejects response_format:"json_object" outright (400
+# "unknown response_format type") and its default json_schema mode still hits
+# issue #2 above — so it doesn't avoid the need for these patches either.
+# Models abab6.5-chat / abab6.5s-chat no longer exist on this account (400
+# "unknown model"). With both patches, end-to-end add_memory succeeded with
+# MiniMax-M3 — episode queued, processed, and written to FalkorDB with no
+# errors in the container logs.
+#
+# REMAINING (unchanged): the hardcoded OpenAIRerankerClient still needs a real
+# OPENAI_API_KEY for `search` specifically; `add_memory` does not need it.
 #
 # HARD LIMITATION FOUND (separate issue, same session): graphiti-core 1.0.2 (pinned in this image) also
 # instantiates a THIRD component — a cross-encoder/reranker
@@ -73,9 +107,9 @@ server:
   port: 8000
 
 llm:
-  provider: "openai"   # MiniMax impersonates "openai" via a custom api_url — same trick as the official Ollama example. NOT FUNCTIONAL on the currently pinned 1.0.2 image — see STATUS note above.
-  model: ${MINIMAX_MODEL:MiniMax-M3}
-  max_tokens: 4096
+  provider: "openai"   # MiniMax impersonates "openai" via a custom api_url — same trick as the official Ollama example. Confirmed working with the custom-built image (see STATUS note above).
+  model: ${MINIMAX_MODEL:MiniMax-M3}   # reasoning model — safe again now the image patches force json_object mode and strip <think> blocks, see STATUS note above
+  max_tokens: 16384   # M3's <think> reasoning counts against the same completion budget as the final JSON answer (MiniMax bills it as "reasoning_tokens", same pattern as OpenAI o1/o3) — 4096 was too small and caused truncated/malformed JSON ("Unterminated string", "Extra data") on the larger fact/edge-extraction schema specifically
   providers:
     openai:
       api_key: ${MINIMAX_API_KEY}

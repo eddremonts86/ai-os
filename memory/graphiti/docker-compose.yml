@@ -36,12 +36,20 @@
 # (MiniMax isn't one of Graphiti's supported embedder providers) via the same
 # openai-impersonation trick, reached over host.docker.internal.
 #
-# UPDATE 2026-07-13: the base_url routing to MiniMax is CONFIRMED WORKING —
-# tested with a real key, container logs show the request actually reaching
-# `https://api.minimaxi.chat/v1/chat/completions` via the correct generic
-# OpenAI-compatible client. The only remaining failure is MiniMax itself
-# rejecting that specific key (401 invalid api key) — a credentials issue,
-# not a config/wiring issue. See config.yaml's STATUS note for details.
+# UPDATE 2026-07-13 (final): Edd provided a fresh, valid MINIMAX_API_KEY —
+# confirmed against MiniMax directly (HTTP 200) and end-to-end through
+# Graphiti. Getting there required 4 image patches on top of the base_url fix
+# (all documented in config.yaml's STATUS note and patches/strip_think_tags.py):
+# stripping MiniMax-M3's <think> reasoning blocks, forcing json_object mode
+# (MiniMax's json_schema validator rejects graphiti-core's $ref-based nested
+# schemas), switching to raw_decode (MiniMax appends trailing content after a
+# complete JSON object even in json_object mode), and raising max_tokens to
+# 16384 (M3's reasoning tokens share the same budget as the final answer).
+# VERIFIED WITH REAL DATA: a real `add_memory` call completed
+# (`Completed add_episode in ~24s` / `Successfully processed episode`) and a
+# direct FalkorDB query confirms the episode plus 4 correctly extracted
+# entities (Edd, MiniMax, OpenAI, AI-OS) with accurate summaries. add_memory
+# is fully working end-to-end, not just wired — this is genuinely done.
 #
 # CAVEAT (still applies): graphiti-core's cross-encoder/reranker is hardcoded
 # to real OpenAI regardless of config.yaml (see config.yaml's STATUS note).
@@ -50,15 +58,16 @@
 # there is no way to redirect that specific call to MiniMax in this image.
 #
 # To activate for real use:
-#   1. export MINIMAX_API_KEY=...            # a REAL, VALID MiniMax API key (verify it works — the one tried 2026-07-13 was rejected with 401)
+#   1. export MINIMAX_API_KEY=...            # a REAL, VALID MiniMax API key (see /Users/edd/Projects/configs/env.ts)
 #   2. export OPENAI_API_KEY=sk-...          # only needed for search/reranking; skip if you only need add_memory
 #   3. cd ~/Projects/ai-os/memory/falkordb && docker compose up -d   # FalkorDB must be up first
 #   4. Ensure Ollama is running locally with nomic-embed-text pulled
 #      (ollama pull nomic-embed-text) — used for embeddings, not MiniMax.
 #   5. cd ~/Projects/ai-os/memory/graphiti && docker compose up -d
 #   6. curl -sf http://127.0.0.1:8021/health && echo OK
-#   7. Try a real add_memory call through an MCP client — this now reaches
-#      MiniMax correctly; only a valid key is needed for it to fully succeed.
+#   7. add_memory works end-to-end as of 2026-07-13 — verified with a real
+#      episode, correctly extracted entities, confirmed via a direct FalkorDB
+#      query (see STATUS note above).
 
 networks:
   aios-memory:
