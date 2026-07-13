@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en" data-theme="void">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>AI-OS</title>
+<meta name="description" content="AI-OS is a personal AI operating system built on Andrej Karpathy's Spec → Verifier → Environment method. One command. Flat skills across 6 CLIs. Mac, Windows, Linux." />
+<meta name="color-scheme" content="dark" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="AI-OS // Your AI setup, as an operating system" />
+<meta property="og:description" content="Spec → Verifier → Environment. One command setup. ~300 skills across 6 AI CLIs. Mac · Windows · Linux." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     AI-OS Landing — single-file, zero-build, phosphor-vapor theme
+     Palette in OKLCH. Motion enhances an always-visible default.
+     ============================================================ */
+  :root {
+    --void:    oklch(0.14 0.012 275);
+    --void-2:  oklch(0.11 0.012 275);
+    --panel:   oklch(0.18 0.016 275);
+    --panel-2: oklch(0.22 0.018 275);
+    --line:    oklch(0.30 0.02 275);
+    --ink:     oklch(0.97 0.006 275);
+    --muted:   oklch(0.72 0.014 275);
+    --faint:   oklch(0.56 0.014 275);
+
+    --acid:    oklch(0.88 0.19 128);   /* primary phosphor lime  */
+    --plasma:  oklch(0.70 0.24 349);   /* hot magenta            */
+    --cyan:    oklch(0.83 0.13 205);   /* electric cyan          */
+    --amber:   oklch(0.83 0.16 78);    /* warning amber          */
+
+    --radius: 14px;
+    --radius-sm: 9px;
+    --shadow: 0 8px 30px oklch(0.02 0 0 / 0.6);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);          /* ease-out-expo-ish */
+    --maxw: 1180px;
+
+    --z-bg: 0; --z-base: 1; --z-nav: 50; --z-boot: 100;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--void);
+    color: var(--ink);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  code, kbd, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--acid); color: var(--void); }
+
+  .wrap { width: min(100% - 2.5rem, var(--maxw)); margin-inline: auto; }
+  .eyebrow { font-family: "JetBrains Mono", monospace; font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acid); }
+
+  h1, h2, h3 { text-wrap: balance; margin: 0; letter-spacing: -0.03em; line-height: 1.02; }
+  p { text-wrap: pretty; }
+
+  .btn {
+    --bg: var(--acid); --fg: var(--void);
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 0.92rem;
+    padding: 0.8rem 1.25rem; border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--fg); border: 1px solid transparent;
+    cursor: pointer; transition: transform 0.35s var(--ease), filter 0.35s var(--ease), background 0.35s var(--ease);
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+  .btn.ghost { --bg: transparent; --fg: var(--ink); border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--acid); color: var(--acid); }
+
+  /* ---------- Boot overlay ---------- */
+  #boot {
+    position: fixed; inset: 0; z-index: var(--z-boot);
+    background: var(--void-2);
+    display: grid; place-items: center;
+    font-family: "JetBrains Mono", monospace;
+    transition: opacity 0.6s var(--ease), visibility 0.6s;
+  }
+  #boot.done { opacity: 0; visibility: hidden; }
+  .boot-inner { width: min(92vw, 640px); }
+  .boot-bar {
+    display: flex; align-items: center; gap: 0.6rem; color: var(--faint);
+    font-size: 0.78rem; margin-bottom: 1.1rem; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .boot-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 12px var(--acid); animation: pulse 1.1s var(--ease) infinite; }
+  @keyframes pulse { 50% { opacity: 0.25; } }
+  #boot-log { font-size: 0.86rem; line-height: 1.9; color: var(--muted); min-height: 260px; }
+  #boot-log .ok { color: var(--acid); }
+  #boot-log .warn { color: var(--amber); }
+  #boot-log b { color: var(--ink); font-weight: 500; }
+  .cursor { display: inline-block; width: 9px; height: 1.05em; translate: 0 2px; background: var(--acid); animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .boot-skip { margin-top: 1.6rem; color: var(--faint); font-size: 0.72rem; letter-spacing: 0.1em; }
+  .boot-skip button { background: none; border: 0; color: var(--cyan); cursor: pointer; font: inherit; text-decoration: underline; }
+
+  /* ---------- Canvas backdrop ---------- */
+  #net { position: fixed; inset: 0; z-index: var(--z-bg); opacity: 0.55; pointer-events: none; }
+  .veil { position: fixed; inset: 0; z-index: var(--z-bg); pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 50% 0%, oklch(0.7 0.18 349 / 0.10), transparent 70%),
+      radial-gradient(50% 40% at 85% 20%, oklch(0.83 0.13 205 / 0.08), transparent 70%);
+  }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: var(--z-nav);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: oklch(0.14 0.012 275 / 0.72);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s var(--ease), background 0.4s var(--ease);
+  }
+  nav.scrolled { border-color: var(--line); }
+  .nav-in { display: flex; align-items: center; gap: 1.5rem; padding: 0.85rem 0; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; font-family: "JetBrains Mono", monospace; font-weight: 700; letter-spacing: -0.02em; font-size: 1.02rem; }
+  .brand .glyph { width: 26px; height: 26px; border-radius: 7px; background: var(--acid); color: var(--void); display: grid; place-items: center; font-size: 0.8rem; box-shadow: 0 0 18px oklch(0.88 0.19 128 / 0.5); }
+  .nav-links { display: flex; gap: 1.4rem; margin-left: auto; font-family: "JetBrains Mono", monospace; font-size: 0.82rem; color: var(--muted); }
+  .nav-links a { position: relative; padding: 0.2rem 0; transition: color 0.3s var(--ease); }
+  .nav-links a:hover { color: var(--acid); }
+  .nav-cta { margin-left: 0.5rem; }
+  @media (max-width: 820px) { .nav-links { display: none; } .nav-cta { margin-left: auto; } }
+
+  /* ---------- Hero ---------- */
+  header.hero { position: relative; z-index: var(--z-base); padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(3rem, 6vw, 5rem); }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.4rem; }
+  .badge {
+    font-family: "JetBrains Mono", monospace; font-size: 0.72rem; letter-spacing: 0.04em;
+    padding: 0.32rem 0.7rem; border-radius: 100px; border: 1px solid var(--line); color: var(--muted);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+  }
+  .badge .d { width: 6px; height: 6px; border-radius: 50%; background: var(--acid); }
+  .badge .d.p { background: var(--plasma); }
+  .badge .d.c { background: var(--cyan); }
+
+  .hero h1 { font-size: clamp(2.7rem, 8vw, 5.4rem); font-weight: 700; }
+  .hero h1 .flick { color: var(--acid); }
+  .hero .lede { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.28rem); max-width: 46ch; margin: 1.3rem 0 1.9rem; }
+  .hero .lede b { color: var(--ink); font-weight: 500; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+  .cta-note { font-family: "JetBrains Mono", monospace; font-size: 0.76rem; color: var(--faint); }
+
+  /* terminal card */
+  .term {
+    background: var(--void-2); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden; font-family: "JetBrains Mono", monospace;
+  }
+  .term-bar { display: flex; align-items: center; gap: 0.55rem; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .term-bar .tb { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+  .term-bar .tb:nth-child(1) { background: var(--plasma); }
+  .term-bar .tb:nth-child(2) { background: var(--amber); }
+  .term-bar .tb:nth-child(3) { background: var(--acid); }
+  .term-bar .title { margin-left: 0.5rem; font-size: 0.74rem; color: var(--faint); letter-spacing: 0.06em; }
+  .term-body { padding: 1.1rem 1.1rem 1.3rem; font-size: 0.85rem; line-height: 1.85; min-height: 230px; }
+  .term-body .pr { color: var(--acid); }
+  .term-body .pth { color: var(--cyan); }
+  .term-body .cm { color: var(--ink); }
+  .term-body .out { color: var(--muted); }
+  .term-body .ok { color: var(--acid); }
+
+  /* ---------- Section scaffolding ---------- */
+  section { position: relative; z-index: var(--z-base); padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .sec-head { max-width: 60ch; margin-bottom: 2.6rem; }
+  .sec-head h2 { font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 600; margin-top: 0.7rem; }
+  .sec-head p { color: var(--muted); font-size: 1.08rem; margin-top: 0.9rem; }
+
+  .reveal { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    html.preanim .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    html.preanim .reveal.in { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .stat { background: var(--void-2); padding: 1.6rem 1.3rem; }
+  .stat .n { font-family: "JetBrains Mono", monospace; font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 700; color: var(--acid); letter-spacing: -0.04em; }
+  .stat:nth-child(2) .n { color: var(--plasma); }
+  .stat:nth-child(3) .n { color: var(--cyan); }
+  .stat:nth-child(4) .n { color: var(--amber); }
+  .stat .l { color: var(--muted); font-size: 0.86rem; margin-top: 0.35rem; }
+
+  /* ---------- Layers (what it does) ---------- */
+  .layers { display: grid; gap: 1rem; }
+  .layer {
+    display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: center;
+    background: var(--void-2); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 1.3rem 1.5rem; transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  .layer:hover { border-color: var(--acid); transform: translateX(4px); }
+  .layer .tag { font-family: "JetBrains Mono", monospace; font-size: 0.72rem; color: var(--void); background: var(--acid); padding: 0.35rem 0.6rem; border-radius: 7px; white-space: nowrap; align-self: start; }
+  .layer:nth-child(2) .tag { background: var(--cyan); }
+  .layer:nth-child(3) .tag { background: var(--plasma); }
+  .layer:nth-child(4) .tag { background: var(--amber); }
+  .layer h3 { font-size: 1.2rem; font-weight: 600; }
+  .layer p { color: var(--muted); font-size: 0.96rem; margin: 0.3rem 0 0; }
+  @media (max-width: 620px) { .layer { grid-template-columns: 1fr; } }
+
+  /* ---------- Method pipeline ---------- */
+  .pipe { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem; }
+  @media (max-width: 780px) { .pipe { grid-template-columns: repeat(2, 1fr); } }
+  .step {
+    position: relative; background: var(--void-2); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1.5rem 1.3rem; overflow: hidden;
+  }
+  .step::before { content: attr(data-n); position: absolute; top: 0.6rem; right: 0.9rem; font-family: "JetBrains Mono", monospace; font-size: 2.6rem; font-weight: 700; color: var(--panel-2); }
+  .step .k { font-family: "JetBrains Mono", monospace; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acid); }
+  .step h3 { font-size: 1.18rem; font-weight: 600; margin-top: 0.5rem; }
+  .step p { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+  .step .flow { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: linear-gradient(90deg, transparent, var(--acid)); transform: scaleX(0); transform-origin: left; transition: transform 0.9s var(--ease); }
+  .step.in .flow { transform: scaleX(1); }
+
+  /* ---------- Features (varied, not identical grid) ---------- */
+  .feat { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; }
+  .card { background: var(--void-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; transition: border-color 0.4s var(--ease); }
+  .card:hover { border-color: var(--cyan); }
+  .card h3 { font-size: 1.15rem; font-weight: 600; }
+  .card p { color: var(--muted); font-size: 0.94rem; margin-top: 0.5rem; }
+  .card .ic { font-family: "JetBrains Mono", monospace; color: var(--acid); font-size: 0.9rem; margin-bottom: 0.7rem; letter-spacing: 0.05em; }
+  .card.wide { grid-column: span 4; } .card.mid { grid-column: span 3; } .card.third { grid-column: span 2; }
+  @media (max-width: 900px) { .feat { grid-template-columns: 1fr; } .card.wide, .card.mid, .card.third { grid-column: auto; } }
+
+  /* ---------- Install ---------- */
+  .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start; }
+  @media (max-width: 880px) { .install-grid { grid-template-columns: 1fr; } }
+  .tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
+  .tab { font-family: "JetBrains Mono", monospace; font-size: 0.82rem; padding: 0.5rem 0.95rem; border-radius: 100px; border: 1px solid var(--line); color: var(--muted); background: none; cursor: pointer; transition: all 0.3s var(--ease); }
+  .tab[aria-selected="true"] { color: var(--void); background: var(--acid); border-color: var(--acid); }
+  .codeblock { position: relative; background: var(--void-2); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .codeblock pre { margin: 0; padding: 1.2rem 1.2rem; overflow-x: auto; font-family: "JetBrains Mono", monospace; font-size: 0.83rem; line-height: 1.9; color: var(--ink); }
+  .codeblock pre .c { color: var(--faint); }
+  .codeblock pre .g { color: var(--acid); }
+  .copy { position: absolute; top: 0.7rem; right: 0.7rem; font-family: "JetBrains Mono", monospace; font-size: 0.72rem; padding: 0.35rem 0.65rem; border-radius: 7px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); cursor: pointer; transition: all 0.3s var(--ease); }
+  .copy:hover { color: var(--acid); border-color: var(--acid); }
+  .copy.done { color: var(--void); background: var(--acid); border-color: var(--acid); }
+  .install-side { display: grid; gap: 1rem; }
+  .req { background: var(--void-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.5rem; }
+  .req h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.7rem; }
+  .req ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: 0.93rem; }
+  .req li { margin-bottom: 0.4rem; }
+  .req li::marker { color: var(--acid); }
+
+  /* ---------- CTA / footer ---------- */
+  .final { text-align: center; }
+  .final h2 { font-size: clamp(2rem, 6vw, 3.6rem); font-weight: 700; }
+  .final p { color: var(--muted); max-width: 52ch; margin: 1rem auto 2rem; }
+  footer { border-top: 1px solid var(--line); padding: 2.4rem 0; color: var(--faint); font-family: "JetBrains Mono", monospace; font-size: 0.8rem; }
+  .foot-in { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+  .foot-in a { color: var(--muted); } .foot-in a:hover { color: var(--acid); }
+
+  .kbd { font-family: "JetBrains Mono", monospace; font-size: 0.82rem; padding: 0.15rem 0.45rem; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; color: var(--muted); }
+  .ink { color: var(--ink); }
+  .center { justify-content: center; }
+</style>
+</head>
+<body>
+
+<!-- ============ BOOT OVERLAY ============ -->
+<div id="boot" role="dialog" aria-label="AI-OS boot sequence">
+  <div class="boot-inner">
+    <div class="boot-bar"><span class="boot-dot"></span> AI-OS · boot sequence</div>
+    <div id="boot-log" class="mono" aria-live="polite"></div>
+    <div class="boot-skip">press <span class="kbd">esc</span> or <button id="skip">skip boot →</button></div>
+  </div>
+</div>
+
+<canvas id="net" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand"><span class="glyph">◈</span> AI&#8209;OS</a>
+    <div class="nav-links">
+      <a href="#what">what</a>
+      <a href="#does">what it does</a>
+      <a href="#method">method</a>
+      <a href="#install">install</a>
+    </div>
+    <a href="#install" class="btn ghost nav-cta">$ install</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero wrap" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="badge-row">
+        <span class="badge"><span class="d"></span> Karpathy method</span>
+        <span class="badge"><span class="d c"></span> 6 AI CLIs</span>
+        <span class="badge"><span class="d p"></span> Mac · Win · Linux</span>
+      </div>
+      <h1>Your AI setup,<br />booted like an <span class="flick">operating&nbsp;system</span>.</h1>
+      <p class="lede">
+        AI-OS is the single source of truth for everything AI in your dev workflow.
+        <b>Spec → Verifier → Environment</b> as real workflows, ~300 skills shared across
+        every CLI, MCP servers as declarative YAML — all restored with <b>one command</b>.
+      </p>
+      <div class="cta-row">
+        <a href="#install" class="btn">$ bash setup/install-mac.sh</a>
+        <a href="#what" class="btn ghost">what is this? →</a>
+      </div>
+      <p class="cta-note">// new Mac to full AI setup in ~5 minutes.</p>
+    </div>
+
+    <div class="term" aria-hidden="true">
+      <div class="term-bar"><span class="tb"></span><span class="tb"></span><span class="tb"></span><span class="title">ai-os — zsh</span></div>
+      <div class="term-body" id="hero-term"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STATS ============ -->
+<section aria-label="At a glance">
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><div class="n" data-count="6">6</div><div class="l">AI CLIs, one config</div></div>
+      <div class="stat"><div class="n" data-count="300" data-suffix="+">300+</div><div class="l">skills, symlinked</div></div>
+      <div class="stat"><div class="n" data-count="10">10</div><div class="l">MCP servers (YAML)</div></div>
+      <div class="stat"><div class="n" data-count="1">1</div><div class="l">command to rebuild</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT ============ -->
+<section id="what">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// 01 · what is it</span>
+      <h2>The answer to “I just got a new Mac. How do I get my AI setup back?”</h2>
+      <p>
+        Most devs who use AI assistants daily end up with skills scattered across
+        <code>~/.claude/</code>, <code>~/.codex/</code>, MCP servers hardcoded with no version control,
+        and the Spec→Plan→Execute→Verify loop living only in their head. AI-OS puts all of it
+        in <b class="ink">one git repo</b>.
+      </p>
+    </div>
+
+    <div class="layers">
+      <div class="layer reveal">
+        <span class="tag">METHOD</span>
+        <div><h3>Spec → Verifier → Environment</h3>
+          <p>Karpathy's framework as 5 recurring workflows, 3 hard rule-sets, and 3 verifier gates applied after every task.</p></div>
+      </div>
+      <div class="layer reveal">
+        <span class="tag">SKILLS</span>
+        <div><h3>One source of truth, every CLI</h3>
+          <p>14 required superpowers + ~300 curated & vendored skills, symlinked into Claude Code, Codex, Gemini, Antigravity, Hermes & MiniMax.</p></div>
+      </div>
+      <div class="layer reveal">
+        <span class="tag">CONFIG</span>
+        <div><h3>MCP + dotfiles as code</h3>
+          <p>10 MCP servers as declarative YAML, generated at install. zsh, Warp, Brewfile & git config versioned in the same repo.</p></div>
+      </div>
+      <div class="layer reveal">
+        <span class="tag">CI</span>
+        <div><h3>Proven on 3 runners</h3>
+          <p>macOS, Linux & Windows CI validate the install scripts on every PR. The setup is idempotent and has a dry-run mode.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT IT DOES ============ -->
+<section id="does">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// 02 · what it does</span>
+      <h2>Three layers, symlinked top to bottom.</h2>
+      <p>Skills and config flow down from a single repo into every CLI, and every CLI reads from the same shell &amp; system underneath.</p>
+    </div>
+
+    <div class="feat">
+      <div class="card wide reveal">
+        <div class="ic">// layer 0 — ai-os</div>
+        <h3>The repo that owns everything</h3>
+        <p>18 master instructions in <code>CLAUDE.md</code>, 5 workflows, 3 rules, 3 verifiers, flat global skills + optional ECC / claude.tools bundles, and a replicable dev-env. Change it here, it propagates everywhere.</p>
+      </div>
+      <div class="card third reveal">
+        <div class="ic">// idempotent</div>
+        <h3>Run it twice, safely</h3>
+        <p>The installer never breaks on re-run. <code>DRY_RUN=1</code> simulates the whole thing without touching your system.</p>
+      </div>
+      <div class="card mid reveal">
+        <div class="ic">// layer 1 — clis</div>
+        <h3>Claude Code · Codex · Gemini · Antigravity · Hermes</h3>
+        <p>Each CLI reads skills from its own home dir — but those dirs are symlinks back to AI-OS. One edit, six assistants updated.</p>
+      </div>
+      <div class="card third reveal">
+        <div class="ic">// layer 2/3</div>
+        <h3>Shell &amp; system</h3>
+        <p>zsh + Oh My Zsh + p10k + Warp on Mac, PowerShell + Windows Terminal on Windows, Homebrew / apt underneath.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METHOD ============ -->
+<section id="method">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// 03 · the method</span>
+      <h2>Every non-trivial task runs the same loop.</h2>
+      <p>Spec quality first, verifier passes second, runtime evidence third. No “it builds, ship it.”</p>
+    </div>
+    <div class="pipe">
+      <div class="step reveal" data-n="1"><span class="k">Spec</span><h3>Define the objective</h3><p>One active spec: objective, acceptance criteria, non-goals, risks.</p><span class="flow"></span></div>
+      <div class="step reveal" data-n="2"><span class="k">Plan</span><h3>Break into blocks</h3><p>Blocks of ≤30 min, dispatched in parallel when independent.</p><span class="flow"></span></div>
+      <div class="step reveal" data-n="3"><span class="k">Execute</span><h3>Block by block</h3><p>Verify after each block. Sub-agents self-report; you check the handles.</p><span class="flow"></span></div>
+      <div class="step reveal" data-n="4"><span class="k">Verify</span><h3>6 gates per task</h3><p>Quality checklist, self-critique, source-check. Evidence before “done”.</p><span class="flow"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSTALL ============ -->
+<section id="install">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// 04 · install</span>
+      <h2>Clone. Run one script. Verify.</h2>
+      <p>Pick your OS. Copy the block. Most of the 30–60 min first install is just downloading packages.</p>
+    </div>
+
+    <div class="install-grid">
+      <div class="reveal">
+        <div class="tabs" role="tablist" aria-label="Operating system">
+          <button class="tab" role="tab" aria-selected="true" data-os="mac">macOS</button>
+          <button class="tab" role="tab" aria-selected="false" data-os="win">Windows</button>
+          <button class="tab" role="tab" aria-selected="false" data-os="linux">Linux</button>
+        </div>
+
+        <div class="codeblock" data-block="mac">
+          <button class="copy" data-copy>copy</button>
+          <pre><span class="c"># 1. clone</span>
+git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
+cd ~/Projects/ai-os
+
+<span class="c"># 2. install everything (Mac)</span>
+<span class="g">bash setup/install-mac.sh</span>
+
+<span class="c"># 3. verify (12 health-check sections)</span>
+bash setup/verify.sh</pre>
+        </div>
+
+        <div class="codeblock" data-block="win" hidden>
+          <button class="copy" data-copy>copy</button>
+          <pre><span class="c"># PowerShell as Admin</span>
+git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
+cd $HOME\Projects\ai-os
+
+<span class="g">powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1</span>
+powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1</pre>
+        </div>
+
+        <div class="codeblock" data-block="linux" hidden>
+          <button class="copy" data-copy>copy</button>
+          <pre><span class="c"># Debian / Ubuntu — same scripts, bash path</span>
+git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
+cd ~/Projects/ai-os
+
+<span class="g">bash setup/install-mac.sh</span>   <span class="c"># cross-platform installer</span>
+bash setup/verify.sh</pre>
+        </div>
+      </div>
+
+      <div class="install-side">
+        <div class="req reveal">
+          <h3>Prerequisites</h3>
+          <ul>
+            <li>Apple Silicon / Intel Mac, Windows 10-11, or Linux</li>
+            <li><code>git</code>, <code>curl</code> and an internet connection</li>
+            <li>~30–60 min for the first run (mostly downloads)</li>
+          </ul>
+        </div>
+        <div class="req reveal">
+          <h3>Optional layers</h3>
+          <ul>
+            <li><code>setup/install-ecc.sh</code> — +271 ECC skills</li>
+            <li><code>setup/install-claude-tools.sh</code> — +12 claude.tools / gstack skills</li>
+            <li><code>DRY_RUN=1</code> — simulate without touching your machine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">// end of boot</span>
+      <h2>Reboot your workflow.</h2>
+      <p>Stop reconfiguring six CLIs by hand. Put the method, the skills and the environment in one repo — and bring it back in one command.</p>
+      <div class="cta-row center">
+        <a href="https://github.com/eddremonts86/ai-os" class="btn" target="_blank" rel="noopener">◈ github.com/eddremonts86/ai-os</a>
+        <a href="#top" class="btn ghost">↑ back to top</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>AI-OS · Spec → Verifier → Environment · MIT</span>
+    <span><a href="https://github.com/eddremonts86/ai-os">source</a> · built with the method it describes</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Gate entrance animations behind a JS-only class so content is visible by
+  // default (no-JS, crawlers, headless renderers never see a blank page).
+  if (!reduce) document.documentElement.classList.add("preanim");
+
+  /* ---------- BOOT SEQUENCE ---------- */
+  const boot = document.getElementById("boot");
+  const bootLog = document.getElementById("boot-log");
+  const skip = document.getElementById("skip");
+  const lines = [
+    'AI-OS <b>v1</b> — Spec + Verifier + Environment',
+    '<span class="out">→ loading context/ ................</span> <span class="ok">ok</span>',
+    '<span class="out">→ mounting 14 superpowers skills .</span> <span class="ok">ok</span>',
+    '<span class="out">→ symlinking ~300 skills → 6 CLIs</span> <span class="ok">ok</span>',
+    '<span class="out">→ generating 10 MCP servers ......</span> <span class="ok">ok</span>',
+    '<span class="out">→ dev-env: zsh · warp · brewfile .</span> <span class="ok">ok</span>',
+    '<span class="warn">→ premature optimization ........ skipped</span>',
+    '<b>ready.</b> welcome back, dev.',
+  ];
+
+  function finishBoot() {
+    boot.classList.add("done");
+    document.body.style.overflow = "";
+    startHeroTerminal();
+  }
+
+  function runBoot() {
+    document.body.style.overflow = "hidden";
+    if (reduce) { bootLog.innerHTML = lines.map(l => "<div>" + l + "</div>").join(""); setTimeout(finishBoot, 700); return; }
+    let i = 0;
+    (function next() {
+      if (i >= lines.length) { setTimeout(finishBoot, 650); return; }
+      const div = document.createElement("div");
+      div.innerHTML = lines[i] + ' <span class="cursor"></span>';
+      bootLog.appendChild(div);
+      // remove cursor from previous line
+      const prev = bootLog.children[i - 1];
+      if (prev) { const c = prev.querySelector(".cursor"); if (c) c.remove(); }
+      i++;
+      setTimeout(next, 300 + Math.random() * 220);
+    })();
+  }
+
+  skip.addEventListener("click", finishBoot);
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape" && !boot.classList.contains("done")) finishBoot(); });
+
+  /* ---------- HERO TERMINAL (cycling commands) ---------- */
+  const heroTerm = document.getElementById("hero-term");
+  const seq = [
+    { t: 'git clone …/ai-os ~/Projects/ai-os', cls: 'cm' },
+    { t: 'cd ~/Projects/ai-os && bash setup/install-mac.sh', cls: 'cm' },
+    { o: '✓ 60+ brew packages · zsh · p10k' },
+    { o: '✓ ~300 skills → claude · codex · gemini · hermes' },
+    { o: '✓ 10 MCP servers generated' },
+    { t: 'bash setup/verify.sh', cls: 'cm' },
+    { o: '✓ 12/12 sections passed — ready.' },
+  ];
+  let heroStarted = false;
+  function startHeroTerminal() {
+    if (heroStarted) return;
+    heroStarted = true;
+    if (reduce) {
+      heroTerm.innerHTML = seq.map(s => s.t
+        ? '<div><span class="pr">➜</span> <span class="pth">ai-os</span> <span class="cm">' + s.t + '</span></div>'
+        : '<div><span class="ok">' + s.o + '</span></div>').join("");
+      return;
+    }
+    let idx = 0;
+    function typeLine() {
+      if (idx >= seq.length) { setTimeout(() => { heroTerm.innerHTML = ""; idx = 0; typeLine(); }, 3200); return; }
+      const item = seq[idx];
+      const line = document.createElement("div");
+      heroTerm.appendChild(line);
+      if (item.o) {
+        line.innerHTML = '<span class="ok">' + item.o + '</span>';
+        idx++; setTimeout(typeLine, 520);
+      } else {
+        let ch = 0;
+        const prefix = '<span class="pr">➜</span> <span class="pth">ai-os</span> ';
+        (function typeChar() {
+          line.innerHTML = prefix + '<span class="cm">' + item.t.slice(0, ch) + '</span><span class="cursor"></span>';
+          ch++;
+          if (ch <= item.t.length) setTimeout(typeChar, 26 + Math.random() * 40);
+          else { line.innerHTML = prefix + '<span class="cm">' + item.t + '</span>'; idx++; setTimeout(typeLine, 360); }
+        })();
+      }
+    }
+    typeLine();
+  }
+
+  /* ---------- NAV shadow ---------- */
+  const nav = document.getElementById("nav");
+  const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 12);
+  onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---------- Reveal on scroll ---------- */
+  const revealEls = document.querySelectorAll(".reveal, .step");
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+    // Failsafe: if the observer never fires (hidden tab, headless capture),
+    // reveal everything so nothing ships blank.
+    setTimeout(() => revealEls.forEach(el => el.classList.add("in")), 2600);
+  } else {
+    revealEls.forEach(el => el.classList.add("in"));
+  }
+
+  /* ---------- Count-up stats ---------- */
+  const counted = new WeakSet();
+  if (!reduce && "IntersectionObserver" in window) {
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting || counted.has(e.target)) return;
+        counted.add(e.target);
+        const target = +e.target.dataset.count;
+        const suffix = e.target.dataset.suffix || "";
+        const dur = 1100; const t0 = performance.now();
+        (function tick(now) {
+          const p = Math.min(1, (now - t0) / dur);
+          const val = Math.round((1 - Math.pow(1 - p, 3)) * target);
+          e.target.textContent = val + (p === 1 ? suffix : "");
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll(".stat .n[data-count]").forEach(el => cio.observe(el));
+  }
+
+  /* ---------- Install tabs ---------- */
+  const tabs = document.querySelectorAll(".tab");
+  const blocks = document.querySelectorAll(".codeblock[data-block]");
+  tabs.forEach(tab => tab.addEventListener("click", () => {
+    tabs.forEach(t => t.setAttribute("aria-selected", "false"));
+    tab.setAttribute("aria-selected", "true");
+    blocks.forEach(b => b.hidden = b.dataset.block !== tab.dataset.os);
+  }));
+
+  /* ---------- Copy buttons ---------- */
+  document.querySelectorAll("[data-copy]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const pre = btn.parentElement.querySelector("pre");
+      try {
+        await navigator.clipboard.writeText(pre.innerText.trim());
+        btn.textContent = "copied ✓"; btn.classList.add("done");
+        setTimeout(() => { btn.textContent = "copy"; btn.classList.remove("done"); }, 1600);
+      } catch { btn.textContent = "select + ⌘C"; }
+    });
+  });
+
+  /* ---------- Canvas: skill constellation ---------- */
+  const canvas = document.getElementById("net");
+  if (canvas && !reduce) {
+    const ctx = canvas.getContext("2d");
+    let w, h, nodes, raf;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const colors = ["oklch(0.88 0.19 128)", "oklch(0.70 0.24 349)", "oklch(0.83 0.13 205)"];
+
+    function resize() {
+      w = canvas.width = innerWidth * DPR;
+      h = canvas.height = innerHeight * DPR;
+      canvas.style.width = innerWidth + "px";
+      canvas.style.height = innerHeight + "px";
+      const count = innerWidth < 700 ? 34 : 64;
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.28 * DPR, vy: (Math.random() - 0.5) * 0.28 * DPR,
+        r: (Math.random() * 1.6 + 0.6) * DPR, c: colors[(Math.random() * colors.length) | 0],
+      }));
+    }
+    const LINK = 140 * DPR;
+    function frame() {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j], dx = n.x - m.x, dy = n.y - m.y, d = Math.hypot(dx, dy);
+          if (d < LINK) {
+            ctx.globalAlpha = (1 - d / LINK) * 0.22;
+            ctx.strokeStyle = "oklch(0.88 0.19 128)";
+            ctx.lineWidth = 0.6 * DPR;
+            ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 0.9;
+      for (const n of nodes) {
+        ctx.fillStyle = n.c;
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    resize(); frame();
+    let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(resize, 200); }, { passive: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) cancelAnimationFrame(raf); else frame();
+    });
+  }
+
+  /* ---------- kick off ---------- */
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", runBoot);
+  else runBoot();
+})();
+</script>
+</body>
+</html>
