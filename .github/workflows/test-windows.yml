@@ -21,7 +21,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install yq
         # Use mikefarah/yq v4 (not choco which can be old/incompatible)
@@ -60,7 +60,7 @@ jobs:
 
       - name: Run install-windows.ps1 (DRY_RUN)
         env:
-          DRY_RUN: '1'
+          DRY_RUN: "1"
         run: pwsh -File ./setup/install-windows.ps1
 
       - name: Verify ECC integration (--check)

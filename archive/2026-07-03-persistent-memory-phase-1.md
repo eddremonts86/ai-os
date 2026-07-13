@@ -7,15 +7,15 @@
 
 ## 0. Decision summary (locked)
 
-| Layer | Pick | Port | Why |
-|---|---|---|---|
-| **Code indexer (MCP)** | `codebase-memory-mcp` (deusdata, 24,615★, pushed 2026-07-02) | stdio | 158 langs, sub-ms, single static binary, MCP-standard. **Binary install:** download `codebase-memory-mcp-darwin-arm64.tar.gz` from v0.8.1 release (Apple Silicon), extract to `~/.local/bin/` |
-| **Embeddings** | `Ollama` + `nomic-embed-text` (274MB) | 11500 | Free, private, Apple Silicon native |
-| **Semantic search (MCP)** | `grepai` (yoanbernabeu/grepai, 1,770★) | stdio | 100% local, MCP server, uses Ollama |
-| **Graph DB** | `FalkorDB` (Docker, 4,709★) | redis 6390, web 3300 | OpenCypher, sparse-matrix adjacency, **Web UI at :3300** |
-| **Graph memory (MCP)** | `graphiti-core[falkordb]` (getzep, 28,294★) | stdio | Bi-temporal, integrates with FalkorDB |
-| **Visual feedback** | CLI `ai-os memory status` + FalkorDB Browser :3300 + colored logs | n/a | User requirement: visual feedback |
-| **Compatibility** | All MCPs (works with Hermes/Claude/Codex/Gemini/Antigravity/MiniMax) | n/a | User requirement: all agents |
+| Layer                     | Pick                                                                 | Port                 | Why                                                                                                                                                                                           |
+| ------------------------- | -------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Code indexer (MCP)**    | `codebase-memory-mcp` (deusdata, 24,615★, pushed 2026-07-02)         | stdio                | 158 langs, sub-ms, single static binary, MCP-standard. **Binary install:** download `codebase-memory-mcp-darwin-arm64.tar.gz` from v0.8.1 release (Apple Silicon), extract to `~/.local/bin/` |
+| **Embeddings**            | `Ollama` + `nomic-embed-text` (274MB)                                | 11500                | Free, private, Apple Silicon native                                                                                                                                                           |
+| **Semantic search (MCP)** | `grepai` (yoanbernabeu/grepai, 1,770★)                               | stdio                | 100% local, MCP server, uses Ollama                                                                                                                                                           |
+| **Graph DB**              | `FalkorDB` (Docker, 4,709★)                                          | redis 6390, web 3300 | OpenCypher, sparse-matrix adjacency, **Web UI at :3300**                                                                                                                                      |
+| **Graph memory (MCP)**    | `graphiti-core[falkordb]` (getzep, 28,294★)                          | stdio                | Bi-temporal, integrates with FalkorDB                                                                                                                                                         |
+| **Visual feedback**       | CLI `ai-os memory status` + FalkorDB Browser :3300 + colored logs    | n/a                  | User requirement: visual feedback                                                                                                                                                             |
+| **Compatibility**         | All MCPs (works with Hermes/Claude/Codex/Gemini/Antigravity/MiniMax) | n/a                  | User requirement: all agents                                                                                                                                                                  |
 
 **Real verification (via `gh api` 2026-07-03):** all 3 repos confirmed real + active + pushed recently. The
 `wenb1n-dev/grepai` reference in the research report was incorrect — the real owner is `yoanbernabeu/grepai`.
@@ -49,30 +49,31 @@ must run first to verify the stack actually starts.
 
 ## 2. Tasks (8 total, all completed at the code level)
 
-| # | Task | Code complete | Runtime verified |
-|---|---|---|---|
-| 1.1 | Brewfile + .env + memory dir | ✅ | ⏳ requires `bash setup/install-mac.sh` |
-| 1.2 |3 new MCPs (codebase-mcp, grepai, graphiti) | ✅ | ⏳ requires install + Hermes restart |
-| 1.3 |FalkorDB Docker compose with custom ports | ✅ | ⏳ requires `docker compose up -d` |
-| 1.4 |Env template (`.env.example`) with port assignments | ✅ | n/a |
-| 1.5 |Codebase-memory-mcp binary download (curl GitHub releases) | ✅ | ⏳ requires `curl` access to github.com |
-| 1.6 |Ollama install + nomic-embed-text pull | ✅ | ⏳ requires `brew install ollama` |
-| 1.7 |`ai-os memory` CLI (status/browse/start/stop/logs/query/reindex/sync-sessions) | ✅ | ✅ (help + status tested, both return clean output) |
-| 1.8 |Weekly cron script (`memory/cron-reindex.sh`) | ✅ | ⏳ requires `hermes cronjob create` registration |
-| 1.9 |Skill `ai-os-memory` (loadable as `--skills ai-os-memory`) | ✅ | n/a (text-only) |
+| #   | Task                                                                           | Code complete | Runtime verified                                    |
+| --- | ------------------------------------------------------------------------------ | ------------- | --------------------------------------------------- |
+| 1.1 | Brewfile + .env + memory dir                                                   | ✅            | ⏳ requires `bash setup/install-mac.sh`             |
+| 1.2 | 3 new MCPs (codebase-mcp, grepai, graphiti)                                    | ✅            | ⏳ requires install + Hermes restart                |
+| 1.3 | FalkorDB Docker compose with custom ports                                      | ✅            | ⏳ requires `docker compose up -d`                  |
+| 1.4 | Env template (`.env.example`) with port assignments                            | ✅            | n/a                                                 |
+| 1.5 | Codebase-memory-mcp binary download (curl GitHub releases)                     | ✅            | ⏳ requires `curl` access to github.com             |
+| 1.6 | Ollama install + nomic-embed-text pull                                         | ✅            | ⏳ requires `brew install ollama`                   |
+| 1.7 | `ai-os memory` CLI (status/browse/start/stop/logs/query/reindex/sync-sessions) | ✅            | ✅ (help + status tested, both return clean output) |
+| 1.8 | Weekly cron script (`memory/cron-reindex.sh`)                                  | ✅            | ⏳ requires `hermes cronjob create` registration    |
+| 1.9 | Skill `ai-os-memory` (loadable as `--skills ai-os-memory`)                     | ✅            | n/a (text-only)                                     |
 
 ## 3. Port policy (locked — Edd's requirement)
 
-| Service | Port | Reason |
-|---|---|---|
-| FalkorDB Redis protocol | **6390** | Offset from default 6379 to avoid conflict; outside 3000-3050 |
-| FalkorDB Web UI (Browser) | **3300** | Just above Edd's 3000-3050 range; offset from default 3000 |
-| Ollama API | **11500** | Offset from default 11434; far from 3000-3050 |
-| codebase-memory-mcp | (stdio, no port) | Single binary, MCP stdio transport |
-| grepai | (stdio, no port) | Single binary, MCP stdio transport |
-| graphiti MCP | (stdio, no port) | `uv run` invocation, MCP stdio transport |
+| Service                   | Port             | Reason                                                        |
+| ------------------------- | ---------------- | ------------------------------------------------------------- |
+| FalkorDB Redis protocol   | **6390**         | Offset from default 6379 to avoid conflict; outside 3000-3050 |
+| FalkorDB Web UI (Browser) | **3300**         | Just above Edd's 3000-3050 range; offset from default 3000    |
+| Ollama API                | **11500**        | Offset from default 11434; far from 3000-3050                 |
+| codebase-memory-mcp       | (stdio, no port) | Single binary, MCP stdio transport                            |
+| grepai                    | (stdio, no port) | Single binary, MCP stdio transport                            |
+| graphiti MCP              | (stdio, no port) | `uv run` invocation, MCP stdio transport                      |
 
 If any port conflicts arise, edit in 3 places:
+
 1. `memory/falkordb/docker-compose.yml` (the canonical "what we bind")
 2. `dev-env/.env.example` (documentation)
 3. `memory/ai-os-memory.sh` (the CLI's defaults)
@@ -130,6 +131,7 @@ hermes chat --skills ai-os-memory
 ## 7. Acceptance gates (run after `bash setup/install-mac.sh`)
 
 Apply after the install runs:
+
 - `verifiers/source_check_prompt.md` on any URLs cited.
 - `verifiers/critic_prompt.md` on the changes.
 - `verification-before-completion` skill on the runtime.

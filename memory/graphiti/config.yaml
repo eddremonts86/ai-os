@@ -134,21 +134,21 @@ server:
   port: 8000
 
 llm:
-  provider: "openai"   # MiniMax impersonates "openai" via a custom api_url — same trick as the official Ollama example. Confirmed working with the custom-built image (see STATUS note above).
-  model: ${MINIMAX_MODEL:MiniMax-M3}   # reasoning model — safe again now the image patches force json_object mode and strip <think> blocks, see STATUS note above
-  max_tokens: 16384   # M3's <think> reasoning counts against the same completion budget as the final JSON answer (MiniMax bills it as "reasoning_tokens", same pattern as OpenAI o1/o3) — 4096 was too small and caused truncated/malformed JSON ("Unterminated string", "Extra data") on the larger fact/edge-extraction schema specifically
+  provider: "openai" # MiniMax impersonates "openai" via a custom api_url — same trick as the official Ollama example. Confirmed working with the custom-built image (see STATUS note above).
+  model: ${MINIMAX_MODEL:MiniMax-M3} # reasoning model — safe again now the image patches force json_object mode and strip <think> blocks, see STATUS note above
+  max_tokens: 16384 # M3's <think> reasoning counts against the same completion budget as the final JSON answer (MiniMax bills it as "reasoning_tokens", same pattern as OpenAI o1/o3) — 4096 was too small and caused truncated/malformed JSON ("Unterminated string", "Extra data") on the larger fact/edge-extraction schema specifically
   providers:
     openai:
       api_key: ${MINIMAX_API_KEY}
       api_url: ${MINIMAX_BASE_URL:https://api.minimaxi.chat/v1}
 
 embedder:
-  provider: "openai"   # Ollama (local, already running for the rest of the AI-OS memory stack) impersonates "openai" the same way
+  provider: "openai" # Ollama (local, already running for the rest of the AI-OS memory stack) impersonates "openai" the same way
   model: ${EMBEDDER_MODEL:nomic-embed-text}
-  dimensions: 768   # nomic-embed-text's native dimension (not OpenAI's 1536)
+  dimensions: 768 # nomic-embed-text's native dimension (not OpenAI's 1536)
   providers:
     openai:
-      api_key: "ollama"   # dummy — Ollama's OpenAI-compatible endpoint doesn't check it
+      api_key: "ollama" # dummy — Ollama's OpenAI-compatible endpoint doesn't check it
       api_url: "http://host.docker.internal:11500/v1"
 
 database:

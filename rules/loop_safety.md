@@ -5,14 +5,14 @@ AI-OS. Every loop must declare its level before scheduling.
 
 ## The 6 Levels
 
-| Level | Name | What it does | Examples |
-|---|---|---|---|
-| 1 | Read only | reads files / tickets / logs / issues | daily project review, CI log triage |
-| 2 | Draft outputs | writes to `outputs/` only — reports, plans, recommendations | PR review draft, standup note |
-| 3 | Sandbox edits | modifies files inside a controlled sandbox (branch / worktree) | code refactor in feature branch |
-| 4 | Draft external actions | prepares but does NOT send: PR, Slack message, ticket update | PR description, Slack draft |
-| 5 | Human-approved actions | applies changes only after explicit human approval | merge PR, send email |
-| 6 | Automated low-risk actions | completes narrowly scoped tasks automatically — with logs, limits, rollback | daily backup, weekly housekeeping |
+| Level | Name                       | What it does                                                                | Examples                            |
+| ----- | -------------------------- | --------------------------------------------------------------------------- | ----------------------------------- |
+| 1     | Read only                  | reads files / tickets / logs / issues                                       | daily project review, CI log triage |
+| 2     | Draft outputs              | writes to `outputs/` only — reports, plans, recommendations                 | PR review draft, standup note       |
+| 3     | Sandbox edits              | modifies files inside a controlled sandbox (branch / worktree)              | code refactor in feature branch     |
+| 4     | Draft external actions     | prepares but does NOT send: PR, Slack message, ticket update                | PR description, Slack draft         |
+| 5     | Human-approved actions     | applies changes only after explicit human approval                          | merge PR, send email                |
+| 6     | Automated low-risk actions | completes narrowly scoped tasks automatically — with logs, limits, rollback | daily backup, weekly housekeeping   |
 
 ## Rule: Level <= 3 by Default
 
@@ -21,6 +21,7 @@ satisfies the task. Promotion requires repeated successful runs at
 the prior level.
 
 **No loop may run above level 3 without:**
+
 - at least 5 successful manual runs at the prior level
 - an explicit human promotion recorded in `memory/loop_state/PROGRESS.md`
 - a documented failure / rollback policy in the loop's `LOOP_INSTRUCTIONS.md`
@@ -82,6 +83,7 @@ powerful".
 ## Compatibility
 
 These rules are vendor-neutral — they apply equally to:
+
 - Hermes (AI-OS default)
 - Claude Code
 - Codex CLI

@@ -80,17 +80,20 @@ Si algo de estos no te gusta, decime antes de aprobar y ajusto.
 ## 9. Subtareas / bloques
 
 **Bloque 1: Diseñar estructura** (< 10 min)
+
 - Leer `skills/skill_template.md` (template) + `~/.claude/skills/ai-os-karpathy/SKILL.md` (referencia).
 - Decidir: frontmatter, secciones, contenido único vs duplicar.
 - Output: estructura definida (borrador mental o en chat).
 
 **Bloque 2: Escribir contenido** (< 15 min)
+
 - Crear `~/.claude/skills/ai-os-quickstart/SKILL.md`.
 - Frontmatter con `name`, `description`, `license`, `metadata.hermes.tags`.
 - Secciones: When to use, Prerequisites, Procedure, Quick start examples, Related.
 - Output: archivo completo.
 
 **Bloque 3: Distribuir y verificar** (< 5 min)
+
 - Crear symlinks en los 4 CLIs restantes.
 - `hermes skills list` → verificar.
 - Test con `hermes chat -q "quickstart test" --skills ai-os-quickstart`.
@@ -110,11 +113,11 @@ Si algo de estos no te gusta, decime antes de aprobar y ajusto.
 
 ## Plan ejecutable (writing-plans skill)
 
-| Bloque | Acción | Output | Tiempo | Verificación |
-|---|---|---|---|---|
-| 1 | Diseñar estructura | Definición inline de frontmatter + secciones | < 10 min | Revisión con Eddy inline |
-| 2 | Escribir contenido | `~/.claude/skills/ai-os-quickstart/SKILL.md` | < 15 min | File exists + frontmatter válido |
-| 3 | Distribuir + verificar | Symlinks en 4 CLIs + Hermes la ve + test OK + commit | < 5 min | `hermes skills list` + test end-to-end |
+| Bloque | Acción                 | Output                                               | Tiempo   | Verificación                           |
+| ------ | ---------------------- | ---------------------------------------------------- | -------- | -------------------------------------- |
+| 1      | Diseñar estructura     | Definición inline de frontmatter + secciones         | < 10 min | Revisión con Eddy inline               |
+| 2      | Escribir contenido     | `~/.claude/skills/ai-os-quickstart/SKILL.md`         | < 15 min | File exists + frontmatter válido       |
+| 3      | Distribuir + verificar | Symlinks en 4 CLIs + Hermes la ve + test OK + commit | < 5 min  | `hermes skills list` + test end-to-end |
 
 ## Estado
 

@@ -4,11 +4,11 @@
 
 ## Workflows
 
-| Workflow | OS | Triggers | Estimated time |
-|---|---|---|---|
-| `test-mac.yml` | `macos-latest` (GitHub runner) | PR + push to main | 3-5 min |
-| `test-linux.yml` | `ubuntu-latest` (GitHub runner) | PR + push to main | 2-3 min |
-| `test-windows.yml` | `windows-latest` (GitHub runner) | PR + push to main | 5-8 min |
+| Workflow           | OS                               | Triggers          | Estimated time |
+| ------------------ | -------------------------------- | ----------------- | -------------- |
+| `test-mac.yml`     | `macos-latest` (GitHub runner)   | PR + push to main | 3-5 min        |
+| `test-linux.yml`   | `ubuntu-latest` (GitHub runner)  | PR + push to main | 2-3 min        |
+| `test-windows.yml` | `windows-latest` (GitHub runner) | PR + push to main | 5-8 min        |
 
 ## What they test
 
@@ -78,6 +78,7 @@ To run manually: Actions tab â†’ "Test macOS" / "Test Linux" / "Test Windows" â†
 ## Costs
 
 GitHub Actions:
+
 - **macOS runner:** 10x more expensive than linux (~$0.08/min).
 - **Linux runner:** free for public repos, free up to 2000 min/month for private.
 - **Windows runner:** 2x more expensive than linux.
