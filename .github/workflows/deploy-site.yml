@@ -1,17 +1,19 @@
 # -----------------------------------------------------------------------------
-# Deploy the AI-OS landing (site/) to a Hetzner VPS over SSH/rsync.
+# Deploy the AI-OS landing (site/) by triggering a Coolify deployment.
 #
-# SAFE BY DEFAULT: until the 6 secrets below are set, this workflow runs a
-# green no-op (the guard step skips everything). It never breaks CI and never
-# sends failure noise. Setting the secrets "switches it on".
+# The landing runs as a Coolify application on the conductor-01 Hetzner VPS,
+# built from the repo-root Dockerfile (nginx serving site/) and routed by
+# Traefik at https://ai-os.eduardoinerarte.dk. Coolify clones the PRIVATE repo
+# with its stored deploy key, so this workflow only needs to POKE Coolify to
+# pull + rebuild on each push.
 #
-# One-time activation (see setup/deploy/README.md for full steps):
-#   gh secret set HETZNER_HOST         # server IP or hostname
-#   gh secret set HETZNER_USER         # ssh user (e.g. deploy)
-#   gh secret set HETZNER_SSH_KEY      # private key (multiline) for that user
-#   gh secret set HETZNER_KNOWN_HOSTS  # output of: ssh-keyscan <host>
-#   gh secret set HETZNER_DEPLOY_PATH  # dedicated dir, e.g. /var/www/ai-os
-#   gh secret set SITE_URL             # https URL to verify, e.g. https://ai-os.example.com
+# SAFE BY DEFAULT: until the 3 secrets below are set, this runs a green no-op.
+#
+# Activation (values live in dev-env/env-config/.env — see setup/deploy/README.md):
+#   gh secret set COOLIFY_API_URL     # e.g. http://178.105.106.79:8000
+#   gh secret set COOLIFY_API_TOKEN   # Coolify API token (Bearer)
+#   gh secret set COOLIFY_APP_UUID    # the ai-os-landing app uuid
+#   gh secret set SITE_URL            # optional, e.g. https://ai-os.eduardoinerarte.dk
 # -----------------------------------------------------------------------------
 name: Deploy site
 
@@ -20,8 +22,8 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "Dockerfile"
       - ".github/workflows/deploy-site.yml"
-      - ".github/nginx/ai-os.conf.example"
   workflow_dispatch:
 
 permissions:
@@ -29,72 +31,60 @@ permissions:
 
 concurrency:
   group: deploy-site
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    name: rsync site/ to Hetzner
+    name: Trigger Coolify deployment
     runs-on: ubuntu-latest
     steps:
       - name: Guard — is deploy configured?
         id: guard
         env:
-          HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
-          if [ -z "$HETZNER_HOST" ]; then
-            echo "::notice title=Deploy skipped::HETZNER_HOST secret is not set — deploy pipeline is wired but not activated yet. See setup/deploy/README.md."
+          if [ -z "$COOLIFY_APP_UUID" ]; then
+            echo "::notice title=Deploy skipped::COOLIFY_APP_UUID secret is not set — pipeline wired but not activated. See setup/deploy/README.md."
             echo "configured=false" >> "$GITHUB_OUTPUT"
           else
             echo "configured=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Checkout
-        if: steps.guard.outputs.configured == 'true'
-        uses: actions/checkout@v4
-
-      - name: Configure SSH
+      - name: Trigger Coolify deploy
         if: steps.guard.outputs.configured == 'true'
         env:
-          SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
-          KNOWN_HOSTS: ${{ secrets.HETZNER_KNOWN_HOSTS }}
-        run: |
-          mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-
-      - name: Deploy (rsync)
-        if: steps.guard.outputs.configured == 'true'
-        env:
-          DEPLOY_HOST: ${{ secrets.HETZNER_HOST }}
-          DEPLOY_USER: ${{ secrets.HETZNER_USER }}
-          DEPLOY_PATH: ${{ secrets.HETZNER_DEPLOY_PATH }}
+          COOLIFY_API_URL: ${{ secrets.COOLIFY_API_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set -euo pipefail
-          echo "Dry run first (no changes applied):"
-          rsync -az --delete --dry-run \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes" \
-            site/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
-          echo "Applying:"
-          rsync -az --delete \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes" \
-            site/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
+          echo "Requesting deployment of ${COOLIFY_APP_UUID} …"
+          code=$(curl -sS -o /tmp/deploy.json -w '%{http_code}' --max-time 30 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_API_URL%/}/api/v1/deploy?uuid=${COOLIFY_APP_UUID}&force=false")
+          echo "Coolify responded HTTP ${code}:"
+          cat /tmp/deploy.json; echo
+          case "$code" in
+            2*) echo "✓ Deployment queued." ;;
+            *)  echo "::error title=Deploy trigger failed::Coolify returned HTTP ${code}"; exit 1 ;;
+          esac
 
-      - name: Verify (curl)
+      - name: Verify (curl, best-effort)
         if: steps.guard.outputs.configured == 'true'
         env:
           SITE_URL: ${{ secrets.SITE_URL }}
         run: |
           set -euo pipefail
           if [ -z "${SITE_URL:-}" ]; then
-            echo "::warning::SITE_URL not set — skipping HTTP verification."
+            echo "::notice::SITE_URL not set — skipping HTTP check (Coolify builds asynchronously)."
             exit 0
           fi
-          code=$(curl -fsS -o /dev/null -w '%{http_code}' --max-time 20 "$SITE_URL" || true)
-          echo "HTTP ${code} from ${SITE_URL}"
-          if [ "$code" != "200" ]; then
-            echo "::error title=Verification failed::expected HTTP 200, got ${code}"
-            exit 1
-          fi
-          echo "✓ Live and serving 200."
+          echo "Waiting ~40s for the Coolify build to roll out, then probing ${SITE_URL} …"
+          sleep 40
+          for i in 1 2 3 4 5; do
+            code=$(curl -fsS -o /dev/null -w '%{http_code}' --max-time 15 "$SITE_URL" || true)
+            echo "attempt ${i}: HTTP ${code}"
+            [ "$code" = "200" ] && { echo "✓ Live."; exit 0; }
+            sleep 15
+          done
+          echo "::warning::Site not 200 yet — the Coolify build may still be running. Check the Coolify dashboard."

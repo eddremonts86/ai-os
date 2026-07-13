@@ -1,74 +1,61 @@
-# Deploy: AI-OS landing → Hetzner
+# Deploy: AI-OS landing → Coolify (conductor-01 / Hetzner)
 
-The landing in [`site/`](../../site/) is published to a Hetzner VPS by the
-[`deploy-site`](../../.github/workflows/deploy-site.yml) GitHub Actions workflow
-on every push to `main` that touches `site/**`.
+The landing in [`site/`](../../site/) runs as a **Coolify application** on the
+single Hetzner VPS `conductor-01` (`178.105.106.79`), built from the repo-root
+[`Dockerfile`](../../Dockerfile) (nginx serving `site/`) and routed by Traefik
+at **https://ai-os.eduardoinerarte.dk** (the `*.eduardoinerarte.dk` wildcard DNS
+already resolves to the server, so no DNS changes are needed).
 
-The pipeline is **wired but safe-by-default**: until the six secrets below are
-set on the GitHub repo, the workflow runs a green no-op (it never breaks CI and
-never emails failures). Setting the secrets activates the real deploy.
+`push to main → GitHub Actions → Coolify /api/v1/deploy → Traefik + TLS`.
 
-## Mechanism
+The [`deploy-site`](../../.github/workflows/deploy-site.yml) workflow triggers a
+Coolify deployment on every push to `main` that touches `site/**` or the
+`Dockerfile`. It is **safe-by-default**: until the repo secrets below exist it
+runs a green no-op.
 
-```
-push to main (site/**) ──> GitHub Actions ──> rsync over SSH ──> nginx (static) ──> curl 200 check
-```
+## Why Coolify (not rsync/nginx)
 
-No container runtime, no Node in production. Reproducible: re-running the same
-commit produces the same result. Only the dedicated deploy directory is
-touched (`rsync --delete`), so other vhosts on the box are never affected.
+`conductor-01` is Coolify-managed; Traefik owns ports 80/443 and terminates TLS
+for ~9 apps (budget, countdown, profile, geo, voice, …). A hand-rolled nginx
+vhost would fight Traefik. The correct integration is a Coolify app so Traefik
+routes and certs it like every other app on the box.
 
-## One-time activation
+## Infra facts (from dev-env/env-config/.env)
 
-### 1. On the Hetzner server
+- Server: `conductor-01`, `178.105.106.79`, Coolify at `:8000`.
+- Coolify project `azrrxo4r5i0b45sfpcc9dayq`, server `y711krrsfpdsjs72iyqi2xjc`.
+- Private repo cloned via Coolify deploy key `aic98e4k8s0hl4zjqatgga77`
+  ("GitHub deploy key (eddremonts86)").
+- The app is built dockerfile-style: `dockerfile_location=/Dockerfile`,
+  `base_directory=/`, `ports_exposes=80`.
 
-```bash
-# Dedicated web root (MUST match HETZNER_DEPLOY_PATH below)
-sudo mkdir -p /var/www/ai-os
-sudo chown "$USER":"$USER" /var/www/ai-os
+## Activation (GitHub repo secrets)
 
-# A restricted deploy key for CI (run on the server or locally)
-ssh-keygen -t ed25519 -f ~/.ssh/ai-os-deploy -C "ai-os-deploy-github-actions" -N ""
-# Append the PUBLIC key to the deploy user's authorized_keys, ideally restricted:
-#   command="rsync ...",no-pty,no-agent-forwarding,no-X11-forwarding <pubkey>
-cat ~/.ssh/ai-os-deploy.pub >> ~/.ssh/authorized_keys
-
-# nginx vhost (see ../nginx/ai-os.conf.example)
-```
-
-### 2. GitHub secrets
+Values come straight from `dev-env/env-config/.env` — never echo or commit them:
 
 ```bash
-gh secret set HETZNER_HOST         # server IP or hostname
-gh secret set HETZNER_USER         # ssh user that owns /var/www/ai-os
-gh secret set HETZNER_SSH_KEY      < ~/.ssh/ai-os-deploy          # PRIVATE key
-gh secret set HETZNER_KNOWN_HOSTS  # paste output of: ssh-keyscan <host>
-gh secret set HETZNER_DEPLOY_PATH  # e.g. /var/www/ai-os
-gh secret set SITE_URL             # e.g. https://ai-os.example.com
+gh secret set COOLIFY_API_URL    # http://178.105.106.79:8000
+gh secret set COOLIFY_API_TOKEN  # the WORKING token (see caveat below)
+gh secret set COOLIFY_APP_UUID   # the ai-os-landing app uuid (created via API)
+gh secret set SITE_URL           # https://ai-os.eduardoinerarte.dk  (optional check)
 ```
 
-### 3. DNS
-
-Point an `A`/`AAAA` record (or a wildcard already covering the host) at the
-server's public IP, then confirm from outside:
+Then:
 
 ```bash
-dig +short ai-os.example.com
+gh workflow run deploy-site.yml      # manual trigger
+curl -I https://ai-os.eduardoinerarte.dk/
 ```
 
-### 4. First deploy
+## ⚠️ .env caveat: COOLIFY_API_TOKEN
 
-```bash
-gh workflow run deploy-site.yml     # manual trigger, no push needed
-# then verify:
-curl -I https://ai-os.example.com/
-```
+Use the token at `.env` line ~237 (`3|conductor-api-token-2026`) — verified
+working (HTTP 200). A second, longer `COOLIFY_API_TOKEN` value (no `id|` prefix)
+returns HTTP 401; if it ever reappears as a later duplicate it will shadow the
+working one when the file is sourced, so keep only the working token.
 
 ## Notes / decisions
 
-- **Why SSH/rsync and not Coolify:** ai-os only ships a static page. rsync to
-  nginx is the lightest reproducible pattern and avoids reusing another
-  project's Coolify app UUID. The `.env` Coolify creds belong to the
-  conductor/ai-chat project — do not repurpose them here.
-- **Never** commit the private deploy key or any secret value; they live only
-  in GitHub Secrets. The `.env` under `dev-env/env-config/` stays gitignored.
+- `COOLIFY_APP_UUID` in `.env` (`bblj47…`) is the **`edd-app-template`** app, NOT
+  ai-os — never deploy to it. The ai-os app is a **separate** application.
+- Creating the ai-os app is additive; it never modifies the other apps.
