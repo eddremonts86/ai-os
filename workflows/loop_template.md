@@ -18,28 +18,37 @@ my-loop/
 # <Loop Name>
 
 ## Goal
+
 <One paragraph: what this loop is trying to accomplish>
 
 ## Expected Output
+
 Each run should produce or update:
-- `outputs/...`  # describe the file(s)
+
+- `outputs/...` # describe the file(s)
 - `PROGRESS.md`
 
 ## Scope
+
 Claude may:
+
 - read files in <list allowed paths>
 - write to `outputs/` only
 
 Claude should NOT:
+
 - modify source files outside <list>
 - delete or rename files
 - send messages or open tickets without explicit approval
 
 ## Blast Radius Level
+
 <1-6 per rules/loop_safety.md>
 
 ## Failure Policy
+
 If verification fails:
+
 1. <first failure mode> -> <first failure response>
 2. <second failure mode> -> <second failure response>
 3. Same check fails 3x -> stop and mark as needing human review
@@ -51,19 +60,23 @@ If verification fails:
 # Loop Instructions
 
 ## Before You Start
+
 1. Read `TASK.md`
 2. Read `PROGRESS.md`
 3. Inspect allowed paths
 4. Identify what changed, what's incomplete, what needs human review
 
 ## What You Should Do
+
 <Concrete, observable, scoped instructions>
 
 After writing:
+
 - update `PROGRESS.md` with date, summary, files checked, blockers
 - mark whether human review is needed
 
 ## Safety Rules
+
 - Do not delete files
 - Do not rename or move files
 - Do not modify files outside allowed paths
@@ -71,21 +84,27 @@ After writing:
 - If unsure whether an action is allowed -> stop and ask
 
 ## Verification Checklist
+
 Before ending the run, confirm:
+
 - `outputs/...` exists with all required sections
 - `PROGRESS.md` was updated
 - No files outside allowed paths were modified
 - Each "Do NOT" rule still holds
 
 ## Failure Policy
+
 <mirrors TASK.md failure policy>
 
 ## Tool Permissions
+
 ### GitHub
+
 Allowed: ...
 NOT allowed: ...
 
 ### Slack
+
 ... etc.
 
 (cut any tool the loop doesn't actually need — blast radius shrinks with
@@ -98,6 +117,7 @@ every tool removed)
 # <Loop Name> Progress
 
 ## Current State
+
 - Status: Active | Paused | Needs Review
 - Main objective: <one line>
 - Current focus: <what matters right now>
@@ -105,6 +125,7 @@ every tool removed)
 - Last updated: <date>
 
 ## Last Run
+
 - Date:
 - Summary:
 - Files reviewed:
@@ -113,24 +134,31 @@ every tool removed)
 - Human review needed: yes | no
 
 ## Open Items
+
 -
 
 ## Blockers
+
 -
 
 ## Needs Human Review
+
 -
 
 ## Next Run Should
+
 -
 
 ## Decisions Made
+
 - <date> — <decision> — <promoted-by>
 
 ## Level promotions
+
 <empty until first promotion>
 
 ## Do Not Repeat
+
 - <things that already failed — never retry>
 ```
 

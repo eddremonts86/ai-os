@@ -46,16 +46,16 @@ Three sub-agents researched in parallel on 2026-07-02:
 
 ## 3. Recommended Phase 1 (for user approval)
 
-| Layer | Tool | Why | Effort |
-|---|---|---|---|
-| **Indexing tool** (code) | `codebase-memory-mcp` (deusdata, 24.6k★) | 158 langs, sub-ms queries, 5× more token-efficient than file-by-file, MCP-native | 1 day |
-| **Embeddings** (if semantic needed) | `nomic-embed-text` via local Ollama | Free, private, Apple Silicon native | 1 hour |
-| **Graph DB** | `FalkorDB` (Docker) | AI-tuned, sparse-matrix adjacency, cypher, OpenCypher-compatible, ~4.7k stars active Jul 2026 | 1 day |
-| **MCP memory server** (graph) | `getzep/graphiti` MCP server (drop-in) or the official `modelcontextprotocol/servers` Memory | Sub-second temporal graph, bi-temporal model for "last Thursday's decision" | 1 day |
-| **Hybrid retrieval** | `ripgrep` (lexical, fallback) + tree-sitter (AST, via codebase-memory-mcp) + BM25 + graph | Tool-driven, deterministic, low-context-cost | Included |
-| **File source of truth** | `context/`, `specs/`, `archive/`, `~/.hermes/memories/`, `~/.hermes/sessions/*.db` | Already correct, git-versioned, no rewrite | 0 (use as-is) |
-| **Wiki authoring (optional)** | Obsidian (default) or Logseq (outliner) | Graph view + `[[wikilinks]]`, both AI-OS-friendly | 1 day |
-| **Cron** | weekly `graphrag index` over the markdown corpus | Keeps embeddings + entities fresh | 0.5 day |
+| Layer                               | Tool                                                                                         | Why                                                                                           | Effort        |
+| ----------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------- |
+| **Indexing tool** (code)            | `codebase-memory-mcp` (deusdata, 24.6k★)                                                     | 158 langs, sub-ms queries, 5× more token-efficient than file-by-file, MCP-native              | 1 day         |
+| **Embeddings** (if semantic needed) | `nomic-embed-text` via local Ollama                                                          | Free, private, Apple Silicon native                                                           | 1 hour        |
+| **Graph DB**                        | `FalkorDB` (Docker)                                                                          | AI-tuned, sparse-matrix adjacency, cypher, OpenCypher-compatible, ~4.7k stars active Jul 2026 | 1 day         |
+| **MCP memory server** (graph)       | `getzep/graphiti` MCP server (drop-in) or the official `modelcontextprotocol/servers` Memory | Sub-second temporal graph, bi-temporal model for "last Thursday's decision"                   | 1 day         |
+| **Hybrid retrieval**                | `ripgrep` (lexical, fallback) + tree-sitter (AST, via codebase-memory-mcp) + BM25 + graph    | Tool-driven, deterministic, low-context-cost                                                  | Included      |
+| **File source of truth**            | `context/`, `specs/`, `archive/`, `~/.hermes/memories/`, `~/.hermes/sessions/*.db`           | Already correct, git-versioned, no rewrite                                                    | 0 (use as-is) |
+| **Wiki authoring (optional)**       | Obsidian (default) or Logseq (outliner)                                                      | Graph view + `[[wikilinks]]`, both AI-OS-friendly                                             | 1 day         |
+| **Cron**                            | weekly `graphrag index` over the markdown corpus                                             | Keeps embeddings + entities fresh                                                             | 0.5 day       |
 
 **Total Phase 1 effort estimate: 1 week part-time, with verification gates between
 each step.**

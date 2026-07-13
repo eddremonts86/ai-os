@@ -74,8 +74,8 @@ component does not exist in the package. Close both gaps.
 
 ## Risks and mitigation
 
-| Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
-| The CSS files contain a `@property` declaration that needs CSS Houdini support (Chromium-only). | medium | low | Fall back to a simpler animation for non-supporting browsers. The fade mask is progressive enhancement. |
-| Importing CSS at module load side-effect (via `import "./scroller.css"`) makes the package non-tree-shakable for those styles. | low | low | Acceptable — the scroller and marker are core surfaces. Treeshaking the styles would force consumers to wire each one manually, which is what caused the current gap. |
-| The shadcn-rhea `Marker` API might not match exactly what MessageList already does inline. | medium | low | Re-export the same props the existing inline JSX used. The MessageList already calls it correctly. |
+| Risk                                                                                                                           | Probability | Impact | Mitigation                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The CSS files contain a `@property` declaration that needs CSS Houdini support (Chromium-only).                                | medium      | low    | Fall back to a simpler animation for non-supporting browsers. The fade mask is progressive enhancement.                                                               |
+| Importing CSS at module load side-effect (via `import "./scroller.css"`) makes the package non-tree-shakable for those styles. | low         | low    | Acceptable — the scroller and marker are core surfaces. Treeshaking the styles would force consumers to wire each one manually, which is what caused the current gap. |
+| The shadcn-rhea `Marker` API might not match exactly what MessageList already does inline.                                     | medium      | low    | Re-export the same props the existing inline JSX used. The MessageList already calls it correctly.                                                                    |

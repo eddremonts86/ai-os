@@ -63,12 +63,12 @@ The fix is to add the missing wiring without touching what already works. No new
 
 ## Risks and mitigation
 
-| Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
-| `SpeechRecognition` is Chrome-only (prefixed `webkitSpeechRecognition` elsewhere). Safari and Firefox will throw. | high | low | Detect both, fall back to disabled state with `supported: false`. UI shows the mic button greyed out. |
-| File size cap and MIME filter are enforced client-side only. A consumer could disable them in CSS dev-tools and send anything. | low | low | This is a UX guard, not a security boundary. Document in a code comment. |
-| Pasting large base64 attachments into the model payload could blow the context window. | medium | medium | Clamp at `ui.maxFileSizeMb` (default 10 MB) and warn in console if the user goes over. The engine doesn't enforce this; that's a separate concern. |
-| Conditional `ChatHeader` rendering shifts the header layout, which could surprise consumers who designed around the always-visible chips. | low | low | `ui.*` defaults are true, so out-of-the-box layout is unchanged. |
+| Risk                                                                                                                                      | Probability | Impact | Mitigation                                                                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SpeechRecognition` is Chrome-only (prefixed `webkitSpeechRecognition` elsewhere). Safari and Firefox will throw.                         | high        | low    | Detect both, fall back to disabled state with `supported: false`. UI shows the mic button greyed out.                                              |
+| File size cap and MIME filter are enforced client-side only. A consumer could disable them in CSS dev-tools and send anything.            | low         | low    | This is a UX guard, not a security boundary. Document in a code comment.                                                                           |
+| Pasting large base64 attachments into the model payload could blow the context window.                                                    | medium      | medium | Clamp at `ui.maxFileSizeMb` (default 10 MB) and warn in console if the user goes over. The engine doesn't enforce this; that's a separate concern. |
+| Conditional `ChatHeader` rendering shifts the header layout, which could surprise consumers who designed around the always-visible chips. | low         | low    | `ui.*` defaults are true, so out-of-the-box layout is unchanged.                                                                                   |
 
 ## Verification (end-to-end)
 

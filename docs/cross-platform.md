@@ -4,26 +4,26 @@
 
 ## Comparison table
 
-| Feature | Mac (native) | Windows (PowerShell) | Notes |
-|---|---|---|---|
-| **AI-OS core (CLAUDE.md, workflows, rules)** | ✅ | ✅ | Identical |
-| **Global flat skills** | ✅ | ✅ | Symlinks work across supported CLI targets |
-| **MCP servers (7)** | ✅ | ✅ | stdio works on both |
-| **Oh My Zsh + Powerlevel10k** | ✅ | ❌ | Unix only. Windows uses PowerShell. |
-| **Warp terminal** | ✅ | ✅ (Windows version) | Warp has a Windows build. |
-| **Terminal.app (native)** | ✅ |❌ | Mac only. Windows uses Windows Terminal. |
-| **Homebrew** | ✅ |❌ | Mac only. Windows uses Chocolatey. |
-| **Brewfile** | ✅ |❌ (use choco equivalent on Windows) | Windows has its own install script. |
-| **Symlinks (zshrc, ssh config)** | ✅ |⚠️ partial | Windows has `New-Item -ItemType SymbolicLink` but with caveats (needs admin or Dev Mode). |
-| **Hermes Agent CLI** | ✅ | ✅ | Hermes runs on both. |
-| **Claude Code CLI** | ✅ | ✅ | Works on both. |
-| **Codex CLI** | ✅ | ✅ | Works on both. |
-| **Gemini CLI** | ✅ | ✅ | Works on both. |
-| **Antigravity / Copilot** | ⚠️ (Warp build) | ✅ (VSCode fork native) | Antigravity is a VSCode fork. |
-| **yq** | ✅ (brew) | ✅ (choco / direct download) | For the verify script. |
-| **git** | ✅ (Xcode CLI tools or brew) | ✅ (Git for Windows or choco) | Both. |
-| **SSH agent** | ✅ (1Password/GPG) | ⚠️ (Pageant or built-in OpenSSH) | Different. |
-| **Terminal multiplexers (tmux)** | ✅ |❌ (use Windows Terminal tabs) | Unix only. |
+| Feature                                      | Mac (native)                 | Windows (PowerShell)                 | Notes                                                                                     |
+| -------------------------------------------- | ---------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **AI-OS core (CLAUDE.md, workflows, rules)** | ✅                           | ✅                                   | Identical                                                                                 |
+| **Global flat skills**                       | ✅                           | ✅                                   | Symlinks work across supported CLI targets                                                |
+| **MCP servers (7)**                          | ✅                           | ✅                                   | stdio works on both                                                                       |
+| **Oh My Zsh + Powerlevel10k**                | ✅                           | ❌                                   | Unix only. Windows uses PowerShell.                                                       |
+| **Warp terminal**                            | ✅                           | ✅ (Windows version)                 | Warp has a Windows build.                                                                 |
+| **Terminal.app (native)**                    | ✅                           | ❌                                   | Mac only. Windows uses Windows Terminal.                                                  |
+| **Homebrew**                                 | ✅                           | ❌                                   | Mac only. Windows uses Chocolatey.                                                        |
+| **Brewfile**                                 | ✅                           | ❌ (use choco equivalent on Windows) | Windows has its own install script.                                                       |
+| **Symlinks (zshrc, ssh config)**             | ✅                           | ⚠️ partial                            | Windows has `New-Item -ItemType SymbolicLink` but with caveats (needs admin or Dev Mode). |
+| **Hermes Agent CLI**                         | ✅                           | ✅                                   | Hermes runs on both.                                                                      |
+| **Claude Code CLI**                          | ✅                           | ✅                                   | Works on both.                                                                            |
+| **Codex CLI**                                | ✅                           | ✅                                   | Works on both.                                                                            |
+| **Gemini CLI**                               | ✅                           | ✅                                   | Works on both.                                                                            |
+| **Antigravity / Copilot**                    | ⚠️ (Warp build)               | ✅ (VSCode fork native)              | Antigravity is a VSCode fork.                                                             |
+| **yq**                                       | ✅ (brew)                    | ✅ (choco / direct download)         | For the verify script.                                                                    |
+| **git**                                      | ✅ (Xcode CLI tools or brew) | ✅ (Git for Windows or choco)        | Both.                                                                                     |
+| **SSH agent**                                | ✅ (1Password/GPG)           | ⚠️ (Pageant or built-in OpenSSH)      | Different.                                                                                |
+| **Terminal multiplexers (tmux)**             | ✅                           | ❌ (use Windows Terminal tabs)       | Unix only.                                                                                |
 
 ## Mac: complete setup
 
@@ -73,21 +73,21 @@ Windows 10/11 supports symlinks but:
 
 ## Fonts (Nerd Fonts)
 
-| Platform | Install |
-|---|---|
-| Mac | `brew install --cask font-caskaydia-cove-nerd-font` |
-| Windows | Download from https://www.nerdfonts.com/ and install manually (double click on .ttf) |
-| Windows (choco) | `choco install nerd-fonts-caskaydia-cove` |
+| Platform        | Install                                                                              |
+| --------------- | ------------------------------------------------------------------------------------ |
+| Mac             | `brew install --cask font-caskaydia-cove-nerd-font`                                  |
+| Windows         | Download from https://www.nerdfonts.com/ and install manually (double click on .ttf) |
+| Windows (choco) | `choco install nerd-fonts-caskaydia-cove`                                            |
 
 ## Path conventions
 
-| Path | Mac | Windows |
-|---|---|---|
-| Home | `~/` | `%USERPROFILE%\` or `$HOME\` |
-| Config shell | `~/.zshrc` | `$PROFILE` (PowerShell) |
-| SSH config | `~/.ssh/config` | `%USERPROFILE%\.ssh\config` |
-| Hermes config | `~/.hermes/config.yaml` | `%USERPROFILE%\.hermes\config.yaml` |
-| Skills globales | `~/.claude/skills/` | `%USERPROFILE%\.claude\skills\` |
+| Path            | Mac                     | Windows                             |
+| --------------- | ----------------------- | ----------------------------------- |
+| Home            | `~/`                    | `%USERPROFILE%\` or `$HOME\`        |
+| Config shell    | `~/.zshrc`              | `$PROFILE` (PowerShell)             |
+| SSH config      | `~/.ssh/config`         | `%USERPROFILE%\.ssh\config`         |
+| Hermes config   | `~/.hermes/config.yaml` | `%USERPROFILE%\.hermes\config.yaml` |
+| Skills globales | `~/.claude/skills/`     | `%USERPROFILE%\.claude\skills\`     |
 
 ## Testing cross-platform
 

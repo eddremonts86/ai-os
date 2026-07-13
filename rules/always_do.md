@@ -32,6 +32,7 @@ Use this CLI's native subagent mechanism. **Max 3 concurrent** per user (default
 - **Codex / Gemini / Antigravity / MiniMax**: use their native subagent or agent-team capability when it is available in the installed client. Otherwise use background shells for independent commands or run sequentially.
 
 Each subagent gets:
+
 - Isolated context and terminal.
 - Its own conversation.
 - Returns only the final summary (intermediate noise stays out of your context).

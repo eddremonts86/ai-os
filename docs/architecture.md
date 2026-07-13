@@ -51,11 +51,13 @@
 ### Why symlinks and not copy?
 
 **Pro symlinks:**
+
 - Single source of truth (one change propagates to supported CLIs).
 - Lower total size.
 - Easy to sync with git (you only modify the source of truth).
 
 **Con symlinks:**
+
 - On Windows they require admin or Developer Mode.
 - Harder to debug (is it a real file or a symlink?).
 - If you delete the source, you break every symlinked destination at once.
@@ -107,13 +109,13 @@
 
 Each CLI has its own mechanism:
 
-| CLI | Invocation mechanism |
-|---|---|
-| Claude Code | `/skill <name>` or auto-load by description |
-| Codex | Auto-load by frontmatter, no explicit command |
-| Gemini CLI | Auto-load by frontmatter |
-| Antigravity | Auto-load by frontmatter |
-| Hermes | `--skills <name>` or auto-load from `imported:`, or `/skill <name>` |
+| CLI         | Invocation mechanism                                                |
+| ----------- | ------------------------------------------------------------------- |
+| Claude Code | `/skill <name>` or auto-load by description                         |
+| Codex       | Auto-load by frontmatter, no explicit command                       |
+| Gemini CLI  | Auto-load by frontmatter                                            |
+| Antigravity | Auto-load by frontmatter                                            |
+| Hermes      | `--skills <name>` or auto-load from `imported:`, or `/skill <name>` |
 
 The `description:` in the frontmatter is the trigger. If it says "Use when X", the CLI loads the skill when it detects X.
 

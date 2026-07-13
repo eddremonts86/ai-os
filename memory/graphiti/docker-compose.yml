@@ -82,7 +82,7 @@
 
 networks:
   aios-memory:
-    external: true   # created by memory/falkordb/docker-compose.yml
+    external: true # created by memory/falkordb/docker-compose.yml
 
 services:
   graphiti-mcp:
@@ -104,11 +104,11 @@ services:
     restart: unless-stopped
     networks:
       - aios-memory
-    depends_on: []  # FalkorDB lives in a separate compose project; start it first manually
+    depends_on: [] # FalkorDB lives in a separate compose project; start it first manually
     extra_hosts:
-      - "host.docker.internal:host-gateway"   # reach host-side Ollama for embeddings; no-op on Docker Desktop (already resolvable there), required on Linux Docker Engine
+      - "host.docker.internal:host-gateway" # reach host-side Ollama for embeddings; no-op on Docker Desktop (already resolvable there), required on Linux Docker Engine
     ports:
-      - "127.0.0.1:8021:8000"   # HTTP transport, MCP endpoint at /mcp/
+      - "127.0.0.1:8021:8000" # HTTP transport, MCP endpoint at /mcp/
     volumes:
       - ./config.yaml:/app/mcp/config/config.yaml:ro
     environment:
@@ -128,9 +128,9 @@ services:
       # enough to let the container start; only `search` calls that trigger real reranking
       # need this to be a genuine OpenAI key.
       OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-placeholder-reranker-only-not-wired-to-minimax}
-      FALKORDB_URI: redis://aios-falkordb:6379   # reach FalkorDB by container name on aios-memory
+      FALKORDB_URI: redis://aios-falkordb:6379 # reach FalkorDB by container name on aios-memory
       GRAPHITI_TELEMETRY_ENABLED: "false"
-      SEMAPHORE_LIMIT: "5"   # conservative default; raise per the tuning table in graphiti's mcp_server/README.md
+      SEMAPHORE_LIMIT: "5" # conservative default; raise per the tuning table in graphiti's mcp_server/README.md
 
 # Usage:
 #   cd ~/Projects/ai-os/memory/graphiti

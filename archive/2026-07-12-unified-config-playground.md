@@ -78,13 +78,13 @@ The reference documentation grid (`ConfigReference` with its 72 collapsible `Con
 
 ## Risks and mitigation
 
-| Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
-| 72 inputs in one form causes React re-render storms / laggy typing | medium | medium | Use `useDeferredValue` for the draft state; commit `updateConfig` debounced (250ms for text, instant for selects/toggles). Memoize per-section subcomponents. |
-| Updating `systemPrompt` mid-conversation breaks the engine's pending stream | low | medium | The engine reads `config` on each new turn, so mid-stream changes don't affect the in-flight response. We document this in a one-line comment near the field. |
-| Two-column layout breaks on smaller `lg` viewports (laptops 1024-1280px) | medium | low | Use `lg:grid-cols-[1fr_360px]` only above 1280px; below that the form stacks under the panel via `lg:flex` + `order-` utilities. Verified manually after block 2. |
-| Form fields desync from `config` (controlled inputs going stale) | medium | medium | All field values are derived from `config` via `useMemo`; reset on `config` change (already a known pattern from the existing `PlaygroundFooter`). |
-| Mixing `useChat().updateConfig()` (partial) with the Playwright test fixtures | low | low | No new tests for the form (acceptance is browser smoke test); existing tests in `tests/` are package-level and don't touch the demo. |
+| Risk                                                                          | Probability | Impact | Mitigation                                                                                                                                                        |
+| ----------------------------------------------------------------------------- | ----------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 72 inputs in one form causes React re-render storms / laggy typing            | medium      | medium | Use `useDeferredValue` for the draft state; commit `updateConfig` debounced (250ms for text, instant for selects/toggles). Memoize per-section subcomponents.     |
+| Updating `systemPrompt` mid-conversation breaks the engine's pending stream   | low         | medium | The engine reads `config` on each new turn, so mid-stream changes don't affect the in-flight response. We document this in a one-line comment near the field.     |
+| Two-column layout breaks on smaller `lg` viewports (laptops 1024-1280px)      | medium      | low    | Use `lg:grid-cols-[1fr_360px]` only above 1280px; below that the form stacks under the panel via `lg:flex` + `order-` utilities. Verified manually after block 2. |
+| Form fields desync from `config` (controlled inputs going stale)              | medium      | medium | All field values are derived from `config` via `useMemo`; reset on `config` change (already a known pattern from the existing `PlaygroundFooter`).                |
+| Mixing `useChat().updateConfig()` (partial) with the Playwright test fixtures | low         | low    | No new tests for the form (acceptance is browser smoke test); existing tests in `tests/` are package-level and don't touch the demo.                              |
 
 ## Verification (end-to-end)
 

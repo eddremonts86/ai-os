@@ -88,12 +88,12 @@ Close every gap identified in the `ui-show-voice-wiring` audit, plus the related
 
 ## Risks and mitigation
 
-| Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
-| `@mdx-js/react` adds significant bundle weight. | medium | medium | Lazy-import the MdxMarkdown wrapper. The plain markdown path stays at zero KB added. |
-| Adding `data-density` on the root can shift the header layout. | low | low | CSS uses scoped, additive rules that don't change the always-on chips. |
-| `getActiveToolCallCount()` always returns 0 — the badge never appears in production until the engine implements it. | medium | low | Document it as a hook for future tool-call wiring. The flag (`ui.showToolCalls`) still works in the sense that "on" means "when count > 0, show; when off, never show". |
-| Integration tests depend on the engine's `subscribe` working in the test environment. | low | medium | Use `useSyncExternalStore` directly via a real `ChatEngine` instance; avoid mocking. |
+| Risk                                                                                                                | Probability | Impact | Mitigation                                                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------- | ----------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@mdx-js/react` adds significant bundle weight.                                                                     | medium      | medium | Lazy-import the MdxMarkdown wrapper. The plain markdown path stays at zero KB added.                                                                                    |
+| Adding `data-density` on the root can shift the header layout.                                                      | low         | low    | CSS uses scoped, additive rules that don't change the always-on chips.                                                                                                  |
+| `getActiveToolCallCount()` always returns 0 — the badge never appears in production until the engine implements it. | medium      | low    | Document it as a hook for future tool-call wiring. The flag (`ui.showToolCalls`) still works in the sense that "on" means "when count > 0, show; when off, never show". |
+| Integration tests depend on the engine's `subscribe` working in the test environment.                               | low         | medium | Use `useSyncExternalStore` directly via a real `ChatEngine` instance; avoid mocking.                                                                                    |
 
 ## Verification (end-to-end)
 

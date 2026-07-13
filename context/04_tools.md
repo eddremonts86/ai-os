@@ -20,13 +20,13 @@ Inventory of installed tools. Update when something changes.
 
 ## CLI tools
 
-| CLI | Path | Notes |
-|---|---|---|
-| **Claude Code** | `~/.claude/` | Anthropic official |
-| **Codex** | `~/.codex/` | OpenAI |
-| **Gemini CLI** | `~/.gemini/` | Google |
-| **Antigravity** | `~/.agents/` | VSCode fork |
-| **Hermes Agent** | `~/.hermes/` | Nous Research |
+| CLI              | Path          | Notes                    |
+| ---------------- | ------------- | ------------------------ |
+| **Claude Code**  | `~/.claude/`  | Anthropic official       |
+| **Codex**        | `~/.codex/`   | OpenAI                   |
+| **Gemini CLI**   | `~/.gemini/`  | Google                   |
+| **Antigravity**  | `~/.agents/`  | VSCode fork              |
+| **Hermes Agent** | `~/.hermes/`  | Nous Research            |
 | **MiniMax Code** | `~/.minimax/` | Mac-only overlay support |
 
 ## Languages

@@ -80,9 +80,11 @@ Structure the research as:
 
 ```markdown
 ## Question
+
 [the question]
 
 ## Options evaluated
+
 - Option 1: [name]
   - Pros: ...
   - Cons: ...
@@ -91,13 +93,16 @@ Structure the research as:
   ...
 
 ## Recommendation
+
 [the recommended option with justification]
 
 ## Sources
+
 - [Link 1](url)
 - [Link 2](url)
 
 ## Next steps
+
 - [concrete next step]
 ```
 
@@ -136,15 +141,19 @@ For research that includes code examples:
 
 ```markdown
 ## [Topic]
+
 [1 paragraph summary]
 
 ### Recommendation
+
 [the recommended option]
 
 ### Why
+
 [3-5 bullet points]
 
 ### Sources
+
 - [link]
 - [link]
 ```

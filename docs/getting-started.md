@@ -21,11 +21,13 @@ cd ~/Projects/ai-os
 ## Step 2: Run setup
 
 ### Mac
+
 ```bash
 bash setup/install-mac.sh
 ```
 
 ### Windows (PowerShell as Admin)
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
 ```
@@ -56,6 +58,7 @@ bash setup/verify.sh
 ```
 
 **Expected output (abridged; exact skill/MCP counts vary by checkout):**
+
 ```
 [ai-os verify] ✅ AI-OS at /Users/edd/Projects/ai-os
 [ai-os verify] ✅   .zshrc → /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc
@@ -75,11 +78,13 @@ bash setup/verify.sh
 ## Step 5: Try AI-OS
 
 ### In Hermes (recommended)
+
 ```bash
 hermes chat --skills ai-os-quickstart
 ```
 
 ### In any CLI
+
 The `ai-os-quickstart` skill auto-loads from:
 
 - **Claude Code:** `/skill ai-os-quickstart` or auto-load if it's in `~/.claude/skills/`.
@@ -95,16 +100,19 @@ The `ai-os-quickstart` skill auto-loads from:
 ## Troubleshooting
 
 ### "Permission denied" in brew install (Mac)
+
 ```bash
 sudo chown -R $(whoami) /opt/homebrew
 ```
 
 ### "Execution Policy" in PowerShell (Windows)
+
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass
 ```
 
 ### Skills don't load in Hermes
+
 ```bash
 hermes gateway restart
 # or from the CLI:
@@ -112,6 +120,7 @@ hermes gateway restart
 ```
 
 ### PyYAML is unavailable
+
 ```bash
 pip3 install pyyaml --user
 ```
@@ -120,6 +129,7 @@ pip3 install pyyaml --user
 files in this repo, so PyYAML is preferred but no longer required for dry-runs.
 
 ### Fonts don't show in Warp/Terminal
+
 1. Verify installation: `ls ~/Library/Fonts/ | grep -i nerd`
 2. Restart Warp/Terminal completely.
 3. Change the font manually in Settings → Appearance → Font.

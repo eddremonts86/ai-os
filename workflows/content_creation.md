@@ -34,15 +34,15 @@ Show the goal to the user. They must approve.
 
 ### 2. Determine the type of content (read Spec)
 
-| Type | Structure | Length |
-|---|---|---|
-| README | What, why, install, usage, contributing | 200-800 lines |
-| ADR | Context, decision, consequences, alternatives | 50-200 lines |
-| Tutorial | Goal, prerequisites, steps, verification, next | 100-500 lines |
-| API doc | Endpoint, params, response, example | 50-200 lines per endpoint |
-| Blog post | Hook, problem, solution, code, result | 500-2000 words |
-| Release notes | What's new, breaking changes, upgrade guide | 50-300 lines |
-| Spec | Metadata, objective, criteria, plan, risks | 50-300 lines |
+| Type          | Structure                                      | Length                    |
+| ------------- | ---------------------------------------------- | ------------------------- |
+| README        | What, why, install, usage, contributing        | 200-800 lines             |
+| ADR           | Context, decision, consequences, alternatives  | 50-200 lines              |
+| Tutorial      | Goal, prerequisites, steps, verification, next | 100-500 lines             |
+| API doc       | Endpoint, params, response, example            | 50-200 lines per endpoint |
+| Blog post     | Hook, problem, solution, code, result          | 500-2000 words            |
+| Release notes | What's new, breaking changes, upgrade guide    | 50-300 lines              |
+| Spec          | Metadata, objective, criteria, plan, risks     | 50-300 lines              |
 
 ### 3. For ADRs: use the standard ADR template
 

@@ -51,10 +51,10 @@ Template for `specs/current_spec.md`. Copy this structure for each new task.
 
 ## Risks and mitigation
 
-| Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
+| Risk     | Probability  | Impact       | Mitigation        |
+| -------- | ------------ | ------------ | ----------------- |
 | [Risk 1] | low/med/high | low/med/high | [How to mitigate] |
-| [Risk 2] | ... | ... | ... |
+| [Risk 2] | ...          | ...          | ...               |
 
 ## Verification (end-to-end)
 

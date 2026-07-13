@@ -11,10 +11,10 @@
 
 networks:
   aios-memory:
-    name: aios-memory   # shared with memory/graphiti/docker-compose.yml so the
-                        # Graphiti MCP container can reach FalkorDB by service
-                        # name over the internal Docker network (not the
-                        # loopback-only published port).
+    name: aios-memory # shared with memory/graphiti/docker-compose.yml so the
+# Graphiti MCP container can reach FalkorDB by service
+# name over the internal Docker network (not the
+# loopback-only published port).
 
 services:
   falkordb:
@@ -24,10 +24,10 @@ services:
     networks:
       - aios-memory
     ports:
-      - "127.0.0.1:6390:6379"   # Redis protocol
-      - "127.0.0.1:3300:3000"   # Web UI / Browser (FalkorDB inspector)
+      - "127.0.0.1:6390:6379" # Redis protocol
+      - "127.0.0.1:3300:3000" # Web UI / Browser (FalkorDB inspector)
     volumes:
-      - ./data:/data  # FalkorDB persists to /data by default
+      - ./data:/data # FalkorDB persists to /data by default
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6379", "PING"]
       interval: 10s
