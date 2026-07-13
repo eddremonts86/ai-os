@@ -65,6 +65,26 @@ When you find a useful parallel-dispatch pattern (e.g., "research + verify + imp
 11. → Load skill `code-review-and-quality` before the final commit.
 12. → Load skill `finishing-a-development-branch` at the end.
 
+## When a task needs an env value or secret
+
+Before inventing, hardcoding, or asking the user for any environment value, read the
+merged master file **`dev-env/env-config/.env`** (relative to `$AI_OS_ROOT`). It is the
+canonical local source for:
+
+- DB URLs / Postgres parts (`DATABASE_URL`, `POSTGRES_*`, prod/fleet variants).
+- Auth secrets (`BETTER_AUTH_SECRET`, `CLERK_*`, `AUTH_MODE`).
+- LLM endpoints + keys (`MINIMAX_*`, `OPENAI_*`, `ANTHROPIC_*`, local `AI_*`, Ollama).
+- Ports / URLs (`PORT`, `APP_URL`, service ports).
+- Agent + infra tokens (`OPENCLAW_GATEWAY_TOKEN`, `TELEGRAM_BOT_TOKEN`, Coolify/Hetzner).
+
+Rules:
+
+- Prefer the master `.env`; only ask the user if the value is genuinely absent.
+- Use `dev-env/env-config/.env.example` (committed, placeholders) when you only need the
+  variable name/shape, not a real secret.
+- Use values in place. NEVER echo, print, paste into chat, log, or commit the real
+  values (see `rules/never_do.md`).
+
 ## When writing code
 
 13. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
