@@ -188,10 +188,14 @@ else
   opt_miss "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
 fi
 # VS Code (GitHub Copilot Chat) carries the bridge block inside its global
-# custom-instructions file (path varies per account; glob for it).
+# custom-instructions file (path varies per account; glob for it). Covers
+# macOS (~/Library/Application Support/) and Linux (~/.config/), since
+# install-mac.sh is also the Linux installer.
 vscode_bridge_found=0
 for f in "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md" \
-         "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"; do
+         "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md" \
+         "$HOME_DIR/.config/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md" \
+         "$HOME_DIR/.config/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"; do
   [ -f "$f" ] || continue
   if grep -q "AI-OS BRIDGE" "$f"; then
     vscode_bridge_found=$((vscode_bridge_found+1))
