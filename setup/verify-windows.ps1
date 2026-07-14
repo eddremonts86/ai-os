@@ -199,6 +199,27 @@ if ((Test-Path "$HomeDir\.hermes\SOUL.md") -and (Select-String -Path "$HomeDir\.
 else {
     OptMiss "  ~/.hermes/SOUL.md missing AI-OS bridge block (Hermes only)"
 }
+# VS Code (GitHub Copilot Chat) carries the bridge block inside its global
+# custom-instructions file (path varies per account; glob for it).
+$vscodeBridgeFound = 0
+foreach ($ghDir in @(
+        (Join-Path $HomeDir "AppData\Roaming\Code\User\globalStorage\github.copilot-chat\github"),
+        (Join-Path $HomeDir "AppData\Roaming\Code - Insiders\User\globalStorage\github.copilot-chat\github")
+    )) {
+    if (-not (Test-Path $ghDir)) { continue }
+    Get-ChildItem $ghDir -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+        $instrFile = Join-Path $_.FullName "instructions\default.instructions.md"
+        if ((Test-Path $instrFile) -and (Select-String -Path $instrFile -SimpleMatch "AI-OS BRIDGE" -Quiet)) {
+            $script:vscodeBridgeFound++
+        }
+    }
+}
+if ($vscodeBridgeFound -gt 0) {
+    OptOk "  VS Code Copilot Chat instructions carry AI-OS bridge block ($vscodeBridgeFound file(s))"
+}
+else {
+    OptMiss "  VS Code Copilot Chat instructions missing AI-OS bridge block (OK if unused; run install-windows.ps1)"
+}
 
 # ─── 4. Superpowers (required = 14) ───
 Section "4. Superpowers skills (REQUIRED = 14)"

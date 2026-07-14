@@ -18,7 +18,11 @@ Host *
     # Add keys to agent
     AddKeysToAgent yes
     # Use specific identity file per host
-    UseKeychain yes  # macOS only
+    # UseKeychain yes  # macOS only (Apple's OpenSSH fork). Uncomment if on
+    # macOS and using Keychain for SSH keys -- this keyword is unknown to
+    # Windows/Linux OpenSSH and breaks config parsing entirely if left active,
+    # since this template is shared across all 3 platforms (install-mac.sh
+    # symlinks it, install-windows.ps1 copies it verbatim).
     # Forward agent only to trusted servers
     ForwardAgent no
     # Verbose logging for debugging

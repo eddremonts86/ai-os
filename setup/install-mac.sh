@@ -376,21 +376,29 @@ if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && [ -d "$HOME_DIR/.minimax/ag
   done
 fi
 # VS Code (GitHub Copilot Chat): unlike the CLIs above, Copilot Chat already
-# discovers ~/.agents/skills on this Mac by whatever mechanism backs its custom
-# chat mode, so no skill-symlink step is needed here. It only needs the bridge
-# block, appended (idempotent) to its global custom-instructions file — the
-# `applyTo: '**'` frontmatter makes it load on every request in every workspace,
-# same role as CLAUDE.md/AGENTS.md/GEMINI.md for the other CLIs. The file lives
-# under a per-account subfolder we can't predict, so glob for it; best-effort,
-# never fails the install if VS Code / Copilot Chat isn't set up on this Mac.
+# discovers ~/.agents/skills on this Mac/Linux box by whatever mechanism backs
+# its custom chat mode, so no skill-symlink step is needed here. It only needs
+# the bridge block, appended (idempotent) to its global custom-instructions
+# file — the `applyTo: '**'` frontmatter makes it load on every request in
+# every workspace, same role as CLAUDE.md/AGENTS.md/GEMINI.md for the other
+# CLIs. The file lives under a per-account subfolder we can't predict, so glob
+# for it; best-effort, never fails the install if VS Code / Copilot Chat isn't
+# set up on this box. Covers Code + Code - Insiders on both macOS
+# (~/Library/Application Support/) and Linux (~/.config/) since install-mac.sh
+# is also the Linux installer (see .github/workflows/test-linux.yml).
+# WIRE_VSCODE defaults to on (this is the whole point of a post-install step:
+# every enabled IDE/CLI gets the same bridge automatically, with no extra
+# flags). Set WIRE_VSCODE=0 to opt out.
 VSCODE_INSTR_GLOBS=(
   "$HOME_DIR/Library/Application Support/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"
   "$HOME_DIR/Library/Application Support/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"
+  "$HOME_DIR/.config/Code/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"
+  "$HOME_DIR/.config/Code - Insiders/User/globalStorage/github.copilot-chat/github/"*"/instructions/default.instructions.md"
 )
 VSCODE_WIRED=0
 for f in "${VSCODE_INSTR_GLOBS[@]}"; do
   [ -f "$f" ] || continue
-  if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && ! grep -q "AI-OS BRIDGE" "$f"; then
+  if [ "${WIRE_VSCODE:-1}" = "1" ] && ! grep -q "AI-OS BRIDGE" "$f"; then
     cat >> "$f" <<AIOS_VSCODE
 
 <!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
@@ -406,7 +414,7 @@ AIOS_VSCODE
   VSCODE_WIRED=$((VSCODE_WIRED + 1))
 done
 ok "Required instruction adapters rendered from manifest"
-[ "$VSCODE_WIRED" -gt 0 ] || warn "VS Code Copilot Chat adapter skipped (optional integration absent)"
+[ "$VSCODE_WIRED" -gt 0 ] || warn "VS Code Copilot Chat adapter skipped (VS Code / Copilot Chat not found on this box)"
 echo ""
 
 # ─── 8. Superpowers skills (REQUIRED) ───

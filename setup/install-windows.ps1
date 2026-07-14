@@ -334,6 +334,58 @@ foreach ($adapter in $adapters) {
 Ok "Required instruction adapters rendered from manifest"
 Write-Host ""
 
+# ─── 5e. VS Code (GitHub Copilot Chat) ───
+# Mirrors setup/install-mac.sh's VS Code wiring step. Copilot Chat already
+# discovers ~/.agents/skills on this box by whatever mechanism backs its
+# custom chat mode, so no skill-symlink step is needed here. It only needs
+# the bridge block, appended (idempotent) to its global custom-instructions
+# file — the `applyTo: '**'` frontmatter makes it load on every request in
+# every workspace, same role as CLAUDE.md/AGENTS.md/GEMINI.md for the other
+# CLIs. The file lives under a per-account subfolder we can't predict, so
+# glob for it; best-effort, never fails the install if VS Code / Copilot
+# Chat isn't set up on this box.
+# WIRE_VSCODE defaults to on (this is the whole point of a post-install
+# step: every enabled IDE/CLI gets the same bridge automatically, with no
+# extra flags). Set $env:WIRE_VSCODE = "0" to opt out.
+Log "5e. Wiring VS Code (GitHub Copilot Chat) global instructions..."
+$vscodeGlobs = @(
+    (Join-Path $HomeDir "AppData\Roaming\Code\User\globalStorage\github.copilot-chat\github"),
+    (Join-Path $HomeDir "AppData\Roaming\Code - Insiders\User\globalStorage\github.copilot-chat\github")
+)
+$vscodeBridgeBlock = @"
+
+<!-- AI-OS BRIDGE -- managed by $AIOSRoot; remove this block to unlink -->
+- AI-OS (operating context): single source of truth is ``$AIOSRoot``. For non-trivial work, read ``context/00_profile.md``, ``context/03_preferences.md``, and ``CLAUDE.md`` from that repo before proceeding.
+- Method: Spec -> Verifier -> Environment (Karpathy loop). Use the ``using-superpowers`` skill as the router for EVERY task, even simple ones -- check whether a skill applies before responding, not just for domain-specific work.
+- Chat in Spanish (lowercase, terse, no ceremony, no "espero que esto ayude"). Code, commits, docs, comments, and logs stay in English always.
+- Verify before claiming something is done: run the actual checks (tests/build/typecheck/browser) and report concrete evidence, never "looks fine" without proof.
+- Confirm before irreversible or outward-facing actions (force-push, prod changes, sending messages, spending money) unless already explicitly authorized.
+- Durable, cross-session facts go in this environment's own memory tool (``/memories/``); sync notable, cross-CLI-relevant facts back into ``context/`` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.
+<!-- /AI-OS BRIDGE -->
+"@
+$vscodeWired = 0
+foreach ($ghDir in $vscodeGlobs) {
+    if (-not (Test-Path $ghDir)) { continue }
+    Get-ChildItem $ghDir -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+        $instrFile = Join-Path $_.FullName "instructions\default.instructions.md"
+        if (-not (Test-Path $instrFile)) { return }
+        if ($env:WIRE_VSCODE -ne "0") {
+            $existing = Get-Content $instrFile -Raw -ErrorAction SilentlyContinue
+            if ($existing -notmatch "AI-OS BRIDGE") {
+                Add-Content -Path $instrFile -Value $vscodeBridgeBlock -NoNewline
+            }
+        }
+        $script:vscodeWired++
+    }
+}
+if ($vscodeWired -gt 0) {
+    Ok "VS Code Copilot Chat instructions wired ($vscodeWired file(s))"
+}
+else {
+    Warn "VS Code Copilot Chat adapter skipped (VS Code / Copilot Chat not found on this box)"
+}
+Write-Host ""
+
 # ─── 6. Superpowers skills (REQUIRED) ───
 Log "6. Verifying superpowers skills (REQUIRED)..."
 $superpowersSkills = @(& yq -r '.required_skills[]' $Manifest)
