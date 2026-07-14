@@ -15,6 +15,7 @@
 #   SKIP_DOTFILES=1  → skip dotfile symlinks
 #   SKIP_MCP=1       → skip MCP config regeneration
 #   SKIP_VERIFY=1    → skip verification at the end
+#   ASSUME_YES=1     → skip the preflight confirmation prompt
 #   DRY_RUN=1        → simulate without executing (CI mode)
 
 set -euo pipefail
@@ -50,6 +51,68 @@ preserve_or_replace() {
   return 0
 }
 
+# ─── Install manifest (shown before anything is installed) ───
+BREWFILE="$AI_OS_ROOT/dev-env/packages/Brewfile"
+NPM_GLOBALS="$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
+PIP_PACKAGES="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
+SKILLS_DIR="$AI_OS_ROOT/ai-config/skills"
+
+# count non-comment, non-blank lines in a package file (0 if missing)
+count_pkgs() { [ -f "$1" ] && grep -cvE '^[[:space:]]*(#|$)' "$1" || echo 0; }
+# comma-join names on stdin, wrap to terminal-ish width, indent
+join_fold() { paste -sd' ' - | sed 's/ /, /g' | fold -s -w 66 | sed 's/^/        /'; }
+
+show_manifest() {
+  local n_formulae n_casks n_node n_pip n_skills
+  n_formulae=$(grep -cE '^brew ' "$BREWFILE" 2>/dev/null || echo 0)
+  n_casks=$(grep -cE '^cask ' "$BREWFILE" 2>/dev/null || echo 0)
+  n_node=$(count_pkgs "$NPM_GLOBALS")
+  n_pip=$(count_pkgs "$PIP_PACKAGES")
+  n_skills=$([ -d "$SKILLS_DIR" ] && find "$SKILLS_DIR" -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ' || echo 0)
+
+  log "This will install / configure the following on your machine:"
+  echo ""
+  echo "  📦 Homebrew CLI tools & runtimes ($n_formulae):"
+  grep -E '^brew ' "$BREWFILE" 2>/dev/null | sed -E 's/brew "([^"]+)".*/\1/' | join_fold
+  echo ""
+  echo "  🖥  Homebrew apps & fonts (casks, $n_casks):"
+  grep -E '^cask ' "$BREWFILE" 2>/dev/null | sed -E 's/cask "([^"]+)".*/\1/' | join_fold
+  echo ""
+  echo "  🟢 Global Node packages via pnpm ($n_node):"
+  grep -vE '^[[:space:]]*(#|$)' "$NPM_GLOBALS" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
+  echo ""
+  echo "  🐍 Python packages in ~/.ai-os/venv ($n_pip):"
+  grep -vE '^[[:space:]]*(#|$)' "$PIP_PACKAGES" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
+  echo ""
+  echo "  🧠 AI skills symlinked into every CLI (~$n_skills)"
+  echo "  🔌 MCP servers → ~/.hermes/config.yaml"
+  echo "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+  echo "  🐚 Shell: Oh My Zsh, Powerlevel10k, dotfile symlinks (~/.zshrc, …)"
+  echo "  📁 Instruction adapters for Claude, Codex, Gemini, Hermes, Antigravity"
+  echo ""
+  log "Locations touched: /opt/homebrew, ~/.ai-os, ~/.local/bin, ~/Library/pnpm,"
+  log "  ~/.hermes, ~/.claude, ~/.codex, ~/.gemini, ~/.agents, and \$HOME dotfiles."
+  echo ""
+}
+
+confirm_or_exit() {
+  # never block automation: honor ASSUME_YES, and auto-proceed without a TTY
+  if [ "${ASSUME_YES:-0}" = "1" ]; then
+    log "ASSUME_YES=1 — proceeding without prompt."
+    return 0
+  fi
+  if [ ! -t 0 ]; then
+    log "Non-interactive shell — proceeding (set ASSUME_YES=1 to silence this)."
+    return 0
+  fi
+  printf '%s Proceed with the installation above? [y/N] ' "$LOG_PREFIX"
+  read -r reply
+  case "$reply" in
+    [Yy] | [Yy][Ee][Ss]) echo "" ;;
+    *) log "Aborted — nothing was installed."; exit 0 ;;
+  esac
+}
+
 # ─── DRY_RUN mode (CI) ───
 if [ "${DRY_RUN:-0}" = "1" ]; then
   exec bash "$SCRIPT_DIR/install-mac.dry-run.sh"
@@ -62,6 +125,10 @@ log "  Source: $AI_OS_ROOT"
 log "  Target: $HOME_DIR"
 log "═══════════════════════════════════════════════════════════"
 echo ""
+
+# ─── Preflight: show everything, then confirm ───
+show_manifest
+confirm_or_exit
 
 # ─── 0. Prereqs ───
 log "0. Verifying prerequisites..."
