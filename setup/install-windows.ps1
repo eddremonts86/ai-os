@@ -15,6 +15,7 @@
 #   $env:SKIP_MCP = "1"        → skip MCP config regeneration
 #   $env:SKIP_MEMORY = "1"     → skip memory stack (FalkorDB, Ollama, code indexers)
 #   $env:SKIP_VERIFY = "1"     → skip verification tests at the end
+#   $env:ASSUME_YES = "1"      → skip the preflight confirmation prompt
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 
 $ErrorActionPreference = "Stop"
@@ -52,6 +53,51 @@ function Preserve-OrReplace([string]$Target) {
     return $true
 }
 
+# ─── Chocolatey package list (single source: manifest + section 1) ───
+$ChocoPackages = @(
+    "git", "gh", "nodejs", "python311", "uv", "pwsh", "fzf", "ripgrep",
+    "fd", "jq", "yq", "mkcert", "docker-desktop", "ollama", "golang",
+    "vscode", "windsurf", "googlechrome", "firefox", "slack", "discord",
+    "7zip", "notepadplusplus", "keepassxc", "postman", "tableplus",
+    "warp"  # Warp has a Windows version
+)
+
+function Show-Manifest {
+    Log "This will install / configure the following on your machine:"
+    Write-Host ""
+    Write-Host "  📦 Chocolatey packages ($($ChocoPackages.Count)):"
+    Write-Host ("        " + ($ChocoPackages -join ", "))
+    Write-Host ""
+    Write-Host "  🧠 AI skills symlinked into every CLI"
+    Write-Host "  🔌 MCP servers → ~/.hermes/config.yaml"
+    Write-Host "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+    Write-Host "  🐚 PowerShell profile + dotfile symlinks"
+    Write-Host "  📁 Instruction adapters for Claude, Codex, Gemini, Hermes, Antigravity"
+    Write-Host "  🧩 VS Code (GitHub Copilot Chat) global instructions"
+    Write-Host ""
+    Log "Locations touched: choco install dir, `$HOME\.ai-os, `$HOME\.hermes,"
+    Log "  `$HOME\.claude, `$HOME\.codex, `$HOME\.gemini, `$HOME\.agents, and `$HOME dotfiles."
+    Write-Host ""
+}
+
+function Confirm-OrExit {
+    # never block automation: honor ASSUME_YES, and auto-proceed when non-interactive
+    if ($env:ASSUME_YES -eq "1") {
+        Log "ASSUME_YES=1 — proceeding without prompt."
+        return
+    }
+    if (-not [Environment]::UserInteractive -or [Console]::IsInputRedirected) {
+        Log "Non-interactive shell — proceeding (set `$env:ASSUME_YES = '1' to silence this)."
+        return
+    }
+    $reply = Read-Host "$LogPrefix Proceed with the installation above? [y/N]"
+    if ($reply -notmatch '^(y|yes)$') {
+        Log "Aborted — nothing was installed."
+        exit 0
+    }
+    Write-Host ""
+}
+
 # ─── Header ───
 Log "═══════════════════════════════════════════════════════════"
 Log "  AI-OS Setup (Windows)"
@@ -59,6 +105,10 @@ Log "  Source: $AIOSRoot"
 Log "  Target: $HomeDir"
 Log "═══════════════════════════════════════════════════════════"
 Write-Host ""
+
+# ─── Preflight: show everything, then confirm ───
+Show-Manifest
+Confirm-OrExit
 
 # ─── 0. Prereqs ───
 Log "0. Verifying prerequisites..."
@@ -90,37 +140,7 @@ Write-Host ""
 if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue)) {
     Log "1. Installing Chocolatey packages (may take 5-15 min)..."
 
-    $packages = @(
-        "git",
-        "gh",
-        "nodejs",
-        "python311",
-        "uv",
-        "pwsh",
-        "fzf",
-        "ripgrep",
-        "fd",
-        "jq",
-        "yq",
-        "mkcert",
-        "docker-desktop",
-        "ollama",
-        "golang",
-        "vscode",
-        "windsurf",
-        "googlechrome",
-        "firefox",
-        "slack",
-        "discord",
-        "7zip",
-        "notepadplusplus",
-        "keepassxc",
-        "postman",
-        "tableplus",
-        "warp"  # Warp has a Windows version
-    )
-
-    foreach ($pkg in $packages) {
+    foreach ($pkg in $ChocoPackages) {
         try {
             choco install -y $pkg --no-progress 2>&1 | Out-Null
             Ok "  $pkg"
