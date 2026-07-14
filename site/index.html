@@ -316,6 +316,229 @@
   .kbd { font-family: "JetBrains Mono", monospace; font-size: 0.82rem; padding: 0.15rem 0.45rem; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; color: var(--muted); }
   .ink { color: var(--ink); }
   .center { justify-content: center; }
+
+  /* ---------- Interactive Terminal Simulator ---------- */
+  .manual-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: oklch(0.12 0.012 275 / 0.8);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .manual-grid:hover {
+    border-color: oklch(0.88 0.19 128 / 0.35);
+    box-shadow: 0 12px 40px oklch(0.88 0.19 128 / 0.08), var(--shadow);
+  }
+  .console-body::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .console-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .console-body::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+  }
+  .console-body::-webkit-scrollbar-thumb:hover {
+    background: var(--faint);
+  }
+  .manual-menu {
+    background: oklch(0.10 0.012 275 / 0.5);
+    border-right: 1px solid var(--line);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .menu-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.74rem;
+    color: var(--faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 0.5rem;
+  }
+  .menu-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .menu-btn {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.86rem;
+    padding: 0.65rem 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .menu-btn:hover {
+    color: var(--acid);
+    background: oklch(0.88 0.19 128 / 0.05);
+    border-color: oklch(0.88 0.19 128 / 0.15);
+  }
+  .menu-btn.active {
+    color: var(--void);
+    background: var(--acid);
+    border-color: var(--acid);
+    box-shadow: 0 0 14px oklch(0.88 0.19 128 / 0.25);
+  }
+  .menu-btn.active .btn-cmd {
+    color: var(--void);
+  }
+  .btn-prompt {
+    color: var(--acid);
+  }
+  .menu-btn.active .btn-prompt {
+    color: var(--void);
+  }
+  .btn-cmd {
+    font-weight: 500;
+  }
+  
+  .manual-console {
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+    background: var(--void-2);
+  }
+  .console-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .console-header .window-controls {
+    display: flex;
+    gap: 0.45rem;
+  }
+  .console-header .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .console-header .dot.close { background: var(--plasma); }
+  .console-header .dot.minimize { background: var(--amber); }
+  .console-header .dot.zoom { background: var(--acid); }
+  .console-header .tab-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  .console-header .console-actions {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .console-body {
+    flex-grow: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.86rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .console-prompt-line {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .console-prompt-line .prompt-symbol {
+    color: var(--acid);
+  }
+  .console-prompt-line .prompt-path {
+    color: var(--cyan);
+  }
+  .console-prompt-line .prompt-cmd {
+    color: var(--ink);
+    min-height: 1.2em;
+    display: inline-block;
+  }
+  .console-content {
+    animation: fadeIn 0.4s var(--ease);
+  }
+  .console-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--faint);
+    margin-bottom: 1rem;
+  }
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--line);
+    border-top-color: var(--acid);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* Output custom formatting elements inside console */
+  .c-section { margin-bottom: 1.5rem; }
+  .c-header { color: var(--acid); font-weight: 700; margin-bottom: 0.45rem; font-size: 0.96rem; display: flex; align-items: center; gap: 0.5rem; }
+  .c-header::before { content: "●"; font-size: 0.7rem; }
+  .c-text { color: var(--muted); margin-bottom: 0.6rem; padding-left: 1rem; }
+  .c-list { list-style: none; padding-left: 1rem; margin: 0; }
+  .c-list li { margin-bottom: 0.55rem; position: relative; padding-left: 1.2rem; }
+  .c-list li::before { content: "├─"; position: absolute; left: 0; color: var(--faint); }
+  .c-list li:last-child::before { content: "└─"; }
+  .c-item-title { color: var(--ink); font-weight: 500; }
+  .c-item-desc { color: var(--muted); font-size: 0.82rem; margin-top: 0.15rem; }
+  .c-path { color: var(--cyan); }
+  .c-code { display: block; background: oklch(0.1 0.012 275 / 0.3); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0.8rem 1rem; margin: 0.6rem 0; overflow-x: auto; color: var(--ink); font-size: 0.8rem; }
+  .c-code-header { display: flex; justify-content: space-between; align-items: center; background: var(--panel); border: 1px solid var(--line); border-bottom: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; padding: 0.4rem 0.8rem; font-size: 0.74rem; color: var(--faint); margin-top: 0.6rem; }
+  .c-code-header + .c-code { margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+
+  /* Mobile responsiveness for manual */
+  @media (max-width: 900px) {
+    .manual-grid {
+      grid-template-columns: 1fr;
+    }
+    .manual-menu {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+      padding: 1rem;
+      overflow-x: auto;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .menu-title {
+      display: none;
+    }
+    .menu-options {
+      flex-direction: row;
+      width: max-content;
+      gap: 0.5rem;
+    }
+    .menu-btn {
+      padding: 0.5rem 0.8rem;
+      white-space: nowrap;
+    }
+  }
 </style>
 </head>
 <body>
@@ -338,7 +561,8 @@
     <a href="#top" class="brand"><span class="glyph">◈</span> AI&#8209;OS</a>
     <div class="nav-links">
       <a href="#what">what</a>
-      <a href="#does">what it does</a>
+      <a href="#does">architecture</a>
+      <a href="#manual">manual</a>
       <a href="#method">method</a>
       <a href="#install">install</a>
     </div>
@@ -460,11 +684,61 @@
   </div>
 </section>
 
+<!-- ============ MANUAL ============ -->
+<section id="manual">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// 03 · system manual</span>
+      <h2>Interactive System Internals &amp; Manual</h2>
+      <p>Click on any command in the sidebar to simulate execution and query detailed specs, configuration files, environment variables, and wiring methods of the AI-OS.</p>
+    </div>
+
+    <div class="manual-grid reveal">
+      <div class="manual-menu">
+        <div class="menu-title">Terminal Menu</div>
+        <ul class="menu-options" role="tablist" aria-label="System manual topics">
+          <li role="presentation"><button class="menu-btn active" role="tab" aria-selected="true" data-cmd="status"><span class="btn-prompt">➜</span> <span class="btn-cmd">ai-os --status</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="clis"><span class="btn-prompt">➜</span> <span class="btn-cmd">cli --list</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="skills"><span class="btn-prompt">➜</span> <span class="btn-cmd">skills --info</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="mcp"><span class="btn-prompt">➜</span> <span class="btn-cmd">mcp --config</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="bridge"><span class="btn-prompt">➜</span> <span class="btn-cmd">bridge --check</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="install"><span class="btn-prompt">➜</span> <span class="btn-cmd">install --steps</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="env"><span class="btn-prompt">➜</span> <span class="btn-cmd">env --variables</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="start"><span class="btn-prompt">➜</span> <span class="btn-cmd">start --first-steps</span></button></li>
+        </ul>
+      </div>
+
+      <div class="manual-console">
+        <div class="console-header">
+          <div class="window-controls"><span class="dot close"></span><span class="dot minimize"></span><span class="dot zoom"></span></div>
+          <div class="tab-title" id="console-tab-title">ai-os --status</div>
+          <div class="console-actions">
+            <button class="copy" style="position:static; padding:0.25rem 0.6rem;" id="console-copy-btn">copy output</button>
+          </div>
+        </div>
+        <div class="console-body" id="console-body-content" role="log" aria-live="polite">
+          <div class="console-prompt-line">
+            <span class="prompt-symbol">➜</span>
+            <span class="prompt-path">~/ai-os</span>
+            <span class="prompt-cmd" id="console-prompt-typed"></span>
+          </div>
+          <div id="console-loading-indicator" class="console-loading" style="display:none;">
+            <div class="spinner"></div> Executing command...
+          </div>
+          <div id="console-output-canvas" class="console-content">
+            <!-- Initial content loaded via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ METHOD ============ -->
 <section id="method">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">// 03 · the method</span>
+      <span class="eyebrow">// 04 · the method</span>
       <h2>Every non-trivial task runs the same loop.</h2>
       <p>Spec quality first, verifier passes second, runtime evidence third. No “it builds, ship it.”</p>
     </div>
@@ -481,7 +755,7 @@
 <section id="install">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">// 04 · install</span>
+      <span class="eyebrow">// 05 · install</span>
       <h2>Clone. Run one script. Verify.</h2>
       <p>Pick your OS. Copy the block. Most of the 30–60 min first install is just downloading packages.</p>
     </div>
@@ -599,6 +873,7 @@ bash setup/verify.sh</pre>
     boot.classList.add("done");
     document.body.style.overflow = "";
     startHeroTerminal();
+    setTimeout(() => typeAndExecute("status"), 300);
   }
 
   function runBoot() {
@@ -713,6 +988,388 @@ bash setup/verify.sh</pre>
     tab.setAttribute("aria-selected", "true");
     blocks.forEach(b => b.hidden = b.dataset.block !== tab.dataset.os);
   }));
+
+  /* ---------- Manual Interactive Console ---------- */
+  const consoleData = {
+    status: `
+<div class="c-section">
+  <div class="c-header">AI-OS Status Monitor</div>
+  <div class="c-text">AI Operating System successfully initialized. Sourced from <code>/Users/edd/Projects/ai-os</code>.</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">System Mode:</span> <span class="c-item-desc">Karpathy Loop (Spec → Verifier → Environment) active.</span></li>
+    <li><span class="c-item-title">Active Workflows:</span> <span class="c-item-desc">5 native files loaded (daily_start.md, project_start.md, coding.md, research.md, content_creation.md).</span></li>
+    <li><span class="c-item-title">Constraint Set:</span> <span class="c-item-desc">3 rules enforced (always_do.md, ask_before_doing.md, never_do.md).</span></li>
+    <li><span class="c-item-title">Verification Gates:</span> <span class="c-item-desc">3 verifiers (quality_checklist.md, critic_prompt.md, source_check_prompt.md).</span></li>
+    <li><span class="c-item-title">Security Status:</span> <span class="c-item-desc">Safe. Zero committed secrets. Pinned releases active.</span></li>
+  </ul>
+</div>
+<div class="c-section">
+  <div class="c-header">AI-OS Repository Tree Layout</div>
+  <div class="c-text">The centralized repository structure acts as the single source of truth for the entire environment:</div>
+  <pre class="c-code">ai-os/
+├── CLAUDE.md                # System instructions (18 sections)
+├── context/                 # Personal context (profile, business, projects, preferences)
+│   ├── 00_profile.md        # User identity and profile facts
+│   ├── 03_preferences.md    # Language rules, autonomy level, format preference
+│   └── ...
+├── rules/                   # Hard system constraints
+│   ├── always_do.md         # 24 mandatory actions and parallel dispatch rule
+│   ├── ask_before_doing.md  # 30+ actions requiring explicit confirmation
+│   └── never_do.md          # 60+ strict prohibitions
+├── specs/                   # Active design specifications
+│   ├── current_spec.md      # Holds the active task spec
+│   └── spec_template.md     # Template for new specs
+├── workflows/               # Recurring developer tasks
+│   ├── daily_start.md       # Triggers daily session initialization
+│   ├── project_start.md     # Initiates specs and plans
+│   └── coding.md            # Red-Green-Refactor development flow
+├── verifiers/               # Post-task quality gates
+│   ├── quality_checklist.md # 30+ compliance check items
+│   └── critic_prompt.md     # LLM critic review guidelines
+├── ai-config/               # Declarative configs
+│   ├── skills/              # Flat global skills directory
+│   └── mcp/                 # MCP server definitions (YAML)
+├── dev-env/                 # Dev environment package listings
+└── setup/                   # Idempotent install and verification scripts</pre>
+</div>`,
+    clis: `
+<div class="c-section">
+  <div class="c-header">Supported AI CLIs & Client Integrations</div>
+  <div class="c-text">AI-OS dynamically wires and links its unified skills and adapters into the following core client applications on install:</div>
+  <ul class="c-list">
+    <li>
+      <span class="c-item-title">Claude Code CLI</span>
+      <div class="c-item-desc">Loads flat skills from <span class="c-path">~/.claude/skills/</span>. Instructed via global adapter linked to <span class="c-path">~/.claude/CLAUDE.md</span>.</div>
+    </li>
+    <li>
+      <span class="c-item-title">OpenAI Codex CLI</span>
+      <div class="c-item-desc">Loads flat skills from <span class="c-path">~/.codex/skills/</span>. Instructed via global adapter linked to <span class="c-path">~/.codex/AGENTS.md</span>.</div>
+    </li>
+    <li>
+      <span class="c-item-title">Gemini CLI</span>
+      <div class="c-item-desc">Loads flat skills from <span class="c-path">~/.gemini/skills/</span>. Instructed via global adapter linked to <span class="c-path">~/.gemini/GEMINI.md</span>.</div>
+    </li>
+    <li>
+      <span class="c-item-title">Antigravity CLI (agy)</span>
+      <div class="c-item-desc">Loads flat skills from <span class="c-path">~/.agents/skills/</span>. Instructed via global adapter linked to <span class="c-path">~/.agents/AGENTS.md</span>.</div>
+    </li>
+    <li>
+      <span class="c-item-title">Hermes Agent CLI</span>
+      <div class="c-item-desc">Natively reads skills from <span class="c-path">~/.agents/skills/</span> via <code>skills.external_dirs</code> in config. Adapter block is appended directly to <span class="c-path">~/.hermes/SOUL.md</span>.</div>
+    </li>
+    <li>
+      <span class="c-item-title">MiniMax Code (mavis)</span>
+      <div class="c-item-desc">Loads skills from <span class="c-path">~/.minimax/skills/</span>. Appends target system instructions to agent config overlay in <span class="c-path">~/.minimax/agents/*/agent.md</span>.</div>
+    </li>
+    <li>
+      <span class="c-item-title">VS Code (GitHub Copilot Chat)</span>
+      <div class="c-item-desc">Discovers skills in <span class="c-path">~/.agents/skills/</span>. Instructed via the global instructions adapter block appended to <span class="c-path">default.instructions.md</span> (covers Code and Code - Insiders on macOS and Linux).</div>
+    </li>
+  </ul>
+</div>
+<div class="c-section">
+  <div class="c-header">Client Integration Wiring Detail</div>
+  <div class="c-text">Skills are shared using symbolic links. Adding a skill directory inside <code>ai-config/skills/</code> maps it to all targets instantly. Instructing is centralized: each CLI points to the single machine-neutral rendered adapter file.</div>
+  <pre class="c-code"># Symlink example during install-mac:
+ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainstorming
+
+# Verification check in verify.sh:
+# Compares installed directory contents to expected set of names (exact match)</pre>
+</div>`,
+    skills: `
+<div class="c-section">
+  <div class="c-header">Skill Corpus & Superpowers Integration</div>
+  <div class="c-text">Skills are instruction directories containing a <code>SKILL.md</code> file with frontmatter triggers. Symlinked directly from <code>ai-config/skills/</code>.</div>
+  
+  <div style="margin-top: 1rem; font-weight: 600; color: var(--acid);">14 REQUIRED Superpowers (obra/superpowers):</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">using-superpowers:</span> Main router loaded at the start of every session to check if any skill matches before responding.</li>
+    <li><span class="c-item-title">brainstorming:</span> Explores intent, scope, and trade-offs before writing plans or editing code.</li>
+    <li><span class="c-item-title">writing-plans:</span> Breaks Specs into detailed, sequential blocks of <=30 minutes.</li>
+    <li><span class="c-item-title">executing-plans:</span> Executes blocks sequentially with structured checkpoint checks.</li>
+    <li><span class="c-item-title">verification-before-completion:</span> Enforces 6 checklist gates (artifacts, content, errors, logs, tests, user flow).</li>
+    <li><span class="c-item-title">test-driven-development:</span> Enforces TDD Red-Green-Refactor testing logic.</li>
+    <li><span class="c-item-title">systematic-debugging:</span> Structured troubleshooting flow (isolate, reproduce, fix, verify).</li>
+    <li><span class="c-item-title">subagent-driven-development & dispatching-parallel-agents:</span> Parallel worker agent dispatcher.</li>
+    <li><span class="c-item-title">using-git-worktrees:</span> Launches isolated branches in separate checkouts for safe multi-tasking.</li>
+    <li><span class="c-item-title">finishing-a-development-branch, requesting-code-review & receiving-code-review.</span></li>
+  </ul>
+
+  <div style="margin-top: 1rem; font-weight: 600; color: var(--cyan);">Optional Bundles & Libraries (165+ Configured Skills):</div>
+  <div class="c-text">Optional skills are grouped by domain to provide instant expert guidance on specific stacks:</div>
+  <ul class="c-list">
+    <li>
+      <span class="c-item-title">Frontend & Web Design:</span>
+      <div class="c-item-desc">
+        <code>antfu-vue</code>, <code>antfu-vueuse</code>, <code>antfu-unocss</code>, <code>antfu-web-design</code>, 
+        <code>shadcn-patterns</code>, <code>shadcn-vue</code>, <code>tailwind-v4-shadcn</code>, <code>taste-skill</code>, 
+        <code>taste-skill-v1</code>, <code>brutalist-skill</code>, <code>minimalist-skill</code>, <code>stitch-skill</code>,
+        <code>frontend-design</code>, <code>frontend-design-alt</code>, <code>micro-interactions</code>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">Full-Stack Frameworks:</span>
+      <div class="c-item-desc">
+        <code>antfu-nuxt</code>, <code>nuxt-v4</code>, <code>nuxt-ui-v4</code>, <code>nextjs-turbopack</code>, 
+        <code>tanstack-start</code>, <code>tanstack-router</code>, <code>tanstack-query</code>, <code>tanstack-table</code>, 
+        <code>nestjs-patterns</code>, <code>fastapi-patterns</code>, <code>springboot-patterns</code>, <code>django-patterns</code>,
+        <code>laravel-patterns</code>, <code>drupal8-pattern</code>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">Languages & Core Runtimes:</span>
+      <div class="c-item-desc">
+        <code>typescript-advanced</code>, <code>golang-patterns</code>, <code>rust-patterns</code>, <code>python-patterns</code>,
+        <code>kotlin-patterns</code>, <code>cpp-coding-standards</code>, <code>java-coding-standards</code>, <code>swift-actor-persistence</code>,
+        <code>bun-runtime</code>, <code>nodejs-keccak256</code>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">DevOps & Staging Pipelines:</span>
+      <div class="c-item-desc">
+        <code>docker-patterns</code>, <code>containers-architecture</code>, <code>coolify-deploy</code>, 
+        <code>coolify-env-sync-and-postdeploy</code>, <code>prod-deploy-verification</code>, <code>prod-fleet-register</code>,
+        <code>hetzner-cloud-cli</code>, <code>tanstack-start-coolify-deploy</code>, <code>pnpm-docker-deploy</code>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">Testing, QA & Security Audits:</span>
+      <div class="c-item-desc">
+        <code>antfu-vitest</code>, <code>antfu-vue-testing</code>, <code>e2e-testing</code>, <code>webapp-testing</code>,
+        <code>golang-testing</code>, <code>rust-testing</code>, <code>python-testing</code>, <code>kotlin-testing</code>, 
+        <code>cpp-testing</code>, <code>springboot-security</code>, <code>django-security</code>, <code>owasp-security</code>,
+        <code>security-review</code>, <code>verification-loop</code>, <code>eval-harness</code>, <code>benchmark-methodology</code>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">Agentic OS, Memory & Automation:</span>
+      <div class="c-item-desc">
+        <code>ai-os-karpathy</code>, <code>ai-os-loop</code>, <code>ai-os-memory</code>, <code>ai-os-quickstart</code>,
+        <code>autonomous-loops</code>, <code>mcp-dynamic-orchestrator</code>, <code>mcp-server-patterns</code>,
+        <code>mcp-management</code>, <code>diagram</code>, <code>freeze</code>, <code>unfreeze</code>, <code>guard</code>, 
+        <code>careful</code>, <code>humanizer</code>, <code>output-skill</code>, <code>strategic-compact</code>, 
+        <code>deep-research</code>, <code>exa-search</code>, <code>notebooklm-skill</code>, <code>brandkit</code>
+      </div>
+    </li>
+  </ul>
+</div>`,
+    mcp: `
+<div class="c-section">
+  <div class="c-header">Declarative MCP Config (10 Enabled Servers)</div>
+  <div class="c-text">MCP servers are defined as YAML files under <code>ai-config/mcp/</code>. The generator outputs <code>~/.hermes/config.yaml</code>:</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">time:</span> Time/timezone utilities for task logging.</li>
+    <li><span class="c-item-title">filesystem:</span> Sandbox-restricted files access.</li>
+    <li><span class="c-item-title">pdf:</span> OCR and text extraction from document sheets.</li>
+    <li><span class="c-item-title">sequential-thinking:</span> Deep multi-step reasoning.</li>
+    <li><span class="c-item-title">memory:</span> FalkorDB knowledge graph memory integration.</li>
+    <li><span class="c-item-title">chrome:</span> Browser automation and screenshots via Playwright.</li>
+    <li><span class="c-item-title">agent-browser:</span> Token-efficient browser agent.</li>
+    <li><span class="c-item-title">codebase-memory-mcp:</span> Go-compiled semantic repository search index (uses nomic embeddings).</li>
+    <li><span class="c-item-title">grepai:</span> AI-powered Ripgrep search engine.</li>
+    <li><span class="c-item-title">graphiti:</span> Graph memory server running on Docker (needs OpenAI key).</li>
+  </ul>
+  
+  <div class="c-code-header">Example Declarative Server Config: ai-config/mcp/time.yaml</div>
+  <pre class="c-code">mcpServers:
+  time:
+    command: npx
+    args:
+      - -y
+      - @modelcontextprotocol/server-time
+    env: {}
+    enabled: true</pre>
+</div>`,
+    bridge: `
+<div class="c-section">
+  <div class="c-header">Global Instruction Bridge (How We Wire CLIs)</div>
+  <div class="c-text">Rather than duplicates, all CLIs share the same environment facts and rules. Here is how they are wired:</div>
+  <ul class="c-list">
+    <li>
+      <span class="c-item-title">Path-Neutral Adapter:</span> The template <span class="c-path">ai-config/templates/global-bridge.md.tmpl</span> is parsed during install.
+      The installer replaces the <code>{{AI_OS_ROOT}}</code> placeholder with the absolute path to your local checkout.
+    </li>
+    <li>
+      <span class="c-item-title">Symlinking:</span> It outputs a static file at <span class="c-path">~/.ai-os/adapters/global-bridge.md</span>, then symlinks each CLI's instructions file directly to it:
+      <div class="c-code">~/.claude/CLAUDE.md  ➜ ~/.ai-os/adapters/global-bridge.md
+~/.codex/AGENTS.md   ➜ ~/.ai-os/adapters/global-bridge.md
+~/.gemini/GEMINI.md  ➜ ~/.ai-os/adapters/global-bridge.md
+~/.agents/AGENTS.md  ➜ ~/.ai-os/adapters/global-bridge.md</div>
+    </li>
+    <li>
+      <span class="c-item-title">Appends & Overlays:</span> For Hermes, it appends a bridge block to <span class="c-path">~/.hermes/SOUL.md</span>. For MiniMax Code, it overrides the agent prompts.
+    </li>
+  </ul>
+</div>`,
+    install: `
+<div class="c-section">
+  <div class="c-header">Idempotent 1-Command Installation Process</div>
+  <div class="c-text">The installer configures the entire development environment from scratch.</div>
+  
+  <div style="font-weight: 600; color: var(--acid); margin-top: 1rem;">System Setup Checklist:</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">1. System packages:</span> Installs Brewfile packages (Mac), Chocolatey packages (Windows), APT (Linux).</li>
+    <li><span class="c-item-title">2. Shell packages:</span> Sets up Oh My Zsh, Powerlevel10k theme, zsh plugins (autosuggestions, syntax-highlighting).</li>
+    <li><span class="c-item-title">3. Custom profiles:</span> Symlinks <code>.zshrc</code>, <code>.gitconfig</code>, <code>.ssh/config</code> from dev-env/dotfiles.</li>
+    <li><span class="c-item-title">4. Local LLM:</span> Starts Ollama local serve and pulls the <code>nomic-embed-text</code> embedding model.</li>
+    <li><span class="c-item-title">5. Local databases:</span> Launches FalkorDB container via docker compose.</li>
+    <li><span class="c-item-title">6. Indexers & Search:</span> Downloads SHA-256 validated <code>codebase-memory-mcp</code>, installs <code>grepai</code> via Go.</li>
+  </ul>
+
+  <div class="c-code-header">Run Setup Command:</div>
+  <pre class="c-code"># Mac / Linux setup
+bash setup/install-mac.sh
+
+# Windows setup (PowerShell as Admin)
+powershell -ExecutionPolicy Bypass -File .\\setup\\install-windows.ps1</pre>
+</div>`,
+    env: `
+<div class="c-section">
+  <div class="c-header">Master Environment Template (.env.example)</div>
+  <div class="c-text">The unmapped Master template is located at <code>dev-env/env-config/.env.example</code>. Copy to <code>.env</code> to fill.</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">1. Application Context:</span> <code>PORT=3000</code>, <code>APP_URL=http://localhost:3000</code> (redirects of auth, webhooks), <code>VITE_API_URL</code> (Vite API path), locales, timezone.</li>
+    <li><span class="c-item-title">2. Database Config:</span> <code>DATABASE_URL</code> (postgres system dev DB), <code>LOCAL_DATABASE_URL</code> (port 5433 Docker postgres), <code>PROD_DATABASE_URL</code> (production database on Coolify's internal network), <code>DB_CONFIG_SECRET</code> (AES encryption key for connection profiles).</li>
+    <li><span class="c-item-title">3. Authentication:</span> <code>AUTH_MODE=hybrid</code> (Better Auth + Clerk), publishable and secret keys.</li>
+    <li><span class="c-item-title">4. Cloud LLMs:</span> Keys and base URLs for <code>MINIMAX_API_KEY</code> (MiniMax-M3), <code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>.</li>
+    <li><span class="c-item-title">5. Local LLMs:</span> <code>AI_API_BASE_URL=http://localhost:11435/v1</code> for Ollama, llama.cpp, LM Studio, and models (qwen3.5:2b).</li>
+    <li><span class="c-item-title">6. Vector Store & Agent Stack:</span> ChromaDB URL, <code>nomic-embed-text</code> embeddings, OpenClaw gateway credentials, Telegram bot token.</li>
+    <li><span class="c-item-title">7. Cloud Infrastructure:</span> <code>HETZNER_API_TOKEN</code> (for Hetzner cloud VPS) and <code>COOLIFY_API_TOKEN</code> (for Coolify staging/prod).</li>
+    <li><span class="c-item-title">8. GitHub / Packaging:</span> <code>GH_TOKEN</code> / <code>GIT_HUB</code> (personal access tokens), npm tokens, Sentry DSN, Percy tokens.</li>
+  </ul>
+  
+  <div class="c-code-header">Initialize Environment:</div>
+  <pre class="c-code">cp dev-env/env-config/.env.example dev-env/env-config/.env
+# Update credentials inside before running CLIs or containers</pre>
+</div>`,
+    start: `
+<div class="c-section">
+  <div class="c-header">First Steps (First-Time Workspace Onboarding)</div>
+  <div class="c-text">Complete these steps sequentially when onboarding a new workstation to AI-OS:</div>
+  <ul class="c-list">
+    <li>
+      <span class="c-item-title">1. Initial Clone</span>
+      <div class="c-item-desc">Clone the repository to your local workspace:
+      <div class="c-code">git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os</div>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">2. Environment Configuration</span>
+      <div class="c-item-desc">Copy the master env file and fill in API keys and details:
+      <div class="c-code">cp dev-env/env-config/.env.example dev-env/env-config/.env</div>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">3. Profile Customization</span>
+      <div class="c-item-desc">Open and edit the markdown files inside <span class="c-path">context/</span>. Set your name, style guidelines, business projects, and target model configurations.</div>
+    </li>
+    <li>
+      <span class="c-item-title">4. Git Identity</span>
+      <div class="c-item-desc">Configure your global git name and email to align with the repository structure:
+      <div class="c-code">git config --global user.name "Your Name"
+git config --global user.email "you@example.com"</div>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">5. Execute System Setup</span>
+      <div class="c-item-desc">Run the idempotent Mac/Linux setup script to install tools, Oh My Zsh, and configure symlinks:
+      <div class="c-code">bash setup/install-mac.sh</div>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">6. Verify Installation</span>
+      <div class="c-item-desc">Run the verification suite to ensure all 12 checks pass:
+      <div class="c-code">bash setup/verify.sh</div>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">7. Start Daily Session</span>
+      <div class="c-item-desc">Launch your target CLI using the quickstart router bootstrap skill:
+      <div class="c-code">hermes chat --skills ai-os-quickstart</div>
+      </div>
+    </li>
+  </ul>
+</div>`
+  };
+
+  const menuBtns = document.querySelectorAll(".menu-btn");
+  const consoleTabTitle = document.getElementById("console-tab-title");
+  const consolePromptTyped = document.getElementById("console-prompt-typed");
+  const consoleLoading = document.getElementById("console-loading-indicator");
+  const consoleOutput = document.getElementById("console-output-canvas");
+  const consoleCopyBtn = document.getElementById("console-copy-btn");
+
+  const cmdMappings = {
+    status: "ai-os --status",
+    clis: "cli --list",
+    skills: "skills --info",
+    mcp: "mcp --config",
+    bridge: "bridge --check",
+    install: "install --steps",
+    env: "env --variables",
+    start: "start --first-steps"
+  };
+
+  let consoleTypingTimeout = null;
+
+  async function typeAndExecute(cmdKey) {
+    if (consoleTypingTimeout) clearTimeout(consoleTypingTimeout);
+    
+    // Set active button
+    menuBtns.forEach(btn => {
+      const active = btn.dataset.cmd === cmdKey;
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.classList.toggle("active", active);
+    });
+
+    const fullCmd = cmdMappings[cmdKey];
+    consoleTabTitle.textContent = fullCmd;
+    consolePromptTyped.textContent = "";
+    consoleOutput.innerHTML = "";
+    consoleLoading.style.display = "none";
+
+    let i = 0;
+    function typeChar() {
+      if (i < fullCmd.length) {
+        consolePromptTyped.textContent += fullCmd[i];
+        i++;
+        consoleTypingTimeout = setTimeout(typeChar, 20 + Math.random() * 15);
+      } else {
+        // Typing done, show spinner
+        consoleLoading.style.display = "flex";
+        setTimeout(() => {
+          consoleLoading.style.display = "none";
+          consoleOutput.innerHTML = consoleData[cmdKey];
+        }, 250 + Math.random() * 150);
+      }
+    }
+    
+    if (reduce) {
+      consolePromptTyped.textContent = fullCmd;
+      consoleOutput.innerHTML = consoleData[cmdKey];
+    } else {
+      typeChar();
+    }
+  }
+
+  menuBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cmdKey = btn.dataset.cmd;
+      typeAndExecute(cmdKey);
+    });
+  });
+
+  if (consoleCopyBtn) {
+    consoleCopyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(consoleOutput.innerText.trim());
+        consoleCopyBtn.textContent = "copied ✓";
+        setTimeout(() => { consoleCopyBtn.textContent = "copy output"; }, 1600);
+      } catch {
+        consoleCopyBtn.textContent = "select + ⌘C";
+      }
+    });
+  }
 
   /* ---------- Copy buttons ---------- */
   document.querySelectorAll("[data-copy]").forEach(btn => {
