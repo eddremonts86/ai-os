@@ -83,6 +83,10 @@ echo ""
 if [ "${SKIP_BREW:-0}" != "1" ]; then
   log "1. Installing Brew packages (may take 5-15 min)..."
   cd "$AI_OS_ROOT"
+  # Homebrew 4.6+ refuses formulae from untrusted third-party taps;
+  # `brew trust` doesn't exist on older versions, so ignore failures there.
+  brew trust hashicorp/tap >/dev/null 2>&1 || true
+  brew trust aws/tap >/dev/null 2>&1 || true
   brew bundle install --file=dev-env/packages/Brewfile --verbose
   ok "Brew packages installed"
 else
@@ -90,49 +94,65 @@ else
 fi
 echo ""
 
-# ─── 2. npm global packages ───
+# ─── 2. Global Node packages (via pnpm) ───
+# pnpm is used instead of npm: stricter dependency resolution and a content-
+# addressable store, which avoids npm's flat-hoist phantom-dependency risks.
 if [ "${SKIP_NPM:-0}" != "1" ]; then
-  log "2. Installing npm globals from dev-env/packages/npm-globals.txt..."
-  if command -v npm >/dev/null 2>&1; then
+  log "2. Installing global Node packages (pnpm) from dev-env/packages/npm-globals.txt..."
+  if command -v pnpm >/dev/null 2>&1; then
+    # pnpm needs PNPM_HOME to place global bins; the AI-OS zshrc adds it to PATH
+    export PNPM_HOME="${PNPM_HOME:-$HOME_DIR/Library/pnpm}"
+    export PATH="$PNPM_HOME:$PATH"
+    npm_failed=""
     while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
       pkg="${raw_pkg%%#*}"
       pkg="$(printf '%s' "$pkg" | xargs)"
       [ -z "$pkg" ] && continue
-      npm install -g "$pkg"
+      # one bad package must not abort the whole install (set -e)
+      pnpm add -g "$pkg" || npm_failed="$npm_failed $pkg"
     done < "$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
-    ok "npm globals installed"
+    if [ -n "$npm_failed" ]; then
+      warn "global Node packages failed:$npm_failed"
+    else
+      ok "global Node packages installed"
+    fi
   else
-    warn "npm not found; skipping npm globals"
+    warn "pnpm not found; skipping global Node packages (install: brew install pnpm)"
   fi
 else
-  log "2. SKIP_NPM=1, skipping npm globals"
+  log "2. SKIP_NPM=1, skipping global Node packages"
 fi
 echo ""
 
-# ─── 3. Python user packages ───
+# ─── 3. Python packages (isolated AI-OS venv) ───
+# Homebrew's Python is externally managed (PEP 668), so `pip install` is
+# rejected. Install everything into a dedicated uv venv instead; its bin is
+# added to PATH by the AI-OS zshrc, so CLI tools (ruff, black, ipython, …)
+# stay callable while brew's python3 remains the default interpreter.
 if [ "${SKIP_PIP:-0}" != "1" ]; then
-  log "3. Installing Python user packages from dev-env/packages/pip-packages.txt..."
-  if command -v python3 >/dev/null 2>&1; then
-    PYTHON_CMD=python3
-  elif command -v python >/dev/null 2>&1; then
-    PYTHON_CMD=python
-  else
-    PYTHON_CMD=""
-  fi
-
-  if [ -n "$PYTHON_CMD" ]; then
+  log "3. Installing Python packages into AI-OS venv (~/.ai-os/venv)..."
+  if command -v uv >/dev/null 2>&1; then
+    AIOS_VENV="$HOME_DIR/.ai-os/venv"
+    uv venv "$AIOS_VENV" >/dev/null 2>&1 || true
+    pip_failed=""
     while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
       pkg="${raw_pkg%%#*}"
       pkg="$(printf '%s' "$pkg" | xargs)"
       [ -z "$pkg" ] && continue
-      "$PYTHON_CMD" -m pip install --user "$pkg"
+      # one bad package must not abort the whole install (set -e)
+      uv pip install --python "$AIOS_VENV/bin/python" "$pkg" >/dev/null 2>&1 \
+        || pip_failed="$pip_failed $pkg"
     done < "$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
-    ok "Python user packages installed"
+    if [ -n "$pip_failed" ]; then
+      warn "Python packages failed:$pip_failed"
+    else
+      ok "Python packages installed into $AIOS_VENV"
+    fi
   else
-    warn "Python not found; skipping Python user packages"
+    warn "uv not found; skipping Python packages (install: brew install uv)"
   fi
 else
-  log "3. SKIP_PIP=1, skipping Python user packages"
+  log "3. SKIP_PIP=1, skipping Python packages"
 fi
 echo ""
 

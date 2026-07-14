@@ -4,6 +4,8 @@
 
 # AI tools
 mcp[cli]                  # MCP SDK
+mcp-server-git            # MCP git server (npm has no equivalent)
+gitingest                 # repo→LLM text digest (Python-only, not on npm)
 
 # Utilities
 ruff                      # Python linter (faster than flake8)
