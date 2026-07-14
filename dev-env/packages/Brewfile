@@ -3,9 +3,8 @@
 # To install: brew bundle install --file=Brewfile
 
 # ─── Taps ───
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
+# homebrew/bundle, homebrew/cask, homebrew/cask-fonts are deprecated:
+# bundle and casks are built into Homebrew core, and all fonts migrated to homebrew/cask.
 tap "hashicorp/tap"  # for terraform
 tap "aws/tap"        # for awscli (optional)
 
@@ -68,7 +67,7 @@ brew "curl"                # already in core, kept for clarity
 brew "httpie"              # modern curl alternative
 brew "mkcert"              # local TLS certs
 
-# ─── Fonts (cask-fonts tap) ───
+# ─── Fonts (now in homebrew/cask) ───
 cask "font-caskaydia-cove-nerd-font"
 cask "font-meslo-lg-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
