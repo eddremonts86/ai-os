@@ -305,6 +305,17 @@
   .req li { margin-bottom: 0.4rem; }
   .req li::marker { color: var(--acid); }
 
+  /* ---------- install manifest ---------- */
+  .manifest-head { margin-top: 3rem; }
+  .manifest-head h3 { font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 700; margin-top: 0.4rem; }
+  .manifest-head p { color: var(--muted); max-width: 60ch; margin-top: 0.6rem; font-size: 0.95rem; }
+  .manifest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.4rem; }
+  @media (max-width: 900px) { .manifest-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .manifest-grid { grid-template-columns: 1fr; } }
+  .manifest-grid .req h3 { display: flex; align-items: baseline; gap: 0.5rem; }
+  .m-count { font-family: "JetBrains Mono", monospace; font-size: 1.5rem; font-weight: 700; }
+  .m-src { font-family: "JetBrains Mono", monospace; font-size: 0.78rem; color: var(--faint); white-space: nowrap; }
+
   /* ---------- CTA / footer ---------- */
   .final { text-align: center; }
   .final h2 { font-size: clamp(2rem, 6vw, 3.6rem); font-weight: 700; }
@@ -819,6 +830,38 @@ bash setup/verify.sh</pre>
             <li><code>DRY_RUN=1</code> — simulate without touching your machine</li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="manifest-head reveal">
+      <span class="eyebrow">// full manifest</span>
+      <h3>Everything it puts on your machine.</h3>
+      <p>The installer prints this list and asks for confirmation before touching anything. Nothing is installed silently.</p>
+    </div>
+    <div class="manifest-grid">
+      <div class="req reveal">
+        <h3><span class="m-count" style="color:var(--acid)">45</span> CLI tools &amp; runtimes</h3>
+        <p>git, gh, node, python, uv, go, rust, docker, kubernetes-cli, terraform, ansible, ripgrep, fzf, bat, eza, lazygit, ollama, helm… <span class="m-src">Homebrew</span></p>
+      </div>
+      <div class="req reveal">
+        <h3><span class="m-count" style="color:var(--cyan)">22</span> Apps &amp; fonts</h3>
+        <p>VS Code, Warp, iTerm2, Windsurf, Docker Desktop, Chrome, Firefox, Raycast, TablePlus, Postman, KeePassXC + 4 Nerd Fonts… <span class="m-src">Homebrew casks</span></p>
+      </div>
+      <div class="req reveal">
+        <h3><span class="m-count" style="color:var(--plasma)">43</span> Global Node packages</h3>
+        <p>claude-code, codex, gemini-cli, MCP servers, typescript, vite, eslint, prettier, biome, turbo, nx, repomix… <span class="m-src">via pnpm</span></p>
+      </div>
+      <div class="req reveal">
+        <h3><span class="m-count" style="color:var(--amber)">28</span> Python packages</h3>
+        <p>ruff, black, mypy, pytest, ipython, pandas, numpy, httpx, typer, bandit, pip-audit, poetry, mcp… <span class="m-src">isolated uv venv</span></p>
+      </div>
+      <div class="req reveal">
+        <h3><span class="m-count" style="color:var(--acid)">~180</span> AI skills</h3>
+        <p>Symlinked into every CLI — Claude, Codex, Gemini, Hermes, Antigravity — plus the 14 required superpowers skills. <span class="m-src">ai-config/skills</span></p>
+      </div>
+      <div class="req reveal">
+        <h3><span class="m-count" style="color:var(--cyan)">+</span> Services &amp; shell</h3>
+        <p>Memory stack (FalkorDB + Ollama + code indexers via Docker), MCP config, Oh My Zsh + Powerlevel10k, dotfile symlinks. <span class="m-src">background layers</span></p>
       </div>
     </div>
   </div>
