@@ -197,17 +197,19 @@ elif [ "$CHECK_MODE" = "1" ]; then
   log "3. --check mode, skipping chrome-devtools-mcp install"
 else
   log "3. Installing chrome-devtools-mcp (ECC dependency)..."
-  if command -v npm >/dev/null 2>&1; then
+  if command -v pnpm >/dev/null 2>&1; then
     if [ "$DRY" = "1" ]; then
-      ok "  Would run: npm install -g chrome-devtools-mcp (simulated)"
+      ok "  Would run: pnpm add -g chrome-devtools-mcp (simulated)"
     else
-      # Idempotent: -g install is safe to repeat; npm will no-op if version is satisfied.
-      npm install -g chrome-devtools-mcp 2>&1 | tail -3
+      # Idempotent: -g add is safe to repeat; pnpm no-ops if version is satisfied.
+      export PNPM_HOME="${PNPM_HOME:-$HOME/Library/pnpm}"
+      export PATH="$PNPM_HOME:$PATH"
+      pnpm add -g chrome-devtools-mcp 2>&1 | tail -3
       ok "  chrome-devtools-mcp installed"
     fi
   else
-    warn "  npm not found; install Node.js >=18 first, then re-run."
-    warn "  (On Mac: brew install node.  On Linux: see https://nodejs.org)"
+    warn "  pnpm not found; install Node.js >=18 and pnpm first, then re-run."
+    warn "  (On Mac: brew install node pnpm.  On Linux: see https://pnpm.io)"
   fi
 fi
 echo ""

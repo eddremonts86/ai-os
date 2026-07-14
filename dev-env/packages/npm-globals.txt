@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# npm-globals.txt — npm packages to install globally
-# Install: while read pkg; do npm install -g "$pkg"; done < npm-globals.txt
+# npm-globals.txt — global Node packages (installed with pnpm, not npm)
+# Install: while read pkg; do pnpm add -g "$pkg"; done < npm-globals.txt
 
 # AI / Claude
 @anthropic-ai/claude-code
@@ -11,8 +11,8 @@
 # Edd installs Hermes via pipx or uv, not npm
 
 # Agent-related
+# mcp-server-git is Python-only (run via `uvx mcp-server-git`), not on npm
 @modelcontextprotocol/server-filesystem
-@modelcontextprotocol/server-git
 @modelcontextprotocol/server-github
 @upstash/context7-mcp
 @playwright/mcp
@@ -45,26 +45,24 @@ git-open
 git-cz
 
 # Utilities
-npx
+# npx ships with npm; ncu is the same binary as npm-check-updates (above);
+# pnpm and yarn come from brew (Brewfile) — all removed to avoid EEXIST conflicts
 npkill
 taze
 np
-ncu
 bumpp
 zx
 ts-node-dev
 lerna
 nx
 turbo
-pnpm
-yarn
 
 # AI dev utilities
+# gitingest is Python-only (see pip-packages.txt), not on npm
 repomix
-gitingest
 llm-cmd
 groq-cli
 openai-cli
 claude-code-router
 mcp-cli
-mcp-server-filesystem
+# mcp-server-filesystem removed: same binary as @modelcontextprotocol/server-filesystem

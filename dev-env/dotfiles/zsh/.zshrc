@@ -142,6 +142,10 @@ export PATH="$HOME/.local/bin:$PATH"
 # Homebrew (Apple Silicon)
 export PATH="/opt/homebrew/bin:$opt/homebrew/sbin:$PATH"
 
+# AI-OS Python venv — CLI tools (ruff, black, ipython, …) on PATH.
+# Appended so brew's python3 stays the default interpreter.
+[ -d "$HOME/.ai-os/venv/bin" ] && export PATH="$PATH:$HOME/.ai-os/venv/bin"
+
 # Navegación rápida
 alias ..="cd .."
 alias ...="cd ../.."

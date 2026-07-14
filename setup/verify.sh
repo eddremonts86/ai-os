@@ -358,7 +358,8 @@ section "8. Brew packages (verifies that brew works)"
 BREW_PACKAGES=("uv" "yq" "warp")
 INSTALLED=0
 for pkg in "${BREW_PACKAGES[@]}"; do
-  if brew list 2>/dev/null | grep -qE "(^|/)$pkg(\s|$)"; then
+  # per-package query is portable; `brew list | grep` broke on BSD grep (\s)
+  if brew list "$pkg" >/dev/null 2>&1; then
     ok "  $pkg installed via brew"
     INSTALLED=$((INSTALLED+1))
   else
@@ -372,67 +373,69 @@ else
   warn "no brew package detected — but it may be OK if you use system packages"
 fi
 
-# ─── 9. npm globals ───
-section "9. npm globals (matches dev-env/packages/npm-globals.txt)"
-if command -v npm >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" ]; then
+# ─── 9. Global Node packages (pnpm) ───
+section "9. Global Node packages (pnpm, matches dev-env/packages/npm-globals.txt)"
+if command -v pnpm >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" ]; then
   NPM_LIST_FILE="$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
   EXPECTED_NPM=$(grep -vE '^\s*#|^\s*$' "$NPM_LIST_FILE" | wc -l | tr -d ' ')
-  INSTALLED_NPM=$(npm ls -g --depth=0 --parseable 2>/dev/null | xargs -I{} basename {} | sort -u | wc -l | tr -d ' ')
+  # snapshot the global list once (name @ version → bare name)
+  INSTALLED_GLOBALS="$(pnpm ls -g --depth=0 --parseable 2>/dev/null | xargs -I{} basename {} | sort -u)"
+  INSTALLED_NPM=$(printf '%s\n' "$INSTALLED_GLOBALS" | grep -c . | tr -d ' ')
   MISSING_NPM=0
   missing_pkgs=""
   while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
     pkg="${raw_pkg%%#*}"
     pkg="$(printf '%s' "$pkg" | xargs)"
     [ -z "$pkg" ] && continue
-    if ! npm ls -g "$pkg" >/dev/null 2>&1; then
+    # match on the package's last path segment (handles scoped @scope/name)
+    base="${pkg##*/}"
+    if ! printf '%s\n' "$INSTALLED_GLOBALS" | grep -qx "$base"; then
       MISSING_NPM=$((MISSING_NPM+1))
       missing_pkgs="$missing_pkgs $pkg"
     fi
   done < "$NPM_LIST_FILE"
   if [ "$MISSING_NPM" -eq 0 ]; then
-    ok "All $EXPECTED_NPM npm globals present ($INSTALLED_NPM total installed)"
+    ok "All $EXPECTED_NPM global Node packages present ($INSTALLED_NPM total installed)"
     PASS=$((PASS+1))
   else
-    warn "$MISSING_NPM npm globals missing:$missing_pkgs"
+    warn "$MISSING_NPM global Node packages missing:$missing_pkgs"
     warn "Run install-mac.sh to install (or set SKIP_NPM=1 if intentionally skipped)"
   fi
 else
-  warn "npm not available or npm-globals.txt missing — skipping npm check"
+  warn "pnpm not available or npm-globals.txt missing — skipping Node check"
 fi
 
-# ─── 10. Python user packages ───
-section "10. Python user packages (matches dev-env/packages/pip-packages.txt)"
-if command -v python3 >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" ]; then
-  PY_CMD=python3
-elif command -v python >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/dev-env/packages/pip-packages.txt" ]; then
-  PY_CMD=python
-else
-  PY_CMD=""
-fi
-if [ -n "$PY_CMD" ]; then
-  PIP_LIST_FILE="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
+# ─── 10. Python packages (AI-OS venv) ───
+section "10. Python packages (matches dev-env/packages/pip-packages.txt)"
+AIOS_VENV="$HOME_DIR/.ai-os/venv"
+PIP_LIST_FILE="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
+if command -v uv >/dev/null 2>&1 && [ -x "$AIOS_VENV/bin/python" ] && [ -f "$PIP_LIST_FILE" ]; then
+  # snapshot installed distributions once, normalized (PEP 503: lowercase, _→-)
+  INSTALLED_DISTS="$(uv pip list --python "$AIOS_VENV/bin/python" --format freeze 2>/dev/null \
+    | sed -E 's/==.*//' | tr '[:upper:]' '[:lower:]' | tr '_' '-')"
   MISSING_PIP=0
   missing_pkgs=""
   while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
     pkg="${raw_pkg%%#*}"
     pkg="$(printf '%s' "$pkg" | xargs)"
-    # strip version specifiers for the import check (e.g. "mcp[cli]" or "ruff>=1.0")
-    import_name="$(printf '%s' "$pkg" | sed -E 's/^([A-Za-z0-9._-]+).*/\1/' | tr '[:upper:]' '[:lower:]' | tr -d -- '-_')"
     [ -z "$pkg" ] && continue
-    if ! "$PY_CMD" -c "import importlib, sys; sys.exit(0 if importlib.util.find_spec('$import_name') else 1)" 2>/dev/null; then
+    # strip extras "[...]" and version specifiers → bare distribution name
+    dist="$(printf '%s' "$pkg" | sed -E 's/\[.*//; s/[><=~!].*//' | xargs \
+      | tr '[:upper:]' '[:lower:]' | tr '_' '-')"
+    if ! printf '%s\n' "$INSTALLED_DISTS" | grep -qx "$dist"; then
       MISSING_PIP=$((MISSING_PIP+1))
       missing_pkgs="$missing_pkgs $pkg"
     fi
   done < "$PIP_LIST_FILE"
   if [ "$MISSING_PIP" -eq 0 ]; then
-    ok "All pip user packages importable"
+    ok "All pip packages present in $AIOS_VENV"
     PASS=$((PASS+1))
   else
-    warn "$MISSING_PIP pip user packages missing:$missing_pkgs"
+    warn "$MISSING_PIP pip packages missing:$missing_pkgs"
     warn "Run install-mac.sh to install (or set SKIP_PIP=1 if intentionally skipped)"
   fi
 else
-  warn "Python not available or pip-packages.txt missing — skipping pip check"
+  warn "uv or AI-OS venv or pip-packages.txt missing — skipping pip check"
 fi
 
 # ─── 11. English-only rule (skill frontmatter) ───
