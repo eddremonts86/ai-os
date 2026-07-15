@@ -172,16 +172,29 @@ if (-not $env:SKIP_DOTFILES) {
 
     # PowerShell profile
     if (Test-Path "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1") {
-        $profilePath = $PROFILE.CurrentUserAllHosts
-        $profileDir = Split-Path -Parent $profilePath
-        if (-not (Test-Path $profileDir)) {
-            New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
+        # $PROFILE.CurrentUserAllHosts only resolves to THIS script's own host
+        # (pwsh/PS7, since the null-coalescing operator used below requires
+        # it). Windows PowerShell 5.1 (still the default in many VS Code
+        # "PowerShell Extension" terminals when pwsh isn't on PATH yet) keeps
+        # a separate profile under Documents\WindowsPowerShell\, which never
+        # gets wired otherwise -- leaving that terminal without the PATH fix
+        # below (nvm4w's %NVM_HOME%/%NVM_SYMLINK% expansion) or any AI-OS
+        # customization at all. Wire both.
+        $profileTargets = @(
+            $PROFILE.CurrentUserAllHosts,
+            (Join-Path $HomeDir "Documents\WindowsPowerShell\profile.ps1")
+        ) | Select-Object -Unique
+        foreach ($profilePath in $profileTargets) {
+            $profileDir = Split-Path -Parent $profilePath
+            if (-not (Test-Path $profileDir)) {
+                New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
+            }
+            if ((Test-Path $profilePath) -and -not (Get-Item $profilePath -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
+                Move-Item $profilePath "$profilePath.pre-aios.bak" -Force
+            }
+            New-Item -ItemType SymbolicLink -Path $profilePath -Target "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1" -Force | Out-Null
         }
-        if (Test-Path $profilePath) {
-            Move-Item $profilePath "$profilePath.pre-aios.bak" -Force
-        }
-        New-Item -ItemType SymbolicLink -Path $profilePath -Target "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1" -Force | Out-Null
-        Ok "  PowerShell profile → ai-os"
+        Ok "  PowerShell profile → ai-os (pwsh + Windows PowerShell 5.1)"
     }
 
     # Git config
@@ -216,6 +229,41 @@ if (-not $env:SKIP_DOTFILES) {
         }
         Copy-Item "$AIOSRoot\dev-env\dotfiles\ssh\config" "$sshDir\config" -Force
         Ok "  .ssh/config → ai-os"
+    }
+
+    # Git Bash NVM PATH fix: nvm-windows (nvm4w) stores its PATH entries as
+    # self-referencing %NVM_HOME%/%NVM_SYMLINK% placeholders (REG_EXPAND_SZ).
+    # Native Windows shells (cmd, PowerShell) expand these when a NEW process
+    # environment is built, but Git Bash / MSYS2 does not -- it copies the
+    # literal, unexpanded text into $PATH, which silently breaks node/npm/pnpm
+    # resolution in every Git Bash terminal. Append an idempotent, self-guarding
+    # fix to ~/.bashrc (skipped entirely on machines without nvm4w). Must
+    # convert through `cygpath -u`: appending the raw Windows backslash paths
+    # (e.g. C:\nvm4w\nodejs) corrupts bash's colon-separated PATH, because the
+    # drive-letter colon (C:) gets misparsed as a PATH separator -- this in
+    # turn breaks POSIX shim scripts like pnpm's, which mis-resolve their own
+    # location (observed: pnpm.cjs resolved under "C:\Program Files\Git\..."
+    # instead of "C:\nvm4w\...").
+    $bashrcPath = Join-Path $HomeDir ".bashrc"
+    $nvmFixMarker = "AI-OS NVM PATH FIX"
+    $bashExists = Get-Command bash -ErrorAction SilentlyContinue
+    if ($bashExists) {
+        $bashrcHasMarker = (Test-Path $bashrcPath) -and (Select-String -Path $bashrcPath -SimpleMatch $nvmFixMarker -Quiet)
+        if (-not $bashrcHasMarker) {
+            $nvmFixBlock = @"
+
+# $nvmFixMarker -- see setup/install-windows.ps1 for the full explanation.
+# Safe no-op on machines without nvm-windows (nvm4w).
+if [ -n "`$NVM_HOME" ] && [ -n "`$NVM_SYMLINK" ]; then
+  export PATH="`$PATH:`$(cygpath -u "`$NVM_HOME" 2>/dev/null):`$(cygpath -u "`$NVM_SYMLINK" 2>/dev/null)"
+fi
+"@
+            Add-Content -Path $bashrcPath -Value $nvmFixBlock
+            Ok "  ~/.bashrc  nvm4w PATH fix for Git Bash"
+        }
+        else {
+            Ok "  ~/.bashrc already has the nvm4w PATH fix"
+        }
     }
 }
 else {
