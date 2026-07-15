@@ -68,6 +68,19 @@ warn() { echo -e "  ${Y}!${R} $*"; }
 err()  { echo -e "  ${RED}✗${R} $*" >&2; }
 hdr()  { echo -e "\n${B}== $1 ==${R}"; }
 
+# Portable "is a process matching <pattern> running?" check. `pgrep` doesn't
+# exist in Git Bash on Windows, so fall back to `ps` (POSIX, available on
+# Mac/Linux and Git Bash/MSYS2 alike) when pgrep is missing.
+proc_matches() {
+  local pattern="$1"
+  if command -v pgrep >/dev/null 2>&1; then
+    pgrep -fl "$pattern" 2>/dev/null
+  else
+    ps aux 2>/dev/null | grep -i -E "$pattern" | grep -v grep
+  fi
+}
+proc_running() { proc_matches "$1" | grep -q .; }
+
 sub_status() {
   hdr "AI-OS Memory Stack Status"
 
@@ -118,15 +131,19 @@ sub_status() {
     warn "Docker not running"
   fi
 
-  # Ollama
-  if command -v ollama >/dev/null 2>&1 && pgrep -f "ollama serve" >/dev/null 2>&1; then
+  # Ollama: check the API directly rather than the process name. `pgrep`
+  # doesn't exist in Git Bash on Windows (this check always failed there even
+  # with ollama actually running), and process names differ by platform
+  # anyway (ollama.exe vs ollama). The API check is the real signal we care
+  # about and works identically everywhere -- and must NOT require the
+  # `ollama` CLI to be on PATH: Windows now defaults to running Ollama in
+  # Docker (aios-ollama container, see memory/falkordb/docker-compose.yml's
+  # opt-in "ollama-docker" profile), which never installs the native CLI at
+  # all. Query the model list over the API too, not via `ollama list`.
+  if curl -s -m 3 "$OLLAMA_URL/api/tags" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
     ok "Ollama serve running"
-    if curl -s -m 3 "$OLLAMA_URL/api/tags" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
-      ok "  API  $OLLAMA_URL"
-    else
-      warn "  API  $OLLAMA_URL not reachable"
-    fi
-    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
+    ok "  API  $OLLAMA_URL"
+    if curl -s -m 3 "$OLLAMA_URL/api/tags" 2>/dev/null | grep -q "nomic-embed-text"; then
       ok "  model nomic-embed-text ready"
     else
       warn "  model nomic-embed-text not pulled"
@@ -203,9 +220,9 @@ sub_visualize() {
   echo ""
 
   # 3. grepai runtime check (no browser UI; surface status + how to use)
-  if pgrep -fl "grepai.*watch" >/dev/null 2>&1; then
+  if proc_running "grepai.*watch"; then
     echo "  3) grepai:               daemon running (semantic search via terminal)"
-    pgrep -fl "grepai.*watch" | sed 's/^/        /'
+    proc_matches "grepai.*watch" | sed 's/^/        /'
   else
     echo "  3) grepai:               daemon NOT running (start with: ai-os memory search <query>)"
   fi
@@ -227,7 +244,7 @@ sub_search() {
   echo ""
 
   # Tier 1 — grepai (if a watch daemon is running)
-  if pgrep -fl "grepai.*watch" >/dev/null 2>&1; then
+  if proc_running "grepai.*watch"; then
     echo "  → grepai (live watch daemon):"
     cd "$target"
     grepai search "$q" --limit 10 2>&1 | sed 's/^/    /' || warn "  grepai search returned non-zero"
@@ -261,11 +278,21 @@ print(json.dumps({'pattern': sys.argv[1], 'project': sys.argv[2], 'limit': 10}))
 sub_start() {
   hdr "Starting FalkorDB"
   cd "$MEMORY_DIR"
-  if docker compose version >/dev/null 2>&1; then
-    docker compose up -d
-  else
-    docker-compose up -d
+  # Auto-detect the opt-in "ollama-docker" profile via the ./ollama-data
+  # directory rather than `docker ps -a`: `docker compose down` REMOVES
+  # containers (not just stops them), so a container-name check only works
+  # once and silently drops Ollama on every subsequent start after the first
+  # stop. The bind-mounted data dir survives `down` and only ever exists if
+  # the profile was started at least once (e.g. by install-windows.ps1,
+  # which defaults to it on Windows). Never touches setups using native
+  # ollama (that dir is never created there).
+  local compose_bin="docker compose"
+  docker compose version >/dev/null 2>&1 || compose_bin="docker-compose"
+  local profile_args=""
+  if [ -d "$MEMORY_DIR/ollama-data" ]; then
+    profile_args="--profile ollama-docker"
   fi
+  $compose_bin $profile_args up -d
   ok "FalkorDB started"
   sub_status
 }
@@ -273,11 +300,13 @@ sub_start() {
 sub_stop() {
   hdr "Stopping FalkorDB"
   cd "$MEMORY_DIR"
-  if docker compose version >/dev/null 2>&1; then
-    docker compose down
-  else
-    docker-compose down
+  local compose_bin="docker compose"
+  docker compose version >/dev/null 2>&1 || compose_bin="docker-compose"
+  local profile_args=""
+  if [ -d "$MEMORY_DIR/ollama-data" ]; then
+    profile_args="--profile ollama-docker"
   fi
+  $compose_bin $profile_args down
   ok "FalkorDB stopped (data preserved in ./data)"
 }
 
