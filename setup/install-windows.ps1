@@ -218,17 +218,25 @@ if (-not $env:SKIP_DOTFILES) {
         Ok "  .gitignore_global → ai-os"
     }
 
-    # SSH config
+    # SSH config: copy only if missing. Unlike most AI-OS-managed dotfiles,
+    # this one is expected to be hand-customized per user right after install
+    # (real IdentityFile paths, extra Host blocks) -- unconditionally
+    # overwriting it on every re-run silently destroyed that customization
+    # (observed: reverted a fixed IdentityFile back to the template's
+    # placeholder path, breaking `git push` over SSH). Same "copy once, never
+    # clobber" behavior as .gitconfig above.
     if (Test-Path "$AIOSRoot\dev-env\dotfiles\ssh\config") {
         $sshDir = "$HomeDir\.ssh"
         if (-not (Test-Path $sshDir)) {
             New-Item -ItemType Directory -Path $sshDir -Force | Out-Null
         }
-        if (Test-Path "$sshDir\config") {
-            Move-Item "$sshDir\config" "$sshDir\config.pre-aios.bak" -Force
+        if (-not (Test-Path "$sshDir\config")) {
+            Copy-Item "$AIOSRoot\dev-env\dotfiles\ssh\config" "$sshDir\config"
+            Ok "  .ssh/config → template (customize IdentityFile for your real key(s))"
         }
-        Copy-Item "$AIOSRoot\dev-env\dotfiles\ssh\config" "$sshDir\config" -Force
-        Ok "  .ssh/config → ai-os"
+        else {
+            Ok "  .ssh/config already exists, not overwriting"
+        }
     }
 
     # Git Bash NVM PATH fix: nvm-windows (nvm4w) stores its PATH entries as
