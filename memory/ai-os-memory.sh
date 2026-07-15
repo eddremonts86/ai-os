@@ -243,12 +243,16 @@ sub_search() {
   echo "  target: $target"
   echo ""
 
-  # Tier 1 — grepai (if a watch daemon is running)
-  if proc_running "grepai.*watch"; then
+  # Tier 1 — grepai (if a watch daemon is running AND it knows this project).
+  # If grepai errors (e.g. project not initialized there), fall through to cbm
+  # instead of aborting the search. cbm is the always-on fallback.
+  if proc_running "grepai.*watch" && [ -f "$target/.grepai/config.yaml" ]; then
     echo "  → grepai (live watch daemon):"
-    cd "$target"
-    grepai search "$q" --limit 10 2>&1 | sed 's/^/    /' || warn "  grepai search returned non-zero"
-    return 0
+    if (cd "$target" && OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}" grepai search "$q" --limit 10 2>&1 | sed 's/^/    /'); then
+      : # grepai returned OK
+    else
+      warn "  grepai search failed; falling back to cbm"
+    fi
   fi
 
   # Tier 2 — codebase-memory-mcp (always available, but only knows indexed repos).
