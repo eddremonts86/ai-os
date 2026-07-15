@@ -24,6 +24,16 @@ Set-Alias -Name gco -Value "git checkout" -Option AllScope -Force
 $env:Path = "$Home\bin;$env:Path"
 $env:Path = "$Home\.local\bin;$env:Path"
 
+# Fix: long-lived shells (e.g. VS Code terminals spawned from a parent process
+# that predates a PATH change) can inherit a Path with literal, unexpanded
+# %VAR% placeholders instead of real directories -- seen with nvm-windows
+# (nvm4w)'s self-referencing %NVM_HOME%/%NVM_SYMLINK% PATH entries, which
+# breaks node/npm/pnpm resolution until VS Code is fully restarted. Expand
+# defensively on every new shell so it works without a restart.
+if ($env:Path -match '%\w+%') {
+    $env:Path = [System.Environment]::ExpandEnvironmentVariables($env:Path)
+}
+
 # Hermes
 function h { hermes }
 Set-Alias -Name hc -Value "hermes chat" -Option AllScope -Force
