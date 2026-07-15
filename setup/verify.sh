@@ -221,6 +221,53 @@ if [ -d "$HOME_DIR/.minimax/agents" ]; then
   fi
 fi
 
+# ─── 3c. IDE/CLI MCP servers ───
+# install-mac.sh step 9a wires ai-config/mcp/*.yaml into each installed
+# client's own MCP config (VS Code mcp.json, Codex config.toml, Claude Code
+# .claude.json, Gemini settings.json). All optional: a client not installed
+# on this machine is skipped, not failed.
+section "3c. IDE/CLI MCP servers (VS Code, Codex, Claude Code, Gemini)"
+vscode_mcp="$HOME_DIR/Library/Application Support/Code/User/mcp.json"
+if [ -d "$(dirname "$vscode_mcp")" ]; then
+  if grep -q "grepai" "$vscode_mcp" 2>/dev/null; then
+    opt_ok "  VS Code mcp.json wired (grepai present)"
+  else
+    opt_miss "  VS Code mcp.json missing AI-OS servers (run install-mac.sh)"
+  fi
+else
+  opt_miss "  VS Code not detected, skipping"
+fi
+codex_toml="$HOME_DIR/.codex/config.toml"
+if [ -d "$HOME_DIR/.codex" ]; then
+  if grep -q "mcp_servers.grepai" "$codex_toml" 2>/dev/null; then
+    opt_ok "  Codex config.toml wired (grepai present)"
+  else
+    opt_miss "  Codex config.toml missing AI-OS servers (run install-mac.sh)"
+  fi
+else
+  opt_miss "  Codex not detected, skipping"
+fi
+claude_json="$HOME_DIR/.claude.json"
+if [ -f "$claude_json" ]; then
+  if grep -q "grepai" "$claude_json" 2>/dev/null; then
+    opt_ok "  Claude Code .claude.json wired (grepai present)"
+  else
+    opt_miss "  Claude Code .claude.json missing AI-OS servers (run install-mac.sh)"
+  fi
+else
+  opt_miss "  Claude Code not detected, skipping"
+fi
+gemini_settings="$HOME_DIR/.gemini/settings.json"
+if [ -d "$HOME_DIR/.gemini" ]; then
+  if grep -q "grepai" "$gemini_settings" 2>/dev/null; then
+    opt_ok "  Gemini settings.json wired (grepai present)"
+  else
+    opt_miss "  Gemini settings.json missing AI-OS servers (run install-mac.sh)"
+  fi
+else
+  opt_miss "  Gemini not detected, skipping"
+fi
+
 # ─── 4. Superpowers (14 required) ───
 section "4. Superpowers skills (REQUIRED = 14)"
 EXPECTED=14
