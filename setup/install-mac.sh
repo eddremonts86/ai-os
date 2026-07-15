@@ -287,6 +287,20 @@ else
 fi
 echo ""
 
+# ─── 5b. Export AI-OS env vars (OLLAMA_URL, AI_OS_ROOT) to ~/.zshrc ───
+# Idempotent: only appends lines that aren't already present.
+AIOS_ZSHRC="$HOME_DIR/.zshrc"
+if [ -f "$AIOS_ZSHRC" ] || [ -L "$AIOS_ZSHRC" ]; then
+  if ! grep -qE "^export OLLAMA_URL=" "$AIOS_ZSHRC" 2>/dev/null; then
+    printf "\n# AI-OS memory stack (added by setup/install-mac.sh)\nexport OLLAMA_URL=\${OLLAMA_URL:-http://localhost:11500}\n" >> "$AIOS_ZSHRC"
+    ok "  ~/.zshrc: OLLAMA_URL exported (Ollama on :11500)"
+  fi
+  if ! grep -qE "^export AI_OS_ROOT=" "$AIOS_ZSHRC" 2>/dev/null; then
+    printf "export AI_OS_ROOT=\${AI_OS_ROOT:-$AI_OS_ROOT}\n" >> "$AIOS_ZSHRC"
+    ok "  ~/.zshrc: AI_OS_ROOT exported"
+  fi
+fi
+
 # ─── 6. Oh My Zsh + Powerlevel10k ───
 # Pinned refs (P1-4): Oh My Zsh has no version tags, so pin a specific commit
 # SHA instead of the mutable `master` branch. Bump deliberately after review,
@@ -707,6 +721,30 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     if go install "github.com/yoanbernabeu/grepai/cmd/grepai@${GREPAI_VERSION}" 2>&1 | tail -2; then
       [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
       ok "  grepai ${GREPAI_VERSION} installed via go install"
+
+      # grepai's init wizard hard-codes Ollama at :11434, but AI-OS uses :11500
+      # (see OLLAMA_URL above). Auto-init the AI-OS repo with the right URL so
+      # `grepai watch` works without manual config. Re-init is a no-op if .grepai/
+      # already exists with the right URL.
+      if [ ! -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
+        if [ -t 0 ]; then
+          # interactive terminal: full wizard
+          (cd "$AI_OS_ROOT" && "$HOME_DIR/.local/bin/grepai" init) || warn "  grepai init interactive failed; run manually: cd ~/Projects/ai-os && grepai init"
+        else
+          # non-interactive (CI, piped): pipe the answers
+          (cd "$AI_OS_ROOT" && printf "1\n%s\ngob\n\n" "$OLLAMA_URL" | "$HOME_DIR/.local/bin/grepai" init >/dev/null 2>&1) || warn "  grepai init non-interactive failed; run manually: cd ~/Projects/ai-os && grepai init"
+        fi
+      fi
+      # Always reconcile endpoint: if the user (or a previous install) used
+      # 11434, swap to OLLAMA_URL. grepai ignores OLLAMA_URL env, so config
+      # is the only way to fix this.
+      if [ -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
+        "$HOME_DIR/.local/bin/grepai" config get embedder.endpoint >/dev/null 2>&1 || true
+        if grep -q "localhost:11434" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null; then
+          sed -i.bak "s|http://localhost:11434|$OLLAMA_URL|g" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null &&             ok "  grepai config: rewrote Ollama endpoint 11434 -> $OLLAMA_URL" ||             warn "  grepai config: could not rewrite endpoint (run: sed -i '' 's|11434|11500|' ~/Projects/ai-os/.grepai/config.yaml)"
+          rm -f "$AI_OS_ROOT/.grepai/config.yaml.bak"
+        fi
+      fi
     else
       warn "  go install grepai failed (will retry on first use)"
     fi
