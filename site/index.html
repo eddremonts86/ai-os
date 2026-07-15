@@ -712,6 +712,7 @@
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="clis"><span class="btn-prompt">➜</span> <span class="btn-cmd">cli --list</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="skills"><span class="btn-prompt">➜</span> <span class="btn-cmd">skills --info</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="mcp"><span class="btn-prompt">➜</span> <span class="btn-cmd">mcp --config</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="memory"><span class="btn-prompt">➜</span> <span class="btn-cmd">memory --status</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="bridge"><span class="btn-prompt">➜</span> <span class="btn-cmd">bridge --check</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="install"><span class="btn-prompt">➜</span> <span class="btn-cmd">install --steps</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="env"><span class="btn-prompt">➜</span> <span class="btn-cmd">env --variables</span></button></li>
@@ -1106,9 +1107,10 @@ bash setup/verify.sh</pre>
     </li>
     <li>
       <span class="c-item-title">VS Code (GitHub Copilot Chat)</span>
-      <div class="c-item-desc">Discovers skills in <span class="c-path">~/.agents/skills/</span>. Instructed via the global instructions adapter block appended to <span class="c-path">default.instructions.md</span> (covers Code and Code - Insiders on macOS and Linux).</div>
+      <div class="c-item-desc">Discovers skills in <span class="c-path">~/.agents/skills/</span>. Instructed via the global instructions adapter block appended to <span class="c-path">default.instructions.md</span> (covers Code and Code - Insiders on macOS and Linux). MCP servers merged into its own <span class="c-path">mcp.json</span>.</div>
     </li>
   </ul>
+  <div class="c-text">Every client above also gets the same <code>ai-config/mcp/*.yaml</code> definitions merged into its own native MCP config (see <code>mcp --config</code>) — skills and tool access are wired together, not just one or the other.</div>
 </div>
 <div class="c-section">
   <div class="c-header">Client Integration Wiring Detail</div>
@@ -1222,6 +1224,35 @@ ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainst
       - @modelcontextprotocol/server-time
     env: {}
     enabled: true</pre>
+</div>
+<div class="c-section">
+  <div class="c-header">Wired Natively Into Every Client (Not Just Hermes)</div>
+  <div class="c-text"><code>setup/sync-ide-mcp-servers.py</code> propagates the same YAML source into each client's own native config format, so grepai/memory/codebase-memory-mcp are queryable from whichever tool you're actually chatting in — not only Hermes.</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">VS Code &amp; VS Code Insiders:</span> writes into <span class="c-path">mcp.json</span> under the <code>servers</code> key.</li>
+    <li><span class="c-item-title">Claude Code:</span> writes into <span class="c-path">~/.claude.json</span> under <code>mcpServers</code> (live session-state file, edited surgically).</li>
+    <li><span class="c-item-title">Gemini CLI:</span> writes into <span class="c-path">~/.gemini/settings.json</span> under <code>mcpServers</code> (best-effort, schema unverified).</li>
+    <li><span class="c-item-title">Codex CLI:</span> writes <code>[mcp_servers.*]</code> tables into <span class="c-path">~/.codex/config.toml</span> via <code>tomlkit</code>; http-transport servers are skipped (Codex is stdio-first).</li>
+  </ul>
+  <div class="c-text">Merge policy is additive-only: a server name that already exists in a client's config (a hand-customized <code>filesystem</code> entry, say) is left byte-for-byte untouched — new AI-OS servers are only <i>added</i>, never overwritten. Runs automatically on every install, gated per-client on that client actually being installed.</div>
+</div>`,
+    memory: `
+<div class="c-section">
+  <div class="c-header">Memory Stack &mdash; Keeping Every Project Indexed &amp; In Sync</div>
+  <div class="c-text">Codebases you work on are continuously indexed for semantic search and long-term memory, all local &mdash; no code leaves your machine.</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">grepai (semantic search):</span> Indexes a repo's files/symbols into <code>.grepai/index.gob</code>. Run <code>grepai watch</code> in a project to keep the index live as you edit &mdash; incremental re-indexing on save, no manual reruns.</li>
+    <li><span class="c-item-title">codebase-memory-mcp:</span> Go-compiled MCP server exposing that index as searchable tools (<code>search</code>, <code>symbols</code>, <code>stats</code>) to any wired client.</li>
+    <li><span class="c-item-title">Ollama (embeddings):</span> Serves <code>nomic-embed-text</code> at <code>127.0.0.1:11500</code>. macOS defaults to native (Metal GPU); Windows defaults to a Docker container (<code>ollama-docker</code> Compose profile) since there's no reliable no-admin native install path &mdash; opt out with <code>OLLAMA_NATIVE=1</code>.</li>
+    <li><span class="c-item-title">FalkorDB (knowledge graph):</span> Persistent graph memory across sessions, containerized via <code>memory/falkordb/docker-compose.yml</code>, browsable at <code>localhost:3300</code>.</li>
+  </ul>
+  <div class="c-code-header">Daily driver: memory/ai-os-memory.sh</div>
+  <pre class="c-code">ai-os memory status     # health check: containers, Ollama, model, index freshness
+ai-os memory start       # docker compose up -d (+ ollama-docker profile if used)
+ai-os memory reindex     # force a full grepai re-index of the current repo
+ai-os memory search "how does the installer wire MCP servers"
+ai-os memory visualize   # open FalkorDB's graph browser</pre>
+  <div class="c-text">Cross-platform by design: process checks use a pure HTTP probe against Ollama's API (no CLI-presence assumption) with a <code>ps</code>-based fallback where <code>pgrep</code> doesn't exist (Git Bash on Windows).</div>
 </div>`,
     bridge: `
 <div class="c-section">
@@ -1347,6 +1378,7 @@ git config --global user.email "you@example.com"</div>
     clis: "cli --list",
     skills: "skills --info",
     mcp: "mcp --config",
+    memory: "memory --status",
     bridge: "bridge --check",
     install: "install --steps",
     env: "env --variables",
