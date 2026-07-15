@@ -208,3 +208,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# AI-OS memory stack (added by setup/install-mac.sh)
+export OLLAMA_URL=${OLLAMA_URL:-http://localhost:11500}
