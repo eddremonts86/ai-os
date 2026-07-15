@@ -561,6 +561,44 @@ if [ "${SKIP_MCP:-0}" != "1" ]; then
 fi
 echo ""
 
+# ─── 9a. IDE/CLI MCP servers (VS Code, Codex, Claude Code, Gemini) ───
+# generate-mcp-config.py above only wires Hermes (~/.hermes/config.yaml). Every
+# other AI client reads its OWN MCP config format/location -- without this
+# step, tools like grepai/codebase-memory-mcp only ever get consulted by
+# Hermes, never by whatever the user is actually chatting in day to day (VS
+# Code Copilot Chat, Claude Code, Codex, Gemini CLI). Merge-preserving: only
+# ADDS a server whose name doesn't already exist in that client's config --
+# never overwrites a hand-customized entry. Skips a target entirely if that
+# client isn't installed (its config dir doesn't exist) rather than
+# speculatively creating one.
+if [ "${SKIP_MCP:-0}" != "1" ]; then
+  log "9a. Wiring MCP servers into installed IDEs/CLIs..."
+
+  SYNC_MCP_ARGS=("$AI_OS_ROOT/ai-config/mcp")
+  VSCODE_MCP="$HOME_DIR/Library/Application Support/Code/User/mcp.json"
+  VSCODE_INSIDERS_MCP="$HOME_DIR/Library/Application Support/Code - Insiders/User/mcp.json"
+  [ -d "$(dirname "$VSCODE_MCP")" ] && SYNC_MCP_ARGS+=(--vscode "$VSCODE_MCP")
+  [ -d "$(dirname "$VSCODE_INSIDERS_MCP")" ] && SYNC_MCP_ARGS+=(--vscode-insiders "$VSCODE_INSIDERS_MCP")
+  [ -d "$HOME_DIR/.codex" ] && SYNC_MCP_ARGS+=(--codex "$HOME_DIR/.codex/config.toml")
+  [ -f "$HOME_DIR/.claude.json" ] && SYNC_MCP_ARGS+=(--claude "$HOME_DIR/.claude.json")
+  [ -d "$HOME_DIR/.gemini" ] && SYNC_MCP_ARGS+=(--gemini "$HOME_DIR/.gemini/settings.json")
+
+  if [ "${#SYNC_MCP_ARGS[@]}" -gt 1 ]; then
+    if [ -x "$HOME_DIR/.ai-os/venv/bin/python" ]; then
+      "$HOME_DIR/.ai-os/venv/bin/python" "$SCRIPT_DIR/sync-ide-mcp-servers.py" "${SYNC_MCP_ARGS[@]}"
+    elif command -v python3 >/dev/null 2>&1; then
+      python3 "$SCRIPT_DIR/sync-ide-mcp-servers.py" "${SYNC_MCP_ARGS[@]}"
+    elif command -v python >/dev/null 2>&1; then
+      python "$SCRIPT_DIR/sync-ide-mcp-servers.py" "${SYNC_MCP_ARGS[@]}"
+    else
+      warn "Python not found. IDE/CLI MCP servers not configured automatically."
+    fi
+  else
+    log "  No known IDE/CLI config directories found -- nothing to wire"
+  fi
+fi
+echo ""
+
 # ─── 9b. Memory stack (FalkorDB + Ollama + code indexers, phase 1) ───
 if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   log "9b. Setting up AI-OS memory stack (FalkorDB, Ollama, code indexers)..."

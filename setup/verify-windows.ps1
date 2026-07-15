@@ -221,6 +221,48 @@ else {
     OptMiss "  VS Code Copilot Chat instructions missing AI-OS bridge block (OK if unused; run install-windows.ps1)"
 }
 
+# ─── 3c. IDE/CLI MCP servers ───
+# install-windows.ps1 step 7c wires ai-config/mcp/*.yaml into each installed
+# client's own MCP config (VS Code mcp.json, Codex config.toml, Claude Code
+# .claude.json, Gemini settings.json). All optional: a client not installed
+# on this machine is skipped, not failed.
+Section "3c. IDE/CLI MCP servers (VS Code, Codex, Claude Code, Gemini)"
+function Test-McpMarker($path, $marker) {
+    (Test-Path $path) -and (Select-String -Path $path -SimpleMatch $marker -Quiet)
+}
+$vscodeMcp = Join-Path $HomeDir "AppData\Roaming\Code\User\mcp.json"
+if (Test-Path (Split-Path -Parent $vscodeMcp)) {
+    if (Test-McpMarker $vscodeMcp "grepai") { OptOk "  VS Code mcp.json wired (grepai present)" }
+    else { OptMiss "  VS Code mcp.json missing AI-OS servers (run install-windows.ps1)" }
+}
+else {
+    OptMiss "  VS Code not detected, skipping"
+}
+$codexToml = Join-Path $HomeDir ".codex\config.toml"
+if (Test-Path (Join-Path $HomeDir ".codex")) {
+    if (Test-McpMarker $codexToml "mcp_servers.grepai") { OptOk "  Codex config.toml wired (grepai present)" }
+    else { OptMiss "  Codex config.toml missing AI-OS servers (run install-windows.ps1)" }
+}
+else {
+    OptMiss "  Codex not detected, skipping"
+}
+$claudeJson = Join-Path $HomeDir ".claude.json"
+if (Test-Path $claudeJson) {
+    if (Test-McpMarker $claudeJson "grepai") { OptOk "  Claude Code .claude.json wired (grepai present)" }
+    else { OptMiss "  Claude Code .claude.json missing AI-OS servers (run install-windows.ps1)" }
+}
+else {
+    OptMiss "  Claude Code not detected, skipping"
+}
+$geminiSettings = Join-Path $HomeDir ".gemini\settings.json"
+if (Test-Path (Join-Path $HomeDir ".gemini")) {
+    if (Test-McpMarker $geminiSettings "grepai") { OptOk "  Gemini settings.json wired (grepai present)" }
+    else { OptMiss "  Gemini settings.json missing AI-OS servers (run install-windows.ps1)" }
+}
+else {
+    OptMiss "  Gemini not detected, skipping"
+}
+
 # ─── 4. Superpowers (required = 14) ───
 Section "4. Superpowers skills (REQUIRED = 14)"
 $expected = 14
