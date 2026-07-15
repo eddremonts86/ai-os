@@ -17,6 +17,7 @@ ipython                   # Better REPL
 rich                      # Pretty terminal output
 httpx                     # Modern HTTP client
 pyyaml                    # YAML parser
+tomlkit                   # TOML parser/writer preserving formatting (Codex config.toml sync)
 python-dotenv             # .env support
 typer                     # CLI framework
 click                     # CLI framework (alt)

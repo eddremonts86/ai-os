@@ -492,6 +492,17 @@ Write-Host ""
 if (-not $env:SKIP_MCP) {
     Log "7. Configuring MCP servers from ai-config/mcp/*.yaml..."
 
+    # generate-mcp-config.py needs PyYAML; sync-ide-mcp-servers.py (step 7c)
+    # additionally needs tomlkit for Codex's config.toml. Neither ships with a
+    # base Python install, and install-windows.ps1 has no separate "Python
+    # packages" step (unlike install-mac.sh's uv venv) -- ensure both here,
+    # once, against whichever interpreter we find, quietly (no-op if already
+    # present).
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
+    if ($pythonCmd) {
+        & $pythonCmd.Source -m pip install --quiet --disable-pip-version-check pyyaml tomlkit 2>&1 | Out-Null
+    }
+
     if (-not (Test-Path "$HomeDir\.hermes")) {
         New-Item -ItemType Directory -Path "$HomeDir\.hermes" -Force | Out-Null
     }
@@ -501,7 +512,6 @@ if (-not $env:SKIP_MCP) {
     }
 
     # Generate config.yaml with Python (works on Windows)
-    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
     if ($pythonCmd) {
         # 3rd arg registers ~/.agents/skills under skills.external_dirs so Hermes
         # reads it natively instead of a symlinked copy under
@@ -550,23 +560,73 @@ if (Test-Path $oldHermesImported) {
 }
 Write-Host ""
 
+# ─── 7c. IDE/CLI MCP servers (VS Code, Codex, Claude Code, Gemini) ───
+# generate-mcp-config.py above only wires Hermes (~/.hermes/config.yaml).
+# Every other AI client reads its OWN MCP config format/location -- without
+# this step, tools like grepai/codebase-memory-mcp only ever get consulted by
+# Hermes, never by whatever the user is actually chatting in day to day (VS
+# Code Copilot Chat, Claude Code, Codex, Gemini CLI). Merge-preserving: only
+# ADDS a server whose name doesn't already exist in that client's config --
+# never overwrites (confirmed real case: this machine's own VS Code
+# "filesystem" server already pointed at different directories than AI-OS's).
+# Skips a target entirely if that client isn't installed (its config dir
+# doesn't exist) rather than speculatively creating one.
+if (-not $env:SKIP_MCP) {
+    Log "7c. Wiring MCP servers into installed IDEs/CLIs..."
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
+    if ($pythonCmd) {
+        $syncArgs = @(($AIOSRoot + "\setup\sync-ide-mcp-servers.py"), ($AIOSRoot + "\ai-config\mcp"))
+        $vscodeMcp = Join-Path $env:APPDATA "Code\User\mcp.json"
+        $vscodeInsidersMcp = Join-Path $env:APPDATA "Code - Insiders\User\mcp.json"
+        if (Test-Path (Split-Path -Parent $vscodeMcp)) { $syncArgs += @("--vscode", $vscodeMcp) }
+        if (Test-Path (Split-Path -Parent $vscodeInsidersMcp)) { $syncArgs += @("--vscode-insiders", $vscodeInsidersMcp) }
+        if (Test-Path "$HomeDir\.codex") { $syncArgs += @("--codex", "$HomeDir\.codex\config.toml") }
+        if (Test-Path "$HomeDir\.claude.json") { $syncArgs += @("--claude", "$HomeDir\.claude.json") }
+        if (Test-Path "$HomeDir\.gemini") { $syncArgs += @("--gemini", "$HomeDir\.gemini\settings.json") }
+        if ($syncArgs.Count -gt 2) {
+            & $pythonCmd.Source @syncArgs
+            if ($LASTEXITCODE -ne 0) {
+                Warn "sync-ide-mcp-servers.py exited with code $LASTEXITCODE; check the IDE/CLI configs manually"
+            }
+        }
+        else {
+            Log "  No known IDE/CLI config directories found -- nothing to wire"
+        }
+    }
+    else {
+        Warn "Python not found. IDE/CLI MCP servers not configured automatically."
+    }
+}
+else {
+    Log "7c. SKIP_MCP=1, skipping IDE/CLI MCP server sync"
+}
+Write-Host ""
+
 # ─── 7b. Memory stack (FalkorDB + Ollama + code indexers, cross-platform parity with Mac) ───
 # Pinned versions are kept in sync with setup/install-mac.sh (P1-4): bump both
 # together, deliberately, not via @latest.
 if ($env:SKIP_MEMORY -ne "1") {
     Log "7b. Setting up AI-OS memory stack (FalkorDB, Ollama, code indexers)..."
 
-    # 7b.1 — Ollama local server (for embeddings, free + private)
-    if (Get-Command ollama -ErrorAction SilentlyContinue) {
+    # 7b.1 — Ollama: Docker by default on Windows. `choco install ollama`
+    # needs admin rights and was unreliable without them (P1 remediation);
+    # Docker Desktop is already required for FalkorDB below, so this reuses
+    # the same daemon with no extra elevation step. Set $env:OLLAMA_NATIVE =
+    # "1" to prefer a native install instead (e.g. for direct GPU passthrough
+    # without the WSL2 container layer). The actual container start happens
+    # together with FalkorDB in 7b.2 (same docker-compose.yml, opt-in
+    # "ollama-docker" profile) so both come up/down as one unit.
+    $useDockerOllama = $false
+    if ($env:OLLAMA_NATIVE -eq "1" -and (Get-Command ollama -ErrorAction SilentlyContinue)) {
         $ollamaRunning = Get-Process -Name "ollama" -ErrorAction SilentlyContinue
         if (-not $ollamaRunning) {
             $env:OLLAMA_HOST = "127.0.0.1:11500"
             Start-Process -FilePath "ollama" -ArgumentList "serve" -WindowStyle Hidden -RedirectStandardOutput "$HomeDir\.ollama.log" -RedirectStandardError "$HomeDir\.ollama.log"
             Start-Sleep -Seconds 3
-            Ok "  Ollama launched on 127.0.0.1:11500 (background, logs: ~/.ollama.log)"
+            Ok "  Ollama (native) launched on 127.0.0.1:11500 (background, logs: ~/.ollama.log)"
         }
         else {
-            Ok "  Ollama already running"
+            Ok "  Ollama (native) already running"
         }
         $env:OLLAMA_HOST = "127.0.0.1:11500"
         try {
@@ -578,18 +638,36 @@ if ($env:SKIP_MEMORY -ne "1") {
             Warn "  ollama pull failed (will retry on first use)"
         }
     }
+    elseif (Get-Command docker -ErrorAction SilentlyContinue) {
+        $useDockerOllama = $true
+        Log "  Ollama will run in Docker (127.0.0.1:11500) -- set `$env:OLLAMA_NATIVE = '1' to use a native install instead"
+    }
     else {
-        Warn "  ollama not installed (run: choco install ollama) — embedding features disabled"
+        Warn "  Neither native ollama nor Docker available -- embedding features disabled"
     }
 
-    # 7b.2 — FalkorDB graph DB (Docker, ports 3300 web UI + 6390 redis)
+    # 7b.2 — FalkorDB graph DB (+ Ollama container if chosen in 7b.1)
     if (Get-Command docker -ErrorAction SilentlyContinue) {
         Push-Location "$AIOSRoot\memory\falkordb"
         try {
             if (-not (Test-Path "data")) { New-Item -ItemType Directory -Path "data" | Out-Null }
-            docker compose up -d 2>&1 | Select-Object -Last 3
+            if (-not (Test-Path "ollama-data")) { New-Item -ItemType Directory -Path "ollama-data" | Out-Null }
+            $composeArgs = @("up", "-d")
+            if ($useDockerOllama) { $composeArgs = @("--profile", "ollama-docker") + $composeArgs }
+            docker compose @composeArgs 2>&1 | Select-Object -Last 5
             if ($LASTEXITCODE -ne 0) { throw "docker compose up exited with code $LASTEXITCODE" }
             Ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300 (image: falkordb/falkordb:v4.18.11, pinned)"
+            if ($useDockerOllama) {
+                Ok "  Ollama container launched: http://localhost:11500 (image: ollama/ollama:0.6.8, pinned)"
+                try {
+                    docker exec aios-ollama ollama pull nomic-embed-text 2>&1 | Select-Object -Last 3
+                    if ($LASTEXITCODE -ne 0) { throw "pull failed" }
+                    Ok "  nomic-embed-text ready (in container)"
+                }
+                catch {
+                    Warn "  nomic-embed-text pull failed (will retry on first use): docker exec aios-ollama ollama pull nomic-embed-text"
+                }
+            }
         }
         catch {
             Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory\falkordb; docker compose up -d)"
