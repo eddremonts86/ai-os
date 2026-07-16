@@ -597,7 +597,7 @@
         every CLI, MCP servers as declarative YAML — all restored with <b>one command</b>.
       </p>
       <div class="cta-row">
-        <a href="#install" class="btn">$ bash setup/install-mac.sh</a>
+        <a href="#install" class="btn">$ npx @edd_remonts/create-ai-os</a>
         <a href="#what" class="btn ghost">what is this? →</a>
       </div>
       <p class="cta-note">// new Mac to full AI setup in ~5 minutes.</p>
@@ -768,7 +768,7 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="eyebrow">// 05 · install</span>
-      <h2>Clone. Run one script. Verify.</h2>
+      <h2>One command. Verify.</h2>
       <p>Pick your OS. Copy the block. Most of the 30–60 min first install is just downloading packages.</p>
     </div>
 
@@ -782,34 +782,29 @@
 
         <div class="codeblock" data-block="mac">
           <button class="copy" data-copy>copy</button>
-          <pre><span class="c"># 1. clone</span>
-git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-cd ~/Projects/ai-os
+          <pre><span class="c"># 1. bootstrap (clones + runs the Mac installer)</span>
+<span class="g">npx @edd_remonts/create-ai-os</span>
+cd ai-os
 
-<span class="c"># 2. install everything (Mac)</span>
-<span class="g">bash setup/install-mac.sh</span>
-
-<span class="c"># 3. verify (12 health-check sections)</span>
+<span class="c"># 2. verify (12 health-check sections)</span>
 bash setup/verify.sh</pre>
         </div>
 
         <div class="codeblock" data-block="win" hidden>
           <button class="copy" data-copy>copy</button>
-          <pre><span class="c"># PowerShell as Admin</span>
-git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
-cd $HOME\Projects\ai-os
+          <pre><span class="c"># PowerShell as Admin — bootstrap (clones + runs the Windows installer)</span>
+<span class="g">npx @edd_remonts/create-ai-os</span>
+cd ai-os
 
-<span class="g">powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1</span>
 powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1</pre>
         </div>
 
         <div class="codeblock" data-block="linux" hidden>
           <button class="copy" data-copy>copy</button>
-          <pre><span class="c"># Debian / Ubuntu — same scripts, bash path</span>
-git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-cd ~/Projects/ai-os
+          <pre><span class="c"># Debian / Ubuntu — same bootstrap, cross-platform installer</span>
+<span class="g">npx @edd_remonts/create-ai-os</span>
+cd ai-os
 
-<span class="g">bash setup/install-mac.sh</span>   <span class="c"># cross-platform installer</span>
 bash setup/verify.sh</pre>
         </div>
       </div>
@@ -943,11 +938,11 @@ bash setup/verify.sh</pre>
   /* ---------- HERO TERMINAL (cycling commands) ---------- */
   const heroTerm = document.getElementById("hero-term");
   const seq = [
-    { t: 'git clone …/ai-os ~/Projects/ai-os', cls: 'cm' },
-    { t: 'cd ~/Projects/ai-os && bash setup/install-mac.sh', cls: 'cm' },
+    { t: 'npx @edd_remonts/create-ai-os', cls: 'cm' },
     { o: '✓ 60+ brew packages · zsh · p10k' },
     { o: '✓ ~300 skills → claude · codex · gemini · hermes' },
     { o: '✓ 10 MCP servers generated' },
+    { t: 'cd ai-os', cls: 'cm' },
     { t: 'bash setup/verify.sh', cls: 'cm' },
     { o: '✓ 12/12 sections passed — ready.' },
   ];
@@ -1291,11 +1286,12 @@ ai-os memory visualize   # open FalkorDB's graph browser</pre>
   </ul>
 
   <div class="c-code-header">Run Setup Command:</div>
-  <pre class="c-code"># Mac / Linux setup
-bash setup/install-mac.sh
+  <pre class="c-code"># bootstraps + installs in one command (Mac/Linux/Windows)
+npx @edd_remonts/create-ai-os
 
-# Windows setup (PowerShell as Admin)
-powershell -ExecutionPolicy Bypass -File .\\setup\\install-windows.ps1</pre>
+# or run the platform script directly from an existing clone
+bash setup/install-mac.sh                                             # Mac/Linux
+powershell -ExecutionPolicy Bypass -File .\\setup\\install-windows.ps1  # Windows</pre>
 </div>`,
     env: `
 <div class="c-section">
@@ -1322,9 +1318,9 @@ powershell -ExecutionPolicy Bypass -File .\\setup\\install-windows.ps1</pre>
   <div class="c-text">Complete these steps sequentially when onboarding a new workstation to AI-OS:</div>
   <ul class="c-list">
     <li>
-      <span class="c-item-title">1. Initial Clone</span>
-      <div class="c-item-desc">Clone the repository to your local workspace:
-      <div class="c-code">git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os</div>
+      <span class="c-item-title">1. Bootstrap</span>
+      <div class="c-item-desc">Clone + install with one command:
+      <div class="c-code">npx @edd_remonts/create-ai-os</div>
       </div>
     </li>
     <li>
@@ -1345,19 +1341,13 @@ git config --global user.email "you@example.com"</div>
       </div>
     </li>
     <li>
-      <span class="c-item-title">5. Execute System Setup</span>
-      <div class="c-item-desc">Run the idempotent Mac/Linux setup script to install tools, Oh My Zsh, and configure symlinks:
-      <div class="c-code">bash setup/install-mac.sh</div>
-      </div>
-    </li>
-    <li>
-      <span class="c-item-title">6. Verify Installation</span>
+      <span class="c-item-title">5. Verify Installation</span>
       <div class="c-item-desc">Run the verification suite to ensure all 12 checks pass:
       <div class="c-code">bash setup/verify.sh</div>
       </div>
     </li>
     <li>
-      <span class="c-item-title">7. Start Daily Session</span>
+      <span class="c-item-title">6. Start Daily Session</span>
       <div class="c-item-desc">Launch your target CLI using the quickstart router bootstrap skill:
       <div class="c-code">hermes chat --skills ai-os-quickstart</div>
       </div>
