@@ -1,6 +1,6 @@
 ---
 name: coolify-deploy
-description: Deploy apps to Coolify (self-hosted PaaS) — multi-service compose, env sync, post-deploy hooks, health checks. Applies to deploying any docker-compose app to a VPS managed by Coolify.
+description: Deploy apps to Coolify (self-hosted PaaS) — multi-service compose, env sync, post-deploy hooks, health checks, and the DEFAULT push-to-deploy setup (a GitHub Actions workflow that triggers Coolify via API). Applies to deploying any docker-compose app to a VPS managed by Coolify.
 license: Internal
 ---
 
@@ -116,14 +116,84 @@ API endpoint: `POST /api/v1/applications/<uuid>/envs` with bearer token.
 
 ### 5. Deploy
 
-```bash
-# Manual from dashboard: click "Deploy"
-# Or via API:
-curl -X POST https://coolify.example.com/api/v1/deploy?uuid=<app-uuid> \
-  -H "Authorization: Bearer ***"
+**DEFAULT: set up push-to-deploy via GitHub Actions.** Whenever asked to deploy
+(or to set up deploys) for a Coolify app, the default is to wire a GitHub
+Actions workflow that triggers a Coolify deployment on every push to the
+deploy branch — do this unless the user explicitly says not to auto-deploy.
+Prefer this over Coolify's dashboard "Automatic Deployment" toggle: the toggle
+needs the GitHub-App webhook wired and can't be reliably enabled via the public
+API, whereas the workflow below is fully reproducible and lives in the repo.
 
-# Auto-deploy on push: configure webhook in GitHub
-# Dashboard → Application → Webhooks → copy URL
+`.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy to Coolify
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: coolify-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment
+        id: trigger
+        run: |
+          resp=$(curl -fsS -X POST \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
+            -H "Accept: application/json" \
+            "${{ secrets.COOLIFY_API_URL }}/api/v1/applications/${{ secrets.COOLIFY_APP_UUID }}/start")
+          echo "$resp"
+          uuid=$(printf '%s' "$resp" | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{process.stdout.write(JSON.parse(d).deployment_uuid||"")}catch{process.stdout.write("")}})')
+          echo "deployment_uuid=$uuid" >> "$GITHUB_OUTPUT"
+      - name: Wait for deployment to finish
+        if: steps.trigger.outputs.deployment_uuid != ''
+        run: |
+          uuid="${{ steps.trigger.outputs.deployment_uuid }}"
+          for i in $(seq 1 40); do
+            sleep 10
+            status=$(curl -fsS -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
+              "${{ secrets.COOLIFY_API_URL }}/api/v1/deployments/$uuid" \
+              | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{process.stdout.write(JSON.parse(d).status||"?")}catch{process.stdout.write("?")}})')
+            echo "poll $i: $status"
+            case "$status" in
+              finished|success) exit 0 ;;
+              failed|error|cancelled) echo "::error::Deployment $status"; exit 1 ;;
+            esac
+          done
+          echo "::error::timeout"; exit 1
+```
+
+Set the three repo secrets from the project's `.env` (do not print values):
+
+```bash
+set -a; . ./.env; set +a
+REPO=<owner>/<repo>
+printf '%s' "$COOLIFY_API_URL"   | gh secret set COOLIFY_API_URL   --repo "$REPO"
+printf '%s' "$COOLIFY_API_TOKEN" | gh secret set COOLIFY_API_TOKEN --repo "$REPO"
+printf '%s' "$COOLIFY_APP_UUID"  | gh secret set COOLIFY_APP_UUID  --repo "$REPO"
+```
+
+Endpoints (verified against the live Coolify v4 API): trigger is
+`POST /api/v1/applications/<uuid>/start` (NOT `/deploy`); poll with
+`GET /api/v1/deployments/<deployment_uuid>` until status is `finished`.
+
+**Security caveat:** if the Coolify instance is HTTP-only (raw IP, no TLS), the
+bearer token travels unencrypted from the runners. Flag this; once Coolify has
+an HTTPS domain, just update the `COOLIFY_API_URL` secret. Confirm placing the
+token in GitHub secrets before doing it.
+
+Manual fallbacks (one-off, not the default):
+
+```bash
+# Dashboard: click "Deploy"
+# API one-shot:
+curl -X POST "$COOLIFY_API_URL/api/v1/applications/<uuid>/start" -H "Authorization: Bearer $COOLIFY_API_TOKEN"
 ```
 
 ## Useful commands
