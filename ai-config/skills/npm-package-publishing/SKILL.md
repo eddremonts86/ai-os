@@ -1,6 +1,6 @@
 ---
 name: npm-package-publishing
-description: Edd's established convention for publishing npm packages (bootstrap CLIs and libraries) — naming, package.json shape, bin script style, and the ask-before-publish rule. Applies whenever creating a new npm package or preparing one to be published.
+description: Edd's established convention for publishing npm packages (bootstrap CLIs and libraries) — always under the @edd_remonts scope, plus package.json shape, bin script style, and the ask-before-publish rule. Applies whenever creating a new npm package or preparing one to be published.
 license: Internal
 ---
 
@@ -13,13 +13,27 @@ pattern instead of inventing a new one.
 
 ## Naming
 
-Two conventions exist, pick by package type:
+**Always publish under the `@edd_remonts` scope.** Every package — CLI or
+library — is `@edd_remonts/<name>`. A single scope keeps everything under one
+npm namespace, avoids top-level name squatting, and makes ownership obvious.
+Do not publish new unscoped packages.
 
-- **Bootstrap/scaffold CLI** ("run one command to set something up"): scoped,
-  `create-*` prefix — `@edd_remonts/create-<thing>`. Matches the npm ecosystem
-  convention for `npx create-*` tools and signals intent clearly.
-- **Library** (importable code, e.g. a component library): unscoped, plain
-  descriptive name — e.g. `schilling-widgets-system`.
+- **Bootstrap/scaffold CLI** ("run one command to set something up"):
+  `@edd_remonts/create-<thing>` — keep the `create-*` prefix so `npx create-*`
+  still reads naturally.
+- **Library** (importable code, e.g. a component library):
+  `@edd_remonts/<descriptive-name>` — e.g. `@edd_remonts/ai-schadcn-chat`.
+
+Scoped packages default to **private** on npm, so `publishConfig.access` MUST be
+`"public"` (see the package.json shape below) or the first `npm publish` fails
+with `402 Payment Required`.
+
+Migrating an existing unscoped package (e.g. `ai-schadcn-chat` →
+`@edd_remonts/ai-schadcn-chat`): npm can't rename in place — change the
+`name` field, publish the scoped package fresh, then `npm deprecate` the old
+unscoped name with a message pointing at the new one. Update the display/brand
+name, repo, domain, and localStorage keys only if the task calls for it — the
+scope change is about the npm package identity, not the project's branding.
 
 Default author identity: `Eduardo Inerarte <eddremonts86@gmail.com>` for
 personal/open-source packages (matches the `eddremonts86` GitHub identity in
