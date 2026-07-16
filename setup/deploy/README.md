@@ -1,10 +1,10 @@
 # Deploy: AI-OS landing → Coolify (conductor-01 / Hetzner)
 
-The landing in [`site/`](../../site/) runs as a **Coolify application** on the
-single Hetzner VPS `conductor-01` (`178.105.106.79`), built from the repo-root
+The landing in [`site/`](../../site/) runs as a **Coolify application** on a
+single Hetzner VPS, built from the repo-root
 [`Dockerfile`](../../Dockerfile) (nginx serving `site/`) and routed by Traefik
-at **https://ai-os.eduardoinerarte.dk** (the `*.eduardoinerarte.dk` wildcard DNS
-already resolves to the server, so no DNS changes are needed).
+at **https://ai-os.eduardoinerarte.dk** (a wildcard DNS entry already resolves
+to the server, so no DNS changes are needed).
 
 `push to main → GitHub Actions → Coolify /api/v1/deploy → Traefik + TLS`.
 
@@ -15,17 +15,17 @@ runs a green no-op.
 
 ## Why Coolify (not rsync/nginx)
 
-`conductor-01` is Coolify-managed; Traefik owns ports 80/443 and terminates TLS
-for ~9 apps (budget, countdown, profile, geo, voice, …). A hand-rolled nginx
+The VPS is Coolify-managed; Traefik owns ports 80/443 and terminates TLS
+for several other apps already hosted on the same box. A hand-rolled nginx
 vhost would fight Traefik. The correct integration is a Coolify app so Traefik
 routes and certs it like every other app on the box.
 
-## Infra facts (from dev-env/env-config/.env)
+## Infra facts (from dev-env/env-config/.env — never committed, local-only)
 
-- Server: `conductor-01`, `178.105.106.79`, Coolify at `:8000`.
-- Coolify project `azrrxo4r5i0b45sfpcc9dayq`, server `y711krrsfpdsjs72iyqi2xjc`.
-- Private repo cloned via Coolify deploy key `aic98e4k8s0hl4zjqatgga77`
-  ("GitHub deploy key (eddremonts86)").
+- Server + Coolify admin port are private; see your local `.env`.
+- Coolify project/server/app identifiers (UUIDs) are private; see your local `.env`.
+- Repo cloned via a Coolify-managed GitHub deploy key (see the Coolify app's
+  Git settings — the key itself is not stored in this repo).
 - The app is built dockerfile-style: `dockerfile_location=/Dockerfile`,
   `base_directory=/`, `ports_exposes=80`.
 
@@ -34,7 +34,7 @@ routes and certs it like every other app on the box.
 Values come straight from `dev-env/env-config/.env` — never echo or commit them:
 
 ```bash
-gh secret set COOLIFY_API_URL    # http://178.105.106.79:8000
+gh secret set COOLIFY_API_URL    # e.g. http://<your-coolify-host>:8000
 gh secret set COOLIFY_API_TOKEN  # the WORKING token (see caveat below)
 gh secret set COOLIFY_APP_UUID   # the ai-os-landing app uuid (created via API)
 gh secret set SITE_URL           # https://ai-os.eduardoinerarte.dk  (optional check)
@@ -49,13 +49,14 @@ curl -I https://ai-os.eduardoinerarte.dk/
 
 ## ⚠️ .env caveat: COOLIFY_API_TOKEN
 
-Use the token at `.env` line ~237 (`3|conductor-api-token-2026`) — verified
-working (HTTP 200). A second, longer `COOLIFY_API_TOKEN` value (no `id|` prefix)
-returns HTTP 401; if it ever reappears as a later duplicate it will shadow the
-working one when the file is sourced, so keep only the working token.
+Check your local `.env` for two `COOLIFY_API_TOKEN` candidates — only one of
+them returns HTTP 200 from the Coolify API; the other returns 401. If it ever
+reappears as a later duplicate it will shadow the working one when the file
+is sourced, so keep only the working token.
 
 ## Notes / decisions
 
-- `COOLIFY_APP_UUID` in `.env` (`bblj47…`) is the **`edd-app-template`** app, NOT
-  ai-os — never deploy to it. The ai-os app is a **separate** application.
+- The `COOLIFY_APP_UUID` used elsewhere in `.env` for other apps (e.g. an
+  app-template project) is NOT the ai-os app — never deploy to it. The ai-os
+  app is a **separate** application; check the value before using it.
 - Creating the ai-os app is additive; it never modifies the other apps.

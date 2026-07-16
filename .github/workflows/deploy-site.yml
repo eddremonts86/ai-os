@@ -1,16 +1,16 @@
 # -----------------------------------------------------------------------------
 # Deploy the AI-OS landing (site/) by triggering a Coolify deployment.
 #
-# The landing runs as a Coolify application on the conductor-01 Hetzner VPS,
-# built from the repo-root Dockerfile (nginx serving site/) and routed by
-# Traefik at https://ai-os.eduardoinerarte.dk. Coolify clones the PRIVATE repo
-# with its stored deploy key, so this workflow only needs to POKE Coolify to
-# pull + rebuild on each push.
+# The landing runs as a Coolify application on a Hetzner VPS, built from the
+# repo-root Dockerfile (nginx serving site/) and routed by Traefik at
+# https://ai-os.eduardoinerarte.dk. Coolify clones the repo with its stored
+# deploy key/credentials, so this workflow only needs to POKE Coolify to pull
+# + rebuild on each push.
 #
 # SAFE BY DEFAULT: until the 3 secrets below are set, this runs a green no-op.
 #
 # Activation (values live in dev-env/env-config/.env — see setup/deploy/README.md):
-#   gh secret set COOLIFY_API_URL     # e.g. http://178.105.106.79:8000
+#   gh secret set COOLIFY_API_URL     # e.g. http://<your-coolify-host>:8000
 #   gh secret set COOLIFY_API_TOKEN   # Coolify API token (Bearer)
 #   gh secret set COOLIFY_APP_UUID    # the ai-os-landing app uuid
 #   gh secret set SITE_URL            # optional, e.g. https://ai-os.eduardoinerarte.dk
