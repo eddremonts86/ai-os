@@ -93,6 +93,15 @@ Rules:
 16. Run format (Prettier, black, shfmt).
 17. If a hook or build script exists, run it.
 
+## When you find an error, anywhere
+
+If a check (type-check, lint, test, build, runtime) surfaces an error, **fix it as part of the current task** — do not just report it and move on, and do not gate the fix on whether it is related to what you were asked to do, who introduced it, or how old it is.
+
+- "Pre-existing" is not a reason to skip it. A baseline error count is not an acceptable steady state to preserve.
+- Reporting an error without fixing it is only acceptable when the fix requires information only the user has (an external credential, a genuine product decision, a destructive/irreversible step) — and even then, propose the concrete fix, don't just list the symptom.
+- The code must always be left in better shape than it was found, not just not-worse.
+- This applies to every language/stack, not just the current task's file.
+
 ## When creating artifacts
 
 18. Save active task planning only in `specs/current_spec.md`; save completed Specs in the versioned `archive/` directory.
