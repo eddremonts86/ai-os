@@ -111,3 +111,5 @@ kubeconfig
 *.old
 *.tmp
 *.swp
+
+**/.claude/settings.local.json
