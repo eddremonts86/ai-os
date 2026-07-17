@@ -1,6 +1,6 @@
 {
   "name": "@edd_remonts/create-ai-os",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bootstrap Edd's AI Operating System (skills, workflows, MCP servers, dev-env) with one command.",
   "type": "module",
   "bin": {
@@ -19,7 +19,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eddremonts86/ai-os.git"
+    "url": "git+https://github.com/eddremonts86/ai-os.git",
+    "directory": "packages/create-ai-os"
   },
   "bugs": {
     "url": "https://github.com/eddremonts86/ai-os/issues"
