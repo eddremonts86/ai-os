@@ -31,6 +31,57 @@ curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
 # https://<server-ip>:8000  (change password on first login)
 ```
 
+## Always verify in a real browser after deploying
+
+**A 200 from `curl` on the homepage does NOT mean the app works.** Static
+pages and health checks can pass while the app is completely unusable —
+e.g. a stale build-time env var (see the `VITE_*`/build-arg gotcha below)
+can leave login permanently broken while the landing page renders fine and
+`/api/health` returns `{ok:true}`. After every deploy (new app, recreated
+app, or an env/domain change that could affect a build), before reporting
+success:
+
+1. Open the live domain in a real browser (Claude Browser / Claude in
+   Chrome), not just `curl` — confirm the landing page actually renders
+   (no blank page, no console errors).
+2. Go through the actual login flow with real credentials (the seeded admin,
+   or whatever the app's default account is) and confirm it lands on an
+   authenticated page — don't stop at "the form submitted without a visible
+   error," check the network request actually completed and the resulting
+   page is the real post-login state.
+3. If login fails, check `read_console_messages` and
+   `read_network_requests` in the browser tooling before diving into server
+   logs — client-side failures (wrong `baseURL` baked into a bundle, CORS
+   from a stale domain) often never reach the server at all, so server logs
+   will look clean while the browser side is broken.
+
+Treat this as non-optional for any Coolify deploy — API/curl checks alone
+have repeatedly missed real breakage that a two-minute browser pass catches
+immediately.
+
+### Gotcha: build-time (`VITE_*`) env vars need a rebuild, not just an env update
+
+Vite bakes `import.meta.env.VITE_*` values into the static JS bundle at
+**build time**. Updating the var in Coolify's env panel changes what's
+available to a *future* build — it does nothing to containers already
+running from an older image. Two consequences:
+
+1. After fixing a `VITE_*` var, you must trigger a new deploy (which
+   rebuilds the image) — restarting the existing container is not enough.
+2. When recreating an app (see "Deploying from a private repository" below)
+   and copying env vars from the old app via a script or a saved API
+   response, **re-fetch current values right before copying** — a cached
+   snapshot taken before a fix was applied will silently carry the stale
+   value into the new app, and it'll only surface once you actually test
+   the feature that depends on it (e.g. login), not from the deploy log or
+   a health check.
+
+To confirm a specific value actually made it into a running build, fetch the
+built JS directly instead of trusting the Coolify env panel:
+```bash
+curl -sk https://your-domain/assets/client-<hash>.js | grep -o "baseURL:[^,}]*"
+```
+
 ## Deploying a new app
 
 ### 1. Expected repo structure
@@ -473,6 +524,9 @@ docker run --rm -v postgres_data:/data -v $(pwd):/backup alpine \
 10. ❌ Trying to attach a private key to an *existing* app via `PATCH /applications/{uuid}` or the dashboard's Git Source page → both reject it. Must recreate the app.
 11. ❌ Trusting an `ssh -T git@github.com` test run on a machine with a `~/.ssh/config` `Host github.com` block → silently authenticates with the wrong key, giving a false "this key works" result. Use `ssh -F /dev/null ... -o IdentitiesOnly=yes` and `gh api repos/<owner>/<repo>/keys` instead.
 12. ❌ Domain-derived env var (`APP_URL` etc.) set without a `https://`/`http://` scheme → app crash-loops on every boot if it feeds straight into `new URL()`.
+13. ❌ Trusting that "migrations applied successfully" in the post-deployment command log means the schema is actually correct → Coolify does not treat a failing post-deployment command as a fatal deploy error, and `drizzle-kit migrate` silently no-ops on migrations missing from its journal (see the database-migrations skill's Drizzle section). Always spot-check the actual live schema (`\dt`, or query a table the new feature depends on) after a deploy that includes migrations, don't just read the deploy log.
+14. ❌ Copying env vars from an old app to a recreated one using a cached/stale API response → re-fetch current values immediately before copying, especially right after fixing one of them (see the `VITE_*` gotcha above).
+15. ❌ Calling it done after `curl` returns 200 → always finish with a real browser pass on the landing page and login (see "Always verify in a real browser after deploying" above).
 
 ## iaWorkSpace patterns
 
