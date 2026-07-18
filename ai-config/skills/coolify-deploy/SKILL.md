@@ -196,6 +196,174 @@ Manual fallbacks (one-off, not the default):
 curl -X POST "$COOLIFY_API_URL/api/v1/applications/<uuid>/start" -H "Authorization: Bearer $COOLIFY_API_TOKEN"
 ```
 
+## Deploying from a private repository
+
+**The problem:** Coolify apps created through the normal dashboard flow (or the
+`POST /api/v1/applications/dockerfile` / `.../dockercompose` API endpoints
+without a `private_key_uuid`) default to source type "Public Repository" —
+an anonymous, unauthenticated `git ls-remote`/clone. This works fine for
+public repos. Against a **private** repo it fails every time with:
+
+```
+fatal: could not read Username for 'https://github.com': No such device or address
+```
+
+...and Coolify treats that pre-deploy git check as fatal, so the app never
+builds — it just crash-loops or sits `exited:unhealthy` depending on whether
+an old container is still around. There is no dashboard toggle or API field
+that fixes this on an *existing* app — see the two cases below.
+
+### Case 1 — brand new app, repo is (or will be) private
+
+Create it directly with the deploy-key flow instead of the generic
+public/dockerfile endpoints:
+
+```bash
+curl -X POST -H "Authorization: Bearer $COOLIFY_API_TOKEN" -H "Content-Type: application/json" \
+  "$COOLIFY_API_URL/api/v1/applications/private-deploy-key" \
+  -d '{
+    "project_uuid": "<project_uuid>",
+    "server_uuid": "<server_uuid>",
+    "environment_name": "production",
+    "private_key_uuid": "<key_uuid_from_security/keys>",
+    "git_repository": "git@github.com:owner/repo.git",
+    "git_branch": "main",
+    "build_pack": "dockerfile",
+    "ports_exposes": "3000",
+    "name": "my-app",
+    "instant_deploy": false
+  }'
+```
+
+Notes:
+- `git_repository` **must** be a full URL (`git@github.com:owner/repo.git`,
+  or `https://...`) — a bare `owner/repo` short form is rejected with
+  `"must start with https://, http://, git://, or git@"`.
+- `project_uuid`/`server_uuid`: look up via `GET /api/v1/projects` and the
+  project's `environments[].uuid` for `environment_name`, or reuse the
+  `server_uuid` from any existing app (`GET /api/v1/applications` →
+  `destination.server.uuid`).
+- After creation, the response only has `uuid` + the auto-generated
+  `sslip.io` domain — set the real domain, env vars, and post-deploy command
+  same as any app (see below). Domain vars (`APP_URL`, etc.) must be set
+  to the **final** intended domain from the start, not the sslip.io default
+  — see the crash-loop gotcha further down.
+
+### Case 2 — existing app needs a key attached (repo went private, or was
+### misconfigured as public from the start)
+
+**There is no way to do this via API or dashboard on the existing app.**
+Confirmed dead ends:
+- `PATCH /api/v1/applications/{uuid}` rejects `private_key_id`,
+  `private_key_uuid`, `git_full_url`, and `source_type` outright:
+  `"This field is not allowed."`
+- The dashboard's own Configuration → **Git Source** page for an app created
+  as "Public Repository" only offers "Change Git Source" to switch between
+  configured GitHub App integrations (`Sources`) — there's no field there to
+  attach a raw SSH key either. If "No other sources found" shows there, this
+  route is a dead end too.
+
+**The fix is to recreate the application** with the Case 1 flow above, then
+migrate its configuration across, then delete the old one:
+
+```bash
+NEW=<uuid from the private-deploy-key create call>
+
+# 1. Domain (force override since the old app still holds it)
+curl -X PATCH ... "$COOLIFY_API_URL/api/v1/applications/$NEW" \
+  -d '{"domains":"https://my-app.example.com","force_domain_override":true,
+       "dockerfile_location":"/Dockerfile",
+       "post_deployment_command":"<same as old app>",
+       "post_deployment_command_container":"app"}'
+
+# 2. Env vars — a fresh app has NONE yet, so use POST (not PATCH — PATCH 404s
+#    with "Environment variable not found" until a key exists to update)
+curl -X POST ... "$COOLIFY_API_URL/api/v1/applications/$NEW/envs" \
+  -d '{"key":"APP_URL","value":"https://my-app.example.com","is_preview":false}'
+# ...repeat per key, pulling real_value from GET .../applications/<old_uuid>/envs
+
+# 3. Deploy and verify (see "Verifying a deploy" below) before touching the old app
+
+# 4. Only once confirmed healthy:
+curl -X DELETE ... "$COOLIFY_API_URL/api/v1/applications/<old_uuid>"
+```
+
+Update the `COOLIFY_APP_UUID` GitHub secret (and any saved reference) to the
+new UUID once this is done — it changes.
+
+### The real trap: verifying a deploy key actually has access to *this* repo
+
+The most time-expensive failure mode isn't the API limitation above — it's
+**assuming an existing Coolify private-key resource is usable just because it
+looks like an "account key."** GitHub deploy keys are scoped to exactly one
+repo. `ssh -T git@github.com` printing `Hi <username>!` (no repo name) looks
+like an account-wide personal key — but that can be a **false positive** if
+the machine you're testing from has a `~/.ssh/config` block like:
+
+```
+Host github.com
+    IdentityFile ~/.ssh/some_personal_key
+    IdentitiesOnly yes
+```
+
+Config-level `IdentityFile` entries are tried *in addition to* whatever you
+pass with `-i` on the command line — `-o IdentitiesOnly=yes` on the CLI does
+**not** suppress them, only ssh-agent/default-file fallbacks. So a test that
+"succeeds" may actually be authenticating with your own personal key, not the
+key you're trying to validate.
+
+**Get a trustworthy answer with both of these, and trust the API result over
+the SSH greeting:**
+
+```bash
+# Bypass all config, agent, and default files — only the exact key is tried
+ssh -F /dev/null -i /path/to/key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no \
+  -o UserKnownHostsFile=/dev/null -T git@github.com
+# "Hi user!"        → genuinely an account-level key, all owned repos OK
+# "Hi user/repo!"   → a deploy key scoped ONLY to that one repo
+
+# Definitive, no ambiguity — ask GitHub directly which repo(s) this exact
+# public key is authorized for:
+gh api repos/<owner>/<repo>/keys
+# lists every deploy key registered on that repo; compare fingerprints
+# (ssh-keygen -lf <pubkey>) against what Coolify has associated.
+```
+
+If the key doesn't check out for the target repo, generate a fresh one and
+register it in both places:
+
+```bash
+ssh-keygen -t ed25519 -f ./new_deploy_key -N "" -C "coolify-<app>-deploy"
+
+# Add it read-only to the repo:
+gh api repos/<owner>/<repo>/keys -f title="Coolify - <app> deploy" \
+  -f key="$(cat ./new_deploy_key.pub)" -F read_only=true
+
+# Register it in Coolify:
+curl -X POST ... "$COOLIFY_API_URL/api/v1/security/keys" -d "{
+  \"name\": \"<app> GitHub deploy key\",
+  \"description\": \"Read-only, scoped to <owner>/<repo>\",
+  \"private_key\": $(python3 -c 'import json,sys;print(json.dumps(open(sys.argv[1]).read()))' ./new_deploy_key)
+}"
+# → returns a uuid; use it as private_key_uuid in Case 1/2 above.
+```
+
+### Related runtime crash: protocol-less domain env vars
+
+Separately from git auth, apps that read their own domain from an
+env var (e.g. `APP_URL` for building an absolute base URL, common with
+better-auth/next-auth-style libraries) can crash-loop if that var is ever
+set to a bare host or protocol-relative value (`//host` or `host` instead of
+`https://host`) — some frameworks throw on `new URL()` with no scheme
+instead of defaulting to one. This has bitten us via a Coolify magic-variable
+substitution that resolved to the host only. Two defenses, do both:
+1. Always set domain-derived env vars in Coolify with the full scheme
+   (`https://...`), never rely on a bare auto-fill.
+2. In app code, normalize with a one-line guard before use — e.g.
+   `const url = /^https?:\/\//.test(v) ? v : \`https://${v.replace(/^\/+/, '')}\`;`
+   — so a future misconfiguration degrades instead of crash-looping the
+   whole process.
+
 ## Useful commands
 
 ```bash
@@ -301,6 +469,10 @@ docker run --rm -v postgres_data:/data -v $(pwd):/backup alpine \
 6. ❌ Coolify token leaked in commit → revoke and reissue.
 7. ❌ No cleanup of dangling images → disk full.
 8. ❌ Compose with `version: '3'` (deprecated) → use compose spec v2 without version.
+9. ❌ Creating an app for a private repo via the generic public/dockerfile create endpoint → unauthenticated git clone always fails. Use `private-deploy-key` at creation time (see "Deploying from a private repository" above).
+10. ❌ Trying to attach a private key to an *existing* app via `PATCH /applications/{uuid}` or the dashboard's Git Source page → both reject it. Must recreate the app.
+11. ❌ Trusting an `ssh -T git@github.com` test run on a machine with a `~/.ssh/config` `Host github.com` block → silently authenticates with the wrong key, giving a false "this key works" result. Use `ssh -F /dev/null ... -o IdentitiesOnly=yes` and `gh api repos/<owner>/<repo>/keys` instead.
+12. ❌ Domain-derived env var (`APP_URL` etc.) set without a `https://`/`http://` scheme → app crash-loops on every boot if it feeds straight into `new URL()`.
 
 ## iaWorkSpace patterns
 
