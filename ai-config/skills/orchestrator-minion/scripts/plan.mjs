@@ -473,30 +473,29 @@ function makeTemplate() {
     workers: [
       {
         id: 'w-1',
-        role: 'CHANGE_ME-role',
-        scope: 'CHANGE_ME: one atomic thing, output to a single file.',
+        role: 'change-me-role',
+        scope: 'CHANGE_ME: do one atomic thing and write the result to a single file.',
         artifact: {
           format: 'json',
           path: '.mavis/plans/change-me/w-1.output.json',
           schema: 'CHANGE_ME-or-remove-this-field',
         },
+        isolation: 'fresh-context',
         acceptance: [
           { type: 'file-exists', path: '.mavis/plans/change-me/w-1.output.json' },
-          // Add at least one structural check (json-schema, render-check, etc.)
-          // OR a verifier-subagent with an explicit rejects_if list.
-          // {
-          //   type: 'verifier-subagent',
-          //   prompt_ref: '.mavis/prompts/verifier-xyz.md',
-          //   rejects_if: [
-          //     'any input handler is missing from the findings',
-          //     'any finding lacks a line number',
-          //   ],
-          // },
+          { type: 'json-schema', path: 'CHANGE_ME-or-remove-this-field' },
+          {
+            type: 'verifier-subagent',
+            prompt_ref: 'CHANGE_ME-or-remove-this-field',
+            rejects_if: [
+              'CHANGE_ME: name the specific failure modes this verifier should reject',
+            ],
+          },
         ],
       },
     ],
-    exit_criteria: 'CHANGE_ME: the concrete condition for this run to be considered done.',
-    notes: 'Optional: capture the reasoning for the decomposition.',
+    exit_criteria: 'CHANGE_ME: the concrete condition for this run to be considered done (e.g. "all N worker files exist, validate against schema, and pass the verifier").',
+    notes: 'CHANGE_ME: capture the reasoning for the decomposition. The CHANGE_ME markers are the only fields you need to replace; the rest of the plan is structurally correct.',
   };
 }
 
