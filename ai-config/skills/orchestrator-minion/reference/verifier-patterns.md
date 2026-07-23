@@ -9,8 +9,8 @@ Two patterns dominate practice, with very different failure surfaces:
 
 | Pattern | What the verifier sees | What the verifier returns | Strong at |
 |---|---|---|---|
-| **Explicit rejects** | the worker's scope, the artifact, the orchestrator's `rejects_if` list | `{"verdict": "yes" \| "no", "reasons": [...]}` | mechanical correctness, schema compliance, well-specified criteria |
-| **Blind reproduction** | only the **original user request** (the same request the orchestrator started with), no scope, no `rejects_if`, no worker's retelling | evidence that the request was satisfied, or a `{"verdict": "no", "reasons": [...]}` | catching scope drift, original-misunderstanding, the "looks good but answers the wrong question" failure mode |
+| **Explicit rejects** | the worker's scope, the artifact, the orchestrator's `rejects_if` list | `{"verdict": "yes" \| "no", "reasons": [...], "notes": "..."?}` | mechanical correctness, schema compliance, well-specified criteria |
+| **Blind reproduction** | only the **original user request** (the same request the orchestrator started with), no scope, no `rejects_if`, no worker's retelling | `{"verdict": "yes" \| "no", "reproduction": "...", "reasons": [...], "notes": "..."?}` | catching scope drift, original-misunderstanding, the "looks good but answers the wrong question" failure mode |
 
 The default in this skill's `reference/examples/prompts/` is **explicit
 rejects** — the verifier is told what to check. It is fast, deterministic,
@@ -84,23 +84,24 @@ The verifier is given the worker's scope, the artifact path, and the
 {
   "type": "verifier-subagent",
   "pattern": "blind",
-  "prompt_ref": "reference/examples/prompts/verifier-blind.md",
-  "rejects_if": [
-    "the original user request is not satisfied as evidenced by [concrete reproducible check]"
-  ]
+  "prompt_ref": "reference/examples/prompts/verifier-blind.md"
 }
 ```
 
 The verifier is given ONLY the original user request (the one the
 orchestrator started with), a fresh context, and read-only tools.
-The `rejects_if` field, in this pattern, names the reproduction the
-verifier must attempt. If the verifier cannot reproduce the evidence
-the user asked for, it rejects.
+There is **no `rejects_if` field** in the blind pattern — the
+rejection criteria is implicit in "reproduce the evidence". If
+the verifier cannot reproduce the evidence the user asked for, it
+rejects. Adding a `rejects_if` here would leak information about
+the worker's interpretation back into the verifier, defeating the
+fresh-context guarantee.
 
-The `rejects_if` list in the blind pattern is shorter and more
-specific: it is the "show me the money" check, not the "are you
-answering the right question" check. The latter is what the fresh
-context buys you.
+If the orchestrator wants the verifier to attempt a specific
+reproduction, the prompt template's "What you must reproduce"
+section is the canonical input — it goes in the prompt, not the
+plan. The plan carries the pattern choice and the prompt ref; the
+prompt carries the substance.
 
 ## The blind verifier prompt template
 

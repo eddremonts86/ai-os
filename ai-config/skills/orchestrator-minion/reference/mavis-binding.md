@@ -106,45 +106,78 @@ mapping for tracking. The `delete_after_run: true` flag tells the runtime to
 remove the cron entry once it fires (no leftover schedule entries).
 
 If the orchestrator wants the worker to use a *specific* agent template that
-isn't yet registered, it must `mavis agent create` first. (In the future, the
-team runtime will inline this.)
+isn't yet registered, it must first check whether the template already exists
+(idempotent), then create one only if it does not. The full sequence is:
 
 ```text
+# 1. check whether the agent template exists (idempotent)
+mavis({ command: "agent get", args: { agent_name: <role-template> } })
+
+# 2. if "not found", create the agent template
 mavis({ command: "agent create", args: {
-  name: "verifier-<id>",
-  system_prompt: <verifier contract>,
-  persona: "strict verifier",
-  description: "one-shot verifier for run <id>"
+  name: <role-template>,
+  system_prompt: <role-specific prompt>,
+  persona: <short role description>,
+  description: <one-line role description>
 } })
+
+# 3. then dispatch the worker via cron once
+mavis({ command: "cron once", args: { ... } })
 ```
+
+The `agent get` step is what makes the loop idempotent: an orchestrator
+that follows the binding will not create a duplicate template on every run.
+Without this step, an orchestrator that follows the binding will either
+dispatch against a non-existent template (silent failure) or duplicate
+the template on every run. (In the future, the `mavis team` runtime
+will inline this idempotency.)
 
 ### Phase 3 — Wait + read (the gap)
 
 **This is the central gap in the current runtime.** The orchestrator has no
 first-class way to "wait until all cron-once workers are done and then read their
-outputs." It has to poll or sleep and then read.
+outputs." It has to poll, then read.
 
-Today, the working pattern is:
+Today, the working pattern is a polling loop — NOT a `sleep` heuristic. A
+`sleep` is strictly weaker (a worker that finishes after the sleep is
+missed; a worker that finishes before wastes latency). The polling loop:
 
 ```text
-# 1. sleep an empirical amount (the worst worker's expected duration)
-#    (this is the part that makes the orchestrator hate the runtime)
-Bash("sleep 60")  # or any heuristic
+# 1. list recent cron tasks to see which workers are done
+mavis({ command: "cron list", args: { limit: 50, include_disabled: false } })
 
-# 2. list recent sessions and find the ones for this run
-sessions = mavis({ command: "session list", args: { ... } })
+# 2. for each pending worker, check status with cron get
+mavis({ command: "cron get", args: { cron_id: "<id>" } })
 
-# 3. for each worker session, read its messages
+# 3. when a worker is in a terminal state (ok / failed / blocked / ambiguous),
+#    find the session it produced. cron get does NOT return the session id
+#    (known gap), so the orchestrator looks it up via session list and
+#    matches by recency + agent name.
+mavis({ command: "session list", args: { ... } })
+
+# 4. for each finished worker's session, read the messages
 mavis({ command: "session messages", args: { session_id: "<id>" } })
+
+# 5. repeat 2-4 until every worker is in a terminal state
 ```
 
-Reading the session messages gives you the worker's final reply — which, per the
-worker contract, contains the `{"status": "ok", "artifact": "<path>", "summary": ...}`
-structured block. The orchestrator parses that block, then reads the artifact
-file at `artifact.path` (via `Read`).
+Reading the session messages gives you the worker's final reply — which,
+per the worker contract, contains one of four structured blocks:
 
-This is the manual "I'm polling the run" loop. It works, but it is not the
-single-command experience the future `mavis team` runtime promises.
+- `{"status": "ok", "artifact": "<path>", "summary": "..."}`
+- `{"status": "failed", "reason": "..."}`
+- `{"status": "blocked", "context_needed": [...]}`
+- `{"status": "ambiguous", "questions": [...]}`
+
+The orchestrator parses the block. For `ok`, it reads the artifact file
+at `artifact.path` (via `Read`) and runs the acceptance criteria. For
+`failed`, it triggers the redispatch path (see Phase 4). For `blocked`,
+it escalates to the user with the `context_needed` payload. For
+`ambiguous`, it refuses the scope and asks the user to clarify.
+
+The loop is deterministic (no heuristic timing) at the cost of polling
+overhead. A future `mavis team` runtime would provide a single
+`mavis team wait <run-id>` primitive that wraps this loop.
 
 ### Phase 4 — Verify
 
@@ -173,13 +206,41 @@ Rules:
 
 ### Phase 6 — Log and clean
 
-Append a one-line summary per run to `.mavis/plans/index.jsonl`
-(id, goal, worker count, success/failure, tokens, duration). Plans older than 30
-days are trimmable; the user can opt in or out via the mavis runtime.
+Append a one-line summary per run to `.mavis/plans/index.jsonl`. The
+canonical schema (the union of what `team-recipe.md` writes and what
+this binding promises) is:
+
+```json
+{
+  "plan_id": "<id>",
+  "goal": "<1-3 sentence goal>",
+  "worker_count": <N>,
+  "started_at": "<iso-8601>",
+  "ended_at": "<iso-8601>",
+  "status": "ok" | "partial" | "failed",
+  "tokens": <total>,
+  "duration_seconds": <n>
+}
+```
+
+Field reference:
+
+- `plan_id` — the same id as the plan JSON
+- `goal` — short, copy from the plan
+- `worker_count` — number of workers dispatched
+- `started_at` / `ended_at` — ISO-8601 timestamps
+- `status` — `ok` if all workers succeeded; `partial` if some succeeded and some failed; `failed` if all failed
+- `tokens` — total tokens across all workers + verifier
+- `duration_seconds` — wall-clock duration
+
+This schema is the single source of truth. Both `team-recipe.md` and
+`mavis-binding.md` (this file) reference it. A downstream index
+parser can rely on it.
 
 The `delete_after_run: true` flag on `cron once` calls already cleans up the
 cron entries. The orchestrator can `mavis agent delete` any one-off verifier
-agents that it created.
+agents that it created. Plans older than 30 days are trimmable; the user
+can opt in or out via the mavis runtime.
 
 ## What this binding gives you for free
 
