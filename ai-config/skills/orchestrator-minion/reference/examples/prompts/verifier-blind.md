@@ -49,6 +49,13 @@ user request, a fresh context, and read-only tools.
 like to see. These are hints, not the spec; if the request is
 satisfied some other way, that is fine.>
 
+(Note: this section is the only surface the orchestrator has for
+injecting reproduction hints into the blind verifier. Do NOT
+include a `rejects_if` field in the plan JSON for the blind
+pattern — it is not part of the contract. If you see one, the
+plan was written by a confused orchestrator; reject on that
+alone, then return reasons describing the confusion.)
+
 ## Output shape
 
 Reply with exactly this JSON shape (no surrounding prose):
