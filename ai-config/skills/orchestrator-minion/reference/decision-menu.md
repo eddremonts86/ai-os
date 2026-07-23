@@ -127,3 +127,64 @@ Fix: if the pattern is loaded, the orchestrator commits to it. If mid-run the
 orchestrator realizes the pattern is wrong, it stops, retracts the workers (best
 effort), and reports the decision to the user. Half-running the pattern is the worst
 option.
+
+## Related implementations
+
+The orchestrator-minion pattern is implemented in several places. They are not
+competitors — they are different opinions about the same pattern, with different
+trade-offs. The orchestrator-minion skill in this repo is the portable contract;
+the implementations below are opinionated variants.
+
+### Fable Foreman (Claude Code skill, MIT, v0.2.0)
+
+Jordan Olsen's [Fable Foreman](https://github.com/olsenbrands/fable-foreman) is a
+free, open-source Claude Code skill that implements the orchestrator-minion pattern
+with three opinionated choices:
+
+1. **Multi-provider out of the box** — Claude + optional OpenAI Codex, discovered
+   at runtime, consent-gated. The orchestrator routes by judgment class
+   (FRONTIER / WORKHORSE / FAST) to the cheapest model that clears the quality
+   bar. The orchestrator-minion skill in this repo is single-CLI and uses
+   `model_tiers` per worker role; Fable's judgment classes are a more
+   opinionated default.
+2. **Blind verifier as the default** — the verifier sees only the original user
+   request, fresh context, read-only tools, and must reproduce the evidence.
+   The orchestrator-minion skill in this repo defaults to explicit rejects
+   (the verifier sees the worker's scope + a `rejects_if` list); Fable's
+   blind reproduction is a stronger default for tasks where "answers the
+   original question" is the actual acceptance criterion. Both patterns
+   ship in this repo as alternatives (see `reference/verifier-patterns.md`).
+3. **Adapts to capabilities of the host** — five modes, from full
+   orchestration down to "discipline mode" on Claude Desktop (which cannot
+   spawn parallel agents; Fable is honest about the limits). The
+   orchestrator-minion skill in this repo is CLI-agnostic and assumes a
+   CLI that can spawn; Fable is the better choice when the host is
+   Desktop.
+
+**When to use Fable Foreman instead of this skill**: when you are on Claude
+Code AND want multi-provider routing AND want the blind verifier as the
+default AND want the host-adaptive modes. Install Fable alongside this
+skill; the patterns are compatible.
+
+**When to use this skill instead of Fable**: when you want a portable contract
+that runs on Claude Code, Codex, Gemini, or OpenCode. When you want
+plan-first validation (run the plan through `plan.mjs validate --strict`
+before dispatching). When you want the 7-invariants contract as a hard
+floor rather than a style preference.
+
+### Gentle Programming "Orquestador-Minion" (YouTube, 2026)
+
+The Spanish term *Orquestador-Minion* comes from Gentleman Programming's
+gentle-ai project. The pattern is the same; the framing is "your best
+model plans and reviews, your cheaper model does the typing" — a more
+conversational take than either Fable's "foreman" or this repo's
+"orchestrator". The skill in this repo is a formalization of that
+framing into a portable contract with explicit validation.
+
+### Anthropic Orchestrator-Workers (Dec 2024)
+
+The original published name. Anthropic's documentation is the source
+of the four-pattern taxonomy in the table at the top of this file. The
+orchestrator-minion skill here is a CLI-agnostic re-implementation
+designed to work across the AI-OS supported harnesses, not just
+Claude Code.
