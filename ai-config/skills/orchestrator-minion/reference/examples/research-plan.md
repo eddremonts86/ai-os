@@ -51,7 +51,7 @@ cross-hypothesis report.
         { "type": "min-count", "field": "findings", "value": 3 },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-research.md",
+          "prompt_ref": "reference/examples/prompts/verifier-research.md",
           "rejects_if": [
             "any finding lacks a URL or DOI",
             "any quote is not actually present in the cited source",
@@ -75,7 +75,7 @@ cross-hypothesis report.
         { "type": "min-count", "field": "findings", "value": 3 },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-research.md",
+          "prompt_ref": "reference/examples/prompts/verifier-research.md",
           "rejects_if": [
             "any finding lacks a URL or DOI",
             "any quote is not actually present in the cited source",
@@ -99,7 +99,7 @@ cross-hypothesis report.
         { "type": "min-count", "field": "findings", "value": 3 },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-research.md",
+          "prompt_ref": "reference/examples/prompts/verifier-research.md",
           "rejects_if": [
             "any finding lacks a URL or DOI",
             "any quote is not actually present in the cited source",

@@ -50,7 +50,7 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
         { "type": "json-schema", "path": ".mavis/schemas/auth-finding.schema.json" },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-auth.md",
+          "prompt_ref": "reference/examples/prompts/verifier-auth.md",
           "rejects_if": [
             "any handler accepting user input is missing from the findings",
             "any finding lacks a line number",
@@ -73,7 +73,7 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
         { "type": "json-schema", "path": ".mavis/schemas/auth-finding.schema.json" },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-auth.md",
+          "prompt_ref": "reference/examples/prompts/verifier-auth.md",
           "rejects_if": [
             "any handler accepting user input is missing from the findings",
             "any finding lacks a line number",
@@ -96,7 +96,7 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
         { "type": "json-schema", "path": ".mavis/schemas/auth-finding.schema.json" },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-auth.md",
+          "prompt_ref": "reference/examples/prompts/verifier-auth.md",
           "rejects_if": [
             "any handler accepting user input is missing from the findings",
             "any finding lacks a line number",
@@ -119,7 +119,7 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
         { "type": "json-schema", "path": ".mavis/schemas/auth-finding.schema.json" },
         {
           "type": "verifier-subagent",
-          "prompt_ref": ".mavis/prompts/verifier-auth.md",
+          "prompt_ref": "reference/examples/prompts/verifier-auth.md",
           "rejects_if": [
             "any handler accepting user input is missing from the findings",
             "any finding lacks a line number",
