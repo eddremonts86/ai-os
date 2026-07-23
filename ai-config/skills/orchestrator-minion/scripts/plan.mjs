@@ -107,6 +107,7 @@ const STRICT_PROMOTED = new Set([
   'STRICT:file-exists-only',
   'STRICT:multi-verb-scope',
   'STRICT:and-also-scope',
+  'STRICT:scope-too-long',
   'STRICT:budget-tokens-too-high',
   'STRICT:budget-wallclock-too-high',
   'STRICT:budget-workers-too-high',
@@ -213,6 +214,20 @@ function validate(plan, { strict = false } = {}) {
     errors.push(`verification must be one of: ${[...VERIFICATION].join(', ')}`);
   }
 
+  // Pre-pass: collect all worker ids at function scope so depends_on
+  // validation (in the workers loop below) and cycle detection (after
+  // the loop) can both see them. Forward references like w-1 -> w-2 are
+  // recognized because we walk the worker list before any per-worker
+  // validation. `seen` is the running set of ids as we walk the plan
+  // (used to detect duplicates in the per-worker loop).
+  const ids = new Set();
+  if (Array.isArray(plan.workers)) {
+    for (const w of plan.workers) {
+      if (typeof w.id === 'string') ids.add(w.id);
+    }
+  }
+  const seen = new Set();
+
   // workers
   if (Array.isArray(plan.workers)) {
     if (plan.workers.length === 0) {
@@ -221,17 +236,16 @@ function validate(plan, { strict = false } = {}) {
     if (plan.budget && plan.workers.length > plan.budget.max_workers) {
       errors.push(`workers.length (${plan.workers.length}) exceeds budget.max_workers (${plan.budget.max_workers})`);
     }
-    const ids = new Set();
     for (let i = 0; i < plan.workers.length; i++) {
       const w = plan.workers[i];
       const wtag = `workers[${i}] (id=${w.id || '?'})`;
 
       if (typeof w.id !== 'string') {
         errors.push(`${wtag}: id must be a string`);
-      } else if (ids.has(w.id)) {
+      } else if (seen.has(w.id)) {
         errors.push(`${wtag}: duplicate worker id "${w.id}"`);
       } else {
-        ids.add(w.id);
+        seen.add(w.id);
       }
 
       if (typeof w.role !== 'string' || w.role.length < 3) {
@@ -256,7 +270,7 @@ function validate(plan, { strict = false } = {}) {
         // P2-3 (pitfalls #6 heuristic): word count. Soft warning, promoted under --strict.
         const words = w.scope.split(/\s+/).filter(Boolean).length;
         if (words > 50) {
-          warnings.push(`${wtag}: scope is ${words} words; atomic scopes are short (<=50 words). See pitfalls #6.`);
+          warnings.push(`STRICT:scope-too-long ${wtag}: scope is ${words} words; atomic scopes are short (<=50 words). See pitfalls #6.`);
         }
       }
 
@@ -359,6 +373,46 @@ function validate(plan, { strict = false } = {}) {
     }
   } else if ('workers' in plan) {
     errors.push(`workers must be an array`);
+  }
+
+  // Cycle detection on depends_on (only meaningful for staged/graph fan-out).
+  // For 'independent', depends_on is ignored and a warning is emitted if any
+  // worker has it set.
+  if (Array.isArray(plan.workers) && plan.workers.length > 0) {
+    const hasDeps = plan.workers.some(w => Array.isArray(w.depends_on) && w.depends_on.length > 0);
+    if (hasDeps) {
+      if (plan.fan_out === 'independent') {
+        warnings.push(`${plan.workers.filter(w => Array.isArray(w.depends_on) && w.depends_on.length > 0).length} workers have depends_on but fan_out is "independent" — depends_on is ignored. Use "staged" or "graph" if you want a DAG.`);
+      } else {
+        // Build adjacency map and run a DFS cycle check.
+        const adj = new Map();
+        for (const w of plan.workers) {
+          adj.set(w.id, Array.isArray(w.depends_on) ? w.depends_on.filter(d => ids.has(d)) : []);
+        }
+        const visiting = new Set();
+        const visited = new Set();
+        const cycles = [];
+        const dfs = (node, path) => {
+          if (visited.has(node)) return;
+          if (visiting.has(node)) {
+            cycles.push([...path, node].slice(path.indexOf(node)));
+            return;
+          }
+          visiting.add(node);
+          for (const next of (adj.get(node) || [])) {
+            dfs(next, [...path, node]);
+          }
+          visiting.delete(node);
+          visited.add(node);
+        };
+        for (const w of plan.workers) dfs(w.id, []);
+        if (cycles.length > 0) {
+          for (const c of cycles) {
+            errors.push(`depends_on cycle detected: ${c.join(' -> ')} -> ${c[0]}`);
+          }
+        }
+      }
+    }
   }
 
   // exit_criteria

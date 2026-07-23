@@ -6,8 +6,6 @@ user-invocable: true
 allowed-tools:
   - Bash(node {{scripts_path}}/*)
   - Read
-  - Write
-  - Edit
   - Glob
   - Grep
 license: Apache 2.0
@@ -177,6 +175,11 @@ opt in or out via the mavis runtime.
 ## Quick start
 
 1. **Plan** — produce the JSON plan, validate it: `node {{scripts_path}}/plan.mjs validate --plan .mavis/plans/<id>.json`.
+   For CI or production runs, pass `--strict` to promote the actionable warnings
+   (file-exists-only acceptance, multi-verb scope, and-also scope, scopes over
+   50 words, budget over the Anthropic dynamic-workflow caps, missing isolation
+   field) to errors. Default validation stays permissive so one-off plans aren't
+   painful.
 2. **Spawn** — dispatch each worker with the minion contract + scope + acceptance criteria.
 3. **Verify** — run the gate per artifact.
 4. **Synthesize** — combine accepted artifacts.

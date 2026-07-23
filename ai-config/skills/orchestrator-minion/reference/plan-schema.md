@@ -90,7 +90,7 @@ cap.
     { "type": "render-check", "command": "node scripts/render.mjs <path>" },
     { "type": "verifier-subagent", "prompt_ref": ".mavis/prompts/verifier.md" }
   ],
-  "depends_on": ["w-0"],           // optional, only for staged/graph
+  "depends_on": ["w-0"],           // optional, only for staged/graph; see semantics below
   "model_tier": "sonnet-4",        // optional override of budget.model_tiers.default
   "tools": ["Read", "Bash(node *)"],  // optional tool allowlist
   "isolation": "fresh-context"     // always; reserved for future variants (e.g. git-worktree)
@@ -100,6 +100,26 @@ cap.
 `acceptance` is the **heart of the plan**. A worker without acceptance criteria is not a
 minion — it is a vibe check wearing a contract. The orchestrator MUST reject any plan where
 a worker has zero or vacuous acceptance.
+
+## `depends_on` semantics
+
+A worker with `depends_on: ["w-1", "w-2"]` does not start until **both** `w-1` and
+`w-2` have reached a terminal state (`ok`, `failed`, `blocked`, or `ambiguous`).
+The semantic is the same for `staged` and `graph` fan-out shapes:
+
+- **Staged** plans use `depends_on` to define wave boundaries. Wave 1 workers
+  have no `depends_on`; wave 2 workers depend on all of wave 1; etc. The DAG
+  is a linear chain (or a few parallel chains).
+- **Graph** plans use `depends_on` to express a non-linear DAG. Diamond shapes
+  (A→B, A→C, B→D, C→D) and other topologies are allowed, but the runtime
+  must validate that the graph is acyclic (see `scripts/plan.mjs validate`).
+- A failed worker **does not** unblock its dependents by default. The
+  orchestrator's policy is set in `exit_criteria` (e.g., "all P0 findings
+  redispatched and still failing" or "any P0 blocks the run").
+
+The runtime is responsible for honoring the DAG. The validator (`plan.mjs`)
+only checks structural validity: every `depends_on` target must be a known
+worker id, and the graph must be acyclic.
 
 ## Exit criteria
 
