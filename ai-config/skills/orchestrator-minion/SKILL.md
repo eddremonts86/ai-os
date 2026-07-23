@@ -171,6 +171,10 @@ opt in or out via the mavis runtime.
   *verifying* the work.
 - **It does not invent its own dispatch primitive.** Spawning is a host-harness concern.
   The skill is portable across harnesses precisely because it does not couple to one.
+  When using the mavis runtime, the orchestrator generates the run plan with
+  `scripts/team.mjs <plan.json> --include-verify --include-synth` and walks
+  it step by step. See `reference/team-recipe.md` for the full breakdown of
+  what the orchestrator does.
 
 ## Quick start
 
@@ -180,10 +184,18 @@ opt in or out via the mavis runtime.
    50 words, budget over the Anthropic dynamic-workflow caps, missing isolation
    field) to errors. Default validation stays permissive so one-off plans aren't
    painful.
-2. **Spawn** — dispatch each worker with the minion contract + scope + acceptance criteria.
-3. **Verify** — run the gate per artifact.
-4. **Synthesize** — combine accepted artifacts.
-5. **Log** — append the run summary to `.mavis/plans/index.jsonl`.
+2. **Run plan** — generate the sequence of `mavis({...})` tool calls the
+   orchestrator must execute: `node {{scripts_path}}/team.mjs <plan.json>
+   --include-verify --include-synth --out .mavis/plans/<id>.run-plan.json`.
+   This produces a run plan with literal tool calls for spawn/synth phases
+   and a documented loop for the poll phase. See `reference/team-recipe.md`
+   for the full breakdown of what the orchestrator does.
+3. **Execute** — in a model session, walk the run plan's `tool_calls` in
+   step order. For each step, call the named tool with the literal args
+   (see `reference/team-recipe.md` for the tool mapping).
+4. **Synthesize** — the run plan's last steps emit the synthesize + log
+   actions. The orchestrator produces the user-facing answer and writes
+   the run summary to `.mavis/plans/index.jsonl`.
 
 For a worked example of a plan, see `reference/examples/code-audit-plan.md`. For the
 anti-patterns and known failure modes, see `reference/pitfalls.md`. For the menu of
