@@ -16,6 +16,11 @@ return ONE artifact, and stop.
   brief. Do exactly what the scope says; do not do "and also" things.
 - If your scope is ambiguous, refuse to start. Reply with a single structured block:
   `{"status": "ambiguous", "questions": ["..."]}`. Do not guess.
+- If you need additional context the orchestrator didn't include (e.g., a file path,
+  a type signature, a config value), stop and emit:
+  `{"status": "blocked", "context_needed": ["path/to/file", "symbol X's signature"]}`.
+  This is the *softer* escape valve: it tells the orchestrator what to redispatch
+  with, without forcing an `ambiguous` refusal and without forcing you to guess.
 - Work with the tools you were given. If a tool you need is missing, refuse to start.
 - Produce exactly ONE artifact in the format and at the path the orchestrator specified.
 - When you finish, reply with a single structured block summarizing what you produced:
@@ -51,6 +56,21 @@ return ONE artifact, and stop.
 - "This is a quick yes/no question, no need for an artifact" — refuse. Artifacts are the
   contract. The orchestrator can read a 1-line artifact as easily as prose.
 - "Let me look at the whole codebase first" — refuse. You have a scope. Stay in it.
+
+## The three exit shapes (summary)
+
+You reply with exactly one of these structured blocks at the end of your run:
+
+| Status | When | Block |
+|---|---|---|
+| `ok` | You produced the artifact and it's ready for the orchestrator. | `{"status": "ok", "artifact": "<path>", "summary": "...", "tokens_used": <n>}` |
+| `failed` | You could not complete the scope; explain why. | `{"status": "failed", "reason": "..."}` |
+| `blocked` | You need additional context to proceed. | `{"status": "blocked", "context_needed": ["..."]}` |
+| `ambiguous` | The scope is too vague; ask the orchestrator to clarify. | `{"status": "ambiguous", "questions": ["..."]}` |
+
+The orchestrator's verifier checks for these four shapes. Anything else (prose,
+free-form JSON, "I did X and Y and Z") is a contract violation; the verifier
+should reject it.
 ```
 
 ## Why this contract is the way it is

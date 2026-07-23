@@ -4,7 +4,7 @@ The orchestrator-minion pattern is one of several ways to structure a multi-step
 menu is the orchestrator's first stop after the skill loads. If the task does not clearly
 match orchestrator-minion, do not force it. Pick the right primitive and move on.
 
-## The five primitives (in increasing ceremony)
+## The six primitives (in increasing ceremony)
 
 | Primitive | What it is | Cost shape | Best for |
 |---|---|---|---|
@@ -14,6 +14,8 @@ match orchestrator-minion, do not force it. Pick the right primitive and move on
 | **Orchestrator-minion** | One orchestrator plans and synthesizes; N minions execute atomic tasks. | 1 (orch) + N (workers) + 1 (synth). | Data-dependent decomposition; sub-tasks unknown until the input is read; sub-tasks must be independently verifiable. |
 | **Agent teams** | Peer agents, shared task list, direct messaging between workers. | N parallel sessions, message overhead. | Workers need to *coordinate* with each other mid-flight (debate, claim work, share findings). |
 | **Dynamic workflow** | The plan is a script the orchestrator writes; runtime executes it with isolated workers. | As above, but plan is in code, not context. | Codebase-wide sweeps, migrations, deep research; reproducible orchestration. |
+
+(If you're counting: single agent, sequential pipeline, parallel dispatch, orchestrator-minion, agent teams, dynamic workflow — six total. The earlier version of this doc said "five" by mistake; the six is canonical and matches the flowchart below.)
 
 ## Decision flowchart
 
