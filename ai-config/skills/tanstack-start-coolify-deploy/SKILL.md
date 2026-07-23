@@ -304,6 +304,143 @@ curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
   -H "Authorization: Bearer ${COOLIFY_TOKEN}"
 ```
 
+## Gotcha: `h-screen + overflow-y-auto` on the layout silently breaks the whole app
+
+A common TanStack Start layout (especially for map pages) looks like:
+
+```tsx
+<div className="flex h-screen flex-col">
+  <Header />
+  <main className="flex-1 overflow-y-auto">  {/* ← the trap */}
+    <Outlet />
+  </main>
+</div>
+```
+
+This works for the page that needs it (a split-view / map page where the
+left list scrolls inside a fixed-height container). **It silently breaks
+every other route** that uses the same layout:
+
+- `h-screen` on the outer div = body height is capped at viewport height,
+  so the document is never taller than the screen. The browser shows no
+  scrollbar, but there's also no place for the page to overflow into.
+- `overflow-y-auto` on `<main>` = scrolling is trapped inside an
+  invisible pane. Users on desktop can sometimes still scroll with a
+  trackpad or middle-click, but mobile users see the page as
+  "completely frozen after the first viewport."
+- `framer-motion`'s `whileInView` uses `IntersectionObserver`, which is
+  tied to the scroll container. With the trap in place, the observer
+  never sees the elements enter the viewport → animations don't fire,
+  sections render but stay invisible, the home page looks blank below
+  the fold.
+
+**The fix**: only apply the split-view shell to routes that actually need
+it. In a `_public` layout, detect the path and switch the wrapper:
+
+```tsx
+import { useRouterState } from '@tanstack/react-router'
+
+const SPLIT_VIEW_ROUTES = ['/explore', '/admin/map']
+
+export const Route = createFileRoute('/_public')({
+  component: PublicLayoutWrapper,
+})
+
+function PublicLayoutWrapper() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const isSplitView = SPLIT_VIEW_ROUTES.some((p) => pathname.startsWith(p))
+
+  if (isSplitView) {
+    return (
+      <div className="flex h-screen flex-col">
+        <Header />
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+```
+
+The non-split-view branch uses `min-h-screen` (lets the page grow taller
+than the viewport) and no `overflow-y-auto` on `<main>` (the browser's
+window handles scrolling). `framer-motion`'s `whileInView` and any
+sticky-header tricks work as expected.
+
+Rule: `h-screen` is a code smell in app layout code. Use it only when
+the page is genuinely a viewport-sized tool (a fullscreen editor, a
+KYC flow, an embedded terminal). For everything else, `min-h-screen`.
+
+## Gotcha: TanStack Start server-fn responses are NOT plain JSON
+
+Server functions (`createServerFn`, `createServerOnlyFn`, `useServerFn`)
+serialize their return values with **devalue** (a cycle-preserving
+serializer), not plain JSON. The wire format you see in `network` is:
+
+```json
+{ "t": 9, "p": { "k": ["id", "title", "lat"], "v": [123, "Foo", 55.6] } }
+```
+
+The shape is `{"t": <type>, "p": <payload>}` where:
+- `t: 0` → number
+- `t: 1` → string
+- `t: 9` → array (with `k` = keys/headers and `v` = values, by index)
+- `t: 10` → object
+- `t: 5` → null
+- (full list: https://github.com/Rich-Harris/devalue)
+
+If you `JSON.parse` the raw response and try to read `.id` you get
+`undefined`. The framework un-serializes it transparently when you
+call the server function from a React component via `useServerFn`, but
+**anything that hits the API directly** (debugging with `curl`,
+test fixtures, third-party tooling) needs a recursive `unwrap`:
+
+```ts
+// lib/unwrap-devalue.ts
+import { parse } from 'devalue'
+
+export function unwrap<T = unknown>(raw: unknown): T {
+  // dev's parse() expects the {t,p} shape; if it's already a plain value,
+  // just return it
+  if (raw && typeof raw === 'object' && 't' in (raw as any) && 'p' in (raw as any)) {
+    return parse(JSON.stringify(raw)) as T
+  }
+  return raw as T
+}
+```
+
+Three things to do when debugging a TanStack Start API:
+1. **Don't trust the raw `Response.json()` body** — it's devalue, not JSON.
+2. **Use `useServerFn` from `@tanstack/react-start`** in your client code;
+   it handles the unwrap.
+3. **For tests**, prefer `@tanstack/react-start/server-testing`'s
+   `createServerFn` mock over hitting the actual HTTP endpoint.
+
+## Gotcha: route loaders (createFileRoute loader) can return server-only data
+
+If a route has a `loader` defined on the server, you can return DB rows
+directly and TanStack Start will devalue-serialize them to the client.
+This is fine for "data needed before first render" (SEO + initial
+paint), but be careful with two things:
+
+1. **Never return secrets, raw passwords, or tokens** — they end up in
+   the HTML payload on first render. Strip sensitive fields server-side
+   before returning.
+2. **Large arrays** (> 100 items) are fine but each one gets devalue'd
+   by reference. If you have 25k listings, paginate — return the first
+   50 in the loader and load more via a server function as the user
+   scrolls.
+
 ## fqdn bug fix (Coolify caching Traefik labels)
 
 **Symptom:** you change `fqdn` in the app dashboard but Traefik still routes to the old container.
@@ -409,6 +546,10 @@ docker exec my-app-app-1 pnpm db:migrate:status
 8. ❌ Non-idempotent post-deploy command → second deploy breaks DB.
 9. ❌ `BETTER_AUTH_URL` pointing to localhost → cookies not set on prod domain.
 10. ❌ Port 8000 closed in firewall → dashboard/API inaccessible.
+11. ❌ Layout uses `h-screen` + `overflow-y-auto` on `<main>` for ALL routes → non-split-view pages (home, about, sign-in) silently lose their scroll, `framer-motion` `whileInView` never fires, animations broken, mobile users see a frozen page. Only apply the split-view shell to routes that need it (e.g. `/explore`).
+12. ❌ Trying to read a server-fn response as plain JSON (`response.json()`) → it's devalue-encoded (`{t:9, p:{k,v}}`), you get back garbage. Use `useServerFn` in React or `parse()` from `devalue` in tests / debugging.
+13. ❌ Returning 25k rows from a route loader "for SEO" → ships them all in the initial HTML payload. Paginate the loader, stream the rest.
+14. ❌ Returning a `user.passwordHash` (or any secret) from a route loader → it ends up in the rendered HTML on first paint. Strip sensitive fields server-side before returning.
 
 ## Resources
 
