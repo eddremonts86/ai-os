@@ -61,6 +61,17 @@ unification (see "Roadmap" at the bottom).
 In mavis terms, an orchestrator-minion run looks like this. The orchestrator emits
 each block as a tool call; it does not type shell commands.
 
+**For the full recipe with each phase explained**, see
+[`reference/team-recipe.md`](team-recipe.md). **For an automated run-plan
+generator** that emits the exact `mavis({...})` tool calls the orchestrator
+must execute, see `scripts/team.mjs`:
+
+```text
+node {{scripts_path}}/team.mjs <plan.json> --include-verify --include-synth --out run-plan.json
+```
+
+The output is a JSON the orchestrator walks step by step.
+
 ### Phase 1 — Plan (in the orchestrator's own context)
 
 Write the plan to disk (the orchestrator uses its `Write` tool), then validate it
