@@ -39,7 +39,7 @@ cross-hypothesis report.
     {
       "id": "w-1",
       "role": "hypothesis-investigator",
-      "scope": "Investigate hypothesis A (DB connection pool exhaustion under load) for the p99 regression; produce 3+ cited findings with quotes and a verdict (supports / refutes / inconclusive).",
+      "scope": "Investigate hypothesis A. Return 3+ cited findings and an overall verdict (supports / refutes / inconclusive).",
       "artifact": {
         "format": "json",
         "path": ".mavis/plans/research-2026-07-23-p99-regression/w-1.hypA.json",
@@ -63,7 +63,7 @@ cross-hypothesis report.
     {
       "id": "w-2",
       "role": "hypothesis-investigator",
-      "scope": "Investigate hypothesis B (GC pauses in the metrics aggregator) for the p99 regression; produce 3+ cited findings with quotes and a verdict (supports / refutes / inconclusive).",
+      "scope": "Investigate hypothesis B. Return 3+ cited findings and an overall verdict (supports / refutes / inconclusive).",
       "artifact": {
         "format": "json",
         "path": ".mavis/plans/research-2026-07-23-p99-regression/w-2.hypB.json",
@@ -87,7 +87,7 @@ cross-hypothesis report.
     {
       "id": "w-3",
       "role": "hypothesis-investigator",
-      "scope": "Investigate hypothesis C (cold start of new sidecar containers) for the p99 regression; produce 3+ cited findings with quotes and a verdict (supports / refutes / inconclusive).",
+      "scope": "Investigate hypothesis C. Return 3+ cited findings and an overall verdict (supports / refutes / inconclusive).",
       "artifact": {
         "format": "json",
         "path": ".mavis/plans/research-2026-07-23-p99-regression/w-3.hypC.json",

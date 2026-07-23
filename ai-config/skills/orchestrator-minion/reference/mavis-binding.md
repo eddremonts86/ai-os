@@ -235,9 +235,12 @@ equivalent in Gemini today.
 
 ### Other harnesses (OpenCode, Cursor, etc.)
 
-All of them go through mavis when the AI-OS setup script installs the bridge.
-The canonical binding is the one above. CLIs that have their own primitives
-(Claude Code's `Task`, etc.) are optimizations on top of the canonical binding.
+When the AI-OS setup script installs the bridge, mavis is the canonical runtime
+and the recommended spawn primitive for cross-CLI portability. CLIs also have
+native skill/agent mechanisms that can be used directly (Codex's `.agents/`,
+OpenCode's `.opencode/`, etc.) — the orchestrator's plan and validation work
+the same way regardless of which primitive you pick. The mavis binding is the
+default; CLI-native primitives are an optimization, not a replacement.
 
 ## Roadmap (planned, not shipped)
 
