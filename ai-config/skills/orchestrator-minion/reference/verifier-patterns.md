@@ -1,9 +1,10 @@
 # Verifier Patterns: Explicit Rejects vs Blind Reproduction
 
-The orchestrator-minion contract defines that a worker produces an artifact
-and a verifier checks it before the orchestrator accepts it. The contract
-deliberately does NOT prescribe one verifier pattern — different tasks
-call for different verifications. This document is the menu.
+This document covers **two of the verifier patterns** available to an
+orchestrator-minion run. The full menu (including sampling-based
+verifiers, human-in-the-loop escalation, and graded verdicts) lives
+in `reference/decision-menu.md`. This file is the deep-dive on the two
+patterns that ship in this skill; the decision menu is the index.
 
 Two patterns dominate practice, with very different failure surfaces:
 
@@ -179,6 +180,68 @@ For tasks that look like:
 the worker's success is well-specified; an explicit `rejects_if` is
 the right tool. The verifier does not need a fresh context; it
 needs the spec.
+
+## When the verifier rejects: the re-dispatch loop
+
+The contract is not complete with "verifier returns yes/no". The
+orchestrator must know what to do with a `no`. The default loop:
+
+1. **Verifier returns `no` with reasons.** The reasons are the
+   specific things the verifier found wrong. They are *not*
+   "try again"; they are the worker's defect list.
+2. **Orchestrator redispatches the worker** with the verifier's
+   reasons as a new scope. The new scope is the original scope
+   plus the reasons as concrete constraints. Example:
+
+   ```text
+   Original scope: "Audit src/foo/handler.ts for missing auth checks."
+
+   Verifier returned: {"verdict": "no", "reasons": [
+     "any handler accepting user input is missing from the findings",
+     "any finding lacks a line number"
+   ]}
+
+   Redispatch scope: "Audit src/foo/handler.ts for missing auth
+   checks. The previous attempt missed handlers accepting user
+   input and lacked line numbers in findings. Include every
+   handler that takes input, and every finding must have a
+   line number."
+   ```
+
+3. **Increment a retry counter.** Hard cap at
+   `budget.max_retries_per_worker` (the plan's
+   `budget.max_retries_per_worker` field). When the cap is hit,
+   the worker is marked failed; the orchestrator decides whether
+   to partial-synthesize, escalate, or re-plan.
+
+4. **Optionally switch verifier pattern** for the retry. If the
+   first attempt was explicit rejects and failed, the second
+   attempt can be blind reproduction (fresh context, no
+   worker's retelling). The two patterns catch different
+   failure modes.
+
+5. **Never re-dispatch the verifier with the worker's artifact
+   visible.** That defeats the blind pattern. If the verifier
+   is blind, redispatching it with the worker's output is
+   just an explicit verifier in disguise.
+
+### The four worker exit shapes the orchestrator must handle
+
+The verifier's `no` is not the only thing that can come back. Per
+`reference/worker-contract.md`, a worker can emit one of four
+structured blocks at the end of its run:
+
+| Status | Orchestrator action |
+|---|---|
+| `ok` | Read the artifact at `artifact.path`. Run the acceptance criteria. If it passes, promote the artifact. If it fails, run the verifier (or a new worker, depending on the failure). |
+| `failed` | The worker's defect list. Redispatch with the reason as a new scope constraint. Or partial-synthesize if the run is otherwise usable. |
+| `blocked` | The worker needs additional context. Escalate to the user with `context_needed`. Do not redispatch without the missing context. |
+| `ambiguous` | The scope was too vague to start. Refuse the scope; ask the user to clarify. Do not guess. |
+
+All four shapes are part of the worker contract. An orchestrator
+that treats `blocked` or `ambiguous` as `failed` is discarding
+structured information. See `reference/worker-contract.md` for the
+exact block formats.
 
 ## Cost tradeoff
 
