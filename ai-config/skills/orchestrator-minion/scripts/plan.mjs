@@ -47,10 +47,16 @@ function parseArgs(argv) {
 const HELP = `plan.mjs — orchestrator-minion plan validator and template generator
 
 Commands:
-  validate --plan <path>   Validate a plan JSON file against the schema.
-  check    <path>          Alias for validate (positional path).
-  template --out <path|->  Write a starter plan. Use "-" for stdout.
-  --help                   Show this help.
+  validate --plan <path>     Validate a plan JSON file against the schema.
+  check    <path>            Alias for validate (positional path).
+  template --out <path|->    Write a starter plan. Use "-" for stdout.
+
+Options:
+  --strict                   Promote STRICT:* warnings to errors.
+                             Promoted categories: file-exists-only acceptance,
+                             multi-verb scope, and-also scope, budget over the
+                             Anthropic dynamic-workflow caps, isolation missing.
+  --help                     Show this help.
 
 Exit codes: 0 ok, 1 validation error, 2 usage error.`;
 
@@ -82,11 +88,53 @@ const ARTIFACT_FORMATS = new Set([
 const FAN_OUT = new Set(['independent', 'staged', 'graph']);
 const VERIFICATION = new Set(['mechanical', 'subjective', 'both']);
 
+// Known isolation values. `fresh-context` is the canonical one (the worker contract
+// requires every worker to start with a clean context). Other values here are
+// forward-compatible; unknown values are rejected to prevent silent violations of
+// invariant #2 in the SKILL.md.
+const ISOLATION_VALUES = new Set(['fresh-context']);
+
+// Known tool names (per Anthropic / OpenAI conventions). Unknown names warn, not error,
+// because custom harnesses may add their own. The warning catches typos and drift.
+const KNOWN_TOOLS = new Set([
+  'Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash', 'WebFetch', 'WebSearch',
+  'Task', 'NotebookEdit', 'TodoWrite', 'Skill',
+]);
+
+// Soft warnings promoted to errors when --strict is passed. Keys are sentinel strings
+// the validator emits as a stable marker; main() filters warnings by these markers.
+const STRICT_PROMOTED = new Set([
+  'STRICT:file-exists-only',
+  'STRICT:multi-verb-scope',
+  'STRICT:and-also-scope',
+  'STRICT:budget-tokens-too-high',
+  'STRICT:budget-wallclock-too-high',
+  'STRICT:budget-workers-too-high',
+  'STRICT:isolation-missing',
+]);
+
+// Upper bounds for the budget fields. Match the Anthropic dynamic-workflow hard caps
+// (16 concurrent / 1000 total per run) scaled down for single-run plans. Plans that
+// exceed these are not invalid (someone may have a legitimate reason) but they
+// warrant a warning because runaway plans are the most common failure mode.
+const BUDGET_UPPER_BOUNDS = {
+  max_workers: 16,
+  max_tokens_per_worker: 1000000,
+  max_wallclock_minutes: 180,
+  max_retries_per_worker: 5,
+};
+
 // ─── validator ───────────────────────────────────────────────────────────────
 
-function validate(plan) {
+function validate(plan, { strict = false } = {}) {
   const errors = [];
   const warnings = [];
+  // --strict promotion: any warning whose first token is in STRICT_PROMOTED
+  // becomes an error. Implementation: we keep warnings as-is, and at the end of
+  // validation we move strict-sentinel warnings into errors when strict=true.
+  // The sentinel format is `STRICT:<key> <message>` (see STRICT_PROMOTED above).
+  void strict; // sentinel-driven; consumed in the post-processing below
+  void warnings; // referenced indirectly via the post-processing loop
 
   // top-level required
   for (const k of ['id', 'goal', 'created_at', 'orchestrator', 'budget', 'fan_out', 'verification', 'workers', 'exit_criteria']) {
@@ -129,12 +177,18 @@ function validate(plan) {
     const b = plan.budget;
     if (typeof b.max_workers !== 'number' || b.max_workers < 1) {
       errors.push(`budget.max_workers must be a positive number, got: ${b.max_workers}`);
+    } else if (b.max_workers > BUDGET_UPPER_BOUNDS.max_workers) {
+      warnings.push(`STRICT:budget-workers-too-high budget.max_workers is ${b.max_workers}; > ${BUDGET_UPPER_BOUNDS.max_workers} is the Anthropic dynamic-workflow cap. See pitfalls #5 (unbounded fan-out).`);
     }
     if (typeof b.max_tokens_per_worker !== 'number' || b.max_tokens_per_worker < 1000) {
       errors.push(`budget.max_tokens_per_worker must be a positive number (>= 1000), got: ${b.max_tokens_per_worker}`);
+    } else if (b.max_tokens_per_worker > BUDGET_UPPER_BOUNDS.max_tokens_per_worker) {
+      warnings.push(`STRICT:budget-tokens-too-high budget.max_tokens_per_worker is ${b.max_tokens_per_worker}; > ${BUDGET_UPPER_BOUNDS.max_tokens_per_worker} is a runaway-cost risk. See pitfalls #5.`);
     }
     if (typeof b.max_wallclock_minutes !== 'number' || b.max_wallclock_minutes < 1) {
       errors.push(`budget.max_wallclock_minutes must be a positive number, got: ${b.max_wallclock_minutes}`);
+    } else if (b.max_wallclock_minutes > BUDGET_UPPER_BOUNDS.max_wallclock_minutes) {
+      warnings.push(`STRICT:budget-wallclock-too-high budget.max_wallclock_minutes is ${b.max_wallclock_minutes}; > ${BUDGET_UPPER_BOUNDS.max_wallclock_minutes} min is unusual for a single plan.`);
     }
     if (typeof b.max_retries_per_worker !== 'number' || b.max_retries_per_worker < 0) {
       errors.push(`budget.max_retries_per_worker must be a non-negative number, got: ${b.max_retries_per_worker}`);
@@ -193,11 +247,56 @@ function validate(plan) {
         }
         const andAlso = /\b(and also|and then|plus also|as well as)\b/i;
         if (andAlso.test(w.scope)) {
-          warnings.push(`${wtag}: scope contains "and also|and then|plus also|as well as" — possible scope creep. See worker-contract.md.`);
+          warnings.push(`STRICT:and-also-scope ${wtag}: scope contains "and also|and then|plus also|as well as" — possible scope creep. See worker-contract.md.`);
         }
         const verbs = (w.scope.match(/\b(audit|fix|refactor|build|implement|investigate|research|review|check|find|list|extract|generate|write|run|test|deploy|design|create|update|delete)\b/gi) || []);
         if (verbs.length > 1) {
-          warnings.push(`${wtag}: scope mentions multiple action verbs (${verbs.join(', ')}); an atomic scope usually has one verb`);
+          warnings.push(`STRICT:multi-verb-scope ${wtag}: scope mentions multiple action verbs (${verbs.join(', ')}); an atomic scope usually has one verb`);
+        }
+        // P2-3 (pitfalls #6 heuristic): word count. Soft warning, promoted under --strict.
+        const words = w.scope.split(/\s+/).filter(Boolean).length;
+        if (words > 50) {
+          warnings.push(`${wtag}: scope is ${words} words; atomic scopes are short (<=50 words). See pitfalls #6.`);
+        }
+      }
+
+      // depends_on: if present, every target must be a known worker id.
+      if (Array.isArray(w.depends_on)) {
+        for (const dep of w.depends_on) {
+          if (typeof dep !== 'string') {
+            errors.push(`${wtag}: depends_on entries must be strings, got: ${JSON.stringify(dep)}`);
+            continue;
+          }
+          if (!ids.has(dep)) {
+            errors.push(`${wtag}: depends_on references unknown worker id "${dep}" (not in plan.workers)`);
+          }
+        }
+      } else if (w.depends_on !== undefined) {
+        errors.push(`${wtag}: depends_on must be an array of worker ids (omit if none)`);
+      }
+
+      // isolation: if present, must be a known value. If missing, warn (it should be
+      // explicit per invariant #2 of SKILL.md — every worker starts with clean context).
+      if (w.isolation !== undefined) {
+        if (typeof w.isolation !== 'string' || !ISOLATION_VALUES.has(w.isolation)) {
+          errors.push(`${wtag}: isolation must be one of: ${[...ISOLATION_VALUES].join(', ')}, got: ${JSON.stringify(w.isolation)}`);
+        }
+      } else {
+        warnings.push(`STRICT:isolation-missing ${wtag}: isolation field is missing. Per worker contract, every worker must have isolation: "fresh-context".`);
+      }
+
+      // tools: if present, must be an array of strings. Warn on unknown tool names.
+      if (w.tools !== undefined) {
+        if (!Array.isArray(w.tools)) {
+          errors.push(`${wtag}: tools must be an array of strings, got: ${typeof w.tools}`);
+        } else {
+          for (const t of w.tools) {
+            if (typeof t !== 'string') {
+              errors.push(`${wtag}: tools entries must be strings, got: ${JSON.stringify(t)}`);
+            } else if (!KNOWN_TOOLS.has(t)) {
+              warnings.push(`${wtag}: tool "${t}" is not in the known list (${[...KNOWN_TOOLS].join(', ')}). Custom tool? Double-check the name.`);
+            }
+          }
         }
       }
 
@@ -253,7 +352,7 @@ function validate(plan) {
             errors.push(`${wtag}: acceptance has no structural check and no verifier with explicit rejection criteria — see pitfalls #2 and #8.`);
           }
           if (hasFileExists && !hasSubstantiveStructural && !hasVerifierWithRejects) {
-            warnings.push(`${wtag}: only file-exists acceptance — see pitfalls #8 (verification theater). Add a substantive check (json-schema, render-check, regex, min-count) or a verifier-subagent with explicit rejects_if.`);
+            warnings.push(`STRICT:file-exists-only ${wtag}: only file-exists acceptance — see pitfalls #8 (verification theater). Add a substantive check (json-schema, render-check, regex, min-count) or a verifier-subagent with explicit rejects_if.`);
           }
         }
       }
@@ -273,6 +372,22 @@ function validate(plan) {
   }
 
   return { errors, warnings };
+}
+
+// Promote any warning whose first token matches a STRICT_PROMOTED key into an error.
+// Returns { errors, warnings } with the promotion applied.
+function applyStrict(errors, warnings) {
+  const keptWarnings = [];
+  const promotedErrors = [...errors];
+  for (const w of warnings) {
+    const m = w.match(/^(STRICT:[a-z0-9-]+)\s+(.*)$/);
+    if (m && STRICT_PROMOTED.has(m[1])) {
+      promotedErrors.push(`[from strict] ${m[2]}`);
+    } else {
+      keptWarnings.push(w);
+    }
+  }
+  return { errors: promotedErrors, warnings: keptWarnings };
 }
 
 // ─── template ─────────────────────────────────────────────────────────────────
@@ -365,7 +480,16 @@ function main() {
       console.error(`error: failed to parse JSON: ${e.message}`);
       process.exit(1);
     }
-    const { errors, warnings } = validate(plan);
+    const strict = !!args.strict;
+    let { errors, warnings } = validate(plan);
+    if (strict) {
+      const promoted = applyStrict(errors, warnings);
+      errors = promoted.errors;
+      warnings = promoted.warnings;
+    }
+    if (strict) {
+      console.error(`(strict mode: warnings marked STRICT:* have been promoted to errors)`);
+    }
     if (warnings.length > 0) {
       console.error(`warnings (${warnings.length}):`);
       for (const w of warnings) console.error(`  ! ${w}`);

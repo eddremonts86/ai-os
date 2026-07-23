@@ -1,7 +1,7 @@
 ---
 name: orchestrator-minion
 description: "Use when a task is large enough to be worth decomposing into independent sub-tasks, AND the sub-tasks can run with fresh context (no shared state, no mid-flight coordination). Applies the Orchestrator-Workers / Supervisor-Worker pattern (Anthropic, 2024): one strong model plans, delegates, and synthesizes; many lightweight minions execute atomic tasks in isolated context and return one artifact each. Covers CLI-agnostic planning, fan-out budget, the 7 invariants, verification gates, and the menu of when to reach for this pattern vs. a single agent, agent teams, or a dynamic workflow. Not for trivial tasks (overhead exceeds benefit), tightly coupled tasks (workers would step on each other), or work that needs cross-worker messaging (use agent teams instead)."
-argument-hint: "<task description> [--budget N] [--workers M] [--model tier]"
+argument-hint: "<task description>"
 user-invocable: true
 allowed-tools:
   - Bash(node {{scripts_path}}/*)
