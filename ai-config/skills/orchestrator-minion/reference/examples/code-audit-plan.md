@@ -57,7 +57,8 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
             "any P0 finding lacks a recommended fix"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     },
     {
       "id": "w-2",
@@ -80,7 +81,8 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
             "any P0 finding lacks a recommended fix"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     },
     {
       "id": "w-3",
@@ -103,7 +105,8 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
             "any P0 finding lacks a recommended fix"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     },
     {
       "id": "w-4",
@@ -126,7 +129,8 @@ missing auth checks. Read this alongside `plan-schema.md` to see the schema in u
             "any P0 finding lacks a recommended fix"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     }
   ],
   "exit_criteria": "All 4 finding JSONs exist, validate against the schema, and pass the verifier. Then orchestrator synthesizes a markdown report with P0/P1/P2 sections and a summary line of total findings per file.",

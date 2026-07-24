@@ -58,7 +58,8 @@ cross-hypothesis report.
             "the verdict does not follow from the evidence cited"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     },
     {
       "id": "w-2",
@@ -82,7 +83,8 @@ cross-hypothesis report.
             "the verdict does not follow from the evidence cited"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     },
     {
       "id": "w-3",
@@ -106,7 +108,8 @@ cross-hypothesis report.
             "the verdict does not follow from the evidence cited"
           ]
         }
-      ]
+      ],
+      "isolation": "fresh-context"
     }
   ],
   "exit_criteria": "All 3 hypothesis JSONs exist, validate against the schema, contain ≥3 findings each, and pass the verifier. Then the orchestrator synthesizes a markdown report weighing the three verdicts and recommending the most-supported hypothesis.",
