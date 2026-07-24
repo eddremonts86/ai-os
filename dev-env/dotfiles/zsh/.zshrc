@@ -211,3 +211,8 @@ esac
 
 # AI-OS memory stack (added by setup/install-mac.sh)
 export OLLAMA_URL=${OLLAMA_URL:-http://localhost:11500}
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/edd/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
