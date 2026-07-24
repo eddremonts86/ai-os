@@ -230,6 +230,111 @@ export type { Db } from './server/db';
 
 Rule: any import that uses Node.js APIs (fs, pg, redis, child_process) **must** use an explicit subpath or barrel.
 
+## Gotcha: unstyled site after deploy (CSS content-hash mismatch on Linux)
+
+**Symptom:** the app builds and runs fine locally, but **after a Coolify/Linux
+deploy the whole site loads with no styling** — raw HTML, no Tailwind. The
+browser console shows a 404 for something like `/assets/globals-CntAvi1o.css`.
+
+**Cause:** with `@tailwindcss/vite` + the TanStack Start plugin there are two
+build passes (a client pass and an SSR pass). On Linux CI they can
+**content-hash the global stylesheet differently**, so the SSR-rendered
+`<link href="/assets/globals-<hashA>.css">` points at a hash the *client* pass
+never emitted (it wrote `globals-<hashB>.css`). Result: 404 → no stylesheet →
+unstyled site. It usually does NOT reproduce on macOS, which is why it "only
+breaks in prod" and recurs on every deploy until pinned.
+
+**Fix:** pin the stylesheet to a **stable, unhashed** filename so both passes
+always reference the same URL, and make sure the static server does NOT cache
+that unhashed file as `immutable` (or a later redeploy would keep serving the
+old CSS).
+
+```ts
+// vite.config.ts
+export default defineConfig(() => ({
+  // ...plugins (tanstackStart, react, tailwindcss), resolve, etc.
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.names?.[0] ?? assetInfo.name ?? ''
+          // Stable, unhashed name for CSS so the client and SSR passes agree.
+          if (name.endsWith('.css')) return 'assets/[name][extname]'
+          // Everything else keeps a content hash → safe to cache immutably.
+          return 'assets/[name]-[hash][extname]'
+        },
+      },
+    },
+  },
+}))
+```
+
+```js
+// server.prod.mjs — only TRULY hashed files may be immutable-cached.
+// An unhashed globals.css MUST get a short cache or redeploys are ignored.
+const isHashedAsset = /\/assets\/.*-[A-Za-z0-9_]{8,}\.[a-z0-9]+$/i.test(safePath)
+res.writeHead(200, {
+  'Content-Type': mime,
+  'Cache-Control': isHashedAsset
+    ? 'public, max-age=31536000, immutable'
+    : 'public, max-age=3600',
+})
+```
+
+Verify after deploy: `curl -sI https://app.example.com/assets/globals.css`
+returns `200` + `content-type: text/css`, and the rendered HTML `<link>` points
+at exactly that unhashed URL (not a phantom hash).
+
+## Gotcha: native `.node` addons crash the Vite dep optimizer
+
+Server-only native addons (e.g. `@resvg/resvg-js` for OG-image rasterization,
+`sharp`, `bcrypt`) ship a `.node` binary. Vite's dep optimizer tries to parse
+it as JS and crashes the build. Keep them out of pre-bundling and mark them
+external for SSR:
+
+```ts
+// vite.config.ts
+optimizeDeps: { exclude: ['@resvg/resvg-js'] },
+ssr:         { external: ['@resvg/resvg-js'] },
+```
+
+## Gotcha: CSP `style-src 'self'` blocks Google Fonts → self-host
+
+If `server.prod.mjs` sets a Content-Security-Policy with `style-src 'self'`
+(and `font-src 'self'`), the usual `<link href="https://fonts.googleapis.com/...">`
+is **blocked** — you get console CSP violations and a silent fallback to system
+fonts. Rather than widen the CSP (which leaks every visitor's IP to Google),
+self-host the fonts:
+
+1. Vendor the `.woff2` files into `public/fonts/` (the `@fontsource-variable/*`
+   packages are a convenient, versioned source — add them as devDeps for
+   provenance and copy the `.woff2` into `public/fonts/`).
+2. Declare them in your global stylesheet, after `@import 'tailwindcss';`:
+
+```css
+/* src/shared/styles/globals.css */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;               /* variable font: one file, all weights */
+  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2');
+}
+```
+
+3. Preload the primary face and DROP the Google `<link>`/`preconnect` from the
+   root document head:
+
+```ts
+// src/routes/__root.tsx (head links)
+{ rel: 'preload', href: '/fonts/inter-latin-wght-normal.woff2',
+  as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+```
+
+Verify: 0 CSP violations in the console, and
+`curl -sI https://app.example.com/fonts/inter-latin-wght-normal.woff2` → `200`
+`font/woff2`.
+
 ## Coolify setup
 
 ### 1. Create app via API
@@ -550,6 +655,10 @@ docker exec my-app-app-1 pnpm db:migrate:status
 12. ❌ Trying to read a server-fn response as plain JSON (`response.json()`) → it's devalue-encoded (`{t:9, p:{k,v}}`), you get back garbage. Use `useServerFn` in React or `parse()` from `devalue` in tests / debugging.
 13. ❌ Returning 25k rows from a route loader "for SEO" → ships them all in the initial HTML payload. Paginate the loader, stream the rest.
 14. ❌ Returning a `user.passwordHash` (or any secret) from a route loader → it ends up in the rendered HTML on first paint. Strip sensitive fields server-side before returning.
+15. ❌ The client and SSR build passes content-hash `globals.css` differently on Linux → SSR `<link>` 404s → **unstyled site after deploy** (recurs every deploy). Pin CSS to a stable unhashed name in `vite.config.ts` `assetFileNames`, and don't `immutable`-cache unhashed assets in `server.prod.mjs`.
+16. ❌ A native `.node` addon (`@resvg/resvg-js`, `sharp`, `bcrypt`) reachable from the client dep graph → Vite dep optimizer crashes at build. Add it to `optimizeDeps.exclude` + `ssr.external`.
+17. ❌ CSP `style-src 'self'` with a Google Fonts `<link>` → fonts blocked, console CSP violations, system-font fallback. Self-host the `.woff2` + `@font-face`, or widen the CSP (privacy tradeoff).
+18. ❌ No `.dockerignore` when the Dockerfile does `COPY . .` → the host's `node_modules` (macOS-native binaries) leak into the Linux image → runtime "invalid ELF header" / wrong-arch crashes. Add `.dockerignore` (`node_modules`, `.git`, `dist`, `.env`, `docs`, `plans`) even with a multi-stage build.
 
 ## Resources
 
@@ -557,5 +666,6 @@ docker exec my-app-app-1 pnpm db:migrate:status
 - [Coolify API](https://coolify.io/docs/api)
 - [Coolify fqdn bug discussion](https://github.com/coollabsio/coolify/issues)
 - Related skill: `coolify-deploy` (overview)
+- Related skill: `coolify-env-sync-and-postdeploy` (env sync + the idempotent DB deploy orchestrator)
 - Related skill: `pnpm-docker-deploy` (lockfile + build scripts)
 - Related skill: `prod-deploy-verification` (pre-flight checks)
