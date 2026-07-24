@@ -198,6 +198,78 @@ docker run --rm test-app ls node_modules/esbuild/bin/
 grep -B 1 -A 15 "^settings:" pnpm-lock.yaml
 ```
 
+## Gotcha: scraper / worker Dockerfiles need `--prod=false` (the opposite of the prod stage)
+
+A scraper or worker container runs scripts that import devDependencies:
+`dotenv`, `@playwright/test`, `eslint`, `tsx`, code generators, etc.
+**The prod stage** of a multi-stage Dockerfile does `pnpm prune --prod`
+to strip devDeps and shrink the image — but the scraper can't function
+with only runtime deps, so the first run dies with:
+
+```
+Error: Cannot find package 'dotenv'
+Error: Cannot find module '@playwright/test'
+```
+
+The fix is to **make the scraper its own stage** with `--prod=false`
+explicitly:
+
+```dockerfile
+# ─── Scraper stage (separate from web app) ────────────────────────────────
+FROM node:22-bookworm-slim AS scraper
+
+WORKDIR /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+RUN pnpm install --frozen-lockfile --prod=false   # ← keep devDeps!
+
+COPY tsconfig.json ./
+COPY src/shared/lib ./src/shared/lib
+COPY scripts/scraping ./scripts/scraping
+
+CMD ["tsx", "scripts/scraping/runner.ts", "--source", "all"]
+```
+
+The web app's `prod` stage keeps `pnpm prune --prod`; the scraper stage
+uses `--prod=false`. Same image, different stages, different dep sets.
+
+If the scraper is in its own repo with its own `Dockerfile.scraper`,
+just use:
+
+```dockerfile
+RUN pnpm install --frozen-lockfile --ignore-scripts --prod=false
+```
+
+`--ignore-scripts` is safe for scrapers too as long as Playwright
+browsers come from the base image (`mcr.microsoft.com/playwright:*`)
+rather than from a postinstall hook.
+
+## Gotcha: `CI=true` is required to avoid `ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY`
+
+pnpm v10+ refuses to delete/replace `node_modules` non-interactively in
+some flows (notably when the deps graph changes and pnpm wants to purge
+the old `node_modules` and re-install). In a Docker layer cache miss
+(e.g. when you bump a transitive dep), this fails the build with:
+
+```
+ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY  Could not remove node_modules
+directory automatically (no TTY). Run pnpm with --force or set CI=true.
+```
+
+Add `CI=true` to the `FROM base` stage so it propagates to every
+subsequent stage:
+
+```dockerfile
+FROM node:22-bookworm-slim AS base
+ENV CI=true                                # ← pnpm can purge non-interactively
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+```
+
+This is the standard fix; it's also the reason GitHub Actions works
+out of the box (Actions sets `CI=true` by default) but a plain
+`docker build` on a developer laptop does not.
+
 ## Common errors
 
 1. ❌ Forgetting to copy `.npmrc` to the Dockerfile → falls back to defaults (no build scripts).
@@ -206,6 +278,8 @@ grep -B 1 -A 15 "^settings:" pnpm-lock.yaml
 4. ❌ Forgetting `enable-pre-post-scripts=true` in `.npmrc` → pre/post install scripts ignored.
 5. ❌ Running `pnpm install` (without `--frozen-lockfile`) in CI/prod → drift between lockfile and installed deps.
 6. ❌ Not including the new package in `onlyBuiltDependencies` when adding a dependency → silent break in build.
+7. ❌ Building a scraper / worker image with the same `pnpm prune --prod` step as the web app → missing `dotenv`, `@playwright/test`, etc. → "Cannot find package" at first run. Use `--prod=false` in the scraper stage instead.
+8. ❌ Building a Docker image with a `node_modules` cache miss and no `CI=true` set → `ERR_PNPM_ABORTED_REMOVE_MODULES_DIR_NO_TTY`. Add `ENV CI=true` to the base stage.
 
 ## Pre-commit check
 
