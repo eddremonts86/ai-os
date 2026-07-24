@@ -438,6 +438,171 @@ coolify app logs <name>
 coolify app restart <name>
 ```
 
+## Gotcha: Coolify defaults `dockerfile_target_build` to `dev` for multi-stage builds
+
+If your `Dockerfile` has multiple stages (`base` / `dev` / `builder` / `prod`) and
+you don't explicitly set the build target on the Coolify app, **Coolify builds
+the `dev` stage** — which usually has `pnpm dev` as its CMD and no production
+deps. The container starts, fails healthcheck, deploy is marked failed. The
+"no application seems to be listening on port 3000" error is the most common
+surface symptom.
+
+**Fix:** when creating the app via API, always pass `dockerfile_target_build`:
+
+```bash
+curl -X POST -H "Authorization: Bearer $COOLIFY_API_TOKEN" -H "Content-Type: application/json" \
+  "$COOLIFY_API_URL/api/v1/applications/public" -d '{
+    "server_uuid": "...",
+    "project_uuid": "...",
+    "environment_name": "production",
+    "git_repository": "https://github.com/owner/repo.git",
+    "git_branch": "main",
+    "build_pack": "dockerfile",
+    "dockerfile_target_build": "prod",   # ← CRITICAL for multi-stage
+    "ports_exposes": "3000",
+    "name": "my-app"
+  }'
+```
+
+For an existing app, patch it:
+
+```bash
+curl -X PATCH -H "Authorization: Bearer $COOLIFY_API_TOKEN" -H "Content-Type: application/json" \
+  "$COOLIFY_API_URL/api/v1/applications/<uuid>" \
+  -d '{"dockerfile_target_build": "prod"}'
+```
+
+Verify what stage the running image actually built by inspecting the labels:
+
+```bash
+docker inspect <container> | jq '.[0].Config.Labels["coolify.deployment"]'
+# Then look at the deployment logs to see which "FROM ... AS <name>" stage was selected.
+```
+
+## Gotcha: `--env-file=.env` does not work inside Coolify containers
+
+Scripts that load config from a file (e.g. `tsx --env-file=.env`, `dotenv -e .env`)
+**fail silently or with `ECONNREFUSED` in Coolify** because the container image
+has no `.env` file baked in — Coolify injects env vars directly into the process
+environment at container start. The shell wrapper that Coolify uses to launch
+the CMD exports them; the running process sees them via `process.env`.
+
+Three patterns to choose from:
+
+1. **Use `process.env` directly** (recommended). The container entrypoint or
+   any script reads `process.env.DATABASE_URL` etc. No file needed. This is
+   the cleanest and works for both build-time and runtime.
+
+2. **Bootstrap an `.env` file from `process.env` in the entrypoint** if some
+   sub-tool needs a file. Example (`scripts/docker-app-entrypoint.sh`):
+   ```sh
+   #!/bin/sh
+   set -eu
+   # synthesize .env from injected env so tsx --env-file and dotenv keep working
+   : > .env
+   for v in DATABASE_URL BETTER_AUTH_URL NODE_ENV; do
+     eval "val=\$$v"
+     [ -n "$val" ] && echo "$v=$val" >> .env
+   done
+   exec node server.prod.mjs
+   ```
+
+3. **Bake a stub `.env` into the image** with placeholders. Brittle — any
+   real secret has to come from `process.env` anyway, so this only helps for
+   keys that have a sane default. Prefer option 1 or 2.
+
+The wrong reflex (don't do this):
+
+```bash
+# ❌ This is what breaks: script tries to read .env from the build context,
+#    which is empty in the prod stage
+tsx --env-file=.env scripts/db/migrate.ts
+```
+
+## Gotcha: do NOT rely on `post_deployment_command` for migrations/seeds
+
+`post_deployment_command` runs **after the healthcheck passes** — which means
+after the app is already serving traffic. If the migration breaks the schema,
+users hit a half-broken app before the hook even starts. Plus, it runs via
+`docker exec` in the **already-running container**, which has its own
+race-condition and error-handling quirks (failure logs go to Coolify, not the
+container; the container keeps running with the new image but un-migrated DB).
+
+**Use the container's ENTRYPOINT as the single source of truth** for any
+startup that must run before the app accepts traffic. The pattern:
+
+```dockerfile
+# Dockerfile
+COPY scripts/docker-app-entrypoint.sh ./scripts/docker-app-entrypoint.sh
+RUN chmod +x ./scripts/docker-app-entrypoint.sh
+CMD ["sh", "scripts/docker-app-entrypoint.sh"]
+```
+
+```sh
+# scripts/docker-app-entrypoint.sh
+#!/bin/sh
+set -eu
+echo "[startup] running migrations…"
+node scripts/db/migrate-prod.mjs     # exits non-zero on any failure
+echo "[startup] starting server on port ${PORT:-3000}…"
+exec node server.prod.mjs             # only reached if migrations succeed
+```
+
+The script must `exec` the server process (not fork) so SIGTERM propagates
+correctly when Coolify stops the container. `set -eu` ensures any failing
+step aborts the whole boot — Coolify then sees the container exit and
+correctly marks the deploy as failed.
+
+`post_deployment_command` is still useful for **optional** post-migrate steps
+like warming caches, sending a deploy-notification webhook, or pruning
+old images. Keep destructive or schema-required work in the entrypoint.
+
+## Gotcha: scrapers / workers belong in their OWN Coolify app, not a docker-compose profile
+
+A typical "app + scraper" stack in `docker-compose.yml` uses profiles so the
+scraper only runs when explicitly raised:
+
+```yaml
+services:
+  app:
+    build: ./Dockerfile
+  scraper:
+    profiles: ["scraping"]    # ← Coolify ignores this
+    build: ./Dockerfile.scraper
+```
+
+Coolify (with `build_pack=dockercompose` or `dockerfile`) **does not raise
+docker-compose profiles** — it only starts services that have no profile, so
+the scraper never runs. To get the scraper running in production:
+
+1. **Register a second Coolify application** pointing at the same repo, with
+   `build_pack=dockerfile` and `dockerfile_target_build` set to the scraper
+   stage (e.g. add a `FROM base AS scraper` stage to the same `Dockerfile`,
+   or use a separate `Dockerfile.scraper`).
+
+2. **Pass scraper-specific env vars only to that app** — `DATABASE_URL`,
+   `SCRAPE_*`, `AI_SCRAPER_*`, `PLAYWRIGHT_*` — and not to the web app.
+
+3. **Use a different CMD/ENTRYPOINT** that runs the scraper loop on
+   container start (e.g. `tsx scripts/scraping/runner.ts --source all`).
+   Since the scraper is a long-running process, set the Coolify container
+   type to "Application" (not "Database") and disable the healthcheck
+   (scraper workers don't expose HTTP).
+
+This also keeps the scraper's resource usage from competing with the web
+app for CPU/RAM on a single Hetzner VPS.
+
+## Gotcha: scraper registries must agree with the `scraping_sources` table
+
+The scraper scheduler typically has a hardcoded list of supported sources
+(`--source edc,homestra,bilbasen`) and writes per-source data into tables
+that FK-reference `scraping_sources.key`. If the registry is missing an
+entry, the scraper either silently no-ops on that source or crashes with
+a foreign-key violation. **Always** run the registry seed (`seed-scrape-sources.mjs`)
+as part of the production migration runner (or in the entrypoint), not
+just on first deploy. Adding a new source = update both the scraper code
+and the seed file in the same PR.
+
 ## Post-deploy hooks
 
 Configure a command that runs post-deploy (e.g. DB migrations, cache clear):
@@ -527,6 +692,11 @@ docker run --rm -v postgres_data:/data -v $(pwd):/backup alpine \
 13. ❌ Trusting that "migrations applied successfully" in the post-deployment command log means the schema is actually correct → Coolify does not treat a failing post-deployment command as a fatal deploy error, and `drizzle-kit migrate` silently no-ops on migrations missing from its journal (see the database-migrations skill's Drizzle section). Always spot-check the actual live schema (`\dt`, or query a table the new feature depends on) after a deploy that includes migrations, don't just read the deploy log.
 14. ❌ Copying env vars from an old app to a recreated one using a cached/stale API response → re-fetch current values immediately before copying, especially right after fixing one of them (see the `VITE_*` gotcha above).
 15. ❌ Calling it done after `curl` returns 200 → always finish with a real browser pass on the landing page and login (see "Always verify in a real browser after deploying" above).
+16. ❌ Multi-stage `Dockerfile` with no `dockerfile_target_build` set in Coolify → Coolify builds the `dev` stage, container starts with the wrong CMD, port never opens. Always pass `dockerfile_target_build: "prod"` (or your final stage name) at app create time AND verify on patch.
+17. ❌ Scripts using `--env-file=.env` or `dotenv -e .env` in the container → fails because the prod image has no `.env` file; Coolify injects env vars into the process env only. Read `process.env` directly, or bootstrap a synthetic `.env` in the entrypoint from `process.env`.
+18. ❌ Putting migrations/seeds in `post_deployment_command` instead of the container entrypoint → runs AFTER the app is already serving traffic (post-healthcheck), and failures are non-fatal to the deploy. Use a shell `ENTRYPOINT`/`CMD` that runs migrations first, then `exec`s the server.
+19. ❌ Expecting `docker-compose` profiles to be raised by Coolify → Coolify does not start services under non-default profiles. Register a second Coolify application for the scraper/worker, with its own `Dockerfile.scraper` and CMD.
+20. ❌ Adding a new scraper source to the runner code but forgetting to add it to `seed-scrape-sources.mjs` registry → scraper no-ops or crashes on FK violation. Update both in the same PR.
 
 ## iaWorkSpace patterns
 
