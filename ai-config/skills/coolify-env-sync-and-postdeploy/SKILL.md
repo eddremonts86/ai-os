@@ -227,6 +227,56 @@ Test with:
   # Watch logs for post_deployment_command output
 ```
 
+## Pattern: one idempotent DB deploy orchestrator (recommended for DB-backed apps)
+
+Instead of wiring a bare `pnpm db:migrate && (pnpm db:seed:admin || true)` into
+the deploy hook, put ALL database bring-up into a single idempotent,
+**fail-loud** script (e.g. `scripts/deploy/orchestrate.mjs`, run as
+`pnpm deploy:db`). This is what makes "push to master" stop breaking prod: the
+same ordered pass runs on every deploy and is safe to re-run.
+
+Ordered steps (forward-only — NEVER `drizzle-kit push`, drop, or reset):
+
+1. **Wait for the database** to accept connections (retry loop with a bounded
+   attempt/delay budget) — the app container often starts before the DB is ready.
+2. **Ensure the database exists** (create-if-absent).
+3. **Ensure required extensions exist** — e.g. `CREATE EXTENSION IF NOT EXISTS
+   vector` for pgvector. Do this *soft* (log a warning, don't hard-fail) so a
+   managed image that already has it, or a permissions quirk, doesn't block the
+   whole deploy.
+4. **Apply migrations** (`drizzle-kit migrate`).
+5. **Provision / rotate login passwords** for the least-privilege roles your
+   migrations create *without* passwords. This is the trap that silently breaks
+   fresh deploys: the app/worker role exists but can't authenticate, so every
+   DB-backed page 500s and the cron workers/scrapers fail 100%. Read each
+   password from its role connection URL and `ALTER ROLE … WITH PASSWORD`.
+   Restrict which roles are provisionable with a regex (e.g. `^myapp_[a-z]+$`)
+   so a misconfigured URL can never rotate a superuser/owner credential.
+6. **Verify** every provisioned role can actually log in — fail early and loud.
+7. **Seed** the default admin (best-effort / `--skip-seed`).
+
+Non-negotiables that make it deploy-safe:
+
+- **Idempotent + forward-only** → existing data is preserved (durability). Safe
+  on every deploy — you never "start from zero".
+- **Container-safe env** → read `process.env` (Coolify-injected). Optionally
+  hydrate from `.env.docker`/`.env` when present (local runs). Do NOT rely on
+  `tsx --env-file=.env` — that file is not in the container.
+- **Secret-safe logs** → NEVER print role passwords or connection strings; log
+  role *names* and step results only. Provide a `--dry-run` that prints the
+  ordered plan without mutating anything.
+
+**Where to run it — entrypoint vs `post_deployment_command`:**
+
+- **Container entrypoint (strongest):** migrations complete *before* the
+  healthcheck. A bad migration fails the container → the deploy is marked failed
+  and you get alerted, instead of a half-broken app going live.
+- **`post_deployment_command` (`pnpm deploy:db`):** acceptable *because* the
+  orchestrator is fail-loud and idempotent — but Coolify does NOT mark the
+  deploy failed on a non-zero post-deploy exit. If you run it here you MUST
+  spot-check the live schema after any deploy that changed migrations (see the
+  `drizzle-kit migrate` silent-no-op trap below).
+
 ## Recommended complete flow
 
 ```bash
@@ -283,6 +333,7 @@ curl -fsS https://my-app.example.com/api/health
 9. ❌ Putting **migrations** in `post_deployment_command` → runs AFTER the app is already serving traffic. A migration that breaks the schema leaves a half-broken app live with no deploy failure. Use the container entrypoint for migrations instead.
 10. ❌ `post_deployment_command` references `pnpm db:seed` which itself calls `tsx --env-file=.env` → fails in container because there is no `.env` file (Coolify injects env vars). Either use `process.env` directly in the seed, or have the entrypoint bootstrap a synthetic `.env` from `process.env` first.
 11. ❌ Trusting "post-deployment command succeeded" in the Coolify logs as proof the schema is correct → Coolify does not fail the deploy on a non-zero post-deployment exit, and `drizzle-kit migrate` silently no-ops on migrations missing from its journal. Always spot-check the live schema with `\dt` or a real query after a deploy that includes migrations.
+12. ❌ Adding a new Drizzle migration but not regenerating the migration-integrity guard (e.g. `drizzle/migration-hashes.json` + a test that asserts the migration count) → preflight/CI fails on the drift, or worse, a drifted journal lets `drizzle-kit migrate` skip the new migration in prod. Regenerate the hash manifest and bump the expected count whenever you add a migration.
 
 ## Verification
 
