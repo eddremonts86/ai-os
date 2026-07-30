@@ -209,6 +209,53 @@ export const users = pgTable("users", {
 });
 ```
 
+### Gotcha: `drizzle-kit migrate` silently skips migrations missing from the journal
+
+`drizzle-kit migrate` does **not** discover migration files by scanning the
+`drizzle/` folder — it only applies what's listed in
+`drizzle/meta/_journal.json`. If a `.sql` file exists on disk (e.g.
+`0004_foo.sql`) but has no corresponding `entries[]` row in `_journal.json`
+(and no `0004_snapshot.json` in `meta/`), `migrate` silently ignores it —
+exits 0, prints "migrations applied successfully!", and the DB never gets
+those changes. This happens when migration files are hand-written/copied in,
+or a `drizzle-kit generate` run is interrupted after writing the `.sql` but
+before updating the journal + snapshot.
+
+**Symptom:** production DB is missing tables/columns that exist in
+`schema.ts` and have a migration file for them, but every deploy reports
+migrations succeeding. Downstream: any code path that reads/writes the
+missing table (e.g. an admin-seed script doing
+`INSERT INTO auth_users ...`) fails with `relation "..." does not exist` —
+and if that failure isn't surfaced (e.g. it's a Coolify post-deployment
+command, which doesn't treat failure as fatal), a fully broken feature like
+login can look "configured correctly" while silently never having worked.
+
+**Diagnose:**
+```bash
+# Compare files on disk vs what the journal actually knows about
+ls drizzle/*.sql
+cat drizzle/meta/_journal.json | jq '.entries[].tag'
+# Any .sql file with no matching tag in the journal will never run
+
+# On the live DB: what has actually been recorded as applied
+psql "$DATABASE_URL" -c 'SELECT * FROM drizzle."__drizzle_migrations" ORDER BY id;'
+# Cross-check its row count/hashes against migration files — a DB with only
+# 1-2 tracked migrations while 7 files exist on disk is the same symptom
+```
+
+**Fix:** add the missing entries to `drizzle/meta/_journal.json` (same shape
+as existing entries — `idx`, `version`, `when` timestamp, `tag` matching the
+filename minus `.sql`), commit it, then re-run `drizzle-kit migrate`. If the
+production DB predates the affected migrations by a lot (e.g. an entire
+schema-naming convention changed underneath it — old unprefixed
+`users`/`accounts` vs new `auth_users`/`auth_accounts`) and has zero real
+rows in the affected tables, the fastest safe path is confirming zero data
+loss (`SELECT count(*)` on every table) then `DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;` (plus `DROP SCHEMA drizzle CASCADE;` to reset
+migration tracking) and letting `drizzle-kit migrate` rebuild from an empty
+DB. Never do the DROP without confirming row counts are actually zero and
+getting explicit user sign-off first — it's irreversible.
+
 ## Django (Python)
 
 ### Workflow

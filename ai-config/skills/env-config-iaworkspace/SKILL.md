@@ -106,15 +106,15 @@ STRIPE_WEBHOOK_SECRET=
 
 | App | Port | Local domain |
 |---|---|---|
-| edd-remonts-dashboard | 3000 | `profile.eduardoinerarte.local` |
-| geo-dashboard | 3001 | `geo.eduardoinerarte.local` |
-| voice-prompt-cleaner | 5173 | `voice.eduardoinerarte.local` |
-| hola-eduardo | 3000 | `hola.eduardoinerarte.local` |
-| builderhunt | 3000 | `builderhunt.eduardoinerarte.local` |
-| budget-app | 3000 | `budget.eduardoinerarte.local` |
-| countdown-timer | 3000 | `countdown.eduardoinerarte.local` |
-| edd-app-template | 3000 | `template.eduardoinerarte.local` |
-| tanstack-template | 3000 | `tanstack.eduardoinerarte.local` |
+| profile-dashboard | 3000 | `profile.<yourdomain>.local` |
+| geo-dashboard | 3001 | `geo.<yourdomain>.local` |
+| voice-prompt-cleaner | 5173 | `voice.<yourdomain>.local` |
+| landing-app | 3000 | `hello.<yourdomain>.local` |
+| link-aggregator | 3000 | `links.<yourdomain>.local` |
+| budget-app | 3000 | `budget.<yourdomain>.local` |
+| countdown-timer | 3000 | `countdown.<yourdomain>.local` |
+| app-template | 3000 | `template.<yourdomain>.local` |
+| tanstack-template | 3000 | `tanstack.<yourdomain>.local` |
 | openclaw | 18789 | `127.0.0.1:18789` |
 | opencode | 4096 | `127.0.0.1:4096` |
 | open-design | 7456 | `127.0.0.1:7456` |
@@ -124,7 +124,7 @@ STRIPE_WEBHOOK_SECRET=
 | lmstudio | 1234 | `127.0.0.1:1234` |
 | workspace-postgres | 5432 | `127.0.0.1:5432` |
 | chromadb | 8000 | `127.0.0.1:8000` |
-| Traefik dashboard | 8080 | `traefik.eduardoinerarte.local` |
+| Traefik dashboard | 8080 | `traefik.<yourdomain>.local` |
 
 **Rules:**
 - Web apps use 3000 by default, and only increment when there is a conflict.
