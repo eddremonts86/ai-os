@@ -6,6 +6,15 @@ license: Internal
 
 # Coolify Env Sync & Post-Deploy
 
+> **Before syncing anything.** Credentials live in `ai-os/dev-env/env-config/.env` (gitignored),
+> as `COOLIFY_API_TOKEN` / `COOLIFY_API_URL` — there is no `ai-os/.env`, and no other spelling of
+> those names works. **Resolve the target app uuid by name from `GET /api/v1/applications`; never
+> reuse a stored `COOLIFY_APP_UUID`**, which points at whichever app was provisioned last. Syncing
+> env vars to the wrong uuid writes secrets into a different production app and reports success.
+> API quirks (`is_build_time` → 422, automatic `is_preview` mirroring, hash-based verification,
+> redeploy required) are documented in
+> [`env-config-and-secrets`](../env-config-and-secrets/SKILL.md).
+
 ## Read first: when to use which (entrypoint vs post_deployment_command)
 
 Coolify has TWO places to run code after a deploy:
