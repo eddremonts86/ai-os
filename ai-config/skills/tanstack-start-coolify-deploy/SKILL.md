@@ -342,16 +342,16 @@ Verify: 0 CSP violations in the console, and
 ```bash
 # Get project + server UUIDs
 curl -fsS http://<server-ip>:8000/api/v1/projects \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
   | jq '.[] | {uuid, name}'
 
 curl -fsS http://<server-ip>:8000/api/v1/servers \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
   | jq '.[] | {uuid, name}'
 
 # Create Postgres DB
 curl -X POST http://<server-ip>:8000/api/v1/databases/postgresql \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "server_uuid": "<server-uuid>",
@@ -365,7 +365,7 @@ curl -X POST http://<server-ip>:8000/api/v1/databases/postgresql \
 
 # Create application
 curl -X POST http://<server-ip>:8000/api/v1/applications/public \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
     "server_uuid": "<server-uuid>",
@@ -406,7 +406,7 @@ node scripts/coolify/set-post-deploy.mjs --app my-app \
 ```bash
 APP_UUID=<from-step-1>
 curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}"
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
 ```
 
 ## Gotcha: `h-screen + overflow-y-auto` on the layout silently breaks the whole app
@@ -571,7 +571,7 @@ echo "Cleared\n";
 
 # Redeploy (this regenerates Traefik labels correctly)
 curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
-  -H "Authorization: Bearer ${COOLIFY_TOKEN}"
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
 ```
 
 Alternative: delete the app and recreate it with the correct fqdn.

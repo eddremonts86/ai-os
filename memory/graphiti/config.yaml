@@ -22,7 +22,7 @@
 # instance AI-OS already runs locally for the rest of the memory stack (same
 # "openai-compatible override" trick, pointed at Ollama's own OpenAI-
 # compatible API). Reached via `host.docker.internal` since Ollama runs as a
-# host process, not inside the `aios-memory` Docker network.
+# host process, not inside the `ia-os-memory` Docker network.
 #
 # STATUS (2026-07-13, UPDATE — WIRING CONFIRMED WORKING): Docker Hub has no
 # newer zepai/knowledge-graph-mcp tag (latest == 1.0.2, identical digest,
@@ -155,7 +155,7 @@ database:
   provider: "falkordb"
   providers:
     falkordb:
-      uri: ${FALKORDB_URI:redis://aios-falkordb:6379}
+      uri: ${FALKORDB_URI:redis://ia-os-falkordb:6379}
       password: ${FALKORDB_PASSWORD:}
       database: ${FALKORDB_DATABASE:default_db}
 

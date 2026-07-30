@@ -8,6 +8,15 @@ license: Internal
 
 Coolify is a self-hosted PaaS (alternative to Vercel/Heroku) that runs on your VPS. Supports Docker compose, automatic HTTPS via Traefik, DBs (Postgres/Redis/MySQL), and deploys from Git.
 
+> **Credentials and app uuid — read before doing anything.** The API token and URL live in
+> `ai-os/dev-env/env-config/.env` (gitignored). Not `ai-os/.env` — that path does not exist.
+> Names are `COOLIFY_API_TOKEN` and `COOLIFY_API_URL`; no other spelling works.
+> **Never reuse a stored `COOLIFY_APP_UUID`** — resolve it by app name from
+> `GET /api/v1/applications`, because one server hosts many apps and the stored value points at
+> whichever was provisioned last. Deploying or writing env vars to the wrong uuid succeeds
+> silently against someone else's production app. Full detail and the resolve snippet:
+> [`env-config-and-secrets`](../env-config-and-secrets/SKILL.md).
+
 ## Architecture
 
 ```
@@ -714,7 +723,7 @@ docker run --rm -v postgres_data:/data -v $(pwd):/backup alpine \
 POSTGRES_DB=myapp_prod
 POSTGRES_USER=myapp
 POSTGRES_PASSWORD=***
-COOLIFY_TOKEN=***
+COOLIFY_API_TOKEN=***
 COOLIFY_API_URL=https://coolify.example.com/api/v1
 DOMAIN=example.com
 LETSENCRYPT_EMAIL=admin@example.com

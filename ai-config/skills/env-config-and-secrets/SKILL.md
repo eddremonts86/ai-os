@@ -6,6 +6,67 @@ license: Internal
 
 # Env Config & Secrets
 
+## Where the infra credentials actually live — read this before saying "no access"
+
+The canonical local dossier is:
+
+```
+ai-os/dev-env/env-config/.env          # real values, gitignored — the source of truth
+ai-os/dev-env/env-config/.env.example  # placeholders only, committed
+```
+
+`ai-os/CLAUDE.md` already mandates reading it first. It holds `COOLIFY_API_URL`,
+`COOLIFY_API_TOKEN`, `HETZNER_API_TOKEN`, `CONDUCTOR_SSH_KEY` and the Coolify
+project/server UUIDs. There is **no** `ai-os/.env` — that path does not exist, and looking for
+it there and stopping is a known failure.
+
+GitHub Actions secrets are a **copy**, not the source. They are write-only and cannot be read
+back, so finding credentials only in a workflow file proves nothing about local availability.
+
+**Canonical names — do not invent variants.** `COOLIFY_API_TOKEN` (never `COOLIFY_TOKEN`),
+`COOLIFY_API_URL` (never `COOLIFY_API`). An agent grepping for the wrong name finds nothing and
+wrongly concludes there is no access. These skills were inconsistent about this until it caused
+exactly that.
+
+**Do not truncate a credential search.** `grep -rl ... | head -8` over a repo full of skill
+docs returns eight documentation hits and cuts off the dossier. Treating that truncated list as
+complete is how a present credential gets reported as missing.
+
+## Never trust a stored `COOLIFY_APP_UUID`
+
+The dossier carries a single `COOLIFY_APP_UUID` while the server hosts a dozen applications.
+That value belongs to whichever app was provisioned when it was written — **not** the app you
+are working on. Using it writes env vars into, or redeploys, a different production app, and
+Coolify will report success.
+
+Resolve the uuid by name from the live API, every time:
+
+```bash
+curl -fsS -H "Authorization: Bearer $COOLIFY_API_TOKEN" -H "Accept: application/json" \
+  "$COOLIFY_API_URL/api/v1/applications" \
+| python3 -c "import json,sys; [print(a['uuid'], a['name'], a.get('fqdn')) for a in json.load(sys.stdin)]"
+```
+
+Match on `name`, confirm `fqdn` is the host you expect, then use that uuid.
+
+## Coolify env-var API quirks (hard-won)
+
+- `POST /api/v1/applications/<uuid>/envs` accepts `key`, `value`, `is_preview`. Sending
+  `is_build_time` returns `422 {"is_build_time":["This field is not allowed."]}`.
+- Coolify **mirrors the var to a second `is_preview: true` entry automatically**, even when you
+  post `is_preview: false`. That is why every key appears twice in the env listing; it is not
+  duplication you introduced.
+- Verify a written secret by comparing a **hash** of the stored value against the local one —
+  never by printing either:
+  ```bash
+  # compare sha256 of local vs stored, print only the digests
+  ```
+- Env changes need a redeploy: Coolify injects the environment at container start.
+  `POST /api/v1/applications/<uuid>/start` returns a `deployment_uuid`; poll
+  `GET /api/v1/deployments/<deployment_uuid>` until `status` is `finished`. Confirm the app
+  actually restarted (a fresh low `uptime` on your health/status endpoint), not just that the
+  deployment reported success.
+
 ## Principles
 
 1. **Never secrets in code.** `git grep -E "(api[_-]?key|token|password)\s*[:=]\s*['\"][a-zA-Z0-9]" --include="*.ts"` should return 0.
@@ -163,7 +224,7 @@ const APP = process.argv.find(a => a.startsWith('--app='))?.split('=')[1];
 const ENV_FILE = process.argv.find(a => a.startsWith('--file='))?.split('=')[1] || '.env';
 
 const COOLIFY_API = process.env.COOLIFY_API_URL;
-const COOLIFY_TOKEN = process.env.COOLIFY_TOKEN;
+const COOLIFY_API_TOKEN = process.env.COOLIFY_API_TOKEN;
 
 // Get app UUID from Coolify
 const apps = JSON.parse(execSync(`curl -fsS ${COOLIFY_API}/applications -H "Authorization: Bearer ${COOL...`));
@@ -185,7 +246,7 @@ const envVars = Object.fromEntries(
 const response = await fetch(`${COOLIFY_API}/applications/${app.uuid}/envs`, {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${COOLIFY_TOKEN}`,
+    'Authorization': `Bearer ${COOLIFY_API_TOKEN}`,
     'Content-Type': 'application/json',
   },
   body: JSON.stringify(envVars),
