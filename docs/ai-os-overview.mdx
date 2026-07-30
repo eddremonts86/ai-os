@@ -130,7 +130,7 @@ Output:
 
 ```
 == AI-OS Memory Stack Status ==
-  ✓ FalkorDB container running (aios-falkordb)
+  ✓ FalkorDB container running (ia-os-falkordb)
   ✓   Web UI  http://localhost:3300
   ✓   Redis  redis://localhost:6390 → PONG (via docker exec)
   ✓ Ollama serve running
@@ -565,7 +565,7 @@ ai-os loop run <id>                       # open Terminal + print run prompt
 
 # ==== MCP / SERVICES ====
 docker ps --format '{{.Names}}\t{{.Status}}'  # all containers
-docker exec aios-falkordb redis-cli -p 6379 PING  # Redis ping
+docker exec ia-os-falkordb redis-cli -p 6379 PING  # Redis ping
 curl -s -m 3 http://localhost:11500/api/tags | jq .  # Ollama models
 curl -sI -m 3 http://localhost:3300/ | head -1       # FalkorDB Web
 curl -sI -m 3 http://localhost:9749/ | head -1       # cbm UI

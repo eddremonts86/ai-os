@@ -51,7 +51,7 @@ if [ -z "${AI_OS_ROOT:-}" ]; then
   fi
 fi
 export AI_OS_ROOT
-MEMORY_DIR="$AI_OS_ROOT/memory/falkordb"
+MEMORY_DIR="$AI_OS_ROOT/memory"
 OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}"
 FALKORDB_URL="${FALKORDB_URL:-redis://127.0.0.1:6390}"
 FALKORDB_WEB="${FALKORDB_WEB:-http://127.0.0.1:3300}"
@@ -86,8 +86,8 @@ sub_status() {
 
   # FalkorDB
   if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-    if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^aios-falkordb$'; then
-      ok "FalkorDB container running (aios-falkordb)"
+    if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-falkordb$'; then
+      ok "FalkorDB container running (ia-os-falkordb)"
       if curl -s -m 3 "$FALKORDB_WEB/" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200\|302"; then
         ok "  Web UI  $FALKORDB_WEB"
       else
@@ -101,7 +101,7 @@ sub_status() {
         fi
       elif command -v docker >/dev/null 2>&1; then
         # Fallback: PING via docker exec (no host redis-cli required)
-        if docker exec aios-falkordb redis-cli -p 6379 PING 2>/dev/null | grep -q PONG; then
+        if docker exec ia-os-falkordb redis-cli -p 6379 PING 2>/dev/null | grep -q PONG; then
           ok "  Redis  $FALKORDB_URL → PONG (via docker exec)"
         else
           warn "  Redis  $FALKORDB_URL no PONG (docker exec failed)"
@@ -116,16 +116,16 @@ sub_status() {
     # Graphiti MCP (P0-3 decision: separate opt-in compose, not started by
     # `ai-os memory start` — needs a REAL OPENAI_API_KEY; deployment path
     # smoke-tested 2026-07-12 with a placeholder key, see
-    # memory/graphiti/docker-compose.yml)
-    if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^aios-graphiti-mcp$'; then
-      ok "Graphiti MCP container running (aios-graphiti-mcp)"
+    # memory/docker-compose.yml)
+    if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-graphiti-mcp$'; then
+      ok "Graphiti MCP container running (ia-os-graphiti-mcp)"
       if curl -s -m 3 "http://127.0.0.1:8021/health" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
         ok "  HTTP  http://127.0.0.1:8021/mcp/"
       else
         warn "  HTTP  http://127.0.0.1:8021/health not reachable"
       fi
     else
-      warn "Graphiti MCP container not running (opt-in — export a real OPENAI_API_KEY, then cd memory/graphiti && docker compose up -d)"
+      warn "Graphiti MCP container not running (opt-in — needs MINIMAX_API_KEY; source ~/Projects/configs/env.ts then run: bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh)"
     fi
   else
     warn "Docker not running"
@@ -137,7 +137,7 @@ sub_status() {
   # anyway (ollama.exe vs ollama). The API check is the real signal we care
   # about and works identically everywhere -- and must NOT require the
   # `ollama` CLI to be on PATH: Windows now defaults to running Ollama in
-  # Docker (aios-ollama container, see memory/falkordb/docker-compose.yml's
+  # Docker (ia-os-ollama container, see memory/docker-compose.yml's
   # opt-in "ollama-docker" profile), which never installs the native CLI at
   # all. Query the model list over the API too, not via `ollama list`.
   if curl -s -m 3 "$OLLAMA_URL/api/tags" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
@@ -301,10 +301,15 @@ print(json.dumps({'pattern': sys.argv[1], 'project': sys.argv[2], 'limit': 10}))
 }
 
 
+COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
+COMPOSE_DIR="$AI_OS_ROOT/memory"
+# Where the ollama-data bind-mount lives (referenced by the unified compose);
+# we detect the "ollama-docker" profile via the existence of this dir.
+OLLAMA_DATA_DIR="$COMPOSE_DIR/falkordb/ollama-data"
+
 sub_start() {
-  hdr "Starting FalkorDB"
-  cd "$MEMORY_DIR"
-  # Auto-detect the opt-in "ollama-docker" profile via the ./ollama-data
+  hdr "Starting AI-OS memory stack"
+  # Auto-detect the opt-in "ollama-docker" profile via the ollama-data
   # directory rather than `docker ps -a`: `docker compose down` REMOVES
   # containers (not just stops them), so a container-name check only works
   # once and silently drops Ollama on every subsequent start after the first
@@ -315,33 +320,31 @@ sub_start() {
   local compose_bin="docker compose"
   docker compose version >/dev/null 2>&1 || compose_bin="docker-compose"
   local profile_args=""
-  if [ -d "$MEMORY_DIR/ollama-data" ]; then
+  if [ -d "$OLLAMA_DATA_DIR" ]; then
     profile_args="--profile ollama-docker"
   fi
-  $compose_bin $profile_args up -d
-  ok "FalkorDB started"
+  $compose_bin -f "$COMPOSE_FILE" $profile_args up -d
+  ok "AI-OS stack started"
   sub_status
 }
 
 sub_stop() {
-  hdr "Stopping FalkorDB"
-  cd "$MEMORY_DIR"
+  hdr "Stopping AI-OS memory stack"
   local compose_bin="docker compose"
   docker compose version >/dev/null 2>&1 || compose_bin="docker-compose"
   local profile_args=""
-  if [ -d "$MEMORY_DIR/ollama-data" ]; then
+  if [ -d "$OLLAMA_DATA_DIR" ]; then
     profile_args="--profile ollama-docker"
   fi
-  $compose_bin $profile_args down
-  ok "FalkorDB stopped (data preserved in ./data)"
+  $compose_bin -f "$COMPOSE_FILE" $profile_args down
+  ok "AI-OS stack stopped (data preserved)"
 }
 
 sub_logs() {
-  cd "$MEMORY_DIR"
   if docker compose version >/dev/null 2>&1; then
-    docker compose logs -f
+    docker compose -f "$COMPOSE_FILE" logs -f
   else
-    docker-compose logs -f
+    docker-compose -f "$COMPOSE_FILE" logs -f
   fi
 }
 
@@ -364,6 +367,12 @@ sub_query() {
     err "grepai search failed"
     exit 1
   fi
+}
+
+sub_bootstrap() {
+  hdr "Bootstrapping AI-OS memory stack"
+  # Forward all args (e.g. --refresh, --only-index) to the setup script.
+  exec bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" "$@"
 }
 
 sub_reindex() {
@@ -416,6 +425,7 @@ case "${1:-}" in
   query)         shift; sub_query "$@" ;;
   search)        shift; sub_search "$@" ;;
   reindex)        shift; sub_reindex "$@" ;;
+  bootstrap)     shift; sub_bootstrap "$@" ;;
   help|--help|-h|"")
     cat <<EOF
 ai-os memory — CLI for the AI-OS memory stack (phase 1)
@@ -432,6 +442,7 @@ Subcommands:
   query "<q>" [path]  Semantic search via grepai
   search "<q>" [path] Same as query, but falls back to cbm if grepai not running
   reindex [path]      Refresh codebase-memory-mcp index
+  bootstrap           First-time / on-demand: start stack + auto-index all projects (see setup/ai-os-bootstrap.sh)
 Environment (override via env):
   FALKORDB_URL=redis://127.0.0.1:6390
   FALKORDB_WEB=http://127.0.0.1:3300

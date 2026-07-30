@@ -638,23 +638,21 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     warn "  ollama not installed (run: brew install ollama) — embedding features disabled"
   fi
 
-  # 9b.2 — FalkorDB graph DB (Docker, ports 3300 web UI + 6390 redis)
+  # 9b.2 — Unified AI-OS memory stack (FalkorDB + Graphiti in one compose project)
   if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-    cd "$AI_OS_ROOT/memory/falkordb"
-    if [ ! -d data ]; then
-      mkdir -p data
-    fi
+    mkdir -p "$AI_OS_ROOT/memory/falkordb/data"
+    COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
     if docker compose version >/dev/null 2>&1; then
-      if docker compose up -d 2>&1 | tail -3; then
-        ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
-        ok "    image: falkordb/falkordb:v4.18.11 (pinned, container_name: aios-falkordb)"
+      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+        ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
-        warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory/falkordb && docker compose up -d)"
+        warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
-      if docker-compose up -d 2>&1 | tail -3; then
-        ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300"
-        ok "    image: falkordb/falkordb:v4.18.11 (pinned, container_name: aios-falkordb)"
+      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+        ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker-compose up failed"
       fi

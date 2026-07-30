@@ -49,14 +49,25 @@ curl -I https://ai-os.eduardoinerarte.dk/
 
 ## ⚠️ .env caveat: COOLIFY_API_TOKEN
 
-Check your local `.env` for two `COOLIFY_API_TOKEN` candidates — only one of
-them returns HTTP 200 from the Coolify API; the other returns 401. If it ever
-reappears as a later duplicate it will shadow the working one when the file
-is sourced, so keep only the working token.
+**Resolved 2026-07-26.** The duplicate is gone: `dev-env/env-config/.env` now holds exactly one
+`COOLIFY_API_TOKEN`, verified returning HTTP 200 against `/api/v1/applications`. Do not go
+hunting for a second candidate — there isn't one.
+
+The original hazard still applies if a duplicate ever reappears: a later definition shadows an
+earlier one when the file is sourced, so a dead token appended below a working one silently
+breaks every deploy. Check with `grep -c '^COOLIFY_API_TOKEN=' dev-env/env-config/.env` — the
+answer must be `1`.
 
 ## Notes / decisions
 
-- The `COOLIFY_APP_UUID` used elsewhere in `.env` for other apps (e.g. an
-  app-template project) is NOT the ai-os app — never deploy to it. The ai-os
-  app is a **separate** application; check the value before using it.
+- The `COOLIFY_APP_UUID` in `.env` is NOT the ai-os app — verified 2026-07-26, it points at
+  `edd-app-template`. The server hosts ~12 applications and that one variable can only name one
+  of them. **Never deploy or write env vars using it without checking.** Resolve by name instead:
+  ```bash
+  curl -fsS -H "Authorization: Bearer $COOLIFY_API_TOKEN" -H "Accept: application/json" \
+    "$COOLIFY_API_URL/api/v1/applications" \
+  | python3 -c "import json,sys; [print(a['uuid'], a['name'], a.get('fqdn')) for a in json.load(sys.stdin)]"
+  ```
+  Confirm `fqdn` matches the host you expect before using the uuid. Coolify returns 200 when you
+  write to the wrong app, so there is no error to catch afterwards.
 - Creating the ai-os app is additive; it never modifies the other apps.

@@ -313,8 +313,8 @@ else
 
 # FalkorDB (best-effort: opt-out via SKIP_MEMORY=1, so never a required gate)
 if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^aios-falkordb$'; then
-    opt_ok "FalkorDB container running (aios-falkordb)"
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-falkordb$'; then
+    opt_ok "FalkorDB container running (ia-os-falkordb)"
     if curl -s -m 3 http://localhost:3300/ -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200\|302"; then
       opt_ok "  FalkorDB Web UI at http://localhost:3300 reachable"
     else
@@ -328,14 +328,14 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
       fi
     elif command -v docker >/dev/null 2>&1; then
       # Fallback: PING via docker exec (no host redis-cli required)
-      if docker exec aios-falkordb redis-cli -p 6379 PING 2>/dev/null | grep -q PONG; then
+      if docker exec ia-os-falkordb redis-cli -p 6379 PING 2>/dev/null | grep -q PONG; then
         opt_ok "  FalkorDB Redis protocol at :6390 returns PONG (via docker exec)"
       else
         warn "  FalkorDB Redis :6390 PING via docker exec failed"
       fi
     fi
   else
-    opt_miss "FalkorDB container 'aios-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
+    opt_miss "FalkorDB container 'ia-os-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
   fi
 else
   warn "Docker not running (FalkorDB disabled)"

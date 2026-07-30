@@ -1,0 +1,120 @@
+# AI-OS memory stack — unified compose.
+#
+# One compose project (`ia-os`) so all services show up grouped under a single
+# header in the Docker Desktop dashboard, exactly like `builderhunt` (see
+# /Users/edd/Projects/eddremonts86/builderhunt/docker-compose.yml). All
+# containers are named `ia-os-*` for the same reason.
+#
+# Services:
+#   ia-os-falkordb       — graph DB (Redis wire on :6390, Web UI on :3300)
+#   ia-os-graphiti-mcp   — temporal knowledge-graph MCP (opt-in, needs MINIMAX_API_KEY)
+#   ia-os-ollama         — embedding model (opt-in profile, used on Windows; Mac
+#                          defaults to a host-side `ollama serve` for Metal GPU
+#                          acceleration, which containers can't reach)
+#
+# First-time / on-demand bring-up:
+#   bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
+# Or just this stack:
+#   cd ~/Projects/ai-os/memory && docker compose up -d
+# With Ollama in the container (Windows / opt-in):
+#   cd ~/Projects/ai-os/memory && docker compose --profile ollama-docker up -d
+#
+# Quick health checks (all should pass):
+#   docker exec ia-os-falkordb redis-cli -p 6379 PING
+#   curl -sI http://localhost:3300/ | head -1
+#   curl -sf http://localhost:8021/health && echo OK
+#   curl -s http://localhost:11500/api/tags | jq .
+
+name: ia-os
+
+services:
+  falkordb:
+    image: falkordb/falkordb:v4.18.11
+    container_name: ia-os-falkordb
+    restart: unless-stopped
+    networks:
+      - ia-os-net
+    ports:
+      - "127.0.0.1:6390:6379" # Redis protocol
+      - "127.0.0.1:3300:3000" # Web UI / Browser (FalkorDB inspector)
+    volumes:
+      - /Users/edd/Projects/ai-os/memory/falkordb/data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6379", "PING"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  graphiti-mcp:
+    # Custom local build from getzep/graphiti's main branch (2026-07-13), NOT the
+    # official zepai/knowledge-graph-mcp:1.0.2-standalone. Built because the pinned
+    # upstream image lacks the `is_non_openai_provider`/custom `api_url` support this
+    # MiniMax setup depends on (see config.yaml's STATUS note for the full root-cause).
+    # Built via Dockerfile.standalone.minimal (a trimmed copy of upstream's
+    # Dockerfile.standalone that skips the `providers`/`azure` extras — those pull in
+    # anthropic/gemini/groq/voyageai/sentence-transformers, and sentence-transformers
+    # alone drags in the full PyTorch+CUDA wheel set, ~3GB, unused here since MiniMax
+    # and Ollama are both reached through the base 'openai' client). Rebuild with:
+    #   git clone https://github.com/getzep/graphiti.git /tmp/graphiti-build/graphiti
+    #   cp /Users/edd/Projects/ai-os/memory/graphiti/Dockerfile.standalone.minimal /tmp/graphiti-build/graphiti/mcp_server/docker/
+    #   cd /tmp/graphiti-build/graphiti/mcp_server/docker
+    #   docker build -f Dockerfile.standalone.minimal -t ai-os/graphiti-mcp:minimax-standalone ..
+    image: ai-os/graphiti-mcp:minimax-standalone
+    container_name: ia-os-graphiti-mcp
+    restart: unless-stopped
+    networks:
+      - ia-os-net
+    depends_on:
+      falkordb:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # reach host-side Ollama for embeddings; no-op on Docker Desktop (already resolvable there), required on Linux Docker Engine
+    ports:
+      - "127.0.0.1:8021:8000" # HTTP transport, MCP endpoint at /mcp/
+    volumes:
+      - /Users/edd/Projects/ai-os/memory/graphiti/config.yaml:/app/mcp/config/config.yaml:ro
+    environment:
+      CONFIG_PATH: /app/mcp/config/config.yaml
+      MINIMAX_API_KEY: ${MINIMAX_API_KEY:?set MINIMAX_API_KEY before starting this service}
+      # MINIMAX_BASE_URL/MINIMAX_MODEL must be explicitly listed here to reach the
+      # container — docker compose does NOT pass through arbitrary host shell env vars,
+      # only ones named in this environment: block (confirmed by a real bug: without
+      # these, config.yaml's ${MINIMAX_BASE_URL:default} fell through to a null base_url,
+      # and the LLM client silently hit real api.openai.com instead of MiniMax).
+      MINIMAX_BASE_URL: ${MINIMAX_BASE_URL:-https://api.minimaxi.chat/v1}
+      MINIMAX_MODEL: ${MINIMAX_MODEL:-MiniMax-M3}
+      # The openai SDK's client constructor validates api_key is a non-empty string at
+      # *instantiation* time (not just when actually calling the API) — graphiti-core's
+      # hardcoded reranker (see config.yaml's STATUS note) crashes the whole server on boot
+      # without this, even though MiniMax + Ollama handle everything else. A placeholder is
+      # enough to let the container start; only `search` calls that trigger real reranking
+      # need this to be a genuine OpenAI key.
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-placeholder-reranker-only-not-wired-to-minimax}
+      FALKORDB_URI: redis://ia-os-falkordb:6379 # reach FalkorDB by service name on the internal network
+      GRAPHITI_TELEMETRY_ENABLED: "false"
+      SEMAPHORE_LIMIT: "5" # conservative default; raise per the tuning table in graphiti's mcp_server/README.md
+
+  ollama:
+    image: ollama/ollama:0.6.8 # pinned, kept in sync with the native version installers pull
+    container_name: ia-os-ollama
+    profiles:
+      - ollama-docker # opt-in only; `docker compose up -d` alone skips this
+    restart: unless-stopped
+    networks:
+      - ia-os-net
+    ports:
+      - "127.0.0.1:11500:11434" # same AI-OS port convention as native installs
+    volumes:
+      - /Users/edd/Projects/ai-os/memory/falkordb/ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  ia-os-net:
+    name: ia-os-net
+    driver: bridge

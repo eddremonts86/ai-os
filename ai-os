@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# ai-os — top-level dispatcher for the AI-OS CLI.
+#
+# Routes the first argument to the right subcommand script under ~/Projects/ai-os/.
+# Without this, `ai-os memory status` would fail because the symlink
+# ~/.local/bin/ai-os historically pointed straight at memory/ai-os-memory.sh
+# (which only knows its own subcommands, not the `memory` keyword).
+#
+# Subcommand groups:
+#   memory  →  memory/ai-os-memory.sh          (status, browse, reindex, bootstrap, ...)
+#   loop    →  memory/ai-os-loop.sh            (Spec → Verifier → Environment)
+#   bootstrap [...]   →  setup/ai-os-bootstrap.sh   (on-demand full-stack + auto-index)
+
+set -euo pipefail
+
+# Resolve the actual AI-OS root, following symlinks (the wrapper at
+# ~/.local/bin/ai-os is a symlink to this file, so BASH_SOURCE alone would
+# resolve to ~/.local/bin/ and exec the wrong path).
+_SOURCE="${BASH_SOURCE[0]:-$0}"
+while [ -L "$_SOURCE" ]; do
+  _DIR="$(cd -P "$(dirname "$_SOURCE")" && pwd)"
+  _SOURCE="$(readlink "$_SOURCE")"
+  [[ "$_SOURCE" != /* ]] && _SOURCE="$_DIR/$_SOURCE"
+done
+AI_OS_ROOT="$(cd -P "$(dirname "$_SOURCE")" && pwd)"
+
+usage() {
+  cat <<EOF
+ai-os — AI-OS top-level CLI
+
+Usage:
+  ai-os memory <subcommand> [args]    Memory stack (status, browse, reindex, bootstrap, ...)
+  ai-os loop   <subcommand> [args]    Loop runner (start, status, ...)
+  ai-os bootstrap [--refresh]         First-time / on-demand full-stack setup + auto-index
+
+Run \`ai-os memory help\` or \`ai-os loop help\` for the subcommand list.
+EOF
+}
+
+case "${1:-}" in
+  memory)
+    shift
+    exec bash "$AI_OS_ROOT/memory/ai-os-memory.sh" "$@"
+    ;;
+  loop)
+    shift
+    exec bash "$AI_OS_ROOT/memory/ai-os-loop.sh" "$@"
+    ;;
+  bootstrap)
+    shift
+    exec bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" "$@"
+    ;;
+  -h|--help|help|"")
+    usage
+    ;;
+  *)
+    echo "ai-os: unknown command: $1" >&2
+    echo "" >&2
+    usage >&2
+    exit 1
+    ;;
+esac

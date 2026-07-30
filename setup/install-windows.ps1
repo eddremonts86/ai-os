@@ -660,12 +660,12 @@ if ($env:SKIP_MEMORY -ne "1") {
             if ($useDockerOllama) {
                 Ok "  Ollama container launched: http://localhost:11500 (image: ollama/ollama:0.6.8, pinned)"
                 try {
-                    docker exec aios-ollama ollama pull nomic-embed-text 2>&1 | Select-Object -Last 3
+                    docker exec ia-os-ollama ollama pull nomic-embed-text 2>&1 | Select-Object -Last 3
                     if ($LASTEXITCODE -ne 0) { throw "pull failed" }
                     Ok "  nomic-embed-text ready (in container)"
                 }
                 catch {
-                    Warn "  nomic-embed-text pull failed (will retry on first use): docker exec aios-ollama ollama pull nomic-embed-text"
+                    Warn "  nomic-embed-text pull failed (will retry on first use): docker exec ia-os-ollama ollama pull nomic-embed-text"
                 }
             }
         }
