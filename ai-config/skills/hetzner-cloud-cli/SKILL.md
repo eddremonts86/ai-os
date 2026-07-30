@@ -147,6 +147,37 @@ hcloud server-type list -o json | jq '.[] | {name, cores, memory, price_hourly: 
 
 CX31 (4 vCPU, 8GB): ~€15/mo. CCX23 (8 dedicated vCPU): ~€45/mo. CPX41 (8 vCPU, 16GB AMD): ~€35/mo.
 
+## Locked out / no working SSH key on hand
+
+Two ways to regain root access to a server without asking anyone for their
+account password:
+
+1. **If the server runs Coolify, reuse Coolify's own "localhost's key".**
+   Coolify always keeps a private-key resource (visible in
+   `GET /api/v1/security/keys`, typically named "localhost's key") that it
+   uses to SSH into the box it's running on to manage Docker — so it's
+   already in `authorized_keys` by definition.
+   ```bash
+   curl -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+     "$COOLIFY_API_URL/api/v1/security/keys/<uuid-of-localhost's-key>" \
+     | python3 -c "import json,sys; print(json.load(sys.stdin)['private_key'])" > /tmp/k
+   chmod 600 /tmp/k
+   ssh -i /tmp/k root@<server-ip>
+   ```
+   Zero friction, doesn't touch account credentials at all — try this first.
+
+2. **Hetzner Cloud API password reset**, if #1 isn't available:
+   ```bash
+   curl -X POST -H "Authorization: Bearer $HETZNER_API_TOKEN" \
+     "https://api.hetzner.cloud/v1/servers/<server-id>/actions/reset_password"
+   # → { "root_password": "...", "action": {...} }
+   ```
+   Returns a fresh one-time root password immediately usable via any console
+   (e.g. the Hetzner Cloud web terminal) — no reboot needed in practice.
+   Relay the password to the human so *they* type it into the console
+   themselves; don't type account passwords into login forms directly.
+   `hcloud` doesn't expose this as a subcommand — it's a raw API call.
+
 ## Common errors
 
 1. ❌ Creating a server without an SSH key → cannot log in.

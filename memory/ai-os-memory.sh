@@ -243,23 +243,48 @@ sub_search() {
   echo "  target: $target"
   echo ""
 
-  # Tier 1 — grepai (if a watch daemon is running)
-  if proc_running "grepai.*watch"; then
+  # Tier 1 — grepai (if a watch daemon is running AND it knows this project).
+  # If grepai errors (e.g. project not initialized there), fall through to cbm
+  # instead of aborting the search. cbm is the always-on fallback.
+  if proc_running "grepai.*watch" && [ -f "$target/.grepai/config.yaml" ]; then
     echo "  → grepai (live watch daemon):"
-    cd "$target"
-    grepai search "$q" --limit 10 2>&1 | sed 's/^/    /' || warn "  grepai search returned non-zero"
-    return 0
+    if (cd "$target" && OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}" grepai search "$q" --limit 10 2>&1 | sed 's/^/    /'); then
+      : # grepai returned OK
+    else
+      warn "  grepai search failed; falling back to cbm"
+    fi
   fi
 
   # Tier 2 — codebase-memory-mcp (always available, but only knows indexed repos).
   # search_code tool schema (verified): {"pattern": "...", "project": "...", "limit": N}
   echo "  → codebase-memory-mcp (search_code tool):"
-  # Pick the most-recently-touched indexed project that matches $target by basename
+  # Pick the indexed project whose root_path matches $target — not just the
+  # first one in the list (that would be the largest project globally, not
+  # the one the user is searching in).
   local project_idx
   project_idx=$(codebase-memory-mcp cli list_projects '{}' 2>/dev/null \
-    | grep -oE '"Users-edd[^"]+"' | head -1 | tr -d '"')
+    | python3 -c "
+import json,sys
+try:
+    data=json.loads(sys.stdin.read())
+except Exception:
+    sys.exit(0)
+target=sys.argv[1].rstrip('/')
+expected=target.lstrip('/').replace('/','-')
+for p in data.get('projects',[]):
+    if p.get('name')==expected or p.get('root_path','').rstrip('/')==target:
+        print(p['name']); break
+else:
+    base=target.rsplit('/',1)[-1]
+    for p in data.get('projects',[]):
+        if p.get('name','').endswith('-'+base):
+            print(p['name']); break
+" "$target" 2>/dev/null)
   if [ -z "$project_idx" ]; then
-    warn "  no indexed projects found — run: ai-os memory reindex <path>"
+    warn "  no indexed project matches $target — run: ai-os memory reindex $target"
+    warn "  available projects:"
+    codebase-memory-mcp cli list_projects '{}' 2>/dev/null \
+      | python3 -c "import json,sys;d=json.loads(sys.stdin.read());[print('   -',p['name'],'(',p.get('root_path',''),')') for p in d.get('projects',[])]" 2>/dev/null
     return 0
   fi
   local payload
@@ -267,10 +292,11 @@ sub_search() {
 import json,sys
 print(json.dumps({'pattern': sys.argv[1], 'project': sys.argv[2], 'limit': 10}))
 " "$q" "$project_idx" 2>/dev/null) || payload="{\"pattern\":\"$q\",\"project\":\"$project_idx\",\"limit\":10}"
+  echo "  project: $project_idx"
   codebase-memory-mcp cli search_code "$payload" 2>&1 | grep -v "^level=info" | sed 's/^/    /' | head -25
   echo ""
   warn "grepai daemon not running — start one for richer semantic search:"
-  echo "    cd $target && grepai watch &"
+  echo "    cd $target && OLLAMA_URL=$OLLAMA_URL grepai watch &"
   return 0
 }
 
@@ -333,6 +359,7 @@ sub_query() {
     exit 1
   fi
   cd "${2:-$HOME/Projects}"
+  export OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}"
   if ! grepai search "$q" 2>&1; then
     err "grepai search failed"
     exit 1

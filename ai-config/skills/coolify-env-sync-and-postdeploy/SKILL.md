@@ -6,6 +6,50 @@ license: Internal
 
 # Coolify Env Sync & Post-Deploy
 
+## Read first: when to use which (entrypoint vs post_deployment_command)
+
+Coolify has TWO places to run code after a deploy:
+
+| Mechanism | When it runs | Failure mode | Use for |
+|---|---|---|---|
+| **Container entrypoint / CMD** | Before the app's main process, BEFORE the healthcheck | Non-zero exit → container exits → deploy fails. Atomic. | **Migrations, schema setup, required seeds** |
+| **`post_deployment_command`** | After the healthcheck passes, the app is already serving traffic | Non-zero exit → logged in Coolify, **deploy is NOT marked failed**, container keeps running | Optional seeds, cache warmup, webhook notifications, image prune |
+
+**Use the entrypoint for anything that MUST run before users hit the app.**
+`post_deployment_command` runs the app first, then runs the command — if the
+command fails, you have a half-broken app live and no deploy failure to alert
+on. It also runs via `docker exec` in the already-running container, so it
+inherits the container's env vars but not its `WORKDIR`-relative state (e.g.
+`.env` files are NOT there).
+
+**Concrete example** (geolocal-style multi-stage Dockerfile):
+
+```dockerfile
+# Dockerfile (excerpt)
+FROM base AS prod
+# ... copy artifacts ...
+CMD ["sh", "scripts/docker-app-entrypoint.sh"]
+```
+
+```sh
+# scripts/docker-app-entrypoint.sh
+#!/bin/sh
+set -eu
+echo "[startup] applying DB migrations…"
+node scripts/db/migrate-prod.mjs   # exits non-zero on any failure
+echo "[startup] starting server on port ${PORT:-3000}…"
+exec node server.prod.mjs           # only reached if migrations succeed
+```
+
+```bash
+# Coolify config (via API or dashboard) — set post_deployment_command to
+# something OPTIONAL, like a deploy notification webhook
+post_deployment_command: |
+  curl -fsS -X POST "$DEPLOY_WEBHOOK_URL" \
+    -H "Content-Type: application/json" \
+    -d "{\"app\":\"$COOLIFY_APP_NAME\",\"status\":\"deployed\"}"
+```
+
 ## sync-env.mjs — sync from .env to Coolify
 
 ### Basic usage
@@ -89,13 +133,19 @@ curl -X POST "https://coolify.example.com/api/v1/deploy?uuid=<app-uuid>" \
 
 Or from dashboard: Application → "Deploy".
 
-## set-post-deploy.mjs — post_deployment_command
+## set-post-deploy.mjs — post_deployment_command (for OPTIONAL work only)
 
-### Why it's needed
+### Why you still want it (despite the warning above)
 
-Coolify v4 with `build_pack=dockerfile` **ignores** `docker-compose.prod.yml` → the `migrator` service defined there is dead code in prod.
+`post_deployment_command` is still the right place for:
+- Cache warmup
+- Deploy-notification webhooks (Slack/Discord/Sentry release)
+- Image prune / cleanup
+- Optional analytics refresh
 
-Solution: use Coolify's native `post_deployment_command`, which runs via `docker exec` over the already-deployed `app` container.
+For migrations, schema setup, or anything that must succeed before users
+hit the app, **use the container entrypoint instead** (see the table at the
+top of this file).
 
 ### Basic usage
 
@@ -106,9 +156,9 @@ node scripts/coolify/set-post-deploy.mjs --app my-app
 # Custom container
 node scripts/coolify/set-post-deploy.mjs --app my-app --container api
 
-# Custom command
+# Custom command (use for OPTIONAL work only)
 node scripts/coolify/set-post-deploy.mjs --app my-app \
-  --command "pnpm db:migrate && pnpm cache:clear"
+  --command "curl -fsS -X POST \$DEPLOY_WEBHOOK_URL && pnpm cache:warm"
 
 # Dry-run
 node scripts/coolify/set-post-deploy.mjs --app my-app --dry-run
@@ -141,16 +191,18 @@ Deploy start
   ↓
 Build image (Dockerfile)
   ↓
-Start container
+Start container ←── ENTRYPOINT/CMD runs HERE (migrations, schema)
   ↓
 Healthcheck pass
   ↓
-post_deployment_command ← HERE
+post_deployment_command ←── optional work only (webhooks, cache warmup)
   ↓
 Deploy done
 ```
 
-**Important:** hook runs **AFTER** the healthcheck. If the hook fails, the deploy is marked as failed but the container keeps running with the old version.
+**Important:** hook runs **AFTER** the healthcheck. If the hook fails, the
+deploy is logged as failed but the container keeps running with the new
+version. Migrations in this slot leave a half-broken app live.
 
 ### Hook idempotency
 
@@ -166,7 +218,7 @@ If the hook is idempotent (e.g. Drizzle migrations are idempotent with `if not e
 ```
 [my-app] build_pack=dockerfile ✓
 [my-app] Setting post_deployment_command:
-  pnpm db:migrate && (pnpm db:seed:admin || true)
+  curl -fsS -X POST $DEPLOY_WEBHOOK_URL && pnpm cache:warm
 [my-app] Container: app (default)
 ✓ POST /api/v1/applications/<uuid> → 200
 ---
@@ -174,6 +226,56 @@ Test with:
   curl -X POST https://coolify.example.com/api/v1/deploy?uuid=<uuid>
   # Watch logs for post_deployment_command output
 ```
+
+## Pattern: one idempotent DB deploy orchestrator (recommended for DB-backed apps)
+
+Instead of wiring a bare `pnpm db:migrate && (pnpm db:seed:admin || true)` into
+the deploy hook, put ALL database bring-up into a single idempotent,
+**fail-loud** script (e.g. `scripts/deploy/orchestrate.mjs`, run as
+`pnpm deploy:db`). This is what makes "push to master" stop breaking prod: the
+same ordered pass runs on every deploy and is safe to re-run.
+
+Ordered steps (forward-only — NEVER `drizzle-kit push`, drop, or reset):
+
+1. **Wait for the database** to accept connections (retry loop with a bounded
+   attempt/delay budget) — the app container often starts before the DB is ready.
+2. **Ensure the database exists** (create-if-absent).
+3. **Ensure required extensions exist** — e.g. `CREATE EXTENSION IF NOT EXISTS
+   vector` for pgvector. Do this *soft* (log a warning, don't hard-fail) so a
+   managed image that already has it, or a permissions quirk, doesn't block the
+   whole deploy.
+4. **Apply migrations** (`drizzle-kit migrate`).
+5. **Provision / rotate login passwords** for the least-privilege roles your
+   migrations create *without* passwords. This is the trap that silently breaks
+   fresh deploys: the app/worker role exists but can't authenticate, so every
+   DB-backed page 500s and the cron workers/scrapers fail 100%. Read each
+   password from its role connection URL and `ALTER ROLE … WITH PASSWORD`.
+   Restrict which roles are provisionable with a regex (e.g. `^myapp_[a-z]+$`)
+   so a misconfigured URL can never rotate a superuser/owner credential.
+6. **Verify** every provisioned role can actually log in — fail early and loud.
+7. **Seed** the default admin (best-effort / `--skip-seed`).
+
+Non-negotiables that make it deploy-safe:
+
+- **Idempotent + forward-only** → existing data is preserved (durability). Safe
+  on every deploy — you never "start from zero".
+- **Container-safe env** → read `process.env` (Coolify-injected). Optionally
+  hydrate from `.env.docker`/`.env` when present (local runs). Do NOT rely on
+  `tsx --env-file=.env` — that file is not in the container.
+- **Secret-safe logs** → NEVER print role passwords or connection strings; log
+  role *names* and step results only. Provide a `--dry-run` that prints the
+  ordered plan without mutating anything.
+
+**Where to run it — entrypoint vs `post_deployment_command`:**
+
+- **Container entrypoint (strongest):** migrations complete *before* the
+  healthcheck. A bad migration fails the container → the deploy is marked failed
+  and you get alerted, instead of a half-broken app going live.
+- **`post_deployment_command` (`pnpm deploy:db`):** acceptable *because* the
+  orchestrator is fail-loud and idempotent — but Coolify does NOT mark the
+  deploy failed on a non-zero post-deploy exit. If you run it here you MUST
+  spot-check the live schema after any deploy that changed migrations (see the
+  `drizzle-kit migrate` silent-no-op trap below).
 
 ## Recommended complete flow
 
@@ -228,6 +330,10 @@ curl -fsS https://my-app.example.com/api/health
 6. ❌ `--keys` flag misspelled → Coolify doesn't accept partial update.
 7. ❌ Sync in production with development vars by mistake → prod app uses `localhost` DB.
 8. ❌ `coolify:postdeploy` with container that doesn't exist (typo) → hook never runs.
+9. ❌ Putting **migrations** in `post_deployment_command` → runs AFTER the app is already serving traffic. A migration that breaks the schema leaves a half-broken app live with no deploy failure. Use the container entrypoint for migrations instead.
+10. ❌ `post_deployment_command` references `pnpm db:seed` which itself calls `tsx --env-file=.env` → fails in container because there is no `.env` file (Coolify injects env vars). Either use `process.env` directly in the seed, or have the entrypoint bootstrap a synthetic `.env` from `process.env` first.
+11. ❌ Trusting "post-deployment command succeeded" in the Coolify logs as proof the schema is correct → Coolify does not fail the deploy on a non-zero post-deployment exit, and `drizzle-kit migrate` silently no-ops on migrations missing from its journal. Always spot-check the live schema with `\dt` or a real query after a deploy that includes migrations.
+12. ❌ Adding a new Drizzle migration but not regenerating the migration-integrity guard (e.g. `drizzle/migration-hashes.json` + a test that asserts the migration count) → preflight/CI fails on the drift, or worse, a drifted journal lets `drizzle-kit migrate` skip the new migration in prod. Regenerate the hash manifest and bump the expected count whenever you add a migration.
 
 ## Verification
 

@@ -66,15 +66,33 @@ AI-OS solves all of this with **a single git repo** that contains:
 ### One-command setup
 
 ```bash
-# 1. Clone
+npx @edd_remonts/create-ai-os
+```
+
+This clones the repo into `./ai-os` and runs the right platform installer
+(`setup/install-mac.sh` on Mac/Linux, `setup/install-windows.ps1` on Windows)
+for you. Pass a target folder to change where it lands, or `--clone-only` to
+skip the installer:
+
+```bash
+npx @edd_remonts/create-ai-os ~/Projects/ai-os
+npx @edd_remonts/create-ai-os --clone-only ~/Projects/ai-os   # clone without installing
+```
+
+Then verify:
+
+```bash
+bash setup/verify.sh                                   # Mac/Linux
+powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1   # Windows
+```
+
+<details>
+<summary>Prefer plain git clone?</summary>
+
+```bash
 git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
 cd ~/Projects/ai-os
-
-# 2. Install everything (Mac)
 bash setup/install-mac.sh
-
-# 3. Verify
-bash setup/verify.sh
 ```
 
 For Windows (PowerShell as Admin):
@@ -83,8 +101,9 @@ For Windows (PowerShell as Admin):
 git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os
 cd $HOME\Projects\ai-os
 powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
-powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1
 ```
+
+</details>
 
 The install script is **idempotent**: run it multiple times without breaking anything. It also has **dry-run mode** for CI:
 
