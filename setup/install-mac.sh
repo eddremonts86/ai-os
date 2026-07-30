@@ -448,6 +448,71 @@ else
 fi
 echo ""
 
+# ─── 7d. Global commands (source of truth: ai-config/commands) ───
+# Mirrors the skills flow (step 7) for slash-command-style combos (/action,
+# /full, /gen-html, ...) that don't fit the Agent Skills model as a distinct
+# artifact everywhere: Claude Code/Codex/Antigravity/Hermes/this VS Code
+# session already get these via ai-config/skills/{action,full,gen-html} (step
+# 7 above — a Skill IS a command there). This step covers the two client
+# types that need a separate, differently-formatted command file: VS Code
+# Copilot Chat's global prompts folder (*.prompt.md, same Markdown+frontmatter
+# source verbatim) and Gemini CLI's custom commands (TOML only, per
+# https://google-gemini.github.io/gemini-cli/docs/cli/custom-commands.html —
+# confirmed 2026-07-30, no SKILL.md-based custom-command support documented).
+# Mirrors setup/install-windows.ps1 step 5d.
+log "7d. Distributing global commands (VS Code prompts + Gemini TOML)..."
+COMMANDS_DIR="$AI_OS_ROOT/ai-config/commands"
+CMD_COUNT=$(find "$COMMANDS_DIR" -maxdepth 1 -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l | tr -d ' ')
+if [ "$CMD_COUNT" -gt 0 ]; then
+  # VS Code Copilot Chat: global prompts folder, verbatim copy as *.prompt.md.
+  # Fixed path (not per-account like globalStorage), covers Code + Code -
+  # Insiders on macOS and Linux (install-mac.sh doubles as the Linux
+  # installer). Gated on the CLI's own User/ dir already existing so this
+  # never creates clutter for a VS Code variant that isn't installed on this box.
+  VSCODE_PROMPTS_DIRS=(
+    "$HOME_DIR/Library/Application Support/Code/User/prompts"
+    "$HOME_DIR/Library/Application Support/Code - Insiders/User/prompts"
+    "$HOME_DIR/.config/Code/User/prompts"
+    "$HOME_DIR/.config/Code - Insiders/User/prompts"
+  )
+  VSCODE_PROMPTS_WIRED=0
+  for dir in "${VSCODE_PROMPTS_DIRS[@]}"; do
+    [ -d "$(dirname "$dir")" ] || continue
+    mkdir -p "$dir"
+    for cmd in "$COMMANDS_DIR"/*.md; do
+      [ -f "$cmd" ] || continue
+      name=$(basename "$cmd")
+      [ "$name" = "README.md" ] && continue
+      cp "$cmd" "$dir/${name%.md}.prompt.md"
+    done
+    VSCODE_PROMPTS_WIRED=$((VSCODE_PROMPTS_WIRED + 1))
+  done
+  if [ "$VSCODE_PROMPTS_WIRED" -gt 0 ]; then
+    ok "  VS Code prompts: $CMD_COUNT command(s) -> $VSCODE_PROMPTS_WIRED prompts folder(s)"
+  else
+    warn "  VS Code prompts skipped (no Code/Code - Insiders User dir found on this box)"
+  fi
+
+  # Gemini CLI: TOML custom commands, generated from the same Markdown source.
+  GEMINI_COMMANDS_DIR="$HOME_DIR/.gemini/commands"
+  mkdir -p "$GEMINI_COMMANDS_DIR"
+  for cmd in "$COMMANDS_DIR"/*.md; do
+    [ -f "$cmd" ] || continue
+    name=$(basename "$cmd" .md)
+    [ "$name" = "README" ] && continue
+    desc=$(sed -n 's/^description: *//p' "$cmd" | head -1 | sed 's/"/\\"/g')
+    body=$(awk 'BEGIN{fm=0} /^---$/{fm++; next} fm>=2{print}' "$cmd")
+    {
+      printf 'description = "%s"\n' "$desc"
+      printf 'prompt = """\n%s\n"""\n' "$body"
+    } > "$GEMINI_COMMANDS_DIR/$name.toml"
+  done
+  ok "  Gemini TOML commands: $CMD_COUNT command(s) -> $GEMINI_COMMANDS_DIR"
+else
+  log "7d. ai-config/commands/ empty or missing, skipping"
+fi
+echo ""
+
 # ─── 7b. Rendered instruction adapters ───
 log "7b. Rendering path-neutral instruction adapters..."
 [ -f "$ADAPTER_TEMPLATE" ] || { err "Adapter template missing: $ADAPTER_TEMPLATE"; exit 1; }
