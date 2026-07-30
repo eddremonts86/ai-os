@@ -52,6 +52,32 @@ function Preserve-OrReplace([string]$Target) {
     }
     return $true
 }
+function New-DirLink([string]$LinkPath, [string]$TargetPath) {
+    # Directory symlinks need Developer Mode or admin elevation on Windows.
+    # Confirmed empirically (2026-07-30): SymbolicLink throws "Administrator
+    # privilege required" on a non-elevated, non-Developer-Mode machine and
+    # $ErrorActionPreference="Stop" would abort the ENTIRE install script on
+    # the very first skill. NTFS junctions give the same transparent
+    # directory redirection without any privilege, so fall back to one
+    # silently when the symlink attempt fails.
+    try {
+        New-Item -ItemType SymbolicLink -Path $LinkPath -Target $TargetPath -Force -ErrorAction Stop | Out-Null
+    }
+    catch {
+        New-Item -ItemType Junction -Path $LinkPath -Target $TargetPath -Force -ErrorAction Stop | Out-Null
+    }
+}
+function New-FileLink([string]$LinkPath, [string]$TargetPath) {
+    # Same privilege gap as New-DirLink, but for a single file: NTFS hard
+    # links (same volume only, true here since both paths are under $HomeDir)
+    # are the no-privilege fallback.
+    try {
+        New-Item -ItemType SymbolicLink -Path $LinkPath -Target $TargetPath -Force -ErrorAction Stop | Out-Null
+    }
+    catch {
+        New-Item -ItemType HardLink -Path $LinkPath -Target $TargetPath -Force -ErrorAction Stop | Out-Null
+    }
+}
 
 # ─── Chocolatey package list (single source: manifest + section 1) ───
 $ChocoPackages = @(
@@ -192,7 +218,7 @@ if (-not $env:SKIP_DOTFILES) {
             if ((Test-Path $profilePath) -and -not (Get-Item $profilePath -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
                 Move-Item $profilePath "$profilePath.pre-aios.bak" -Force
             }
-            New-Item -ItemType SymbolicLink -Path $profilePath -Target "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1" -Force | Out-Null
+            New-FileLink -LinkPath $profilePath -TargetPath "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
         }
         Ok "  PowerShell profile → ai-os (pwsh + Windows PowerShell 5.1)"
     }
@@ -213,7 +239,7 @@ if (-not $env:SKIP_DOTFILES) {
         if (Test-Path "$HomeDir\.gitignore_global") {
             Move-Item "$HomeDir\.gitignore_global" "$HomeDir\.gitignore_global.pre-aios.bak" -Force
         }
-        New-Item -ItemType SymbolicLink -Path "$HomeDir\.gitignore_global" -Target "$AIOSRoot\dev-env\dotfiles\git\.gitignore_global" -Force | Out-Null
+        New-FileLink -LinkPath "$HomeDir\.gitignore_global" -TargetPath "$AIOSRoot\dev-env\dotfiles\git\.gitignore_global"
         git config --global core.excludesfile "$HomeDir\.gitignore_global" 2>&1 | Out-Null
         Ok "  .gitignore_global → ai-os"
     }
@@ -352,7 +378,7 @@ foreach ($cliDir in $cliDirs) {
     foreach ($skillDir in $skillDirs) {
         $linkPath = Join-Path $cliDir $skillDir.Name
         if ((-not (Test-Path $linkPath)) -or (Preserve-OrReplace $linkPath)) {
-            New-Item -ItemType SymbolicLink -Path $linkPath -Target $skillDir.FullName -Force | Out-Null
+            New-DirLink -LinkPath $linkPath -TargetPath $skillDir.FullName
         }
     }
 }
@@ -381,7 +407,7 @@ if (Test-Path $gstackDir) {
         foreach ($skillDir in $gstackSkillDirs) {
             $linkPath = Join-Path $cliDir $skillDir.Name
             if ((-not (Test-Path $linkPath)) -or (Preserve-OrReplace $linkPath)) {
-                New-Item -ItemType SymbolicLink -Path $linkPath -Target $skillDir.FullName -Force | Out-Null
+                New-DirLink -LinkPath $linkPath -TargetPath $skillDir.FullName
             }
         }
     }
@@ -389,6 +415,57 @@ if (Test-Path $gstackDir) {
 }
 else {
     Log "5c. vendor/gstack/ absent, skipping"
+}
+Write-Host ""
+
+# ─── 5d. Global commands (source of truth: ai-config/commands) ───
+# Mirrors the skills flow (step 5) for slash-command-style combos (/action,
+# /full, /gen-html, ...) that don't fit the Agent Skills model as a distinct
+# artifact everywhere: Claude Code/Codex/Antigravity/Hermes already get these
+# via ai-config/skills/{action,full,gen-html} (step 5 above — Skills ARE
+# commands there). This step covers the two client types that need a
+# separate, differently-formatted command file: VS Code Copilot Chat's global
+# prompts folder (*.prompt.md, same Markdown+frontmatter source verbatim) and
+# Gemini CLI's custom commands (TOML only, per
+# https://google-gemini.github.io/gemini-cli/docs/cli/custom-commands.html —
+# confirmed 2026-07-30, no SKILL.md-based custom-command support documented).
+Log "5d. Distributing global commands (VS Code prompts + Gemini TOML)..."
+$commandsDir = Join-Path $AIOSRoot "ai-config\commands"
+$commandFiles = Get-ChildItem $commandsDir -Filter "*.md" -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne "README.md" }
+if ($commandFiles) {
+    # VS Code Copilot Chat: global prompts folder, verbatim copy as *.prompt.md
+    $vscodePrompts = Join-Path $env:APPDATA "Code\User\prompts"
+    New-Item -ItemType Directory -Path $vscodePrompts -Force | Out-Null
+    foreach ($cmd in $commandFiles) {
+        Copy-Item $cmd.FullName (Join-Path $vscodePrompts ($cmd.BaseName + ".prompt.md")) -Force
+    }
+    Ok "  VS Code prompts: $($commandFiles.Count) command(s) -> $vscodePrompts"
+
+    # Gemini CLI: TOML custom commands, generated from the same Markdown source
+    $geminiCommands = Join-Path $HomeDir ".gemini\commands"
+    New-Item -ItemType Directory -Path $geminiCommands -Force | Out-Null
+    foreach ($cmd in $commandFiles) {
+        $raw = Get-Content $cmd.FullName -Raw
+        $frontmatter = ""
+        $body = $raw
+        if ($raw -match '(?s)^---\r?\n(.*?)\r?\n---\r?\n(.*)$') {
+            $frontmatter = $Matches[1]
+            $body = $Matches[2].Trim()
+        }
+        $desc = ""
+        if ($frontmatter -match 'description:\s*(.+)') { $desc = $Matches[1].Trim() }
+        $descEscaped = $desc -replace '"', '\"'
+        $tomlLines = @()
+        $tomlLines += "description = `"$descEscaped`""
+        $tomlLines += 'prompt = """'
+        $tomlLines += $body
+        $tomlLines += '"""'
+        Set-Content -Path (Join-Path $geminiCommands ($cmd.BaseName + ".toml")) -Value ($tomlLines -join "`n") -Encoding utf8
+    }
+    Ok "  Gemini TOML commands: $($commandFiles.Count) command(s) -> $geminiCommands"
+}
+else {
+    Warn "  ai-config/commands/ empty or missing, skipping"
 }
 Write-Host ""
 
@@ -404,7 +481,7 @@ foreach ($adapter in $adapters) {
     $target = Join-Path $HomeDir $adapter.path
     New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
     if (Preserve-OrReplace $target) {
-        New-Item -ItemType SymbolicLink -Path $target -Target $bridge -Force | Out-Null
+        New-FileLink -LinkPath $target -TargetPath $bridge
     }
 }
 Ok "Required instruction adapters rendered from manifest"
@@ -478,7 +555,7 @@ if ($actual -ne $expected) {
         if (-not (Test-Path $source)) { throw "Required skill missing from source: $skill" }
         foreach ($cliDir in $cliDirs) {
             $linkPath = Join-Path $cliDir $skill
-            if (-not (Test-Path $linkPath)) { New-Item -ItemType SymbolicLink -Path $linkPath -Target $source -Force | Out-Null }
+            if (-not (Test-Path $linkPath)) { New-DirLink -LinkPath $linkPath -TargetPath $source }
         }
     }
     Ok "Required skills linked from local source ($expected/$expected)"

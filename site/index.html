@@ -713,6 +713,7 @@
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="skills"><span class="btn-prompt">➜</span> <span class="btn-cmd">skills --info</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="mcp"><span class="btn-prompt">➜</span> <span class="btn-cmd">mcp --config</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="memory"><span class="btn-prompt">➜</span> <span class="btn-cmd">memory --status</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="commands"><span class="btn-prompt">➜</span> <span class="btn-cmd">commands --list</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="bridge"><span class="btn-prompt">➜</span> <span class="btn-cmd">bridge --check</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="install"><span class="btn-prompt">➜</span> <span class="btn-cmd">install --steps</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="env"><span class="btn-prompt">➜</span> <span class="btn-cmd">env --variables</span></button></li>
@@ -857,7 +858,7 @@ bash setup/verify.sh</pre>
       </div>
       <div class="req reveal">
         <h3><span class="m-count" style="color:var(--cyan)">+</span> Services &amp; shell</h3>
-        <p>Memory stack (FalkorDB + Ollama + code indexers via Docker), MCP config, Oh My Zsh + Powerlevel10k, dotfile symlinks. <span class="m-src">background layers</span></p>
+        <p>Memory stack (FalkorDB + Ollama + Graphiti + code indexers via Docker), 3 global commands (<code>/action</code> <code>/full</code> <code>/gen-html</code>), MCP config, Oh My Zsh + Powerlevel10k, dotfile symlinks. <span class="m-src">background layers</span></p>
       </div>
     </div>
   </div>
@@ -1207,7 +1208,7 @@ ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainst
     <li><span class="c-item-title">agent-browser:</span> Token-efficient browser agent.</li>
     <li><span class="c-item-title">codebase-memory-mcp:</span> Go-compiled semantic repository search index (uses nomic embeddings).</li>
     <li><span class="c-item-title">grepai:</span> AI-powered Ripgrep search engine.</li>
-    <li><span class="c-item-title">graphiti:</span> Graph memory server running on Docker (needs OpenAI key).</li>
+    <li><span class="c-item-title">graphiti:</span> Temporal knowledge-graph memory. Custom-built image (<code>ai-os/graphiti-mcp:minimax-standalone</code>) using MiniMax as LLM, verified end-to-end 2026-07-30. Opt-in — not started by <code>ai-os memory start</code>.</li>
   </ul>
   
   <div class="c-code-header">Example Declarative Server Config: ai-config/mcp/time.yaml</div>
@@ -1240,6 +1241,7 @@ ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainst
     <li><span class="c-item-title">codebase-memory-mcp:</span> Go-compiled MCP server exposing that index as searchable tools (<code>search</code>, <code>symbols</code>, <code>stats</code>) to any wired client.</li>
     <li><span class="c-item-title">Ollama (embeddings):</span> Serves <code>nomic-embed-text</code> at <code>127.0.0.1:11500</code>. macOS defaults to native (Metal GPU); Windows defaults to a Docker container (<code>ollama-docker</code> Compose profile) since there's no reliable no-admin native install path &mdash; opt out with <code>OLLAMA_NATIVE=1</code>.</li>
     <li><span class="c-item-title">FalkorDB (knowledge graph):</span> Persistent graph memory across sessions, containerized via <code>memory/falkordb/docker-compose.yml</code>, browsable at <code>localhost:3300</code>.</li>
+    <li><span class="c-item-title">Graphiti (temporal memory, opt-in):</span> Custom-built image (<code>ai-os/graphiti-mcp:minimax-standalone</code>) built locally from <code>getzep/graphiti</code> source, patched to strip MiniMax's <code>&lt;think&gt;</code> reasoning blocks before JSON parsing. Verified end-to-end 2026-07-30 &mdash; <code>add_memory</code>/<code>search_nodes</code>/<code>search_memory_facts</code>/<code>get_episodes</code> all confirmed against a live FalkorDB graph with a real <code>MINIMAX_API_KEY</code>. Not started by <code>ai-os memory start</code> by default (needs the key); only the hardcoded reranker inside <code>search</code> still wants a real <code>OPENAI_API_KEY</code>.</li>
   </ul>
   <div class="c-code-header">Daily driver: memory/ai-os-memory.sh</div>
   <pre class="c-code">ai-os memory status     # health check: containers, Ollama, model, index freshness
@@ -1248,6 +1250,26 @@ ai-os memory reindex     # force a full grepai re-index of the current repo
 ai-os memory search "how does the installer wire MCP servers"
 ai-os memory visualize   # open FalkorDB's graph browser</pre>
   <div class="c-text">Cross-platform by design: process checks use a pure HTTP probe against Ollama's API (no CLI-presence assumption) with a <code>ps</code>-based fallback where <code>pgrep</code> doesn't exist (Git Bash on Windows).</div>
+</div>`,
+    commands: `
+<div class="c-section">
+  <div class="c-header">Global Commands — /action, /full, /gen-html</div>
+  <div class="c-text">Three combo workflows, available as literal slash commands everywhere — not skills you have to describe in prose. Each one exists as both a proper Agent Skill and a canonical Markdown command source, so it works the same way regardless of which client you're chatting in.</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">/action:</span> spec → plan → build → review.</li>
+    <li><span class="c-item-title">/full:</span> spec → plan → build → review → code-simplify → ship.</li>
+    <li><span class="c-item-title">/gen-html:</span> generate a rich, responsive, self-contained HTML document from a description or an existing <code>.md</code>/<code>.mdx</code> file.</li>
+  </ul>
+  <div class="c-text">Distribution, by client:</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">Claude Code, Codex, Antigravity, Hermes, VS Code Copilot Chat:</span> auto-discover Agent Skills from <code>~/.agents/skills/</code> (or their own skills dir) — a Skill directory <i>is</i> a slash command there. Zero extra plumbing.</li>
+    <li><span class="c-item-title">VS Code's classic prompts folder:</span> <code>ai-config/commands/*.md</code> copied verbatim to the global prompts folder as <code>*.prompt.md</code>.</li>
+    <li><span class="c-item-title">Gemini CLI:</span> custom commands are TOML-only (no SKILL.md support), so the installer generates <code>~/.gemini/commands/*.toml</code> from the same Markdown source.</li>
+  </ul>
+  <div class="c-text">Deliberately <b>not</b> vendored: gstack's other ~40 commands (<code>/office-hours</code>, <code>/qa</code>, <code>/browse</code>, <code>/scrape</code>...). They hardcode <code>~/.claude/skills/gstack/bin/*</code> paths, ship their own telemetry/session/gbrain sync system, and their standout capabilities need a macOS-only Chrome-CDP + AppleScript binary and a bundled Chrome extension — broken on Windows and redundant with the memory stack above.</div>
+  <div class="c-code-header">Source of truth</div>
+  <pre class="c-code">ai-config/skills/{action,full,gen-html}/SKILL.md   # Skills (all 6 CLIs)
+ai-config/commands/{action,full,gen-html}.md       # VS Code prompts + Gemini TOML</pre>
 </div>`,
     bridge: `
 <div class="c-section">
@@ -1369,6 +1391,7 @@ git config --global user.email "you@example.com"</div>
     skills: "skills --info",
     mcp: "mcp --config",
     memory: "memory --status",
+    commands: "commands --list",
     bridge: "bridge --check",
     install: "install --steps",
     env: "env --variables",
