@@ -438,3 +438,140 @@ Before any production deployment:
 - Implementing health checks
 - Preparing for production releases
 - Troubleshooting deployment issues
+
+## Idempotent Seed Orchestrator Pattern
+
+A marketplace / CMS / data-driven app typically has:
+
+- A schema that's created by migrations
+- **Reference data** that must exist for the app to function (admin user, scraper registry, feature flags)
+- **Demo / marketplace data** that's nice to have (sample listings, seed catalog, generated content)
+
+On a fresh deploy, all three need to be set up. On subsequent deploys, only
+the migrations should run — re-seeding reference data is idempotent, but
+re-seeding demo data wipes real data accumulated since the last seed.
+
+The pattern that handles all of this cleanly:
+
+1. **Per-script production guard**: each seed script (e.g. `seed.ts`,
+   `seed-admin.ts`, `seed-legacy.ts`) checks `process.env.NODE_ENV === 'production'`
+   AND that the target table is already populated, and exits early with a
+   clear log line. The exit is `0` (success), not a failure — the
+   orchestrator treats it as a no-op.
+
+2. **Orchestrator that calls them in dependency order**: a
+   `seed-prod.mjs` script (or `entrypoint.sh` block) inspects the current
+   state of the database and runs only the missing pieces. The
+   orchestrator itself is idempotent (calling it twice is a no-op).
+
+3. **Container entrypoint as the canonical caller**: the entrypoint runs
+   `migrate-prod` then `seed-prod` before `exec`ing the server. Every
+   cold start either bootstraps the DB (fresh) or no-ops (populated).
+   `post_deployment_command` is left for optional work only (see
+   `coolify-env-sync-and-postdeploy`).
+
+### Per-script production guard template
+
+```ts
+// scripts/db/seed.ts (excerpt)
+const [existing] = await db.execute(sql`SELECT count(*)::int AS n FROM listings`)
+const existingCount = Number(existing?.n ?? 0)
+if (existingCount > 0 && process.env.NODE_ENV === 'production' && process.env.SEED_FORCE !== 'true') {
+  console.log(`  · listings table already has ${existingCount} rows; skipping (production mode).`)
+  console.log('    Pass SEED_FORCE=true to override, or run scripts/db/seed-prod.mjs.')
+  process.exit(0)
+}
+
+// Only reached if it's actually safe to seed
+await db.execute(sql`TRUNCATE listing_features, listing_assets, listing_translations, …`)
+```
+
+Three things this guard gives you:
+
+- **Destructive TRUNCATEs are impossible in prod** unless the table is empty
+  OR the operator explicitly sets `SEED_FORCE=true`.
+- **Re-deploys are safe** even if the entrypoint runs the script every boot.
+- **The script is independently usable in dev** (no guard needed because
+  `NODE_ENV !== 'production'`).
+
+### Orchestrator template
+
+```js
+// scripts/db/seed-prod.mjs
+import { execFileSync } from 'node:child_process'
+import postgres from 'postgres'
+
+const sql = postgres(process.env.DATABASE_URL, { max: 1, prepare: false })
+
+async function counts() {
+  const rows = await sql`
+    SELECT
+      (SELECT count(*)::int FROM listings) AS listings,
+      (SELECT count(*)::int FROM users) AS users,
+      (SELECT count(*)::int FROM user_profiles WHERE role='admin') AS admin_profiles,
+      (SELECT count(*)::int FROM scraping_sources) AS scraping_sources
+  `
+  return rows[0]
+}
+
+function runTsx(label, script) {
+  console.log(`\n── ${label} ──`)
+  execFileSync('pnpm', ['exec', 'tsx', script], { stdio: 'inherit', cwd: process.cwd() })
+}
+
+const initial = await counts()
+let ran = false
+
+// 1. Scraping registry — must be present before the scheduler can write FKs
+if (initial.scraping_sources === 0) {
+  runTsx('seed-scrape-sources', 'scripts/db/seed-scrape-sources.mjs')
+  ran = true
+} else {
+  console.log('· scraping_sources already populated — skipping')
+}
+
+// 2. Admin user — only if missing
+if (initial.admin_profiles === 0) {
+  runTsx('seed-admin', 'scripts/db/seed-admin.ts')
+  ran = true
+} else {
+  console.log('· admin user already exists — skipping')
+}
+
+// 3. Marketplace listings — only if the v2 table is empty
+if (initial.listings === 0) {
+  runTsx('seed (listings)', 'scripts/db/seed.ts')
+  ran = true
+} else {
+  console.log('· listings already populated — skipping seed.ts')
+}
+
+await sql.end({ timeout: 5 })
+console.log(`\n${ran ? '✅ finished (some seeds ran)' : '✅ no-op — DB already bootstrapped'}`)
+```
+
+### Why this beats a single "if not exists" guard in each script
+
+| Approach | Fresh DB | Re-deploy (populated) | Bug in fresh DB |
+|---|---|---|---|
+| One guard per script, no orchestrator | All scripts run; re-deploy wipes real data | **Wipes data** | One bad script aborts the rest |
+| One orchestrator with no per-script guards | All scripts run; re-deploy wipes real data | **Wipes data** | Same as above |
+| Both (per-script guard + orchestrator state check) | All scripts run once | All scripts no-op (each exits 0) | One bad script aborts but `migrate-prod` catches it before the app starts |
+
+The two layers are **complementary**:
+- The per-script guard is the last line of defense (it's what protects
+  production data even if someone calls `seed.ts` directly via a manual
+  `docker exec`).
+- The orchestrator makes the entrypoint log readable and avoids spawning
+  a 30-second `tsx` process for a script that's about to no-op.
+
+## Foreign-key consistency: scraper registry ↔ scraper source code
+
+Scrapers typically have a hardcoded list of source keys (e.g.
+`--source edc,homestra,bilbasen`) and write to tables that
+FK-reference a `scraping_sources.key` registry. If the registry is
+missing an entry, the scraper either silently no-ops that source or
+crashes with a FK violation on the first tick. **Always** seed the
+registry from the entrypoint/migrate-prod runner, and update both the
+scraper code AND the seed file in the same PR. See
+`coolify-deploy` for the full pattern.

@@ -225,6 +225,90 @@ export const Route = createFileRoute('/health')({
 | build | `TS2304: Cannot find name 'X'` | Fix types |
 | size | Bundle > 1MB | Code-split + lazy load |
 
+## Post-deploy: spot-check the live schema (the "Drizzle metadata gap" trap)
+
+`drizzle-kit migrate` is the canonical way to apply Drizzle migrations, but
+it has a sharp edge: **if a migration is missing from the
+`__drizzle_migrations` journal, `drizzle-kit migrate` silently no-ops it**.
+This happens when:
+
+- A migration is added to the `drizzle/` folder by hand (custom SQL the
+  ORM didn't generate).
+- The journal is out of sync with the file list (e.g. after a merge, a
+  rename, or a rebase that didn't update the metadata).
+- The migration was generated against a different schema and
+  `drizzle-kit` rejected it from the journal even though the file is on
+  disk.
+
+The "migrations applied successfully" log line will print, the deploy
+is marked green, the container is healthy, and **the new table the
+feature depends on is not in the DB**. The first user to hit the new
+feature gets a 500. The error is silent at deploy time and loud in
+production — the worst possible combination.
+
+**Defense (do all three):**
+
+1. **Use a custom migration runner** (e.g. `scripts/db/migrate-prod.mjs`)
+   that tracks applied migrations in its own `app_migrations` table and
+   applies any `drizzle/*.sql` file not in that table, regardless of
+   whether `drizzle-kit` knows about it. This catches the gap. See the
+   `drizzle-prod-migrations` skill for the full pattern.
+
+2. **Always include a schema spot-check in the verification step.** A
+   one-line query that confirms the tables/columns your new feature
+   depends on actually exist:
+
+   ```bash
+   # 13. schema-spot-check (new check)
+   echo "[schema-spot-check] verifying expected tables…"
+   EXPECTED_TABLES=("listings" "listing_properties" "scraping_sources" "users" "user_profiles")
+   for t in "${EXPECTED_TABLES[@]}"; do
+     n=$(docker exec <db-container> psql -U <user> -d <db> -tAc \
+         "SELECT count(*) FROM information_schema.tables WHERE table_name = '$t'")
+     [ "$n" -eq 1 ] || { echo "::error::missing table $t"; exit 1; }
+   done
+   ```
+
+3. **Test the new feature path with a real authenticated request** (see
+   "Always verify in a real browser after deploying" in `coolify-deploy`).
+   Even if the schema is fine, the server might be reading from a wrong
+   column, or a FK might be missing, and the only way to catch that is to
+   run the actual user flow.
+
+## Post-deploy: backfill mismatched rows with a one-shot SQL (don't re-seed)
+
+When production data has a column that was added in a recent migration
+but never populated for existing rows (e.g. `region` was `NOT NULL` from
+the start, but old rows were inserted before the column existed, so
+they're `NULL` even though the value is recoverable from another
+column), the temptation is to wipe and re-seed. **Don't.** Re-seeding
+destroys real user data and scraped data accumulated since the last
+seed. Write a single `UPDATE` that backfills from the data you already
+have:
+
+```sql
+-- Example: backfill listings.region from listing_translations
+UPDATE listings l
+SET region = lt.region
+FROM listing_translations lt
+WHERE lt.listing_id = l.id
+  AND l.region IS NULL;
+
+-- Always check the count after
+SELECT count(*) FROM listings WHERE region IS NULL;  -- should be 0
+```
+
+For more complex cases (region derived from lat/lng + city, or category
+derived from a join), a one-off `scripts/db/backfill-region.ts` is
+appropriate — but it must have the same production guard as the rest of
+your seeds (`if existing rows already have the new value, skip`).
+
+**Verify the backfill with a count query before AND after**. The
+"before" count tells you the scope of the problem; the "after" count
+tells you the migration worked. If the "after" is still non-zero, the
+JOIN missed rows (typo, wrong column name, NULL in the source). Repeat
+until the count is 0.
+
 ## Manual pre-deploy checklist
 
 - [ ] Branch up to date with `main`
