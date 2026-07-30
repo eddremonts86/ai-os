@@ -38,7 +38,11 @@ services:
       - "127.0.0.1:6390:6379" # Redis protocol
       - "127.0.0.1:3300:3000" # Web UI / Browser (FalkorDB inspector)
     volumes:
-      - /Users/edd/Projects/ai-os/memory/falkordb/data:/data
+      # Relative to this compose file (memory/), not an absolute Mac path --
+      # docker compose resolves relative host paths against the compose
+      # file's own directory on every OS, so this works unmodified on both
+      # Mac and Windows (fixed 2026-07-30; was hardcoded to /Users/edd/...).
+      - ./falkordb/data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6379", "PING"]
       interval: 10s
@@ -73,7 +77,7 @@ services:
     ports:
       - "127.0.0.1:8021:8000" # HTTP transport, MCP endpoint at /mcp/
     volumes:
-      - /Users/edd/Projects/ai-os/memory/graphiti/config.yaml:/app/mcp/config/config.yaml:ro
+      - ./graphiti/config.yaml:/app/mcp/config/config.yaml:ro
     environment:
       CONFIG_PATH: /app/mcp/config/config.yaml
       MINIMAX_API_KEY: ${MINIMAX_API_KEY:?set MINIMAX_API_KEY before starting this service}
@@ -106,7 +110,7 @@ services:
     ports:
       - "127.0.0.1:11500:11434" # same AI-OS port convention as native installs
     volumes:
-      - /Users/edd/Projects/ai-os/memory/falkordb/ollama-data:/root/.ollama
+      - ./falkordb/ollama-data:/root/.ollama
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s

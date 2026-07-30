@@ -11,6 +11,7 @@
 [![Skills: dynamic](https://img.shields.io/badge/skills-dynamic-green.svg)](ai-config/skills/)
 [![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
 [![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
+[![Commands: action/full/gen-html](https://img.shields.io/badge/commands-action%2Ffull%2Fgen--html-orange.svg)](ai-config/commands/)
 
 ---
 
@@ -25,7 +26,8 @@ AI-OS is the **single source of truth** for everything AI in your dev workflow:
 - **5 recurring workflows** (daily_start, project_start, coding, research, content_creation).
 - **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
 - **3 verifiers** (quality_checklist, critic_prompt, source_check_prompt) — applied after every task.
-- **10 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai, graphiti — graphiti's Docker deployment passed a structural smoke test 2026-07-12, but real knowledge-graph operations need a real `OPENAI_API_KEY`; see `ai-config/mcp/graphiti.yaml`).
+- **10 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai, graphiti — graphiti runs a custom-built image with MiniMax as LLM provider, verified end-to-end 2026-07-30 with a real `MINIMAX_API_KEY`; opt-in, not started by `ai-os memory start`; see `ai-config/mcp/graphiti.yaml`).
+- **3 global commands** (`/action`, `/full`, `/gen-html`) as Agent Skills + `ai-config/commands/`, distributed to all 6 CLIs, VS Code's prompts folder, and Gemini's TOML custom commands.
 - **Replicable dev env** (zsh + Oh My Zsh + p10k, Warp, Brewfile, git/ssh config templates).
 - **1-command setup** on Mac, Linux, and Windows.
 - **CI** (macOS, Linux, Windows runners) that validates the install scripts on every PR.
@@ -239,7 +241,16 @@ ai-os/
 │   │   ├── writing-plans/
 │   │   ├── writing-skills/
 │   │   ├── code-review-and-quality/
+│   │   ├── action/                #   /action combo (spec+plan+build+review)
+│   │   ├── full/                  #   /full combo (+code-simplify+ship)
+│   │   ├── gen-html/               #   /gen-html (rich HTML doc generator)
 │   │   └── ... 84+ third-party skills (antfu, tanstack, react, shadcn, etc.)
+│   ├── commands/                  #   /action, /full, /gen-html sources for
+│   │   │                          #   VS Code prompts + Gemini TOML (Skills
+│   │   │                          #   above cover Claude/Codex/Antigravity/Hermes)
+│   │   ├── action.md
+│   │   ├── full.md
+│   │   └── gen-html.md
 │   └── mcp/                       #   10 declarative MCP servers (YAML, all enabled)
 │       ├── README.md
 │       ├── time.yaml
@@ -331,6 +342,26 @@ Why a separate installer (instead of folding into `install-mac.sh`)?
 - **Mirrors ECC**: Same shape as `install-ecc.sh`, so the CI pattern is consistent.
 
 Full architecture, skill catalog, and update procedure: [`docs/claude-tools-integration.md`](docs/claude-tools-integration.md). CI validates it in the three platform workflows — the `--check` step is non-fatal and uses `|| echo ::warning::` so PRs that don't touch the integration stay green.
+
+### Global commands: `/action`, `/full`, `/gen-html`
+
+Three combo workflows, available as literal slash commands everywhere — not just as skills you have to describe in prose. Each one is **both** a proper Agent Skill (`ai-config/skills/{action,full,gen-html}/SKILL.md`) **and**, for the two client types that don't consume Skills as commands, a canonical Markdown source in `ai-config/commands/`:
+
+| Command     | Runs                                                                                          |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| `/action`   | spec → plan → build → review                                                                     |
+| `/full`     | spec → plan → build → review → code-simplify → ship                                              |
+| `/gen-html` | generate a rich, responsive, self-contained HTML doc from a description or `.md`/`.mdx` file |
+
+Distribution, by client:
+
+- **Claude Code, Codex, Antigravity, Hermes, VS Code Copilot Chat (this session's own mechanism)** — all auto-discover Skills from `~/.agents/skills/` (or their own skills dir), where a Skill directory **is** a slash command. Zero extra plumbing: it rides the same skill-symlink step every other AI-OS skill uses.
+- **VS Code Copilot Chat's classic prompts folder** — `ai-config/commands/*.md` copied verbatim to the global `prompts/` folder as `*.prompt.md`.
+- **Gemini CLI** — Gemini's custom commands are TOML-only (no `SKILL.md` support), so the installer generates `~/.gemini/commands/*.toml` from the same Markdown source (frontmatter `description` → TOML `description`, body → TOML `prompt`).
+
+Both distribution steps run in `setup/install-windows.ps1` (step 5d); `setup/install-mac.sh` needs the same step added for full Mac parity.
+
+We deliberately did **not** vendor gstack's other ~40 commands (`/office-hours`, `/qa`, `/browse`, `/scrape`, etc.): they hardcode `~/.claude/skills/gstack/bin/*` paths, ship their own telemetry/session/analytics system, and their standout capabilities (`/browse`, `/scrape`, `/qa`) require a macOS-only Chrome-CDP + AppleScript binary and a bundled Chrome extension — broken on Windows and redundant with the memory stack below.
 
 ---
 
@@ -426,17 +457,22 @@ If any is missing, run [`prompts/setup/03-required-skills.md`](prompts/setup/03-
 
 ## MCP servers
 
-7 declarative servers in `ai-config/mcp/*.yaml`. Generated to `~/.hermes/config.yaml` at install time:
+10 declarative servers in `ai-config/mcp/*.yaml`. Generated to `~/.hermes/config.yaml` at install time:
 
-| Server                | Purpose                                     |
-| --------------------- | ------------------------------------------- |
-| `time`                | Time/date/timezone utilities                |
-| `filesystem`          | Read/write files outside cwd                |
-| `pdf`                 | PDF reading, extraction, OCR                |
-| `sequential-thinking` | Multi-step planning                         |
-| `memory`              | Persistent knowledge graph                  |
-| `chrome`              | Browser automation, screenshots             |
-| `agent-browser`       | Vercel agent-browser (token-efficient @ref) |
+| Server                | Purpose                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------ |
+| `time`                | Time/date/timezone utilities                                                       |
+| `filesystem`          | Read/write files outside cwd                                                       |
+| `pdf`                 | PDF reading, extraction, OCR                                                       |
+| `sequential-thinking` | Multi-step planning                                                                |
+| `memory`              | Persistent knowledge graph                                                         |
+| `chrome`              | Browser automation, screenshots                                                    |
+| `agent-browser`       | Vercel agent-browser (token-efficient @ref)                                        |
+| `codebase-memory-mcp` | Go-compiled semantic repository index (AST + embeddings)                          |
+| `grepai`              | AI-powered semantic code search                                                    |
+| `graphiti`            | Temporal knowledge-graph memory — **opt-in**, not started by `ai-os memory start` |
+
+`graphiti` is verified working end-to-end (2026-07-30): a custom image (`ai-os/graphiti-mcp:minimax-standalone`) is built locally from `getzep/graphiti` source + this repo's patches (`memory/graphiti/Dockerfile.standalone.minimal`, `memory/graphiti/patches/strip_think_tags.py`) because MiniMax's OpenAI-compatible endpoint needs `<think>`-tag stripping the pinned upstream image doesn't do. `add_memory`/`search_nodes`/`search_memory_facts`/`get_episodes` all confirmed against a live FalkorDB graph with a real `MINIMAX_API_KEY`; only the hardcoded reranker inside `search` still wants a real `OPENAI_API_KEY`. See `ai-config/mcp/graphiti.yaml` and the `ai-os-memory` skill.
 
 To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/generate-mcp-config.py`, commit.
 
@@ -517,8 +553,10 @@ Differences:
 | **Oh My Zsh + p10k**             | ✅  | ❌ (use Oh-My-Posh or Starship) | ✅               |
 | **Warp**                         | ✅  | ✅ (Windows version)            | ❌ (use Wezterm) |
 | **Homebrew**                     | ✅  | ❌ (Chocolatey)                 | ❌ (apt)         |
-| **Symlinks**                     | ✅  | ⚠️ (need admin or Dev Mode)      | ✅               |
+| **Symlinks**                     | ✅  | ✅ (auto-fallback\*)            | ✅               |
 | **CI**                           | ✅  | ✅                              | ✅               |
+
+\* Windows directory/file symlinks need admin elevation or Developer Mode, both uncommon on a fresh box. `setup/install-windows.ps1` detects the `SymbolicLink` failure and falls back automatically to NTFS Junctions (directories) or Hard Links (files, same volume) — confirmed live 2026-07-30 on a non-elevated, non-Developer-Mode Windows 11 machine, where the unpatched installer aborted entirely on the first skill (`$ErrorActionPreference = "Stop"` + no fallback).
 
 See [`docs/cross-platform.md`](docs/cross-platform.md) for full details.
 
@@ -583,7 +621,8 @@ AI-OS is successful if:
 
 - **Files:** 1363
 - **Skills:** dynamic; count with `find ai-config/skills -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l`.
-- **MCP servers:** 7 (declarative YAML).
+- **MCP servers:** 10 (declarative YAML).
+- **Global commands:** 3 (`action`, `full`, `gen-html`).
 - **Workflows:** 5.
 - **Rules:** 3.
 - **Verifiers:** 3.
@@ -602,6 +641,10 @@ AI-OS is successful if:
 - [x] v0.4.0: Windows PowerShell install.
 - [x] v0.5.0: GitHub Actions CI for setup scripts.
 - [x] Documentation policy: repository-authored files are English; third-party vendored content retains its upstream language.
+- [x] Global commands `/action`, `/full`, `/gen-html` — Skills + `ai-config/commands/` distributed to all 6 CLIs, VS Code prompts, and Gemini TOML.
+- [x] Graphiti verified end-to-end with MiniMax as LLM provider (custom-built image, patched for `<think>`-tag stripping).
+- [x] Windows installer robustness: symlink→Junction/HardLink fallback so setup no longer aborts on machines without Developer Mode/elevation.
+- [x] `memory/docker-compose.yml` portability fix — relative volume paths, works unmodified on Mac and Windows.
 - [ ] v1.0.0: Stable API for skills + workflows.
 - [ ] v1.1.0: WSL2 support as primary Windows workflow.
 - [ ] v2.0.0: Multi-tenant / team support (config layers).
