@@ -25,9 +25,15 @@ Scope: `$input` if given (a path, route or component), otherwise the whole app.
    extract harden init layout live onboard optimize overdrive polish quieter shape typeset
    ```
 
-   `brand`, `product`, `codex` and `interaction-design` exist under `reference/` but are **internal
-   references, not commands** — read them, never invoke them. If you are unsure a verb exists, read
-   `command-metadata.json` rather than guessing; it also carries each verb's `argumentHint`.
+   Files under `reference/` that are **not** in that list are internal references, not commands —
+   read them, never invoke them. In 3.5.0 those are `brand`, `product`, `codex` and
+   `interaction-design`; 4.0.4 adds `doctor`, `operate`, `visualize`, `routing`, `degraded`,
+   `craft-floor`, `hooks`, `new-work`, `ios`, `android` and platform variants like `audit.native`.
+
+   **Verified across versions:** the 23 invocable verbs are byte-identical between 3.5.0 and 4.0.4,
+   so this chain is version-stable. Do not assume that holds forever — read
+   `scripts/command-metadata.json` from the installed version rather than trusting this list, and
+   note that 4.0.4's `argument-hint` omits `craft` even though the metadata still exposes it.
 
 2. **Impeccable's own setup contract applies to every invocation** and must not be short-circuited:
    - Run its context script once per session. **Resolve its path, do not hardcode one.** Impeccable's
