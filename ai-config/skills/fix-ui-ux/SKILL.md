@@ -35,16 +35,27 @@ Scope: `$input` if given (a path, route or component), otherwise the whole app.
    `scripts/command-metadata.json` from the installed version rather than trusting this list, and
    note that 4.0.4's `argument-hint` omits `craft` even though the metadata still exposes it.
 
-2. **Impeccable's own setup contract applies to every invocation** and must not be short-circuited:
-   - Run its context script once per session. **Resolve its path, do not hardcode one.** Impeccable's
-     SKILL.md refers to `.claude/skills/impeccable/scripts/context.mjs`, which is correct only when it
-     is vendored into the project; when installed as a plugin it lives under
-     `~/.claude/plugins/cache/impeccable/impeccable/<version>/skills/impeccable/scripts/`. Locate the
-     real `SKILL.md` for `impeccable` first and run the script relative to it.
+2. **Impeccable's own setup contract applies to every invocation** and must not be short-circuited.
+   **Read the installed `SKILL.md`'s Setup section rather than trusting the summary below — it
+   changed between 3.5.0 and 4.0.4 and will change again.** As of 4.0.4:
+   - Run its context script once per session, from the project cwd. **Resolve its path, do not
+     hardcode one.** Impeccable's SKILL.md refers to
+     `.claude/skills/impeccable/scripts/context.mjs`, correct only when vendored into the project;
+     as a plugin it lives under
+     `~/.claude/plugins/cache/impeccable/impeccable/<version>/skills/impeccable/scripts/`. It
+     accepts `--target <path>` to scope it to one file or route. It loads PRODUCT.md, DESIGN.md and
+     the matching surface brief itself — **do not hand-load a register reference.**
    - If the script reports `NO_PRODUCT_MD`, follow `reference/init.md` before anything else.
-   - Read `reference/<verb>.md` for each verb you invoke. Non-optional; it defines the flow.
-   - Read the register reference: `reference/product.md` for app UI / dashboards / tools,
-     `reference/brand.md` for marketing / landing / portfolio.
+   - Load exactly one playbook: `reference/<verb>.md` for the sub-command, or
+     `reference/new-work.md` for a brand-new surface. Non-optional; it defines the flow.
+   - **Immediately before editing any UI, load `reference/craft-floor.md`.** It carries the quality
+     floor, the absolute bans, and the reflexes no detector catches. Skip it only for
+     planning-only work such as `audit` and `critique`.
+
+   Version note: 3.5.0 required hand-loading `reference/product.md` (app UI) or `reference/brand.md`
+   (marketing). **4.0.4 deleted both**, along with `codex.md` and `interaction-design.md`, and moved
+   register selection into `context.mjs`. Following the 3.5.0 instruction against a 4.0.4 install
+   reads a file that no longer exists.
 3. **Do not break the app.** After each phase that writes code, run the project's own verification
    and fix what you broke before moving on. Discover it, don't assume it:
    - `package.json` scripts named `check:isReady`, `lint`, `typecheck`, `build`, `test:e2e`
