@@ -19,8 +19,14 @@ current repository.
 2. **No code before approval.** Phases 0–4 are read-only. Writing starts only after the user approves
    the findings list in Phase 4.
 3. **Evidence per finding.** Route + file/line + observable symptom. "Feels cluttered" is not a finding.
-4. **Never type the user's credentials.** For gated routes, ask them to log in in the browser session,
-   or to supply a seeded test account / saved session state / dev bypass.
+4. **Never type the user's personal credentials.** For gated routes, prefer in order: (a) a saved
+   Playwright storage state committed to the repo, (b) seeded test users read from the audited app's
+   `.env` under the `SAAS_REVIEW_*` convention (see Authentication modes), (c) the user logs in
+   themselves in the browser session you are driving. **Only test/dev credentials may be auto-read from
+   `.env` — never a personal or production account.** Refuse to proceed if the only credentials
+   available in `.env` look like a real account (no `local`/`test`/`dev`/`seed` markers in the email,
+   the password is in a secret manager, the user objects to the read). Log the role you logged in as,
+   never the password.
 5. **Report gaps out loud.** Unvisited routes, untested roles, unprovoked states, unmeasured claims.
    A review that hides its gaps is worse than a short one.
 6. **Do not break the app.** After every writing batch, run the project's own gate and fix what you
@@ -59,12 +65,15 @@ Produce the inventory table (route · file · auth · params · kind · main job
 to `docs/ui-audit/route-inventory.md` in the audited repo.
 
 **Checkpoint — present the route list to the user.** Confirm: is this complete, which routes are in
-scope, which roles exist, and how to authenticate. Do not proceed on assumption; a wrong scope here
-wastes the entire pass.
+scope, which roles exist, and which Authentication mode applies (Mode A storage state, Mode B
+`.env` test users, or Mode C user-logs-in-themselves). Do not proceed on assumption; a wrong scope
+here wastes the entire pass.
 
 ## Phase 2 — Visit every in-scope route
 
-Start the app (`preview_start`, or the project's dev command). For each in-scope route capture:
+Start the app (`preview_start`, or the project's dev command). Resolve authentication using the
+mode confirmed at the Phase 1 checkpoint (see Authentication modes). For each in-scope route
+capture:
 
 - Screenshot: desktop light · desktop dark (if themed) · mobile 375px
 - Console errors and warnings
@@ -156,6 +165,69 @@ terminology, pricing copy, or an activation definition. Those are product decisi
 - `--report-only` in `$input`: stop after Phase 4. Use when the user wants the backlog, not the edits.
 - A route or flow in `$input`: run all six phases, scoped to it — but still enumerate the full route
   list in Phase 1, because scope decisions need the whole map.
+
+## Authentication modes
+
+For gated routes, pick the first mode that applies; refuse to proceed if none does.
+
+### Mode A — Saved storage state (preferred)
+
+A Playwright `storageState` JSON (cookies + localStorage) committed to the audited repo. The
+agent reuses the existing session; no credentials are read at all. Look for `auth.json`,
+`playwright/.auth/user.json`, or a custom path. If the state has expired by the time Phase 2 runs,
+fall back to Mode B or C — do not silently re-log-in with a guessed password.
+
+### Mode B — Test users from `.env` (the new default for this skill)
+
+Read seeded test users from the audited app's `.env` under the `SAAS_REVIEW_*` convention. The
+audited app owns which users it exposes; the skill just consumes the contract.
+
+**Env var contract.** The skill reads, in order:
+
+1. `SAAS_REVIEW_USERS_JSON` — a single JSON object, e.g.
+   ```json
+   {
+     "owner":          { "email": "owner@test.local",          "password": "..." },
+     "admin":          { "email": "admin@test.local",          "password": "..." },
+     "member":         { "email": "member@test.local",         "password": "..." },
+     "platform-admin": { "email": "platform-admin@test.local",  "password": "..." }
+   }
+   ```
+   Keys are role names (matching the audited app's auth model). Passwords are required.
+2. Per-role env vars as a fallback when the JSON form is awkward to maintain in shell:
+   `SAAS_REVIEW_OWNER_EMAIL`/`_PASSWORD`, `SAAS_REVIEW_ADMIN_EMAIL`/`_PASSWORD`,
+   `SAAS_REVIEW_MEMBER_EMAIL`/`_PASSWORD`, `SAAS_REVIEW_PLATFORM_ADMIN_EMAIL`/`_PASSWORD`.
+3. App-convention fallbacks for the platform-admin role only, since most apps already seed one:
+   `DEFAULT_ADMIN_EMAIL` / `DEFAULT_ADMIN_PASSWORD` (builderhunt), `ADMIN_EMAIL` / `ADMIN_PASSWORD`
+   (rails/devise), `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (custom). Use this only for the
+   platform-admin role; for owner/admin/member, require the explicit `SAAS_REVIEW_*` keys.
+
+**Safety rules when using Mode B.**
+
+- **Test/dev only.** The email must contain a non-production marker (`test`, `dev`, `local`,
+  `staging`, `example`, `.local`, `.test`, `@localhost`). If the only email present looks like a
+  real account (`@builderhunt.com`, `@gmail.com`, etc., no test marker) **stop and ask the user**;
+  do not auto-log-in. Same rule if the password is loaded from a secret manager rather than `.env`.
+- **Never log the password.** When reporting progress, log the role and the email's local-part
+  (`owner@test.local` → `owner`), never the secret.
+- **Read `.env` once per session.** Cache the parsed users in a session-local variable; do not
+  re-read the file per request.
+- **Prefer `pnpm dev`/local URLs.** The skill runs the audit against the app's local dev server
+  (per the project's own `.claude/launch.json` or `dev` script), not a deployed environment.
+
+### Mode C — User logs in themselves
+
+Ask the user to sign in inside the in-app Browser session you are driving, or to provide a
+seeded test account out of band (chat, password manager, 1Password CLI). Continue from the
+authenticated session. Used when Mode A and Mode B are not available.
+
+### Decision tree
+
+```
+Is there a saved storage state in the repo?  → Mode A
+Else: does the app's .env have SAAS_REVIEW_* test users?  → Mode B
+Else: ask the user to log in themselves or share creds out of band  → Mode C
+```
 
 ## Anti-patterns
 
