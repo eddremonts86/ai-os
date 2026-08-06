@@ -55,6 +55,8 @@ Thumbs.db
 # Unified env dossier with real secrets (generated locally, never versioned)
 dev-env/env-config/env.ts
 dev-env/env-config/env-reference.html
+# Local zip backup of the env-config dossier (contains real secrets)
+dev-env/env-config.zip
 
 # Project-local Hermes runtime (may contain real secrets, e.g. desktop-attachments/env.ts)
 .hermes/
