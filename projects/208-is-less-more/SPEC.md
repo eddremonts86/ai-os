@@ -1,0 +1,36 @@
+# SPEC.md — Is less, more?
+
+## Problema Detectado
+
+&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Yesterday I spent pretty much the whole day stressing about my app &lt;a href=&quot;https://apps.apple.com/us/app/gamified-lives/id6761446121&quot;&gt;Gamified Lives&lt;/a&gt; I launched 1.5 months ago, I’m at 69 users, 20% stickiness, 1 free trial, decent overall retention. Just pushed a new update 2 days ago. Yet it never feels like enough, I was up all night thinking about it, thinking about the stats, thinking about user requests, things I wanted to work on, scared I didn’t post for the day. I then woke up to 5 new users, higher retention then I went to sleep with, and hitting 10,000 website views on my website. I’ve realized now that although going into maintenance mode may feel difficult it pretty much is the only way to keep an app sustainable, listening to users feedback every week and spending 15-30 minutes just writing down everything you heard multiple times, thinking of the what can do better as the founder. At the end of the day users are flowing in, SEO is doing its job, Reddit posts are driving traffic, and there’s no reason to try and be everywhere at once when the app can sustain with me not being there every millisecond stressing about it. So I’ve set a goal for myself to not spend more than 5 hours per week on the app until I hit 100 users, which likely means around 1 month of 1 hour a day every week day not thinking about it every second, I implore you guys to try doing the same if you’re in a similar spot, sure growing is hard, and it’s even harder to let go a little but it does no good to sit there stressing about something you can’t entirely control, all you can control is your understanding of the market you’re in, and how you adjust your copy and your angle, if the product is good people will come over time and whether they all come today or in 6 months makes little to no difference. I’d love to hear what got others to the point where they could stop stressing about their product and instead just focus on the small things that actually move the needle?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/kev_habits&quot;&gt; /u/kev_habits &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/indiehackers/comments/1vgdyvf/is_less_more/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/indiehackers/comments/1vgdyvf/is_less_more/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;
+
+**Source:** [Reddit r/IndieHackers](https://www.reddit.com/r/indiehackers/comments/1vgdyvf/is_less_more/)
+**Subreddit:** IndieHackers
+**Posted:** 2026-08-05T17:28:48+00:00
+
+---
+
+## Objetivo Principal
+
+Crear una solución que aborde este problema de forma clara y escalable.
+
+---
+
+## Usuarios Objetivo
+
+1. **[Usuario primario]** — descripción del usuario principal
+2. **[Usuario secundario]** — otros usuarios relevantes
+
+## Alcance MVP
+
+- Funcionalidad core
+- Evitar funcionalidades fuera del MVP
+
+## Design Direction
+
+Ver `DESIGN.md` para tokens específicos del proyecto.
+
+## Constraints
+
+- Mantener simple el MVP
+- Sin dependencias externas innecesarias
