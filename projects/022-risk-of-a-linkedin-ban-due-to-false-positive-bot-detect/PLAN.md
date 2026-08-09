@@ -1,0 +1,28 @@
+# PLAN.md — Risk of a LinkedIn ban due to false positive bot detection. Official support is unhelpful. Need a tool that warns about suspicious activity to avoid losing 11,500 followers.
+
+## Tech Stack Propuesta
+
+- **Frontend:** React + TypeScript
+- **Backend:** Node.js API (TanStack Start)
+- **DB:** SQLite con Drizzle ORM
+- **Despliegue:** Coolify + Docker
+
+## Arquitectura
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Client    │────▶│   API       │────▶│   DB        │
+└─────────────┘     └─────────────┘     └─────────────┘
+```
+
+## Milestones
+
+1. **M0:** Setup proyecto + SPEC.md + DESIGN.md aprobado
+2. **M1:** Scaffold + auth
+3. **M2:** Core feature
+4. **M3:** Testing + deployment
+
+## Riesgos
+
+- Dependencia de APIs externas
+- Alcance ambiguo sin más detalles
