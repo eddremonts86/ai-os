@@ -2050,9 +2050,819 @@
       "tags": "",
       "source": "reddit",
       "analyzedAt": "2026-08-09T00:01:02.747Z"
+    },
+    "251-how-do-you-decide-which-customer-feedback-is-actually-w": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjn52e/how_do_you_decide_which_customer_feedback_is/",
+      "uid": null,
+      "title": "How do you decide which customer feedback is actually worth acting on?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.286Z"
+    },
+    "252-ive-spent-150k-on-therapy-and-i-cant-remember-half-of-i": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjn2ih/ive_spent_150k_on_therapy_and_i_cant_remember/",
+      "uid": null,
+      "title": "I've spent $150k on therapy and I can't remember half of it",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.288Z"
+    },
+    "253-random-idea-ive-been-thinking-about-would-this-be-usefu": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjmw41/random_idea_ive_been_thinking_about_would_this_be/",
+      "uid": null,
+      "title": "Random idea I've been thinking about, would this be useful?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.289Z"
+    },
+    "254-quoti-accidentally-grew-my-app-to-3k-mrrquot-no-you-did": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjmkxd/i_accidentally_grew_my_app_to_3k_mrr_no_you_didnt/",
+      "uid": null,
+      "title": "&quot;I accidentally grew my app to 3k mrr&quot; No you didnt",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.290Z"
+    },
+    "255-i-built-a-resume-tool-that-tailors-your-cv-to-each-job-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjmisl/i_built_a_resume_tool_that_tailors_your_cv_to/",
+      "uid": null,
+      "title": "I built a resume tool that tailors your CV to each job description. Looking for honest feedback",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.292Z"
+    },
+    "256-lemonsqueezie-scammed-me-for-my-saas": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjmc9m/lemonsqueezie_scammed_me_for_my_saas/",
+      "uid": null,
+      "title": "lemonsqueezie scammed me for my Saas",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.293Z"
+    },
+    "257-my-product-is-finally-ready-now-im-nervous-about-reachi": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjm88v/my_product_is_finally_ready_now_im_nervous_about/",
+      "uid": null,
+      "title": "My product is finally ready. Now I’m nervous about reaching out to my first 10 companies",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.294Z"
+    },
+    "258-multi-agent-coding-almost-shipped-a-billing-bug-for-us": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjm66c/multi_agent_coding_almost_shipped_a_billing_bug/",
+      "uid": null,
+      "title": "Multi agent coding almost shipped a billing bug for us",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.295Z"
+    },
+    "259-built-the-same-saas-ui-in-light-dark-mode-which-one-wou": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjm1rt/built_the_same_saas_ui_in_light_dark_mode_which/",
+      "uid": null,
+      "title": "Built the same SaaS UI in light + dark mode, which one would you actually use?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.296Z"
+    },
+    "260-i-am-building-a-tool-that-runs-your-entire-marketing-st": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjlkeh/i_am_building_a_tool_that_runs_your_entire/",
+      "uid": null,
+      "title": "I am building a tool that runs your entire marketing stack with AI, not just SEO",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.297Z"
+    },
+    "261-my-product-share-quality-backlinks-from-the-community": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjliww/my_product_share_quality_backlinks_from_the/",
+      "uid": null,
+      "title": "My product. : Share Quality Backlinks from the Community",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.299Z"
+    },
+    "262-how-would-you-want-your-product-demoexplainer-to-look": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjlfzi/how_would_you_want_your_product_demoexplainer_to/",
+      "uid": null,
+      "title": "How would you want your product demo/explainer to look?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.300Z"
+    },
+    "263-looking-for-10-people-who-need-a-deck-walkthrough-ready": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjlbot/looking_for_10_people_who_need_a_deck_walkthrough/",
+      "uid": null,
+      "title": ": Looking for 10 people who need a deck walkthrough ready this week (no camera)",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.301Z"
+    },
+    "264-investors-what-are-you-building-exactly-us": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjkudu/investors_what_are_you_building_exactly_us/",
+      "uid": null,
+      "title": "Investors: what are you building exactly? Us:",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.302Z"
+    },
+    "265-i-built-a-way-to-actually-find-the-instagram-reels-i-sa": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjkqo4/i_built_a_way_to_actually_find_the_instagram/",
+      "uid": null,
+      "title": "I built a way to actually find the Instagram Reels I save",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.303Z"
+    },
+    "266-built-a-uk-agency-directory-from-scratch-920-listings-1": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjkodz/built_a_uk_agency_directory_from_scratch_920/",
+      "uid": null,
+      "title": "Built a UK agency directory from scratch, 920+ listings, 1.16M search impressions in 5 months, no ad spend. Here's where it's at.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.304Z"
+    },
+    "267-does-anyone-know-any-startup-directory": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjko72/does_anyone_know_any_startup_directory/",
+      "uid": null,
+      "title": "Does anyone know any startup directory",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.305Z"
+    },
+    "268-27-early-accessers-said-that-would-pay-me-when-i-launch": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjknpr/27_early_accessers_said_that_would_pay_me_when_i/",
+      "uid": null,
+      "title": "27 early accessers said that would pay me when I launch. Here is what I learned.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.306Z"
+    },
+    "269-need-help-choosing-an-open-source-ai-music-mastering-mo": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjk4fs/need_help_choosing_an_opensource_ai_music/",
+      "uid": null,
+      "title": "Need Help Choosing an Open-Source AI Music Mastering Model for a SaaS Web App",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.307Z"
+    },
+    "270-i-built-a-tool-that-shows-you-how-much-each-user-is-act": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjk4fb/i_built_a_tool_that_shows_you_how_much_each_user/",
+      "uid": null,
+      "title": "I built a tool that shows you how much each User is actually costing you",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.308Z"
+    },
+    "271-we-just-launched-our-bug-reporting-tool-without-a-free-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjk097/we_just_launched_our_bugreporting_tool_without_a/",
+      "uid": null,
+      "title": "We just launched our bug-reporting tool without a free trial",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.309Z"
+    },
+    "272-i-spent-way-too-much-time-building-features-nobody-aske": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjjh32/i_spent_way_too_much_time_building_features/",
+      "uid": null,
+      "title": "I spent way too much time building features nobody asked for",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.310Z"
+    },
+    "273-got-rejected-by-paddle-twice-with-the-exact-same-email-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjjckt/got_rejected_by_paddle_twice_with_the_exact_same/",
+      "uid": null,
+      "title": "Got rejected by Paddle twice with the exact same email. Still not sure what I did wrong .",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.311Z"
+    },
+    "274-i-studied-how-a-saas-grew-from-0-to-173k-mrr-heres-ever": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjisei/i_studied_how_a_saas_grew_from_0_to_173k_mrr/",
+      "uid": null,
+      "title": "i studied how a saas grew from $0 to $173k mrr. here's every step.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.312Z"
+    },
+    "275-agentcn-installable-ai-agents": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjie29/agentcn_installable_ai_agents/",
+      "uid": null,
+      "title": "Agentcn | Installable AI Agents",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.313Z"
+    },
+    "276-i-will-not-promote-sharing-equity-half-or-less": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjmq61/i_will_not_promote_sharing_equity_half_or_less/",
+      "uid": null,
+      "title": "[I will not promote] Sharing equity, half or less ?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.314Z"
+    },
+    "277-update-3080-users-2-trials-5561-users-59-trials-i-teste": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjm4jk/update_3080_users_2_trials_5561_users_59_trials_i/",
+      "uid": null,
+      "title": "Update: 3,080 users / 2 trials → 5,561 users / 59 trials. I tested forcing users into Premium, free still won. (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.316Z"
+    },
+    "278-what-are-the-best-companies-to-have-a-business-relation": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjbh4z/what_are_the_best_companies_to_have_a_business/",
+      "uid": null,
+      "title": "What are the best companies to have a business relationship with? (i will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.317Z"
+    },
+    "279-looking-for-advice-on-recurring-legal-contracts-for-a-s": {
+      "url": "https://www.reddit.com/r/startups/comments/1vj65s2/looking_for_advice_on_recurring_legal_contracts/",
+      "uid": null,
+      "title": "Looking for advice on recurring legal contracts for a small US-based digital marketplace (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.318Z"
+    },
+    "280-mentioning-i-own-the-startup-on-my-resume-or-framing-it": {
+      "url": "https://www.reddit.com/r/startups/comments/1vj5j2r/mentioning_i_own_the_startup_on_my_resume_or/",
+      "uid": null,
+      "title": "Mentioning I own the startup on my resume or framing it as an employee? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.319Z"
+    },
+    "281-is-running-your-own-business-the-easiest-way-to-skip-th": {
+      "url": "https://www.reddit.com/r/startups/comments/1viwdmx/is_running_your_own_business_the_easiest_way_to/",
+      "uid": null,
+      "title": "Is running your own business the easiest way to skip the job hunt later? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.320Z"
+    },
+    "282-what-are-you-writing-on-linkedin-while-you-are-still-em": {
+      "url": "https://www.reddit.com/r/startups/comments/1vibpn9/what_are_you_writing_on_linkedin_while_you_are/",
+      "uid": null,
+      "title": "What are you writing on LinkedIn while you are still employed, but already started a startup (i will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.321Z"
+    },
+    "283-if-we-want-to-start-earning-right-away-which-model-is-b": {
+      "url": "https://www.reddit.com/r/startups/comments/1vi9452/if_we_want_to_start_earning_right_away_which/",
+      "uid": null,
+      "title": "If we want to start earning right away, which model is better for us? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.322Z"
+    },
+    "284-the-app-takes-5-minutes-with-ai-everything-after-takes-": {
+      "url": "https://www.reddit.com/r/startups/comments/1vi8rzi/the_app_takes_5_minutes_with_ai_everything_after/",
+      "uid": null,
+      "title": "The app takes 5 minutes with AI. Everything after takes months. I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.323Z"
+    },
+    "285-is-there-more-value-in-focusing-on-opportunities-than-p": {
+      "url": "https://www.reddit.com/r/startups/comments/1vi5b2s/is_there_more_value_in_focusing_on_opportunities/",
+      "uid": null,
+      "title": "Is there more value in focusing on opportunities than problems? | I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.324Z"
+    },
+    "286-b2c-social-media-advice-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vi251q/b2c_social_media_advice_i_will_not_promote/",
+      "uid": null,
+      "title": "B2C social media advice? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.325Z"
+    },
+    "287-founders-what-actually-caused-you-to-buy-business-insur": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhxe8u/founders_what_actually_caused_you_to_buy_business/",
+      "uid": null,
+      "title": "Founders , what actually caused you to buy business insurance for the first time? &quot;i will not promote&quot;",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.326Z"
+    },
+    "288-how-do-you-make-sure-people-will-pay-for-your-product-i": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhvqtp/how_do_you_make_sure_people_will_pay_for_your/",
+      "uid": null,
+      "title": "How do you make sure people will pay for your product? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.327Z"
+    },
+    "289-what-is-the-biggest-challenge-youre-facing-while-buildi": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhvncv/what_is_the_biggest_challenge_youre_facing_while/",
+      "uid": null,
+      "title": "What is the biggest challenge you’re facing while building your startup? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.329Z"
+    },
+    "290-how-collaborations-can-help-you-based-on-where-youre-at": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhumd3/how_collaborations_can_help_you_based_on_where/",
+      "uid": null,
+      "title": "How collaborations can help you, based on where you're at with your startup journey (i will not promote nor sell anything, just sharing insights)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.330Z"
+    },
+    "291-feedback-friday": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhr7sh/feedback_friday/",
+      "uid": null,
+      "title": "Feedback Friday",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.332Z"
+    },
+    "292-cto-offer-at-a-pre-traction-startup-but-the-pay-is-belo": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhkxog/cto_offer_at_a_pretraction_startup_but_the_pay_is/",
+      "uid": null,
+      "title": "CTO offer at a pre-traction startup, but the pay is below my current stable job. Red flag? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.333Z"
+    },
+    "293-favorite-startup-podcast-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhkc0c/favorite_startup_podcast_i_will_not_promote/",
+      "uid": null,
+      "title": "Favorite startup podcast? *I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.334Z"
+    },
+    "294-my-technical-co-founder-ghosted-an-investor-meeting-on-": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhjoyi/my_technical_cofounder_ghosted_an_investor/",
+      "uid": null,
+      "title": "My technical co-founder ghosted an investor meeting on purpose as a &quot;lesson,&quot; delivered nothing usable in ~12 months, and I rebuilt the entire product myself in 9 days. What's the actual right way to fix the equity split? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.337Z"
+    },
+    "295-google-flags-my-startup-as-quotpharmaceutical-servicesq": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhigm3/google_flags_my_startup_as_pharmaceutical/",
+      "uid": null,
+      "title": "Google flags my startup as &quot;pharmaceutical services&quot; even though I don't sell or prescribe anything. How do you market in a restricted industry? &quot;I will not promote&quot;",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.338Z"
+    },
+    "296-i-will-not-promote-what-skills-make-a-junior-engineer-v": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhgwtl/i_will_not_promote_what_skills_make_a_junior/",
+      "uid": null,
+      "title": "I will not promote | What skills make a junior engineer valuable at an early-stage startup?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.339Z"
+    },
+    "297-which-of-these-models-gets-us-to-start-earning-right-aw": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhdh0c/which_of_these_models_gets_us_to_start_earning/",
+      "uid": null,
+      "title": "Which of these models gets us to start earning right away? i will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.340Z"
+    },
+    "298-what-do-folks-use-to-forecast-growth-for-executive-lead": {
+      "url": "https://www.reddit.com/r/startups/comments/1vhbar2/what_do_folks_use_to_forecast_growth_for/",
+      "uid": null,
+      "title": "What do folks use to forecast growth for executive leadership or board meetings? [I will not promote]",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.341Z"
+    },
+    "299-is-building-offline-desktop-software-still-a-good-path-": {
+      "url": "https://www.reddit.com/r/startups/comments/1vham9i/is_building_offline_desktop_software_still_a_good/",
+      "uid": null,
+      "title": "Is building offline desktop software still a good path in 2026? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.342Z"
+    },
+    "300-founders-who-sold-to-restaurants-is-quotwere-not-busy-e": {
+      "url": "https://www.reddit.com/r/startups/comments/1vh78je/founders_who_sold_to_restaurants_is_were_not_busy/",
+      "uid": null,
+      "title": "Founders who sold to restaurants, is &quot;we're not busy enough to need it&quot; a dead deal or am I just positioning it wrong? I WILL NOT PROMOTE",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T11:30:00.344Z"
+    },
+    "301-a-saas-launch-playbook-weve-actually-started-using-whic": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk4d6l/a_saas_launch_playbook_weve_actually_started/",
+      "uid": null,
+      "title": "A SaaS launch playbook we’ve actually started using, which makes a lot of sense for small teams",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.318Z"
+    },
+    "302-need-advice": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk47eu/need_advice/",
+      "uid": null,
+      "title": "Need advice",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.320Z"
+    },
+    "303-looking-for-advice-and-help": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk3s7g/looking_for_advice_and_help/",
+      "uid": null,
+      "title": "Looking for advice and help.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.322Z"
+    },
+    "304-saas-for-aesthetic-clinics": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk3qv4/saas_for_aesthetic_clinics/",
+      "uid": null,
+      "title": "SAAS for Aesthetic Clinics",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.322Z"
+    },
+    "305-built-a-tool-for-outreach-with-your-face-rather-than-ge": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk3jr6/built_a_tool_for_outreach_with_your_face_rather/",
+      "uid": null,
+      "title": "Built a tool for outreach with your face rather than generic chunks of text",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.323Z"
+    },
+    "306-going-all-in-on-a-super-niche-audience-this-time-seesta": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk36vx/going_allin_on_a_super_niche_audience_this_time/",
+      "uid": null,
+      "title": "Going all-in on a super niche audience this time (Seestar astrophotography)",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.325Z"
+    },
+    "307-building-realtime-chat-is-one-thing-making-it-reliable-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk2nq3/building_realtime_chat_is_one_thing_making_it/",
+      "uid": null,
+      "title": "Building realtime chat is one thing. Making it reliable is the hard part.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.326Z"
+    },
+    "308-i-built-5-saas-products-but-i-made-this-mistake": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk2awh/i_built_5_saas_products_but_i_made_this_mistake/",
+      "uid": null,
+      "title": "I Built 5+ SaaS Products, But I Made This Mistake",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.327Z"
+    },
+    "309-how-long-do-you-spend-building-a-first-meeting-deck-for": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vk15ty/how_long_do_you_spend_building_a_firstmeeting/",
+      "uid": null,
+      "title": "How long do you spend building a first-meeting deck for one account?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.328Z"
+    },
+    "310-how-do-you-know-your-saas-is-secure": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjza7q/how_do_you_know_your_saas_is_secure/",
+      "uid": null,
+      "title": "How do you know your saas is secure?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.329Z"
+    },
+    "311-vercel-vs-railway-vs-render-which-has-the-best-security": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjypo4/vercel_vs_railway_vs_render_which_has_the_best/",
+      "uid": null,
+      "title": "Vercel vs Railway vs Render: Which has the best security?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.330Z"
+    },
+    "312-hi-everyone-i-built-flotorqapp-its-a-simple-but-not-so-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjyepm/hi_everyone_i_built_flotorqapp_its_a_simple_but/",
+      "uid": null,
+      "title": "Hi everyone, I built Flotorq.app. It's a simple (but not so simple) productivity website",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.331Z"
+    },
+    "313-i-am-frustrated-post-got-removed-for-self-promo-tried-t": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjydak/i_am_frustrated_post_got_removed_for_selfpromo/",
+      "uid": null,
+      "title": "I am frustrated! Post got removed for self-promo, tried to reframe it, now I'm getting bashed for &quot;stealth marketing.&quot; I just wanted feedback.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.332Z"
+    },
+    "314-i-scope-saas-platforms-here-is-the-exact-framework-i-us": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjy1lq/i_scope_saas_platforms_here_is_the_exact/",
+      "uid": null,
+      "title": "I scope SaaS platforms. Here is the exact framework I use to stop founders from wasting $10k+ on devs building the wrong features.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.334Z"
+    },
+    "315-what-happened-to-rbuildinpublic": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjxz26/what_happened_to_rbuildinpublic/",
+      "uid": null,
+      "title": "What happened to r/buildinpublic?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.334Z"
+    },
+    "316-how-are-you-collecting-user-feedback-from-reddit-and-re": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjxvhg/how_are_you_collecting_user_feedback_from_reddit/",
+      "uid": null,
+      "title": "How are you collecting user feedback from Reddit and review sites for positioning?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.335Z"
+    },
+    "317-update-habibi-now-scrapes-the-actual-chatgptperplexityc": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjx580/update_habibi_now_scrapes_the_actual/",
+      "uid": null,
+      "title": "update: habibi now scrapes the actual chatgpt/perplexity/claude apps too, not just apis (and it's cheaper now)",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.336Z"
+    },
+    "318-dm": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjwvao/dm/",
+      "uid": null,
+      "title": "DM",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.337Z"
+    },
+    "319-were-hiring-outreach-interns-commission-based-rocket": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjwt2n/were_hiring_outreach_interns_commission_based/",
+      "uid": null,
+      "title": "**We're hiring outreach interns (commission based) :rocket:**﻿﻿",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.338Z"
+    },
+    "320-the-more-i-learn-about-saas-the-more-i-realise-the-prod": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjvs0d/the_more_i_learn_about_saas_the_more_i_realise/",
+      "uid": null,
+      "title": "The more I learn about SaaS, the more I realise the product is only one part of the job",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.339Z"
+    },
+    "321-i-cant-find-a-client-in-my-area": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjvhcs/i_cant_find_a_client_in_my_area/",
+      "uid": null,
+      "title": "I can’t find a client in my area.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.340Z"
+    },
+    "322-mercury-rejected-my-official-government-address-for-my-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjv2t6/mercury_rejected_my_official_government_address/",
+      "uid": null,
+      "title": "Mercury rejected my official government address for my US LLC. Here is the 4-Part &quot;Infrastructure Stack&quot; I had to build to launch my SaaS as a non-US founder.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.342Z"
+    },
+    "323-idea-predicament": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjuujg/idea_predicament/",
+      "uid": null,
+      "title": "Idea Predicament",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.343Z"
+    },
+    "324-career-shift-advice-needed-on-how-to-land-a-job-in-saas": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjuonc/career_shift_advice_needed_on_how_to_land_a_job/",
+      "uid": null,
+      "title": "Career shift - advice needed on how to land a job in SaaS sales",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.344Z"
+    },
+    "325-when-you-let-ai-write-your-landing-page": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vjuoiu/when_you_let_ai_write_your_landing_page/",
+      "uid": null,
+      "title": "when you let AI write your landing page .",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.345Z"
+    },
+    "326-is-post-mvp-with-commitments-from-customers-to-run-pilo": {
+      "url": "https://www.reddit.com/r/startups/comments/1vk46z9/is_postmvp_with_commitments_from_customers_to_run/",
+      "uid": null,
+      "title": "Is post-MVP with commitments from customers to run pilots a good time to raise funds? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.346Z"
+    },
+    "327-in-person-marketing-ideas-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vk10um/in_person_marketing_ideas_i_will_not_promote/",
+      "uid": null,
+      "title": "In person marketing ideas (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.347Z"
+    },
+    "328-for-startups-brockers-whats-the-first-red-flag-that-mak": {
+      "url": "https://www.reddit.com/r/startups/comments/1vk0m5v/for_startups_brockers_whats_the_first_red_flag/",
+      "uid": null,
+      "title": "For startups Brockers. What's the first red flag that makes you walk away from a deal? [i will not promote]",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.348Z"
+    },
+    "329-our-sales-are-super-low-what-can-we-do-to-fix-it-i-will": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjy58y/our_sales_are_super_low_what_can_we_do_to_fix_it/",
+      "uid": null,
+      "title": "Our sales are super low, what can we do to fix it? - I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.348Z"
+    },
+    "330-i-will-not-promote-next-steps-after-building": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjxy1l/i_will_not_promote_next_steps_after_building/",
+      "uid": null,
+      "title": "[I will not promote] Next steps after building ?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.349Z"
+    },
+    "331-looking-for-a-co-founder-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjxq52/looking_for_a_cofounder_i_will_not_promote/",
+      "uid": null,
+      "title": "Looking for a co-founder | I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.350Z"
+    },
+    "332-i-will-not-promote-clerky-with-stripe-atlas-or-firstbas": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjxpbb/i_will_not_promote_clerky_with_stripe_atlas_or/",
+      "uid": null,
+      "title": "[I will not promote] Clerky with Stripe Atlas or Firstbase ?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.351Z"
+    },
+    "333-what-would-you-call-this-product-or-service-based-i-wil": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjvjkh/what_would_you_call_this_product_or_service_based/",
+      "uid": null,
+      "title": "What would you call this? Product or service based? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.352Z"
+    },
+    "334-i-will-not-promote-startup-equity-agreement-paperwork-w": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjuc18/i_will_not_promote_startup_equity_agreement/",
+      "uid": null,
+      "title": "[I will not promote] startup equity agreement paperwork with no lawyer ?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.353Z"
+    },
+    "335-one-year-building-three-months-selling-zero-customers-f": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjtsws/one_year_building_three_months_selling_zero/",
+      "uid": null,
+      "title": "One year building, three months selling, zero customers. Frustrated and exhausted - where did I go wrong? i will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.354Z"
+    },
+    "336-how-would-you-spend-a-200000-marketing-budget-i-will-no": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjsm9v/how_would_you_spend_a_200000_marketing_budget_i/",
+      "uid": null,
+      "title": "How would you spend a $200,000+ marketing budget? I will not promote.",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.355Z"
+    },
+    "337-i-will-not-promote-something-that-does-not-work-when-do": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjryg1/i_will_not_promote_something_that_does_not_work/",
+      "uid": null,
+      "title": "I will not promote something that does not work. When do you know that the problem is actually sales, not the product-market fit?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.356Z"
+    },
+    "338-tips-for-last-hr-interview-in-a-mid-size-stage-c-tech-s": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjqoay/tips_for_last_hr_interview_in_a_mid_size_stage_c/",
+      "uid": null,
+      "title": "Tips for last HR interview in a mid size, stage C tech startup (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.357Z"
+    },
+    "339-ff-preferred-shares-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjqjjd/ff_preferred_shares_i_will_not_promote/",
+      "uid": null,
+      "title": "FF preferred shares? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.358Z"
+    },
+    "340-how-do-you-sell-against-quotpeople-already-have-a-worka": {
+      "url": "https://www.reddit.com/r/startups/comments/1vjo9zy/how_do_you_sell_against_people_already_have_a/",
+      "uid": null,
+      "title": "How do you sell against &quot;people already have a workaround&quot;? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-09T23:37:00.359Z"
     }
   },
-  "lastRun": "2026-08-09T00:01:02.747Z",
-  "nextNumber": 251,
-  "topProjectsEvaluatedAt": "2026-08-08T23:48:35Z"
+  "lastRun": "2026-08-09T23:37:00.359Z",
+  "nextNumber": 341,
+  "topProjectsEvaluatedAt": "2026-08-09T23:39:02Z"
 }
