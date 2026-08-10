@@ -11,7 +11,7 @@
 [![Skills: dynamic](https://img.shields.io/badge/skills-dynamic-green.svg)](ai-config/skills/)
 [![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
 [![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
-[![Commands: action/full/gen-html](https://img.shields.io/badge/commands-action%2Ffull%2Fgen--html-orange.svg)](ai-config/commands/)
+[![Commands: 5 (action/full/gen-html/saas-review/fix-ui-ux)](https://img.shields.io/badge/commands-5-orange.svg)](ai-config/commands/)
 
 ---
 
@@ -27,7 +27,7 @@ AI-OS is the **single source of truth** for everything AI in your dev workflow:
 - **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
 - **3 verifiers** (quality_checklist, critic_prompt, source_check_prompt) — applied after every task.
 - **10 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai, graphiti — graphiti runs a custom-built image with MiniMax as LLM provider, verified end-to-end 2026-07-30 with a real `MINIMAX_API_KEY`; opt-in, not started by `ai-os memory start`; see `ai-config/mcp/graphiti.yaml`).
-- **3 global commands** (`/action`, `/full`, `/gen-html`) as Agent Skills + `ai-config/commands/`, distributed to all 6 CLIs, VS Code's prompts folder, and Gemini's TOML custom commands.
+- **5 global commands** (`/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux`) as Agent Skills + `ai-config/commands/`, distributed to all 6 CLIs, VS Code's prompts folder, and Gemini's TOML custom commands.
 - **Replicable dev env** (zsh + Oh My Zsh + p10k, Warp, Brewfile, git/ssh config templates).
 - **1-command setup** on Mac, Linux, and Windows.
 - **CI** (macOS, Linux, Windows runners) that validates the install scripts on every PR.
@@ -244,13 +244,19 @@ ai-os/
 │   │   ├── action/                #   /action combo (spec+plan+build+review)
 │   │   ├── full/                  #   /full combo (+code-simplify+ship)
 │   │   ├── gen-html/               #   /gen-html (rich HTML doc generator)
+│   │   ├── saas-review/           #   /saas-review (whole-app design review)
+│   │   ├── fix-ui-ux/             #   /fix-ui-ux (Impeccable remediation)
 │   │   └── ... 84+ third-party skills (antfu, tanstack, react, shadcn, etc.)
-│   ├── commands/                  #   /action, /full, /gen-html sources for
-│   │   │                          #   VS Code prompts + Gemini TOML (Skills
-│   │   │                          #   above cover Claude/Codex/Antigravity/Hermes)
+│   ├── commands/                  #   /action, /full, /gen-html, /saas-review,
+│   │   │                          #   /fix-ui-ux sources for VS Code prompts +
+│   │   │                          #   Gemini TOML (Skills above cover
+│   │   │                          #   Claude/Codex/Antigravity/Hermes)
 │   │   ├── action.md
 │   │   ├── full.md
-│   │   └── gen-html.md
+│   │   ├── gen-html.md
+│   │   ├── saas-review.md
+│   │   ├── sass-review.md
+│   │   └── fix-ui-ux.md
 │   └── mcp/                       #   10 declarative MCP servers (YAML, all enabled)
 │       ├── README.md
 │       ├── time.yaml
@@ -343,15 +349,17 @@ Why a separate installer (instead of folding into `install-mac.sh`)?
 
 Full architecture, skill catalog, and update procedure: [`docs/claude-tools-integration.md`](docs/claude-tools-integration.md). CI validates it in the three platform workflows — the `--check` step is non-fatal and uses `|| echo ::warning::` so PRs that don't touch the integration stay green.
 
-### Global commands: `/action`, `/full`, `/gen-html`
+### Global commands: `/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux`
 
-Three combo workflows, available as literal slash commands everywhere — not just as skills you have to describe in prose. Each one is **both** a proper Agent Skill (`ai-config/skills/{action,full,gen-html}/SKILL.md`) **and**, for the two client types that don't consume Skills as commands, a canonical Markdown source in `ai-config/commands/`:
+Five combo workflows, available as literal slash commands everywhere, not just as skills you have to describe in prose. Each one is **both** a proper Agent Skill (`ai-config/skills/{action,full,gen-html,saas-review,fix-ui-ux}/SKILL.md`) **and**, for the two client types that don't consume Skills as commands, a canonical Markdown source in `ai-config/commands/`:
 
-| Command     | Runs                                                                                          |
-| ----------- | ---------------------------------------------------------------------------------------------- |
-| `/action`   | spec → plan → build → review                                                                     |
-| `/full`     | spec → plan → build → review → code-simplify → ship                                              |
-| `/gen-html` | generate a rich, responsive, self-contained HTML doc from a description or `.md`/`.mdx` file |
+| Command        | Runs                                                                                          |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| `/action`      | spec → plan → build → review                                                                     |
+| `/full`        | spec → plan → build → review → code-simplify → ship                                              |
+| `/gen-html`    | generate a rich, responsive, self-contained HTML doc from a description or `.md`/`.mdx` file |
+| `/saas-review` | enumerate every route, audit against expensive-UI criteria, apply approved fixes with verification (alias `/sass-review`) |
+| `/fix-ui-ux`   | full Impeccable remediation pass: context + audit + critique, targeted repairs, then polish   |
 
 Distribution, by client:
 
@@ -622,7 +630,7 @@ AI-OS is successful if:
 - **Files:** 1363
 - **Skills:** dynamic; count with `find ai-config/skills -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l`.
 - **MCP servers:** 10 (declarative YAML).
-- **Global commands:** 3 (`action`, `full`, `gen-html`).
+- **Global commands:** 5 (`action`, `full`, `gen-html`, `saas-review`, `fix-ui-ux`).
 - **Workflows:** 5.
 - **Rules:** 3.
 - **Verifiers:** 3.
@@ -641,7 +649,7 @@ AI-OS is successful if:
 - [x] v0.4.0: Windows PowerShell install.
 - [x] v0.5.0: GitHub Actions CI for setup scripts.
 - [x] Documentation policy: repository-authored files are English; third-party vendored content retains its upstream language.
-- [x] Global commands `/action`, `/full`, `/gen-html` — Skills + `ai-config/commands/` distributed to all 6 CLIs, VS Code prompts, and Gemini TOML.
+- [x] Global commands `/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux` — Skills + `ai-config/commands/` distributed to all 6 CLIs, VS Code prompts, and Gemini TOML.
 - [x] Graphiti verified end-to-end with MiniMax as LLM provider (custom-built image, patched for `<think>`-tag stripping).
 - [x] Windows installer robustness: symlink→Junction/HardLink fallback so setup no longer aborts on machines without Developer Mode/elevation.
 - [x] `memory/docker-compose.yml` portability fix — relative volume paths, works unmodified on Mac and Windows.
