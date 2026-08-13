@@ -49,6 +49,20 @@ Inventory of installed tools. Update when something changes.
 - **14 superpowers skills** (REQUIRED for AI-OS).
 - **Source of truth:** `~/Projects/ai-os/ai-config/skills/`.
 
+### Diagrams
+
+- **`diagram-design`** — 27 editorial diagram types → self-contained HTML + inline SVG.
+  Third-party (MIT, `cathrynlavery/diagram-design`), vendored with local brand deltas; see
+  `ai-config/skills/diagram-design/VENDORED_FROM.md`.
+- Skinned with the AI-OS brand, dark-first. Tokens live in `context/06_brand.md` — the skill's
+  brand onboarding is **disabled on purpose** (it would rewrite the shared skill for every
+  project). Per-project override: `.ai-os/brand-tokens.md` in that project's root.
+- PNG export needs `playwright` + chromium in the AI-OS venv (`~/.ai-os/venv`). HTML and SVG
+  work without it. `setup/verify.sh` section 10b reports the browser as an optional check.
+- Routing vs other diagram tools: `rules/always_do.md` § "When a task needs a diagram".
+  The gstack `diagram` skill (excalidraw triplet) was retired 2026-08-13 — full trigger
+  collision with `diagram-design`.
+
 ## Environment config (secrets)
 
 - **Master merged `.env`:** `dev-env/env-config/.env` — single source of truth for

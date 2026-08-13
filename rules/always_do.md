@@ -110,8 +110,27 @@ If a check (type-check, lint, test, build, runtime) surfaces an error, **fix it 
 21. Add examples for non-trivial code.
 22. Update the related context file (if applicable).
 
+## When a task needs a diagram
+
+23. Route by **destination artifact**, not by the word "diagram":
+
+    | Destination | Use |
+    |---|---|
+    | Branded deliverable — docs, ADRs, README, decks, social cards | `diagram-design` skill (HTML + inline SVG, AI-OS skin, dark by default) |
+    | The diagram lives in FigJam / Figma | figma MCP `generate_diagram` |
+    | The destination is a claude.ai Artifact | `artifact-diagramming` |
+    | Throwaway shape inside a chat reply | fenced mermaid, no skill |
+
+24. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
+    budget, and the accessible-SVG contract; a hand-rolled figure silently drops all three.
+25. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `site/index.html`
+    or invent them, and do not rewrite a skill's style guide for a single project — use
+    `.ai-os/brand-tokens.md` in that project's root.
+26. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and
+    `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>`. Report the result.
+
 ## At session end
 
-23. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
-24. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
-25. Report final state with concrete evidence.
+27. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
+28. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
+29. Report final state with concrete evidence.

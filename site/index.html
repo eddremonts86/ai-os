@@ -77,6 +77,10 @@
     --ink:     oklch(0.97 0.006 275);
     --muted:   oklch(0.72 0.014 275);
     --faint:   oklch(0.56 0.014 275);
+    /* --faint measures 4.27:1 on --void, which fails WCAG AA for anything under
+       ~18px. --dim is the same hue lifted to the smallest value that clears 4.5:1
+       (5.04:1) — use it for dim text below 18px. See context/06_brand.md. */
+    --dim:     oklch(0.60 0.014 275);
 
     --acid:    oklch(0.88 0.19 128);   /* primary phosphor lime  */
     --plasma:  oklch(0.70 0.24 349);   /* hot magenta            */
@@ -284,6 +288,28 @@
   .card .ic { font-family: "JetBrains Mono", monospace; color: var(--acid); font-size: 0.9rem; margin-bottom: 0.7rem; letter-spacing: 0.05em; }
   .card.wide { grid-column: span 4; } .card.mid { grid-column: span 3; } .card.third { grid-column: span 2; }
   @media (max-width: 900px) { .feat { grid-template-columns: 1fr; } .card.wide, .card.mid, .card.third { grid-column: auto; } }
+
+  /* ---------- System diagram ---------- */
+  .sysmap { margin: 2.5rem 0 0; }
+  .sysmap img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: var(--radius); background: var(--void); }
+  .sysmap figcaption { margin-top: 0.8rem; color: var(--dim); font-size: 0.84rem; font-family: "JetBrains Mono", monospace; }
+  .sysmap figcaption a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--line); }
+  .sysmap figcaption a:hover { color: var(--acid); text-decoration-color: var(--acid); }
+
+  /* ---------- Command reference ---------- */
+  .cmd-groups { display: grid; gap: 2.4rem; }
+  .cmd-head { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; padding-bottom: 0.6rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--line); }
+  .cmd-head h3 { font-size: 1.1rem; font-weight: 600; }
+  .cmd-head .cmd-scope { font-family: "JetBrains Mono", monospace; font-size: 0.72rem; color: var(--dim); }
+  .cmd-row { display: grid; grid-template-columns: minmax(0, 21rem) 1fr; gap: 1.4rem; align-items: start; padding: 0.6rem 0.7rem; border-radius: var(--radius-sm); transition: background 0.3s var(--ease); }
+  .cmd-row:hover { background: var(--void-2); }
+  .cmd-row > code { font-family: "JetBrains Mono", monospace; font-size: 0.83rem; line-height: 1.5; color: var(--acid); overflow-x: auto; display: block; }
+  /* margin: 0 overrides the section-wide `p` top margin, which otherwise pushes
+     the description 0.9rem below its command and breaks the row's baseline. */
+  .cmd-row p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+  .cmd-row p b { color: var(--ink); font-weight: 600; }
+  .cmd-row p code { font-family: "JetBrains Mono", monospace; font-size: 0.82em; color: var(--muted); }
+  @media (max-width: 780px) { .cmd-row { grid-template-columns: 1fr; gap: 0.25rem; padding: 0.7rem; } }
 
   /* ---------- Install ---------- */
   .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start; }
@@ -574,6 +600,7 @@
       <a href="#what">what</a>
       <a href="#does">architecture</a>
       <a href="#manual">manual</a>
+      <a href="#commands">commands</a>
       <a href="#method">method</a>
       <a href="#install">install</a>
     </div>
@@ -670,26 +697,41 @@
       <p>Skills and config flow down from a single repo into every CLI, and every CLI reads from the same shell &amp; system underneath.</p>
     </div>
 
+    <figure class="sysmap reveal">
+      <img src="ai-os-system.svg" width="1280" height="720" loading="lazy" decoding="async"
+           alt="Whole-system architecture. Left: the ai-os repo holds context, rules, workflows, verifiers, ai-config and dev-env. Centre: setup/install-mac.sh reads it as the single entry point. Right, top: it symlinks skills and renders the instruction adapter into six CLIs — Claude Code, Codex, Gemini, Antigravity, MiniMax, and Hermes, which reads the shared directory in place instead of getting a copy. Right, bottom: it generates the config for 10 MCP servers plus the local memory stack (FalkorDB, Ollama, and the AST and semantic code indexers) that those CLIs call into. Along the bottom: every non-trivial task runs Spec, Execute, Verify, Archive, then resets the spec." />
+      <figcaption>
+        The whole system on one page.
+        <a href="ai-os-system.svg">SVG</a> · <a href="ai-os-system.png">PNG</a> —
+        generated with the vendored <code>diagram-design</code> skill, skinned from <code>context/06_brand.md</code>.
+      </figcaption>
+    </figure>
+
     <div class="feat">
       <div class="card wide reveal">
         <div class="ic">// layer 0: ai-os</div>
         <h3>The repo that owns everything</h3>
-        <p>18 master instructions in <code>CLAUDE.md</code>, 5 workflows, 3 rules, 3 verifiers, flat global skills + optional ECC / claude.tools bundles, and a replicable dev-env. Change it here, it propagates everywhere.</p>
+        <p>18 master instructions in <code>CLAUDE.md</code>, 7 context files, 6 workflows, 4 rules, 3 verifiers, flat global skills + optional ECC / claude.tools bundles, and a replicable dev-env. Change it here, it propagates everywhere.</p>
       </div>
       <div class="card third reveal">
         <div class="ic">// idempotent</div>
         <h3>Run it twice, safely</h3>
         <p>The installer never breaks on re-run. <code>DRY_RUN=1</code> simulates the whole thing without touching your system.</p>
       </div>
-      <div class="card mid reveal">
+      <div class="card third reveal">
         <div class="ic">// layer 1: clis</div>
-        <h3>Claude Code · Codex · Gemini · Antigravity · Hermes</h3>
-        <p>Each CLI reads skills from its own home dir, but those dirs are symlinks back to AI-OS. One edit, six assistants updated.</p>
+        <h3>Six CLIs, one skill set</h3>
+        <p>Claude Code · Codex · Gemini · Antigravity · MiniMax · Hermes. Each reads skills from its own home dir, but those dirs are symlinks back to AI-OS. One edit, six assistants updated.</p>
       </div>
       <div class="card third reveal">
         <div class="ic">// layer 2/3</div>
         <h3>Shell &amp; system</h3>
         <p>zsh + Oh My Zsh + p10k + Warp on Mac, PowerShell + Windows Terminal on Windows, Homebrew / apt underneath.</p>
+      </div>
+      <div class="card third reveal">
+        <div class="ic">// branded output</div>
+        <h3>Diagrams that match the brand</h3>
+        <p>27 editorial diagram types via the vendored <code>diagram-design</code> skill — self-contained HTML + inline SVG, dark-first, skinned from one token file. No Mermaid-slop, no shadows.</p>
       </div>
     </div>
   </div>
@@ -743,6 +785,86 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMMANDS ============ -->
+<section id="commands">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// command reference</span>
+      <h2>Every command, and what it actually does.</h2>
+      <p>Five surfaces: slash commands that work in any CLI, AI-OS skills you call by name, the <code>ai-os</code> shell CLI, the installers, and how each client enters a session.</p>
+    </div>
+
+    <div class="cmd-groups">
+
+      <div class="reveal">
+        <div class="cmd-head">
+          <h3>Global slash commands</h3>
+          <span class="cmd-scope">any CLI · ai-config/commands/ + matching skill</span>
+        </div>
+        <div class="cmd-row"><code>/action</code><p>Idea to reviewed code in one command: <b>spec → plan → build → review</b>, without stopping between phases.</p></div>
+        <div class="cmd-row"><code>/full</code><p>The complete delivery chain: <b>spec → plan → build → review → code-simplify → ship</b>.</p></div>
+        <div class="cmd-row"><code>/gen-html</code><p>Generate a rich, responsive, self-contained HTML document from a description — or convert an existing <code>.md</code>/<code>.mdx</code> file.</p></div>
+        <div class="cmd-row"><code>/saas-review</code><p>Whole-app design review: enumerate and visit <b>every route</b>, audit each screen against the expensive-UI criteria, report prioritised findings, then apply the approved fixes.</p></div>
+        <div class="cmd-row"><code>/sass-review</code><p>Alias of <code>/saas-review</code> — catches the common "SaaS" typo instead of failing.</p></div>
+        <div class="cmd-row"><code>/fix-ui-ux</code><p>Full Impeccable remediation pass: context + audit + critique, targeted repairs, then polish and document.</p></div>
+      </div>
+
+      <div class="reveal">
+        <div class="cmd-head">
+          <h3>AI-OS skills, called by name</h3>
+          <span class="cmd-scope">any CLI · ai-config/skills/</span>
+        </div>
+        <div class="cmd-row"><code>ai-os-quickstart</code><p>One-line bootstrap in a fresh CLI: verifies the 14 required superpowers are installed, runs setup, confirms the environment is ready.</p></div>
+        <div class="cmd-row"><code>ai-os-karpathy</code><p>Loads the full <b>Spec + Verifier + Environment</b> method plus persistent context — profile, projects, preferences, tools, sources.</p></div>
+        <div class="cmd-row"><code>ai-os-memory</code><p>Operate and inspect the memory stack: graph status, project indexing, semantic code search, graph browsing.</p></div>
+        <div class="cmd-row"><code>ai-os-loop</code><p>Build and run reusable loops — the 4-file system (TASK, INSTRUCTIONS, PROGRESS, outputs) with 6 blast-radius safety levels.</p></div>
+        <div class="cmd-row"><code>diagram-design</code><p>27 editorial diagram types as self-contained HTML + inline SVG, skinned from <code>context/06_brand.md</code>. The diagram above came from it.</p></div>
+      </div>
+
+      <div class="reveal">
+        <div class="cmd-head">
+          <h3>The <code>ai-os</code> CLI</h3>
+          <span class="cmd-scope">shell · ~/.local/bin/ai-os</span>
+        </div>
+        <div class="cmd-row"><code>ai-os bootstrap [--refresh]</code><p>First-time or on-demand full-stack setup, then auto-index every project.</p></div>
+        <div class="cmd-row"><code>ai-os memory status</code><p>FalkorDB + Ollama + MCP health with node and edge counts.</p></div>
+        <div class="cmd-row"><code>ai-os memory start | stop | logs</code><p>FalkorDB container lifecycle. <code>stop</code> preserves the data; <code>logs</code> tails it.</p></div>
+        <div class="cmd-row"><code>ai-os memory query "&lt;q&gt;" [path]</code><p>Semantic search across indexed code via grepai.</p></div>
+        <div class="cmd-row"><code>ai-os memory search "&lt;q&gt;" [path]</code><p>Same, but falls back to the AST index when grepai isn't running.</p></div>
+        <div class="cmd-row"><code>ai-os memory reindex [path]</code><p>Refresh the codebase-memory-mcp AST index.</p></div>
+        <div class="cmd-row"><code>ai-os memory browse | visualize</code><p>Open the FalkorDB web UI, or every memory UI plus grepai status at once.</p></div>
+        <div class="cmd-row"><code>ai-os loop ls | add &lt;dir&gt; | rm &lt;id&gt;</code><p>List loops, register one (needs TASK.md + LOOP_INSTRUCTIONS.md), or mark one removed while keeping its directory.</p></div>
+        <div class="cmd-row"><code>ai-os loop status | show | run | pause &lt;id&gt;</code><p>Inspect a loop's files, level and last activity; cat its PROGRESS.md; open a terminal at it; or disable its scheduling.</p></div>
+      </div>
+
+      <div class="reveal">
+        <div class="cmd-head">
+          <h3>Install &amp; verify</h3>
+          <span class="cmd-scope">shell · from the repo root</span>
+        </div>
+        <div class="cmd-row"><code>npx @edd_remonts/create-ai-os</code><p>Bootstrap from nothing — clones the repo and runs the right installer for your OS.</p></div>
+        <div class="cmd-row"><code>bash setup/install-mac.sh</code><p>The full Mac install. <b>Idempotent</b> — safe to re-run. Honours <code>SKIP_BREW</code>, <code>SKIP_NPM</code>, <code>SKIP_PIP</code>, <code>SKIP_MCP</code> and friends.</p></div>
+        <div class="cmd-row"><code>powershell -File setup/install-windows.ps1</code><p>The Windows equivalent, same guarantees.</p></div>
+        <div class="cmd-row"><code>bash setup/install-mac.dry-run.sh</code><p>Simulates the entire install against a temp HOME, touching nothing real. This is the CI gate on every PR.</p></div>
+        <div class="cmd-row"><code>bash setup/verify.sh</code><p>Verifies a live install: 19 required checks (skills, adapters, superpowers, per-machine env isolation) plus optional ones that warn instead of failing.</p></div>
+        <div class="cmd-row"><code>bash setup/install-ecc.sh</code><p>Wires the vendored ECC bundle — 271 skills, 28 hooks, agents — into the core CLIs.</p></div>
+        <div class="cmd-row"><code>bash setup/install-claude-tools.sh [--check]</code><p>claude.tools + gstack skills and the Codex plugin. <code>--check</code> validates structure only, for CI.</p></div>
+      </div>
+
+      <div class="reveal">
+        <div class="cmd-head">
+          <h3>Entering a session</h3>
+          <span class="cmd-scope">shell · per client</span>
+        </div>
+        <div class="cmd-row"><code>claude &nbsp;·&nbsp; codex &nbsp;·&nbsp; gemini</code><p>Nothing to pass. Each client's global instruction file is a symlink to the rendered AI-OS bridge, so context loads on start.</p></div>
+        <div class="cmd-row"><code>hermes chat --skills ai-os-quickstart</code><p>Hermes takes skills as a flag; it reads the shared skills directory natively via <code>skills.external_dirs</code>.</p></div>
+        <div class="cmd-row"><code>cat CLAUDE.md</code><p>The escape hatch for any client without a global instruction file — paste it at the start of the conversation.</p></div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -904,6 +1026,7 @@ bash setup/verify.sh</pre>
     '<span class="out">→ mounting 14 superpowers skills .</span> <span class="ok">ok</span>',
     '<span class="out">→ symlinking ~300 skills → 6 CLIs</span> <span class="ok">ok</span>',
     '<span class="out">→ generating 10 MCP servers ......</span> <span class="ok">ok</span>',
+    '<span class="out">→ brand tokens → diagram skin ...</span> <span class="ok">ok</span>',
     '<span class="out">→ dev-env: zsh · warp · brewfile .</span> <span class="ok">ok</span>',
     '<span class="warn">→ premature optimization ........ skipped</span>',
     '<b>ready.</b> welcome back, dev.',
@@ -1164,6 +1287,22 @@ ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainst
         saas-review + fix-ui-ux + a taste pass + humanizer + landing image generation with gates between every
         phase. It lives only in <code>~/.agents/skills/</code> today, kept project-specific on purpose (hardcodes a
         dev port, package manager, and seed command).
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">Diagrams (branded, brand-token driven):</span>
+      <div class="c-item-desc">
+        <code>diagram-design</code> — 27 editorial diagram types (architecture, flowchart, sequence, state,
+        ER, timeline, swimlane, quadrant, radar, loop, tree, org chart, layer stack, Venn, pyramid, bar,
+        line, Gantt, scatter, and 8 data-platform types) rendered as self-contained HTML with inline SVG.
+        Vendored from <code>cathrynlavery/diagram-design</code> (MIT) and re-skinned to the AI-OS brand:
+        dark-first, acid accent, Space&nbsp;Grotesk&nbsp;+&nbsp;JetBrains&nbsp;Mono, every token resolved
+        from <code>context/06_brand.md</code>. Upstream's per-project brand onboarding is disabled on
+        purpose — the skill is a symlink shared by all six CLIs, so a project needing a different brand
+        drops <code>.ai-os/brand-tokens.md</code> in its own root instead. Imports
+        <code>.drawio</code> / Mermaid sources by redrawing them, never converting. Ships its own taste
+        gate and <code>self_check.py</code>, both wired into <code>verifiers/quality_checklist.md</code>.
+        PNG export needs <code>playwright</code> + chromium; HTML and SVG need nothing.
       </div>
     </li>
     <li>

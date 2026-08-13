@@ -34,7 +34,6 @@ These are checked directly into `ai-config/skills/` and treated like any other A
 | `careful`             | gstack       | Safety guardrails for destructive commands.                                                      |
 | `context-restore`     | gstack       | Restore working context saved earlier by `context-save`.                                         |
 | `context-save`        | gstack       | Save working context (paths, decisions, open threads) for later.                                 |
-| `diagram`             | gstack       | Turn an English description (or mermaid source) into a diagram triple (mermaid + ASCII + image). |
 | `freeze`              | gstack       | Restrict file edits to a specific directory for the session.                                     |
 | `guard`               | gstack       | Full safety mode: destructive-command warnings + directory-scoped edits.                         |
 | `spec`                | gstack       | Turn vague intent into a precise, executable spec in five phases.                                |
@@ -87,14 +86,14 @@ Same reasoning as [ECC Integration](ecc-integration.md): we want updates to be a
 | Source                            | Owner                 | How propagated                                                              | What lives there                     |
 | --------------------------------- | --------------------- | --------------------------------------------------------------------------- | ------------------------------------ |
 | `vendor/codex-plugin-cc/`         | OpenAI                | `install-claude-tools.sh` (plugin link + internal skills)                   | The Codex plugin + 3 internal skills |
-| `ai-config/skills/{12 new dirs}/` | AI-OS (cherry-picked) | `install-mac.sh` step 5 (Claude) + `install-claude-tools.sh` (other 4 CLIs) | The 12 individual skills             |
+| `ai-config/skills/{11 new dirs}/` | AI-OS (cherry-picked) | `install-mac.sh` step 5 (Claude) + `install-claude-tools.sh` (other 4 CLIs) | The 11 individual skills             |
 | `ai-config/skills/*/SKILL.md`     | AI-OS (native)        | `install-mac.sh` flat-skill step                                            | The hand-curated AI-OS flat skills   |
 
 ### How is this different from ECC?
 
 |                       | ECC                                             | claude.tools / gstack                                                                                     |
 | --------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Scale                 | 271 skills + 28 hooks + agents + plugin runtime | 12 individual skills + 1 plugin (3 internal skills)                                                       |
+| Scale                 | 271 skills + 28 hooks + agents + plugin runtime | 11 individual skills + 1 plugin (3 internal skills)                                                       |
 | Plugin runtime        | Yes — `~/.claude/plugins/ecc`                   | Yes for codex-plugin-cc only                                                                              |
 | Hooks                 | 28 declarative hooks in `hooks/hooks.json`      | None                                                                                                      |
 | Installer             | `install-ecc.sh` (271 × 5 symlinks + hooks)     | `install-claude-tools.sh` (12 × 4 + 3 × 5 + 1 plugin link)                                                |
@@ -123,7 +122,7 @@ bash setup/install-mac.sh
 bash setup/install-claude-tools.sh
 ```
 
-If `vendor/codex-plugin-cc/` is missing, `install-claude-tools.sh` prints a warning and continues — the 12 individual skills still get wired. To vendor the plugin:
+If `vendor/codex-plugin-cc/` is missing, `install-claude-tools.sh` prints a warning and continues — the 11 individual skills still get wired. To vendor the plugin:
 
 ```bash
 git clone --depth=1 https://github.com/openai/codex-plugin-cc.git vendor/codex-plugin-cc
@@ -152,7 +151,6 @@ Antigravity:    same — by name
 | `frontend-design-alt`              | Frontend builds where you want a deliberate visual direction held through pages, not generic "AI landing page" output. |
 | `careful`                          | Sessions where you'll run `rm`, `git reset`, `git push --force`, `kubectl delete`, etc. — confirms before each.        |
 | `context-restore` / `context-save` | At the start/end of a long session: `context-save` snapshots paths/decisions; `context-restore` brings them back.      |
-| `diagram`                          | When you need a Mermaid + ASCII + image triple from a verbal description.                                              |
 | `freeze` / `unfreeze`              | Pin edits to a single subdirectory for the session (e.g., only `src/api/`).                                            |
 | `guard`                            | Full safety mode — combines `careful` warnings + `freeze`-style directory scoping.                                     |
 | `spec`                             | Turn "make a thing that does X" into a 5-phase executable spec — similar to AI-OS's own `project_start` workflow.      |
@@ -221,7 +219,7 @@ The script:
 1. Verifies `vendor/codex-plugin-cc/` exists (warns and continues if not).
 2. Verifies all 12 expected skill directories are present under `ai-config/skills/`.
 3. Symlinks `vendor/codex-plugin-cc/` → `~/.claude/plugins/codex-plugin-cc` (if vendored).
-4. Symlinks the 12 individual skills into `~/.codex/skills/`, `~/.gemini/skills/`, and `~/.agents/skills/`. (Claude is handled by `install-mac.sh`; Hermes reads `~/.agents/skills/` natively via `skills.external_dirs` — no separate symlink.)
+4. Symlinks the 11 individual skills into `~/.codex/skills/`, `~/.gemini/skills/`, and `~/.agents/skills/`. (Claude is handled by `install-mac.sh`; Hermes reads `~/.agents/skills/` natively via `skills.external_dirs` — no separate symlink.)
 5. Symlinks the 3 codex-plugin-cc internal skills into the core CLIs.
 6. In `--check` mode, validates structure only: package.json present, every `SKILL.md` has `---` delimiters and `name:` + `description:` fields.
 
@@ -245,7 +243,7 @@ The three platform workflows (`test-mac.yml`, `test-linux.yml`, `test-windows.ym
 ```yaml
 - name: Verify claude.tools / gstack integration (--check)
   # Non-fatal: vendor/codex-plugin-cc/ may be absent on PRs that don't
-  # touch this integration. The 12 individual skills are checked in
+  # touch this integration. The 11 individual skills are checked in
   # to ai-config/skills/, so the --check step still validates their
   # frontmatter on every PR.
   run: |
@@ -253,7 +251,7 @@ The three platform workflows (`test-mac.yml`, `test-linux.yml`, `test-windows.ym
       echo "vendor/codex-plugin-cc/ present, running install-claude-tools.sh --check..."
       bash setup/install-claude-tools.sh --check
     else
-      echo "::warning::vendor/codex-plugin-cc/ not present; running --check anyway (12 individual skills are in ai-config/skills/)"
+      echo "::warning::vendor/codex-plugin-cc/ not present; running --check anyway (11 individual skills are in ai-config/skills/)"
       bash setup/install-claude-tools.sh --check || true
     fi
 ```

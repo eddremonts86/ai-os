@@ -239,7 +239,16 @@ Categories:
 - **anthropics (skills)**: claude-code, claude-api, frontend-design, mcp-builder, claude-best-practices, webapp-testing.
 - **taste-skill (v1, v2)**: anti-slop frontend design.
 - **secondsky (8)**: open-design, hcloud, coolify, prod-deploy, pnpm-docker, fleet-register, env-sync, containers-architecture.
+- **diagram-design (1, third-party MIT)**: 27 editorial diagram types → self-contained HTML + inline SVG, skinned with the AI-OS brand. Vendored, dark-first, brand already onboarded — see `ai-config/skills/diagram-design/VENDORED_FROM.md`.
 - **custom (Edd)**: ai-os-karpathy, ai-os-quickstart, wave-template, tanstack-*, vue-*, react-*, 30+ more.
+
+### Diagram routing
+
+Route by **destination artifact**, not by the word "diagram". Full rule in `rules/always_do.md`:
+branded deliverable → `diagram-design`; FigJam/Figma → figma MCP `generate_diagram`;
+claude.ai Artifact → `artifact-diagramming`; throwaway shape in a reply → fenced mermaid.
+Brand tokens live in `context/06_brand.md`. The gstack `diagram` skill (excalidraw triplet) was
+retired 2026-08-13 — it collided on every trigger with `diagram-design`.
 
 ## 15. AI-OS as orchestrator
 
