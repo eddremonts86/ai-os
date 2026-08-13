@@ -103,7 +103,9 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'title-asc', label: 'Title A–Z' },
 ];
 
-onMounted(async () => {
+async function load() {
+  loading.value = true;
+  error.value = null;
   try {
     plans.value = await loadPlans();
   } catch (e) {
@@ -111,7 +113,9 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
-});
+}
+
+onMounted(load);
 </script>
 
 <template>
@@ -173,7 +177,8 @@ onMounted(async () => {
     <!-- Results -->
     <section class="results">
       <header class="results-header">
-        <div class="results-summary">
+        <h1 class="sr-only">Plans</h1>
+        <div class="results-summary" role="status" aria-live="polite">
           <strong>{{ results.length }}</strong>
           <span> of </span>
           <strong>{{ plans.length }}</strong>
@@ -192,12 +197,13 @@ onMounted(async () => {
       <div v-if="loading" class="empty-state">
         <p>Loading plans…</p>
       </div>
-      <div v-else-if="error" class="empty-state">
-        <h3>Failed to load</h3>
+      <div v-else-if="error" class="empty-state" role="alert">
+        <h2>Couldn't load the plans</h2>
         <p>{{ error }}</p>
+        <button class="retry-btn" @click="load">Try again</button>
       </div>
       <div v-else-if="results.length === 0" class="empty-state">
-        <h3>No plans match these filters</h3>
+        <h2>No plans match these filters</h2>
         <p>Try clearing some filters or searching for something broader.</p>
         <button class="clear-btn" @click="clearAll">clear all filters</button>
       </div>
@@ -253,7 +259,6 @@ onMounted(async () => {
 }
 
 .search-input:focus {
-  outline: none;
   border-color: var(--accent);
 }
 
@@ -333,7 +338,6 @@ onMounted(async () => {
 }
 
 .sort-label select:focus {
-  outline: none;
   border-color: var(--accent);
 }
 

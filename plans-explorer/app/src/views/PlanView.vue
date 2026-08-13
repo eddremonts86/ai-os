@@ -16,19 +16,24 @@ const id = computed(() => String(route.params.id ?? ''));
 const plan = ref<Plan | null>(null);
 const docs = ref<PlanDocument | null>(null);
 const loading = ref(true);
+// A missing id and a failed fetch are different problems with different
+// recoveries; reporting both as "Plan not found" sent users hunting for a typo
+// when the real cause was the network.
+const notFound = ref(false);
 const error = ref<string | null>(null);
 const activeTab = ref<DocKey>('SPEC');
 
 async function loadAll(planId: string) {
   loading.value = true;
   error.value = null;
+  notFound.value = false;
   plan.value = null;
   docs.value = null;
   try {
     const plans = await loadPlans();
     const found = plans.find((p) => p.id === planId);
     if (!found) {
-      error.value = 'Plan not found';
+      notFound.value = true;
       return;
     }
     plan.value = found;
@@ -90,10 +95,15 @@ function goBack() {
       <div v-if="loading" class="empty-state">
         <p>Loading plan…</p>
       </div>
-      <div v-else-if="error" class="empty-state">
-        <h3>Plan not found</h3>
+      <div v-else-if="notFound" class="empty-state" role="alert">
+        <h2>Plan not found</h2>
         <p>The plan id <code>{{ id }}</code> does not exist in the corpus.</p>
         <button class="back-btn" @click="goBack">← All plans</button>
+      </div>
+      <div v-else-if="error" class="empty-state" role="alert">
+        <h2>Couldn't load this plan</h2>
+        <p>{{ error }}</p>
+        <button class="retry-btn" @click="loadAll(id)">Try again</button>
       </div>
       <template v-else-if="plan">
         <header class="plan-header">
@@ -109,7 +119,7 @@ function goBack() {
         <MarkdownReader :source="activeSource" />
 
         <section v-if="plan.originalExcerpt" class="original-section">
-          <h3 class="original-title">Original problem (from source)</h3>
+          <h2 class="original-title">Original problem (from source)</h2>
           <p class="original-text">{{ plan.originalExcerpt }}</p>
         </section>
       </template>

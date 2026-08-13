@@ -43,7 +43,9 @@ function rankIn(kind: 'money' | 'learn' | 'fun', id: string): number {
   return idx === -1 ? 0 : idx + 1;
 }
 
-onMounted(async () => {
+async function load() {
+  loading.value = true;
+  error.value = null;
   try {
     const [p, r] = await Promise.all([loadPlans(), loadRankings()]);
     plans.value = p;
@@ -53,7 +55,9 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
-});
+}
+
+onMounted(load);
 </script>
 
 <template>
@@ -70,9 +74,10 @@ onMounted(async () => {
     <div v-if="loading" class="empty-state">
       <p>Loading rankings…</p>
     </div>
-    <div v-else-if="error" class="empty-state">
-      <h3>Failed to load</h3>
+    <div v-else-if="error" class="empty-state" role="alert">
+      <h2>Couldn't load the rankings</h2>
       <p>{{ error }}</p>
+      <button class="retry-btn" @click="load">Try again</button>
     </div>
     <div v-else-if="rankings" class="rankings-grid">
       <section v-for="col in COLUMNS" :key="col.key" class="rank-column">

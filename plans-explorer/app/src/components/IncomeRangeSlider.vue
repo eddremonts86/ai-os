@@ -31,9 +31,9 @@ function reset() {
 </script>
 
 <template>
-  <section class="range-group">
+  <section class="range-group" role="group" aria-labelledby="income-range-title">
     <header class="range-header">
-      <span class="range-title">Income range</span>
+      <span id="income-range-title" class="range-title">Income range</span>
       <button v-if="modelValue[0] !== 0 || modelValue[1] !== max" class="reset-btn" @click="reset">reset</button>
     </header>
 
@@ -54,7 +54,8 @@ function reset() {
         @input="onLeft"
         name="wtp-min"
         class="range-input range-input-left"
-        :aria-label="'Minimum income'"
+        aria-label="Minimum monthly income"
+        :aria-valuetext="leftLabel + ' per month'"
       />
       <input
         type="range"
@@ -65,7 +66,8 @@ function reset() {
         @input="onRight"
         name="wtp-max"
         class="range-input range-input-right"
-        :aria-label="'Maximum income'"
+        aria-label="Maximum monthly income"
+        :aria-valuetext="rightLabel + ' per month'"
       />
     </div>
 

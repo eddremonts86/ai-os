@@ -11,6 +11,10 @@
   --warn: #f5a524;
   --danger: #ef4444;
 
+  /* Keyboard focus ring. Kept as its own token so the ring never silently
+     inherits a palette change that drops it below the 3:1 WCAG 1.4.11 floor. */
+  --focus: #7c5cff;
+
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;

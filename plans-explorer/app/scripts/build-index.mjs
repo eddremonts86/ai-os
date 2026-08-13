@@ -3,7 +3,7 @@
  * plans-explorer indexer (build-time).
  *
  * Reads projects dir SPEC, PRODUCT, PLAN and TOP_PROJECTS.md
- * and writes plans.json + rankings.json + documents per-id json.
+ * and writes plans.json + rankings.json + meta.json + documents per-id json.
  *
  * Run via `npm run index` or as prebuild hook before `vite build`.
  */
@@ -692,6 +692,12 @@ async function main() {
 
   writeFileSync(join(OUT_DATA, 'plans.json'), JSON.stringify(slim));
   writeFileSync(join(OUT_DATA, 'rankings.json'), JSON.stringify(rankings));
+  // Build metadata as its own file: plans.json is a bare array, and wrapping it
+  // to carry metadata would break every existing consumer and fixture.
+  writeFileSync(
+    join(OUT_DATA, 'meta.json'),
+    JSON.stringify({ indexedAt: new Date().toISOString().slice(0, 10), planCount: slim.length }),
+  );
 
   writeDocumentFiles(plans);
   writePlanZips(plans);

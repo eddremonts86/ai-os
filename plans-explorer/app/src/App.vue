@@ -1,22 +1,42 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { RouterView, RouterLink } from 'vue-router';
+import { loadPlans, loadIndexedAt } from '@/data/load';
+
+// The footer used to hardcode "525 plans" and print `new Date()` as the index
+// date, so it always claimed the corpus was indexed today. Both now come from
+// the generated manifest, and render as nothing rather than as a guess.
+const planCount = ref<number | null>(null);
+const indexedAt = ref<string | null>(null);
+
+onMounted(async () => {
+  try {
+    const [plans, at] = await Promise.all([loadPlans(), loadIndexedAt()]);
+    planCount.value = plans.length;
+    indexedAt.value = at;
+  } catch {
+    // Footer metadata is decorative; the views surface load failures themselves.
+  }
+});
 </script>
 
 <template>
   <div class="app-shell">
+    <a class="skip-link" href="#main">Skip to results</a>
+
     <header class="app-header">
       <RouterLink to="/" class="brand">
-        <span class="brand-mark">◆</span>
+        <span class="brand-mark" aria-hidden="true">◆</span>
         <span class="brand-text">AI-OS Plans Explorer</span>
       </RouterLink>
-      <nav class="app-nav">
+      <nav class="app-nav" aria-label="Main">
         <RouterLink to="/" exact-active-class="is-active">Plans</RouterLink>
         <RouterLink to="/rankings" active-class="is-active">Rankings</RouterLink>
         <RouterLink to="/about" active-class="is-active">About</RouterLink>
       </nav>
     </header>
 
-    <main class="app-main">
+    <main id="main" class="app-main">
       <RouterView v-slot="{ Component }">
         <Transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -25,8 +45,12 @@ import { RouterView, RouterLink } from 'vue-router';
     </main>
 
     <footer class="app-footer">
-      <span>525 plans · last indexed <em>{{ new Date().toISOString().slice(0, 10) }}</em></span>
-      <span class="dot">·</span>
+      <span>
+        <template v-if="planCount !== null">{{ planCount }} plans</template>
+        <template v-else>Plans</template>
+        <template v-if="indexedAt"> · indexed <em>{{ indexedAt }}</em></template>
+      </span>
+      <span class="dot" aria-hidden="true">·</span>
       <a href="https://github.com/eddremonts86/ai-os" target="_blank" rel="noopener">source on GitHub</a>
     </footer>
   </div>
@@ -35,6 +59,7 @@ import { RouterView, RouterLink } from 'vue-router';
 <style scoped>
 .app-shell {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -91,6 +116,9 @@ import { RouterView, RouterLink } from 'vue-router';
   color: var(--text);
   background: var(--surface-2);
 }
+
+/* Route transition: opacity only, no movement, so reduced-motion needs no
+ * special case beyond the global duration clamp. */
 
 .app-main {
   flex: 1;

@@ -32,16 +32,16 @@ const countryFlag = computed(() => {
       <span v-if="extraTags > 0" class="chip">+{{ extraTags }}</span>
     </header>
 
-    <h3 class="card-title">
+    <h2 class="card-title">
       <RouterLink :to="`/plans/${plan.id}`">{{ plan.title }}</RouterLink>
-    </h3>
+    </h2>
 
     <p class="card-excerpt">{{ plan.excerpt }}</p>
 
     <footer class="card-footer">
       <div class="card-meta">
-        <span v-if="plan.country" class="meta-item" :title="plan.country">
-          <span class="flag">{{ countryFlag }}</span>
+        <span v-if="plan.country" class="meta-item">
+          <span class="flag" aria-hidden="true">{{ countryFlag }}</span>
           {{ plan.country }}
         </span>
         <span v-if="plan.tech.length" class="meta-item tech" :title="plan.tech.join(', ')">
@@ -55,8 +55,15 @@ const countryFlag = computed(() => {
         <ScoreBadge kind="money" :score="plan.scores.money" size="sm" />
         <ScoreBadge kind="learn" :score="plan.scores.learn" size="sm" />
         <ScoreBadge kind="fun" :score="plan.scores.fun" size="sm" />
-        <a v-if="plan.sourceUrl" :href="plan.sourceUrl" target="_blank" rel="noopener" class="link-out" :title="'View on ProblemHunt'">
-          ↗
+        <a
+          v-if="plan.sourceUrl"
+          :href="plan.sourceUrl"
+          target="_blank"
+          rel="noopener"
+          class="link-out"
+          :aria-label="`Open the original post for ${plan.title} in a new tab`"
+        >
+          <span aria-hidden="true">↗</span>
         </a>
       </div>
     </footer>
