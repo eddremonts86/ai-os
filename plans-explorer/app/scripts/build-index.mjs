@@ -258,15 +258,41 @@ const MAX_DECODE_PASSES = 3;
 // noise, never authored content, so they go.
 const ZERO_WIDTH_RE = /[​-‍⁠﻿]/g;
 
-function htmlToText(input) {
-  if (!input) return '';
+function decodeAndStrip(input) {
   let out = String(input);
   for (let pass = 0; pass < MAX_DECODE_PASSES; pass++) {
     const next = stripMarkup(decodePass(out));
     if (next === out) break;
     out = next;
   }
-  return out.replace(ZERO_WIDTH_RE, '').replace(/\s+/g, ' ').trim();
+  return out.replace(ZERO_WIDTH_RE, '');
+}
+
+/** One-line display text: excerpts, titles. Collapses all whitespace. */
+function htmlToText(input) {
+  if (!input) return '';
+  return decodeAndStrip(input).replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Same conversion for MARKDOWN bodies, preserving line structure.
+ *
+ * 351 of 552 SPEC.md files carry the scraped post as escaped HTML inside their
+ * prose, and markdown-it runs with `html: false` (correct for untrusted content),
+ * so the detail view rendered `<table> <tr><td> <a href=...>` as literal text on
+ * 64% of plans. The source corpus is read-only per AGENTS.md, but
+ * `public/data/documents/*.json` is a generated artifact, so it is normalised here.
+ *
+ * Collapsing whitespace like htmlToText would flatten every heading, list and code
+ * fence into one line, so only horizontal runs are collapsed and newlines survive.
+ */
+function markdownToText(input) {
+  if (!input) return '';
+  return decodeAndStrip(input)
+    .replace(/[^\S\n]+/g, ' ')          // horizontal whitespace only
+    .replace(/ *\n/g, '\n')             // trailing spaces per line
+    .replace(/\n{3,}/g, '\n\n')         // markdown needs at most one blank line
+    .trim();
 }
 
 // ---------- Source scraper (ProblemHunt + Reddit) ----------
@@ -479,7 +505,7 @@ function writeDocumentFiles(plans) {
     const docs = {};
     for (const name of ['SPEC.md', 'PRODUCT.md', 'PLAN.md', 'DESIGN.md', 'TASKS.md']) {
       const text = readSafe(join(dirPath, name));
-      if (text) docs[name.replace('.md', '')] = text;
+      if (text) docs[name.replace('.md', '')] = markdownToText(text);
     }
     if (Object.keys(docs).length > 0) {
       writeFileSync(join(OUT_DOCS, `${p.id}.json`), JSON.stringify(docs));

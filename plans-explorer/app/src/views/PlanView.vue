@@ -127,7 +127,7 @@ function goBack() {
 
     <aside v-if="plan" class="plan-sidebar">
       <section class="sidebar-section">
-        <h4 class="sidebar-title">Scores</h4>
+        <h3 class="sidebar-title">Scores</h3>
         <div class="sidebar-scores">
           <ScoreBadge kind="money" :score="plan.scores.money" />
           <ScoreBadge kind="learn" :score="plan.scores.learn" />
@@ -136,13 +136,13 @@ function goBack() {
       </section>
 
       <section class="sidebar-section">
-        <h4 class="sidebar-title">Income</h4>
+        <h3 class="sidebar-title">Income</h3>
         <WtpBadge v-if="plan.wtp" :wtp="plan.wtp" />
         <p v-else class="sidebar-empty">not stated</p>
       </section>
 
       <section v-if="plan.country" class="sidebar-section">
-        <h4 class="sidebar-title">Country</h4>
+        <h3 class="sidebar-title">Country</h3>
         <p class="sidebar-value">
           <span class="flag">{{ countryFlag }}</span>
           {{ plan.country }}
@@ -150,26 +150,26 @@ function goBack() {
       </section>
 
       <section v-if="plan.tech.length" class="sidebar-section">
-        <h4 class="sidebar-title">Tech</h4>
+        <h3 class="sidebar-title">Tech</h3>
         <div class="sidebar-chips">
           <span v-for="t in plan.tech" :key="t" class="chip">{{ t }}</span>
         </div>
       </section>
 
       <section v-if="plan.date" class="sidebar-section">
-        <h4 class="sidebar-title">Date</h4>
+        <h3 class="sidebar-title">Date</h3>
         <p class="sidebar-value">{{ plan.date }}</p>
       </section>
 
       <section v-if="plan.sourceUrl" class="sidebar-section">
-        <h4 class="sidebar-title">Source</h4>
+        <h3 class="sidebar-title">Source</h3>
         <a :href="plan.sourceUrl" target="_blank" rel="noopener" class="sidebar-link">
           ↗ View on ProblemHunt
         </a>
       </section>
 
       <section class="sidebar-section">
-        <h4 class="sidebar-title">Download</h4>
+        <h3 class="sidebar-title">Download</h3>
         <a
           :href="`./data/zips/${plan.id}.zip`"
           :download="`plan-${plan.id}-${plan.slug}.zip`"

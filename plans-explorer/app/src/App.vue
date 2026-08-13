@@ -72,19 +72,44 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 14px 24px;
-  background: var(--surface);
+  /* Translucent so the backdrop-filter below actually has something to blur — it
+     was sitting on an opaque --surface, making it a compositing layer that blurred
+     nothing. color-mix keeps it tied to the token instead of a second literal. */
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(8px);
+}
+
+/* No backdrop-filter support: fall back to the opaque surface rather than a
+   see-through header over scrolling cards. */
+@supports not (backdrop-filter: blur(8px)) {
+  .app-header {
+    background: var(--surface);
+  }
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  /* Do not wrap: at 375px the nav squeezed this to "AI-OS / Plans / Explorer"
+     across three lines. min-width:0 lets it shrink; the label truncates instead. */
+  flex: 0 1 auto;
+  min-width: 0;
   text-decoration: none;
   color: var(--text);
   font-weight: 600;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.brand-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-nav {
+  flex: none;
 }
 
 .brand-mark {
@@ -146,6 +171,21 @@ onMounted(async () => {
 
 .app-footer a:hover {
   color: var(--accent-text);
+}
+
+@media (max-width: 560px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  /* Drop to the short mark: the nav needs the room more than the full name does. */
+  .brand-text {
+    font-size: 14px;
+  }
+
+  .app-nav a {
+    padding: 8px 10px;
+  }
 }
 
 .fade-enter-active,

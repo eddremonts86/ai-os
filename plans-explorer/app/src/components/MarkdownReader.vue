@@ -20,6 +20,11 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
   line-height: 1.7;
   color: var(--text);
   max-width: 720px;
+  /* The corpus is scraped prose full of bare URLs — one 200-character
+     preview.redd.it link pushed the whole plan page 285px wider than a 375px
+     viewport. `anywhere` breaks mid-token only when there is no better
+     opportunity, so normal prose still wraps on spaces. */
+  overflow-wrap: anywhere;
 }
 
 .md-reader h1,
@@ -126,6 +131,9 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
 .md-reader pre {
   margin: 0 0 1.2em;
   padding: 14px 16px;
+  /* Code must not be broken mid-token, so it scrolls in place instead. */
+  overflow-x: auto;
+  overflow-wrap: normal;
   /* Slightly above --surface-2 so fenced code reads as inset. */
   background: var(--code-bg);
   border: 1px solid var(--line);
@@ -147,6 +155,13 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
   margin: 0 0 1.2em;
   border-collapse: collapse;
   font-size: 14px;
+}
+
+/* Wide tables scroll in their own track rather than widening the document. */
+.md-reader :where(table) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .md-reader thead {

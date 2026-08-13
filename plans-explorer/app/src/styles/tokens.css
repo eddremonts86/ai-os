@@ -28,7 +28,7 @@
 
   /* Keyboard focus ring. Kept as its own token so the ring never silently
      inherits a palette change that drops it below the 3:1 WCAG 1.4.11 floor. */
-  --focus: #7c5cff;
+  --focus: var(--accent);
 
   /* Alpha derivations. These existed as 25 hand-written rgba() literals across 8
      files, so changing --accent left every one of them purple. Named by source

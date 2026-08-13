@@ -125,6 +125,15 @@ for (const fx of fixtures) {
 
 // ---------- Display-text guards ----------
 
+// Every (docName, body) pair across all generated document files.
+const DOCS_DIR = join(DATA, 'documents');
+const docBodies = existsSync(DOCS_DIR)
+  ? readdirSync(DOCS_DIR).flatMap((f) =>
+      Object.entries(JSON.parse(readFileSync(join(DOCS_DIR, f), 'utf8')))
+        .filter(([, v]) => typeof v === 'string'))
+  : [];
+
+
 const DISPLAY_FIELDS = ['title', 'excerpt', 'originalExcerpt'];
 // Fresh RegExp per test: /g literals carry lastIndex across .test() calls.
 const ENTITY_RE = { test: (s) => /&#\d+;|&#x[0-9a-fA-F]+;|&[a-zA-Z]{2,8};/.test(s) };
@@ -158,6 +167,11 @@ const inv = [
   // Relational, not a hardcoded corpus size. This asserted `=== 525` and started
   // failing the moment the corpus grew to 552 — the same brittleness as the
   // hardcoded "525 plans" the UI used to print. What matters is one zip per plan.
+  // Documents get the same guard. The excerpt fix covered plans.json only, so 351
+  // of 552 detail pages still rendered `<table> <tr><td>` as literal text —
+  // markdown-it runs with html:false, correctly, so escaped HTML shows verbatim.
+  { name: 'no document body contains HTML tags or entities', ok: docBodies.every(([, body]) => !ENTITY_RE.test(body) && !MARKUP_RE.test(body)), got: docBodies.filter(([, body]) => ENTITY_RE.test(body) || MARKUP_RE.test(body)).length },
+  { name: 'document markdown keeps its line structure', ok: docBodies.every(([name, body]) => name !== 'SPEC' || (body.includes('\n') && /^#{1,3} /m.test(body))), got: docBodies.filter(([name, body]) => name === 'SPEC' && !(body.includes('\n') && /^#{1,3} /m.test(body))).length },
   { name: 'zips directory has exactly one entry per plan', ok: existsSync(join(DATA, 'zips')) && readdirSync(join(DATA, 'zips')).length === plans.length, got: existsSync(join(DATA, 'zips')) ? `${readdirSync(join(DATA, 'zips')).length} zips / ${plans.length} plans` : 'missing' },
 ];
 

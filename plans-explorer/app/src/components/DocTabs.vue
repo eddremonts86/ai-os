@@ -44,6 +44,19 @@ const TABS: { key: DocKey; label: string }[] = [
   gap: 4px;
   border-bottom: 1px solid var(--line);
   margin-bottom: 24px;
+  /* Five tabs need ~500px and the viewport can be 375. Scroll the strip rather than
+     the page: without this the whole document overflowed horizontally by 285px.
+     The tabs stay full-size, which keeps them at the 44px touch floor. */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.doc-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.doc-tab {
+  flex: none;
 }
 
 .doc-tab {
