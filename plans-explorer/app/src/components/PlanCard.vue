@@ -72,12 +72,16 @@ const countryFlag = computed(() => {
 
 <style scoped>
 .plan-card {
+  /* Containing block for the stretched title link below. */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  /* line-strong, not line: this outlines the card against the page rather than
+     dividing content inside it. */
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
   transition: transform 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
 }
@@ -110,8 +114,36 @@ const countryFlag = computed(() => {
   color: inherit;
 }
 
+/* The whole card is the target, not just the title text. Hover already lifted the
+   entire card, so a title-only link was an affordance that lied — and it left 261
+   links at ~280x41, under the 44px floor. A stretched pseudo-element keeps exactly
+   one link in the accessibility tree and leaves the text selectable. */
+.card-title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+}
+
 .card-title a:hover {
   color: var(--accent-text);
+}
+
+/* Focus lands on the title link but the ring must outline the card it now covers. */
+.plan-card:has(.card-title a:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.card-title a:focus-visible {
+  outline: none;
+}
+
+/* The source link sits above the stretched overlay so it stays independently
+   clickable; without this the card link would swallow it. */
+.link-out {
+  position: relative;
+  z-index: 1;
 }
 
 .card-excerpt {

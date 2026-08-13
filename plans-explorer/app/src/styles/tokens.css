@@ -1,9 +1,15 @@
 /* Tokens shared with ../site/index.html — keep in sync if site/ changes. */
 :root {
   --bg: #0b0d12;
-  --surface: #11141b;
-  --surface-2: #161a23;
-  --line: #1f2530;
+  --surface: #151922;
+  --surface-2: #1b2029;
+  /* Hairlines. --line separates content inside a surface; --line-strong outlines a
+     surface against the page. Neither reaches the 3:1 of WCAG 1.4.11 — on this
+     palette that needs a mid-grey (#59677f) that turns the UI into a wireframe —
+     and neither has to: cards are grouped by a 12px gap and their own content, so
+     the hairline is emphasis, not the identifying boundary. */
+  --line: #232a36;
+  --line-strong: #2d3644;
   --text: #e8ebf2;
   --text-dim: #9aa3b2;
   /* --accent is the brand purple, used for FILLS, RAILS, BORDERS and the focus

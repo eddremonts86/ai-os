@@ -262,8 +262,10 @@ function goBack() {
   margin-top: 32px;
   padding: 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent-2);
+  /* Was a 3px accent-2 slab on the left edge. The block is already distinguished
+     by its own surface, its eyebrow heading and its position; the slab only added
+     the tell. */
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
 }
 

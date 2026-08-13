@@ -102,7 +102,9 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
 .md-reader blockquote {
   margin: 0 0 1em;
   padding: 0.6em 1em;
-  border-left: 3px solid var(--accent);
+  /* A 1px hairline, not a 3px coloured slab. The quote already reads as a quote
+     from its indent and tint; the thick edge was decoration. */
+  border-left: 1px solid var(--accent-a30);
   background: var(--accent-a05);
   color: var(--text-dim);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
