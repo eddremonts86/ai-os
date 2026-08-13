@@ -288,7 +288,12 @@ function htmlToText(input) {
  */
 function markdownToText(input) {
   if (!input) return '';
-  return decodeAndStrip(input)
+  // Strip leading YAML frontmatter (`---\n...\n---\n`) so it does not render as
+  // a giant paragraph in the markdown reader. The frontmatter is metadata; the
+  // SPA already reads it from plans.json / individual JSON fields, never from
+  // the body.
+  const stripped = input.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+  return decodeAndStrip(stripped)
     .replace(/[^\S\n]+/g, ' ')          // horizontal whitespace only
     .replace(/ *\n/g, '\n')             // trailing spaces per line
     .replace(/\n{3,}/g, '\n\n')         // markdown needs at most one blank line
@@ -712,9 +717,19 @@ async function main() {
   console.log(`[indexer] scraped=${scraped} cached=${cached}`);
 
   // Strip bulky per-doc dump from plans.json (kept in documents/<id>.json instead).
-  const slim = plans.map(({ id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores }) => ({
-    id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores,
-  }));
+  // `assets` lists architecture-diagram HTML files copied from
+  // projects/<id>-<slug>/assets/*.html into public/projects/<id>-<slug>/assets/
+  // at build time, so the SPA can render them as iframes without HEAD-fishing
+  // every candidate name (which on the Vite dev server returns 200 + the SPA
+  // shell for any path that does not exist).
+  const slim = plans.map((p) => {
+    const assetsDir = join(PROJECTS_DIR, `${p.id}-${p.slug}`, 'assets');
+    const assets = existsSync(assetsDir)
+      ? readdirSync(assetsDir).filter((n) => n.endsWith('.html')).sort()
+      : [];
+    const { id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores } = p;
+    return { id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores, assets };
+  });
 
   writeFileSync(join(OUT_DATA, 'plans.json'), JSON.stringify(slim));
   writeFileSync(join(OUT_DATA, 'rankings.json'), JSON.stringify(rankings));

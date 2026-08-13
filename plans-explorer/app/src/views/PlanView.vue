@@ -70,6 +70,13 @@ const activeSource = computed(() => {
   return d[activeTab.value] ?? '';
 });
 
+// Architecture diagrams served as self-contained HTML files under
+// public/projects/<id>-<slug>/assets/*.html. The list comes from the indexer
+// (plan.assets), not a HEAD request — the Vite dev server returns 200 + the
+// SPA shell for any missing path, which made every candidate name appear to
+// exist and rendered 6 wrong iframes per plan.
+const planAssets = computed(() => plan.value?.assets ?? []);
+
 const countryFlag = computed(() => {
   const c = plan.value?.country;
   if (!c) return null;
@@ -117,6 +124,19 @@ function goBack() {
         <DocTabs :available="available" v-model:active="activeTab" />
 
         <MarkdownReader :source="activeSource" />
+
+        <section v-if="planAssets.length" class="assets-section">
+          <h2 class="assets-title">Architecture diagrams</h2>
+          <div v-for="asset in planAssets" :key="asset" class="asset-frame-wrap">
+            <iframe
+              :src="`./projects/${plan.id}-${plan.slug}/assets/${asset}`"
+              class="asset-frame"
+              :title="asset"
+              loading="lazy"
+              sandbox="allow-same-origin"
+            ></iframe>
+          </div>
+        </section>
 
         <section v-if="plan.originalExcerpt" class="original-section">
           <h2 class="original-title">Original problem (from source)</h2>
@@ -188,9 +208,9 @@ function goBack() {
 <style scoped>
 .plan-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 32px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -209,6 +229,9 @@ function goBack() {
   position: sticky;
   top: 60px;
   align-self: start;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -256,6 +279,34 @@ function goBack() {
   letter-spacing: -0.02em;
   line-height: 1.25;
   color: var(--text);
+}
+
+.assets-section {
+  margin-top: 32px;
+}
+
+.assets-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+}
+
+.asset-frame-wrap {
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--paper, #08090e);
+}
+
+.asset-frame {
+  display: block;
+  width: 100%;
+  height: 720px;
+  border: 0;
 }
 
 .original-section {
@@ -323,6 +374,14 @@ function goBack() {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  min-width: 0;
+}
+
+.sidebar-chips .chip {
+  font-size: 11px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .flag {
