@@ -51,6 +51,13 @@ export const md: MarkdownIt = new MarkdownIt({
   },
 });
 
+// Wrap tables in typeset's scroll container. Wide tables must scroll in their own
+// track, and the alternative — `display: block` on the <table> — removes its table
+// role from the accessibility tree. shadcn/typeset documents this wrapper as the
+// place to solve it, and expects the renderer to emit it.
+md.renderer.rules.table_open = () => '<div class="typeset-scroll"><table>';
+md.renderer.rules.table_close = () => '</table></div>';
+
 // Demote every heading in an embedded document by one level. A plan's markdown
 // opens with its own `# SPEC.md — <title>`, and PlanView already prints that title
 // as the page h1, so rendering it verbatim produced two h1 elements and an outline

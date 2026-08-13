@@ -81,3 +81,42 @@ body,
 a {
   color: inherit;
 }
+
+/* ---------- shadcn/typeset bridge ---------- *
+ * typeset.css reads shadcn theme variable names. Rather than rename this app's
+ * tokens, alias them here so typeset picks up our palette and both naming schemes
+ * keep working. Its own fallbacks (currentColor, 0.5em) would otherwise silently
+ * flatten the prose to a single colour.
+ *
+ * --color-muted-foreground and --color-border have no fallback problem — typeset
+ * derives --typeset-muted / --typeset-rule from them with color-mix — but aliasing
+ * them keeps rules and secondary text on our exact tokens instead of an opacity
+ * approximation of the body colour.
+ */
+:root {
+  --color-foreground: var(--text);
+  --color-muted-foreground: var(--text-dim);
+  --color-border: var(--line);
+  /* typeset uses --color-primary only for task-list checkbox accent-color. */
+  --color-primary: var(--accent);
+  --color-ring: var(--focus);
+  --font-heading: var(--font-ui);
+  /* typeset applies --radius to code blocks and images; --radius-md matches the
+     rest of the app's surfaces. */
+  --radius: var(--radius-md);
+}
+
+/* ---------- Typeset presets ---------- */
+
+/* Plan documents: the reading surface for SPEC/PRODUCT/PLAN/DESIGN/TASKS.
+   Size 15px and leading 1.7 preserve what the hand-rolled prose used, so this is a
+   like-for-like swap rather than a redesign. Flow 1.25em is typeset's default
+   rhythm; the old CSS hand-set every margin instead. */
+.typeset-plan {
+  --typeset-font-body: var(--font-ui);
+  --typeset-font-heading: var(--font-ui);
+  --typeset-font-mono: var(--font-mono);
+  --typeset-size: 15px;
+  --typeset-leading: 1.7;
+  --typeset-flow: 1.25em;
+}

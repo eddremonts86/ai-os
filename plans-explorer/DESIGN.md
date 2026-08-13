@@ -164,10 +164,64 @@ Counts come from `meta.json`, never hardcoded.
 | `ScoreBadge` | Pill, money 💰 / learn 🧠 / fun 🎮. Renders `—` when a plan is not ranked on that axis — most plans are unranked on two of three. |
 | `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. |
 | `DocTabs` | `role="tablist"`, 44px tabs. |
-| `MarkdownReader` | `markdown-it` + highlight.js `atom-one-dark`, lazy-loaded in its own chunk. |
+| `MarkdownReader` | `markdown-it` + highlight.js `atom-one-dark`, lazy-loaded in its own chunk. Prose rhythm comes from shadcn/typeset — see below. |
 
 Country flags come from a 17-entry map with a 🌍 fallback, and are `aria-hidden`
 because the country name follows as text.
+
+---
+
+## Prose — shadcn/typeset
+
+Rendered markdown is styled by [shadcn/typeset](https://ui.shadcn.com/docs/typeset),
+vendored verbatim at `app/src/styles/typeset.css` (MIT, fetched 2026-08-13, sha
+`f70fb975…`). It replaced 32 hand-written `.md-reader` rules that set every font
+size and margin individually.
+
+**It needs no Tailwind.** The file has zero Tailwind directives — no `@apply`,
+`@tailwind`, `theme()` or `@utility`. It is plain CSS using `@layer components`,
+`:where()` and custom properties, which is why it does not breach the "no Tailwind,
+no UI kit, keep CSS small" rule in AGENTS.md. Upstream's install instructions
+assume a Tailwind project; the stylesheet itself does not.
+
+Typeset reads shadcn theme variable names, so `tokens.css` aliases ours onto them
+(`--color-foreground`, `--color-muted-foreground`, `--color-border`,
+`--color-primary`, `--color-ring`, `--font-heading`, `--radius`). Without those
+aliases its own fallbacks would flatten the prose to `currentColor`.
+
+The preset is `.typeset-plan`: 15px / 1.7 leading / 1.25em flow. Size and leading
+match what the hand-rolled CSS used, so this was a like-for-like swap, not a
+redesign. **To retune the prose, change those three values — do not add element
+rules.** Everything else (heading sizes, list indents, the gap under a heading, rule
+spacing) derives from them.
+
+Three overrides remain in `MarkdownReader.vue`, each for a reason typeset documents
+as the app's business:
+
+1. `max-width: 720px` — typeset deliberately sets no measure; the layout owns it.
+2. `overflow-wrap: anywhere` — typeset sets `break-word`, which does not shrink a
+   container's min-content width. This corpus contains bare 200-character URLs that
+   forced the page 285px past a 375px viewport, and only `anywhere` affects
+   intrinsic sizing.
+3. `pre.hljs` background/border — `atom-one-dark.css` is imported unlayered, so it
+   beats `@layer components` and correctly owns syntax token colours; we take back
+   only the container, since its `#282c34` is a different hue family from our
+   surfaces.
+
+Links keep typeset's underline **and** add `--accent-text`. Typeset sets links to
+`color: inherit` on purpose — identifying links by underline rather than colour is
+what WCAG 1.4.1 asks for, and the CSS this replaced was colour-only until hover.
+The underline is the primary signal; the accent is a second one.
+
+Wide tables are wrapped in typeset's `.typeset-scroll` by a `markdown-it` renderer
+rule. The previous fix set `display: block` on the `<table>`, which removes its
+table role from the accessibility tree.
+
+> **Observation, not yet acted on:** no document in the corpus uses a labelled code
+> fence, so highlight.js never actually highlights anything — its languages and
+> theme are ~125KB (53.7KB gzipped) of the lazy markdown chunk serving a code path
+> the data never takes. Left in place because plans are authored content that could
+> start labelling fences, and the chunk is lazy. Worth revisiting if it never does.
 
 ---
 
