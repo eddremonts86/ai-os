@@ -19,8 +19,18 @@ warn() { echo "$LOG_PREFIX ⚠️  $*"; }
 err() { echo "$LOG_PREFIX ❌ $*"; }
 
 # Create temporary HOME to not touch the real one
+# Resolve the real user site-packages BEFORE HOME is overridden, and keep it on
+# PYTHONPATH afterwards. Python derives the user site path from $HOME, so pointing
+# HOME at a temp dir hides every user-installed package from the child processes this
+# script invokes — generate-mcp-config.py then fails with "PyYAML is required" on any
+# machine where PyYAML is user-installed, which is the default on macOS. CI never saw
+# it because the runners have PyYAML system-wide, so the dry-run was green in CI and
+# red on the developer machine that is supposed to run it before pushing.
+REAL_USER_SITE=$(python3 -m site --user-site 2>/dev/null || true)
+
 TMP_HOME=$(mktemp -d -t aios-dryrun-XXXX)
 export HOME="$TMP_HOME"
+[ -n "$REAL_USER_SITE" ] && export PYTHONPATH="$REAL_USER_SITE${PYTHONPATH:+:$PYTHONPATH}"
 mkdir -p "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
 
 log "═══════════════════════════════════════════════════════════"
