@@ -324,7 +324,7 @@ Full architecture, hook policy, and update procedure: [`docs/ecc-integration.md`
 AI-OS also vendors a **small, focused set of skills** from [claude.tools](https://claude.tools) and cherry-picks a handful of skills from [gstack](https://github.com/earendil-works/gstack) — the same pattern as ECC but at a much smaller scale. These are checked directly into `ai-config/skills/`, so they propagate to `~/.claude/skills/` via `install-mac.sh` step 5 like any other AI-OS-native skill. The companion installer wires them into the other 4 CLIs and creates the plugin link for codex-plugin-cc:
 
 ```bash
-# Install (idempotent). The 12 individual skills are already in ai-config/skills/,
+# Install (idempotent). The 11 individual skills are already in ai-config/skills/,
 # so this script's main job is to wire them to the 4 non-Claude CLIs and to
 # symlink vendor/codex-plugin-cc/ into ~/.claude/plugins/.
 bash setup/install-claude-tools.sh
@@ -338,7 +338,8 @@ What gets vendored:
 | Source                                                                                                  | Where it lives                                                                     | Count               |
 | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------- |
 | claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`)                        | `ai-config/skills/`                                                                | 4 skills            |
-| gstack (`careful`, `context-save`, `context-restore`, `diagram`, `freeze`, `guard`, `spec`, `unfreeze`) | `ai-config/skills/`                                                                | 8 skills            |
+| gstack (`careful`, `context-save`, `context-restore`, `freeze`, `guard`, `spec`, `unfreeze`)            | `ai-config/skills/`                                                                | 7 skills            |
+| diagram-design (MIT, `cathrynlavery/diagram-design`) — re-skinned to the AI-OS brand                    | `ai-config/skills/diagram-design/`                                                 | 1 skill             |
 | OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
 Why a separate installer (instead of folding into `install-mac.sh`)?

@@ -28,6 +28,17 @@ Checklist that the Verifier applies to every output. **All boxes must pass** to 
 - [ ] Is the CHANGELOG updated (if applicable)?
 - [ ] Are the examples in the docs tested?
 
+## Diagrams (only if the deliverable includes one)
+
+- [ ] Produced with `diagram-design` (not hand-rolled SVG, not a mermaid fence passed off as a deliverable)?
+- [ ] Tokens resolved from `context/06_brand.md` / project `.ai-os/brand-tokens.md` — no upstream default skin, no inlined hex?
+- [ ] Taste gate applied (`diagram-design` SKILL.md §9)?
+- [ ] `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>` clean?
+- [ ] Opened in a browser — renders as intended, no overlapping labels, no clipped nodes?
+- [ ] ≤9 nodes, or explicitly zoned/split if `faithful` detail was requested?
+- [ ] Accent used on 1–2 focal nodes only?
+- [ ] `<title>` + `<desc>` present, IDs prefixed per diagram, `role="img"` set?
+
 ## Security
 
 - [ ] Are there no secrets in the commit?

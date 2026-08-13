@@ -34,52 +34,43 @@ const planById = (id) => plans.find((p) => p.id === id);
 //   - want: expected value (literal, not computed)
 
 const fixtures = [
+  // Rewritten 2026-08-13. The previous fixtures asserted against plans 001/016/236/419/441
+  // from the 552-plan corpus; the corpus reset to 10 plans deleted four of them, so the
+  // suite had been failing 5/5 on every run and was no longer guarding anything.
+  //
+  // Expectations come from each plan's frontmatter — the source of truth the indexer is
+  // supposed to read. That is not tautological: reading it at all is exactly the plumbing
+  // that silently broke when the corpus was migrated, taking category, date, sourceUrl,
+  // country and wtp to 0/10 while the build stayed green.
   {
     id: '001',
     checks: [
+      { kind: 'eq', path: 'status', want: 'enriched' },
+      { kind: 'eq', path: 'country', want: 'Serbia' },
+      { kind: 'eq', path: 'date', want: '2026-07-17' },
+      { kind: 'eq', path: 'wtp.mrrMid', want: 200 },
+      { kind: 'includes', path: 'tags', want: 'Immigration' },
+      { kind: 'includes', path: 'tech', want: 'Next.js' },
+      { kind: 'startsWith', path: 'sourceUrl', want: 'https://problemhunt.pro/en/' },
+    ],
+  },
+  {
+    id: '002',
+    checks: [
+      { kind: 'eq', path: 'category', want: 'ai' },
+      { kind: 'eq', path: 'country', want: 'USA' },
+      { kind: 'eq', path: 'wtp.period', want: 'month' },
+      { kind: 'startsWith', path: 'sourceUrl', want: 'https://problemhunt.pro/en/ai/' },
+    ],
+  },
+  {
+    id: '003',
+    checks: [
       { kind: 'eq', path: 'category', want: 'marketing' },
-      { kind: 'eq', path: 'country', want: 'Russia' },
-      { kind: 'eq', path: 'wtp.raw', want: 'negotiable' },
-      { kind: 'eq', path: 'wtp.mrrMid', want: null },
-      { kind: 'includes', path: 'tags', want: 'Marketing' },
+      { kind: 'eq', path: 'country', want: 'Georgia' },
+      // No price in the source, so none invented. Absence is the assertion.
+      { kind: 'eq', path: 'wtp', want: null },
       { kind: 'startsWith', path: 'sourceUrl', want: 'https://problemhunt.pro/en/marketing/' },
-    ],
-  },
-  {
-    id: '016',
-    checks: [
-      { kind: 'eq', path: 'category', want: 'validated' },
-      { kind: 'eq', path: 'country', want: null }, // 'Validated' is a category, not a country
-      { kind: 'eq', path: 'wtp', want: null },
-      { kind: 'startsWith', path: 'sourceUrl', want: 'https://problemhunt.pro/en/validated/' },
-    ],
-  },
-  {
-    id: '236',
-    checks: [
-      { kind: 'eq', path: 'category', want: 'other' },
-      { kind: 'eq', path: 'country', want: null },
-      { kind: 'eq', path: 'wtp', want: null },
-      { kind: 'eq', path: 'sourceUrl', want: null },
-    ],
-  },
-  {
-    id: '419',
-    checks: [
-      { kind: 'eq', path: 'category', want: 'other' },
-      { kind: 'eq', path: 'country', want: null },
-      { kind: 'eq', path: 'wtp', want: null },
-      { kind: 'eq', path: 'sourceUrl', want: null },
-    ],
-  },
-  {
-    id: '441',
-    checks: [
-      { kind: 'eq', path: 'category', want: 'other' },
-      { kind: 'eq', path: 'country', want: null },
-      // Critical: the text says "charging $20/mo" (competitor) — must NOT be picked up.
-      { kind: 'eq', path: 'wtp', want: null },
-      { kind: 'eq', path: 'sourceUrl', want: null },
     ],
   },
 ];
@@ -147,8 +138,14 @@ for (const r of results) console.log(r);
 
 console.log('\n[test] aggregate invariants:');
 const totalPlans = plans.length;
+const PROJECTS_DIR = join(ROOT, '..', 'projects');
+const planDirCount = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3}-/.test(n)
+  && existsSync(join(PROJECTS_DIR, n, 'SPEC.md'))).length;
 const inv = [
-  { name: 'plans.json has at least 500 entries', ok: totalPlans >= 500, got: totalPlans },
+  // Relational, not a hardcoded corpus size: this read `>= 500` and went red the moment
+  // the corpus was reset to 10 clean plans. What matters is that every plan directory
+  // made it into the index.
+  { name: 'plans.json has one entry per plan directory', ok: totalPlans === planDirCount, got: `${totalPlans} indexed / ${planDirCount} dirs` },
   { name: 'rankings.money has 5 entries', ok: rankings.money.length === 5, got: rankings.money.length },
   { name: 'rankings.learn has 5 entries', ok: rankings.learn.length === 5, got: rankings.learn.length },
   { name: 'rankings.fun has 5 entries', ok: rankings.fun.length === 5, got: rankings.fun.length },

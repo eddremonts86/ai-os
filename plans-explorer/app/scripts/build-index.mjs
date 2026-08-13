@@ -456,6 +456,72 @@ function parseRankings(topPath) {
 
 // ---------- Single plan parse ----------
 
+// ---------- Frontmatter (schema shape, see projects/_schema.json) ----------
+
+/**
+ * Read the YAML frontmatter a formatted plan carries.
+ *
+ * Inlined rather than imported from tools/plan-format so this app stays a
+ * standalone npm package that builds without reaching up into the repo — the same
+ * reasoning as the normalisation pipeline below.
+ *
+ * Narrow on purpose: scalars, inline arrays, and one level of nesting at two-space
+ * indent, which is exactly what the schema writes. Anything deeper returns null and
+ * the caller falls back to prose extraction, so an unexpected shape degrades instead
+ * of throwing mid-build. DESIGN.md's authored design-token block is precisely such a
+ * case and must never be interpreted as plan metadata.
+ */
+function readFrontmatter(text) {
+  if (!text.startsWith('---\n')) return null;
+  const end = text.indexOf('\n---', 4);
+  if (end === -1) return null;
+  const data = {};
+  let key = null;
+  for (const line of text.slice(4, end).split('\n')) {
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+    const nested = line.match(/^ {2}([A-Za-z][\w-]*):\s*(.*)$/);
+    const top = line.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+    if (nested && key && data[key] && typeof data[key] === 'object' && !Array.isArray(data[key])) {
+      if (nested[2].trim() === '') return null;          // third level: out of subset
+      data[key][nested[1]] = fmScalar(nested[2]);
+    } else if (top) {
+      key = top[1];
+      const v = top[2];
+      if (v === '') data[key] = {};
+      else if (v.startsWith('[')) {
+        const inner = v.trim().slice(1, -1).trim();
+        data[key] = inner ? inner.split(',').map(fmScalar) : [];
+      } else data[key] = fmScalar(v);
+    } else {
+      return null;
+    }
+  }
+  return data;
+}
+
+function fmScalar(v) {
+  const s = v.trim().replace(/\s+#.*$/, '');
+  if (s === '') return '';
+  if (/^-?\d+$/.test(s)) return parseInt(s, 10);
+  if (/^-?\d*\.\d+$/.test(s)) return parseFloat(s);
+  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+    return s.slice(1, -1).replace(/\\"/g, '"');
+  }
+  return s;
+}
+
+/** Body with the frontmatter removed. */
+function stripFrontmatter(text) {
+  return text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+}
+
+/** A named H2 section's body, from a frontmatter-stripped document. */
+function sectionBody(body, heading) {
+  const re = new RegExp(`^##\\s+${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$([\\s\\S]*?)(?=^##\\s|\\Z)`, 'm');
+  const m = body.match(re);
+  return m ? m[1].trim() : '';
+}
+
 function parsePlan(dirPath) {
   const dirName = dirPath.split('/').pop();
   const parsed = parseId(dirName);
@@ -466,26 +532,50 @@ function parsePlan(dirPath) {
   const productText = readSafe(join(dirPath, 'PRODUCT.md')) ?? '';
   const planText = readSafe(join(dirPath, 'PLAN.md')) ?? '';
 
-  const title = extractTitle(specText, slug);
-  const category = extractCategory(specText);
-  const tags = extractTags(specText, productText);
-  const date = extractDate(specText);
-  const country = extractCountry(specText);
-  const tech = extractTech(planText);
-  const sourceUrl = extractSourceUrl(specText, slug, category);
+  // Frontmatter first, prose second.
+  //
+  // Formatted plans (projects/_schema.json) carry metadata in YAML frontmatter.
+  // Legacy plans carry it as Spanish bold labels inside prose. Reading only the prose
+  // is what broke this index the moment the corpus was migrated: category, date,
+  // sourceUrl, country and originalExcerpt all went to 0/10, `excerpt` silently became
+  // a copy of the title, and `tech` filled with sentence fragments scraped out of
+  // prose ('Postgres on Neon for tenants', 'photographers', 'bookings'). The build
+  // stayed green throughout.
+  const fm = readFrontmatter(specText);
+  const specBody = stripFrontmatter(specText);
 
-  const problemaMatch = specText.match(/##\s+Problema Detectado\s*\n+([\s\S]+?)(?=\n##\s|\n\*\*Fuente|\n---)/);
-  const problema = problemaMatch ? problemaMatch[1] : '';
-  const wtp = parseWillingnessToPay([title, problema].join(' '));
+  const title = fm?.title ?? extractTitle(specText, slug);
+  const category = fm?.category ?? extractCategory(specText);
+  const tags = Array.isArray(fm?.tags) && fm.tags.length ? fm.tags : extractTags(specText, productText);
+  const date = fm?.date || extractDate(specText);
+  const country = fm?.country ?? extractCountry(specText);
+  // A migrated plan with no `tech` has honestly not had a stack chosen yet — the
+  // schema forbids carrying the old global default forward. Do NOT fall back to the
+  // prose scraper here: that is what produced the fragment garbage above.
+  const tech = fm ? (Array.isArray(fm.tech) ? fm.tech : []) : extractTech(planText);
+  const sourceUrl = fm?.source?.url ?? extractSourceUrl(specText, slug, category);
+  const status = fm?.status ?? 'legacy';
 
-  // Build a local-only excerpt (regex-cleaned HTML escapado). Replaced by the
-  // scraped original problem in main() when the fetch succeeds.
+  // The Problem section is `## Problem` once formatted, `## Problema Detectado` before.
+  const problema = sectionBody(specBody, 'Problem')
+    || (specText.match(/##\s+Problema Detectado\s*\n+([\s\S]+?)(?=\n##\s|\n\*\*Fuente|\n---)/)?.[1] ?? '');
+
+  // wtp comes from frontmatter when the formatter recorded one; the text parser is the
+  // fallback for legacy plans. Absent means the source never named a price.
+  const wtp = fm?.wtp
+    ? { raw: fm.wtp.raw ?? null, currency: fm.wtp.currency ?? null, min: fm.wtp.min ?? null,
+        max: fm.wtp.max ?? null, period: fm.wtp.period ?? null, mrrMid: fm.wtp.mrrMid ?? null }
+    : parseWillingnessToPay([title, problema].join(' '));
+
+  // Local excerpt from the plan's own Problem section. For an enriched plan this IS
+  // the authored text, so main() no longer needs to scrape it back from the source.
   const localExcerpt = htmlToText(problema).slice(0, 280) || title;
 
   return {
     id,
     slug,
     title,
+    status,
     category,
     categories: [category, ...tags.filter((t) => t.toLowerCase() === category)].filter((v, i, a) => a.indexOf(v) === i),
     tags,
@@ -704,8 +794,12 @@ async function main() {
   console.log(`[indexer] scraping ${scrapable.length} sources (cached after first run)`);
   let scraped = 0;
   let cached = 0;
+  let skipped = 0;
   for (const p of plans) {
     if (!p.sourceUrl) continue;
+    // Enriched plans own their prose; do not re-fetch it. This is what keeps a
+    // container build offline and reproducible instead of hostage to a rate limiter.
+    if (p.status && p.status !== 'legacy' && p.status !== 'draft') { skipped++; continue; }
     const wasCached = existsSync(join(CACHE_DIR, `${p.id}.txt`));
     const original = await cachedOriginalProblem(p.id, p.sourceUrl);
     if (original) {
@@ -714,7 +808,7 @@ async function main() {
       if (wasCached) cached++; else scraped++;
     }
   }
-  console.log(`[indexer] scraped=${scraped} cached=${cached}`);
+  console.log(`[indexer] scraped=${scraped} cached=${cached} skipped=${skipped} (enriched plans own their prose)`);
 
   // Strip bulky per-doc dump from plans.json (kept in documents/<id>.json instead).
   // `assets` lists architecture-diagram HTML files copied from
@@ -727,8 +821,8 @@ async function main() {
     const assets = existsSync(assetsDir)
       ? readdirSync(assetsDir).filter((n) => n.endsWith('.html')).sort()
       : [];
-    const { id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores } = p;
-    return { id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores, assets };
+    const { id, slug, title, status, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores } = p;
+    return { id, slug, title, status, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores, assets };
   });
 
   writeFileSync(join(OUT_DATA, 'plans.json'), JSON.stringify(slim));
