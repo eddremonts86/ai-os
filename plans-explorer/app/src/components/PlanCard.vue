@@ -171,10 +171,17 @@ const countryFlag = computed(() => {
 }
 
 .link-out {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px hit area, visually unchanged: the glyph is 14px and the box around it
+     is transparent until hover. */
+  min-width: 44px;
+  min-height: 44px;
+  margin: -10px -8px -10px 0;
   color: var(--text-dim);
   text-decoration: none;
   font-size: 14px;
-  padding: 2px 6px;
   border-radius: var(--radius-sm);
   transition: color 150ms, background 150ms;
 }

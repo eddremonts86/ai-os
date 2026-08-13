@@ -48,6 +48,7 @@ const TABS: { key: DocKey; label: string }[] = [
 
 .doc-tab {
   position: relative;
+  min-height: 44px;
   padding: 10px 16px;
   background: none;
   border: none;

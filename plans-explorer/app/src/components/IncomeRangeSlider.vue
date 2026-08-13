@@ -116,7 +116,8 @@ function reset() {
 
 .range-track {
   position: relative;
-  height: 24px;
+  /* 44px so the thumbs have a real drag area; the visible rail stays 4px. */
+  height: 44px;
   display: flex;
   align-items: center;
 }
@@ -145,7 +146,7 @@ function reset() {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 24px;
+  height: 44px;
   margin: 0;
   background: transparent;
   pointer-events: none;
@@ -156,8 +157,8 @@ function reset() {
 .range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   background: var(--text);
   border: 2px solid var(--accent);
   border-radius: 50%;
@@ -167,8 +168,8 @@ function reset() {
 }
 
 .range-input::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   background: var(--text);
   border: 2px solid var(--accent);
   border-radius: 50%;
@@ -184,6 +185,27 @@ function reset() {
 .range-input::-moz-range-track {
   background: transparent;
   height: 4px;
+}
+
+/* The input element covers the entire track, so a ring on it would outline the
+   full width. Ring the thumb, which is what the user is actually moving. */
+.range-input:focus-visible {
+  outline: none;
+}
+
+.range-input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.range-input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.reset-btn {
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .range-labels {
