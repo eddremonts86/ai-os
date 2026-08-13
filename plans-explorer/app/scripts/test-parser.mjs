@@ -149,13 +149,16 @@ const inv = [
   { name: 'no plan is missing id', ok: plans.every((p) => /^\d{3}$/.test(p.id)), got: plans.filter((p) => !/^\d{3}$/.test(p.id)).length },
   { name: 'no plan has wtp.mrrMid negative', ok: plans.every((p) => !p.wtp || p.wtp.mrrMid == null || p.wtp.mrrMid >= 0), got: plans.filter((p) => p.wtp?.mrrMid < 0).length },
   { name: 'plans.json plans with sourceUrl have an excerpt', ok: plans.every((p) => !p.sourceUrl || (typeof p.excerpt === 'string' && p.excerpt.length > 0)), got: plans.filter((p) => p.sourceUrl && (!p.excerpt || p.excerpt.length === 0)).length },
-  // Regression guards for the HTML→text pipeline. 178/525 plans once shipped raw
-  // `&#39;` to the UI, and a naive decode-without-strip fix pushed 326/525 to
-  // showing `<!-- SC_OFF --><div class="md">` instead. Both are now invariants.
+  // Regression guards for the HTML→text pipeline. 178 of the then-525 plans once
+  // shipped raw `&#39;` to the UI, and a naive decode-without-strip fix pushed 326
+  // to showing `<!-- SC_OFF --><div class="md">` instead. Both are now invariants.
   { name: 'no display field contains an HTML entity', ok: plans.every((p) => !DISPLAY_FIELDS.some((f) => ENTITY_RE.test(p[f] || ''))), got: plans.filter((p) => DISPLAY_FIELDS.some((f) => ENTITY_RE.test(p[f] || ''))).length },
   { name: 'no display field contains an HTML tag or comment', ok: plans.every((p) => !DISPLAY_FIELDS.some((f) => MARKUP_RE.test(p[f] || ''))), got: plans.filter((p) => DISPLAY_FIELDS.some((f) => MARKUP_RE.test(p[f] || ''))).length },
   { name: 'no display field contains a zero-width character', ok: plans.every((p) => !DISPLAY_FIELDS.some((f) => ZERO_WIDTH_RE.test(p[f] || ''))), got: plans.filter((p) => DISPLAY_FIELDS.some((f) => ZERO_WIDTH_RE.test(p[f] || ''))).length },
-  { name: 'zips directory exists and has 525 entries', ok: existsSync(join(DATA, 'zips')) && readdirSync(join(DATA, 'zips')).length === 525, got: existsSync(join(DATA, 'zips')) ? readdirSync(join(DATA, 'zips')).length : 'missing' },
+  // Relational, not a hardcoded corpus size. This asserted `=== 525` and started
+  // failing the moment the corpus grew to 552 — the same brittleness as the
+  // hardcoded "525 plans" the UI used to print. What matters is one zip per plan.
+  { name: 'zips directory has exactly one entry per plan', ok: existsSync(join(DATA, 'zips')) && readdirSync(join(DATA, 'zips')).length === plans.length, got: existsSync(join(DATA, 'zips')) ? `${readdirSync(join(DATA, 'zips')).length} zips / ${plans.length} plans` : 'missing' },
 ];
 
 let invPass = 0;
