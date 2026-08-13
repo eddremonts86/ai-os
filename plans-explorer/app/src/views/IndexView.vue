@@ -340,7 +340,7 @@ onMounted(load);
 }
 
 .clear-btn:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   border-color: var(--accent);
 }
 
@@ -433,8 +433,12 @@ onMounted(load);
     height: 22px;
     padding: 0 6px;
     border-radius: 999px;
-    background: var(--accent);
-    color: #fff;
+    /* Tint + accent-text, matching .chip.is-accent. The first version of this
+       badge was accent fill with white text, which measures 4.35:1 and fails AA;
+       this pair measures 4.89:1 and is already the app's idiom for a count. */
+    background: var(--accent-a10);
+    border: 1px solid var(--accent-a30);
+    color: var(--accent-text);
     font-size: 12px;
     font-weight: 600;
     font-variant-numeric: tabular-nums;

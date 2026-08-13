@@ -84,7 +84,9 @@ const countryFlag = computed(() => {
 
 .plan-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(124, 92, 255, 0.3);
+  /* Full accent, not a 30% tint: the tint measured 1.43:1 on --surface, and with
+     reduced motion removing the transform this border is the only hover feedback. */
+  border-color: var(--accent);
   box-shadow: var(--shadow-2);
 }
 
@@ -109,7 +111,7 @@ const countryFlag = computed(() => {
 }
 
 .card-title a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .card-excerpt {
@@ -187,7 +189,7 @@ const countryFlag = computed(() => {
 }
 
 .link-out:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--surface-2);
 }
 </style>

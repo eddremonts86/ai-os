@@ -6,7 +6,16 @@
   --line: #1f2530;
   --text: #e8ebf2;
   --text-dim: #9aa3b2;
+  /* --accent is the brand purple, used for FILLS, RAILS, BORDERS and the focus
+     ring. It measures 4.24:1 on --surface, which clears the 3:1 WCAG 1.4.11 floor
+     for non-text, but NOT the 4.5:1 for text. */
   --accent: #7c5cff;
+  /* ...so accent-coloured TEXT uses this instead: the same hue lifted 15% toward
+     white. Measured on every surface the UI actually pairs it with — 5.38:1 on
+     --surface, 5.08:1 on --surface-2, 5.67:1 on --bg, and 4.89:1 on the 10%
+     accent tint the chips use. The old single token put 12px chip labels at
+     3.86:1. */
+  --accent-text: #9074ff;
   --accent-2: #3ddc97;
   --warn: #f5a524;
   --danger: #ef4444;
@@ -14,6 +23,24 @@
   /* Keyboard focus ring. Kept as its own token so the ring never silently
      inherits a palette change that drops it below the 3:1 WCAG 1.4.11 floor. */
   --focus: #7c5cff;
+
+  /* Alpha derivations. These existed as 25 hand-written rgba() literals across 8
+     files, so changing --accent left every one of them purple. Named by source
+     colour and opacity so the relationship is legible. */
+  --accent-a05: rgba(124, 92, 255, 0.05);
+  --accent-a10: rgba(124, 92, 255, 0.1);
+  --accent-a30: rgba(124, 92, 255, 0.3);
+  --accent-2-a10: rgba(61, 220, 151, 0.1);
+  --accent-2-a30: rgba(61, 220, 151, 0.3);
+  --warn-a10: rgba(245, 165, 36, 0.1);
+  --warn-a30: rgba(245, 165, 36, 0.3);
+  /* Neutral wash for zebra striping and inset panels. */
+  --ink-a02: rgba(255, 255, 255, 0.02);
+
+  /* Fenced code. Was two bare literals in MarkdownReader; named here so a theme
+     change reaches them. --code-fg is 9.29:1 on --code-bg. */
+  --code-bg: #1a1d24;
+  --code-fg: #c0c5d0;
 
   --radius-sm: 6px;
   --radius-md: 8px;

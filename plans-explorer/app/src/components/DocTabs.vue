@@ -64,7 +64,7 @@ const TABS: { key: DocKey; label: string }[] = [
 }
 
 .doc-tab.is-active {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .doc-tab.is-disabled {

@@ -110,7 +110,7 @@ function reset() {
 }
 
 .reset-btn:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--surface-2);
 }
 

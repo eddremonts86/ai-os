@@ -88,7 +88,7 @@ onMounted(async () => {
 }
 
 .brand-mark {
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 18px;
 }
 
@@ -145,7 +145,7 @@ onMounted(async () => {
 }
 
 .app-footer a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .fade-enter-active,

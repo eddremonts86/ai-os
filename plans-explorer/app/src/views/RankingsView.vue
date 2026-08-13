@@ -152,7 +152,7 @@ onMounted(load);
   padding: 1px 6px;
   background: var(--surface-2);
   border-radius: 4px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .rankings-grid {
@@ -229,7 +229,7 @@ onMounted(load);
 }
 
 .rank-item:hover {
-  border-color: rgba(124, 92, 255, 0.3);
+  border-color: var(--accent);
   transform: translateX(2px);
 }
 
@@ -237,7 +237,7 @@ onMounted(load);
   font-family: var(--font-mono);
   font-size: 22px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-text);
   line-height: 1;
   text-align: center;
 }
@@ -267,7 +267,7 @@ onMounted(load);
 }
 
 .rank-title:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .rank-badge.is-multi {
@@ -275,8 +275,8 @@ onMounted(load);
   align-items: center;
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(245, 165, 36, 0.1);
-  border: 1px solid rgba(245, 165, 36, 0.3);
+  background: var(--warn-a10);
+  border: 1px solid var(--warn-a30);
   color: var(--warn);
   font-size: 10px;
   font-weight: 600;
@@ -311,7 +311,7 @@ onMounted(load);
 }
 
 .link-out:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--surface);
 }
 </style>

@@ -60,7 +60,7 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
 }
 
 .md-reader a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 150ms;
@@ -103,7 +103,7 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
   margin: 0 0 1em;
   padding: 0.6em 1em;
   border-left: 3px solid var(--accent);
-  background: rgba(124, 92, 255, 0.05);
+  background: var(--accent-a05);
   color: var(--text-dim);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
@@ -118,13 +118,14 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
   padding: 1px 6px;
   background: var(--surface-2);
   border-radius: 4px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .md-reader pre {
   margin: 0 0 1.2em;
   padding: 14px 16px;
-  background: #1a1d24;
+  /* Slightly above --surface-2 so fenced code reads as inset. */
+  background: var(--code-bg);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   overflow-x: auto;
@@ -135,7 +136,7 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
 .md-reader pre code {
   padding: 0;
   background: transparent;
-  color: #c0c5d0;
+  color: var(--code-fg);
   font-size: inherit;
 }
 
@@ -163,7 +164,7 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
 }
 
 .md-reader tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--ink-a02);
 }
 
 .md-reader img {

@@ -84,7 +84,7 @@ function toggle(opt: string) {
 }
 
 .facet-active-count {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -146,7 +146,7 @@ function toggle(opt: string) {
 }
 
 .facet-option:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .facet-option input[type='checkbox'] {

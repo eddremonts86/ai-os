@@ -234,7 +234,7 @@ function goBack() {
 }
 
 .back-btn:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   border-color: var(--accent);
 }
 
@@ -328,7 +328,7 @@ function goBack() {
 }
 
 .sidebar-link {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: none;
   font-size: 13px;
   border-bottom: 1px solid transparent;
@@ -347,7 +347,7 @@ function goBack() {
   background: var(--surface-2);
   border: 1px solid var(--accent);
   border-radius: var(--radius-md);
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 500;
   transition: background 150ms, color 150ms;
 }
