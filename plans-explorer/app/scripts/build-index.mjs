@@ -1,0 +1,640 @@
+#!/usr/bin/env node
+/**
+ * plans-explorer indexer (build-time).
+ *
+ * Reads projects dir SPEC, PRODUCT, PLAN and TOP_PROJECTS.md
+ * and writes plans.json + rankings.json + documents per-id json.
+ *
+ * Run via `npm run index` or as prebuild hook before `vite build`.
+ */
+
+import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '..', '..'); // .../plans-explorer/
+const PROJECTS_DIR = join(ROOT, '..', 'projects'); // .../ai-os/projects
+const OUT_DATA = join(ROOT, 'app', 'public', 'data');
+const OUT_DOCS = join(OUT_DATA, 'documents');
+const CACHE_DIR = join(ROOT, 'app', '.cache', 'sources');
+
+// ---------- Utilities ----------
+
+function readSafe(path) {
+  try {
+    return readFileSync(path, 'utf8');
+  } catch {
+    return null;
+  }
+}
+
+function listPlanDirs() {
+  if (!existsSync(PROJECTS_DIR)) return [];
+  return readdirSync(PROJECTS_DIR)
+    .filter((name) => /^\d{3}-/.test(name))
+    .map((name) => join(PROJECTS_DIR, name))
+    .filter((p) => existsSync(join(p, 'SPEC.md')))
+    .sort();
+}
+
+function parseId(dirName) {
+  const m = dirName.match(/^(\d{3})-(.+)$/);
+  if (!m) return null;
+  return { id: m[1], slug: m[2] };
+}
+
+// Strip H1 prefix like `# SPEC.md — ` or `# PLAN.md — ` to get the actual title.
+function extractTitle(md, fallback) {
+  const m = md.match(/^#\s+(?:SPEC|PRODUCT|PLAN|DESIGN|TASKS)\.md\s*[-—–]\s*(.+)$/m);
+  if (m) return m[1].trim();
+  const h1 = md.match(/^#\s+(.+)$/m);
+  return h1 ? h1[1].trim() : fallback;
+}
+
+function extractCategory(specText) {
+  const m = specText.match(/\*\*Categoría primaria:\*\*\s*([a-z][a-z-]*)/i);
+  return m ? m[1].toLowerCase() : 'other';
+}
+
+function extractTags(specText, productText) {
+  const out = new Set();
+  const re = /\*\*Tags:\*\*\s*([^*\n]+)/gi;
+  for (const t of [specText, productText]) {
+    if (!t) continue;
+    let m;
+    while ((m = re.exec(t)) !== null) {
+      m[1].split(',').map((s) => s.trim()).filter(Boolean).forEach((tag) => out.add(tag));
+    }
+  }
+  return [...out];
+}
+
+function extractDate(specText) {
+  const iso = specText.match(/\*\*Fecha:\*\*\s*(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+  const reddit = specText.match(/\*\*Posted:\*\*\s*(\d{4}-\d{2}-\d{2})/);
+  if (reddit) return reddit[1];
+  return null;
+}
+
+function extractCountry(specText) {
+  const pre = specText.split(/\*\*Fuente:\*\*/)[0] ?? specText;
+  const KNOWN_CATEGORIES = new Set([
+    'validated', 'ai', 'hardware', 'dev', 'no-code', 'freelance', 'design',
+    'marketing', 'seo', 'retail', 'finance', 'legal', 'realty', 'travel',
+    'immigration', 'career', 'education', 'health', 'food', 'fitness',
+    'productivity', 'media', 'social', 'startups', 'logistics',
+    'transportation', 'business', 'security', 'psychology', 'agtech', 'other',
+  ]);
+  const lines = pre.split('\n').map((l) => l.trim()).filter(Boolean);
+  for (const line of lines) {
+    if (/^[A-Z][a-zA-Z\s]+$/.test(line) && line.length < 40 && !line.startsWith('#')) {
+      if (KNOWN_CATEGORIES.has(line.toLowerCase())) continue;
+      if (/^(Problema|Objetivo|Alcance|Design|Constraints|MVP|Source|Subreddit|Posted|Tags|Categoría|Fecha)$/i.test(line)) continue;
+      return line;
+    }
+  }
+  return null;
+}
+
+function extractTech(planText) {
+  if (!planText) return [];
+  const out = [];
+  const re = /\*\*\s*(Frontend|Backend|DB|Database|Despliegue|Stack|Framework):\*\*\s*([^\n]+)/gi;
+  let m;
+  while ((m = re.exec(planText)) !== null) {
+    const stack = m[2].split(/[+,]/).map((s) => s.trim()).filter(Boolean);
+    out.push(...stack);
+  }
+  return [...new Set(out)];
+}
+
+function extractSourceUrl(specText, slug, primaryCategory) {
+  const m = specText.match(/\*\*Fuente:\*\*\s*\[(?:ProblemHunt|.+?)\]\((https?:\/\/[^)]+)\)/);
+  if (m) return m[1];
+  if (slug && primaryCategory && primaryCategory !== 'other') {
+    return `https://problemhunt.pro/en/${primaryCategory}/${slug}`;
+  }
+  return null;
+}
+
+function parseWillingnessToPay(text) {
+  if (!text) return null;
+  const flat = text.replace(/\s+/g, ' ');
+  const anchoredRe = /(?:willing\s+to\s+pay|we(?:\s+can|\s+will|\s+would|\s+are\s+willing\s+to)?\s+pay|budget(?:\s+is)?|ready\s+to\s+(?:pay|invest)|pay\s+(?:up\s+)?to|price\s+(?:is|of)|cost[s]?\s+(?:is|of))\s*[:\$€£]?\s*([\$€£]\s?\d[\d,\s]*[\d])(?:\s*(?:per|\/|a|an?)\s*(month|year|project|deal|week|mo|yr))?/i;
+  const m = flat.match(anchoredRe);
+  if (m) return normalizeWtp(m[0], m[1], m[2]);
+  const bare = flat.match(/[\$€£]\s?(\d[\d,]*(?:\s*[–—\-~]\s*\d[\d,]*)?)\s*(?:\/\s*)?(month|year|mo|yr|week)/i);
+  if (bare) {
+    const idx = flat.indexOf(bare[0]);
+    const before = flat.slice(Math.max(0, idx - 80), idx);
+    if (/(willing|pay|budget|negotiab|invest|spend|tier|price)/i.test(before)
+        && !/(charging|competitor|anchor|instead of|rivals?|alternative|vs\.?|versus)/i.test(before)) {
+      return normalizeWtp(bare[0], bare[1], bare[2]);
+    }
+  }
+  if (/negotiable|open to discussing/i.test(flat)) {
+    return { raw: 'negotiable', currency: null, min: null, max: null, period: null, mrrMid: null };
+  }
+  return null;
+}
+
+function normalizeWtp(rawMatch, amountStr, periodStr) {
+  const currencyMatch = rawMatch.match(/[\$€£]/);
+  const currency = currencyMatch ? currencyMatch[0] : null;
+  const nums = amountStr
+    .replace(/[\$€£,\s]/g, '')
+    .split(/[–—\-~]/)
+    .map((n) => parseInt(n, 10))
+    .filter((n) => !Number.isNaN(n));
+  if (nums.length === 0) return null;
+  const min = nums[0];
+  const max = nums.length > 1 ? nums[1] : nums[0];
+
+  let period = null;
+  if (periodStr) {
+    const p = periodStr.toLowerCase();
+    if (p.startsWith('mo')) period = 'month';
+    else if (p.startsWith('yr') || p === 'year') period = 'year';
+    else if (p === 'project' || p === 'deal') period = 'one-shot';
+    else if (p === 'week') period = 'week';
+  }
+
+  let mrrMid = null;
+  if (min != null && max != null) {
+    const mid = (min + max) / 2;
+    if (period === 'month') mrrMid = mid;
+    else if (period === 'year') mrrMid = mid / 12;
+    else if (period === 'week') mrrMid = mid * 4.33;
+    else if (period === 'one-shot') mrrMid = mid / 12;
+    else mrrMid = mid;
+  }
+
+  return {
+    raw: rawMatch.trim().replace(/\s+/g, ' '),
+    currency,
+    min,
+    max,
+    period,
+    mrrMid: mrrMid != null ? Math.round(mrrMid) : null,
+  };
+}
+
+// ---------- Source scraper (ProblemHunt + Reddit) ----------
+
+function cleanExcerpt(text, maxLen = 280) {
+  if (!text) return '';
+  return text.replace(/\s+/g, ' ').trim().slice(0, maxLen);
+}
+
+function extractProblemhuntProblem(html) {
+  // 1. Try the standard "1. Describe the problem:" h3 + t-redactor__text div pattern.
+  const standard = html.match(/<h3[^>]*>\s*1\.\s*Describe the problem:\s*<\/h3>\s*<div[^>]*class="[^"]*t-redactor__text[^"]*"[^>]*>([\s\S]+?)<\/div>\s*<h3/i);
+  if (standard) return cleanHtmlText(standard[1]);
+
+  // 2. Fallback for "validated" / research posts: scan t-redactor__text blocks.
+  //    Skip author intros ("Name, co-founder...") and generic greetings ("Hello, ProblemHunt...").
+  const blocks = [...html.matchAll(/<div[^>]*class="[^"]*t-redactor__text[^"]*"[^>]*>([\s\S]+?)<\/div>/g)]
+    .map((m) => cleanHtmlText(m[1]))
+    .filter((t) => t.length >= 80);
+
+  const isAuthorIntro = (t) =>
+    /^[A-Z][a-z]+\s+[A-Z][a-z]+,?\s+(co-?founder|founder|CEO|CTO|holds|has|is an?|works)/i.test(t);
+
+  const isGreeting = (t) =>
+    /^(Hello|Hey|Hi|Dear)\b.*(ProblemHunt|community|everyone|all|there|guys|folks)/i.test(t)
+    || /^Hello,?\s/i.test(t.slice(0, 30))
+    || /^Hey\s+(guys|there|all|everyone|folks|community)\b/i.test(t)
+    || /^Hi\s+(guys|there|all|everyone|folks|community)\b/i.test(t);
+
+  const isModeratorNote = (t) =>
+    /^Moderator'?s?\s+note/i.test(t);
+
+  // Try non-greeting blocks first (problem statement usually follows the greeting).
+  for (const text of blocks) {
+    if (isAuthorIntro(text)) continue;
+    if (isModeratorNote(text)) continue;
+    if (isGreeting(text)) continue;
+    return text;
+  }
+
+  // If all blocks are greetings, use the longest one (better than nothing).
+  if (blocks.length > 0) {
+    return blocks.reduce((a, b) => (b.length > a.length ? b : a), '');
+  }
+  return null;
+}
+
+function cleanHtmlText(html) {
+  return html
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractRedditProblem(html) {
+  // Reddit embeds the post body in <div class="md"> ... </div>.
+  const m = html.match(/<div class="md">([\s\S]+?)<\/div><!-- SC_ON -->/);
+  if (!m) return null;
+  // Strip all tags and decode common entities.
+  const text = m[1]
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#32;/g, ' ');
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+async function scrapeSource(url, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'accept-language': 'en-US,en;q=0.9',
+      },
+      redirect: 'follow',
+    });
+    if (!res.ok) return null;
+    return await res.text();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function getOriginalProblem(sourceUrl) {
+  if (!sourceUrl) return null;
+  // Try ProblemHunt first
+  if (sourceUrl.includes('problemhunt.pro')) {
+    const html = await scrapeSource(sourceUrl);
+    if (html) {
+      const ph = extractProblemhuntProblem(html);
+      if (ph) return ph;
+    }
+    // Fallback: ProblemHunt page did not match the section selector — try the page itself.
+    const html2 = await scrapeSource(sourceUrl);
+    if (html2) return extractRedditProblem(html2) || null;
+  }
+  // Try Reddit
+  if (sourceUrl.includes('reddit.com')) {
+    const html = await scrapeSource(sourceUrl + '.json', 6000);
+    if (html) {
+      try {
+        const json = JSON.parse(html);
+        const post = json?.[0]?.data?.children?.[0]?.data;
+        if (post?.selftext) return post.selftext.replace(/\s+/g, ' ').trim();
+      } catch { /* ignore parse error */ }
+    }
+    // Fallback: scrape old.reddit.com (simpler markup, no JS).
+    const html2 = await scrapeSource(sourceUrl.replace('www.reddit.com', 'old.reddit.com'));
+    if (html2) {
+      const r = extractRedditProblem(html2);
+      if (r) return r;
+    }
+  }
+  return null;
+}
+
+async function cachedOriginalProblem(id, sourceUrl) {
+  mkdirSync(CACHE_DIR, { recursive: true });
+  const cachePath = join(CACHE_DIR, `${id}.txt`);
+  if (existsSync(cachePath)) {
+    const cached = readSafe(cachePath);
+    if (cached) return cached;
+  }
+  const fresh = await getOriginalProblem(sourceUrl);
+  if (fresh) writeFileSync(cachePath, fresh);
+  return fresh;
+}
+
+// ---------- TOP_PROJECTS.md → rankings.json ----------
+
+function parseRankings(topPath) {
+  const md = readSafe(topPath);
+  if (!md) return { money: [], learn: [], fun: [] };
+
+  const sections = { money: [], learn: [], fun: [] };
+  const sectionRe = /^##\s+Top\s+\d+\s+[—–-]\s+(.+)$/gm;
+  const matches = [...md.matchAll(sectionRe)];
+  for (let i = 0; i < matches.length; i++) {
+    const heading = matches[i][1].toLowerCase();
+    let key = null;
+    if (heading.includes('revenue') || heading.includes('money')) key = 'money';
+    else if (heading.includes('learning')) key = 'learn';
+    else if (heading.includes('fun')) key = 'fun';
+    if (!key) continue;
+
+    const start = matches[i].index + matches[i][0].length;
+    const end = i + 1 < matches.length ? matches[i + 1].index : md.length;
+    const body = md.slice(start, end);
+
+    const itemRe = /(\d+)\.\s+\*\*(\d{3}-[^*]+?)\*\*\s+[—–-]\s+score\s+(\d+)\/10\s*\n\s*_(.+?)_/g;
+    let im;
+    while ((im = itemRe.exec(body)) !== null) {
+      const id = im[2].slice(0, 3);
+      sections[key].push({ id, score: parseInt(im[3], 10), hook: im[4].trim() });
+    }
+  }
+  return sections;
+}
+
+// ---------- Single plan parse ----------
+
+function parsePlan(dirPath) {
+  const dirName = dirPath.split('/').pop();
+  const parsed = parseId(dirName);
+  if (!parsed) return null;
+  const { id, slug } = parsed;
+
+  const specText = readSafe(join(dirPath, 'SPEC.md')) ?? '';
+  const productText = readSafe(join(dirPath, 'PRODUCT.md')) ?? '';
+  const planText = readSafe(join(dirPath, 'PLAN.md')) ?? '';
+
+  const title = extractTitle(specText, slug);
+  const category = extractCategory(specText);
+  const tags = extractTags(specText, productText);
+  const date = extractDate(specText);
+  const country = extractCountry(specText);
+  const tech = extractTech(planText);
+  const sourceUrl = extractSourceUrl(specText, slug, category);
+
+  const problemaMatch = specText.match(/##\s+Problema Detectado\s*\n+([\s\S]+?)(?=\n##\s|\n\*\*Fuente|\n---)/);
+  const problema = problemaMatch ? problemaMatch[1] : '';
+  const wtp = parseWillingnessToPay([title, problema].join(' '));
+
+  // Build a local-only excerpt (regex-cleaned HTML escapado). Replaced by the
+  // scraped original problem in main() when the fetch succeeds.
+  const localExcerpt = problema
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 280) || title;
+
+  return {
+    id,
+    slug,
+    title,
+    category,
+    categories: [category, ...tags.filter((t) => t.toLowerCase() === category)].filter((v, i, a) => a.indexOf(v) === i),
+    tags,
+    date,
+    country,
+    tech,
+    sourceUrl,
+    wtp,
+    excerpt: localExcerpt,
+    hasSpec: !!specText,
+    hasProduct: !!productText,
+    hasPlan: !!planText,
+  };
+}
+
+// ---------- Write per-document files (lazy md) ----------
+
+function writeDocumentFiles(plans) {
+  mkdirSync(OUT_DOCS, { recursive: true });
+  for (const p of plans) {
+    const dirPath = join(PROJECTS_DIR, `${p.id}-${p.slug}`);
+    const docs = {};
+    for (const name of ['SPEC.md', 'PRODUCT.md', 'PLAN.md', 'DESIGN.md', 'TASKS.md']) {
+      const text = readSafe(join(dirPath, name));
+      if (text) docs[name.replace('.md', '')] = text;
+    }
+    if (Object.keys(docs).length > 0) {
+      writeFileSync(join(OUT_DOCS, `${p.id}.json`), JSON.stringify(docs));
+    }
+  }
+}
+
+// ---------- Pre-built ZIPs (one per plan) ----------
+// Each zip contains SPEC.md + PRODUCT.md + PLAN.md + DESIGN.md + TASKS.md +
+// a generated README.md with metadata. Uses Node's built-in `zlib` to write
+// store-only entries (no compression — these are small text files and gzip
+// would cost more time than it saves for ~1KB inputs).
+
+import { deflateRawSync, crc32 } from 'node:zlib';
+
+function writeZipEntry(fileName, content) {
+  const nameBuf = Buffer.from(fileName, 'utf8');
+  const dataBuf = Buffer.from(content, 'utf8');
+  const compressed = deflateRawSync(dataBuf);
+  const crc = crc32(dataBuf);
+
+  // Local file header
+  const local = Buffer.alloc(30 + nameBuf.length);
+  local.writeUInt32LE(0x04034b50, 0);                  // signature
+  local.writeUInt16LE(20, 4);                            // version needed
+  local.writeUInt16LE(0, 6);                             // flags
+  local.writeUInt16LE(8, 8);                             // method = deflate
+  local.writeUInt16LE(0, 10);                            // mod time
+  local.writeUInt16LE(0, 12);                            // mod date
+  local.writeUInt32LE(crc, 14);                          // crc32
+  local.writeUInt32LE(compressed.length, 18);            // compressed size
+  local.writeUInt32LE(dataBuf.length, 22);               // uncompressed size
+  local.writeUInt16LE(nameBuf.length, 26);               // name length
+  local.writeUInt16LE(0, 28);                            // extra length
+  nameBuf.copy(local, 30);
+
+  return { local, central: null, compressed, nameBuf, crc, dataBuf };
+}
+
+function buildZip(entries) {
+  const chunks = [];
+  const central = [];
+  let offset = 0;
+
+  for (const e of entries) {
+    chunks.push(e.local);
+    chunks.push(e.compressed);
+    const localHeaderSize = 30 + e.nameBuf.length;
+
+    // Central directory entry
+    const cd = Buffer.alloc(46 + e.nameBuf.length);
+    cd.writeUInt32LE(0x02014b50, 0);                     // signature
+    cd.writeUInt16LE(20, 4);                             // version made by
+    cd.writeUInt16LE(20, 6);                             // version needed
+    cd.writeUInt16LE(0, 8);                              // flags
+    cd.writeUInt16LE(8, 10);                             // method
+    cd.writeUInt16LE(0, 12);                             // mod time
+    cd.writeUInt16LE(0, 14);                             // mod date
+    cd.writeUInt32LE(e.crc, 16);                         // crc32
+    cd.writeUInt32LE(e.compressed.length, 20);           // compressed size
+    cd.writeUInt32LE(e.dataBuf.length, 24);              // uncompressed size
+    cd.writeUInt16LE(e.nameBuf.length, 28);              // name length
+    cd.writeUInt16LE(0, 30);                             // extra length
+    cd.writeUInt16LE(0, 32);                             // comment length
+    cd.writeUInt16LE(0, 34);                             // disk number
+    cd.writeUInt16LE(0, 36);                             // internal attrs
+    cd.writeUInt32LE(0, 38);                             // external attrs
+    cd.writeUInt32LE(offset, 42);                        // local header offset
+    e.nameBuf.copy(cd, 46);
+    central.push(cd);
+
+    offset += localHeaderSize + e.compressed.length;
+  }
+
+  const centralStart = offset;
+  let centralSize = 0;
+  for (const c of central) {
+    chunks.push(c);
+    centralSize += c.length;
+  }
+
+  // End of central directory
+  const eocd = Buffer.alloc(22);
+  eocd.writeUInt32LE(0x06054b50, 0);                     // signature
+  eocd.writeUInt16LE(0, 4);                              // disk number
+  eocd.writeUInt16LE(0, 6);                              // disk with central
+  eocd.writeUInt16LE(entries.length, 8);                 // entries on this disk
+  eocd.writeUInt16LE(entries.length, 10);                // total entries
+  eocd.writeUInt32LE(centralSize, 12);                   // central size
+  eocd.writeUInt32LE(centralStart, 16);                  // central offset
+  eocd.writeUInt16LE(0, 20);                             // comment length
+  chunks.push(eocd);
+
+  return Buffer.concat(chunks);
+}
+
+function buildPlanReadme(plan) {
+  const lines = [];
+  lines.push(`# Plan ${plan.id}: ${plan.title}`);
+  lines.push('');
+  lines.push('> Auto-generated from AI-OS Plans Explorer.');
+  lines.push('> This bundle lets you start the project from scratch without cloning the corpus.');
+  lines.push('');
+  lines.push('## Metadata');
+  lines.push('');
+  if (plan.sourceUrl) lines.push(`- **Source:** ${plan.sourceUrl}`);
+  if (plan.country) lines.push(`- **Country:** ${plan.country}`);
+  if (plan.date) lines.push(`- **Date:** ${plan.date}`);
+  lines.push(`- **Category:** ${plan.category}`);
+  if (plan.tags.length) lines.push(`- **Tags:** ${plan.tags.join(', ')}`);
+  if (plan.tech.length) lines.push(`- **Tech stack:** ${plan.tech.join(', ')}`);
+  if (plan.wtp) lines.push(`- **Willingness to pay:** ${plan.wtp.raw}${plan.wtp.mrrMid != null ? ` (~$${plan.wtp.mrrMid}/mo)` : ''}`);
+  if (plan.scores.money || plan.scores.learn || plan.scores.fun) {
+    const scores = [];
+    if (plan.scores.money != null) scores.push(`💰 ${plan.scores.money}`);
+    if (plan.scores.learn != null) scores.push(`🧠 ${plan.scores.learn}`);
+    if (plan.scores.fun != null) scores.push(`🎮 ${plan.scores.fun}`);
+    lines.push(`- **Scores:** ${scores.join(' · ')}`);
+  }
+  lines.push('');
+  lines.push('## Contents');
+  lines.push('');
+  lines.push('- `SPEC.md` — full problem spec.');
+  lines.push('- `PRODUCT.md` — product brief (value prop, JTBD, metrics).');
+  lines.push('- `PLAN.md` — tech stack and milestones.');
+  if (plan.hasProduct === false) lines.push('- (no PRODUCT.md)');
+  if (plan.hasPlan === false) lines.push('- (no PLAN.md)');
+  lines.push('');
+  lines.push('## How to start');
+  lines.push('');
+  lines.push('1. Read `SPEC.md` end to end.');
+  lines.push('2. Validate the problem (5 user interviews, willingness to pay).');
+  lines.push('3. Follow the milestones in `PLAN.md`.');
+  if (plan.sourceUrl) lines.push(`4. Compare with the original post: ${plan.sourceUrl}`);
+  lines.push('');
+  return lines.join('\n');
+}
+
+function writePlanZips(plans) {
+  const outDir = join(OUT_DATA, 'zips');
+  mkdirSync(outDir, { recursive: true });
+  for (const p of plans) {
+    const dirPath = join(PROJECTS_DIR, `${p.id}-${p.slug}`);
+    const entries = [];
+
+    // README first (so it shows at top in tools that sort alphabetically)
+    entries.push(writeZipEntry('README.md', buildPlanReadme(p)));
+
+    for (const name of ['SPEC.md', 'PRODUCT.md', 'PLAN.md', 'DESIGN.md', 'TASKS.md']) {
+      const text = readSafe(join(dirPath, name));
+      if (text) entries.push(writeZipEntry(name, text));
+    }
+
+    const zipBuf = buildZip(entries);
+    writeFileSync(join(outDir, `${p.id}.zip`), zipBuf);
+  }
+}
+
+// ---------- Main ----------
+
+async function main() {
+  const t0 = Date.now();
+  console.log('[indexer] reading corpus from', PROJECTS_DIR);
+
+  const dirs = listPlanDirs();
+  console.log(`[indexer] found ${dirs.length} plan dirs`);
+
+  const plans = [];
+  const scoreIndex = { money: new Map(), learn: new Map(), fun: new Map() };
+
+  const rankings = parseRankings(join(PROJECTS_DIR, 'TOP_PROJECTS.md'));
+  for (const k of ['money', 'learn', 'fun']) {
+    for (const item of rankings[k]) scoreIndex[k].set(item.id, item.score);
+  }
+
+  for (const dir of dirs) {
+    const p = parsePlan(dir);
+    if (!p) continue;
+    p.scores = {
+      money: scoreIndex.money.get(p.id) ?? null,
+      learn: scoreIndex.learn.get(p.id) ?? null,
+      fun: scoreIndex.fun.get(p.id) ?? null,
+    };
+    plans.push(p);
+  }
+
+  mkdirSync(OUT_DATA, { recursive: true });
+
+  // Scrape original problem text for plans with a source URL.
+  const scrapable = plans.filter((p) => p.sourceUrl);
+  console.log(`[indexer] scraping ${scrapable.length} sources (cached after first run)`);
+  let scraped = 0;
+  let cached = 0;
+  for (const p of plans) {
+    if (!p.sourceUrl) continue;
+    const wasCached = existsSync(join(CACHE_DIR, `${p.id}.txt`));
+    const original = await cachedOriginalProblem(p.id, p.sourceUrl);
+    if (original) {
+      p.excerpt = cleanExcerpt(original, 280);
+      p.originalExcerpt = cleanExcerpt(original, 1200);
+      if (wasCached) cached++; else scraped++;
+    }
+  }
+  console.log(`[indexer] scraped=${scraped} cached=${cached}`);
+
+  // Strip bulky per-doc dump from plans.json (kept in documents/<id>.json instead).
+  const slim = plans.map(({ id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores }) => ({
+    id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores,
+  }));
+
+  writeFileSync(join(OUT_DATA, 'plans.json'), JSON.stringify(slim));
+  writeFileSync(join(OUT_DATA, 'rankings.json'), JSON.stringify(rankings));
+
+  writeDocumentFiles(plans);
+  writePlanZips(plans);
+
+  const dt = Date.now() - t0;
+  console.log(`[indexer] wrote ${slim.length} plans + rankings (money=${rankings.money.length}, learn=${rankings.learn.length}, fun=${rankings.fun.length}) in ${dt}ms`);
+}
+
+main();

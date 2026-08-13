@@ -1,0 +1,133 @@
+# plans-explorer
+
+Static SPA that indexes and renders the 525 product plans living in `../projects/` (each plan has SPEC/PRODUCT/PLAN/DESIGN/TASKS) plus the auto-generated `TOP_PROJECTS.md` rankings (money / learn / fun).
+
+This is a **framework component of AI-OS**, not a personal/work project. It does NOT appear in `context/02_projects.md` — it's documented here and in the `plans-explorer` skill (see `ai-config/skills/plans-explorer/SKILL.md`).
+
+## What it does
+
+- **Index** all 525 plans at build-time into `app/public/data/plans.json` and `app/public/data/rankings.json`.
+- **Render** SPEC / PRODUCT / PLAN as markdown in the browser (`markdown-it` + GFM tables + hljs).
+- **Search & filter** by title, problem, tags, category, technology, country, willingness-to-pay range, and ranking scores.
+- **Display** the top-5 money / learn / fun rankings side-by-side, with badges for plans that appear in multiple rankings.
+
+## Quick start
+
+```bash
+cd app
+npm install
+npm run dev          # http://localhost:5173
+```
+
+## Build & refresh data
+
+```bash
+# from repo root
+./refresh-data.sh    # regenerates plans.json + rankings.json + vite build → app/dist/
+```
+
+Or manually:
+
+```bash
+cd app
+npm run index        # only the indexer (no vite build)
+npm run build        # runs prebuild → build-index.mjs → vue-tsc → vite build
+npm run test:parser  # run fixture tests against the indexer
+```
+
+The refresh script is meant to be hooked into the `problemhunt-scraper` cron so the app stays in sync when new plans arrive or the ranking updates.
+
+## Stack
+
+- **Build:** Vite 6 + vue-tsc (strict TypeScript)
+- **Framework:** Vue 3.5 (Composition API, `<script setup lang="ts">`)
+- **Router:** vue-router 4 (hash mode, lazy chunks per route)
+- **Markdown:** markdown-it + highlight.js (lazy-loaded on PlanView)
+- **Search:** Fuse.js (client-side, no backend)
+- **Styling:** CSS variables, tokens shared with `../site/index.html`. No Tailwind / UI kit.
+
+## Layout
+
+```
+plans-explorer/
+├── SPEC.md           ← what & why
+├── PLAN.md           ← architecture & stack
+├── PRODUCT.md        ← product brief (JTBD, metrics)
+├── DESIGN.md         ← visual tokens, components
+├── TASKS.md          ← 6 milestones, each with verify steps
+├── AGENTS.md         ← instructions for AI CLIs (Claude Code, Codex, Hermes, ...)
+├── README.md         ← this file
+├── refresh-data.sh   ← indexer + build wrapper
+└── app/
+    ├── package.json
+    ├── vite.config.ts
+    ├── tsconfig.json + tsconfig.node.json
+    ├── index.html
+    ├── .gitignore
+    ├── scripts/
+    │   ├── build-index.mjs          ← 11KB, regex parsers
+    │   └── test-parser.mjs          ← 5 fixtures + 9 invariants
+    ├── public/data/
+    │   ├── plans.json               ← generated, 525 entries (~360KB)
+    │   ├── rankings.json            ← generated, top-5 each
+    │   └── documents/<id>.json      ← generated, lazy md per plan
+    └── src/
+        ├── main.ts, App.vue, types.ts
+        ├── styles/tokens.css, app.css
+        ├── data/load.ts             ← fetch with cache
+        ├── lib/search.ts            ← Fuse + facets + sort
+        ├── lib/md.ts                ← markdown-it + hljs
+        ├── components/
+        │   ├── PlanCard.vue
+        │   ├── ScoreBadge.vue
+        │   ├── WtpBadge.vue
+        │   ├── FacetPanel.vue
+        │   ├── IncomeRangeSlider.vue
+        │   ├── DocTabs.vue
+        │   └── MarkdownReader.vue
+        └── views/
+            ├── IndexView.vue        ← grid + search + facets
+            ├── PlanView.vue         ← /plans/:id, tabs + sidebar
+            ├── RankingsView.vue     ← /rankings, 3 columns
+            └── AboutView.vue
+```
+
+## Bundle sizes (gzipped)
+
+- **IndexView (cold load):** 68.1 KB JS + 4.3 KB CSS + 0.4 KB HTML = **~73 KB**
+- **PlanView (lazy add):** +53.7 KB (markdown chunk) = **~127 KB**
+
+Both well under the 200 KB budget.
+
+## URL state
+
+All filters sync to the URL (debounced 150 ms). Refresh preserves the state:
+
+```
+/#/?q=shopify&cat=marketing&tag=AI&wtpMin=100&wtpMax=500&sort=money-desc
+```
+
+## Verified
+
+- **525 plans indexed** in ~250 ms.
+- **13 plans with stated mrrMid** (USD/mo), **1 with "negotiable"**.
+- **Test fixtures pass:** 5/5 fixture checks + 9/9 invariants.
+- **Smoke test E2E** (cold load → search → filter → open plan → switch tab → rankings → back) all green.
+- **0 console errors**, only a small accessibility nit (`form field should have id or name`) resolved.
+
+## Deploy
+
+Currently undecided. `app/dist/` is deployable to any static host. Options:
+
+- Subpath under `ai-os.eduardoinerarte.dk/plans/` (shares Coolify setup with `site/`).
+- Separate subdomain `plans.ai-os.eduardoinerarte.dk`.
+
+CI re-runs `./refresh-data.sh` on changes to `../projects/TOP_PROJECTS.md` or new plan folders (TODO: wire to `problemhunt-scraper` cron).
+
+## Related
+
+- Corpus: `../projects/` (525 plans, read-only).
+- Rankings source: `../projects/TOP_PROJECTS.md` (auto-generated by `problemhunt-scraper` cron).
+- Skill: `../ai-config/skills/plans-explorer/SKILL.md` — auto-loads when the user mentions plans/explorer/rankings.
+- Visual reference: `../site/index.html` — same dark theme, typography, color palette.
+- AI-OS framework docs: `../CLAUDE.md`, `../context/00_profile.md`.
