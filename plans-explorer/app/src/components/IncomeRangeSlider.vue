@@ -31,9 +31,9 @@ function reset() {
 </script>
 
 <template>
-  <section class="range-group">
+  <section class="range-group" role="group" aria-labelledby="income-range-title">
     <header class="range-header">
-      <span class="range-title">Income range</span>
+      <span id="income-range-title" class="range-title">Income range</span>
       <button v-if="modelValue[0] !== 0 || modelValue[1] !== max" class="reset-btn" @click="reset">reset</button>
     </header>
 
@@ -54,7 +54,8 @@ function reset() {
         @input="onLeft"
         name="wtp-min"
         class="range-input range-input-left"
-        :aria-label="'Minimum income'"
+        aria-label="Minimum monthly income"
+        :aria-valuetext="leftLabel + ' per month'"
       />
       <input
         type="range"
@@ -65,7 +66,8 @@ function reset() {
         @input="onRight"
         name="wtp-max"
         class="range-input range-input-right"
-        :aria-label="'Maximum income'"
+        aria-label="Maximum monthly income"
+        :aria-valuetext="rightLabel + ' per month'"
       />
     </div>
 
@@ -108,13 +110,14 @@ function reset() {
 }
 
 .reset-btn:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--surface-2);
 }
 
 .range-track {
   position: relative;
-  height: 24px;
+  /* 44px so the thumbs have a real drag area; the visible rail stays 4px. */
+  height: 44px;
   display: flex;
   align-items: center;
 }
@@ -143,7 +146,7 @@ function reset() {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 24px;
+  height: 44px;
   margin: 0;
   background: transparent;
   pointer-events: none;
@@ -154,8 +157,8 @@ function reset() {
 .range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   background: var(--text);
   border: 2px solid var(--accent);
   border-radius: 50%;
@@ -165,8 +168,8 @@ function reset() {
 }
 
 .range-input::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   background: var(--text);
   border: 2px solid var(--accent);
   border-radius: 50%;
@@ -182,6 +185,27 @@ function reset() {
 .range-input::-moz-range-track {
   background: transparent;
   height: 4px;
+}
+
+/* The input element covers the entire track, so a ring on it would outline the
+   full width. Ring the thumb, which is what the user is actually moving. */
+.range-input:focus-visible {
+  outline: none;
+}
+
+.range-input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.range-input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.reset-btn {
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .range-labels {

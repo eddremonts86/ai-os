@@ -94,6 +94,23 @@ function clearAll() {
   sortKey.value = 'money-desc';
 }
 
+// Mobile filter disclosure. On a phone the sidebar rendered as a 732px nested
+// scroller stacked ABOVE the results, so the whole first screen was filters and
+// zero plans. Collapsed by default there; always open from the tablet breakpoint up.
+const filtersOpen = ref(false);
+
+// Shown on the toggle so a collapsed panel never hides the fact that filters are
+// active — the results count alone does not tell you why it is 12 instead of 525.
+const activeFilterCount = computed(() =>
+  categories.value.length +
+  tags.value.length +
+  techs.value.length +
+  countries.value.length +
+  (hasWtpOnly.value ? 1 : 0) +
+  (wtpRange.value[0] !== 0 || wtpRange.value[1] !== 5000 ? 1 : 0) +
+  (query.value ? 1 : 0),
+);
+
 const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'money-desc', label: 'Money score ↓' },
   { value: 'learn-desc', label: 'Learn score ↓' },
@@ -103,7 +120,9 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'title-asc', label: 'Title A–Z' },
 ];
 
-onMounted(async () => {
+async function load() {
+  loading.value = true;
+  error.value = null;
   try {
     plans.value = await loadPlans();
   } catch (e) {
@@ -111,24 +130,40 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
-});
+}
+
+onMounted(load);
 </script>
 
 <template>
   <div class="layout">
-    <!-- Sidebar with facets -->
-    <aside class="facets">
-      <div class="search-wrap">
-        <input
-          v-model="query"
-          type="search"
-          name="q"
-          class="search-input"
-          placeholder="Search title, problem, tags…"
-          aria-label="Search plans"
-        />
-      </div>
+    <!-- Search sits outside the disclosure: it is the primary filter and must stay
+         reachable when the panel is collapsed on mobile. -->
+    <div class="search-wrap">
+      <input
+        v-model="query"
+        type="search"
+        name="q"
+        class="search-input"
+        placeholder="Search title, problem, tags…"
+        aria-label="Search plans"
+      />
+    </div>
 
+    <!-- Mobile-only disclosure for the rest of the filters -->
+    <button
+      class="filters-toggle"
+      type="button"
+      :aria-expanded="filtersOpen"
+      aria-controls="facet-panel"
+      @click="filtersOpen = !filtersOpen"
+    >
+      <span>{{ filtersOpen ? 'Hide filters' : 'Filters' }}</span>
+      <span v-if="activeFilterCount" class="filters-badge">{{ activeFilterCount }}</span>
+    </button>
+
+    <!-- Sidebar with facets -->
+    <aside id="facet-panel" class="facets" :class="{ 'is-open': filtersOpen }">
       <FacetPanel
         title="Category"
         :count="categoryOptions.length"
@@ -173,7 +208,8 @@ onMounted(async () => {
     <!-- Results -->
     <section class="results">
       <header class="results-header">
-        <div class="results-summary">
+        <h1 class="sr-only">Plans</h1>
+        <div class="results-summary" role="status" aria-live="polite">
           <strong>{{ results.length }}</strong>
           <span> of </span>
           <strong>{{ plans.length }}</strong>
@@ -192,12 +228,13 @@ onMounted(async () => {
       <div v-if="loading" class="empty-state">
         <p>Loading plans…</p>
       </div>
-      <div v-else-if="error" class="empty-state">
-        <h3>Failed to load</h3>
+      <div v-else-if="error" class="empty-state" role="alert">
+        <h2>Couldn't load the plans</h2>
         <p>{{ error }}</p>
+        <button class="retry-btn" @click="load">Try again</button>
       </div>
       <div v-else-if="results.length === 0" class="empty-state">
-        <h3>No plans match these filters</h3>
+        <h2>No plans match these filters</h2>
         <p>Try clearing some filters or searching for something broader.</p>
         <button class="clear-btn" @click="clearAll">clear all filters</button>
       </div>
@@ -212,34 +249,50 @@ onMounted(async () => {
 .layout {
   display: grid;
   grid-template-columns: 240px 1fr;
-  gap: 24px;
+  grid-template-areas:
+    'search results'
+    'facets results';
+  /* min-content on row 1 is load-bearing: .results spans both rows and is ~50,000px
+     tall, and without this the browser splits that height across the two rows —
+     row 1 became 24,470px, stretching the search box and pushing the whole filter
+     sidebar 24,565px down the page where nobody would ever find it. */
+  grid-template-rows: min-content 1fr;
+  align-content: start;
+  gap: 12px 24px;
   max-width: 1280px;
   margin: 0 auto;
   padding: 16px 24px 48px;
 }
 
-@media (max-width: 768px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
+.search-wrap {
+  grid-area: search;
+}
+
+.facets {
+  grid-area: facets;
+}
+
+.results {
+  grid-area: results;
+}
+
+
+.filters-toggle {
+  display: none;
 }
 
 .facets {
   position: sticky;
   top: 60px;
   align-self: start;
-  max-height: calc(100vh - 80px);
+  /* dvh, not vh: vh counts the mobile browser chrome, so the panel claimed more
+     height than was actually visible. */
+  max-height: calc(100dvh - 80px);
   overflow-y: auto;
   padding-right: 8px;
 }
 
-.search-wrap {
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  padding-bottom: 12px;
-  z-index: 1;
-}
+
 
 .search-input {
   width: 100%;
@@ -253,7 +306,6 @@ onMounted(async () => {
 }
 
 .search-input:focus {
-  outline: none;
   border-color: var(--accent);
 }
 
@@ -288,7 +340,7 @@ onMounted(async () => {
 }
 
 .clear-btn:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   border-color: var(--accent);
 }
 
@@ -333,7 +385,6 @@ onMounted(async () => {
 }
 
 .sort-label select:focus {
-  outline: none;
   border-color: var(--accent);
 }
 
@@ -342,4 +393,96 @@ onMounted(async () => {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 12px;
 }
+
+/* The corpus renders every match at once — 552 cards, 14,555 DOM nodes, a 52,000px
+   page. `content-visibility: auto` lets the browser skip style, layout and paint
+   for cards outside the viewport while keeping every one of them in the DOM, so
+   the result count and the filtered set stay exact. A JS virtualiser would also
+   cut the node count, but it costs a dependency and AGENTS.md caps the bundle and
+   rules out UI kits.
+   Note this trades RENDER work, not DOM weight: the node count is unchanged at
+   ~14,500. Cutting that needs windowing, which is a bigger change than this pass.
+   Caveat: skipped subtrees are excluded from `innerText`, so any check that reads
+   document text will under-report. Browsers do force-render a skipped subtree when
+   find-in-page matches inside it, but that is browser behaviour this change did
+   not verify.
+   contain-intrinsic-size seeds the placeholder height. Use the measured mean ROW
+   height, not the median card height: grid rows size to their tallest card, and
+   seeding 334px (the median card) inflated the page from 52,123px to 69,696px —
+   34% too long, so the scrollbar visibly shrank as cards realised. The true mean
+   over 184 rows is 271px.
+   The `auto` keyword makes the browser remember each card's real size once it has
+   been rendered a first time, so the estimate only governs never-seen cards. */
+.card-grid > * {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 271px;
+}
+/* ---------- Mobile ---------- *
+ * Last in the file on purpose: these override the desktop rules above at
+ * equal specificity, so source order is what makes them win.
+ */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'search'
+      'toggle'
+      'facets'
+      'results';
+    padding-top: 12px;
+  }
+
+  .filters-toggle {
+    grid-area: toggle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .filters-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    /* Tint + accent-text, matching .chip.is-accent. The first version of this
+       badge was accent fill with white text, which measures 4.35:1 and fails AA;
+       this pair measures 4.89:1 and is already the app's idiom for a count. */
+    background: var(--accent-a10);
+    border: 1px solid var(--accent-a30);
+    color: var(--accent-text);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Collapsed by default, and no nested scroll region when open: the panel grows
+     inline and the page scrolls, which is what a phone expects. */
+  .facets {
+    display: none;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+    margin-top: 12px;
+  }
+
+  .facets.is-open {
+    display: block;
+  }
+
+}
+
 </style>

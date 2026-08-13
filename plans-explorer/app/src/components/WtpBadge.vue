@@ -52,14 +52,14 @@ const label = computed(() => {
 }
 
 .wtp-badge.is-high {
-  background: rgba(61, 220, 151, 0.1);
-  border-color: rgba(61, 220, 151, 0.3);
+  background: var(--accent-2-a10);
+  border-color: var(--accent-2-a30);
   color: var(--accent-2);
 }
 
 .wtp-badge.is-mid {
-  background: rgba(245, 165, 36, 0.1);
-  border-color: rgba(245, 165, 36, 0.3);
+  background: var(--warn-a10);
+  border-color: var(--warn-a30);
   color: var(--warn);
 }
 

@@ -123,6 +123,23 @@ for (const fx of fixtures) {
   results.push(`${allOk ? '✅' : '❌'} ${fx.id} ${p.title.slice(0, 50)}${allOk ? '' : '\n' + failMsgs}`);
 }
 
+// ---------- Display-text guards ----------
+
+// Every (docName, body) pair across all generated document files.
+const DOCS_DIR = join(DATA, 'documents');
+const docBodies = existsSync(DOCS_DIR)
+  ? readdirSync(DOCS_DIR).flatMap((f) =>
+      Object.entries(JSON.parse(readFileSync(join(DOCS_DIR, f), 'utf8')))
+        .filter(([, v]) => typeof v === 'string'))
+  : [];
+
+
+const DISPLAY_FIELDS = ['title', 'excerpt', 'originalExcerpt'];
+// Fresh RegExp per test: /g literals carry lastIndex across .test() calls.
+const ENTITY_RE = { test: (s) => /&#\d+;|&#x[0-9a-fA-F]+;|&[a-zA-Z]{2,8};/.test(s) };
+const MARKUP_RE = { test: (s) => /<!--|<\/?[a-zA-Z][a-zA-Z0-9]*(?:\s|>|\/)/.test(s) };
+const ZERO_WIDTH_RE = { test: (s) => /[\u200b-\u200d\u2060\ufeff]/.test(s) };
+
 // ---------- Aggregate invariants ----------
 
 console.log('\n[test] fixture checks:');
@@ -141,7 +158,21 @@ const inv = [
   { name: 'no plan is missing id', ok: plans.every((p) => /^\d{3}$/.test(p.id)), got: plans.filter((p) => !/^\d{3}$/.test(p.id)).length },
   { name: 'no plan has wtp.mrrMid negative', ok: plans.every((p) => !p.wtp || p.wtp.mrrMid == null || p.wtp.mrrMid >= 0), got: plans.filter((p) => p.wtp?.mrrMid < 0).length },
   { name: 'plans.json plans with sourceUrl have an excerpt', ok: plans.every((p) => !p.sourceUrl || (typeof p.excerpt === 'string' && p.excerpt.length > 0)), got: plans.filter((p) => p.sourceUrl && (!p.excerpt || p.excerpt.length === 0)).length },
-  { name: 'zips directory exists and has 525 entries', ok: existsSync(join(DATA, 'zips')) && readdirSync(join(DATA, 'zips')).length === 525, got: existsSync(join(DATA, 'zips')) ? readdirSync(join(DATA, 'zips')).length : 'missing' },
+  // Regression guards for the HTML→text pipeline. 178 of the then-525 plans once
+  // shipped raw `&#39;` to the UI, and a naive decode-without-strip fix pushed 326
+  // to showing `<!-- SC_OFF --><div class="md">` instead. Both are now invariants.
+  { name: 'no display field contains an HTML entity', ok: plans.every((p) => !DISPLAY_FIELDS.some((f) => ENTITY_RE.test(p[f] || ''))), got: plans.filter((p) => DISPLAY_FIELDS.some((f) => ENTITY_RE.test(p[f] || ''))).length },
+  { name: 'no display field contains an HTML tag or comment', ok: plans.every((p) => !DISPLAY_FIELDS.some((f) => MARKUP_RE.test(p[f] || ''))), got: plans.filter((p) => DISPLAY_FIELDS.some((f) => MARKUP_RE.test(p[f] || ''))).length },
+  { name: 'no display field contains a zero-width character', ok: plans.every((p) => !DISPLAY_FIELDS.some((f) => ZERO_WIDTH_RE.test(p[f] || ''))), got: plans.filter((p) => DISPLAY_FIELDS.some((f) => ZERO_WIDTH_RE.test(p[f] || ''))).length },
+  // Relational, not a hardcoded corpus size. This asserted `=== 525` and started
+  // failing the moment the corpus grew to 552 — the same brittleness as the
+  // hardcoded "525 plans" the UI used to print. What matters is one zip per plan.
+  // Documents get the same guard. The excerpt fix covered plans.json only, so 351
+  // of 552 detail pages still rendered `<table> <tr><td>` as literal text —
+  // markdown-it runs with html:false, correctly, so escaped HTML shows verbatim.
+  { name: 'no document body contains HTML tags or entities', ok: docBodies.every(([, body]) => !ENTITY_RE.test(body) && !MARKUP_RE.test(body)), got: docBodies.filter(([, body]) => ENTITY_RE.test(body) || MARKUP_RE.test(body)).length },
+  { name: 'document markdown keeps its line structure', ok: docBodies.every(([name, body]) => name !== 'SPEC' || (body.includes('\n') && /^#{1,3} /m.test(body))), got: docBodies.filter(([name, body]) => name === 'SPEC' && !(body.includes('\n') && /^#{1,3} /m.test(body))).length },
+  { name: 'zips directory has exactly one entry per plan', ok: existsSync(join(DATA, 'zips')) && readdirSync(join(DATA, 'zips')).length === plans.length, got: existsSync(join(DATA, 'zips')) ? `${readdirSync(join(DATA, 'zips')).length} zips / ${plans.length} plans` : 'missing' },
 ];
 
 let invPass = 0;
