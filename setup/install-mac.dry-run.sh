@@ -106,6 +106,32 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
   fi
 done
 
+# ─── 4b. Tracked .zshrc must stay machine-agnostic (CI gate) ───
+# ~/.zshrc is a symlink to the tracked dev-env/dotfiles/zsh/.zshrc (step 4 above),
+# so anything appended to ~/.zshrc is written into the repo. install-mac.sh step 5b
+# used to append `export AI_OS_ROOT=…/Users/<name>/…` there, which committed a
+# machine path and left `git status` dirty after every install. It now generates
+# ~/.ai-os/env.sh instead, loaded by a committed source guard.
+#
+# This lives here, not only in verify.sh: CI runs the dry-run on every PR but
+# deliberately does NOT run verify.sh (it needs a fully-installed machine).
+log "4b. Checking the tracked .zshrc is machine-agnostic..."
+TRACKED_ZSHRC="$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc"
+if ! grep -qF '$HOME/.ai-os/env.sh' "$TRACKED_ZSHRC"; then
+  err "  $TRACKED_ZSHRC is missing the ~/.ai-os/env.sh source guard"
+  err "  Without it, AI_OS_ROOT and OLLAMA_URL never reach the shell."
+  exit 1
+fi
+ok "  source guard for ~/.ai-os/env.sh present"
+LEAKED_PATHS=$(grep -nE '^[^#]*(/Users/|/home/)[a-zA-Z0-9._-]+/' "$TRACKED_ZSHRC" || true)
+if [ -n "$LEAKED_PATHS" ]; then
+  err "  Hardcoded home paths in the tracked .zshrc (use \$HOME instead):"
+  echo "$LEAKED_PATHS" | while IFS= read -r leak; do err "    $leak"; done
+  err "  This file is shared across machines — an absolute home path breaks every other one."
+  exit 1
+fi
+ok "  no hardcoded home paths"
+
 # ─── 5. Validate source skills and simulate native destinations ───
 log "5. Simulating flat skills propagation to manifest destinations..."
 duplicate_names=$(find "$AI_OS_ROOT/ai-config/skills" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort | uniq -d)
