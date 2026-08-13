@@ -77,6 +77,30 @@ README standard structure:
 
 Keep it under 500 lines. Detailed docs go in `docs/`.
 
+### 5b. Decide whether it needs a diagram (load skill)
+
+Ask once, per document: *would the reader learn more from a visual than from a well-written
+paragraph?* If no, skip this step — a diagram that restates a 3-row table is noise.
+
+If yes, load skill `diagram-design`. Typical hits per content type:
+
+| Content type | Likely diagram |
+| ------------ | -------------- |
+| README (system with >2 moving parts) | Architecture |
+| ADR | Flowchart (the decision) or Layer stack (where controls sit) |
+| Tutorial | Sequence or Process (the happy path) |
+| API doc | Sequence (request/response) or ER (data model) |
+| Blog post | Whatever carries the argument — 1 diagram, not 5 |
+
+Rules that apply here:
+
+- Route by destination per `rules/always_do.md` — this workflow produces repo files, so
+  `diagram-design` is the right tool, not FigJam and not an Artifact.
+- Brand tokens come from `context/06_brand.md`. Never ask the user to onboard a brand.
+- Output is a self-contained `.html`; commit it next to the doc and link it. Export PNG/SVG
+  only when the destination cannot render HTML (GitHub README → export SVG).
+- One diagram per idea. Above 9 nodes it is two diagrams.
+
 ### 6. Write the first draft (write)
 
 Write the content following the structure. Style:
@@ -96,6 +120,9 @@ Write the content following the structure. Style:
 3. Are all internal links valid? (`markdown-link-check` or `lychee`)
 4. Are all code examples valid? (run them)
 5. Is the content up to date with the actual code? (compare with reality)
+6. If the content includes a diagram: taste gate (`diagram-design` SKILL.md §9) applied, and
+   `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>` clean. Open it in a
+   browser — a diagram that passes self-check can still be visually broken.
 
 ### 8. Critical review
 

@@ -19,8 +19,18 @@ warn() { echo "$LOG_PREFIX ⚠️  $*"; }
 err() { echo "$LOG_PREFIX ❌ $*"; }
 
 # Create temporary HOME to not touch the real one
+# Resolve the real user site-packages BEFORE HOME is overridden, and keep it on
+# PYTHONPATH afterwards. Python derives the user site path from $HOME, so pointing
+# HOME at a temp dir hides every user-installed package from the child processes this
+# script invokes — generate-mcp-config.py then fails with "PyYAML is required" on any
+# machine where PyYAML is user-installed, which is the default on macOS. CI never saw
+# it because the runners have PyYAML system-wide, so the dry-run was green in CI and
+# red on the developer machine that is supposed to run it before pushing.
+REAL_USER_SITE=$(python3 -m site --user-site 2>/dev/null || true)
+
 TMP_HOME=$(mktemp -d -t aios-dryrun-XXXX)
 export HOME="$TMP_HOME"
+[ -n "$REAL_USER_SITE" ] && export PYTHONPATH="$REAL_USER_SITE${PYTHONPATH:+:$PYTHONPATH}"
 mkdir -p "$HOME"/.oh-my-zsh/custom/themes "$HOME"/.oh-my-zsh/custom/plugins "$HOME"/.ssh "$HOME"/.local/bin "$HOME"/Library/Preferences
 
 log "═══════════════════════════════════════════════════════════"
@@ -105,6 +115,32 @@ for dotfile in .zshrc .p10k.zsh .gitignore_global; do
     exit 1
   fi
 done
+
+# ─── 4b. Tracked .zshrc must stay machine-agnostic (CI gate) ───
+# ~/.zshrc is a symlink to the tracked dev-env/dotfiles/zsh/.zshrc (step 4 above),
+# so anything appended to ~/.zshrc is written into the repo. install-mac.sh step 5b
+# used to append `export AI_OS_ROOT=…/Users/<name>/…` there, which committed a
+# machine path and left `git status` dirty after every install. It now generates
+# ~/.ai-os/env.sh instead, loaded by a committed source guard.
+#
+# This lives here, not only in verify.sh: CI runs the dry-run on every PR but
+# deliberately does NOT run verify.sh (it needs a fully-installed machine).
+log "4b. Checking the tracked .zshrc is machine-agnostic..."
+TRACKED_ZSHRC="$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc"
+if ! grep -qF '$HOME/.ai-os/env.sh' "$TRACKED_ZSHRC"; then
+  err "  $TRACKED_ZSHRC is missing the ~/.ai-os/env.sh source guard"
+  err "  Without it, AI_OS_ROOT and OLLAMA_URL never reach the shell."
+  exit 1
+fi
+ok "  source guard for ~/.ai-os/env.sh present"
+LEAKED_PATHS=$(grep -nE '^[^#]*(/Users/|/home/)[a-zA-Z0-9._-]+/' "$TRACKED_ZSHRC" || true)
+if [ -n "$LEAKED_PATHS" ]; then
+  err "  Hardcoded home paths in the tracked .zshrc (use \$HOME instead):"
+  echo "$LEAKED_PATHS" | while IFS= read -r leak; do err "    $leak"; done
+  err "  This file is shared across machines — an absolute home path breaks every other one."
+  exit 1
+fi
+ok "  no hardcoded home paths"
 
 # ─── 5. Validate source skills and simulate native destinations ───
 log "5. Simulating flat skills propagation to manifest destinations..."
