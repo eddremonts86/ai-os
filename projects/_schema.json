@@ -3,9 +3,9 @@
   "$id": "https://github.com/eddremonts86/ai-os/projects/_schema.json",
   "title": "AI-OS plan document contract",
   "version": "1.0.0",
-  "description": "Machine-readable contract for the plan documents under projects/<id>-<slug>/. Read by tools/plan-format (writer + gate) and by plans-explorer/app/scripts/build-index.mjs (reader). Prose docs are PLAN_SCHEMA.md next to this file. Change both together — that is the whole point of having one file.",
+  "description": "Machine-readable contract for the plan documents under projects/<id>-<slug>/.",
   "statusLifecycle": {
-    "description": "A plan advances one step at a time and never skips. The gate only grants web-ready.",
+    "description": "A plan advances one step at a time and never skips.",
     "order": [
       "draft",
       "enriched",
@@ -13,14 +13,13 @@
       "web-ready"
     ],
     "meaning": {
-      "draft": "Captured by the scraper. Metadata is real; prose is only the source problem. Honest but not publishable.",
+      "draft": "Captured by the scraper. Metadata is real; prose is only the source problem.",
       "enriched": "An agent wrote real per-plan content for every varying section.",
       "humanized": "Prose passed the humanizer skill.",
       "web-ready": "Passed every gate rule below. Only `ai-os plans check` may set this."
     }
   },
   "frontmatter": {
-    "description": "YAML frontmatter on every document. This exists so metadata is never regex-scraped out of prose again: the old reader matched Spanish literals like '**Categoría primaria:**', which coupled the web index to prose wording, and it derived `country` from 'the first Title-Case line before **Fuente:**' — which only worked because 163 plans had a bare country sitting where the problem statement belonged.",
     "required": [
       "id",
       "slug",
@@ -101,12 +100,11 @@
         }
       },
       "country": {
-        "type": "string",
-        "note": "Explicit. Never inferred from prose position."
+        "type": "string"
       },
       "wtp": {
         "type": "object",
-        "note": "Willingness to pay, only when the source states one. Absent beats invented.",
+        "note": "Only when the source states one. Absent beats invented.",
         "fields": {
           "raw": {
             "type": "string"
@@ -136,7 +134,6 @@
       },
       "scores": {
         "type": "object",
-        "note": "From projects/TOP_PROJECTS.md. Absent means unranked on that axis; the UI shows a dash.",
         "fields": {
           "money": {
             "type": "integer",
@@ -160,11 +157,10 @@
         "items": {
           "type": "string"
         },
-        "note": "Chosen FOR THIS PROBLEM. All 552 plans previously carried one identical stack, which made the Tech facet in the web UI filter nothing (React 552, TypeScript 552). An empty array is honest; a copied default is not."
+        "note": "Chosen FOR THIS PROBLEM."
       },
       "diagram": {
-        "type": "string",
-        "note": "Path to a generated SVG, relative to the plan directory. Set by the illustrate stage. Absent means the plan did not earn one."
+        "type": "string"
       }
     }
   },
@@ -231,7 +227,7 @@
     "DESIGN.md": {
       "required": [],
       "optional": [],
-      "note": "Free-form: this is the one document already authored per plan (14 design-system references, 0 identical sections). The gate only checks its text hygiene."
+      "note": "Free-form. Gate only checks text hygiene."
     },
     "TASKS.md": {
       "required": [
@@ -247,7 +243,7 @@
     }
   },
   "gate": {
-    "description": "Rules `ai-os plans check` enforces. Each cites the measured defect it exists to prevent, so nobody relaxes one without knowing what it was catching.",
+    "description": "Rules `ai-os plans check` enforces.",
     "rules": [
       {
         "id": "frontmatter-present",
@@ -263,62 +259,53 @@
           "\\[Usuario secundario\\]",
           "\\[Placeholder\\]",
           "\\[TODO\\]",
-          "_Pendiente de análisis manual\\._",
-          "descripción del usuario principal"
-        ],
-        "why": "SPEC.md shipped `**[Usuario primario]** — descripción del usuario principal` in all 552 plans."
+          "_Pendiente de an\u00e1lisis manual\\._",
+          "descripci\u00f3n del usuario principal"
+        ]
       },
       {
         "id": "no-template-clone",
         "severity": "error",
-        "rule": "A section listed in varyingSections must not be byte-identical across more than `maxIdenticalRatio` of plans.",
-        "maxIdenticalRatio": 0.02,
-        "why": "14 of 24 H2 sections were byte-identical across all 552 plans; PLAN.md was 100% identical."
+        "rule": "varyingSections not byte-identical across more than maxIdenticalRatio of plans.",
+        "maxIdenticalRatio": 0.02
       },
       {
         "id": "sections-written",
         "severity": "error",
         "rule": "No varying section is still the unwritten marker.",
-        "marker": "_Not written yet",
-        "why": "`ai-os plans format` replaces template filler with a visible marker rather than leaving prose that reads as authored. The marker is honest, not acceptable: it means enrichment still owes this section. It is exempt from no-template-clone, which exists for filler pretending to be content."
+        "marker": "_Not written yet"
       },
       {
         "id": "problem-substantive",
         "severity": "error",
-        "rule": "The SPEC Problem section is at least `minProblemChars` and is not just a country name.",
-        "minProblemChars": 120,
-        "why": "29% of plans had a bare country ('Russia', 'Serbia', 'USA') where the problem belonged; 6% were under 60 characters."
+        "rule": "SPEC Problem at least minProblemChars and not just a country.",
+        "minProblemChars": 120
       },
       {
         "id": "no-html-in-prose",
         "severity": "error",
-        "rule": "No HTML entities, tags or comments in any document body.",
-        "why": "435 raw entities were visible in the card grid across 178 plans, and 351 of 552 documents rendered `<!-- SC_OFF --><div class=\"md\">` as literal prose."
+        "rule": "No HTML entities, tags or comments in any document body."
       },
       {
         "id": "no-zero-width",
         "severity": "error",
-        "rule": "No zero-width characters.",
-        "why": "They survive entity decoding as invisible codepoints and break word wrapping and search matching."
+        "rule": "No zero-width characters."
       },
       {
         "id": "english-headings",
         "severity": "error",
-        "rule": "Section headings match the schema, which is English.",
-        "why": "Headings were Spanish ('Problema Detectado', 'Tech Stack Propuesta'), against the AI-OS rule that every repo file is English."
+        "rule": "Section headings match the schema, which is English."
       },
       {
         "id": "no-bare-long-url",
         "severity": "warn",
-        "rule": "No bare URL longer than `maxBareUrlChars`; wrap it as a markdown link.",
-        "maxBareUrlChars": 100,
-        "why": "A 200-character preview.redd.it URL pushed the plan page 285px past a 375px viewport."
+        "rule": "No bare URL longer than maxBareUrlChars.",
+        "maxBareUrlChars": 100
       },
       {
         "id": "heading-depth",
         "severity": "warn",
-        "rule": "Headings never skip a level.",
-        "why": "The web demotes document headings one level to nest them under the page title; a skipped level in source becomes a skipped level on screen."
+        "rule": "Headings never skip a level."
       },
       {
         "id": "tech-not-default",
@@ -331,8 +318,7 @@
           "SQLite con Drizzle ORM",
           "Coolify",
           "Docker"
-        ],
-        "why": "One identical stack across 552 plans made the web's Tech facet useless."
+        ]
       }
     ]
   }
