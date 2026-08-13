@@ -49,14 +49,75 @@ curl -I https://ai-os.eduardoinerarte.dk/
 
 ## ⚠️ .env caveat: COOLIFY_API_TOKEN
 
-**Resolved 2026-07-26.** The duplicate is gone: `dev-env/env-config/.env` now holds exactly one
-`COOLIFY_API_TOKEN`, verified returning HTTP 200 against `/api/v1/applications`. Do not go
-hunting for a second candidate — there isn't one.
+**The duplicate is gone** (resolved 2026-07-26): `dev-env/env-config/.env` holds exactly one
+`COOLIFY_API_TOKEN`. Do not go hunting for a second candidate — there isn't one. The original
+hazard still applies if a duplicate ever reappears: a later definition shadows an earlier one
+when the file is sourced, so a dead token appended below a working one silently breaks every
+deploy. Check with `grep -c '^COOLIFY_API_TOKEN=' dev-env/env-config/.env` — the answer must be `1`.
 
-The original hazard still applies if a duplicate ever reappears: a later definition shadows an
-earlier one when the file is sourced, so a dead token appended below a working one silently
-breaks every deploy. Check with `grep -c '^COOLIFY_API_TOKEN=' dev-env/env-config/.env` — the
-answer must be `1`.
+**That single token is dead as of 2026-08-14.** It is well-formed (`4|` + 48 chars) but returns
+`401 {"message":"Unauthenticated."}` on `/api/v1/teams`, `/projects`, `/servers` and
+`/applications`. The GitHub secret of the same name is a *different, still-valid* token — the
+`deploy-site` run on 2026-08-13 succeeded with it. So a green deploy proves nothing about the
+local `.env`; test the local token before trusting it:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' -H "Authorization: Bearer $TOKEN" \
+  -H 'Accept: application/json' "$COOLIFY_API_URL/api/v1/teams"   # must be 200, not 401
+```
+
+Refresh it in Coolify → Keys & Tokens → API tokens, with **read + write** permissions (read
+alone cannot create an application).
+
+### Do not `source` this file to get the token
+
+The value contains a `|`. Unquoted, `set -a; . dev-env/env-config/.env` makes the shell parse it
+as a pipeline, and `$COOLIFY_API_TOKEN` ends up **empty** — not wrong, *empty*, with no error.
+That empty value then produces the same `401` as a revoked token, which is how a live token and
+a dead one become indistinguishable. Either quote the value in `.env`:
+
+```
+COOLIFY_API_TOKEN="4|xxxxxxxx…"
+```
+
+…or read it without a shell, which is what the snippets in this file assume:
+
+```bash
+TOKEN=$(grep -m1 '^COOLIFY_API_TOKEN=' dev-env/env-config/.env | cut -d= -f2- | tr -d '"'"'"')
+```
+
+## plans-explorer (second app, not yet created)
+
+The explorer in [`plans-explorer/`](../../plans-explorer/) is a separate Coolify application
+built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), with its own
+subdomain. Its [`deploy-plans-explorer`](../../.github/workflows/deploy-plans-explorer.yml)
+workflow is live on `main` and, like the landing's, runs a green no-op until its secrets exist —
+so **a successful run does not mean it deployed.** Check the run's annotation for
+`Deploy skipped`.
+
+The image is verified locally (2026-08-14): builds clean, indexes 10 plans, serves `/`,
+`/data/plans.json` and the SPA fallback, and reports `healthy`.
+
+Create the app with these settings — they are not defaults, and the first two are the ones that
+break silently if wrong:
+
+| Setting | Value | Why |
+|---|---|---|
+| `build_pack` | `dockerfile` | |
+| `dockerfile_location` | `/Dockerfile.plans-explorer` | |
+| `base_directory` | `/` | The indexer reads `../projects/`; scoping the context to `plans-explorer/` yields a green build serving **zero** plans |
+| `ports_exposes` | `80` | |
+| domain | a subdomain on `eduardoinerarte.dk` | Wildcard DNS already resolves to the box; no DNS change needed |
+| git | same repo + branch `main`, same deploy key as the landing | |
+
+Then activate:
+
+```bash
+gh secret set COOLIFY_APP_UUID_PLANS_EXPLORER   # the new app uuid — NOT the one in .env
+gh secret set SITE_URL_PLANS_EXPLORER           # https://<subdomain>.eduardoinerarte.dk
+```
+
+After that, pushes touching `plans-explorer/**` or `projects/**` deploy it automatically.
 
 ## Notes / decisions
 
