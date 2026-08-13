@@ -84,7 +84,7 @@ function toggle(opt: string) {
 }
 
 .facet-active-count {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -103,23 +103,50 @@ function toggle(opt: string) {
   flex-direction: column;
   gap: 2px;
   margin-top: 8px;
-  max-height: 240px;
+  max-height: 320px;
   overflow-y: auto;
 }
 
 .facet-option {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 0;
+  gap: 10px;
+  /* The label is the hit area for its checkbox, so it carries the 44px floor.
+     Negative inline margin keeps the text flush with the panel edge while the
+     padding still counts toward the target. */
+  min-height: 44px;
+  padding: 4px 8px;
+  margin-inline: -8px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
   color: var(--text);
-  transition: color 100ms;
+  transition: color 100ms, background 100ms;
 }
 
 .facet-option:hover {
-  color: var(--accent);
+  background: var(--surface-2);
+}
+
+/* The checkbox itself stays visually small — the label supplies the target —
+   but not so small it is hard to see which rows are checked. */
+.facet-option input[type='checkbox'] {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* Focus lands on the checkbox; surface it on the whole row so it is findable. */
+.facet-option:has(input:focus-visible) {
+  background: var(--surface-2);
+  outline: 2px solid var(--focus);
+  outline-offset: 0;
+}
+
+.facet-option:hover {
+  color: var(--accent-text);
 }
 
 .facet-option input[type='checkbox'] {

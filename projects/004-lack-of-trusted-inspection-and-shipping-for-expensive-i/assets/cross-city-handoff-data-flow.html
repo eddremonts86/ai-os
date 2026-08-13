@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>004 · Data flow · Cross-city handoff</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #08090e;
+      --color-ink:     #f4f5f9;
+      --color-muted:   #a2a4ae;
+      --color-accent:  #b3ee55;
+      --font-sans:     'Space Grotesk', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1200px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Data Flow · Diagram Design</p>
+    <h1>Cross-city handoff · escrow + inspection + shipping</h1>
+
+    <svg viewBox="0 0 1000 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="df-004-title df-004-desc">
+      <title id="df-004-title">Cross-city handoff · escrow + inspection + shipping</title>
+      <desc id="df-004-desc">Data-flow diagram for a one-party handoff service: a regional seller lists a high-value item, the platform holds payment in escrow, a vetted inspector picks up and reports condition, and the buyer confirms delivery to release funds to the seller.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#a2a4ae"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b3ee55"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3bdfef"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#08090e"/>
+
+      <!-- Arrows first -->
+      <!-- Seller -> Platform (list + book) -->
+      <path d="M 232,148 H 340" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Seller -> Inspector (item pickup) -->
+      <path d="M 100,196 H 80 Q 64,196 64,212 V 320 Q 64,336 80,336 H 320" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Platform -> Inspector (dispatch + insurance bind) -->
+      <path d="M 460,196 H 540" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Inspector -> Platform (condition report + storage) -->
+      <path d="M 540,300 H 480 Q 460,300 460,316 V 348 Q 460,364 480,364 H 540" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Platform -> Storage (escrow hold) — accent: money path -->
+      <path d="M 484,216 H 540" fill="none" stroke="#b3ee55" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <!-- Storage -> Platform (release on delivery confirmation) -->
+      <path d="M 660,216 H 740" fill="none" stroke="#b3ee55" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <!-- Platform -> Buyer (delivery + report link) -->
+      <path d="M 760,156 H 868" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Inspector -> Buyer (ship leg) -->
+      <path d="M 660,372 H 720 Q 736,372 736,388 V 408 Q 736,424 752,424 H 868" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Buyer -> Platform (confirm delivery) -->
+      <path d="M 900,300 H 760" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+
+      <!-- Arrow labels with mask + 6-10px gap -->
+      <rect x="262" y="132" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="286" y="142" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">LIST</text>
+
+      <rect x="158" y="318" width="60" height="14" rx="2" fill="#08090e"/>
+      <text x="188" y="328" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">PICKUP</text>
+
+      <rect x="478" y="180" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="506" y="190" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">DISPATCH</text>
+
+      <rect x="478" y="378" width="60" height="14" rx="2" fill="#08090e"/>
+      <text x="508" y="388" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">REPORT</text>
+
+      <rect x="490" y="200" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="514" y="210" fill="#b3ee55" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">HOLD</text>
+
+      <rect x="680" y="200" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="704" y="210" fill="#b3ee55" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">RELEASE</text>
+
+      <rect x="788" y="140" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="816" y="150" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">NOTIFY</text>
+
+      <rect x="772" y="408" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="800" y="418" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">SHIP LEG</text>
+
+      <rect x="812" y="284" width="68" height="14" rx="2" fill="#08090e"/>
+      <text x="846" y="294" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CONFIRM</text>
+
+      <!-- Nodes -->
+      <!-- Seller -->
+      <rect x="20" y="100" width="80" height="96" rx="6" fill="rgba(244,245,249,0.05)" stroke="rgba(244,245,249,0.30)" stroke-width="1"/>
+      <rect x="28" y="108" width="32" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.25)" stroke-width="0.8"/>
+      <text x="44" y="118" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">USER</text>
+      <text x="60" y="148" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Seller</text>
+      <text x="60" y="166" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">regional city</text>
+      <text x="60" y="180" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">high-value item</text>
+
+      <!-- Platform (focal) -->
+      <rect x="340" y="120" width="120" height="96" rx="6" fill="rgba(179,238,85,0.12)" stroke="#b3ee55" stroke-width="1.2"/>
+      <rect x="348" y="128" width="48" height="14" rx="2" fill="transparent" stroke="rgba(179,238,85,0.55)" stroke-width="0.8"/>
+      <text x="372" y="138" fill="rgba(179,238,85,0.85)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PLATFORM</text>
+      <text x="400" y="168" fill="#b3ee55" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Platform</text>
+      <text x="400" y="186" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">one accountable party</text>
+      <text x="400" y="200" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">deal log · insurance</text>
+
+      <!-- Storage / escrow -->
+      <rect x="540" y="168" width="120" height="48" rx="6" fill="rgba(244,245,249,0.05)" stroke="rgba(244,245,249,0.30)" stroke-width="1"/>
+      <rect x="548" y="176" width="48" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.25)" stroke-width="0.8"/>
+      <text x="572" y="186" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PSP</text>
+      <text x="600" y="202" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Escrow</text>
+
+      <!-- Inspector -->
+      <rect x="660" y="324" width="180" height="96" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="668" y="332" width="48" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="692" y="342" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VETTED</text>
+      <text x="750" y="368" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Inspector</text>
+      <text x="750" y="386" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">pickup · condition report</text>
+      <text x="750" y="400" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">storage ≤14d · ship leg</text>
+
+      <!-- Buyer -->
+      <rect x="900" y="252" width="80" height="96" rx="6" fill="rgba(244,245,249,0.05)" stroke="rgba(244,245,249,0.30)" stroke-width="1"/>
+      <rect x="908" y="260" width="32" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.25)" stroke-width="0.8"/>
+      <text x="924" y="270" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">USER</text>
+      <text x="940" y="300" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Buyer</text>
+      <text x="940" y="318" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">major city</text>
+      <text x="940" y="332" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">confirms delivery</text>
+
+      <!-- Storage below platform (escrow hold zone) -->
+      <rect x="540" y="248" width="120" height="48" rx="6" fill="rgba(244,245,249,0.03)" stroke="rgba(244,245,249,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="600" y="276" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">inspector storage</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="468" x2="960" y2="468" stroke="rgba(244,245,249,0.10)" stroke-width="0.8"/>
+      <text x="40" y="484" fill="#a2a4ae" font-size="8" font-family="'JetBrains Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+      <line x1="120" y1="481" x2="144" y2="481" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="152" y="485" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Money path (escrow hold → release)</text>
+      <line x1="380" y1="481" x2="404" y2="481" stroke="#a2a4ae" stroke-width="1"/>
+      <text x="412" y="485" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Operational / informational</text>
+      <rect x="600" y="474" width="24" height="14" rx="3" fill="rgba(179,238,85,0.12)" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="632" y="485" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Single accountable party (focal)</text>
+    </svg>
+  </div>
+</body>
+</html>

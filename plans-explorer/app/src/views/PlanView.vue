@@ -16,19 +16,24 @@ const id = computed(() => String(route.params.id ?? ''));
 const plan = ref<Plan | null>(null);
 const docs = ref<PlanDocument | null>(null);
 const loading = ref(true);
+// A missing id and a failed fetch are different problems with different
+// recoveries; reporting both as "Plan not found" sent users hunting for a typo
+// when the real cause was the network.
+const notFound = ref(false);
 const error = ref<string | null>(null);
 const activeTab = ref<DocKey>('SPEC');
 
 async function loadAll(planId: string) {
   loading.value = true;
   error.value = null;
+  notFound.value = false;
   plan.value = null;
   docs.value = null;
   try {
     const plans = await loadPlans();
     const found = plans.find((p) => p.id === planId);
     if (!found) {
-      error.value = 'Plan not found';
+      notFound.value = true;
       return;
     }
     plan.value = found;
@@ -65,6 +70,13 @@ const activeSource = computed(() => {
   return d[activeTab.value] ?? '';
 });
 
+// Architecture diagrams served as self-contained HTML files under
+// public/projects/<id>-<slug>/assets/*.html. The list comes from the indexer
+// (plan.assets), not a HEAD request — the Vite dev server returns 200 + the
+// SPA shell for any missing path, which made every candidate name appear to
+// exist and rendered 6 wrong iframes per plan.
+const planAssets = computed(() => plan.value?.assets ?? []);
+
 const countryFlag = computed(() => {
   const c = plan.value?.country;
   if (!c) return null;
@@ -90,10 +102,15 @@ function goBack() {
       <div v-if="loading" class="empty-state">
         <p>Loading plan…</p>
       </div>
-      <div v-else-if="error" class="empty-state">
-        <h3>Plan not found</h3>
+      <div v-else-if="notFound" class="empty-state" role="alert">
+        <h2>Plan not found</h2>
         <p>The plan id <code>{{ id }}</code> does not exist in the corpus.</p>
         <button class="back-btn" @click="goBack">← All plans</button>
+      </div>
+      <div v-else-if="error" class="empty-state" role="alert">
+        <h2>Couldn't load this plan</h2>
+        <p>{{ error }}</p>
+        <button class="retry-btn" @click="loadAll(id)">Try again</button>
       </div>
       <template v-else-if="plan">
         <header class="plan-header">
@@ -108,8 +125,21 @@ function goBack() {
 
         <MarkdownReader :source="activeSource" />
 
+        <section v-if="planAssets.length" class="assets-section">
+          <h2 class="assets-title">Architecture diagrams</h2>
+          <div v-for="asset in planAssets" :key="asset" class="asset-frame-wrap">
+            <iframe
+              :src="`./projects/${plan.id}-${plan.slug}/assets/${asset}`"
+              class="asset-frame"
+              :title="asset"
+              loading="lazy"
+              sandbox="allow-same-origin"
+            ></iframe>
+          </div>
+        </section>
+
         <section v-if="plan.originalExcerpt" class="original-section">
-          <h3 class="original-title">Original problem (from source)</h3>
+          <h2 class="original-title">Original problem (from source)</h2>
           <p class="original-text">{{ plan.originalExcerpt }}</p>
         </section>
       </template>
@@ -117,7 +147,7 @@ function goBack() {
 
     <aside v-if="plan" class="plan-sidebar">
       <section class="sidebar-section">
-        <h4 class="sidebar-title">Scores</h4>
+        <h3 class="sidebar-title">Scores</h3>
         <div class="sidebar-scores">
           <ScoreBadge kind="money" :score="plan.scores.money" />
           <ScoreBadge kind="learn" :score="plan.scores.learn" />
@@ -126,13 +156,13 @@ function goBack() {
       </section>
 
       <section class="sidebar-section">
-        <h4 class="sidebar-title">Income</h4>
+        <h3 class="sidebar-title">Income</h3>
         <WtpBadge v-if="plan.wtp" :wtp="plan.wtp" />
         <p v-else class="sidebar-empty">not stated</p>
       </section>
 
       <section v-if="plan.country" class="sidebar-section">
-        <h4 class="sidebar-title">Country</h4>
+        <h3 class="sidebar-title">Country</h3>
         <p class="sidebar-value">
           <span class="flag">{{ countryFlag }}</span>
           {{ plan.country }}
@@ -140,26 +170,26 @@ function goBack() {
       </section>
 
       <section v-if="plan.tech.length" class="sidebar-section">
-        <h4 class="sidebar-title">Tech</h4>
+        <h3 class="sidebar-title">Tech</h3>
         <div class="sidebar-chips">
           <span v-for="t in plan.tech" :key="t" class="chip">{{ t }}</span>
         </div>
       </section>
 
       <section v-if="plan.date" class="sidebar-section">
-        <h4 class="sidebar-title">Date</h4>
+        <h3 class="sidebar-title">Date</h3>
         <p class="sidebar-value">{{ plan.date }}</p>
       </section>
 
       <section v-if="plan.sourceUrl" class="sidebar-section">
-        <h4 class="sidebar-title">Source</h4>
+        <h3 class="sidebar-title">Source</h3>
         <a :href="plan.sourceUrl" target="_blank" rel="noopener" class="sidebar-link">
           ↗ View on ProblemHunt
         </a>
       </section>
 
       <section class="sidebar-section">
-        <h4 class="sidebar-title">Download</h4>
+        <h3 class="sidebar-title">Download</h3>
         <a
           :href="`./data/zips/${plan.id}.zip`"
           :download="`plan-${plan.id}-${plan.slug}.zip`"
@@ -178,9 +208,9 @@ function goBack() {
 <style scoped>
 .plan-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 32px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -199,6 +229,9 @@ function goBack() {
   position: sticky;
   top: 60px;
   align-self: start;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -224,7 +257,7 @@ function goBack() {
 }
 
 .back-btn:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   border-color: var(--accent);
 }
 
@@ -248,12 +281,42 @@ function goBack() {
   color: var(--text);
 }
 
+.assets-section {
+  margin-top: 32px;
+}
+
+.assets-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+}
+
+.asset-frame-wrap {
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--paper, #08090e);
+}
+
+.asset-frame {
+  display: block;
+  width: 100%;
+  height: 720px;
+  border: 0;
+}
+
 .original-section {
   margin-top: 32px;
   padding: 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent-2);
+  /* Was a 3px accent-2 slab on the left edge. The block is already distinguished
+     by its own surface, its eyebrow heading and its position; the slab only added
+     the tell. */
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
 }
 
@@ -311,6 +374,14 @@ function goBack() {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  min-width: 0;
+}
+
+.sidebar-chips .chip {
+  font-size: 11px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .flag {
@@ -318,7 +389,7 @@ function goBack() {
 }
 
 .sidebar-link {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: none;
   font-size: 13px;
   border-bottom: 1px solid transparent;
@@ -337,7 +408,7 @@ function goBack() {
   background: var(--surface-2);
   border: 1px solid var(--accent);
   border-radius: var(--radius-md);
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 500;
   transition: background 150ms, color 150ms;
 }
