@@ -9,9 +9,11 @@ import type { Plan, Rankings, PlanDocument } from '@/types';
 
 const PLANS_URL = './data/plans.json';
 const RANKINGS_URL = './data/rankings.json';
+const META_URL = './data/meta.json';
 
 let plansCache: Plan[] | null = null;
 let rankingsCache: Rankings | null = null;
+let indexedAtCache: string | null = null;
 let docsCache = new Map<string, Promise<PlanDocument | null>>();
 
 export async function loadPlans(): Promise<Plan[]> {
@@ -30,6 +32,23 @@ export async function loadRankings(): Promise<Rankings> {
   const data = (await res.json()) as Rankings;
   rankingsCache = data;
   return data;
+}
+
+/**
+ * Build date from the indexer. Returns null instead of throwing: the footer that
+ * consumes this is decorative, and a missing meta.json must not blank the page.
+ */
+export async function loadIndexedAt(): Promise<string | null> {
+  if (indexedAtCache) return indexedAtCache;
+  try {
+    const res = await fetch(META_URL);
+    if (!res.ok) return null;
+    const data = (await res.json()) as { indexedAt?: string };
+    indexedAtCache = data.indexedAt ?? null;
+    return indexedAtCache;
+  } catch {
+    return null;
+  }
 }
 
 export async function loadPlanDocument(id: string): Promise<PlanDocument | null> {

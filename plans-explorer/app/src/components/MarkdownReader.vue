@@ -10,164 +10,66 @@ const html = computed(() => renderMarkdown(props.source ?? ''));
 </script>
 
 <template>
-  <div class="md-reader" v-html="html" />
+  <!--
+    shadcn/typeset owns the prose rhythm. `typeset` turns it on, `typeset-plan` is
+    this app's preset (see tokens.css). This replaced 32 hand-written .md-reader
+    rules that set every font size and margin by hand — and it covers cases those
+    never did: task lists, footnotes, dl/dt/dd, kbd, sub/sup, per-cell table
+    alignment.
+  -->
+  <div class="md-reader typeset typeset-plan" v-html="html" />
 </template>
 
 <style>
-/* Global, not scoped — markdown-it emits plain HTML that should be styled. */
+/*
+ * Global, not scoped — markdown-it emits plain HTML.
+ *
+ * Only what typeset deliberately leaves to the app remains here. Resist re-adding
+ * element rules: typeset derives every size and margin from --typeset-size,
+ * --typeset-leading and --typeset-flow in the preset, so tune those instead.
+ */
+
 .md-reader {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--text);
+  /* Typeset sets no max-width on purpose — "your layout owns that". */
   max-width: 720px;
+
+  /* Typeset sets `overflow-wrap: break-word`, which is not enough here. This corpus
+     is scraped prose containing bare 200-character preview.redd.it URLs, and
+     `break-word` does not shrink the container's min-content width, so the long
+     token still forced the plan page 285px past a 375px viewport. `anywhere` does
+     affect intrinsic sizing, which is the property that actually fixes it. */
+  overflow-wrap: anywhere;
 }
 
-.md-reader h1,
-.md-reader h2,
-.md-reader h3,
-.md-reader h4 {
-  color: var(--text);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-  margin: 1.6em 0 0.6em;
+/*
+ * Links: keep typeset's underline, add the accent on top.
+ *
+ * Typeset sets links to `color: inherit` with an underline, deliberately — marking
+ * links by underline rather than by colour is what WCAG 1.4.1 asks for, and the CSS
+ * this replaced was colour-only until hover, which is weaker. So the underline
+ * stays as the primary signal and the accent is a second one, matching how links
+ * read elsewhere in the app. --accent-text, not --accent: this is text, and the
+ * plain accent measures 4.24:1 where 4.5:1 is required.
+ */
+.md-reader :where(a) {
+  color: var(--accent-text);
 }
 
-.md-reader h1 {
-  font-size: 28px;
-  margin-top: 0;
-}
-
-.md-reader h2 {
-  font-size: 22px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--line);
-}
-
-.md-reader h3 {
-  font-size: 18px;
-}
-
-.md-reader h4 {
-  font-size: 15px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.md-reader p {
-  margin: 0 0 1em;
-}
-
-.md-reader a {
-  color: var(--accent);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 150ms;
-}
-
-.md-reader a:hover {
-  border-bottom-color: var(--accent);
-}
-
-.md-reader strong {
-  color: var(--text);
-  font-weight: 600;
-}
-
-.md-reader em {
-  color: var(--text-dim);
-}
-
-.md-reader ul,
-.md-reader ol {
-  margin: 0 0 1em;
-  padding-left: 1.5em;
-}
-
-.md-reader li {
-  margin-bottom: 0.4em;
-}
-
-.md-reader li::marker {
-  color: var(--text-dim);
-}
-
-.md-reader hr {
-  border: none;
-  border-top: 1px solid var(--line);
-  margin: 2em 0;
-}
-
-.md-reader blockquote {
-  margin: 0 0 1em;
-  padding: 0.6em 1em;
-  border-left: 3px solid var(--accent);
-  background: rgba(124, 92, 255, 0.05);
-  color: var(--text-dim);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-}
-
-.md-reader blockquote p:last-child {
-  margin-bottom: 0;
-}
-
-.md-reader code {
-  font-family: var(--font-mono);
-  font-size: 0.88em;
-  padding: 1px 6px;
-  background: var(--surface-2);
-  border-radius: 4px;
-  color: var(--accent);
-}
-
-.md-reader pre {
-  margin: 0 0 1.2em;
-  padding: 14px 16px;
-  background: #1a1d24;
+/*
+ * Code colours stay with highlight.js.
+ *
+ * `atom-one-dark.css` is imported unlayered in lib/md.ts, and unlayered rules beat
+ * @layer components, so it wins over typeset for `pre.hljs` — which is what we
+ * want: the syntax theme should own token colours. We only take the container back,
+ * because atom-one-dark's #282c34 is a different hue family from this app's
+ * blue-black surfaces.
+ */
+.md-reader pre.hljs {
+  background: var(--code-bg);
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  color: var(--code-fg);
+  /* Code must never break mid-token; it scrolls instead. */
   overflow-x: auto;
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.md-reader pre code {
-  padding: 0;
-  background: transparent;
-  color: #c0c5d0;
-  font-size: inherit;
-}
-
-.md-reader table {
-  width: 100%;
-  margin: 0 0 1.2em;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.md-reader thead {
-  background: var(--surface-2);
-}
-
-.md-reader th,
-.md-reader td {
-  padding: 8px 12px;
-  text-align: left;
-  border: 1px solid var(--line);
-}
-
-.md-reader th {
-  font-weight: 600;
-  color: var(--text);
-}
-
-.md-reader tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.md-reader img {
-  max-width: 100%;
-  border-radius: var(--radius-sm);
+  overflow-wrap: normal;
 }
 </style>

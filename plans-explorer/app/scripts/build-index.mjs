@@ -3,7 +3,7 @@
  * plans-explorer indexer (build-time).
  *
  * Reads projects dir SPEC, PRODUCT, PLAN and TOP_PROJECTS.md
- * and writes plans.json + rankings.json + documents per-id json.
+ * and writes plans.json + rankings.json + meta.json + documents per-id json.
  *
  * Run via `npm run index` or as prebuild hook before `vite build`.
  */
@@ -47,9 +47,9 @@ function parseId(dirName) {
 // Strip H1 prefix like `# SPEC.md — ` or `# PLAN.md — ` to get the actual title.
 function extractTitle(md, fallback) {
   const m = md.match(/^#\s+(?:SPEC|PRODUCT|PLAN|DESIGN|TASKS)\.md\s*[-—–]\s*(.+)$/m);
-  if (m) return m[1].trim();
+  if (m) return htmlToText(m[1]);
   const h1 = md.match(/^#\s+(.+)$/m);
-  return h1 ? h1[1].trim() : fallback;
+  return h1 ? htmlToText(h1[1]) : fallback;
 }
 
 function extractCategory(specText) {
@@ -181,11 +181,129 @@ function normalizeWtp(rawMatch, amountStr, periodStr) {
   };
 }
 
+// ---------- HTML → display text ----------
+
+// One converter, used at every boundary where scraped or authored HTML becomes
+// display text. Four partial hand-rolled decoders used to live in this file and
+// none of them covered the path that actually feeds `excerpt`, so 34% of plans
+// (178/525) shipped raw `&#39;` and `&#32;` straight into the UI.
+const NAMED_ENTITIES = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  hellip: '…', mdash: '—', ndash: '–', minus: '−',
+  lsquo: '‘', rsquo: '’', sbquo: '‚',
+  ldquo: '“', rdquo: '”', bdquo: '„',
+  laquo: '«', raquo: '»', deg: '°', middot: '·', bull: '•',
+  euro: '€', pound: '£', yen: '¥', cent: '¢', copy: '©', reg: '®', trade: '™',
+  eacute: 'é', egrave: 'è', agrave: 'à', ccedil: 'ç', ntilde: 'ñ',
+  aacute: 'á', iacute: 'í', oacute: 'ó', uacute: 'ú', uuml: 'ü', ouml: 'ö', auml: 'ä',
+};
+
+function codePointToChar(cp) {
+  // Reject values that would throw or produce a lone surrogate; leave those
+  // entities as-is rather than corrupting the string.
+  if (!Number.isFinite(cp) || cp <= 0 || cp > 0x10ffff) return null;
+  if (cp >= 0xd800 && cp <= 0xdfff) return null;
+  try {
+    return String.fromCodePoint(cp);
+  } catch {
+    return null;
+  }
+}
+
+const ENTITY_RE = /&(?:#[xX]([0-9a-fA-F]+)|#(\d+)|([a-zA-Z][a-zA-Z0-9]{1,31}));/g;
+
+function decodePass(text) {
+  return text.replace(ENTITY_RE, (match, hex, dec, name) => {
+    if (hex !== undefined) return codePointToChar(parseInt(hex, 16)) ?? match;
+    if (dec !== undefined) return codePointToChar(parseInt(dec, 10)) ?? match;
+    const mapped = NAMED_ENTITIES[name.toLowerCase()];
+    return mapped === undefined ? match : mapped;
+  });
+}
+
+function stripMarkup(text) {
+  return text
+    // Reddit wraps post bodies in `<!-- SC_OFF -->` / `<!-- SC_ON -->`; comments
+    // must go before tags or their contents survive as text.
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<br\s*\/?>/gi, ' ')
+    // Closing block tags become a space, not nothing: `<p>a</p><p>b</p>` is
+    // "a b", never "ab".
+    .replace(/<\/(?:p|div|li|tr|td|h[1-6]|blockquote|pre)>/gi, ' ')
+    .replace(/<[^>]+>/g, '');
+}
+
+// Decode AND strip, alternating to a fixed point. Two facts about this corpus
+// force the loop:
+//
+//  1. Entities are MIXED-depth. projects/204-*/SPEC.md carries 9x `&amp;amp;`,
+//     3x `&amp;#32;` and 2x `&amp;#39;` (double-encoded) alongside single-encoded
+//     `&lt;`, `&gt;` and `&quot;`. One decode pass leaves the double-encoded half
+//     visible in the UI.
+//  2. What the entities ENCODE is itself markup. 326/525 excerpts hold an escaped
+//     copy of the original scraped post — `&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;`.
+//     Decoding without stripping afterwards just trades `&#39;` in the UI for
+//     `<!-- SC_OFF --><div class="md">`, which is worse.
+//
+// So each pass decodes one level and strips whatever markup that level revealed,
+// until the text stops changing.
+//
+// Bounded at 3 passes: enough for the observed depth with margin, and it cannot
+// spin on pathological input. Text still holding an entity after 3 passes keeps
+// it verbatim rather than being mangled further.
+const MAX_DECODE_PASSES = 3;
+
+// Zero-width characters (&#x200B; and friends) survive decoding as invisible
+// codepoints that break word wrapping and search matching. They are scraping
+// noise, never authored content, so they go.
+const ZERO_WIDTH_RE = /[​-‍⁠﻿]/g;
+
+function decodeAndStrip(input) {
+  let out = String(input);
+  for (let pass = 0; pass < MAX_DECODE_PASSES; pass++) {
+    const next = stripMarkup(decodePass(out));
+    if (next === out) break;
+    out = next;
+  }
+  return out.replace(ZERO_WIDTH_RE, '');
+}
+
+/** One-line display text: excerpts, titles. Collapses all whitespace. */
+function htmlToText(input) {
+  if (!input) return '';
+  return decodeAndStrip(input).replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Same conversion for MARKDOWN bodies, preserving line structure.
+ *
+ * 351 of 552 SPEC.md files carry the scraped post as escaped HTML inside their
+ * prose, and markdown-it runs with `html: false` (correct for untrusted content),
+ * so the detail view rendered `<table> <tr><td> <a href=...>` as literal text on
+ * 64% of plans. The source corpus is read-only per AGENTS.md, but
+ * `public/data/documents/*.json` is a generated artifact, so it is normalised here.
+ *
+ * Collapsing whitespace like htmlToText would flatten every heading, list and code
+ * fence into one line, so only horizontal runs are collapsed and newlines survive.
+ */
+function markdownToText(input) {
+  if (!input) return '';
+  // Strip leading YAML frontmatter (`---\n...\n---\n`) so it does not render as
+  // a giant paragraph in the markdown reader. The frontmatter is metadata; the
+  // SPA already reads it from plans.json / individual JSON fields, never from
+  // the body.
+  const stripped = input.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+  return decodeAndStrip(stripped)
+    .replace(/[^\S\n]+/g, ' ')          // horizontal whitespace only
+    .replace(/ *\n/g, '\n')             // trailing spaces per line
+    .replace(/\n{3,}/g, '\n\n')         // markdown needs at most one blank line
+    .trim();
+}
+
 // ---------- Source scraper (ProblemHunt + Reddit) ----------
 
 function cleanExcerpt(text, maxLen = 280) {
-  if (!text) return '';
-  return text.replace(/\s+/g, ' ').trim().slice(0, maxLen);
+  return htmlToText(text).slice(0, maxLen);
 }
 
 function extractProblemhuntProblem(html) {
@@ -227,17 +345,7 @@ function extractProblemhuntProblem(html) {
 }
 
 function cleanHtmlText(html) {
-  return html
-    .replace(/<br\s*\/?>/gi, ' ')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim();
+  return htmlToText(html);
 }
 
 function extractRedditProblem(html) {
@@ -245,16 +353,7 @@ function extractRedditProblem(html) {
   const m = html.match(/<div class="md">([\s\S]+?)<\/div><!-- SC_ON -->/);
   if (!m) return null;
   // Strip all tags and decode common entities.
-  const text = m[1]
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&#32;/g, ' ');
-  return text.replace(/\s+/g, ' ').trim();
+  return htmlToText(m[1]);
 }
 
 async function scrapeSource(url, timeoutMs = 10000) {
@@ -381,12 +480,7 @@ function parsePlan(dirPath) {
 
   // Build a local-only excerpt (regex-cleaned HTML escapado). Replaced by the
   // scraped original problem in main() when the fetch succeeds.
-  const localExcerpt = problema
-    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 280) || title;
+  const localExcerpt = htmlToText(problema).slice(0, 280) || title;
 
   return {
     id,
@@ -416,7 +510,7 @@ function writeDocumentFiles(plans) {
     const docs = {};
     for (const name of ['SPEC.md', 'PRODUCT.md', 'PLAN.md', 'DESIGN.md', 'TASKS.md']) {
       const text = readSafe(join(dirPath, name));
-      if (text) docs[name.replace('.md', '')] = text;
+      if (text) docs[name.replace('.md', '')] = markdownToText(text);
     }
     if (Object.keys(docs).length > 0) {
       writeFileSync(join(OUT_DOCS, `${p.id}.json`), JSON.stringify(docs));
@@ -623,12 +717,28 @@ async function main() {
   console.log(`[indexer] scraped=${scraped} cached=${cached}`);
 
   // Strip bulky per-doc dump from plans.json (kept in documents/<id>.json instead).
-  const slim = plans.map(({ id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores }) => ({
-    id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores,
-  }));
+  // `assets` lists architecture-diagram HTML files copied from
+  // projects/<id>-<slug>/assets/*.html into public/projects/<id>-<slug>/assets/
+  // at build time, so the SPA can render them as iframes without HEAD-fishing
+  // every candidate name (which on the Vite dev server returns 200 + the SPA
+  // shell for any path that does not exist).
+  const slim = plans.map((p) => {
+    const assetsDir = join(PROJECTS_DIR, `${p.id}-${p.slug}`, 'assets');
+    const assets = existsSync(assetsDir)
+      ? readdirSync(assetsDir).filter((n) => n.endsWith('.html')).sort()
+      : [];
+    const { id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores } = p;
+    return { id, slug, title, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores, assets };
+  });
 
   writeFileSync(join(OUT_DATA, 'plans.json'), JSON.stringify(slim));
   writeFileSync(join(OUT_DATA, 'rankings.json'), JSON.stringify(rankings));
+  // Build metadata as its own file: plans.json is a bare array, and wrapping it
+  // to carry metadata would break every existing consumer and fixture.
+  writeFileSync(
+    join(OUT_DATA, 'meta.json'),
+    JSON.stringify({ indexedAt: new Date().toISOString().slice(0, 10), planCount: slim.length }),
+  );
 
   writeDocumentFiles(plans);
   writePlanZips(plans);

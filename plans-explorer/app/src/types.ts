@@ -32,6 +32,7 @@ export interface Plan {
   excerpt: string;
   originalExcerpt?: string;
   scores: Scores;
+  assets: string[];
 }
 
 export interface RankEntry {

@@ -43,7 +43,9 @@ function rankIn(kind: 'money' | 'learn' | 'fun', id: string): number {
   return idx === -1 ? 0 : idx + 1;
 }
 
-onMounted(async () => {
+async function load() {
+  loading.value = true;
+  error.value = null;
   try {
     const [p, r] = await Promise.all([loadPlans(), loadRankings()]);
     plans.value = p;
@@ -53,7 +55,9 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
-});
+}
+
+onMounted(load);
 </script>
 
 <template>
@@ -70,9 +74,10 @@ onMounted(async () => {
     <div v-if="loading" class="empty-state">
       <p>Loading rankings…</p>
     </div>
-    <div v-else-if="error" class="empty-state">
-      <h3>Failed to load</h3>
+    <div v-else-if="error" class="empty-state" role="alert">
+      <h2>Couldn't load the rankings</h2>
       <p>{{ error }}</p>
+      <button class="retry-btn" @click="load">Try again</button>
     </div>
     <div v-else-if="rankings" class="rankings-grid">
       <section v-for="col in COLUMNS" :key="col.key" class="rank-column">
@@ -147,7 +152,7 @@ onMounted(async () => {
   padding: 1px 6px;
   background: var(--surface-2);
   border-radius: 4px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .rankings-grid {
@@ -224,7 +229,7 @@ onMounted(async () => {
 }
 
 .rank-item:hover {
-  border-color: rgba(124, 92, 255, 0.3);
+  border-color: var(--accent);
   transform: translateX(2px);
 }
 
@@ -232,7 +237,7 @@ onMounted(async () => {
   font-family: var(--font-mono);
   font-size: 22px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-text);
   line-height: 1;
   text-align: center;
 }
@@ -262,7 +267,7 @@ onMounted(async () => {
 }
 
 .rank-title:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .rank-badge.is-multi {
@@ -270,8 +275,8 @@ onMounted(async () => {
   align-items: center;
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(245, 165, 36, 0.1);
-  border: 1px solid rgba(245, 165, 36, 0.3);
+  background: var(--warn-a10);
+  border: 1px solid var(--warn-a30);
   color: var(--warn);
   font-size: 10px;
   font-weight: 600;
@@ -306,7 +311,7 @@ onMounted(async () => {
 }
 
 .link-out:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--surface);
 }
 </style>

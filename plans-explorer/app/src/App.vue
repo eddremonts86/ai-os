@@ -1,22 +1,42 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { RouterView, RouterLink } from 'vue-router';
+import { loadPlans, loadIndexedAt } from '@/data/load';
+
+// The footer used to hardcode "525 plans" and print `new Date()` as the index
+// date, so it always claimed the corpus was indexed today. Both now come from
+// the generated manifest, and render as nothing rather than as a guess.
+const planCount = ref<number | null>(null);
+const indexedAt = ref<string | null>(null);
+
+onMounted(async () => {
+  try {
+    const [plans, at] = await Promise.all([loadPlans(), loadIndexedAt()]);
+    planCount.value = plans.length;
+    indexedAt.value = at;
+  } catch {
+    // Footer metadata is decorative; the views surface load failures themselves.
+  }
+});
 </script>
 
 <template>
   <div class="app-shell">
+    <a class="skip-link" href="#main">Skip to results</a>
+
     <header class="app-header">
       <RouterLink to="/" class="brand">
-        <span class="brand-mark">◆</span>
+        <span class="brand-mark" aria-hidden="true">◆</span>
         <span class="brand-text">AI-OS Plans Explorer</span>
       </RouterLink>
-      <nav class="app-nav">
+      <nav class="app-nav" aria-label="Main">
         <RouterLink to="/" exact-active-class="is-active">Plans</RouterLink>
         <RouterLink to="/rankings" active-class="is-active">Rankings</RouterLink>
         <RouterLink to="/about" active-class="is-active">About</RouterLink>
       </nav>
     </header>
 
-    <main class="app-main">
+    <main id="main" class="app-main">
       <RouterView v-slot="{ Component }">
         <Transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -25,8 +45,12 @@ import { RouterView, RouterLink } from 'vue-router';
     </main>
 
     <footer class="app-footer">
-      <span>525 plans · last indexed <em>{{ new Date().toISOString().slice(0, 10) }}</em></span>
-      <span class="dot">·</span>
+      <span>
+        <template v-if="planCount !== null">{{ planCount }} plans</template>
+        <template v-else>Plans</template>
+        <template v-if="indexedAt"> · indexed <em>{{ indexedAt }}</em></template>
+      </span>
+      <span class="dot" aria-hidden="true">·</span>
       <a href="https://github.com/eddremonts86/ai-os" target="_blank" rel="noopener">source on GitHub</a>
     </footer>
   </div>
@@ -35,6 +59,7 @@ import { RouterView, RouterLink } from 'vue-router';
 <style scoped>
 .app-shell {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -47,23 +72,48 @@ import { RouterView, RouterLink } from 'vue-router';
   align-items: center;
   justify-content: space-between;
   padding: 14px 24px;
-  background: var(--surface);
+  /* Translucent so the backdrop-filter below actually has something to blur — it
+     was sitting on an opaque --surface, making it a compositing layer that blurred
+     nothing. color-mix keeps it tied to the token instead of a second literal. */
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(8px);
+}
+
+/* No backdrop-filter support: fall back to the opaque surface rather than a
+   see-through header over scrolling cards. */
+@supports not (backdrop-filter: blur(8px)) {
+  .app-header {
+    background: var(--surface);
+  }
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  /* Do not wrap: at 375px the nav squeezed this to "AI-OS / Plans / Explorer"
+     across three lines. min-width:0 lets it shrink; the label truncates instead. */
+  flex: 0 1 auto;
+  min-width: 0;
   text-decoration: none;
   color: var(--text);
   font-weight: 600;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.brand-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-nav {
+  flex: none;
 }
 
 .brand-mark {
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 18px;
 }
 
@@ -92,6 +142,9 @@ import { RouterView, RouterLink } from 'vue-router';
   background: var(--surface-2);
 }
 
+/* Route transition: opacity only, no movement, so reduced-motion needs no
+ * special case beyond the global duration clamp. */
+
 .app-main {
   flex: 1;
   width: 100%;
@@ -117,7 +170,22 @@ import { RouterView, RouterLink } from 'vue-router';
 }
 
 .app-footer a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
+}
+
+@media (max-width: 560px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  /* Drop to the short mark: the nav needs the room more than the full name does. */
+  .brand-text {
+    font-size: 14px;
+  }
+
+  .app-nav a {
+    padding: 8px 10px;
+  }
 }
 
 .fade-enter-active,
