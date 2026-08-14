@@ -25,7 +25,9 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
+    // Honour a harness-assigned PORT so a preview can take a free port when
+    // 5173 is already claimed; plain `npm run dev` still lands on 5173.
+    port: Number(process.env.PORT) || 5173,
     strictPort: false,
   },
 });

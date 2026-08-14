@@ -87,3 +87,6 @@ __pycache__/
 # `docker compose up`, never versioned.
 memory/falkordb/data/
 memory/falkordb/ollama-data/
+
+# plans-pipeline runtime state (per-machine cursor, not shared config).
+tools/plans-pipeline/state.json
