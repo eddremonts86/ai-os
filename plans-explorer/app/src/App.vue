@@ -22,7 +22,7 @@ onMounted(async () => {
 
 <template>
   <div class="app-shell">
-    <a class="skip-link" href="#main">Skip to results</a>
+    <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="app-header">
       <RouterLink to="/" class="brand">
@@ -30,7 +30,7 @@ onMounted(async () => {
         <span class="brand-text">AI-OS Plans Explorer</span>
       </RouterLink>
       <nav class="app-nav" aria-label="Main">
-        <RouterLink to="/" exact-active-class="is-active">Plans</RouterLink>
+        <RouterLink to="/plans" active-class="is-active">Plans</RouterLink>
         <RouterLink to="/rankings" active-class="is-active">Rankings</RouterLink>
         <RouterLink to="/about" active-class="is-active">About</RouterLink>
       </nav>

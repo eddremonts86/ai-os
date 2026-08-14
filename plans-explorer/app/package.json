@@ -9,7 +9,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test:parser": "node scripts/test-parser.mjs"
+    "test:parser": "node scripts/test-parser.mjs",
+    "shots": "node scripts/capture-shots.mjs"
   },
   "dependencies": {
     "fuse.js": "^7.0.0",
