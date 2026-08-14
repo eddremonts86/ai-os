@@ -13,7 +13,6 @@ tags: [Validated, Legal, Business, Other]
 country: Unknown
 tech: [Next.js, Postgres, Anthropic Claude, Stripe, DocuSign API]
 ---
-
 # Research: existing solutions cover only 30% of small businesses' concerns about potential legal risks. They need a different product.
 
 ## Phase 0: Scaffold

@@ -1,7 +1,7 @@
 ---
 id: "002"
 slug: need-a-super-simple-ai-agent-that-learns-by-watching-yo
-title: "Need a super simple AI agent that learns by watching your screen and automates routine tasks. Existing solutions are complex or expensive. Willing to pay $10–30/month."
+title: Need a super simple AI agent that learns by watching your screen and automates routine tasks. Existing solutions are complex or expensive. Willing to pay $10–30/month.
 status: enriched
 source:
   name: ProblemHunt
@@ -11,8 +11,15 @@ category: ai
 date: "2026-07-17"
 tags: [AI, Productivity, Other]
 country: USA
+wtp:
+  raw: $10–30/month
+  currency: USD
+  min: 10
+  max: 30
+  period: month
+  mrrMid: 20
+tech: [Python, Tauri, OpenAI Whisper, Anthropic Claude, DuckDB]
 ---
-
 # Need a super simple AI agent that learns by watching your screen and automates routine tasks. Existing solutions are complex or expensive. Willing to pay $10–30/month.
 
 ## Phase 0: Scaffold
