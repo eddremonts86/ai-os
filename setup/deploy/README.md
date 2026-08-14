@@ -49,14 +49,71 @@ curl -I https://ai-os.eduardoinerarte.dk/
 
 ## ⚠️ .env caveat: COOLIFY_API_TOKEN
 
-**Resolved 2026-07-26.** The duplicate is gone: `dev-env/env-config/.env` now holds exactly one
-`COOLIFY_API_TOKEN`, verified returning HTTP 200 against `/api/v1/applications`. Do not go
-hunting for a second candidate — there isn't one.
+**The duplicate is gone** (resolved 2026-07-26): `dev-env/env-config/.env` holds exactly one
+`COOLIFY_API_TOKEN`. Do not go hunting for a second candidate — there isn't one. The original
+hazard still applies if a duplicate ever reappears: a later definition shadows an earlier one
+when the file is sourced, so a dead token appended below a working one silently breaks every
+deploy. Check with `grep -c '^COOLIFY_API_TOKEN=' dev-env/env-config/.env` — the answer must be `1`.
 
-The original hazard still applies if a duplicate ever reappears: a later definition shadows an
-earlier one when the file is sourced, so a dead token appended below a working one silently
-breaks every deploy. Check with `grep -c '^COOLIFY_API_TOKEN=' dev-env/env-config/.env` — the
-answer must be `1`.
+**That single token is dead as of 2026-08-14.** It is well-formed (`4|` + 48 chars) but returns
+`401 {"message":"Unauthenticated."}` on `/api/v1/teams`, `/projects`, `/servers` and
+`/applications`. The GitHub secret of the same name is a *different, still-valid* token — the
+`deploy-site` run on 2026-08-13 succeeded with it. So a green deploy proves nothing about the
+local `.env`; test the local token before trusting it:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' -H "Authorization: Bearer $TOKEN" \
+  -H 'Accept: application/json' "$COOLIFY_API_URL/api/v1/teams"   # must be 200, not 401
+```
+
+Refresh it in Coolify → Keys & Tokens → API tokens, with **read + write** permissions (read
+alone cannot create an application).
+
+### Do not `source` this file to get the token
+
+The value contains a `|`. Unquoted, `set -a; . dev-env/env-config/.env` makes the shell parse it
+as a pipeline, and `$COOLIFY_API_TOKEN` ends up **empty** — not wrong, *empty*, with no error.
+That empty value then produces the same `401` as a revoked token, which is how a live token and
+a dead one become indistinguishable. Either quote the value in `.env`:
+
+```
+COOLIFY_API_TOKEN="4|xxxxxxxx…"
+```
+
+…or read it without a shell, which is what the snippets in this file assume:
+
+```bash
+TOKEN=$(grep -m1 '^COOLIFY_API_TOKEN=' dev-env/env-config/.env | cut -d= -f2- | tr -d '"'"'"')
+```
+
+## plans-explorer (second app — live since 2026-08-14)
+
+The explorer in [`plans-explorer/`](../../plans-explorer/) is a separate Coolify application
+built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), serving
+**https://plans.eduardoinerarte.dk**. Created via the API and deployed; both repo secrets are
+set, so pushes to `main` touching `plans-explorer/**` or `projects/**` now deploy it
+automatically.
+
+Its settings — mirrored from `ai-os-landing`, same repo and deploy key, in project
+`edd-app-template` / environment `production`:
+
+| Setting | Value | Why |
+|---|---|---|
+| `build_pack` | `dockerfile` | |
+| `dockerfile_location` | `/Dockerfile.plans-explorer` | |
+| `base_directory` | `/` | The indexer reads `../projects/`; scoping the context to `plans-explorer/` yields a green build serving **zero** plans |
+| `ports_exposes` | `80` | |
+| domain | `https://plans.eduardoinerarte.dk` | Wildcard DNS already resolved to the box; no DNS change was needed |
+
+Verified in production by content, not by status code: `/` serves the SPA shell (678 B, distinct
+from the landing's 96 kB), `/data/plans.json` returns 10 plans all at `status: enriched`, the SPA
+fallback answers unknown paths, and the container's own healthcheck — which probes
+`/data/plans.json`, not just the shell — reports `healthy`.
+
+> Both deploy workflows are safe-by-default: they run a **green no-op** when their secrets are
+> absent. A successful run is therefore not evidence of a deploy. Check the run's annotation for
+> `Deploy skipped`, and confirm the live site by content. `/plans/` on the landing returns
+> HTTP 200 serving the landing itself via nginx's SPA fallback — a 404 wearing a 200.
 
 ## Notes / decisions
 
