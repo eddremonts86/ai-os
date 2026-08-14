@@ -11,8 +11,8 @@ category: productivity
 date: "2026-07-17"
 tags: [Productivity, Business, Other]
 country: Andorra
+tech: [Flutter, Firebase, Cloud Functions, BigQuery]
 ---
-
 # Centralized tracking of tasks, time, and attendance for field staff. No unified dashboard, manual entry leads to errors and wasted time. Ready to invest in a solution.
 
 ## Phase 0: Scaffold

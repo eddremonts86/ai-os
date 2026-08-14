@@ -1,7 +1,7 @@
 ---
 id: "004"
 slug: lack-of-trusted-inspection-and-shipping-for-expensive-i
-title: "Lack of trusted inspection and shipping for expensive items when selling between cities. Willing to pay $80–130 per deal."
+title: Lack of trusted inspection and shipping for expensive items when selling between cities. Willing to pay $80–130 per deal.
 status: enriched
 source:
   name: ProblemHunt
@@ -11,8 +11,15 @@ category: logistics
 date: "2026-07-17"
 tags: [Logistics, Transportation, Business, Retail, Other]
 country: Russia
+wtp:
+  raw: $80–130 per deal
+  currency: USD
+  min: 80
+  max: 130
+  period: one-shot
+  mrrMid: 105
+tech: [Go, Postgres, S3, Stripe Connect, Resend]
 ---
-
 # Lack of trusted inspection and shipping for expensive items when selling between cities. Willing to pay $80–130 per deal.
 
 ## Phase 0: Scaffold
