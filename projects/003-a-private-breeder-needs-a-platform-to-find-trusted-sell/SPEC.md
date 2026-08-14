@@ -13,7 +13,6 @@ tags: [Marketing, Business, Retail, Other]
 country: Georgia
 tech: [Next.js, Postgres, Stripe Connect, Twilio, Mapbox]
 ---
-
 # A private breeder needs a platform to find trusted sellers who work for a commission. One helper at 10% commission already boosted sales. Need more people like that.
 
 ## Problem
@@ -40,7 +39,17 @@ Ship a vetting-first marketplace where a breeder can post a commission-only sell
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+Design direction for the MVP at `https://problemhunt.pro/en/marketing/xcnt6j8g51-a-private-breeder-needs-a-platfo` follows the constraints in `003-.../SPEC.md` and the chosen stack (Next.js, Postgres, Stripe Connect). The visual language is intentionally narrow: a single primary surface, a single accent, and density tuned for the primary user in Georgia.
+
+For Georgia, the defaults lean toward the locale's reading direction, currency glyph, and date format. No third-party tracking is added to the surface; the design is intentionally auditable.
+
+**Color** — neutral surface (off-white / off-black per OS theme), one accent for primary actions, one muted accent for secondary. No gradients in v1.
+
+**Type** — one display family for headings, one text family for body, one mono for code/numbers. Type scale is small (4 steps) so the layout stays compact.
+
+**Density** — tight, table-driven for dashboards; generous spacing for content-heavy screens.
+
+**Motion** — minimal: page transitions only when the user explicitly navigates. No autoplay, no parallax.
 
 ## Constraints
 

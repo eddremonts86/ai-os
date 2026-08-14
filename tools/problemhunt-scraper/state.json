@@ -3581,8 +3581,3033 @@
       "tags": "Freelance",
       "source": "problemhunt",
       "analyzedAt": "2026-08-13T15:08:39.561Z"
+    },
+    "199-a-psychologist-needs-an-advertising-bot-that-analyzes-h": {
+      "url": "https://problemhunt.pro/en/marketing/f9domkol61-a-psychologist-needs-an-advertising-bot",
+      "uid": "f9domkol61",
+      "title": "A psychologist needs an advertising bot that analyzes her workload and automatically adjusts her ads. She is willing to pay for a solution and is open to discussing the details.",
+      "category": "marketing",
+      "tags": "Marketing,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.575Z"
+    },
+    "200-need-a-tool-that-automatically-finds-people-in-social-m": {
+      "url": "https://problemhunt.pro/en/social/6stv96yp21-need-a-tool-that-automatically-finds-peo",
+      "uid": "6stv96yp21",
+      "title": "Need a tool that automatically finds people in social media using deeper criteria. Willing to pay $50/month.",
+      "category": "social",
+      "tags": "Social,Marketing,Business,Startups,AI,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.576Z"
+    },
+    "201-voice-cloning-kills-the-character-of-a-voice-making-it-": {
+      "url": "https://problemhunt.pro/en/ai/ucs1zbnp71-voice-cloning-kills-the-character-of-a-v",
+      "uid": "ucs1zbnp71",
+      "title": "Voice cloning kills the character of a voice, making it too perfect and lifeless. Need a way to preserve natural imperfections without sacrificing quality.",
+      "category": "ai",
+      "tags": "AI,Media,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.577Z"
+    },
+    "202-need-a-oneclick-solution-that-replaces-a-lecturers-voic": {
+      "url": "https://problemhunt.pro/en/education/cuglmz7oz1-need-a-oneclick-solution-that-replaces-a",
+      "uid": "cuglmz7oz1",
+      "title": "Need a one‑click solution that replaces a lecturer's voice with clear English directly inside YouTube. Current services are inconvenient. Willing to pay $12/month.",
+      "category": "education",
+      "tags": "Education,Productivity,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.578Z"
+    },
+    "203-real-working-conditions-cant-be-verified-before-taking-": {
+      "url": "https://problemhunt.pro/en/career/f50s1ke0t1-real-working-conditions-cant-be-verified",
+      "uid": "f50s1ke0t1",
+      "title": "Real working conditions can't be verified before taking a job — reviews lie. Need a service for direct contact with former employees. Willing to pay: £50–100 when I successfully get hired.",
+      "category": "career",
+      "tags": "Career,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.579Z"
+    },
+    "204-coming-soon-validated-problems-for-startups-with-a-high": {
+      "url": "https://problemhunt.pro/en/validated/yfo00hoie1-coming-soon-validated-problems-for-start",
+      "uid": "yfo00hoie1",
+      "title": "Coming soon: validated problems for startups with a high chance of success. Our mission: 0% failed startups.",
+      "category": "validated",
+      "tags": "Validated",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.580Z"
+    },
+    "205-a-gambling-addict-hasnt-been-able-to-quit-online-casino": {
+      "url": "https://problemhunt.pro/en/psychology/dopyur7701-a-gambling-addict-hasnt-been-able-to-qui",
+      "uid": "dopyur7701",
+      "title": "A gambling addict hasn’t been able to quit online casinos for years. All known methods have failed. He has three hypotheses for solving his own problem. Willing to pay $15–30/month.",
+      "category": "psychology",
+      "tags": "Psychology,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.581Z"
+    },
+    "206-a-designer-needs-an-ai-agent-to-eliminate-the-manual-dr": {
+      "url": "https://problemhunt.pro/en/design/j8ay8xay71-a-designer-needs-an-ai-agent-to-eliminat",
+      "uid": "j8ay8xay71",
+      "title": "A designer needs an AI agent to eliminate the manual drudgery of adapting designs for mobile/tablet. Willing to pay €20–30 per project.",
+      "category": "design",
+      "tags": "Design,AI,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.581Z"
+    },
+    "207-a-russian-developer-built-an-app-for-nigeria-but-cant-a": {
+      "url": "https://problemhunt.pro/en/finance/y3ik6f8sr1-a-russian-developer-built-an-app-for-nig",
+      "uid": "y3ik6f8sr1",
+      "title": "A Russian developer built an app for Nigeria but can't accept payments. App stores are unavailable, direct providers are complex. Needs a simple solution. Budget $500–700.",
+      "category": "finance",
+      "tags": "Finance,Legal,Dev,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.582Z"
+    },
+    "208-need-an-ai-app-upload-a-photo-get-a-weekly-verdict-prog": {
+      "url": "https://problemhunt.pro/en/fitness/xhutexah41-need-an-ai-app-upload-a-photo-get-a-week",
+      "uid": "xhutexah41",
+      "title": "Need an AI app: upload a photo → get a weekly verdict «progress / no progress» and advice on when to increase load. Existing trackers either lack AI or are too complex. Willing to pay $100/year.",
+      "category": "fitness",
+      "tags": "Fitness,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.583Z"
+    },
+    "209-there-is-no-simple-and-secure-way-to-pass-bitcoin-to-he": {
+      "url": "https://problemhunt.pro/en/finance/gs2svjum41-there-is-no-simple-and-secure-way-to-pas",
+      "uid": "gs2svjum41",
+      "title": "There is no simple and secure way to pass bitcoin to heirs in the event of sudden death. Without complex multisignature setups or trust in third parties.",
+      "category": "finance",
+      "tags": "Finance,Security,Dev,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.584Z"
+    },
+    "210-risk-of-a-linkedin-ban-due-to-false-positive-bot-detect": {
+      "url": "https://problemhunt.pro/en/marketing/p1ecr48041-risk-of-a-linkedin-ban-due-to-false-posi",
+      "uid": "p1ecr48041",
+      "title": "Risk of a LinkedIn ban due to false positive bot detection. Official support is unhelpful. Need a tool that warns about suspicious activity to avoid losing 11,500 followers.",
+      "category": "marketing",
+      "tags": "Marketing,Security,Productivity,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.585Z"
+    },
+    "211-for-5-years-goods-have-been-stolen-from-the-office-ther": {
+      "url": "https://problemhunt.pro/en/security/rgj4xt7ep1-for-5-years-goods-have-been-stolen-from",
+      "uid": "rgj4xt7ep1",
+      "title": "For 5 years, goods have been stolen from the office. There is no available service that automatically analyzes camera footage and sends alerts about suspicious activity.",
+      "category": "security",
+      "tags": "Security,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.586Z"
+    },
+    "212-no-simple-affordable-credit-layer-to-bridge-payment-pro": {
+      "url": "https://problemhunt.pro/en/dev/of852me891-no-simple-affordable-credit-layer-to-bri",
+      "uid": "of852me891",
+      "title": "No simple, affordable «credit layer» to bridge payment processors with user balances — developers rebuild credit tracking, consumption logic, and refunds for every app.",
+      "category": "dev",
+      "tags": "Dev,Business,Finance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.587Z"
+    },
+    "213-designers-are-losing-their-bearings-in-the-era-of-ai-it": {
+      "url": "https://problemhunt.pro/en/design/b17z60rdb1-designers-are-losing-their-bearings-in-t",
+      "uid": "b17z60rdb1",
+      "title": "Designers are losing their bearings in the era of AI — it's unclear which direction to develop in, which stack to master, and how to become a «highly valuable specialist».",
+      "category": "design",
+      "tags": "Design,Education,Career,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.588Z"
+    },
+    "214-5-partners-5-different-cv-templates-managers-spend-2040": {
+      "url": "https://problemhunt.pro/en/career/u2jsc5fxc1-5-partners-5-different-cv-templates-mana",
+      "uid": "u2jsc5fxc1",
+      "title": "5 partners — 5 different CV templates. Managers spend 20–40 minutes on each adaptation, up to 15 times a week. Over a year of this routine. No ready-made solutions found.",
+      "category": "career",
+      "tags": "Career,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.589Z"
+    },
+    "215-healthcare-professionals-want-ai-for-diagnosis-document": {
+      "url": "https://problemhunt.pro/en/education/6p14z4bz51-healthcare-professionals-want-ai-for-dia",
+      "uid": "6p14z4bz51",
+      "title": "Healthcare professionals want AI for diagnosis, documentation, and patient care — but training doesn't scale and tools feel too technical. Need a simple, clinically relevant path.",
+      "category": "education",
+      "tags": "Education,Health,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.589Z"
+    },
+    "216-two-years-searching-for-reliable-current-knowledge-ai-g": {
+      "url": "https://problemhunt.pro/en/education/35l4crn5d1-two-years-searching-for-reliable-current",
+      "uid": "35l4crn5d1",
+      "title": "Two years searching for reliable, current knowledge. AI gives generic answers, search engines thousands of links. Need a personalized guide to trusted information.",
+      "category": "education",
+      "tags": "Education,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.590Z"
+    },
+    "217-procurement-data-quality-suffers-supplier-contacts-outd": {
+      "url": "https://problemhunt.pro/en/business/1xuloij3k1-procurement-data-quality-suffers-supplie",
+      "uid": "1xuloij3k1",
+      "title": "Procurement data quality suffers — supplier contacts outdated, prices stale, history lost. Existing solutions too expensive or don't fix data quality. Need a simple tool for $10/month.",
+      "category": "business",
+      "tags": "Business,Finance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.591Z"
+    },
+    "218-photographer-loses-2030-of-clients-to-spam-needs-an-ai-": {
+      "url": "https://problemhunt.pro/en/marketing/rlr11kl8y1-photographer-loses-2030-of-clients-to-sp",
+      "uid": "rlr11kl8y1",
+      "title": "Photographer loses 20–30% of clients to spam — needs an AI clone with a copy of her voice to answer calls and book sessions.",
+      "category": "marketing",
+      "tags": "Marketing,AI,Freelance,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.592Z"
+    },
+    "219-need-a-smart-device-that-automatically-detects-pigeons-": {
+      "url": "https://problemhunt.pro/en/hardware/xaf7mgmiy1-need-a-smart-device-that-automatically-d",
+      "uid": "xaf7mgmiy1",
+      "title": "Need a smart device that automatically detects pigeons and permanently deters them. Everything on the market only works temporarily.",
+      "category": "hardware",
+      "tags": "Hardware,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.593Z"
+    },
+    "220-voice-control-for-ai-coding-breaks-when-i-change-my-min": {
+      "url": "https://problemhunt.pro/en/ai/2k6f44lb51-voice-control-for-ai-coding-breaks-when",
+      "uid": "2k6f44lb51",
+      "title": "Voice control for AI coding breaks when I change my mind mid-sentence. Need an AI intermediary that cleans up prompts through conversation before sending.",
+      "category": "ai",
+      "tags": "AI,Dev,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.594Z"
+    },
+    "221-nigerias-transport-trap-uberbolt-too-expensive-okada-to": {
+      "url": "https://problemhunt.pro/en/transportation/i0p4ciscj1-nigerias-transport-trap-uberbolt-too-exp",
+      "uid": "i0p4ciscj1",
+      "title": "Nigeria's transport trap: Uber/Bolt too expensive, okada too deadly, Danfo buses a nightmare. Millions need safe, affordable carpooling. Ready to pay.",
+      "category": "transportation",
+      "tags": "Transportation,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.595Z"
+    },
+    "222-micro-influencer-cannot-monetize-a-loyal-audience-there": {
+      "url": "https://problemhunt.pro/en/media/1430dgg9o1-micro-influencer-cannot-monetize-a-loyal",
+      "uid": "1430dgg9o1",
+      "title": "Micro-influencer cannot monetize a loyal audience: there is no safe and effective platform for deals with small brands and those willing to work with small influencers in India.",
+      "category": "media",
+      "tags": "Media,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.595Z"
+    },
+    "223-global-problem-dating-apps-fail-for-complex-lives-illne": {
+      "url": "https://problemhunt.pro/en/social/8bua20bf01-global-problem-dating-apps-fail-for-comp",
+      "uid": "8bua20bf01",
+      "title": "Global problem: Dating apps fail for complex lives (illness, relocation, unfulfilled youth). A platform is needed for matching based on life path compatibility.",
+      "category": "social",
+      "tags": "Social,Psychology,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.596Z"
+    },
+    "224-an-african-entrepreneur-cannot-accept-international-pay": {
+      "url": "https://problemhunt.pro/en/finance/ces298ikj1-an-african-entrepreneur-cannot-accept-in",
+      "uid": "ces298ikj1",
+      "title": "An African entrepreneur cannot accept international payments on Shopify. PayPal blocks, Stripe is unavailable. There is no payment gateway that does not discriminate based on geography.",
+      "category": "finance",
+      "tags": "Finance,Legal,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.597Z"
+    },
+    "225-daily-routine-after-every-client-meeting-i-need-to-writ": {
+      "url": "https://problemhunt.pro/en/productivity/goxzmndvc1-daily-routine-after-every-client-meeting",
+      "uid": "goxzmndvc1",
+      "title": "Daily routine: after every client meeting, I need to write a structured report for colleagues. Existing corporate tools (Microsoft 365) are inefficient and slow for this.",
+      "category": "productivity",
+      "tags": "Productivity,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.598Z"
+    },
+    "226-a-startup-founder-loses-focus-and-productivity-juggling": {
+      "url": "https://problemhunt.pro/en/productivity/nglbafr5o1-a-startup-founder-loses-focus-and-produc",
+      "uid": "nglbafr5o1",
+      "title": "A startup founder loses focus and productivity juggling 5-7 tools for a single project. Existing «all-in-one» platforms don't provide the feel of a unified workspace.",
+      "category": "productivity",
+      "tags": "Productivity,Startups,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.599Z"
+    },
+    "227-a-3-year-search-for-a-simple-tool-to-track-both-persona": {
+      "url": "https://problemhunt.pro/en/finance/mc8mvksu31-a-3-year-search-for-a-simple-tool-to-tra",
+      "uid": "mc8mvksu31",
+      "title": "A 3-year search for a simple tool to track both personal and business finances in one place. Nothing fits.",
+      "category": "finance",
+      "tags": "Finance,Freelance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.600Z"
+    },
+    "228-a-freelancer-often-loses-in-proposal-competitions-due-t": {
+      "url": "https://problemhunt.pro/en/freelance/c3y54z8xz1-a-freelancer-often-loses-in-proposal-com",
+      "uid": "c3y54z8xz1",
+      "title": "A freelancer often loses in proposal competitions due to the inability to quickly create personalized and visual website concepts for each job order.",
+      "category": "freelance",
+      "tags": "Freelance,AI,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.600Z"
+    },
+    "229-a-telegram-channel-owner-is-losing-their-audience-witho": {
+      "url": "https://problemhunt.pro/en/media/dkr31xnko1-a-telegram-channel-owner-is-losing-their",
+      "uid": "dkr31xnko1",
+      "title": "A Telegram channel owner is losing their audience without understanding the reasons for unsubscriptions. There is no simple tool for automatically collecting feedback from departed subscribers.",
+      "category": "media",
+      "tags": "Media,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.601Z"
+    },
+    "230-an-indie-hacker-spends-20-30-hours-manually-cold-launch": {
+      "url": "https://problemhunt.pro/en/ai/1trzcj1cz1-an-indie-hacker-spends-20-30-hours-manua",
+      "uid": "1trzcj1cz1",
+      "title": "An indie hacker spends 20-30 hours manually «cold launching» each new product in directories, Reddit, and blogs. There is no tool that fully automates this and proves its effectiveness.",
+      "category": "ai",
+      "tags": "AI,Media,Marketing,Startups,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.602Z"
+    },
+    "231-website-owners-constantly-need-minor-edits-in-the-admin": {
+      "url": "https://problemhunt.pro/en/ai/smpdtt9zc1-website-owners-constantly-need-minor-edi",
+      "uid": "smpdtt9zc1",
+      "title": "Website owners constantly need minor edits in the admin panel. They are forced to pay specialists for 5-minute tasks. We need an AI agent that does this on command in the browser.",
+      "category": "ai",
+      "tags": "AI,No-Code,Freelance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.603Z"
+    },
+    "232-republished-there-is-no-app-for-nigerian-passengers-tha": {
+      "url": "https://problemhunt.pro/en/legal/rdydysy711-republished-there-is-no-app-for-nigerian",
+      "uid": "rdydysy711",
+      "title": "Republished: There is no app for Nigerian passengers that shows the real-time flight status and helps claim compensation for delays and cancellations.",
+      "category": "legal",
+      "tags": "Legal,Travel,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.604Z"
+    },
+    "233-constantly-forgetting-minor-tasks-due-to-the-impulsive-": {
+      "url": "https://problemhunt.pro/en/productivity/6hmyvb2mk1-constantly-forgetting-minor-tasks-due-to",
+      "uid": "6hmyvb2mk1",
+      "title": "Constantly forgetting minor tasks due to the impulsive habit of «swiping» reminders away. Needs a tool that breaks this behavioral pattern.",
+      "category": "productivity",
+      "tags": "Productivity,Psychology,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.605Z"
+    },
+    "234-its-impossible-to-order-truly-fresh-farm-vegetables-and": {
+      "url": "https://problemhunt.pro/en/food/a6dgf1icc1-its-impossible-to-order-truly-fresh-farm",
+      "uid": "a6dgf1icc1",
+      "title": "It's impossible to order truly fresh farm vegetables and bread through delivery aggregators — product quality is low, and you have to go to the market yourself.",
+      "category": "food",
+      "tags": "Food,Logistics,Retail,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.606Z"
+    },
+    "235-online-clothes-shopping-is-a-lottery-theres-no-accessib": {
+      "url": "https://problemhunt.pro/en/retail/k5z415d0z1-online-clothes-shopping-is-a-lottery-the",
+      "uid": "k5z415d0z1",
+      "title": "Online clothes shopping is a lottery. There's no accessible technology to see how an item will fit your body, especially in small stores. It's a pain for the buyer and a loss for the seller.",
+      "category": "retail",
+      "tags": "Retail,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.607Z"
+    },
+    "236-need-an-ai-jarvis-that-turns-chaotic-voicetext-updates-": {
+      "url": "https://problemhunt.pro/en/ai/kmtor7kz31-need-an-ai-jarvis-that-turns-chaotic-voi",
+      "uid": "kmtor7kz31",
+      "title": "Need an AI «Jarvis» that turns chaotic voice/text updates into automatically structured tasks, projects, and dashboards for managing all of life and work.",
+      "category": "ai",
+      "tags": "AI,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.607Z"
+    },
+    "237-vpn-users-have-nowhere-to-find-out-if-a-service-will-wo": {
+      "url": "https://problemhunt.pro/en/productivity/a20h8f74z1-vpn-users-have-nowhere-to-find-out-if-a",
+      "uid": "a20h8f74z1",
+      "title": "VPN users have nowhere to find out if a service will work reliably on their network — there is no up-to-date rating based on real-time quality monitoring.",
+      "category": "productivity",
+      "tags": "Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.608Z"
+    },
+    "238-a-musician-from-lebanon-cannot-sell-his-music-streaming": {
+      "url": "https://problemhunt.pro/en/media/0vvg4xzv91-a-musician-from-lebanon-cannot-sell-his",
+      "uid": "0vvg4xzv91",
+      "title": "A musician from Lebanon cannot sell his music: streaming pays pennies, and Bandcamp doesn't accept payments in his country. Needs a fair radio-platform with direct sales.",
+      "category": "media",
+      "tags": "Media,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.609Z"
+    },
+    "239-hours-of-manual-searching-for-parts-for-chinese-cars-ne": {
+      "url": "https://problemhunt.pro/en/retail/a035m95nv1-hours-of-manual-searching-for-parts-for",
+      "uid": "a035m95nv1",
+      "title": "Hours of manual searching for parts for Chinese cars. Need an AI agent that understands queries from photos or text and finds the part.",
+      "category": "retail",
+      "tags": "Retail,AI,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.610Z"
+    },
+    "240-the-lack-of-a-service-that-creates-hyper-personalized-g": {
+      "url": "https://problemhunt.pro/en/education/jdez9r0101-the-lack-of-a-service-that-creates-hyper",
+      "uid": "jdez9r0101",
+      "title": "The lack of a service that creates hyper-personalized, gamified English courses (in the Duolingo format) for narrow professional niches (e.g., for a barista in a vegan coffee shop or a startup founder",
+      "category": "education",
+      "tags": "Education,AI,Career,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.611Z"
+    },
+    "241-automating-cross-posting-of-an-indie-hackers-technical-": {
+      "url": "https://problemhunt.pro/en/media/3i2dy4ryd1-automating-cross-posting-of-an-indie-hac",
+      "uid": "3i2dy4ryd1",
+      "title": "Automating cross-posting of an indie hacker's technical content across multiple platforms (Twitter, LinkedIn, Product Hunt) while adhering to each platform's best practices.",
+      "category": "media",
+      "tags": "Media,Marketing,AI,Startups,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.612Z"
+    },
+    "242-the-monthly-headache-of-being-remote-tech-support-for-e": {
+      "url": "https://problemhunt.pro/en/ai/u9prt4av11-the-monthly-headache-of-being-remote-tec",
+      "uid": "u9prt4av11",
+      "title": "The monthly headache of being remote tech support for elderly relatives who constantly need help with the same computer problems",
+      "category": "ai",
+      "tags": "AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.612Z"
+    },
+    "243-searching-for-direct-hotel-contacts-to-book-without-ove": {
+      "url": "https://problemhunt.pro/en/travel/kymbn6kp61-searching-for-direct-hotel-contacts-to-b",
+      "uid": "kymbn6kp61",
+      "title": "Searching for direct hotel contacts to book without overpaying to aggregators, which markup prices by 15-30%",
+      "category": "travel",
+      "tags": "Travel,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.613Z"
+    },
+    "244-a-beginner-in-online-business-needs-not-a-course-but-a-": {
+      "url": "https://problemhunt.pro/en/ai/h0x8gh7a71-a-beginner-in-online-business-needs-not",
+      "uid": "h0x8gh7a71",
+      "title": "A beginner in online business needs not a course, but a personalized AI guide that will create and lead them through an individual step-by-step plan.",
+      "category": "ai",
+      "tags": "AI,Business,Startups,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.614Z"
+    },
+    "245-a-pre-check-of-the-approval-chances-for-a-construction-": {
+      "url": "https://problemhunt.pro/en/realty/38t2m50py1-a-pre-check-of-the-approval-chances-for",
+      "uid": "38t2m50py1",
+      "title": "A pre-check of the approval chances for a construction project with the Australian council before making significant investments",
+      "category": "realty",
+      "tags": "Realty,Legal,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.615Z"
+    },
+    "246-users-of-credit-products-regularly-overpay-due-to-non-t": {
+      "url": "https://problemhunt.pro/en/finance/jtv11ju831-users-of-credit-products-regularly-overp",
+      "uid": "jtv11ju831",
+      "title": "Users of credit products regularly overpay due to non-transparent bank terms. There is no advocate service that would analyze their spending and find hidden fees.",
+      "category": "finance",
+      "tags": "Finance,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.616Z"
+    },
+    "247-search-for-a-controlled-and-stable-channel-for-attracti": {
+      "url": "https://problemhunt.pro/en/marketing/g9lxp72ug1-search-for-a-controlled-and-stable-chann",
+      "uid": "g9lxp72ug1",
+      "title": "Search for a controlled and stable channel for attracting clients to a banquet hall, as an alternative to unpredictable social media advertising",
+      "category": "marketing",
+      "tags": "Marketing,Business,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.617Z"
+    },
+    "248-marketing-directors-and-founders-have-nowhere-to-find-v": {
+      "url": "https://problemhunt.pro/en/marketing/lk4uc1xvl1-marketing-directors-and-founders-have-no",
+      "uid": "lk4uc1xvl1",
+      "title": "Marketing directors and founders have nowhere to find verified contractors (targeting specialists, SMM managers) — the existing search process is a lottery that wastes time and budget",
+      "category": "marketing",
+      "tags": "Marketing,Business,Freelance,Career,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.618Z"
+    },
+    "249-its-impossible-to-donate-to-animal-shelters-due-to-comp": {
+      "url": "https://problemhunt.pro/en/other/1adxzgi7b1-its-impossible-to-donate-to-animal-shelt",
+      "uid": "1adxzgi7b1",
+      "title": "It's impossible to donate to animal shelters due to complete distrust in charity fundraisers. There is no service with guaranteed transparency and audit",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.618Z"
+    },
+    "250-aviation-safety-expert-seeks-a-technical-co-founder-to-": {
+      "url": "https://problemhunt.pro/en/ai/9g9de9og51-aviation-safety-expert-seeks-a-technical",
+      "uid": "9g9de9og51",
+      "title": "Aviation safety expert seeks a technical co-founder to develop an AI solution that prevents daily collisions between aircraft and birds/drones — a problem causing massive losses.",
+      "category": "ai",
+      "tags": "AI,Dev,Logistics,Travel,Hardware,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.619Z"
+    },
+    "251-no-way-for-city-residents-to-order-delivery-from-local-": {
+      "url": "https://problemhunt.pro/en/logistics/kos2aznku1-no-way-for-city-residents-to-order-deliv",
+      "uid": "kos2aznku1",
+      "title": "No way for city residents to order delivery from local stores to their elderly relatives in remote villages",
+      "category": "logistics",
+      "tags": "Logistics,Retail,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.620Z"
+    },
+    "252-startups-at-the-monetization-validation-stage-have-nowh": {
+      "url": "https://problemhunt.pro/en/startups/elj91ej9k1-startups-at-the-monetization-validation",
+      "uid": "elj91ej9k1",
+      "title": "Startups at the monetization validation stage have nowhere to quickly start accepting payments without company registration to test demand for their MVP.",
+      "category": "startups",
+      "tags": "Startups,Legal,Finance,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.621Z"
+    },
+    "253-parents-lack-precise-warnings-about-violent-scenes-in-m": {
+      "url": "https://problemhunt.pro/en/media/ar3ebnm6c1-parents-lack-precise-warnings-about-viol",
+      "uid": "ar3ebnm6c1",
+      "title": "Parents lack precise warnings about violent scenes in movies to safely watch films with their children",
+      "category": "media",
+      "tags": "Media,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.622Z"
+    },
+    "254-solar-installation-companies-lack-a-platform-for-end-to": {
+      "url": "https://problemhunt.pro/en/business/ldt9cicmy1-solar-installation-companies-lack-a-plat",
+      "uid": "ldt9cicmy1",
+      "title": "Solar installation companies lack a platform for end-to-end tracking of a customer's project — from sale to official approval, causing complaints and dissatisfaction",
+      "category": "business",
+      "tags": "Business,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.623Z"
+    },
+    "255-its-difficult-for-parents-of-newborns-in-india-to-organ": {
+      "url": "https://problemhunt.pro/en/health/o94v8yjuj1-its-difficult-for-parents-of-newborns-in",
+      "uid": "o94v8yjuj1",
+      "title": "It's difficult for parents of newborns in India to organize vaccination: there is no service for easy doctor search and a «turnkey» process provision.",
+      "category": "health",
+      "tags": "Health,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.624Z"
+    },
+    "256-researchers-have-nowhere-to-get-an-exhaustive-overview-": {
+      "url": "https://problemhunt.pro/en/ai/t3i6ddxjb1-researchers-have-nowhere-to-get-an-exhau",
+      "uid": "t3i6ddxjb1",
+      "title": "Researchers have nowhere to get an exhaustive overview of what has been done in their field, leading to the risk of duplicating work",
+      "category": "ai",
+      "tags": "AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.624Z"
+    },
+    "257-the-owner-of-a-relaunched-bar-on-the-french-coast-canno": {
+      "url": "https://problemhunt.pro/en/business/tuolr4jo61-the-owner-of-a-relaunched-bar-on-the-fre",
+      "uid": "tuolr4jo61",
+      "title": "The owner of a relaunched bar on the French coast cannot attract an audience in the evening due to the legacy of its past format (nightclub) and its isolated location",
+      "category": "business",
+      "tags": "Business,Travel,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.625Z"
+    },
+    "258-problem-analysis-owners-of-small-b2b-businesses-cannot-": {
+      "url": "https://problemhunt.pro/en/business/3pb7gtrku1-problem-analysis-owners-of-small-b2b-bus",
+      "uid": "3pb7gtrku1",
+      "title": "Problem Analysis: Owners of small B2B businesses cannot build a growth system. Do they need a fractional CMO, or can a SaaS be built?",
+      "category": "business",
+      "tags": "Business,Marketing,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.626Z"
+    },
+    "259-fans-of-paper-planners-lack-an-ipad-app-that-would-allo": {
+      "url": "https://problemhunt.pro/en/productivity/l3grb6t2f1-fans-of-paper-planners-lack-an-ipad-app",
+      "uid": "l3grb6t2f1",
+      "title": "Fans of paper planners lack an iPad app that would allow importing PDF layout templates and using them as a foundation for digital notes",
+      "category": "productivity",
+      "tags": "Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.627Z"
+    },
+    "260-startup-founders-get-lost-in-legal-accounting-and-admin": {
+      "url": "https://problemhunt.pro/en/legal/6rdbp6php1-startup-founders-get-lost-in-legal-accou",
+      "uid": "6rdbp6php1",
+      "title": "Startup founders get lost in legal, accounting, and administrative tasks after incorporation, leading to stress and risks due to the lack of a clear, step-by-step plan.",
+      "category": "legal",
+      "tags": "Legal,Business,Startups,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.628Z"
+    },
+    "261-uk-property-investors-have-nowhere-to-quickly-and-relia": {
+      "url": "https://problemhunt.pro/en/business/pu341olhc1-uk-property-investors-have-nowhere-to-qu",
+      "uid": "pu341olhc1",
+      "title": "UK property investors have nowhere to quickly and reliably assess refurbishment costs and find verified contractors, leading to weeks of delays and financial risks.",
+      "category": "business",
+      "tags": "Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.629Z"
+    },
+    "262-immigrants-lack-an-ai-service-for-finding-familiar-and-": {
+      "url": "https://problemhunt.pro/en/zlt9tnxv31-immigrants-lack-an-ai-service-for-findin",
+      "uid": "zlt9tnxv31",
+      "title": "Immigrants lack an AI service for finding familiar and verified places (pharmacies, doctors, banks) in a new country, causing daily stress and time loss",
+      "category": "other",
+      "tags": "Immigration,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.630Z"
+    },
+    "263-regional-media-outlets-lack-news-there-is-no-service-fo": {
+      "url": "https://problemhunt.pro/en/media/hap6bnpjo1-regional-media-outlets-lack-news-there-i",
+      "uid": "hap6bnpjo1",
+      "title": "Regional media outlets lack news: there is no service for automatically finding local events and topics not yet covered by competitors",
+      "category": "media",
+      "tags": "Media,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.631Z"
+    },
+    "264-startup-founders-have-nowhere-to-order-quality-in-depth": {
+      "url": "https://problemhunt.pro/en/startups/l74cvddaj1-startup-founders-have-nowhere-to-order-q",
+      "uid": "l74cvddaj1",
+      "title": "Startup founders have nowhere to order quality, in-depth research on specific projects or niches — existing services provide superficial and unreliable reports",
+      "category": "startups",
+      "tags": "Startups,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.631Z"
+    },
+    "265-clients-struggle-to-verify-the-competence-and-pricing-h": {
+      "url": "https://problemhunt.pro/en/freelance/ousnmj63l1-clients-struggle-to-verify-the-competenc",
+      "uid": "ousnmj63l1",
+      "title": "Clients struggle to verify the competence and pricing honesty of freelancers when creating websites — there is no AI tool for real-time proposal analysis.",
+      "category": "freelance",
+      "tags": "Freelance,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.632Z"
+    },
+    "266-owners-of-niche-telegram-channels-lack-a-service-for-au": {
+      "url": "https://problemhunt.pro/en/marketing/kfsnhgszj1-owners-of-niche-telegram-channels-lack-a",
+      "uid": "kfsnhgszj1",
+      "title": "Owners of niche Telegram channels lack a service for automatically finding and organizing cross-promotion with relevant channels without spending hours on manual selection and negotiations",
+      "category": "marketing",
+      "tags": "Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.633Z"
+    },
+    "267-startup-teams-have-nowhere-to-find-relevant-custdev-par": {
+      "url": "https://problemhunt.pro/en/startups/frug7pmx31-startup-teams-have-nowhere-to-find-relev",
+      "uid": "frug7pmx31",
+      "title": "Startup teams have nowhere to find relevant custdev participants (people for interviews) to test early ideas and prototypes without overpaying for biased feedback",
+      "category": "startups",
+      "tags": "Startups,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.634Z"
+    },
+    "268-no-device-allows-a-4-year-old-child-to-independently-st": {
+      "url": "https://problemhunt.pro/en/hardware/eopralbt51-no-device-allows-a-4-year-old-child-to-i",
+      "uid": "eopralbt51",
+      "title": "No device allows a 4-year-old child to independently stream music to a speaker over Wi-Fi without using a phone, tablet, or increasing screen time",
+      "category": "hardware",
+      "tags": "Hardware,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.635Z"
+    },
+    "269-indie-developers-have-nowhere-to-cheaply-and-effectivel": {
+      "url": "https://problemhunt.pro/en/marketing/tok505klc1-indie-developers-have-nowhere-to-cheaply",
+      "uid": "tok505klc1",
+      "title": "Indie developers have nowhere to cheaply and effectively find the first 50-100 active users to test new niche products.",
+      "category": "marketing",
+      "tags": "Marketing,Startups,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.636Z"
+    },
+    "270-people-with-a-criminal-past-cannot-reintegrate-into-soc": {
+      "url": "https://problemhunt.pro/en/career/krxg2n1ge1-people-with-a-criminal-past-cannot-reint",
+      "uid": "krxg2n1ge1",
+      "title": "People with a criminal past cannot reintegrate into society because their real skills are «invisible»",
+      "category": "career",
+      "tags": "Career,Legal,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.637Z"
+    },
+    "271-startup-founders-lack-a-safe-space-for-psychological-su": {
+      "url": "https://problemhunt.pro/en/psychology/r15v6zgeg1-startup-founders-lack-a-safe-space-for-p",
+      "uid": "r15v6zgeg1",
+      "title": "Startup founders lack a safe space for psychological support during moments of burnout and loneliness",
+      "category": "psychology",
+      "tags": "Psychology,Startups,Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.638Z"
+    },
+    "272-first-physical-product-problem-on-problemhunt-in-norway": {
+      "url": "https://problemhunt.pro/en/hardware/0xut3v4y21-first-physical-product-problem-on-proble",
+      "uid": "0xut3v4y21",
+      "title": "First physical product problem on ProblemHunt: In Norway, you can't enter a building wearing shoes with spikes or roll in a bicycle with winter tires — no convenient protective pads exist",
+      "category": "hardware",
+      "tags": "Hardware,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.639Z"
+    },
+    "273-indian-small-scale-waste-processors-lack-simple-b2b-too": {
+      "url": "https://problemhunt.pro/en/business/2ge6lbk8e1-indian-small-scale-waste-processors-lack",
+      "uid": "2ge6lbk8e1",
+      "title": "Indian small-scale waste processors lack simple B2B tools for finding suppliers and controlling copper quality",
+      "category": "business",
+      "tags": "Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.639Z"
+    },
+    "274-saas-founders-lack-a-platform-for-finding-partners-and-": {
+      "url": "https://problemhunt.pro/en/marketing/jeh9mn47u1-saas-founders-lack-a-platform-for-findin",
+      "uid": "jeh9mn47u1",
+      "title": "SaaS founders lack a platform for finding partners and organizing joint advertising campaigns with bloggers to reduce costs by 5 times while maintaining the same reach",
+      "category": "marketing",
+      "tags": "Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.640Z"
+    },
+    "275-trust-crisis-in-indias-upi-payments-fear-of-stranger-tr": {
+      "url": "https://problemhunt.pro/en/finance/jrrxhgsoh1-trust-crisis-in-indias-upi-payments-fear",
+      "uid": "jrrxhgsoh1",
+      "title": "Trust crisis in India's UPI payments: fear of stranger transfers hurts business",
+      "category": "finance",
+      "tags": "Finance,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.641Z"
+    },
+    "276-traders-lose-money-due-to-emotional-decisions-fear-gree": {
+      "url": "https://problemhunt.pro/en/psychology/vhe68ui8b1-traders-lose-money-due-to-emotional-deci",
+      "uid": "vhe68ui8b1",
+      "title": "Traders lose money due to emotional decisions (fear, greed) and lack a tool for real-time control of their psychological state during trading",
+      "category": "psychology",
+      "tags": "Psychology,AI,Finance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.642Z"
+    },
+    "277-owners-of-modern-macs-cant-launch-old-games-due-to-comp": {
+      "url": "https://problemhunt.pro/en/other/ff5gcnrro1-owners-of-modern-macs-cant-launch-old-ga",
+      "uid": "ff5gcnrro1",
+      "title": "Owners of modern Macs can't launch old games due to complex instructions involving emulators and file conversion",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.643Z"
+    },
+    "278-linkedin-content-creators-operate-blindly-they-see-the-": {
+      "url": "https://problemhunt.pro/en/media/ja0oyjzdd1-linkedin-content-creators-operate-blindl",
+      "uid": "ja0oyjzdd1",
+      "title": "LinkedIn content creators operate blindly: they see the results but don't understand the reasons behind their posts' success or failure",
+      "category": "media",
+      "tags": "Media,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.644Z"
+    },
+    "279-impossible-to-find-quality-web3-projects-and-communitie": {
+      "url": "https://problemhunt.pro/en/finance/1yr4ejpc51-impossible-to-find-quality-web3-projects",
+      "uid": "1yr4ejpc51",
+      "title": "Impossible to find quality Web3 projects and communities due to information noise and fraud",
+      "category": "finance",
+      "tags": "Finance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.644Z"
+    },
+    "280-no-access-to-mentors-from-real-experts-to-start-in-the-": {
+      "url": "https://problemhunt.pro/en/education/x9ojkb1fc1-no-access-to-mentors-from-real-experts-t",
+      "uid": "x9ojkb1fc1",
+      "title": "No access to mentors from real experts to start in the real estate field",
+      "category": "education",
+      "tags": "Education,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.645Z"
+    },
+    "281-the-problem-of-discrimination-wage-delays-and-fear-of-f": {
+      "url": "https://problemhunt.pro/en/ydplsur631-the-problem-of-discrimination-wage-delay",
+      "uid": "ydplsur631",
+      "title": "The problem of discrimination, wage delays, and fear of firing/deportation among immigrant construction workers in the USA",
+      "category": "other",
+      "tags": "Immigration,Career,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.646Z"
+    },
+    "282-a-complex-saas-needs-a-tool-for-adaptive-and-visual-exp": {
+      "url": "https://problemhunt.pro/en/marketing/kvgpxv6py1-a-complex-saas-needs-a-tool-for-adaptive",
+      "uid": "kvgpxv6py1",
+      "title": "A complex SaaS needs a tool for adaptive and visual explanation of the product to different audiences",
+      "category": "marketing",
+      "tags": "Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.647Z"
+    },
+    "283-no-quick-cheap-fix-for-leaky-faucets-no-clear-diy-guide": {
+      "url": "https://problemhunt.pro/en/other/e59sb30221-no-quick-cheap-fix-for-leaky-faucets-no",
+      "uid": "e59sb30221",
+      "title": "No quick, cheap fix for leaky faucets: no clear DIY guide or affordable plumber",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.648Z"
+    },
+    "284-regular-loss-of-tax-credits-among-immigrants-in-the-us": {
+      "url": "https://problemhunt.pro/en/unnnxi3m71-regular-loss-of-tax-credits-among-immigr",
+      "uid": "unnnxi3m71",
+      "title": "Regular loss of tax credits among immigrants in the US",
+      "category": "other",
+      "tags": "Immigration,Legal,Finance,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.649Z"
+    },
+    "285-the-problem-of-multi-platform-kyckyb-processes-in-finte": {
+      "url": "https://problemhunt.pro/en/ai/u4jsvhe931-the-problem-of-multi-platform-kyckyb-pro",
+      "uid": "u4jsvhe931",
+      "title": "The problem of multi-platform KYC/KYB processes in fintech leading to specialist burnout",
+      "category": "ai",
+      "tags": "AI,Finance,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.650Z"
+    },
+    "286-lack-of-a-simple-and-convenient-reminder-system-in-what": {
+      "url": "https://problemhunt.pro/en/productivity/3tct7tk731-lack-of-a-simple-and-convenient-reminder",
+      "uid": "3tct7tk731",
+      "title": "Lack of a simple and convenient reminder system in WhatsApp",
+      "category": "productivity",
+      "tags": "Productivity,Business,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.651Z"
+    },
+    "287-no-convenient-platform-for-finding-and-purchasing-quali": {
+      "url": "https://problemhunt.pro/en/food/2mrn1lzlp1-no-convenient-platform-for-finding-and-p",
+      "uid": "2mrn1lzlp1",
+      "title": "No convenient platform for finding and purchasing quality products from local farms in small wholesale quantities",
+      "category": "food",
+      "tags": "Food,AgTech,Logistics,Retail,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.652Z"
+    },
+    "288-the-problem-of-manual-processing-of-logistics-documenta": {
+      "url": "https://problemhunt.pro/en/logistics/phshnmzd51-the-problem-of-manual-processing-of-logi",
+      "uid": "phshnmzd51",
+      "title": "The problem of manual processing of logistics documentation and lack of unified databases in a Mexican company",
+      "category": "logistics",
+      "tags": "Logistics,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.652Z"
+    },
+    "289-a-year-of-searching-for-an-affordable-solution-for-remo": {
+      "url": "https://problemhunt.pro/en/business/zosvs04rp1-a-year-of-searching-for-an-affordable-so",
+      "uid": "zosvs04rp1",
+      "title": "A year of searching for an affordable solution for remote US business opening without citizenship",
+      "category": "business",
+      "tags": "Business,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.653Z"
+    },
+    "290-difficulty-of-remote-housing-rental-in-the-usa-for-fore": {
+      "url": "https://problemhunt.pro/en/ngmhk91121-difficulty-of-remote-housing-rental-in-t",
+      "uid": "ngmhk91121",
+      "title": "Difficulty of remote housing rental in the USA for foreigners without credit history and American guarantors",
+      "category": "other",
+      "tags": "Immigration,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.654Z"
+    },
+    "291-automation-of-resume-filling-for-recruiters-saving-40-6": {
+      "url": "https://problemhunt.pro/en/career/0s98al0y01-automation-of-resume-filling-for-recruit",
+      "uid": "0s98al0y01",
+      "title": "Automation of resume filling for recruiters — saving 40-60 minutes on each candidate",
+      "category": "career",
+      "tags": "Career,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.655Z"
+    },
+    "292-protection-against-fraudulent-schemes-in-trading-and-cr": {
+      "url": "https://problemhunt.pro/en/finance/lux1195af1-protection-against-fraudulent-schemes-in",
+      "uid": "lux1195af1",
+      "title": "Protection against fraudulent schemes in trading and cryptocurrency investments",
+      "category": "finance",
+      "tags": "Finance,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.656Z"
+    },
+    "293-search-for-an-effective-cleaning-business-management-so": {
+      "url": "https://problemhunt.pro/en/business/57nszufsz1-search-for-an-effective-cleaning-busines",
+      "uid": "57nszufsz1",
+      "title": "Search for an effective cleaning business management solution",
+      "category": "business",
+      "tags": "Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.657Z"
+    },
+    "294-cant-start-a-photography-and-videography-business-due-t": {
+      "url": "https://problemhunt.pro/en/business/97fb1l9m21-cant-start-a-photography-and-videography",
+      "uid": "97fb1l9m21",
+      "title": "Can't start a photography and videography business due to lack of clients and systematic approach",
+      "category": "business",
+      "tags": "Business,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.657Z"
+    },
+    "295-finding-buyers-in-the-uk-for-nigerian-food-products-for": {
+      "url": "https://problemhunt.pro/en/business/nj2h0b8kp1-finding-buyers-in-the-uk-for-nigerian-fo",
+      "uid": "nj2h0b8kp1",
+      "title": "Finding buyers in the UK for Nigerian food products for export",
+      "category": "business",
+      "tags": "Business,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.658Z"
+    },
+    "296-high-costs-and-complexity-of-api-integration-for-launch": {
+      "url": "https://problemhunt.pro/en/dev/fyf4aet6g1-high-costs-and-complexity-of-api-integra",
+      "uid": "fyf4aet6g1",
+      "title": "High costs and complexity of API integration for launching a travel website",
+      "category": "dev",
+      "tags": "Dev,Travel,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.659Z"
+    },
+    "297-inability-to-get-a-response-to-complaints-from-companie": {
+      "url": "https://problemhunt.pro/en/legal/7aa0fv3651-inability-to-get-a-response-to-complaint",
+      "uid": "7aa0fv3651",
+      "title": "Inability to get a response to complaints from companies",
+      "category": "legal",
+      "tags": "Legal,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.660Z"
+    },
+    "298-a-teacher-needs-a-specialized-chatgpt-for-video-editing": {
+      "url": "https://problemhunt.pro/en/education/15ig65exr1-a-teacher-needs-a-specialized-chatgpt-fo",
+      "uid": "15ig65exr1",
+      "title": "A teacher needs a specialized «ChatGPT for video editing»",
+      "category": "education",
+      "tags": "Education,Media,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.661Z"
+    },
+    "299-difficulties-with-content-localization-and-dubbing-for-": {
+      "url": "https://problemhunt.pro/en/media/c1u4lh83p1-difficulties-with-content-localization-a",
+      "uid": "c1u4lh83p1",
+      "title": "Difficulties with content localization and dubbing for TV channel",
+      "category": "media",
+      "tags": "Media,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.662Z"
+    },
+    "300-problem-of-product-selection-and-production-capacity-pl": {
+      "url": "https://problemhunt.pro/en/business/cbc7zd9891-problem-of-product-selection-and-product",
+      "uid": "cbc7zd9891",
+      "title": "Problem of product selection and production capacity planning",
+      "category": "business",
+      "tags": "Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.663Z"
+    },
+    "301-low-trust-level-in-nigerian-e-commerce-due-to-lack-of-r": {
+      "url": "https://problemhunt.pro/en/logistics/8msk10fu31-low-trust-level-in-nigerian-e-commerce-d",
+      "uid": "8msk10fu31",
+      "title": "Low trust level in Nigerian e-commerce due to lack of reliable logistics service",
+      "category": "logistics",
+      "tags": "Logistics,Business,Retail,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.664Z"
+    },
+    "302-problem-of-market-access-for-francophone-african-freela": {
+      "url": "https://problemhunt.pro/en/freelance/kh7v4kr3i1-problem-of-market-access-for-francophone",
+      "uid": "kh7v4kr3i1",
+      "title": "Problem of market access for francophone African freelancers",
+      "category": "freelance",
+      "tags": "Freelance,Career,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.665Z"
+    },
+    "303-there-is-no-effective-tool-for-researching-high-margin-": {
+      "url": "https://problemhunt.pro/en/retail/yjz80tm2z1-there-is-no-effective-tool-for-researchi",
+      "uid": "yjz80tm2z1",
+      "title": "There is no effective tool for researching high-margin and small e-commerce products",
+      "category": "retail",
+      "tags": "Retail,Business,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.666Z"
+    },
+    "304-need-a-ai-bot-for-analyzing-car-and-real-estate-prices": {
+      "url": "https://problemhunt.pro/en/ai/lbdzym5un1-need-a-ai-bot-for-analyzing-car-and-real",
+      "uid": "lbdzym5un1",
+      "title": "Need a AI-bot for analyzing car and real estate prices",
+      "category": "ai",
+      "tags": "AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.666Z"
+    },
+    "305-ai-assistants-cant-handle-feynman-learning-technique": {
+      "url": "https://problemhunt.pro/en/education/tnjlstt8s1-ai-assistants-cant-handle-feynman-learni",
+      "uid": "tnjlstt8s1",
+      "title": "AI assistants can't handle Feynman learning technique",
+      "category": "education",
+      "tags": "Education,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.667Z"
+    },
+    "306-gps-based-taxi-and-delivery-solution-for-zimbabwe": {
+      "url": "https://problemhunt.pro/en/logistics/m71idr7761-gps-based-taxi-and-delivery-solution-for",
+      "uid": "m71idr7761",
+      "title": "GPS-based taxi and delivery solution for Zimbabwe",
+      "category": "logistics",
+      "tags": "Logistics,Transportation,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.668Z"
+    },
+    "307-problem-of-marketing-automation-for-saas-products": {
+      "url": "https://problemhunt.pro/en/marketing/mrcgth24s1-problem-of-marketing-automation-for-saas",
+      "uid": "mrcgth24s1",
+      "title": "Problem of marketing automation for SaaS products",
+      "category": "marketing",
+      "tags": "Marketing,Media,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.669Z"
+    },
+    "308-problem-of-promoting-on-reddit-for-beginners": {
+      "url": "https://problemhunt.pro/en/marketing/rs2248ze51-problem-of-promoting-on-reddit-for-begin",
+      "uid": "rs2248ze51",
+      "title": "Problem of promoting on Reddit for beginners",
+      "category": "marketing",
+      "tags": "Marketing,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.670Z"
+    },
+    "309-problem-of-finding-a-workout-partner-in-a-new-gym": {
+      "url": "https://problemhunt.pro/en/fitness/59adku49n1-problem-of-finding-a-workout-partner-in",
+      "uid": "59adku49n1",
+      "title": "Problem of finding a workout partner in a new gym",
+      "category": "fitness",
+      "tags": "Fitness,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.671Z"
+    },
+    "310-export-procedure-solution-for-pakistan-to-europe-trade": {
+      "url": "https://problemhunt.pro/en/legal/bua99xjl81-export-procedure-solution-for-pakistan-t",
+      "uid": "bua99xjl81",
+      "title": "Export procedure solution for Pakistan to Europe trade",
+      "category": "legal",
+      "tags": "Legal,Business,Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.672Z"
+    },
+    "311-problem-of-access-to-loans-for-immigrants-in-the-eu": {
+      "url": "https://problemhunt.pro/en/lhvgiz7hs1-problem-of-access-to-loans-for-immigrant",
+      "uid": "lhvgiz7hs1",
+      "title": "Problem of access to loans for immigrants in the EU",
+      "category": "other",
+      "tags": "Immigration,Finance,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.673Z"
+    },
+    "312-problem-of-entering-the-ai-automation-market-without-te": {
+      "url": "https://problemhunt.pro/en/ai/gtd8o0taz1-problem-of-entering-the-ai-automation-ma",
+      "uid": "gtd8o0taz1",
+      "title": "Problem of entering the AI automation market without technical experience",
+      "category": "ai",
+      "tags": "AI,Business,Education,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.673Z"
+    },
+    "313-image-based-furniture-and-materials-search-service-for-": {
+      "url": "https://problemhunt.pro/en/design/n8bf3rlru1-image-based-furniture-and-materials-sear",
+      "uid": "n8bf3rlru1",
+      "title": "Image-based furniture and materials search service for designers",
+      "category": "design",
+      "tags": "Design,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.675Z"
+    },
+    "314-need-simple-application-testing-tool-without-programmin": {
+      "url": "https://problemhunt.pro/en/dev/ved547b251-need-simple-application-testing-tool-wit",
+      "uid": "ved547b251",
+      "title": "Need simple application testing tool without programming",
+      "category": "dev",
+      "tags": "Dev,AI,No-Code,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.676Z"
+    },
+    "315-lack-of-a-unified-hub-for-tasks-from-different-services": {
+      "url": "https://problemhunt.pro/en/productivity/7pukf4c5a1-lack-of-a-unified-hub-for-tasks-from-dif",
+      "uid": "7pukf4c5a1",
+      "title": "Lack of a unified hub for tasks from different services",
+      "category": "productivity",
+      "tags": "Productivity,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.676Z"
+    },
+    "316-automating-b2b-marketing-database-segmentation-client-p": {
+      "url": "https://problemhunt.pro/en/marketing/8kr7mskh41-automating-b2b-marketing-database-segmen",
+      "uid": "8kr7mskh41",
+      "title": "Automating B2B Marketing: database segmentation, client profiling, and contact parsing",
+      "category": "marketing",
+      "tags": "Marketing,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.677Z"
+    },
+    "317-retail-store-profitability-problem": {
+      "url": "https://problemhunt.pro/en/retail/r94p9mdzl1-retail-store-profitability-problem",
+      "uid": "r94p9mdzl1",
+      "title": "Retail store profitability problem",
+      "category": "retail",
+      "tags": "Retail,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.679Z"
+    },
+    "318-problem-of-managing-type-1-diabetes-without-ai-assistan": {
+      "url": "https://problemhunt.pro/en/health/45u31o0b41-problem-of-managing-type-1-diabetes-with",
+      "uid": "45u31o0b41",
+      "title": "Problem of managing type 1 diabetes without AI assistance",
+      "category": "health",
+      "tags": "Health,Food,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.679Z"
+    },
+    "319-business-setup-and-launch-challenges-in-india": {
+      "url": "https://problemhunt.pro/en/ai/m7vsm5tpv1-business-setup-and-launch-challenges-in",
+      "uid": "m7vsm5tpv1",
+      "title": "Business setup and launch challenges in India",
+      "category": "ai",
+      "tags": "AI,Business,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.680Z"
+    },
+    "320-problem-of-automating-culturally-relevant-content-creat": {
+      "url": "https://problemhunt.pro/en/media/pxet2490m1-problem-of-automating-culturally-relevan",
+      "uid": "pxet2490m1",
+      "title": "Problem of automating culturally relevant content creation",
+      "category": "media",
+      "tags": "Media,Marketing,AI,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.681Z"
+    },
+    "321-problem-of-finding-clients-for-ai-solution-implementati": {
+      "url": "https://problemhunt.pro/en/ai/ab9rnnoja1-problem-of-finding-clients-for-ai-soluti",
+      "uid": "ab9rnnoja1",
+      "title": "Problem of finding clients for AI solution implementation in Europe and Eastern Europe",
+      "category": "ai",
+      "tags": "AI,Marketing,Business,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.682Z"
+    },
+    "322-problem-of-finding-and-obtaining-grants-for-small-busin": {
+      "url": "https://problemhunt.pro/en/finance/gkrcgpelx1-problem-of-finding-and-obtaining-grants",
+      "uid": "gkrcgpelx1",
+      "title": "Problem of finding and obtaining grants for small businesses",
+      "category": "finance",
+      "tags": "Finance,Business,Legal,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.683Z"
+    },
+    "323-automating-bureaucracy-and-funding-search-for-a-new-bus": {
+      "url": "https://problemhunt.pro/en/legal/9gly3h5lg1-automating-bureaucracy-and-funding-searc",
+      "uid": "9gly3h5lg1",
+      "title": "Automating bureaucracy and funding search for a new business",
+      "category": "legal",
+      "tags": "Legal,Finance,Business",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.684Z"
+    },
+    "324-the-systemic-crisis-of-athlete-transition": {
+      "url": "https://problemhunt.pro/en/fitness/jovbc4bek1-the-systemic-crisis-of-athlete-transitio",
+      "uid": "jovbc4bek1",
+      "title": "The systemic crisis of athlete transition",
+      "category": "fitness",
+      "tags": "Fitness,Health,Career",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.685Z"
+    },
+    "325-no-effective-service-for-finding-target-customers": {
+      "url": "https://problemhunt.pro/en/marketing/voyb4a4nb1-no-effective-service-for-finding-target",
+      "uid": "voyb4a4nb1",
+      "title": "No effective service for finding target customers",
+      "category": "marketing",
+      "tags": "Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.686Z"
+    },
+    "326-search-for-an-ai-tool-to-create-high-quality-and-natura": {
+      "url": "https://problemhunt.pro/en/ai/8p64cdskm1-search-for-an-ai-tool-to-create-high-qua",
+      "uid": "8p64cdskm1",
+      "title": "Search for an AI tool to create high-quality and natural-looking animation",
+      "category": "ai",
+      "tags": "AI,Media,Design",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.687Z"
+    },
+    "327-problem-of-arabic-language-support-in-digital-services": {
+      "url": "https://problemhunt.pro/en/other/taootfgpp1-problem-of-arabic-language-support-in-di",
+      "uid": "taootfgpp1",
+      "title": "Problem of arabic language support in digital services",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.688Z"
+    },
+    "328-need-a-simple-alternative-to-meta-ads-after-andromeda-u": {
+      "url": "https://problemhunt.pro/en/marketing/8xk7k4gx31-need-a-simple-alternative-to-meta-ads-af",
+      "uid": "8xk7k4gx31",
+      "title": "Need a simple alternative to Meta Ads after Andromeda update",
+      "category": "marketing",
+      "tags": "Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.689Z"
+    },
+    "329-problem-with-choosing-a-business-niche-in-the-local-mar": {
+      "url": "https://problemhunt.pro/en/ai/tl9r966991-problem-with-choosing-a-business-niche-i",
+      "uid": "tl9r966991",
+      "title": "Problem with choosing a business niche in the local market",
+      "category": "ai",
+      "tags": "AI,Business,Psychology,Education,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.690Z"
+    },
+    "330-student-needs-a-reliable-and-affordable-tool-for-exam-p": {
+      "url": "https://problemhunt.pro/en/education/mf1bmc02s1-student-needs-a-reliable-and-affordable",
+      "uid": "mf1bmc02s1",
+      "title": "Student needs a reliable and affordable tool for exam preparation",
+      "category": "education",
+      "tags": "Education,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.691Z"
+    },
+    "331-problem-of-efficient-resource-use-in-agriculture": {
+      "url": "https://problemhunt.pro/en/agtech/5gr3p49mg1-problem-of-efficient-resource-use-in-agr",
+      "uid": "5gr3p49mg1",
+      "title": "Problem of efficient resource use in agriculture",
+      "category": "agtech",
+      "tags": "AgTech,Hardware,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.692Z"
+    },
+    "332-lack-of-convenient-service-for-buying-and-selling-used-": {
+      "url": "https://problemhunt.pro/en/retail/a40dcs4621-lack-of-convenient-service-for-buying-an",
+      "uid": "a40dcs4621",
+      "title": "Lack of convenient service for buying and selling used cars",
+      "category": "retail",
+      "tags": "Retail,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.693Z"
+    },
+    "333-ai-agent-for-automatic-seo-promotion-of-websites-on-wor": {
+      "url": "https://problemhunt.pro/en/seo/6ajl0f17x1-ai-agent-for-automatic-seo-promotion-of",
+      "uid": "6ajl0f17x1",
+      "title": "AI agent for automatic SEO promotion of websites on Wordpress and Tilda",
+      "category": "seo",
+      "tags": "SEO,Marketing,AI,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.694Z"
+    },
+    "334-farm-vegetable-delivery-problem-through-mobile-applicat": {
+      "url": "https://problemhunt.pro/en/retail/mnvzelo5i1-farm-vegetable-delivery-problem-through",
+      "uid": "mnvzelo5i1",
+      "title": "Farm vegetable delivery problem through mobile application",
+      "category": "retail",
+      "tags": "Retail,Logistics,Food,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.695Z"
+    },
+    "335-the-problem-of-lacking-effective-rescue-robots-for-disa": {
+      "url": "https://problemhunt.pro/en/other/m5ks0dxi31-the-problem-of-lacking-effective-rescue",
+      "uid": "m5ks0dxi31",
+      "title": "The problem of lacking effective rescue robots for disaster situations",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.696Z"
+    },
+    "336-search-for-an-affordable-way-to-get-pr-in-forbes-and-ot": {
+      "url": "https://problemhunt.pro/en/marketing/xi1ox0v161-search-for-an-affordable-way-to-get-pr-i",
+      "uid": "xi1ox0v161",
+      "title": "Search for an affordable way to get PR in Forbes and other top media outlets",
+      "category": "marketing",
+      "tags": "Marketing,Media,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.697Z"
+    },
+    "337-a-ready-made-platform-for-robotics-prototyping-cannot-c": {
+      "url": "https://problemhunt.pro/en/marketing/4jgemm3td1-a-ready-made-platform-for-robotics-proto",
+      "uid": "4jgemm3td1",
+      "title": "A ready-made platform for robotics prototyping cannot create an active user community",
+      "category": "marketing",
+      "tags": "Marketing,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.697Z"
+    },
+    "338-live-threat-monitoring-for-soc-teams-with-incident-visu": {
+      "url": "https://problemhunt.pro/en/dev/pijugc1v31-live-threat-monitoring-for-soc-teams-wit",
+      "uid": "pijugc1v31",
+      "title": "Live threat monitoring for SOC teams with incident visualization and prioritization",
+      "category": "dev",
+      "tags": "Dev,Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.698Z"
+    },
+    "339-automated-hosting-comparison-tool-for-developers": {
+      "url": "https://problemhunt.pro/en/dev/djk3np9401-automated-hosting-comparison-tool-for-de",
+      "uid": "djk3np9401",
+      "title": "Automated hosting comparison tool for developers",
+      "category": "dev",
+      "tags": "Dev",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.699Z"
+    },
+    "340-nigerians-cant-access-local-movies-due-to-expensive-sub": {
+      "url": "https://problemhunt.pro/en/media/pypg9yzgy1-nigerians-cant-access-local-movies-due-t",
+      "uid": "pypg9yzgy1",
+      "title": "Nigerians can't access local movies due to expensive subscriptions and piracy",
+      "category": "media",
+      "tags": "Media,Legal",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.700Z"
+    },
+    "341-need-a-simple-action-tracker-for-busy-people": {
+      "url": "https://problemhunt.pro/en/productivity/bngxaaugn1-need-a-simple-action-tracker-for-busy-pe",
+      "uid": "bngxaaugn1",
+      "title": "Need a simple action tracker for busy people",
+      "category": "productivity",
+      "tags": "Productivity",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.701Z"
+    },
+    "342-looking-for-interested-buyers-for-export-of-dehydrated-": {
+      "url": "https://problemhunt.pro/en/marketing/p158tshc81-looking-for-interested-buyers-for-export",
+      "uid": "p158tshc81",
+      "title": "Looking for interested buyers for export of dehydrated products from India",
+      "category": "marketing",
+      "tags": "Marketing,Business",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.702Z"
+    },
+    "343-an-educator-seeks-a-tool-for-automatically-creating-coh": {
+      "url": "https://problemhunt.pro/en/design/oy3gtd71l1-an-educator-seeks-a-tool-for-automatical",
+      "uid": "oy3gtd71l1",
+      "title": "An educator seeks a tool for automatically creating coherent video lessons from multiple fragments",
+      "category": "design",
+      "tags": "Design,Education,Media",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.703Z"
+    },
+    "344-searching-for-an-adaptive-system-for-training-and-nutri": {
+      "url": "https://problemhunt.pro/en/fitness/5x163so5m1-searching-for-an-adaptive-system-for-tra",
+      "uid": "5x163so5m1",
+      "title": "Searching for an adaptive system for training and nutrition that helps overcome plateaus and is resilient to schedule disruptions",
+      "category": "fitness",
+      "tags": "Fitness,Food",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.704Z"
+    },
+    "345-searching-for-stable-anime-streaming-service-in-russia-": {
+      "url": "https://problemhunt.pro/en/media/ycnydla351-searching-for-stable-anime-streaming-ser",
+      "uid": "ycnydla351",
+      "title": "Searching for stable anime streaming service in Russia without VPN requirement",
+      "category": "media",
+      "tags": "Media,Legal",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.705Z"
+    },
+    "346-universal-tracking-service-for-all-mobile-devices": {
+      "url": "https://problemhunt.pro/en/other/kiv6i361e1-universal-tracking-service-for-all-mobil",
+      "uid": "kiv6i361e1",
+      "title": "Universal tracking service for all mobile devices",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.706Z"
+    },
+    "347-search-for-personal-business-niche-considering-psycholo": {
+      "url": "https://problemhunt.pro/en/psychology/u4o11i24f1-search-for-personal-business-niche-consi",
+      "uid": "u4o11i24f1",
+      "title": "Search for personal business niche considering psychological barriers",
+      "category": "psychology",
+      "tags": "Psychology",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.707Z"
+    },
+    "348-need-a-service-for-generating-names-and-instantly-check": {
+      "url": "https://problemhunt.pro/en/marketing/s4e5ajoj91-need-a-service-for-generating-names-and",
+      "uid": "s4e5ajoj91",
+      "title": "Need a service for generating names and instantly checking domain availability",
+      "category": "marketing",
+      "tags": "Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.708Z"
+    },
+    "349-there-is-no-stable-access-to-global-app-stores-for-russ": {
+      "url": "https://problemhunt.pro/en/legal/jg3la3g2k1-there-is-no-stable-access-to-global-app",
+      "uid": "jg3la3g2k1",
+      "title": "There is no stable access to global app stores for Russian developers",
+      "category": "legal",
+      "tags": "Legal",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.709Z"
+    },
+    "350-the-absence-of-a-single-trusted-service-for-solving-eve": {
+      "url": "https://problemhunt.pro/en/freelance/c371yg3cu1-the-absence-of-a-single-trusted-service",
+      "uid": "c371yg3cu1",
+      "title": "The absence of a single trusted service for solving everyday tasks",
+      "category": "freelance",
+      "tags": "Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.710Z"
+    },
+    "351-its-not-possible-to-automatically-create-a-diet-plan-fr": {
+      "url": "https://problemhunt.pro/en/food/yby468h0g1-its-not-possible-to-automatically-create",
+      "uid": "yby468h0g1",
+      "title": "It's not possible to automatically create a diet plan from video recipes",
+      "category": "food",
+      "tags": "Food",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.711Z"
+    },
+    "352-automating-hr-and-legal-processes-for-companies-in-comp": {
+      "url": "https://problemhunt.pro/en/career/cdysjhl381-automating-hr-and-legal-processes-for-co",
+      "uid": "cdysjhl381",
+      "title": "Automating HR and legal processes for companies, in compliance with the Russian Labor Code",
+      "category": "career",
+      "tags": "Career,Finance,Legal",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.712Z"
+    },
+    "353-difficulty-finding-relevant-respondents-for-b2b-researc": {
+      "url": "https://problemhunt.pro/en/other/tphf0sjeg1-difficulty-finding-relevant-respondents",
+      "uid": "tphf0sjeg1",
+      "title": "Difficulty finding relevant respondents for b2b research",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.714Z"
+    },
+    "354-the-problem-of-ai-agent-instability-and-regression-on-t": {
+      "url": "https://problemhunt.pro/en/ai/bacfrvck91-the-problem-of-ai-agent-instability-and",
+      "uid": "bacfrvck91",
+      "title": "The problem of AI agent instability and regression on the path from prototype to stable product",
+      "category": "ai",
+      "tags": "AI,Dev",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.715Z"
+    },
+    "355-unreliable-market-valuations-in-startup-pitch-decks": {
+      "url": "https://problemhunt.pro/en/startups/45pkeu8rb1-unreliable-market-valuations-in-startup",
+      "uid": "45pkeu8rb1",
+      "title": "Unreliable market valuations in startup pitch decks",
+      "category": "startups",
+      "tags": "Startups",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.716Z"
+    },
+    "356-peer-to-peer-platform-for-verified-generic-drugs": {
+      "url": "https://problemhunt.pro/en/health/tp6dgyysf1-peer-to-peer-platform-for-verified-gener",
+      "uid": "tp6dgyysf1",
+      "title": "Peer-to-peer platform for verified generic drugs",
+      "category": "health",
+      "tags": "Health",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.717Z"
+    },
+    "357-need-to-withdraw-cash-from-credit-card-without-high-fee": {
+      "url": "https://problemhunt.pro/en/finance/6obgkxdbi1-need-to-withdraw-cash-from-credit-card-w",
+      "uid": "6obgkxdbi1",
+      "title": "Need to withdraw cash from credit card without high fees",
+      "category": "finance",
+      "tags": "Finance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.718Z"
+    },
+    "358-automated-submission-of-utility-meter-readings-to-multi": {
+      "url": "https://problemhunt.pro/en/other/nn38cp51u1-automated-submission-of-utility-meter-re",
+      "uid": "nn38cp51u1",
+      "title": "Automated submission of utility meter readings to multiple management companies",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.719Z"
+    },
+    "359-hr-problem-subjective-hiring-and-slow-adaptation-of-new": {
+      "url": "https://problemhunt.pro/en/career/otnixd2971-hr-problem-subjective-hiring-and-slow-ad",
+      "uid": "otnixd2971",
+      "title": "HR problem: subjective hiring and slow adaptation of new employees",
+      "category": "career",
+      "tags": "Career",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.720Z"
+    },
+    "360-automating-tilda-landing-page-creation-for-webinars": {
+      "url": "https://problemhunt.pro/en/education/8gtvllpc91-automating-tilda-landing-page-creation-f",
+      "uid": "8gtvllpc91",
+      "title": "Automating Tilda landing page creation for webinars",
+      "category": "education",
+      "tags": "Education,No-Code,AI,Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.721Z"
+    },
+    "361-systemic-problem-of-unenforceable-contracts-and-slow-di": {
+      "url": "https://problemhunt.pro/en/legal/0i3lmdtm71-systemic-problem-of-unenforceable-contra",
+      "uid": "0i3lmdtm71",
+      "title": "Systemic problem of unenforceable contracts and slow dispute resolution",
+      "category": "legal",
+      "tags": "Legal",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.722Z"
+    },
+    "362-automated-tool-for-link-checking-and-stylistic-editing": {
+      "url": "https://problemhunt.pro/en/media/gvks1brdf1-automated-tool-for-link-checking-and-sty",
+      "uid": "gvks1brdf1",
+      "title": "Automated tool for link checking and stylistic editing",
+      "category": "media",
+      "tags": "Media",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.723Z"
+    },
+    "363-difficulty-finding-effective-marketers-for-a-constructi": {
+      "url": "https://problemhunt.pro/en/freelance/hc75uckma1-difficulty-finding-effective-marketers-f",
+      "uid": "hc75uckma1",
+      "title": "Difficulty finding effective marketers for a construction business",
+      "category": "freelance",
+      "tags": "Freelance,Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.724Z"
+    },
+    "364-lack-of-reusable-components-and-centralized-styling-in-": {
+      "url": "https://problemhunt.pro/en/dev/91cnbgco21-lack-of-reusable-components-and-centrali",
+      "uid": "91cnbgco21",
+      "title": "Lack of reusable components and centralized styling in Tilda",
+      "category": "dev",
+      "tags": "Dev,No-Code,Design",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.725Z"
+    },
+    "365-daily-content-adaptation-grind-for-marketing-teams": {
+      "url": "https://problemhunt.pro/en/marketing/s69dtmhcb1-daily-content-adaptation-grind-for-marke",
+      "uid": "s69dtmhcb1",
+      "title": "Daily content adaptation grind for marketing teams",
+      "category": "marketing",
+      "tags": "Marketing,Media",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.726Z"
+    },
+    "366-need-for-a-built-in-audio-player-in-tilda-product-catal": {
+      "url": "https://problemhunt.pro/en/no-code/9gfljgt4l1-need-for-a-built-in-audio-player-in-tild",
+      "uid": "9gfljgt4l1",
+      "title": "Need for a built-in audio player in tilda product catalog",
+      "category": "no-code",
+      "tags": "No-Code,Marketing,Retail,Dev",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.727Z"
+    },
+    "367-need-for-a-service-to-package-website-deliveries-profes": {
+      "url": "https://problemhunt.pro/en/freelance/kb6ioy7hb1-need-for-a-service-to-package-website-de",
+      "uid": "kb6ioy7hb1",
+      "title": "Need for a service to package website deliveries professionally",
+      "category": "freelance",
+      "tags": "Freelance,Marketing,Design",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.728Z"
+    },
+    "368-tildas-terrible-support-and-the-need-for-a-premium-help": {
+      "url": "https://problemhunt.pro/en/other/t6oxa8m3d1-tildas-terrible-support-and-the-need-for",
+      "uid": "t6oxa8m3d1",
+      "title": "Tilda's terrible support and the need for a premium help service",
+      "category": "other",
+      "tags": "Other",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.729Z"
+    },
+    "369-no-solution-for-from-figma-to-taptop-in-one-click": {
+      "url": "https://problemhunt.pro/en/design/m1m3pi5e11-no-solution-for-from-figma-to-taptop-in",
+      "uid": "m1m3pi5e11",
+      "title": "No solution for From Figma to TapTop in one click",
+      "category": "design",
+      "tags": "Design,No-Code,Dev",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.730Z"
+    },
+    "370-need-for-affordable-legal-protection-service-for-freela": {
+      "url": "https://problemhunt.pro/en/legal/mfxod8viz1-need-for-affordable-legal-protection-ser",
+      "uid": "mfxod8viz1",
+      "title": "Need for affordable legal protection service for freelancers",
+      "category": "legal",
+      "tags": "Legal,Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.731Z"
+    },
+    "371-there-is-a-lack-of-a-platform-with-proven-and-relevant-": {
+      "url": "https://problemhunt.pro/en/freelance/3nb3237gu1-there-is-a-lack-of-a-platform-with-prove",
+      "uid": "3nb3237gu1",
+      "title": "There is a lack of a platform with proven and relevant marketing cases",
+      "category": "freelance",
+      "tags": "Freelance,Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.732Z"
+    },
+    "372-courier-app-navigation-and-grouping-issues-in-vozy-ozon": {
+      "url": "https://problemhunt.pro/en/logistics/69hxkoys91-courier-app-navigation-and-grouping-issu",
+      "uid": "69hxkoys91",
+      "title": "Courier app navigation and grouping issues in «Vozy Ozon»",
+      "category": "logistics",
+      "tags": "Logistics",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.734Z"
+    },
+    "373-problem-importing-figma-animation-to-tilda": {
+      "url": "https://problemhunt.pro/en/no-code/o9hindv9z1-problem-importing-figma-animation-to-til",
+      "uid": "o9hindv9z1",
+      "title": "Problem importing Figma animation to Tilda",
+      "category": "no-code",
+      "tags": "No-Code,Design",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.735Z"
+    },
+    "374-need-for-instant-notifications-about-discounts-at-vkusv": {
+      "url": "https://problemhunt.pro/en/retail/lfz3mtpit1-need-for-instant-notifications-about-dis",
+      "uid": "lfz3mtpit1",
+      "title": "Need for instant notifications about discounts at «Vkusvill» and «Perekrestok»",
+      "category": "retail",
+      "tags": "Retail",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.736Z"
+    },
+    "375-frustration-with-news-overload-and-need-for-a-personali": {
+      "url": "https://problemhunt.pro/en/media/09eoroiy71-frustration-with-news-overload-and-need",
+      "uid": "09eoroiy71",
+      "title": "Frustration with news overload and need for a personalized telegram bot",
+      "category": "media",
+      "tags": "Media",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.737Z"
+    },
+    "376-wasting-time-on-unpaid-client-estimates-and-communicati": {
+      "url": "https://problemhunt.pro/en/marketing/72kngh5xp1-wasting-time-on-unpaid-client-estimates",
+      "uid": "72kngh5xp1",
+      "title": "Wasting time on unpaid client estimates and communication",
+      "category": "marketing",
+      "tags": "Marketing,Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.738Z"
+    },
+    "377-problem-of-chaotic-requirements-gathering-in-b2b-outsou": {
+      "url": "https://problemhunt.pro/en/dev/0yof53jk01-problem-of-chaotic-requirements-gatherin",
+      "uid": "0yof53jk01",
+      "title": "Problem of chaotic requirements gathering in b2b outsourcing",
+      "category": "dev",
+      "tags": "Dev",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.739Z"
+    },
+    "378-need-for-a-niche-marketplace-for-tilda-code-blocks-and-": {
+      "url": "https://problemhunt.pro/en/dev/rsx7rzckd1-need-for-a-niche-marketplace-for-tilda-c",
+      "uid": "rsx7rzckd1",
+      "title": "Need for a niche marketplace for Tilda code blocks and solutions",
+      "category": "dev",
+      "tags": "Dev,No-Code",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.740Z"
+    },
+    "379-need-for-an-ai-agent-to-auto-respond-to-suitable-freela": {
+      "url": "https://problemhunt.pro/en/marketing/8jzg4eu451-need-for-an-ai-agent-to-auto-respond-to",
+      "uid": "8jzg4eu451",
+      "title": "Need for an AI agent to auto-respond to suitable freelance orders",
+      "category": "marketing",
+      "tags": "Marketing,Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.741Z"
+    },
+    "380-automating-the-referral-program-for-teachers-on-tilda": {
+      "url": "https://problemhunt.pro/en/marketing/stn9lyfeo1-automating-the-referral-program-for-teac",
+      "uid": "stn9lyfeo1",
+      "title": "Automating the referral program for teachers on Tilda",
+      "category": "marketing",
+      "tags": "Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.742Z"
+    },
+    "381-a-universal-solution-is-required-to-convert-voice-to-cl": {
+      "url": "https://problemhunt.pro/en/marketing/uam90ckxn1-a-universal-solution-is-required-to-conv",
+      "uid": "uam90ckxn1",
+      "title": "A universal solution is required to convert voice to clear text",
+      "category": "marketing",
+      "tags": "Marketing,Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.743Z"
+    },
+    "382-need-for-a-unified-tilda-extension-combining-nolim-and-": {
+      "url": "https://problemhunt.pro/en/dev/82uz45nni1-need-for-a-unified-tilda-extension-combi",
+      "uid": "82uz45nni1",
+      "title": "Need for a unified Tilda extension combining Nolim and Annexx features",
+      "category": "dev",
+      "tags": "Dev,No-Code",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.744Z"
+    },
+    "383-ineffective-client-acquisition-and-spam-overload-for-a-": {
+      "url": "https://problemhunt.pro/en/freelance/7vyumtmek1-ineffective-client-acquisition-and-spam",
+      "uid": "7vyumtmek1",
+      "title": "Ineffective client acquisition and spam overload for a lawyer",
+      "category": "freelance",
+      "tags": "Freelance,Marketing",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.745Z"
+    },
+    "384-need-for-try-on-service-in-telegram-second-hand-stores": {
+      "url": "https://problemhunt.pro/en/retail/dknrnh1581-need-for-try-on-service-in-telegram-seco",
+      "uid": "dknrnh1581",
+      "title": "Need for try-on service in Telegram second-hand stores",
+      "category": "retail",
+      "tags": "Retail",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.747Z"
+    },
+    "385-automated-figma-to-tilda-zero-block-layout-ai": {
+      "url": "https://problemhunt.pro/en/no-code/yf3xyo1d31-automated-figma-to-tilda-zero-block-layo",
+      "uid": "yf3xyo1d31",
+      "title": "Automated Figma-to-Tilda Zero Block layout AI",
+      "category": "no-code",
+      "tags": "No-Code,Dev",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.748Z"
+    },
+    "386-no-orders-without-a-portfolio-a-beginner-freelancers-pr": {
+      "url": "https://problemhunt.pro/en/freelance/bhk2hd8zp1-no-orders-without-a-portfolio-a-beginner",
+      "uid": "bhk2hd8zp1",
+      "title": "No orders without a portfolio: a beginner freelancer's problem",
+      "category": "freelance",
+      "tags": "Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.749Z"
+    },
+    "387-no-auto-reply-for-orders-in-the-photographers-chat": {
+      "url": "https://problemhunt.pro/en/freelance/r3sxzzfh11-no-auto-reply-for-orders-in-the-photogra",
+      "uid": "r3sxzzfh11",
+      "title": "No auto-reply for orders in the photographers' chat",
+      "category": "freelance",
+      "tags": "Freelance",
+      "source": "problemhunt",
+      "analyzedAt": "2026-08-14T00:15:00.750Z"
+    },
+    "388-is-it-even-worth-making-a-new-restaurant-scheduling-app": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnrsq5/is_it_even_worth_making_a_new_restaurant/",
+      "uid": null,
+      "title": "is it even worth making a new restaurant scheduling app in 2026?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.751Z"
+    },
+    "389-manor-a-voice-first-expense-tracker-without-spreadsheet": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnrjw1/manor_a_voicefirst_expense_tracker_without/",
+      "uid": null,
+      "title": "Manor : a voice-first expense tracker without spreadsheet-style forms",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.752Z"
+    },
+    "390-quote-generator-pro": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnr67z/quote_generator_pro/",
+      "uid": null,
+      "title": "Quote Generator Pro",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.754Z"
+    },
+    "391-how-strange-is-this": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnr1ls/how_strange_is_this/",
+      "uid": null,
+      "title": "How strange is this?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.755Z"
+    },
+    "392-resilient-payment-services-through-diverse-payment-prov": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnqtc3/resilient_payment_services_through_diverse/",
+      "uid": null,
+      "title": "Resilient payment services through diverse payment providers",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.756Z"
+    },
+    "393-building-a-micro-saas-for-a-500m-legacy-industry-15-per": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnqlk8/building_a_microsaas_for_a_500m_legacy_industry/",
+      "uid": null,
+      "title": "Building a micro-SaaS for a $500M+ legacy industry (1–5 person teams). How do you approach feedback from non-tech users?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.758Z"
+    },
+    "394-i-finally-launched-my-first-saas-the-hardest-part-was-d": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnordf/i_finally_launched_my_first_saas_the_hardest_part/",
+      "uid": null,
+      "title": "I finally launched my first SaaS. The hardest part was deciding when to stop building it.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.759Z"
+    },
+    "395-ai-fuckery": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnoifw/ai_fuckery/",
+      "uid": null,
+      "title": "AI fuckery",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.760Z"
+    },
+    "396-cold-email-est-ce-la-bonne-solution": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnod47/cold_email_est_ce_la_bonne_solution/",
+      "uid": null,
+      "title": "Cold email est ce la bonne solution ?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.761Z"
+    },
+    "397-for-b2b-saas-founders-how-much-engineering-time-did-it-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnnn9x/for_b2b_saas_founders_how_much_engineering_time/",
+      "uid": null,
+      "title": "For B2B SaaS founders: How much engineering time did it actually take you to list on the AWS or Azure marketplace?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.763Z"
+    },
+    "398-how-do-you-know-when-a-saas-company-has-outgrown-spread": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnnlvw/how_do_you_know_when_a_saas_company_has_outgrown/",
+      "uid": null,
+      "title": "How do you know when a SaaS company has outgrown spreadsheets for partner management?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.764Z"
+    },
+    "399-i-built-an-influencer-channel-for-a-productivity-app-an": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnnj0a/i_built_an_influencer_channel_for_a_productivity/",
+      "uid": null,
+      "title": "I built an influencer channel for a productivity app and here's my learning",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.766Z"
+    },
+    "400-we-sent-1000-loom-videos": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnn9g5/we_sent_1000_loom_videos/",
+      "uid": null,
+      "title": "We sent 1000 loom videos",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.768Z"
+    },
+    "401-how-did-you-get-your-first-real-users-when-nobody-knew-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnml9h/how_did_you_get_your_first_real_users_when_nobody/",
+      "uid": null,
+      "title": "How did you get your first real users when nobody knew your product existed?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.769Z"
+    },
+    "402-built-this-thing-called-dolly-would-love-if-some-of-you": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnml72/built_this_thing_called_dolly_would_love_if_some/",
+      "uid": null,
+      "title": "built this thing called dolly, would love if some of you tried it",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.771Z"
+    },
+    "403-im-convinced-the-next-big-saas-category-isnt-another-to": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnmk32/im_convinced_the_next_big_saas_category_isnt/",
+      "uid": null,
+      "title": "I’m convinced the next big SaaS category isn’t another tool",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.772Z"
+    },
+    "404-setting-up-a-branded-short-domain-for-an-indie-saas-her": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnmhxj/setting_up_a_branded_short_domain_for_an_indie/",
+      "uid": null,
+      "title": "Setting up a branded short domain for an indie SaaS - here's what I learned",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.773Z"
+    },
+    "405-audited-every-post-id-made-for-my-saas-the-problem-was-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnm0nd/audited_every_post_id_made_for_my_saas_the/",
+      "uid": null,
+      "title": "Audited every post I'd made for my SaaS. The problem was never the writing.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.775Z"
+    },
+    "406-does-making-tiktok-videos-about-your-b2c-saas-work": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnl3q0/does_making_tiktok_videos_about_your_b2c_saas_work/",
+      "uid": null,
+      "title": "Does making TikTok videos about your B2C SaaS work?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.776Z"
+    },
+    "407-drop-elite-ball-knowledge-about-moats": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnk3em/drop_elite_ball_knowledge_about_moats/",
+      "uid": null,
+      "title": "Drop elite ball knowledge about moats",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.777Z"
+    },
+    "408-marketing-scams-and-emulation-farms": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnjp5t/marketing_scams_and_emulation_farms/",
+      "uid": null,
+      "title": "Marketing scams and emulation farms",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.779Z"
+    },
+    "409-kick-them-out-or-put-a-paywall": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnjo91/kick_them_out_or_put_a_paywall/",
+      "uid": null,
+      "title": "Kick them out or put a paywall?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.780Z"
+    },
+    "410-i-migrated-my-whole-company-to-a-notion-alternative-and": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnji0g/i_migrated_my_whole_company_to_a_notion/",
+      "uid": null,
+      "title": "I migrated my whole company to a Notion alternative and realized the tool was never my problem",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.781Z"
+    },
+    "411-your-user-has-already-started-the-decision-before-openi": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnj84g/your_user_has_already_started_the_decision_before/",
+      "uid": null,
+      "title": "Your User Has Already Started the Decision Before Opening Your Product",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.783Z"
+    },
+    "412-finally-a-steady-income-1200-cadmonth": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnj7hy/finally_a_steady_income_1200_cadmonth/",
+      "uid": null,
+      "title": "Finally a steady income! 1200 CAD/month",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.784Z"
+    },
+    "413-i-will-not-promote-about-half-our-product-usage-now-com": {
+      "url": "https://www.reddit.com/r/startups/comments/1vnm3el/i_will_not_promote_about_half_our_product_usage/",
+      "uid": null,
+      "title": "I will not promote: About half our product usage now comes through the API, and we almost missed what that meant",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.786Z"
+    },
+    "414-institutional-credit-abs-amp-lbo-underwriter-open-to-ea": {
+      "url": "https://www.reddit.com/r/startups/comments/1vnjlpv/institutional_credit_abs_lbo_underwriter_open_to/",
+      "uid": null,
+      "title": "Institutional Credit, ABS &amp; LBO Underwriter open to early-stage startups I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.787Z"
+    },
+    "415-sense-check-on-two-comp-packages-for-our-first-commerci": {
+      "url": "https://www.reddit.com/r/startups/comments/1vnj580/sense_check_on_two_comp_packages_for_our_first/",
+      "uid": null,
+      "title": "Sense check on two comp packages for our first commercial hire - equity vs cash split - I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.788Z"
+    },
+    "416-has-anyone-found-a-good-tool-to-get-read-email-access-s": {
+      "url": "https://www.reddit.com/r/startups/comments/1vng5cp/has_anyone_found_a_good_tool_to_get_read_email/",
+      "uid": null,
+      "title": "Has anyone found a good tool to get read email access (similar to Plaid for financials, but for email) - I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.790Z"
+    },
+    "417-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vng36u/i_will_not_promote/",
+      "uid": null,
+      "title": "I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.791Z"
+    },
+    "418-hardware-and-deep-tech-startups-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vn9k7h/hardware_and_deep_tech_startups_i_will_not_promote/",
+      "uid": null,
+      "title": "Hardware and deep tech startups. I will not promote.",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.792Z"
+    },
+    "419-3-months-into-building-our-ai-startup-we-just-unplugged": {
+      "url": "https://www.reddit.com/r/startups/comments/1vn0qa9/3_months_into_building_our_ai_startup_we_just/",
+      "uid": null,
+      "title": "3 months into building our AI startup, we just unplugged our own backend system. Here's why. i will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.793Z"
+    },
+    "420-advice-on-share-distribution-with-founding-engineer-i-w": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmwyvt/advice_on_share_distribution_with_founding/",
+      "uid": null,
+      "title": "Advice on share distribution with founding engineer. I will not promote.",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.795Z"
+    },
+    "421-how-are-you-evaluating-agents-that-write-sql-against-li": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmu0dh/how_are_you_evaluating_agents_that_write_sql/",
+      "uid": null,
+      "title": "How are you evaluating agents that write SQL against live databases?[I will not promote]",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.797Z"
+    },
+    "422-render-credits-vs-aws-activate-for-a-seed-stage-web-app": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmqwbj/render_credits_vs_aws_activate_for_a_seedstage/",
+      "uid": null,
+      "title": "Render credits vs AWS Activate for a seed-stage web app, what would you take? i will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.798Z"
+    },
+    "423-how-did-you-get-over-the-fear-of-judgement-of-putting-y": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmloqz/how_did_you_get_over_the_fear_of_judgement_of/",
+      "uid": null,
+      "title": "How did you get over the fear of judgement of putting yourself and your startup out in the public view? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.799Z"
+    },
+    "424-how-many-startups-is-too-many-startups-to-be-involved-w": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmlaap/how_many_startups_is_too_many_startups_to_be/",
+      "uid": null,
+      "title": "How many startups is too many startups to be involved with at a time? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.800Z"
+    },
+    "425-has-anyone-reinvented-intercom-yet-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmgsyo/has_anyone_reinvented_intercom_yet_i_will_not/",
+      "uid": null,
+      "title": "Has anyone reinvented Intercom yet? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.801Z"
+    },
+    "426-anyone-here-in-a-meteorology-startup-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmg8w4/anyone_here_in_a_meteorology_startup_i_will_not/",
+      "uid": null,
+      "title": "Anyone here in a meteorology startup? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.803Z"
+    },
+    "427-how-do-i-sell-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmdsf4/how_do_i_sell_i_will_not_promote/",
+      "uid": null,
+      "title": "How Do I Sell? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.804Z"
+    },
+    "428-creating-infographic-for-start-upplease-helpi-will-not-": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmds6q/creating_infographic_for_startupplease_helpi_will/",
+      "uid": null,
+      "title": "Creating infographic for start-up..Please Help...I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.805Z"
+    },
+    "429-i-cant-sell-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmdpnf/i_cant_sell_i_will_not_promote/",
+      "uid": null,
+      "title": "I can’t sell. (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.806Z"
+    },
+    "430-looking-for-teammates-for-pitch-comps-i-will-not-promot": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmbxiz/looking_for_teammates_for_pitch_comps_i_will_not/",
+      "uid": null,
+      "title": "Looking for teammates for pitch comps (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.808Z"
+    },
+    "431-looking-for-teammates-for-pitch-comps-i-will-not-promot": {
+      "url": "https://www.reddit.com/r/startups/comments/1vmbw29/looking_for_teammates_for_pitch_comps_i_will_not/",
+      "uid": null,
+      "title": "Looking for teammates for pitch comps (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.809Z"
+    },
+    "432-pre-revenue-startup-raising-angel-capital-what-financia": {
+      "url": "https://www.reddit.com/r/startups/comments/1vma20k/prerevenue_startup_raising_angel_capital_what/",
+      "uid": null,
+      "title": "Pre-revenue startup raising angel capital - what financials need to be in a pitch deck/data room? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.810Z"
+    },
+    "433-how-realistic-is-it-to-aim-for-7-digit-usd-acquisition-": {
+      "url": "https://www.reddit.com/r/startups/comments/1vm9a7e/how_realistic_is_it_to_aim_for_7_digit_usd/",
+      "uid": null,
+      "title": "How realistic is it to aim for 7 digit USD acquisition after 3-4 years of running a startup? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.812Z"
+    },
+    "434-if-you-could-talk-to-an-expert-for-30-minutes-before-st": {
+      "url": "https://www.reddit.com/r/startups/comments/1vm717r/if_you_could_talk_to_an_expert_for_30_minutes/",
+      "uid": null,
+      "title": "If you could talk to an expert for 30 minutes before starting your business, what would you ask? I will not Promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.813Z"
+    },
+    "435-welche-herausforderungen-hast-du-i-will-not-promote": {
+      "url": "https://www.reddit.com/r/startups/comments/1vm6kpo/welche_herausforderungen_hast_du_i_will_not/",
+      "uid": null,
+      "title": "Welche Herausforderungen hast Du? i will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.814Z"
+    },
+    "436-what-problem-makes-you-think-omfg-this-sucks-there-must": {
+      "url": "https://www.reddit.com/r/startups/comments/1vm5qbw/what_problem_makes_you_think_omfg_this_sucks/",
+      "uid": null,
+      "title": "What problem makes you think Omfg this sucks there must be a better way? (I will not promote)",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.816Z"
+    },
+    "437-startups-have-began-hiring-again-im-grateful-and-quoti-": {
+      "url": "https://www.reddit.com/r/startups/comments/1vm51gq/startups_have_began_hiring_again_im_grateful_and/",
+      "uid": null,
+      "title": "Startups have began hiring again - I'm grateful and &quot;I will not promote&quot;",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T00:15:00.817Z"
+    },
+    "438-modern-job-hunting": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo0nvl/modern_job_hunting/",
+      "uid": null,
+      "title": "Modern job hunting",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.230Z"
+    },
+    "439-the-build-step-is-easy-now-the-deploy-step-is-where-eve": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo0mio/the_build_step_is_easy_now_the_deploy_step_is/",
+      "uid": null,
+      "title": "The build step is easy now, the deploy step is where every small tool dies",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.232Z"
+    },
+    "440-stuck-on-how-to-get-customers-for-my-saas": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo0ki6/stuck_on_how_to_get_customers_for_my_saas/",
+      "uid": null,
+      "title": "Stuck on how to get customers for my SaaS",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.235Z"
+    },
+    "441-i-stopped-writing-feature-specs-and-started-drawing-eve": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo051p/i_stopped_writing_feature_specs_and_started/",
+      "uid": null,
+      "title": "I stopped writing feature specs and started drawing every feature as a flowchart first. Way less wasted code.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.236Z"
+    },
+    "442-automating-lead-gen-for-small-businesses-mini-saas": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo04ue/automating_lead_gen_for_small_businesses_minisaas/",
+      "uid": null,
+      "title": "Automating Lead Gen for Small Businesses (Mini-SaaS)",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.238Z"
+    },
+    "443-the-gap-between-quotthe-ai-built-itquot-and-quotit-surv": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnzx5n/the_gap_between_the_ai_built_it_and_it_survived/",
+      "uid": null,
+      "title": "the gap between &quot;the AI built it&quot; and &quot;it survived real users&quot; is where all our bugs live",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.240Z"
+    },
+    "444-i-think-ai-has-made-building-saas-easier-while-quietly-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnzviu/i_think_ai_has_made_building_saas_easier_while/",
+      "uid": null,
+      "title": "I think AI has made building SaaS easier while quietly making one part of SaaS much more dangerous",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.242Z"
+    },
+    "445-how-do-you-write-seo-articles-with-claude-that-actually": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnzhm3/how_do_you_write_seo_articles_with_claude_that/",
+      "uid": null,
+      "title": "How do you write SEO articles with Claude that actually rank?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.244Z"
+    },
+    "446-i-removed-the-explanation-from-my-homepage-and-made-use": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnyy7x/i_removed_the_explanation_from_my_homepage_and/",
+      "uid": null,
+      "title": "I removed the explanation from my homepage and made users experience the product first",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.245Z"
+    },
+    "447-spent-9-years-fixing-marketing-for-aiweb3-startups-here": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnyt8s/spent_9_years_fixing_marketing_for_aiweb3/",
+      "uid": null,
+      "title": "Spent 9 years fixing marketing for AI/web3 startups. heres the one mistake i see literally every single time",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.247Z"
+    },
+    "448-any-way-to-automate-backlinks-for-cheap": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vny6i3/any_way_to_automate_backlinks_for_cheap/",
+      "uid": null,
+      "title": "Any way to automate backlinks for cheap?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.249Z"
+    },
+    "449-how-do-i-turn-free-users-into-paying-users": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnxy46/how_do_i_turn_free_users_into_paying_users/",
+      "uid": null,
+      "title": "How do i turn free users into paying users?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.251Z"
+    },
+    "450-does-this-quote-only-apply-to-disruptive-products-or-al": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnxx8b/does_this_quote_only_apply_to_disruptive_products/",
+      "uid": null,
+      "title": "Does this quote only apply to disruptive products, or also to improving existing ones?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.252Z"
+    },
+    "451-30-signups-in-3-days-0-paid-is-that-a-signal-yet-or-is-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnxvon/30_signups_in_3_days_0_paid_is_that_a_signal_yet/",
+      "uid": null,
+      "title": "30 signups in 3 days, 0 paid. Is that a signal yet or is my sample too small?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.254Z"
+    },
+    "452-expense-split-app-idea": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnxl6p/expense_split_app_idea/",
+      "uid": null,
+      "title": "Expense split app idea",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.255Z"
+    },
+    "453-7-mvp-mistakes-that-cost-founders-time-and-money": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnxcqb/7_mvp_mistakes_that_cost_founders_time_and_money/",
+      "uid": null,
+      "title": "7 MVP mistakes that cost founders time and money",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.258Z"
+    },
+    "454-are-chat-room-software-still-relevant": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnwvdn/are_chat_room_software_still_relevant/",
+      "uid": null,
+      "title": "Are chat room software still relevant?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.259Z"
+    },
+    "455-when-do-u-give-up-bro": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnwt0k/when_do_u_give_up_bro/",
+      "uid": null,
+      "title": "when do u give up bro",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.261Z"
+    },
+    "456-my-first-screen-recording-app-just-hit-50-in-revenue": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnwsiu/my_first_screen_recording_app_just_hit_50_in/",
+      "uid": null,
+      "title": "My first screen recording app just hit $50 in revenue.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.263Z"
+    },
+    "457-i-can-build-the-saas-finding-the-first-customer-is-the-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnwlm6/i_can_build_the_saas_finding_the_first_customer/",
+      "uid": null,
+      "title": "I can build the SaaS. Finding the first customer is the hard part.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.264Z"
+    },
+    "458-i-dont-know-why-i-still-have-0-tenants": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnvx5c/i_dont_know_why_i_still_have_0_tenants/",
+      "uid": null,
+      "title": "I don't know why I still have 0 tenants",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.265Z"
+    },
+    "459-truly-one-of-the-best-feelings-ever": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnv65x/truly_one_of_the_best_feelings_ever/",
+      "uid": null,
+      "title": "Truly one of the best feelings ever",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.267Z"
+    },
+    "460-this-is-the-biggest-achievement-for-me-so-far": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vnulls/this_is_the_biggest_achievement_for_me_so_far/",
+      "uid": null,
+      "title": "This is the biggest achievement for me so far.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.269Z"
+    },
+    "461-how-i-made-050-with-my-chrome-extension": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vntsbi/how_i_made_050_with_my_chrome_extension/",
+      "uid": null,
+      "title": "How I made $0.50 with my Chrome extension",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.271Z"
+    },
+    "462-founder-pov": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vntqsr/founder_pov/",
+      "uid": null,
+      "title": "Founder POV",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.272Z"
+    },
+    "463-i-built-an-ios-app-blocker-that-forces-you-to-complete-": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vnlnni/i_built_an_ios_app_blocker_that_forces_you_to/",
+      "uid": null,
+      "title": "I built an iOS app blocker that forces you to complete a challenge before unblocking an addictive app.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.274Z"
+    },
+    "464-i-added-a-backlinks-exchange-network-to-my-founders-foc": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vnkax0/i_added_a_backlinks_exchange_network_to_my/",
+      "uid": null,
+      "title": "I added a Backlinks exchange network to my founders-focused project - Free to use",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.276Z"
+    },
+    "465-my-wife-and-i-built-a-mac-app-that-turns-your-screensho": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vnbaw1/my_wife_and_i_built_a_mac_app_that_turns_your/",
+      "uid": null,
+      "title": "My wife and I built a Mac app that turns your screenshots into actions - explain an error and create an issue, add events to Calendar, save contacts and more.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.279Z"
+    },
+    "466-share-what-youre-building": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vn7o6e/share_what_youre_building/",
+      "uid": null,
+      "title": "Share what you're building",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.280Z"
+    },
+    "467-were-building-a-bridge-between-japanese-companies-with-": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vmx4o9/were_building_a_bridge_between_japanese_companies/",
+      "uid": null,
+      "title": "We're building a bridge between Japanese companies with an engineering shortage and engineers abroad who want short paid projects. Early, and I'd like the holes poked in it.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.282Z"
+    },
+    "468-5-months-in-49-downloads-0-paying-customers-heres-what-": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vlig4g/5_months_in_49_downloads_0_paying_customers_heres/",
+      "uid": null,
+      "title": "5 months in, 49 downloads, 0 paying customers. Here's what changed since the last update.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.285Z"
+    },
+    "469-after-months-of-averaging-1-2-users-per-day-we-suddenly": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vkfimr/after_months_of_averaging_12_users_per_day_we/",
+      "uid": null,
+      "title": "After months of averaging 1-2 users per day, we suddenly got 400+ users",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.287Z"
+    },
+    "470-i-analyzed-979-product-hunt-launches-from-the-last-3-mo": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vjirh5/i_analyzed_979_product_hunt_launches_from_the/",
+      "uid": null,
+      "title": "I analyzed 979 Product Hunt launches from the last 3 months. Launching on a weekday might be a mistake.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.290Z"
+    },
+    "471-every-quotstartup-idea-validatorquot-is-ai-now-i-went-t": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vj4oe6/every_startup_idea_validator_is_ai_now_i_went_the/",
+      "uid": null,
+      "title": "Every &quot;startup idea validator&quot; is AI now. I went the other way — real founders vote on your decision, and they can't see each other's answers.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.291Z"
+    },
+    "472-a-fiverr-animator-ghosted-us-so-we-made-this-product-an": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vi6u9i/a_fiverr_animator_ghosted_us_so_we_made_this/",
+      "uid": null,
+      "title": "A Fiverr animator ghosted us, so we made this product animation with 3 prompts and one HTML file",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.293Z"
+    },
+    "473-i-made-a-free-list-of-100-places-where-you-can-promote-": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vi5ui8/i_made_a_free_list_of_100_places_where_you_can/",
+      "uid": null,
+      "title": "i made a free list of 100 places where you can promote your app",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.295Z"
+    },
+    "474-solo-founder-building-fetchsandbox-no-network-how-are-y": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vi2qdv/solo_founder_building_fetchsandbox_no_network_how/",
+      "uid": null,
+      "title": "Solo founder building FetchSandbox, no network. How are you actually getting VC intros?",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.297Z"
+    },
+    "475-i-got-kicked-from-quotship-or-diequot": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vi0q98/i_got_kicked_from_ship_or_die/",
+      "uid": null,
+      "title": "I got kicked from &quot;Ship or Die&quot; 😢",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.299Z"
+    },
+    "476-my-little-clock-app-just-got-a-lifetime-customer-from-g": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vhsfej/my_little_clock_app_just_got_a_lifetime_customer/",
+      "uid": null,
+      "title": "my little clock app just got a lifetime customer from Germany 🇩🇪",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.302Z"
+    },
+    "477-building-saas-got-10x-easier-getting-someone-to-care-so": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vh6uro/building_saas_got_10x_easier_getting_someone_to/",
+      "uid": null,
+      "title": "building saas got 10x easier. getting someone to care somehow got 10x harder. so we built this.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.304Z"
+    },
+    "478-2-times-top-10-and-featured-on-product-hunt-heres-how-y": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vgix9n/2_times_top_10_and_featured_on_product_hunt_heres/",
+      "uid": null,
+      "title": "2 times Top 10 and featured on Product Hunt - here's how you too can do it",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.307Z"
+    },
+    "479-is-less-more": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vgdyvf/is_less_more/",
+      "uid": null,
+      "title": "Is less, more?",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.308Z"
+    },
+    "480-i-built-a-youtube-transcript-api-for-developers-looking": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vgc5aa/i_built_a_youtube_transcript_api_for_developers/",
+      "uid": null,
+      "title": "I built a YouTube Transcript API for developers — looking for feedback",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.310Z"
+    },
+    "481-share-what-youre-building": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vgb5dl/share_what_youre_building/",
+      "uid": null,
+      "title": "Share what you're building",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.312Z"
+    },
+    "482-i-built-an-app-to-filter-noise-from-tech-blogs-and-surf": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vfju24/i_built_an_app_to_filter_noise_from_tech_blogs/",
+      "uid": null,
+      "title": "I built an app to filter noise from tech blogs and surface 6 quality engineering reads every day. How do I get more users?",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.314Z"
+    },
+    "483-220-directory-submissions-later-440-linking-domains-and": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vfcwbx/220_directory_submissions_later_440_linking/",
+      "uid": null,
+      "title": "220 directory submissions later: 440 linking domains and DR 54",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.317Z"
+    },
+    "484-we-helped-a-client-go-from-3k-to-12k-with-outbound-and-": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vfc8ia/we_helped_a_client_go_from_3k_to_12k_with/",
+      "uid": null,
+      "title": "We helped a client go from $3K to $12K with outbound and now we’re looking for 5 agency owners to help for free",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.319Z"
+    },
+    "485-i-couldnt-find-a-writing-tool-that-didnt-sound-ai-gener": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1vej4p9/i_couldnt_find_a_writing_tool_that_didnt_sound/",
+      "uid": null,
+      "title": "I couldn't find a writing tool that didn't sound AI-generated for GTM work, so I built my own and dogfooded it for 2 months",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.321Z"
+    },
+    "486-i-built-a-home-inventory-app-that-fills-in-an-items-det": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1ve81fm/i_built_a_home_inventory_app_that_fills_in_an/",
+      "uid": null,
+      "title": "I built a home inventory app that fills in an item's details from a photo. Looking for critique on how I have it priced.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.324Z"
+    },
+    "487-we-built-a-tool-that-fixes-bugs-it-couldnt-always-prove": {
+      "url": "https://www.reddit.com/r/indiehackers/comments/1ve51dd/we_built_a_tool_that_fixes_bugs_it_couldnt_always/",
+      "uid": null,
+      "title": "We built a tool that fixes bugs. It couldn't always prove it.",
+      "category": "IndieHackers",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.326Z"
+    },
+    "488-ive-built-an-app-that-runs-real-spoken-mock-job-intervi": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo0ipz/ive_built_an_app_that_runs_real_spoken_mock_job/",
+      "uid": null,
+      "title": "I've built an app that runs real spoken mock job interviews with an AI — it researches the company first, then grills you for 30 minutes",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.328Z"
+    },
+    "489-i-built-a-visual-api-test-builder-looking-for-honest-fe": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo0i1x/i_built_a_visual_api_test_builder_looking_for/",
+      "uid": null,
+      "title": "I built a visual API test builder - looking for honest feedback",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.330Z"
+    },
+    "490-i-keep-missing-my-favorite-farmers-market-vendorswould-": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo07oc/i_keep_missing_my_favorite_farmersmarket/",
+      "uid": null,
+      "title": "I keep missing my favorite farmers-market vendors—would this solve it?",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.332Z"
+    },
+    "491-sky-claim-claim-the-real-night-sky-free": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo079k/sky_claim_claim_the_real_night_sky_free/",
+      "uid": null,
+      "title": "Sky Claim - Claim the real night sky - Free",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.334Z"
+    },
+    "492-built-a-free-platform-to-learn-to-code-the-problem-was-": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo06sf/built_a_free_platform_to_learn_to_code_the/",
+      "uid": null,
+      "title": "Built a free platform to learn to code — the problem was never &quot;no free content,&quot; it's &quot;nobody tells you what to learn first&quot;",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.336Z"
+    },
+    "493-i-built-a-random-video-chat-website-looking-for-people-": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo06ju/i_built_a_random_video_chat_website_looking_for/",
+      "uid": null,
+      "title": "I built a random video chat website — looking for people to test it",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.338Z"
+    },
+    "494-focus-timer-update-is-live-on-google-play-built-entirel": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vo0368/focus_timer_update_is_live_on_google_play_built/",
+      "uid": null,
+      "title": "Focus timer update is live - on Google Play, built entirely from your feedback",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.341Z"
+    },
+    "495-i-built-my-portfolio-site-with-an-ai-website-builder-in": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnzzuk/i_built_my_portfolio_site_with_an_ai_website/",
+      "uid": null,
+      "title": "I built my portfolio site with an AI website builder in an afternoon, here's what broke and what held up",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.342Z"
+    },
+    "496-killgate-blueprint-a-6-agent-ai-operating-system-design": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnztj5/killgate_blueprint_a_6agent_ai_operating_system/",
+      "uid": null,
+      "title": "Killgate Blueprint - A 6-agent AI operating system designed to kill bad SaaS ideas before you waste months building them",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.344Z"
+    },
+    "497-i-built-a-cool-secret-code-website": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnzfdq/i_built_a_cool_secret_code_website/",
+      "uid": null,
+      "title": "I built a cool Secret Code website!",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.347Z"
+    },
+    "498-im-building-an-evidence-based-governor-for-coding-agent": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnzfc1/im_building_an_evidencebased_governor_for_coding/",
+      "uid": null,
+      "title": "I’m building an evidence-based governor for coding agents — looking for people to try it",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.349Z"
+    },
+    "499-what-does-your-setup-look-like-when-youre-the-only-one-": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnzb5d/what_does_your_setup_look_like_when_youre_the/",
+      "uid": null,
+      "title": "What does your setup look like when you’re the only one working on it?",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.350Z"
+    },
+    "500-i-build-an-app-that-goes-full-screen-when-a-solar-event": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnyzad/i_build_an_app_that_goes_full_screen_when_a_solar/",
+      "uid": null,
+      "title": "I build an app that goes full screen when a solar event happens in space",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.352Z"
+    },
+    "501-spatialboard-an-mit-react-infinite-canvasnode-graphsket": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnyx7t/spatialboard_an_mit_react_infinitecanvasnode/",
+      "uid": null,
+      "title": "SpatialBoard – an MIT, React infinite-canvas/node graph/sketch package",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.354Z"
+    },
+    "502-built-and-nba-roster-building-game-with-a-salary-cap": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnyun5/built_and_nba_roster_building_game_with_a_salary/",
+      "uid": null,
+      "title": "Built and NBA roster building game with a salary cap",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.356Z"
+    },
+    "503-difftrail-reconstruct-git-history-even-if-you-never-com": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnypso/difftrail_reconstruct_git_history_even_if_you/",
+      "uid": null,
+      "title": "DiffTrail: Reconstruct Git history even if you never committed it",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.359Z"
+    },
+    "504-whats-the-most-misleading-metric-in-your-side-project-r": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnynj8/whats_the_most_misleading_metric_in_your_side/",
+      "uid": null,
+      "title": "What’s the most misleading metric in your side project right now?",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.361Z"
+    },
+    "505-vibecoding-that-doesnt-feel-like-vibecoding": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnym0y/vibecoding_that_doesnt_feel_like_vibecoding/",
+      "uid": null,
+      "title": "Vibecoding that doesn't feel like vibecoding!",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.364Z"
+    },
+    "506-spent-3-months-building-the-wrong-version-of-my-app-bef": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnybs6/spent_3_months_building_the_wrong_version_of_my/",
+      "uid": null,
+      "title": "Spent 3 months building the wrong version of my app before realizing the actual insight",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.366Z"
+    },
+    "507-i-made-a-free-countdown-tool-looking-for-feedback": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vny9r9/i_made_a_free_countdown_tool_looking_for_feedback/",
+      "uid": null,
+      "title": "I made a free countdown tool - looking for feedback",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.370Z"
+    },
+    "508-scanmyemails-super-simple-email-scanner-for-those-forgo": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vny8mw/scanmyemails_super_simple_email_scanner_for_those/",
+      "uid": null,
+      "title": "Scanmyemails - super simple email scanner for those forgotten important emails.",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.372Z"
+    },
+    "509-every-day-this-site-posts-one-joke-and-one-photo-one-of": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vny4od/every_day_this_site_posts_one_joke_and_one_photo/",
+      "uid": null,
+      "title": "Every day this site posts one joke and one photo. One of each is AI. You guess.",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.373Z"
+    },
+    "510-i-built-monito-a-native-macos-menu-bar-app-for-monitori": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vny42b/i_built_monito_a_native_macos_menu_bar_app_for/",
+      "uid": null,
+      "title": "I built Monito, a native macOS menu bar app for monitoring and managing VPS instances",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.376Z"
+    },
+    "511-mail-tester-alternative-better-tools-to-check-deliverab": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vny3mk/mail_tester_alternative_better_tools_to_check/",
+      "uid": null,
+      "title": "mail tester alternative - better tools to check deliverability?",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.378Z"
+    },
+    "512-tocala-song-writers-companion-app": {
+      "url": "https://www.reddit.com/r/SideProject/comments/1vnxwsj/tocala_song_writers_companion_app/",
+      "uid": null,
+      "title": "toca.la - song writer's companion app",
+      "category": "SideProject",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T07:45:03.380Z"
+    },
+    "513-your-saas-works-but-does-it-actually-look-good-enough-t": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo4wan/your_saas_works_but_does_it_actually_look_good/",
+      "uid": null,
+      "title": "Your SaaS works. But does it actually look good enough to make people trust it?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.380Z"
+    },
+    "514-guide-to-ai-brand-visibility-tracking-tools-in-2026": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo4r4a/guide_to_ai_brand_visibility_tracking_tools_in/",
+      "uid": null,
+      "title": "Guide to AI Brand Visibility Tracking Tools in 2026",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.382Z"
+    },
+    "515-critique-my-onboarding-built-a-workflow-tool-for-digita": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo4lzy/critique_my_onboarding_built_a_workflow_tool_for/",
+      "uid": null,
+      "title": "Critique my onboarding? Built a workflow tool for digital marketing managers",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.384Z"
+    },
+    "516-best-mor-provider-out-there": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo4cmj/best_mor_provider_out_there/",
+      "uid": null,
+      "title": "Best MoR provider out there?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.385Z"
+    },
+    "517-build-an-app-they-said-its-passive-income-once-its-live": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo45xx/build_an_app_they_said_its_passive_income_once/",
+      "uid": null,
+      "title": "Build an app they said it’s Passive income once it’s live.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.386Z"
+    },
+    "518-which-is-the-best-payment-provider-in-india-that-i-can-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo3zte/which_is_the_best_payment_provider_in_india_that/",
+      "uid": null,
+      "title": "Which is the best payment provider in India that I can use to integrate payments in my SaaS.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.388Z"
+    },
+    "519-plateforme-de-gestion-dcole": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo3utd/plateforme_de_gestion_décole/",
+      "uid": null,
+      "title": "Plateforme de gestion d’école",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.390Z"
+    },
+    "520-how-we-decide-what-to-build-next-after-rice-completely-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo3np0/how_we_decide_what_to_build_next_after_rice/",
+      "uid": null,
+      "title": "How we decide what to build next after RICE completely fell apart for us",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.392Z"
+    },
+    "521-any-way-to-speed-up-aws-build-times-without-increasing-": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo3ket/any_way_to_speed_up_aws_build_times_without/",
+      "uid": null,
+      "title": "Any way to speed up AWS build times without increasing infrastructure costs?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.393Z"
+    },
+    "522-what-problems-do-you-face-as-a-creator-that-a-content-d": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo3bue/what_problems_do_you_face_as_a_creator_that_a/",
+      "uid": null,
+      "title": "What problems do you face as a creator that a content distribution platform could solve?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.394Z"
+    },
+    "523-free-typeform-clone-tool-for-this-community-enjoy": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo2ouv/free_typeform_clone_tool_for_this_community_enjoy/",
+      "uid": null,
+      "title": "FREE Typeform clone tool for this community. Enjoy!",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.396Z"
+    },
+    "524-3k-monthly-visitors-and-80-mrr-would-you-focus-on-traff": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo2k7u/3k_monthly_visitors_and_80_mrr_would_you_focus_on/",
+      "uid": null,
+      "title": "3k monthly visitors and $80 MRR. Would you focus on traffic or conversion?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.398Z"
+    },
+    "525-need-a-co-founder": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo2h9r/need_a_cofounder/",
+      "uid": null,
+      "title": "Need a Co-founder",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.399Z"
+    },
+    "526-how-would-you-distribute-a-niche-saas-for-real-estate-i": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo2e8u/how_would_you_distribute_a_niche_saas_for/",
+      "uid": null,
+      "title": "How would you distribute a niche SaaS for real-estate investors?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.401Z"
+    },
+    "527-i-built-an-app-for-4-months-launched-in-1-week-ago-0-us": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo28x9/i_built_an_app_for_4_months_launched_in_1_week/",
+      "uid": null,
+      "title": "I built an app for 4 months, launched in 1 week ago. 0 users, super polished and proven demand.",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.402Z"
+    },
+    "528-loom-silence-removal-feature-is-trash": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo23cg/loom_silence_removal_feature_is_trash/",
+      "uid": null,
+      "title": "Loom Silence Removal Feature is trash",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.403Z"
+    },
+    "529-what-would-make-you-pay-for-a-screen-recording-saas": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo1wd5/what_would_make_you_pay_for_a_screen_recording/",
+      "uid": null,
+      "title": "What would make you pay for a screen recording SaaS?",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.405Z"
+    },
+    "530-free-way-to-actually-see-videos-of-the-errors-your-saas": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo1r5j/free_way_to_actually_see_videos_of_the_errors/",
+      "uid": null,
+      "title": "Free way to actually see videos of the errors your SaaS users are running into",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.407Z"
+    },
+    "531-new-saas-got-good-google-impressions-initially-then": {
+      "url": "https://www.reddit.com/r/SaaS/comments/1vo0r7j/new_saas_got_good_google_impressions_initially/",
+      "uid": null,
+      "title": "New SaaS got good Google impressions initially, then",
+      "category": "SaaS",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.408Z"
+    },
+    "532-i-will-not-promote-your-saas-works-but-does-it-actually": {
+      "url": "https://www.reddit.com/r/startups/comments/1vo4n8q/i_will_not_promote_your_saas_works_but_does_it/",
+      "uid": null,
+      "title": "(I will not promote) Your SaaS works. But does it actually look good enough to make people trust it?",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.409Z"
+    },
+    "533-do-tiny-safe-rounds-really-require-state-by-state-secur": {
+      "url": "https://www.reddit.com/r/startups/comments/1vo0d9v/do_tiny_safe_rounds_really_require_statebystate/",
+      "uid": null,
+      "title": "Do tiny SAFE rounds really require state-by-state securities compliance? I will not promote",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.411Z"
+    },
+    "534-feedback-friday": {
+      "url": "https://www.reddit.com/r/startups/comments/1vnxu7u/feedback_friday/",
+      "uid": null,
+      "title": "Feedback Friday",
+      "category": "startups",
+      "tags": "",
+      "source": "reddit",
+      "analyzedAt": "2026-08-14T11:50:00.413Z"
     }
   },
-  "nextNumber": 199,
-  "lastRun": "2026-08-13T15:08:39.561Z"
+  "nextNumber": 535,
+  "lastRun": "2026-08-14T11:50:00.413Z",
+  "topProjectsEvaluatedAt": "2026-08-14T00:21:53Z"
 }
