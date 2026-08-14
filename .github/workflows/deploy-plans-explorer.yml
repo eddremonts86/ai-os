@@ -22,6 +22,13 @@ on:
     branches: [main]
     paths:
       - "plans-explorer/**"
+      # The corpus is an input to the image, not just app source: the indexer reads
+      # projects/ at build time and plans.json is generated, never committed. Without
+      # this path the daily pipeline would land new plans on main and change nothing
+      # the site serves — a green push with a stale explorer behind it.
+      - "projects/**"
+      - "Dockerfile.plans-explorer"
+      - ".dockerignore"
       - ".github/workflows/deploy-plans-explorer.yml"
   workflow_dispatch:
 

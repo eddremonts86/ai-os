@@ -735,3 +735,65 @@ LETSENCRYPT_EMAIL=admin@example.com
 - [Coolify API reference](https://coolify.io/docs/api)
 - [Traefik docs](https://doc.traefik.io/traefik/)
 - [Docker compose spec](https://docs.docker.com/compose/compose-file/)
+
+## Create and update do NOT accept the same fields (verified 2026-08-14)
+
+Provisioning an app is **two calls**, not one, and the validation errors do not hint at it.
+
+`POST /api/v1/applications/public` rejects both of these outright:
+
+```
+422 {"errors":{"fqdn":["This field is not allowed."],
+               "dockerfile_target_build":["This field is not allowed."]}}
+```
+
+So create without them, then `PATCH /api/v1/applications/<uuid>` — where the target stage works
+under the name you expect, but **the domain does not**:
+
+| Field | On create | On update | Notes |
+| --- | --- | --- | --- |
+| `fqdn` | rejected | **rejected** | yet it is the field name the API *returns* when you GET the app |
+| `domains` | — | **accepted** | this is how you set the domain. Write `domains`, read `fqdn`. |
+| `dockerfile_target_build` | rejected | accepted | set it explicitly; an unset target builds the last stage in the Dockerfile |
+
+Working sequence:
+
+```bash
+APP=$(curl -fsS -X POST -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+  -H 'Content-Type: application/json' -d '{
+    "server_uuid":"…","project_uuid":"…","environment_name":"production",
+    "name":"myapp","git_repository":"https://github.com/user/myapp",
+    "git_branch":"master","build_pack":"dockerfile",
+    "ports_exposes":"3000","instant_deploy":false
+  }' "$COOLIFY_API_URL/api/v1/applications/public" | jq -r .uuid)
+
+curl -fsS -X PATCH -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"domains":"https://myapp.example.com","dockerfile_target_build":"runtime"}' \
+  "$COOLIFY_API_URL/api/v1/applications/$APP"
+```
+
+Same family as the `is_build_time` rejection on the envs endpoint: this API's allow-lists differ per
+route, so **print the response body** instead of relying on `curl -f`, which hides it.
+
+### One project per app
+
+Every app on this server sits in its own Coolify project (`ai-chat`, `builderhunt`, `budget-app`…).
+Create the project first, then the application inside it — `POST /api/v1/projects` takes just
+`{name, description}`.
+
+### Wildcard DNS is already in place
+
+`*.eduardoinerarte.dk` resolves to the Coolify host, so a new subdomain needs **no DNS record** — set
+`domains` and Let's Encrypt issues within about a minute. Two consequences worth knowing:
+
+- A brand-new app is reachable immediately; do not wait on DNS.
+- If a browser hits the host *before* the certificate is issued, it caches the TLS failure and keeps
+  showing it after the cert is live. Verify with `curl` (which does not cache) and tell the user to
+  retry in a private window rather than debugging a working deploy.
+
+### "finished" is not "working"
+
+`GET /api/v1/deployments/<uuid>` returning `finished` means the container started. Assert the app's
+own health payload field by field afterwards — a status code cannot tell a healthy app from a proxy
+answering for it, and a build can exit 0 while omitting a runtime asset.

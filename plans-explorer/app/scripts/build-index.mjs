@@ -8,7 +8,7 @@
  * Run via `npm run index` or as prebuild hook before `vite build`.
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -444,11 +444,14 @@ function parseRankings(topPath) {
     const end = i + 1 < matches.length ? matches[i + 1].index : md.length;
     const body = md.slice(start, end);
 
-    const itemRe = /(\d+)\.\s+\*\*(\d{3}-[^*]+?)\*\*\s+[—–-]\s+score\s+(\d+)\/10\s*\n\s*_(.+?)_/g;
+    // Scores are fractional (`8.4/10`). An integer-only pattern silently matched
+    // nothing and emptied all three rankings without raising anything, so keep the
+    // decimal optional — older files write `8/10`.
+    const itemRe = /(\d+)\.\s+\*\*(\d{3}-[^*]+?)\*\*\s+[—–-]\s+score\s+(\d+(?:\.\d+)?)\/10\s*\n\s*_(.+?)_/g;
     let im;
     while ((im = itemRe.exec(body)) !== null) {
       const id = im[2].slice(0, 3);
-      sections[key].push({ id, score: parseInt(im[3], 10), hook: im[4].trim() });
+      sections[key].push({ id, score: parseFloat(im[3]), hook: im[4].trim() });
     }
   }
   return sections;
@@ -739,6 +742,25 @@ function buildPlanReadme(plan) {
   return lines.join('\n');
 }
 
+/**
+ * Delete generated files whose plan is no longer published.
+ *
+ * These directories are write-only otherwise: a plan that drops out of the published set
+ * (demoted status, deleted capture) leaves its artifact behind forever, so the output
+ * grows past the corpus and the image ships downloads for plans the site does not list.
+ */
+function pruneGenerated(dir, keepIds, ext) {
+  if (!existsSync(dir)) return 0;
+  let removed = 0;
+  for (const name of readdirSync(dir)) {
+    if (!name.endsWith(ext)) continue;
+    if (keepIds.has(name.slice(0, -ext.length))) continue;
+    rmSync(join(dir, name));
+    removed++;
+  }
+  return removed;
+}
+
 function writePlanZips(plans) {
   const outDir = join(OUT_DATA, 'zips');
   mkdirSync(outDir, { recursive: true });
@@ -776,9 +798,18 @@ async function main() {
     for (const item of rankings[k]) scoreIndex[k].set(item.id, item.score);
   }
 
+  // `status` is a promise about the prose (see projects/_schema.json). Only plans that
+  // have actually been authored get published; `legacy` and `draft` are raw capture and
+  // template filler, and shipping them puts half-written pages on the web behind a green
+  // build. Excluding them also keeps the build offline: unauthored plans are precisely the
+  // ones whose prose would have to be re-scraped from the source at build time.
+  const PUBLISHABLE = new Set(['enriched', 'humanized', 'web-ready']);
+  let unpublished = 0;
+
   for (const dir of dirs) {
     const p = parsePlan(dir);
     if (!p) continue;
+    if (!PUBLISHABLE.has(p.status)) { unpublished++; continue; }
     p.scores = {
       money: scoreIndex.money.get(p.id) ?? null,
       learn: scoreIndex.learn.get(p.id) ?? null,
@@ -786,12 +817,15 @@ async function main() {
     };
     plans.push(p);
   }
+  console.log(`[indexer] publishable ${plans.length}, held back ${unpublished} (not yet authored)`);
 
   mkdirSync(OUT_DATA, { recursive: true });
 
-  // Scrape original problem text for plans with a source URL.
-  const scrapable = plans.filter((p) => p.sourceUrl);
-  console.log(`[indexer] scraping ${scrapable.length} sources (cached after first run)`);
+  // Scrape original problem text for plans with a source URL. In practice the status
+  // filter above already removed every plan this could apply to, so this is a no-op that
+  // stays for the case where a plan is deliberately demoted back to draft.
+  const scrapable = plans.filter((p) => p.sourceUrl && (p.status === 'legacy' || p.status === 'draft'));
+  if (scrapable.length) console.log(`[indexer] scraping ${scrapable.length} sources (cached after first run)`);
   let scraped = 0;
   let cached = 0;
   let skipped = 0;
@@ -836,6 +870,13 @@ async function main() {
 
   writeDocumentFiles(plans);
   writePlanZips(plans);
+
+  const keep = new Set(plans.map((p) => p.id));
+  const prunedDocs = pruneGenerated(OUT_DOCS, keep, '.json');
+  const prunedZips = pruneGenerated(join(OUT_DATA, 'zips'), keep, '.zip');
+  if (prunedDocs || prunedZips) {
+    console.log(`[indexer] pruned ${prunedDocs} stale documents, ${prunedZips} stale zips`);
+  }
 
   const dt = Date.now() - t0;
   console.log(`[indexer] wrote ${slim.length} plans + rankings (money=${rankings.money.length}, learn=${rankings.learn.length}, fun=${rankings.fun.length}) in ${dt}ms`);

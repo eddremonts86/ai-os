@@ -10,9 +10,12 @@ usage() {
 ai-os plans — the plan document contract (projects/_schema.json)
 
 Usage:
-  ai-os plans check  [--json] [--verbose] [--summary] [--id <id>] [--rule <id>]
+  ai-os plans check  [--json] [--verbose] [--summary] [--id <id>] [--rule <id>] [--publishable]
       Web-readiness gate. Read-only. Reports every failing rule per plan.
-      Exit 0 only when every plan is web-ready.
+      Exit 0 only when every plan checked is web-ready.
+      --publishable narrows it to the plans the explorer actually ships (status
+      enriched/humanized/web-ready). Use it as a deploy gate: the default asks "is
+      the whole corpus finished?", which is never true while capture keeps arriving.
 
   ai-os plans format [--write] [--diff] [--id <id>] [--limit N] [--keep-filler]
       Migrate documents to the schema shape: metadata to YAML frontmatter, English
@@ -26,11 +29,16 @@ Usage:
       Prints the agent brief. Enrichment is written by a CLI/agent using the
       \`plan-authoring\` skill, not by this script — it needs judgement, not regex.
 
+  ai-os plans pipeline <scrape|prepare|verify|ship|status> [--cap N] [--dry-run] [--yes]
+      The daily unattended loop: scrape, format, pick a slice to enrich, gate,
+      commit, promote through dev to main, deploy. See tools/plans-pipeline/README.md.
+
 Typical flow:
   ai-os plans check --summary        # where the corpus stands
   ai-os plans format                # preview the migration
   ai-os plans format --write        # apply it
   ai-os plans check --summary       # what enrichment still owes
+  ai-os plans pipeline status       # what the daily loop would do next
 EOF
 }
 
@@ -38,6 +46,7 @@ case "${1:-}" in
   check)  shift; exec node "$HERE/check-plans.mjs" "$@" ;;
   format) shift; exec node "$HERE/format-plans.mjs" "$@" ;;
   test)   shift; exec node "$HERE/test-plan-format.mjs" "$@" ;;
+  pipeline) shift; exec bash "$AI_OS_ROOT/tools/plans-pipeline/daily.sh" "$@" ;;
   enrich)
     shift
     cat <<EOF
