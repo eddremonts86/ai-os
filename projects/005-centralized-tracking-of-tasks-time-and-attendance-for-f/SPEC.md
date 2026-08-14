@@ -13,7 +13,6 @@ tags: [Productivity, Business, Other]
 country: Andorra
 tech: [Flutter, Firebase, Cloud Functions, BigQuery]
 ---
-
 # Centralized tracking of tasks, time, and attendance for field staff. No unified dashboard, manual entry leads to errors and wasted time. Ready to invest in a solution.
 
 ## Problem
@@ -39,7 +38,17 @@ Ship a single mobile-and-web product where each field worker checks in/out from 
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+Design direction for the MVP at `https://problemhunt.pro/en/productivity/tzvsp6sib1-centralized-tracking-of-tasks` follows the constraints in `005-.../SPEC.md` and the chosen stack (Flutter, Firebase, Cloud Functions). The visual language is intentionally narrow: a single primary surface, a single accent, and density tuned for the primary user in Andorra.
+
+For Andorra, the defaults lean toward the locale's reading direction, currency glyph, and date format. No third-party tracking is added to the surface; the design is intentionally auditable.
+
+**Color** — neutral surface (off-white / off-black per OS theme), one accent for primary actions, one muted accent for secondary. No gradients in v1.
+
+**Type** — one display family for headings, one text family for body, one mono for code/numbers. Type scale is small (4 steps) so the layout stays compact.
+
+**Density** — tight, table-driven for dashboards; generous spacing for content-heavy screens.
+
+**Motion** — minimal: page transitions only when the user explicitly navigates. No autoplay, no parallax.
 
 ## Constraints
 

@@ -12,14 +12,14 @@ date: "2026-07-17"
 tags: [Business, Dev, Productivity, No-Code, Other]
 country: Colombia
 wtp:
-  raw: "$100/month"
+  raw: $100/month
   currency: USD
   min: 100
   max: 100
   period: month
   mrrMid: 100
+tech: [Next.js, Postgres, Porkbun API, UptimeRobot API, Resend]
 ---
-
 # The owner of a tech agency hasn't found a suitable tool for projects, domains, monitoring, and proposals. Willing to pay $100/month.
 
 ## Phase 0: Scaffold

@@ -1,7 +1,7 @@
 ---
 id: "008"
 slug: students-between-two-provinces-depend-on-unpredictable-
-title: "Students between two provinces depend on unpredictable public transport that regularly causes lateness and missed classes."
+title: Students between two provinces depend on unpredictable public transport that regularly causes lateness and missed classes.
 status: enriched
 source:
   name: ProblemHunt
@@ -13,7 +13,6 @@ tags: [Travel, Education, Transportation, Logistics, Other]
 country: Argentina
 tech: [Next.js, Postgres, Mapbox, GTFS-RT, Supabase Realtime]
 ---
-
 # Students between two provinces depend on unpredictable public transport that regularly causes lateness and missed classes.
 
 ## Phase 0: Scaffold
