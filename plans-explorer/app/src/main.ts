@@ -7,6 +7,7 @@ import './styles/app.css';
 // still win where they need to.
 import './styles/typeset.css';
 
+import LandingView from './views/LandingView.vue';
 import IndexView from './views/IndexView.vue';
 import PlanView from './views/PlanView.vue';
 import RankingsView from './views/RankingsView.vue';
@@ -15,7 +16,11 @@ import AboutView from './views/AboutView.vue';
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: '/', name: 'index', component: IndexView },
+    // The landing owns '/', the explorer moves to '/plans'. Opening straight into the
+    // search results asked visitors to filter a corpus before anything explained what it
+    // was. '/plans/:id' below is unaffected and keeps every existing deep link working.
+    { path: '/', name: 'landing', component: LandingView },
+    { path: '/plans', name: 'index', component: IndexView },
     { path: '/plans/:id', name: 'plan', component: PlanView, props: true },
     { path: '/rankings', name: 'rankings', component: RankingsView },
     { path: '/about', name: 'about', component: AboutView },
