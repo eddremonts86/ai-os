@@ -139,13 +139,26 @@ for (const r of results) console.log(r);
 console.log('\n[test] aggregate invariants:');
 const totalPlans = plans.length;
 const PROJECTS_DIR = join(ROOT, '..', 'projects');
-const planDirCount = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3}-/.test(n)
-  && existsSync(join(PROJECTS_DIR, n, 'SPEC.md'))).length;
+const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3}-/.test(n)
+  && existsSync(join(PROJECTS_DIR, n, 'SPEC.md')));
+
+// The indexer publishes only authored plans, so the corpus size is the wrong yardstick —
+// it counts captures still waiting to be written. Count the ones that claim a published
+// status, read straight from the frontmatter rather than from the index being tested.
+const PUBLISHABLE = new Set(['enriched', 'humanized', 'web-ready']);
+const publishableDirCount = planDirs.filter((n) => {
+  const spec = readFileSync(join(PROJECTS_DIR, n, 'SPEC.md'), 'utf8');
+  if (!spec.startsWith('---\n')) return false;                 // no frontmatter → legacy
+  const end = spec.indexOf('\n---', 4);
+  const status = spec.slice(4, end === -1 ? 4 : end).match(/^status:\s*(\S+)/m)?.[1];
+  return PUBLISHABLE.has(status);
+}).length;
+
 const inv = [
   // Relational, not a hardcoded corpus size: this read `>= 500` and went red the moment
-  // the corpus was reset to 10 clean plans. What matters is that every plan directory
-  // made it into the index.
-  { name: 'plans.json has one entry per plan directory', ok: totalPlans === planDirCount, got: `${totalPlans} indexed / ${planDirCount} dirs` },
+  // the corpus was reset to 10 clean plans. What matters is that every plan the contract
+  // considers publishable made it into the index — no more, and crucially no fewer.
+  { name: 'plans.json has one entry per publishable plan', ok: totalPlans === publishableDirCount, got: `${totalPlans} indexed / ${publishableDirCount} publishable of ${planDirs.length} dirs` },
   { name: 'rankings.money has 5 entries', ok: rankings.money.length === 5, got: rankings.money.length },
   { name: 'rankings.learn has 5 entries', ok: rankings.learn.length === 5, got: rankings.learn.length },
   { name: 'rankings.fun has 5 entries', ok: rankings.fun.length === 5, got: rankings.fun.length },
