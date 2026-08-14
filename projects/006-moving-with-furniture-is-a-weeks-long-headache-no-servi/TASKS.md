@@ -16,8 +16,8 @@ wtp:
   currency: PCT
   max: 50
   period: one-shot
+tech: [Next.js, Postgres, Stripe Connect, Twilio, Cloudflare R2]
 ---
-
 # Moving with furniture is a weeks-long headache. No service picks up everything and pays fairly. Willing to give up to 50% commission just to get rid of this pain.
 
 ## Phase 0: Scaffold
