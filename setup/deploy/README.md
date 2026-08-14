@@ -86,20 +86,16 @@ COOLIFY_API_TOKEN="4|xxxxxxxx…"
 TOKEN=$(grep -m1 '^COOLIFY_API_TOKEN=' dev-env/env-config/.env | cut -d= -f2- | tr -d '"'"'"')
 ```
 
-## plans-explorer (second app, not yet created)
+## plans-explorer (second app — live since 2026-08-14)
 
 The explorer in [`plans-explorer/`](../../plans-explorer/) is a separate Coolify application
-built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), with its own
-subdomain. Its [`deploy-plans-explorer`](../../.github/workflows/deploy-plans-explorer.yml)
-workflow is live on `main` and, like the landing's, runs a green no-op until its secrets exist —
-so **a successful run does not mean it deployed.** Check the run's annotation for
-`Deploy skipped`.
+built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), serving
+**https://plans.eduardoinerarte.dk**. Created via the API and deployed; both repo secrets are
+set, so pushes to `main` touching `plans-explorer/**` or `projects/**` now deploy it
+automatically.
 
-The image is verified locally (2026-08-14): builds clean, indexes 10 plans, serves `/`,
-`/data/plans.json` and the SPA fallback, and reports `healthy`.
-
-Create the app with these settings — they are not defaults, and the first two are the ones that
-break silently if wrong:
+Its settings — mirrored from `ai-os-landing`, same repo and deploy key, in project
+`edd-app-template` / environment `production`:
 
 | Setting | Value | Why |
 |---|---|---|
@@ -107,17 +103,17 @@ break silently if wrong:
 | `dockerfile_location` | `/Dockerfile.plans-explorer` | |
 | `base_directory` | `/` | The indexer reads `../projects/`; scoping the context to `plans-explorer/` yields a green build serving **zero** plans |
 | `ports_exposes` | `80` | |
-| domain | a subdomain on `eduardoinerarte.dk` | Wildcard DNS already resolves to the box; no DNS change needed |
-| git | same repo + branch `main`, same deploy key as the landing | |
+| domain | `https://plans.eduardoinerarte.dk` | Wildcard DNS already resolved to the box; no DNS change was needed |
 
-Then activate:
+Verified in production by content, not by status code: `/` serves the SPA shell (678 B, distinct
+from the landing's 96 kB), `/data/plans.json` returns 10 plans all at `status: enriched`, the SPA
+fallback answers unknown paths, and the container's own healthcheck — which probes
+`/data/plans.json`, not just the shell — reports `healthy`.
 
-```bash
-gh secret set COOLIFY_APP_UUID_PLANS_EXPLORER   # the new app uuid — NOT the one in .env
-gh secret set SITE_URL_PLANS_EXPLORER           # https://<subdomain>.eduardoinerarte.dk
-```
-
-After that, pushes touching `plans-explorer/**` or `projects/**` deploy it automatically.
+> Both deploy workflows are safe-by-default: they run a **green no-op** when their secrets are
+> absent. A successful run is therefore not evidence of a deploy. Check the run's annotation for
+> `Deploy skipped`, and confirm the live site by content. `/plans/` on the landing returns
+> HTTP 200 serving the landing itself via nginx's SPA fallback — a 404 wearing a 200.
 
 ## Notes / decisions
 
