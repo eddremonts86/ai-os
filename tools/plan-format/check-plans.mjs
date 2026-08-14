@@ -27,6 +27,7 @@ const VERBOSE = has('--verbose');
 const SUMMARY_ONLY = has('--summary');
 const ONLY_ID = val('--id');
 const ONLY_RULE = val('--rule');
+const PUBLISHABLE_ONLY = has('--publishable');
 
 const schema = loadSchema();
 const RULES = new Map(schema.gate.rules.map((r) => [r.id, r]));
@@ -34,6 +35,26 @@ const rule = (id) => RULES.get(id);
 
 let dirs = listPlanDirs();
 if (ONLY_ID) dirs = dirs.filter((d) => planIdSlug(d)?.id === ONLY_ID);
+
+/**
+ * `--publishable` narrows the gate to the plans the explorer actually ships — the same
+ * status set the indexer publishes. Without it the gate answers "is the whole corpus
+ * finished?", which is never true while capture keeps arriving, so it can never be a
+ * deploy gate. With it the question becomes "is everything about to go on the web
+ * sound?", which is the one a pipeline needs to ask.
+ *
+ * Filtering happens BEFORE clone detection, and that is load-bearing rather than
+ * incidental: unauthored plans are template filler by definition and all share the same
+ * section bodies, so leaving them in the corpus makes every authored plan look like a
+ * clone of them.
+ */
+const PUBLISHABLE = new Set(['enriched', 'humanized', 'web-ready']);
+if (PUBLISHABLE_ONLY) {
+  dirs = dirs.filter((d) => {
+    const spec = readDoc(d, 'SPEC.md');
+    return PUBLISHABLE.has(spec?.frontmatter?.status ?? 'legacy');
+  });
+}
 
 if (dirs.length === 0) {
   console.error(ONLY_ID ? `no plan with id ${ONLY_ID}` : 'no plans found');

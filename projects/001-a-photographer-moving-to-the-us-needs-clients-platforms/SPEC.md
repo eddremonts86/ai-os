@@ -12,7 +12,7 @@ date: "2026-07-17"
 tags: [Immigration, Freelance, Marketing, Career, Other]
 country: Serbia
 wtp:
-  raw: "$100–300/month"
+  raw: $100–300/month
   currency: USD
   min: 100
   max: 300
@@ -20,7 +20,6 @@ wtp:
   mrrMid: 200
 tech: [Next.js, Vercel, Stripe, Resend, Google Business Profile API]
 ---
-
 # A photographer moving to the US needs clients. Platforms require reviews, agencies are expensive. Wants a website + ads that bring bookings. Willing to pay $100–300/month.
 
 ## Problem
@@ -46,7 +45,17 @@ Ship a thin acquisition system that gives a freshly-relocated photographer a cre
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+Design direction for the MVP at `https://problemhunt.pro/en/6t7ke01t41-a-photographer-moving-to-the-us-needs-cl` follows the constraints in `001-.../SPEC.md` and the chosen stack (Next.js, Vercel, Stripe). The visual language is intentionally narrow: a single primary surface, a single accent, and density tuned for the primary user in Serbia.
+
+For Serbia, the defaults lean toward the locale's reading direction, currency glyph, and date format. No third-party tracking is added to the surface; the design is intentionally auditable.
+
+**Color** — neutral surface (off-white / off-black per OS theme), one accent for primary actions, one muted accent for secondary. No gradients in v1.
+
+**Type** — one display family for headings, one text family for body, one mono for code/numbers. Type scale is small (4 steps) so the layout stays compact.
+
+**Density** — tight, table-driven for dashboards; generous spacing for content-heavy screens.
+
+**Motion** — minimal: page transitions only when the user explicitly navigates. No autoplay, no parallax.
 
 ## Constraints
 

@@ -11,8 +11,15 @@ category: other
 date: "2026-07-17"
 tags: [Immigration, Freelance, Marketing, Career, Other]
 country: Serbia
+wtp:
+  raw: $100–300/month
+  currency: USD
+  min: 100
+  max: 300
+  period: month
+  mrrMid: 200
+tech: [Next.js, Vercel, Stripe, Resend, Google Business Profile API]
 ---
-
 # A photographer moving to the US needs clients. Platforms require reviews, agencies are expensive. Wants a website + ads that bring bookings. Willing to pay $100–300/month.
 
 ## Phase 0: Scaffold
