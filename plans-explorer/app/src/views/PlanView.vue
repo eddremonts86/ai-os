@@ -90,7 +90,7 @@ const countryFlag = computed(() => {
 });
 
 function goBack() {
-  router.push({ path: '/' });
+  router.push({ path: '/plans' });
 }
 </script>
 
