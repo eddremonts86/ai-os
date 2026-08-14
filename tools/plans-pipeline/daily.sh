@@ -24,9 +24,10 @@
 # Usage:
 #   daily.sh <phase> [--cap N] [--dry-run] [--yes]
 #
-#   --cap N     plans to enrich this run (default 25). prepare only.
-#   --dry-run   ship: do everything except push, PR and merge.
-#   --yes       ship: required to actually merge to main unattended.
+#   --cap N          plans to enrich this run (default 25). prepare only.
+#   --claim-ttl H    hours a selected plan stays claimed (default 8). prepare only.
+#   --dry-run        ship: do everything except push, PR and merge.
+#   --yes            ship: required to actually merge to main unattended.
 
 set -euo pipefail
 
@@ -35,11 +36,13 @@ cd "$AI_OS_ROOT"
 
 PHASE="${1:-}"; shift || true
 CAP=25
+CLAIM_TTL=""
 DRY_RUN=0
 ASSUME_YES=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --cap) CAP="${2:?--cap needs a number}"; shift 2 ;;
+    --claim-ttl) CLAIM_TTL="${2:?--claim-ttl needs hours}"; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     --yes) ASSUME_YES=1; shift ;;
     *) echo "unknown flag: $1" >&2; exit 2 ;;
@@ -121,7 +124,10 @@ phase_prepare() {
 
   log "selecting the slice to enrich (cap $CAP)"
   set +e
-  node "$AI_OS_ROOT/tools/plans-pipeline/select-slice.mjs" --cap "$CAP"
+  # A long manual catch-up run needs a TTL that outlasts it, or the cron reclaims its
+  # plans mid-run and two agents write the same ones.
+  node "$AI_OS_ROOT/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" \
+    ${CLAIM_TTL:+--claim-ttl "$CLAIM_TTL"}
   local rc=$?
   set -e
   if [ "$rc" -eq 3 ]; then
@@ -315,7 +321,8 @@ merge_through() {
 
 phase_status() {
   log "corpus"
-  node "$AI_OS_ROOT/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" --dry-run || true
+  node "$AI_OS_ROOT/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" \
+    ${CLAIM_TTL:+--claim-ttl "$CLAIM_TTL"} --dry-run || true
   log "gate (publishable only)"
   node "$AI_OS_ROOT/tools/plan-format/check-plans.mjs" --publishable --summary || true
 }
