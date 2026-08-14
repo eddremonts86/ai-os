@@ -323,7 +323,16 @@ merge_through() {
   log "checks: $out"
 
   log "merging $head → $base"
-  gh pr merge "$url" --squash || die "merge failed for $url"
+
+  # Squash a feature branch into dev, but NEVER squash the dev → main promotion. A squash
+  # rewrites dev's commits as one new commit with no ancestry link, so main ends up holding
+  # dev's content while git still considers the branches unrelated — every later promotion
+  # then conflicts on files both sides touched, forever. Learned by doing it: the first
+  # promotion landed fine and the very next one came up CONFLICTING with a one-file diff.
+  local strategy=--squash
+  [ "$head" = "dev" ] && [ "$base" = "main" ] && strategy=--merge
+
+  gh pr merge "$url" "$strategy" || die "merge failed for $url"
 
   # Delete the remote head ref ourselves rather than via `gh pr merge --delete-branch`: that
   # flag also deletes the local branch, which is checked out in ship's worktree, so it fails
