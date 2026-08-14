@@ -2,7 +2,10 @@ name: Test Linux
 
 on:
   pull_request:
-    branches: [main]
+    # dev too: the plans pipeline promotes through dev, and it refuses to merge
+    # unless checks are green. With main-only triggers the dev hop saw no test
+    # run at all, so that guard was satisfied by a check that proved nothing.
+    branches: [main, dev]
   push:
     branches: [main]
 
