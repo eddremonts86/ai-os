@@ -68,23 +68,37 @@ die() { printf '[plans-pipeline] FATAL: %s\n' "$*" >&2; exit 1; }
 mkdir -p "$LOG_DIR"
 
 # ---------- one run at a time ----------
-# The cron fires every 12h and enrichment can outlast that. Two overlapping runs would
+# The cron fires every 4h and authoring a slice can outlast that. Two overlapping runs would
 # enrich the same slice twice and race each other's commits.
+#
+# Liveness is decided by PID, not by age. An age threshold has to be shorter than the
+# interval to clear crashed runs promptly, and longer than the slowest healthy run to avoid
+# double-starting one — at a 4h interval there is no honest value that is both, and guessing
+# wrong in the permissive direction is what puts two authoring agents in the repo at once.
+# So: alive holder means skip, dead holder means reclaim, whatever the clock says.
+release_lock() { rm -rf "$LOCK" 2>/dev/null || true; }
+
 acquire_lock() {
   if mkdir "$LOCK" 2>/dev/null; then
-    trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
+    echo $$ > "$LOCK/pid"
+    trap release_lock EXIT
     return
   fi
-  local age_min
+
+  local holder age_min
+  holder=$(cat "$LOCK/pid" 2>/dev/null || echo '')
   age_min=$(( ( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) ) / 60 ))
-  if [ "$age_min" -gt 180 ]; then
-    log "stale lock (${age_min}m old) — reclaiming"
-    rmdir "$LOCK" 2>/dev/null || true
-    mkdir "$LOCK" 2>/dev/null || die "could not reclaim lock at $LOCK"
-    trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
-  else
-    die "another run holds the lock (${age_min}m old). Remove $LOCK if that is wrong."
+
+  if [ -n "$holder" ] && kill -0 "$holder" 2>/dev/null; then
+    die "run $holder is still working (${age_min}m). Skipping this tick — the next one picks it up."
   fi
+
+  # No pid recorded, or the recorded process is gone: the holder died without cleaning up.
+  log "abandoned lock (holder '${holder:-none}' not running, ${age_min}m old) — reclaiming"
+  release_lock
+  mkdir "$LOCK" 2>/dev/null || die "could not reclaim lock at $LOCK"
+  echo $$ > "$LOCK/pid"
+  trap release_lock EXIT
 }
 
 # ---------- phases ----------
@@ -204,7 +218,7 @@ phase_ship() {
   log "preparing isolated worktree at $wt (base $base)"
   git worktree add -q --detach "$wt" "$base"
   # shellcheck disable=SC2064
-  trap "git worktree remove --force '$wt' >/dev/null 2>&1 || true; rmdir '$LOCK' 2>/dev/null || true" EXIT
+  trap "git worktree remove --force '$wt' >/dev/null 2>&1 || true; release_lock" EXIT
 
   git -C "$wt" switch -q -c "$branch"
   sync_corpus "$wt"

@@ -7,8 +7,13 @@ fed without anyone touching it.
 scrape → rank → format → [agent enriches a slice] → index + gate + tests → commit → dev → main → deploy
 ```
 
-Driven by the Hermes cron job `problemhunt-scraper` (`~/.hermes/cron/jobs.json`, every
-12 h). The job is the *driver*; the mechanics live in [`daily.sh`](daily.sh).
+Driven by the Hermes cron job `plans-pipeline` (`~/.hermes/cron/jobs.json`, every **4 h**).
+The job is the *driver*; the mechanics live in [`daily.sh`](daily.sh). Its prompt is
+version-controlled in [`cron-prompt.md`](cron-prompt.md) — edit that, then apply it with:
+
+```bash
+hermes cron edit 59b1562e8007 --prompt "$(cat tools/plans-pipeline/cron-prompt.md)"
+```
 
 ## Why it is split this way
 
@@ -42,8 +47,12 @@ backlog forever and oldest-first alone means today's capture waits weeks. Plans 
 arrived but did not fit stop counting as new and join the oldest-first queue, so nothing
 is skipped twice.
 
-State lives in `state.json` (`lastSeenId`). Deleting it makes everything look new once;
-the cap still bounds the run.
+At 4 h × 25 that is up to 150 plans a day, so raise or lower `--cap` in the cron prompt to
+trade run cost against how fast the backlog drains.
+
+State lives in `state.json` — `lastSeenId` plus the live claims. It is per-machine and
+gitignored. Deleting it makes everything look new once and releases every claim; the cap
+still bounds the run.
 
 ## What stops a bad run
 
@@ -68,8 +77,19 @@ The pipeline merges to production unattended, so it is built to refuse rather th
   right for one withdrawn capture, catastrophic for a half-synced checkout.
 - **`--yes` is required** to merge to main unattended. Without it `ship` stops after
   committing.
-- **A lock.** Enrichment can outlast the 12 h interval; two overlapping runs would enrich
-  the same slice twice and race each other's commits. Stale after 3 h.
+- **Claims, not just a lock.** Authoring 25 plans can outlast the 4 h interval, and the
+  critical section spans four separate processes — `prepare`, the agent's authoring,
+  `verify`, `ship` — so a lock held by one invocation cannot protect it: it is gone the
+  moment `prepare` exits while authoring still has hours to run, and the next tick would
+  select the very same plans, because plans being written are still unauthored. So
+  `prepare` **claims** its slice (`state.json`, TTL 8 h, `--claim-ttl` to change).
+  Overlapping runs get disjoint slices rather than fighting for one. An abandoned claim
+  expires on its own and the plan returns to the queue.
+- **A per-invocation lock on top**, so two `ship`s or two `scrape`s cannot interleave. It
+  decides liveness by **PID**, not by age: an age threshold has to be shorter than the
+  interval to clear crashed runs promptly and longer than the slowest healthy run to avoid
+  double-starting one, and at 4 h there is no honest value that is both. A live holder means
+  skip this tick; a dead one means reclaim, whatever the clock says.
 - **Green checks before every merge.** A missing check counts as a failure, not as
   permission.
 
