@@ -230,9 +230,17 @@ phase_ship() {
   sync_corpus "$wt"
   git -C "$wt" add -- "${COMMIT_PATHS[@]}"
 
-  # Nothing to say is a normal outcome: the scraper found nothing and no plan advanced.
+  # Nothing to say is a normal outcome: the scraper found nothing and no plan advanced. Still
+  # try the promotion — dev can hold work an earlier run committed but never got to main, and
+  # returning here would leave it stranded there indefinitely.
   if git -C "$wt" diff --cached --quiet; then
-    log "no corpus changes to ship — done"
+    log "no corpus changes to commit"
+    if [ "$DRY_RUN" -eq 1 ]; then
+      log "DRY RUN — would promote dev → main if dev is ahead. Stopping."
+      return 0
+    fi
+    [ "$ASSUME_YES" -eq 1 ] || die "promoting dev to main deploys to production. Pass --yes."
+    merge_through dev main "chore(plans): promote corpus $stamp"
     return 0
   fi
 
@@ -315,8 +323,16 @@ merge_through() {
   log "checks: $out"
 
   log "merging $head → $base"
-  gh pr merge "$url" --squash $([ "$head" != "dev" ] && echo --delete-branch) \
-    || die "merge failed for $url"
+  gh pr merge "$url" --squash || die "merge failed for $url"
+
+  # Delete the remote head ref ourselves rather than via `gh pr merge --delete-branch`: that
+  # flag also deletes the local branch, which is checked out in ship's worktree, so it fails
+  # AFTER a successful merge and gh's non-zero exit made a landed merge look like a failure.
+  case "$head" in
+    dev|main) ;;
+    *) git push -q origin --delete "$head" 2>/dev/null \
+         || log "note: remote branch $head was not deleted (merge already landed)" ;;
+  esac
 }
 
 phase_status() {
