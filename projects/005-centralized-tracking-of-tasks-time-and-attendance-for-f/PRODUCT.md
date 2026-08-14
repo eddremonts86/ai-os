@@ -13,7 +13,6 @@ tags: [Productivity, Business, Other]
 country: Andorra
 tech: [Flutter, Firebase, Cloud Functions, BigQuery]
 ---
-
 # Centralized tracking of tasks, time, and attendance for field staff. No unified dashboard, manual entry leads to errors and wasted time. Ready to invest in a solution.
 
 > Auto-generated product brief. Review and refine before MVP scoping.

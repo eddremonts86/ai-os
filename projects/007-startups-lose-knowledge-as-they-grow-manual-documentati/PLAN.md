@@ -12,14 +12,13 @@ date: "2026-07-17"
 tags: [Productivity, Startups, Business, AI, Other]
 country: Argentina
 wtp:
-  raw: "from $25/month"
+  raw: from $25/month
   currency: USD
   min: 25
   period: month
   mrrMid: 25
 tech: [Next.js, Postgres, Anthropic Claude, Slack API, Notion API]
 ---
-
 # Startups lose knowledge as they grow. Manual documentation doesn't work. Need a smart tool for automatic knowledge capture and retrieval. Willing to pay from $25/month.
 
 ## Tech Stack

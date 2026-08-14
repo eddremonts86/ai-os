@@ -13,7 +13,6 @@ tags: [Marketing, Business, Retail, Other]
 country: Georgia
 tech: [Next.js, Postgres, Stripe Connect, Twilio, Mapbox]
 ---
-
 # A private breeder needs a platform to find trusted sellers who work for a commission. One helper at 10% commission already boosted sales. Need more people like that.
 
 ## Tech Stack
