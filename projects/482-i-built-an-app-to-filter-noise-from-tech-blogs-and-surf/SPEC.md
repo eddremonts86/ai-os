@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, RSS aggregation, PostgreSQL, Resend, Stripe, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vfju24/i_built_an_app_to_filter_noise_from_tech_blogs/)))))))
+Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vfju24/i_built_an_app_to_filter_noise_from_tech_blogs/)
 
 Original post:
 

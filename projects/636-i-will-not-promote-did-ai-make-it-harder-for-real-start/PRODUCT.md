@@ -52,4 +52,4 @@ _Not written yet — `ai-os plans enrich` fills this section._
 
 ---
 
-_Source:_ [Reddit r/startups]([reddit.com/r/startups/comments/1vo…](https://www.reddit.com/r/startups/comments/1vozijo/i_will_not_promote_did_ai_make_it_harder_for_real/)) · **Posted:** 2026-08-15T10:38:05+00:00
+_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vozijo/i_will_not_promote_did_ai_make_it_harder_for_real/) · **Posted:** 2026-08-15T10:38:05+00:00

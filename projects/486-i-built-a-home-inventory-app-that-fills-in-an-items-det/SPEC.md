@@ -14,7 +14,7 @@ tech: [React Native, TypeScript, Vision API, PostgreSQL, Google Play, AdMob (opt
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1ve81fm/i_built_a_home_inventory_app_that_fills_in_an/)))))))
+Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1ve81fm/i_built_a_home_inventory_app_that_fills_in_an/)
 
 Original post:
 

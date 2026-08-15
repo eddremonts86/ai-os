@@ -109,8 +109,18 @@ export function markdownToText(input) {
  * viewport; as a link the label wraps and the href does not participate in layout.
  */
 export function linkifyLongUrls(markdown, maxChars = 100) {
-  return markdown.replace(/(^|[\s(])(https?:\/\/\S{2,})/g, (whole, lead, url) => {
-    // Leave URLs that are already inside a markdown link or an image.
+  return markdown.replace(/(^|[\s(])(https?:\/\/\S{2,})/g, (whole, lead, url, offset) => {
+    /**
+     * Leave URLs that are already the href of a markdown link or an image.
+     *
+     * This line is the one the comment above always promised and never had. The lead class must
+     * accept `(` so that a bare URL written inside parentheses still gets wrapped — but `(` is also
+     * the character that opens an href, and the only thing telling the two apart is the `]` in front
+     * of it. Without the check the function is not idempotent: every run wraps the link the previous
+     * run wrote, nesting the label inside itself one level deeper each time. It cost the corpus 253
+     * links across 43 files, the worst of them eight levels deep.
+     */
+    if (lead === '(' && markdown[offset - 1] === ']') return whole;
     if (url.length <= maxChars) return whole;
     const trailing = url.match(/[).,;!?]+$/)?.[0] ?? '';
     const clean = trailing ? url.slice(0, -trailing.length) : url;
@@ -123,6 +133,39 @@ export function linkifyLongUrls(markdown, maxChars = 100) {
     }
     return `${lead}[${label}…](${clean})${trailing}`;
   });
+}
+
+/**
+ * Collapse a link that `linkifyLongUrls` wrapped more than once back to a single link.
+ *
+ * Damage shape, one `[label](` per run and one `)` to match:
+ *
+ *     [preview.redd.it/x.png…]([preview.redd.it/x.png…]([preview.redd.it/x.png…](https://preview.redd.it/x.png)))
+ *
+ * The outermost label is the one to keep — every run produced the same label from the same URL, so
+ * they are interchangeable, and taking the first avoids caring how deep it went.
+ *
+ * Closing parens are counted rather than trimmed with `)+`, because a link written inside parentheses
+ * ends with one paren that belongs to the sentence, not to the link. Anything beyond the openers is
+ * put back.
+ *
+ * A single, healthy link matches this shape too, with one opener — it is returned untouched, which is
+ * what makes the pass safe to run over the whole corpus.
+ */
+export function unnestLinks(markdown) {
+  return markdown.replace(
+    /(?:\[[^\]\n]*\]\()+https?:\/\/[^)\s]+\)+/g,
+    (whole) => {
+      const openers = whole.match(/\[[^\]\n]*\]\(/g) ?? [];
+      if (openers.length < 2) return whole;
+
+      const label = openers[0].slice(1, -2);
+      const url = whole.match(/(https?:\/\/[^)\s]+)/)[1];
+      const surplus = (whole.match(/\)+$/)?.[0].length ?? 0) - openers.length;
+
+      return `[${label}](${url})` + ')'.repeat(Math.max(0, surplus));
+    },
+  );
 }
 
 export const HYGIENE = { ENTITY_RE, ZERO_WIDTH_RE };

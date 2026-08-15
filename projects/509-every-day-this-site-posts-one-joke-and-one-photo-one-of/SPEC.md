@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny4od/every_day_this_site_posts_one_joke_and_one_photo/)))))))
+Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny4od/every_day_this_site_posts_one_joke_and_one_photo/)
 
 Original post:
 
