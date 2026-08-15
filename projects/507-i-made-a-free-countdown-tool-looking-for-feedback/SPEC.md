@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny9r9/i_made_a_free_countdown_tool_looking_for_feedback/)))))))
+Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny9r9/i_made_a_free_countdown_tool_looking_for_feedback/)
 
 Original post:
 

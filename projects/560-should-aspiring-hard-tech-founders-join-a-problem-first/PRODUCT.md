@@ -50,4 +50,4 @@ Risk: the framework oversimplifies — many successful hard-tech founders came f
 
 ---
 
-_Source:_ [Reddit]([reddit.com/r/SaaS/comments/1vog4l9…]([reddit.com/r/SaaS/comments/1vog4l9…]([reddit.com/r/SaaS/comments/1vog4l9…]([reddit.com/r/SaaS/comments/1vog4l9…](https://www.reddit.com/r/SaaS/comments/1vog4l9/should_aspiring_hard_tech_founders_join_a_problem_first/)))))
+_Source:_ [Reddit](https://www.reddit.com/r/SaaS/comments/1vog4l9/should_aspiring_hard_tech_founders_join_a_problem_first/)
