@@ -48,4 +48,4 @@ The market the founder operates in today is a mix of deep-tech accelerators (Hax
 
 ---
 
-_Source:_ [Reddit]([reddit.com/r/startups/comments/1vn…](https://www.reddit.com/r/startups/comments/1vn9k7h/hardware_and_deep_tech_startups_i_will_not_promote/)) · **Category:** startups · **Tags:** n/a
+_Source:_ [Reddit]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…](https://www.reddit.com/r/startups/comments/1vn9k7h/hardware_and_deep_tech_startups_i_will_not_promote/)))))) · **Category:** startups · **Tags:** n/a
