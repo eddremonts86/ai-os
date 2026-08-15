@@ -14,7 +14,7 @@ tech: [Swift, SwiftUI, macOS, Nezha/Komari/NodeGet APIs, SSH (NMSSH), StoreKit, 
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny42b/i_built_monito_a_native_macos_menu_bar_app_for/)))))
+Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny42b/i_built_monito_a_native_macos_menu_bar_app_for/)))))))
 
 Original post:
 

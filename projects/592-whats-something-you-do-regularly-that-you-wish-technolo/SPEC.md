@@ -18,19 +18,15 @@ date: "2026-08-15"
 
 ## Objective
 
-Crear una solución que aborde este problema de forma clara y escalable.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Usuario primario]** — descripción del usuario principal
-2. **[Usuario secundario]** — otros usuarios relevantes
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Funcionalidad core
-- Evitar funcionalidades fuera del MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -38,5 +34,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Mantener simple el MVP
-- Sin dependencias externas innecesarias
+_Not written yet — `ai-os plans enrich` fills this section._
