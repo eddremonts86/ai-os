@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Stripe, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vi2qdv/solo_founder_building_fetchsandbox_no_network_how/)
+Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vi2qdv/solo_founder_building_fetchsandbox_no_network_how/)))))
 
 Original post:
 

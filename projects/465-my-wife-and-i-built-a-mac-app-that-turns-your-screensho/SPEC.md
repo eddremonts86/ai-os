@@ -14,7 +14,7 @@ tech: [Swift, SwiftUI, CoreData, AppleScript, StoreKit, TestFlight]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vnbaw1/my_wife_and_i_built_a_mac_app_that_turns_your/)
+Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vnbaw1/my_wife_and_i_built_a_mac_app_that_turns_your/)))))
 
 Original post:
 
