@@ -14,7 +14,7 @@ tech: [Swift, SwiftUI, macOS, EventKit, StoreKit, TestFlight]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnyzad/i_build_an_app_that_goes_full_screen_when_a_solar/)))))
+Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnyzad/i_build_an_app_that_goes_full_screen_when_a_solar/)))))))
 
 Original post:
 

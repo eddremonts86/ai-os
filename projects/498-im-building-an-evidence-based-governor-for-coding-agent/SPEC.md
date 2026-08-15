@@ -14,7 +14,7 @@ tech: [TypeScript, Node.js (Fastify), PostgreSQL, Redis, Docker, MCP (Model Cont
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnzfc1/im_building_an_evidencebased_governor_for_coding/)))))
+Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnzfc1/im_building_an_evidencebased_governor_for_coding/)))))))
 
 Original post:
 
