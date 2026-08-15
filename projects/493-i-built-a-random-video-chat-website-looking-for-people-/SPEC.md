@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, WebRTC, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vo06ju/i_built_a_random_video_chat_website_looking_for/)
+Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vo06ju/i_built_a_random_video_chat_website_looking_for/)))))
 
 Original post:
 

@@ -14,7 +14,7 @@ tech: [TypeScript, Node.js (Fastify), Playwright, PostgreSQL, Redis, Docker, Het
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1ve51dd/we_built_a_tool_that_fixes_bugs_it_couldnt_always/)
+Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1ve51dd/we_built_a_tool_that_fixes_bugs_it_couldnt_always/)))))
 
 Original post:
 

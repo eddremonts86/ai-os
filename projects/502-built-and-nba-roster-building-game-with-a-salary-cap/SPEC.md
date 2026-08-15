@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnyun5/built_and_nba_roster_building_game_with_a_salary/)
+Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnyun5/built_and_nba_roster_building_game_with_a_salary/)))))
 
 Original post:
 
