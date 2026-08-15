@@ -7,7 +7,7 @@
  * real corpus shapes, not invented ones.
  */
 
-import { parseFrontmatter, stringifyFrontmatter, parseSections, loadSchema } from './lib/plan.mjs';
+import { parseFrontmatter, stringifyFrontmatter, parseSections, loadSchema, missingSourceFields } from './lib/plan.mjs';
 import { htmlToText, markdownToText, linkifyLongUrls, hasEntities, hasMarkup, hasZeroWidth } from './lib/normalize.mjs';
 import { renameHeadings, stripMetadataBlock, extractCountry, extractProblem, extractTech } from './lib/legacy.mjs';
 
@@ -168,9 +168,38 @@ console.log('\n[schema integrity]');
   ok('status order matches the documented lifecycle', schema.statusLifecycle.order.join(',') === 'draft,enriched,humanized,web-ready');
 }
 
+// ---------- source.* conditional requirements ----------
+// A condition that never fires is worse than no condition, so each direction is asserted
+// rather than inferred from the corpus passing.
+{
+  const scraped = { name: 'ProblemHunt', url: 'https://problemhunt.pro/en/x/y' };
+  const scrapedNoUrl = { name: 'Reddit' };
+  const web = { name: 'web', consent: true };
+  const webNoConsent = { name: 'web' };
+  const webWithUrl = { name: 'web', consent: true, url: 'https://news.ycombinator.com/item?id=1' };
+
+  ok('scraped source with a url is complete',
+    missingSourceFields(scraped, schema).length === 0, missingSourceFields(scraped, schema));
+  ok('scraped source without a url still fails',
+    missingSourceFields(scrapedNoUrl, schema).includes('url'), missingSourceFields(scrapedNoUrl, schema));
+  ok('web submission does not need a url',
+    !missingSourceFields(web, schema).includes('url'), missingSourceFields(web, schema));
+  ok('web submission without consent fails',
+    missingSourceFields(webNoConsent, schema).includes('consent'), missingSourceFields(webNoConsent, schema));
+  ok('scraped source is not asked for consent',
+    !missingSourceFields(scraped, schema).includes('consent'), missingSourceFields(scraped, schema));
+  ok('web submission may still carry a url',
+    missingSourceFields(webWithUrl, schema).length === 0, missingSourceFields(webWithUrl, schema));
+  ok('web is a legal source name',
+    schema.frontmatter.fields.source.fields.name.enum.includes('web'));
+  ok('draft meaning is no longer scraper-specific',
+    !/scraper\.$/.test(schema.statusLifecycle.meaning.draft), schema.statusLifecycle.meaning.draft.slice(0, 40));
+}
+
 console.log(`\n[test] ${pass} pass, ${fails.length} fail`);
 if (fails.length) {
   console.log('[test] FAILED:\n  - ' + fails.join('\n  - '));
   process.exit(1);
 }
+
 console.log('[test] OK\n');

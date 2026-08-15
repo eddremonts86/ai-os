@@ -13,7 +13,7 @@
 
 import { createHash } from 'node:crypto';
 import {
-  loadSchema, listPlanDirs, planIdSlug, readDoc, DOC_NAMES,
+  loadSchema, listPlanDirs, planIdSlug, readDoc, DOC_NAMES, missingSourceFields,
 } from './lib/plan.mjs';
 import { hasMarkup, hasEntities, hasZeroWidth } from './lib/normalize.mjs';
 import { stripMetadataBlock } from './lib/legacy.mjs';
@@ -121,7 +121,21 @@ for (const dir of dirs) {
   } else {
     const missing = schema.frontmatter.required.filter((k) => fm[k] === undefined || fm[k] === null || fm[k] === '');
     if (missing.length) add('frontmatter-present', `missing required: ${missing.join(', ')}`);
-    if (fm.source && !fm.source.url) add('frontmatter-present', 'source.url missing');
+
+    // source.url used to be required unconditionally, by a hardcoded check rather than by the
+    // schema. That is right for a scraped capture, which always has an upstream page, and
+    // wrong for a web submission, which has none: it would either block submissions or invite
+    // a fabricated URL, and a fabricated source is worse than an absent one. The condition now
+    // comes from the schema so the contract and the gate cannot drift apart.
+    if (fm.source) {
+      for (const field of missingSourceFields(fm.source, schema)) {
+        add('frontmatter-present', `source.${field} missing`);
+      }
+      if (!schema.frontmatter.fields.source.fields.name.enum.includes(fm.source.name)) {
+        add('frontmatter-present', `unknown source.name: ${fm.source.name}`);
+      }
+    }
+
     if (fm.status && !schema.statusLifecycle.order.includes(fm.status)) {
       add('frontmatter-present', `unknown status: ${fm.status}`);
     }
