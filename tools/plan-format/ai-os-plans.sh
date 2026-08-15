@@ -52,6 +52,7 @@ case "${1:-}" in
     # pipeline's verify phase runs it on every cycle.
     node "$AI_OS_ROOT/tools/lib/test-plan-ids.mjs" "$@" || exit 1
     node "$AI_OS_ROOT/tools/plans-pipeline/test-intake.mjs" "$@" || exit 1
+    node "$AI_OS_ROOT/tools/submission-api/test-server.mjs" "$@" || exit 1
     exec node "$HERE/test-plan-format.mjs" "$@"
     ;;
   pipeline) shift; exec bash "$AI_OS_ROOT/tools/plans-pipeline/daily.sh" "$@" ;;
