@@ -14,7 +14,7 @@ tech: [TypeScript, Claude API, Anthropic API, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnztj5/killgate_blueprint_a_6agent_ai_operating_system/)))))))
+Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnztj5/killgate_blueprint_a_6agent_ai_operating_system/)
 
 Original post:
 

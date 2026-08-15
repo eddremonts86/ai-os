@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Stripe, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnybs6/spent_3_months_building_the_wrong_version_of_my/)))))))
+Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vnybs6/spent_3_months_building_the_wrong_version_of_my/)
 
 Original post:
 

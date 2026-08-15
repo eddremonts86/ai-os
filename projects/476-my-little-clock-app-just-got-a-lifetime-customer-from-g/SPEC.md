@@ -14,11 +14,11 @@ tech: [Swift, SwiftUI, StoreKit, TestFlight]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vhsfej/my_little_clock_app_just_got_a_lifetime_customer/)))))))
+Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vhsfej/my_little_clock_app_just_got_a_lifetime_customer/)
 
 Original post:
 
-> [preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…]([preview.redd.it/ddfsvw779whh1.jpg…](https://preview.redd.it/ddfsvw779whh1.jpg?width=1179&format=pjpg&auto=webp&s=a20fc5690a35a4f85d7857095a512cd74ec3f0bd)))))))) Solo dev here 👋 I've been quietly building Tempus Fugit, a pendulum clock app that turns an iPhone into a calm desk clock (real swinging pendulum, ticks, hourly chimes, widgets, StandBy Mode). Today someone in Germany bought the lifetime plan. 🇩🇪 I know it's a small thing in the grand scheme, but building alone can feel like shouting into the void, and a stranger halfway across the world deciding your work is worth paying for... that hits different. Just wanted to share the win with people who get it. Back to building. submitted by /u/suniltarge [link] [comments]
+> [preview.redd.it/ddfsvw779whh1.jpg…](https://preview.redd.it/ddfsvw779whh1.jpg?width=1179&format=pjpg&auto=webp&s=a20fc5690a35a4f85d7857095a512cd74ec3f0bd) Solo dev here 👋 I've been quietly building Tempus Fugit, a pendulum clock app that turns an iPhone into a calm desk clock (real swinging pendulum, ticks, hourly chimes, widgets, StandBy Mode). Today someone in Germany bought the lifetime plan. 🇩🇪 I know it's a small thing in the grand scheme, but building alone can feel like shouting into the void, and a stranger halfway across the world deciding your work is worth paying for... that hits different. Just wanted to share the win with people who get it. Back to building. submitted by /u/suniltarge [link] [comments]
 
 ---
 

@@ -52,4 +52,4 @@ _Not written yet — `ai-os plans enrich` fills this section._
 
 ---
 
-_Source:_ [Reddit r/startups]([reddit.com/r/startups/comments/1vo…]([reddit.com/r/startups/comments/1vo…]([reddit.com/r/startups/comments/1vo…](https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/)))) · **Posted:** 2026-08-15T01:58:41+00:00
+_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/) · **Posted:** 2026-08-15T01:58:41+00:00

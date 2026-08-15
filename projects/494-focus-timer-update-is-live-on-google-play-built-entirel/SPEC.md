@@ -14,7 +14,7 @@ tech: [React Native, TypeScript, Android, Google Play, AsyncStorage]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vo0368/focus_timer_update_is_live_on_google_play_built/)))))))
+Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vo0368/focus_timer_update_is_live_on_google_play_built/)
 
 Original post:
 
