@@ -1,0 +1,37 @@
+---
+id: "617"
+slug: i-set-up-llmstxt-and-every-ai-crawler-file-correctly-an
+title: I set up llms.txt and every AI crawler file correctly and got zero visibility. The problem was the domain being 3 days old
+status: draft
+source:
+  name: Reddit
+  url: "https://www.reddit.com/r/SaaS/comments/1vp0suj/i_set_up_llmstxt_and_every_ai_crawler_file/"
+category: saas
+date: "2026-08-15"
+---
+# I set up llms.txt and every AI crawler file correctly and got zero visibility. The problem was the domain being 3 days old
+
+## Problem
+ Launched a site three days ago and wanted to know whether AI assistants could see it. Set up llms.txt, robots with 19 named AI crawler tokens, clean markup, the whole checklist. Then asked a few assistants about the site and got nothing. Assumed something was blocking the crawlers. Spent a while checking that, and it was all fine. Fetched the live domain as eight different user agents. Every one of them got the identical visible text a human gets. No redirects, no challenge pages, no bot walls. Files served with correct content types. The proxy wasn't touching anything. 4,634 words of real content on the homepage, no cookies set on seven different paths. Technically nothing was wrong. The site just wasn't in any index yet, because it's three days old. Assistants answer either from training data or from a search index, and a domain that new is in neither. The second thing I got wrong, which I think is the more useful one: llms.txt doesn't bring anyone. It's a file that helps an assistant that already arrived. It has no discovery function at all. What gets you crawled is other sites linking to you, same as it's always been. I had built the welcome mat and no road. If you launched recently and set this up, how long did it take before assistants could actually find you? Trying to work out whether this is a two week thing or a two month thing. submitted by /u/SSShken [link] [comments]
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._
