@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { generateDesignMD } = require('./design-dna.js');
+const { allocatePlanIds } = require('../lib/plan-ids.cjs');
 
 const AI_OS_ROOT   = process.env.AI_OS_ROOT || path.join(os.homedir(), 'Projects', 'ai-os');
 const PROJECTS_DIR = path.join(AI_OS_ROOT, 'projects');
@@ -494,11 +495,19 @@ async function main() {
     return !docsExist(existing);
   });
 
-  newProjects.forEach(p => {
-    const titleSlug = titleToSlug(p.title);
-    p.folderSlug = `${String(state.nextNumber).padStart(3, '0')}-${titleSlug}`;
-    state.nextNumber++;
+  // Ids come from the shared allocator rather than straight from `state.nextNumber`. The
+  // counter was correct only while this scraper was the corpus's sole writer; submission
+  // intake is a second one, and a counter owned by one of two writers is a race. The
+  // allocator derives from the filesystem, which both writers already agree on because both
+  // produce it, and still consults the counter as a high-water mark so the id of a deleted
+  // top plan is never handed out twice.
+  const { ids: allocated, nextNumber } = allocatePlanIds(
+    PROJECTS_DIR, newProjects.length, STATE_FILE,
+  );
+  newProjects.forEach((p, i) => {
+    p.folderSlug = `${allocated[i]}-${titleToSlug(p.title)}`;
   });
+  state.nextNumber = nextNumber;
 
   log(`🆕 Nuevos (sin docs): ${newProjects.length}`);
 

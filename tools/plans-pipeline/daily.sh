@@ -185,8 +185,8 @@ sync_corpus() {
   # `set -e` then kills the run on a perfectly ordinary "no matches" — which is exactly how
   # a first version of this script died silently right after passing its own safety check.
   local gone_dirs total pct
-  gone_dirs=$(printf '%s\n' "$gone" | { grep -oE '^projects/[0-9]{3}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
-  total=$(git -C "$wt" ls-files -- projects | { grep -oE '^projects/[0-9]{3}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  gone_dirs=$(printf '%s\n' "$gone" | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  total=$(git -C "$wt" ls-files -- projects | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
 
   if [ "$total" -gt 0 ] && [ "$gone_dirs" -gt 0 ]; then
     pct=$(( gone_dirs * 100 / total ))
@@ -246,7 +246,7 @@ phase_ship() {
 
   local added changed
   added=$(git -C "$wt" diff --cached --name-only --diff-filter=A -- projects \
-          | { grep -oE '^projects/[0-9]{3}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+          | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
   changed=$(git -C "$wt" diff --cached --name-only -- projects | wc -l | tr -d ' ')
   log "staged: $changed files across $added new plan dirs"
 
