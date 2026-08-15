@@ -225,3 +225,28 @@ export function isLegacy(dirPath) {
   const doc = readDoc(dirPath, 'SPEC.md');
   return !!doc && !doc.hasFrontmatter;
 }
+
+/**
+ * Which `source.*` fields are missing for this capture's origin.
+ *
+ * `source.url` is required for a scraped capture, which always has an upstream page to check
+ * a claim against, and must NOT be required for a web submission, which has none: demanding
+ * one would either block submissions or invite a fabricated URL, and a fabricated source is
+ * worse than an absent one. `source.consent` is the mirror case, required only for `web`.
+ *
+ * Lives here rather than inline in the gate so the condition can be tested directly. An
+ * unconditional check that silently never fires is the failure mode this is guarding against.
+ */
+export function missingSourceFields(source, schema) {
+  if (!source) return [];
+  const cond = schema.frontmatter.fields.source.conditionalRequired ?? {};
+  const absent = (v) => v === undefined || v === null || v === '';
+  return Object.entries(cond)
+    .filter(([field, rule]) => {
+      const applies = rule.whenNameIn
+        ? rule.whenNameIn.includes(source.name)
+        : !(rule.unlessNameIn ?? []).includes(source.name);
+      return applies && absent(source[field]);
+    })
+    .map(([field]) => field);
+}
