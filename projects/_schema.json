@@ -13,7 +13,7 @@
       "web-ready"
     ],
     "meaning": {
-      "draft": "Captured by the scraper. Metadata is real; prose is only the source problem.",
+      "draft": "Captured, not authored. Metadata is real; prose is only the captured problem. Set by the scraper or by submission intake, which is the only difference between them.",
       "enriched": "An agent wrote real per-plan content for every varying section.",
       "humanized": "Prose passed the humanizer skill.",
       "web-ready": "Passed every gate rule below. Only `ai-os plans check` may set this."
@@ -40,7 +40,7 @@
     "fields": {
       "id": {
         "type": "string",
-        "pattern": "^\\d{3}$"
+        "pattern": "^\\d{3,}$"
       },
       "slug": {
         "type": "string",
@@ -63,25 +63,50 @@
       "source": {
         "type": "object",
         "required": [
-          "name",
-          "url"
+          "name"
         ],
+        "conditionalRequired": {
+          "url": {
+            "unlessNameIn": [
+              "web"
+            ],
+            "why": "Every scraped capture has an upstream page to check a claim against. A web submission has none, so requiring one would either block submissions or invite a fabricated URL."
+          },
+          "consent": {
+            "whenNameIn": [
+              "web"
+            ],
+            "why": "The corpus is public and every plan becomes a page. A submission may only be published if its author agreed to that."
+          }
+        },
         "fields": {
           "name": {
             "type": "string",
             "enum": [
               "ProblemHunt",
               "Reddit",
-              "manual"
-            ]
+              "manual",
+              "web"
+            ],
+            "note": "`web` is a submission through the site's form. It is a capture like any other; nothing downstream treats it differently."
           },
           "url": {
             "type": "string",
-            "pattern": "^https?://"
+            "pattern": "^https?://",
+            "note": "For `web`, optional and only present when the submitter pointed at where they saw the problem."
           },
           "captured": {
             "type": "string",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "submittedBy": {
+            "type": "string",
+            "maxLength": 60,
+            "note": "Display name or handle the submitter chose. Never an email address: this field is published."
+          },
+          "consent": {
+            "type": "boolean",
+            "note": "True only when the submitter ticked the publication consent box. Never inferred, never defaulted."
           }
         }
       },

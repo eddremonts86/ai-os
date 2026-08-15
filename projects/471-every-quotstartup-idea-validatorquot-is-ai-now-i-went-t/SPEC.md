@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Stripe, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vj4oe6/every_startup_idea_validator_is_ai_now_i_went_the/)))))
+Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vj4oe6/every_startup_idea_validator_is_ai_now_i_went_the/)))))))
 
 Original post:
 
