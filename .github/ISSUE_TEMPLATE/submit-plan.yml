@@ -1,0 +1,120 @@
+name: Submit a problem worth building
+description: Describe a real problem you have or have seen. If it is accepted it becomes a free, public plan.
+title: "[submission] "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time.
+
+        **What happens next.** A person reads every submission. Accepted ones are written up
+        into a full plan by the same pipeline that produces the rest of the corpus, and
+        published at [plans.eduardoinerarte.dk](https://plans.eduardoinerarte.dk). Most
+        submissions are not published, and there is no queue position or timeline to promise
+        you. Nothing here is automated approval.
+
+        **This is public.** Everything you type below becomes a public page, under the
+        repository's MIT licence, with no way to unpublish it yourself. Do not include
+        anything you would not put on a public website: no client names, no private company
+        data, no personal contact details, and nothing covered by an NDA.
+
+  - type: input
+    id: title
+    attributes:
+      label: The problem in one sentence
+      description: Written the way the person with the problem would say it, not as a product pitch.
+      placeholder: A photographer moving to a new country cannot get their first local clients.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem in full
+      description: |
+        Who has it, what they tried, and why the existing options do not work. Concrete beats
+        general: a number they quoted, a tool they abandoned, the workaround they use today.
+
+        **At least 120 characters.** That is not an arbitrary floor, it is the same bar every
+        plan in the corpus has to clear, and a submission below it cannot be written up
+        without inventing the missing half.
+      placeholder: |
+        A photographer relocating from Serbia to the US has no local client history and no
+        reviews, so the platforms rank them invisibly. Agencies want 30% and want exclusivity.
+        They currently cold-email wedding venues, which converts at roughly nothing.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: The closest fit. Pick "other" rather than forcing one.
+      options:
+        - other
+        - ai
+        - business
+        - design
+        - dev
+        - education
+        - finance
+        - fintech
+        - freelance
+        - health
+        - indiehackers
+        - legal
+        - logistics
+        - marketing
+        - media
+        - productivity
+        - retail
+        - saas
+        - sideproject
+        - startups
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: country
+    attributes:
+      label: Country
+      description: Where the person with the problem is, if you know. Helps readers judge whether it travels.
+      placeholder: Serbia
+
+  - type: input
+    id: wtp
+    attributes:
+      label: What they said they would pay
+      description: Only if they actually named a figure. Leave empty otherwise; an invented price is worse than none.
+      placeholder: $100-300/month
+
+  - type: input
+    id: source
+    attributes:
+      label: Where you saw it
+      description: A link to the post, thread or comment, if there is one. Leave empty if this is your own problem.
+      placeholder: https://www.reddit.com/r/...
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What you would build
+      description: Optional. If you already have a shape in mind, it seeds the plan's objective. Skip it if you do not.
+
+  - type: input
+    id: submitted_by
+    attributes:
+      label: Credit this to
+      description: A name or handle to credit on the published plan. Leave empty to stay anonymous. Do not put an email address here, this field is published.
+
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Before you send
+      options:
+        - label: This can be published publicly under the repository's MIT licence, and I have the right to submit it.
+          required: true
+        - label: It contains no confidential information and no personal details of anyone who has not agreed to this.
+          required: true
