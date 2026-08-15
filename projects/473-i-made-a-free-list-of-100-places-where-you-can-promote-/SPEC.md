@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vi5ui8/i_made_a_free_list_of_100_places_where_you_can/)))))
+Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vi5ui8/i_made_a_free_list_of_100_places_where_you_can/)))))))
 
 Original post:
 

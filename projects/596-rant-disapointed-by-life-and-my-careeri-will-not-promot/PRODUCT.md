@@ -30,15 +30,11 @@ _Based on source brief:_ Basically what the title says. I got a math degree and 
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -46,7 +42,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 
@@ -56,4 +52,4 @@ _TODO:_ list 2-3 alternatives + differentiation.
 
 ---
 
-_Source:_ [Reddit r/startups]([reddit.com/r/startups/comments/1vo…](https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/)) · **Posted:** 2026-08-15T01:58:41+00:00
+_Source:_ [Reddit r/startups]([reddit.com/r/startups/comments/1vo…]([reddit.com/r/startups/comments/1vo…]([reddit.com/r/startups/comments/1vo…](https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/)))) · **Posted:** 2026-08-15T01:58:41+00:00

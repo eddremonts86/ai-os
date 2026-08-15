@@ -23,10 +23,7 @@ date: "2026-08-15"
 
 ## Phase 1: Core
 
-- [ ] Implementar scaffold del proyecto
-- [ ] Implementar features core
-- [ ] Aplicar design tokens al components
-- [ ] Escribir tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 
