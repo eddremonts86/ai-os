@@ -32,14 +32,15 @@ function readSafe(path) {
 function listPlanDirs() {
   if (!existsSync(PROJECTS_DIR)) return [];
   return readdirSync(PROJECTS_DIR)
-    .filter((name) => /^\d{3}-/.test(name))
+    .filter((name) => /^\d{3,}-/.test(name))
     .map((name) => join(PROJECTS_DIR, name))
     .filter((p) => existsSync(join(p, 'SPEC.md')))
-    .sort();
+    // Numeric, not lexicographic: once ids pass 999 a plain sort puts 1000 before 999.
+    .sort((a, b) => parseInt(a.split('/').pop(), 10) - parseInt(b.split('/').pop(), 10));
 }
 
 function parseId(dirName) {
-  const m = dirName.match(/^(\d{3})-(.+)$/);
+  const m = dirName.match(/^(\d{3,})-(.+)$/);
   if (!m) return null;
   return { id: m[1], slug: m[2] };
 }
@@ -447,7 +448,7 @@ function parseRankings(topPath) {
     // Scores are fractional (`8.4/10`). An integer-only pattern silently matched
     // nothing and emptied all three rankings without raising anything, so keep the
     // decimal optional — older files write `8/10`.
-    const itemRe = /(\d+)\.\s+\*\*(\d{3}-[^*]+?)\*\*\s+[—–-]\s+score\s+(\d+(?:\.\d+)?)\/10\s*\n\s*_(.+?)_/g;
+    const itemRe = /(\d+)\.\s+\*\*(\d{3,}-[^*]+?)\*\*\s+[—–-]\s+score\s+(\d+(?:\.\d+)?)\/10\s*\n\s*_(.+?)_/g;
     let im;
     while ((im = itemRe.exec(body)) !== null) {
       const id = im[2].slice(0, 3);
