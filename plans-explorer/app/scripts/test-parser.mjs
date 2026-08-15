@@ -140,7 +140,7 @@ console.log('\n[test] aggregate invariants:');
 const totalPlans = plans.length;
 const PROJECTS_DIR = join(ROOT, '..', 'projects');
 const TOP_PROJECTS = join(PROJECTS_DIR, 'TOP_PROJECTS.md');
-const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3}-/.test(n)
+const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3,}-/.test(n)
   && existsSync(join(PROJECTS_DIR, n, 'SPEC.md')));
 
 // The indexer publishes only authored plans, so the corpus size is the wrong yardstick —
@@ -173,7 +173,7 @@ const inv = [
       const label = m[2].toLowerCase();
       const key = Object.entries(KEY).find(([word]) => label.includes(word))?.[1];
       const body = md.slice(m.index + m[0].length, i + 1 < secs.length ? secs[i + 1].index : md.length);
-      const written = (body.match(/^\d+\.\s+\*\*\d{3}-/gm) || []).length;
+      const written = (body.match(/^\d+\.\s+\*\*\d{3,}-/gm) || []).length;
       const parsed = key ? rankings[key].length : null;
       return {
         name: `"${m[2].trim()}" holds the ${want} its heading promises, and all ${want} parse`,
@@ -182,10 +182,10 @@ const inv = [
       };
     });
   })(),
-  { name: 'rankings.money ids are 3-digit strings', ok: rankings.money.every((r) => /^\d{3}$/.test(r.id)), got: rankings.money.map((r) => r.id) },
+  { name: 'rankings.money ids are at least 3 digits', ok: rankings.money.every((r) => /^\d{3,}$/.test(r.id)), got: rankings.money.map((r) => r.id) },
   { name: 'rankings scores are 1..10', ok: rankings.money.every((r) => r.score >= 1 && r.score <= 10), got: rankings.money.map((r) => r.score) },
   { name: 'no plan is missing title', ok: plans.every((p) => typeof p.title === 'string' && p.title.length > 0), got: plans.filter((p) => !p.title || p.title.length === 0).length },
-  { name: 'no plan is missing id', ok: plans.every((p) => /^\d{3}$/.test(p.id)), got: plans.filter((p) => !/^\d{3}$/.test(p.id)).length },
+  { name: 'no plan is missing id', ok: plans.every((p) => /^\d{3,}$/.test(p.id)), got: plans.filter((p) => !/^\d{3,}$/.test(p.id)).length },
   { name: 'no plan has wtp.mrrMid negative', ok: plans.every((p) => !p.wtp || p.wtp.mrrMid == null || p.wtp.mrrMid >= 0), got: plans.filter((p) => p.wtp?.mrrMid < 0).length },
   { name: 'plans.json plans with sourceUrl have an excerpt', ok: plans.every((p) => !p.sourceUrl || (typeof p.excerpt === 'string' && p.excerpt.length > 0)), got: plans.filter((p) => p.sourceUrl && (!p.excerpt || p.excerpt.length === 0)).length },
   // Regression guards for the HTML→text pipeline. 178 of the then-525 plans once

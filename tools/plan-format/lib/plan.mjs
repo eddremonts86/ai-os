@@ -27,14 +27,15 @@ export function loadSchema() {
 export function listPlanDirs() {
   if (!existsSync(PROJECTS_DIR)) return [];
   return readdirSync(PROJECTS_DIR)
-    .filter((n) => /^\d{3}-/.test(n))
+    .filter((n) => /^\d{3,}-/.test(n))
     .map((n) => join(PROJECTS_DIR, n))
     .filter((p) => statSync(p).isDirectory() && existsSync(join(p, 'SPEC.md')))
-    .sort();
+    // Numeric, not lexicographic: once ids pass 999 a plain sort puts 1000 before 999.
+    .sort((a, b) => parseInt(a.split('/').pop(), 10) - parseInt(b.split('/').pop(), 10));
 }
 
 export function planIdSlug(dirPath) {
-  const m = dirPath.split('/').pop().match(/^(\d{3})-(.+)$/);
+  const m = dirPath.split('/').pop().match(/^(\d{3,})-(.+)$/);
   return m ? { id: m[1], slug: m[2] } : null;
 }
 

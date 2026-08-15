@@ -45,7 +45,14 @@ EOF
 case "${1:-}" in
   check)  shift; exec node "$HERE/check-plans.mjs" "$@" ;;
   format) shift; exec node "$HERE/format-plans.mjs" "$@" ;;
-  test)   shift; exec node "$HERE/test-plan-format.mjs" "$@" ;;
+  test)
+    shift
+    # Both suites, not just the formatter's: the id allocator has two callers that never
+    # run in the same process, so it is exactly the kind of thing that rots unless the
+    # pipeline's verify phase runs it on every cycle.
+    node "$AI_OS_ROOT/tools/lib/test-plan-ids.mjs" "$@" || exit 1
+    exec node "$HERE/test-plan-format.mjs" "$@"
+    ;;
   pipeline) shift; exec bash "$AI_OS_ROOT/tools/plans-pipeline/daily.sh" "$@" ;;
   enrich)
     shift

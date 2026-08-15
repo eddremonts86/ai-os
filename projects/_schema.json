@@ -40,7 +40,7 @@
     "fields": {
       "id": {
         "type": "string",
-        "pattern": "^\\d{3}$"
+        "pattern": "^\\d{3,}$"
       },
       "slug": {
         "type": "string",
