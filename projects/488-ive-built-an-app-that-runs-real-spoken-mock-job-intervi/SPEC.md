@@ -14,7 +14,7 @@ tech: [TypeScript, Next.js, OpenAI Realtime API, PostgreSQL, Stripe, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vo0ipz/ive_built_an_app_that_runs_real_spoken_mock_job/)
+Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vo0ipz/ive_built_an_app_that_runs_real_spoken_mock_job/)))))
 
 Original post:
 

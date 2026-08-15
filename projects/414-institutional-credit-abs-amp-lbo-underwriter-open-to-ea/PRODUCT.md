@@ -48,4 +48,4 @@ The market the founder operates in today is a mix of advisor-matching platforms 
 
 ---
 
-_Source:_ [Reddit]([reddit.com/r/startups/comments/1vn…](https://www.reddit.com/r/startups/comments/1vnjlpv/institutional_credit_abs_lbo_underwriter_open_to/)) · **Category:** startups · **Tags:** n/a
+_Source:_ [Reddit]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…]([reddit.com/r/startups/comments/1vn…](https://www.reddit.com/r/startups/comments/1vnjlpv/institutional_credit_abs_lbo_underwriter_open_to/)))))) · **Category:** startups · **Tags:** n/a
