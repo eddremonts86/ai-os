@@ -57,6 +57,8 @@ dev-env/env-config/env.ts
 dev-env/env-config/env-reference.html
 # Local zip backup of the env-config dossier (contains real secrets)
 dev-env/env-config.zip
+# Timestamped copies taken before editing the master .env — same secrets, no protection
+.env.bak-*
 
 # Project-local Hermes runtime (may contain real secrets, e.g. desktop-attachments/env.ts)
 .hermes/
