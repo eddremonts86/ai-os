@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Meilisearch, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vjirh5/i_analyzed_979_product_hunt_launches_from_the/)
+Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vjirh5/i_analyzed_979_product_hunt_launches_from_the/)))))
 
 Original post:
 
