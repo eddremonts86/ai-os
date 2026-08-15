@@ -8,7 +8,7 @@
  */
 
 import { parseFrontmatter, stringifyFrontmatter, parseSections, loadSchema } from './lib/plan.mjs';
-import { htmlToText, markdownToText, linkifyLongUrls, hasEntities, hasMarkup, hasZeroWidth } from './lib/normalize.mjs';
+import { htmlToText, markdownToText, linkifyLongUrls, unnestLinks, hasEntities, hasMarkup, hasZeroWidth } from './lib/normalize.mjs';
 import { renameHeadings, stripMetadataBlock, extractCountry, extractProblem, extractTech } from './lib/legacy.mjs';
 
 const schema = loadSchema();
@@ -110,6 +110,35 @@ console.log('\n[long URLs]');
   ok('leaves a short URL bare', linkifyLongUrls(`See ${short}`, 100) === `See ${short}`);
   const trailing = `(${long}).`;
   ok('keeps trailing punctuation outside the link', linkifyLongUrls(trailing, 100).endsWith(').'), linkifyLongUrls(trailing, 100).slice(-12));
+
+  /**
+   * The formatter runs over the corpus repeatedly, so wrapping has to be a fixed point. It was not:
+   * the lead class accepts `(`, which is also the character opening an href, so every run wrapped the
+   * link the previous run wrote. 253 links across 43 plans ended up nested, the worst eight deep.
+   */
+  const once = linkifyLongUrls(`Source: ${long}`, 100);
+  ok('wrapping is idempotent', linkifyLongUrls(linkifyLongUrls(once, 100), 100) === once, once.slice(0, 70));
+  ok('leaves an existing markdown link alone', linkifyLongUrls(`[label](${long})`, 100) === `[label](${long})`);
+  ok('leaves an existing image alone', linkifyLongUrls(`![alt](${long})`, 100) === `![alt](${long})`);
+}
+
+console.log('\n[repairing nested links]');
+{
+  const url = 'https://preview.redd.it/' + 'a'.repeat(200) + '.jpg';
+  const nested = `Source: ${'[preview.redd.it/aaa…]('.repeat(7)}${url}${')'.repeat(7)}`;
+  const repaired = unnestLinks(nested);
+
+  ok('collapses seven levels to one', (repaired.match(/\]\(/g) ?? []).length === 1, repaired.slice(0, 70));
+  ok('keeps the url intact', repaired.includes(`](${url})`));
+
+  const healthy = 'see [ex](https://example.com/x) and (a [second](https://example.com/y)) end';
+  ok('leaves healthy links untouched', unnestLinks(healthy) === healthy);
+
+  // The last paren belongs to the sentence, not to the link. Counting openers is what protects it.
+  const inParens = '(see [x](https://example.com/a))';
+  ok('keeps a paren that belongs to the sentence', unnestLinks(inParens) === inParens, unnestLinks(inParens));
+
+  ok('is itself idempotent', unnestLinks(repaired) === repaired);
 }
 
 console.log('\n[legacy extraction]');

@@ -32,7 +32,7 @@ import {
   loadSchema, listPlanDirs, planIdSlug, readDoc, writeDocText,
   stringifyFrontmatter, DOC_NAMES,
 } from './lib/plan.mjs';
-import { markdownToText, linkifyLongUrls } from './lib/normalize.mjs';
+import { markdownToText, linkifyLongUrls, unnestLinks } from './lib/normalize.mjs';
 import {
   extractTitle, extractCategory, extractTags, extractDate, extractSource,
   extractCountry, extractProblem, extractTech, stripMetadataBlock, renameHeadings,
@@ -177,6 +177,9 @@ function rewriteBody(name, doc, problemOverride) {
   body = renameHeadings(body);
   body = translateFixedStrings(body);
   body = markdownToText(body);
+  // Heal before wrapping. Plans already carrying nested links from the runs that predate the
+  // idempotency fix collapse back to one link here, so the corpus repairs itself as it is formatted.
+  body = unnestLinks(body);
   body = linkifyLongUrls(body, maxUrl);
 
   // Re-parse after renaming so section headings are the schema's.

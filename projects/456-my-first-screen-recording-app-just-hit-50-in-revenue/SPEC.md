@@ -18,7 +18,7 @@ Source: https://www.reddit.com/r/SaaS/comments/1vnwsiu/my_first_screen_recording
 
 Original post:
 
-> It’s not life-changing money, but knowing that real people paid for something I built feels pretty damn good. I launched Verismo Screen Studio one month ago, and that's really upset that no one is buying. [preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…]([preview.redd.it/smy3v7gjl9jh1.png…](https://preview.redd.it/smy3v7gjl9jh1.png?width=2934&format=png&auto=webp&s=08bd68c960285cdca6fdeee78198876da3486e40)))))))) submitted by /u/phenix_dance_ninesky [link] [comments]
+> It’s not life-changing money, but knowing that real people paid for something I built feels pretty damn good. I launched Verismo Screen Studio one month ago, and that's really upset that no one is buying. [preview.redd.it/smy3v7gjl9jh1.png…](https://preview.redd.it/smy3v7gjl9jh1.png?width=2934&format=png&auto=webp&s=08bd68c960285cdca6fdeee78198876da3486e40) submitted by /u/phenix_dance_ninesky [link] [comments]
 
 ---
 

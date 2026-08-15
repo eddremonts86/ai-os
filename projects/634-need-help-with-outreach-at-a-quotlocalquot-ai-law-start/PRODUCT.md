@@ -52,4 +52,4 @@ _Not written yet — `ai-os plans enrich` fills this section._
 
 ---
 
-_Source:_ [Reddit r/startups]([reddit.com/r/startups/comments/1vp…](https://www.reddit.com/r/startups/comments/1vp036s/need_help_with_outreach_at_a_local_ai_law_startup/)) · **Posted:** 2026-08-15T11:10:16+00:00
+_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vp036s/need_help_with_outreach_at_a_local_ai_law_startup/) · **Posted:** 2026-08-15T11:10:16+00:00

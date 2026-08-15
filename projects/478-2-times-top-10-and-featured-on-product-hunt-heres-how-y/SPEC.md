@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Stripe, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vgix9n/2_times_top_10_and_featured_on_product_hunt_heres/)))))))
+Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vgix9n/2_times_top_10_and_featured_on_product_hunt_heres/)
 
 Original post:
 
