@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, PostgreSQL, Stripe, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…]([reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vmx4o9/were_building_a_bridge_between_japanese_companies/)))))))
+Source: [reddit.com/r/indiehackers/comments…](https://www.reddit.com/r/indiehackers/comments/1vmx4o9/were_building_a_bridge_between_japanese_companies/)
 
 Original post:
 

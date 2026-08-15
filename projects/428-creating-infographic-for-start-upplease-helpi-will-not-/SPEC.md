@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, Tailwind, MDX, Cloudflare Pages, Puppeteer (Node), R
 
 ## Problem
 
-Source: [reddit.com/r/startups/comments/1vm…]([reddit.com/r/startups/comments/1vm…]([reddit.com/r/startups/comments/1vm…]([reddit.com/r/startups/comments/1vm…]([reddit.com/r/startups/comments/1vm…]([reddit.com/r/startups/comments/1vm…]([reddit.com/r/startups/comments/1vm…](https://www.reddit.com/r/startups/comments/1vmds6q/creating_infographic_for_startupplease_helpi_will/)))))))
+Source: [reddit.com/r/startups/comments/1vm…](https://www.reddit.com/r/startups/comments/1vmds6q/creating_infographic_for_startupplease_helpi_will/)
 
 Original post:
 

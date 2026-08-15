@@ -14,7 +14,7 @@ tech: [Next.js, TypeScript, Gmail API, PostgreSQL, Resend, Vercel]
 
 ## Problem
 
-Source: [reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…]([reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny8mw/scanmyemails_super_simple_email_scanner_for_those/)))))))
+Source: [reddit.com/r/SideProject/comments/…](https://www.reddit.com/r/SideProject/comments/1vny8mw/scanmyemails_super_simple_email_scanner_for_those/)
 
 Original post:
 
