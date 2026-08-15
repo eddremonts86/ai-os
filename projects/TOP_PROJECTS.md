@@ -1,7 +1,7 @@
 # TOP_PROJECTS.md — ProblemHunt ranked
 
 > Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-15.
-> Source: 404 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
+> Source: 447 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
 > Scoring blends WTP (from SPEC/PRODUCT YAML or extracted from title), B2B/recurring signals, sticky-compliance verticals, tech-stack breadth (learn), and visual/agent/creative novelty (fun).
 
 ## Top 5 — Real Revenue Potential
@@ -26,7 +26,7 @@
    _SOC 2 fast-track service for pre-Series A B2B SaaS_
    Author cites $15k–$30k tooling-burn traps and the "blocked-deal" trigger pattern (external clock, not internal want). SPEC scopes plain-checklist + ownership-mapping workflow vs the typical automation-first playbook — strong WTP signal from the audience (B2B founders losing deals), and recurring revenue once the audit cycle restarts annually.
 
-## Top 5 — Learning Potential
+## Top 6 — Learning Potential
 
 1. **252-startups-at-the-monetization-validation-stage-have-nowh** — score 7.0/10
    _Payment-onboarding sandbox for unincorporated startups (Morocco)_
@@ -44,11 +44,15 @@
    _Direct-sales music platform for under-banked regions (Lebanon)_
    Combines streaming, direct-checkout, regional PSP routing, and rights management — an unusual full-stack with content + payments + geo-restriction logic. Cold path: countries where Bandcamp/PayPal are blocked.
 
-5. **583-as-a-former-cyber-security-analyst-i-noticed-multiple-s** — score 6.0/10
+5. **621-need-brutally-honest-feedback-before-i-build-this** — score 6.0/10
+   _Design-skill Chrome extension: website → design-system spec for AI codegen_
+   Founder explicitly lists $5 / $10 / $20 / month or one-time as WTP options. Stack spans DOM/CSS extraction, design-token mapping (typography/colors/spacing/components), serialization to an LLM-consumable skill spec, and a Chrome-extension Manifest V3 surface. Broader than 583 (LLM-facing output format) but lighter on security depth.
+
+6. **583-as-a-former-cyber-security-analyst-i-noticed-multiple-s** — score 6.0/10
    _Fully-local AI-code security scanner (OWASP top 10 + cred leak + .env hygiene)_
    Stack spans AST-based static analysis for 7 languages (PHP/JS/Python/...), taint tracking for IDOR/CSRF/SQLi/CMDi, a CI token + attested-PDF report pipeline for agency-tier clients, and a "no code leaves the box" local-first deployment model. Rare corner where the demo is a red-team diff against a generated vuln, and the security domain forces the engineer to think about trust boundaries rather than just CRUD.
 
-## Top 5 — Fun to Build
+## Top 7 — Fun to Build
 
 1. **240-the-lack-of-a-service-that-creates-hyper-personalized-g** — score 7.5/10
    _Hyper-personalized gamified English courses_
@@ -66,13 +70,25 @@
    _Designer AI agent for responsive cross-device adaptation_
    Estonia-based designer with explicit WTP (€20–30/project). Computer-vision + diff + Figma plugin territory; high reward in seeing the agent reshuffle a desktop layout into a tablet layout in real time.
 
-5. **239-hours-of-manual-searching-for-parts-for-chinese-car** — score 5.5/10
+5. **621-need-brutally-honest-feedback-before-i-build-this** — score 6.5/10
+   _Chrome extension that turns any site into a "design skill" for AI codegen_
+   The click-and-extract loop is the entire payoff: open site → click extension → watch a live token panel (typography, colors, spacing, components) populate → export as a structured spec that Cursor/Claude Code can consume. Visual feedback loop is tight, the chrome-extension surface is small enough to ship in a weekend, and the WTP question ($5/10/20/mo, one-time) is the founder's explicit open question — perfect "validate before you build" frame.
+
+6. **605-built-a-radial-menu-utility-for-macos-after-getting-tir** — score 6.5/10
+   _SwiftUI radial-menu utility for macOS — "Arc" (already on the App Store)_
+   Founder shipped a launchable product (SwiftUI, multi-display hit-testing, action chains) with $9.99 one-time / 7-day trial on the Mac App Store. Demo is the product — a single big radial pi revealing/app/launcher/clipboard/screenshot/shortcut slices. B2C macOS utility, so money is capped (single-purchase, not SaaS), but the visual/interaction polish is the genuine "fun" payoff and the SPEC/PRODUCT are concrete enough to reproduce.
+
+7. **239-hours-of-manual-searching-for-parts-for-chinese-car** — score 5.5/10
    _Visual parts-search for Chinese cars (Russia)_
    Multimodal search (photo → text query → part catalogue); interesting because it combines a real-world messy problem with a tight, satisfying demo and a niche user base that has few competitors.
 
 ---
 
 ## Changelog
+
+- **2026-08-15 (cron run #7)** — re-ranked 447 projects after a fresh scrape added 27 new Reddit r/SaaS captures (610–636). 22 of the 27 are meta-discussion posts (advice questions, "best distribution channel", AI-era debate prompts, llms.txt visibility question, Onboarding-with-ClickUp help request, integrations research request, "build for wrong ICP" advice, ubiquity-era GTM essay, k8s BYOC hot-take) — none displace the Money Top-5. Three real products land on the rankings: **621 design-skill Chrome extension** ($5/10/20/mo or one-time WTP asked explicitly) slots at **Learn #5 (6.0)** and **Fun #5 (6.5)** — broader stack than 583 (DOM/CSS extraction + design-token mapping + Chrome MV3 surface) with a tight visual demo; **629 firefighter-union member platform** (live product, setup + annual recurring, vertical-SaaS path to police/public-sector unions) lands at **Money #6 (6.5)** — strongest recurring-revenue signal in the batch but doesn't crack the existing Money Top-5 ceiling of 7.0 (573 SOC-2); **624 Stepway white-label agency bench** (flat subscription, pause-when-slow feature, Designjoy comparator) at **Money #7 (6.0)** and **Learn #7 (4.5)**. Displaced: 583 (Learn #5 → #6); 605 (Fun #5 → #6); 239 (Fun #6 → #7). New-batch score ceiling: money 6.5 (629), learn 6.0 (621), fun 6.5 (621). Replaces the 2026-08-15 cron-run #6 ranking.
+
+- **2026-08-15 (cron run #6)** — re-ranked 420 projects after a fresh scrape added 12 new Reddit r/SaaS/r/startups captures (597–608). 11 of the 12 are meta-discussion posts (advice, "rate my landing page", "what do with my VPS", jurisdiction questions, career rants, "how do you find customers") — none displace the Money Top-5. **605 Arc radial-menu** is the only real product in the batch and lands at **Fun #5 (6.5)** — SwiftUI macOS utility, $9.99 one-time with 7-day trial, already on the Mac App Store. B2C single-purchase caps money (4.5) and learn (5.5) so it only moves the Fun chart. Displaced: 239 (Fun #5: 5.5, pushed down to #6). New-batch score ceiling: money 4.5 (605), learn 5.5 (605), fun 6.5 (605). Replaces the 2026-08-15 cron-run #5 ranking.
 
 - **2026-08-15 (cron run #5)** — re-ranked 411 projects after a fresh scrape added 7 new Reddit r/SaaS/r/startups captures (590–596). All 7 are low-substance discussion posts: 590 (events-passport founder asking whether to pivot to managed service — no WTP signal, advice question), 591 (SEO deindexing help request — no product), 592 (research request asking r/SaaS to volunteer pain points — no product), 593 (a real gap: social-media alerts with semantic search across Reddit + X.com, but no WTP stated and explicit "no PR" framing — undercuts GTM), 594 ($8 MRR AMA with no body text), 595 (image-only post about AI-agentified company), 596 (career rant with no product). **None displace any Top-5 slot.** The strongest in the batch was 593 (semantic Reddit + X alerts, money 4.0 / learn 5.5 / fun 4.5) — all scores below the current #5 entry (239, fun 5.5). The existing Top-5 in Money, Learn, and Fun remains unchanged. New-batch score ceiling: money 4.5 (590), learn 5.5 (593), fun 4.5 (593). Replaces the 2026-08-15 cron-run #4 ranking.
 
