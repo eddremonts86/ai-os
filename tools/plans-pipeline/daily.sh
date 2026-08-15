@@ -12,6 +12,7 @@
 #
 # Phases, in order:
 #   scrape    fetch new captures (the ProblemHunt/Reddit scraper)
+#   intake    materialise approved community submissions into captures
 #   prepare   ai-os plans format --write, then pick the slice to enrich → slice manifest
 #   verify    index + gate + both test suites. Exit non-zero means DO NOT SHIP.
 #   ship      commit → PR to dev → merge → PR dev to main → merge (deploy triggers itself)
@@ -115,6 +116,17 @@ phase_scrape() {
     die "scrape failed"
   }
   tail -1 "$SCRAPER_DIR/last-run.log" | sed 's/^/[plans-pipeline] /'
+}
+
+# Approved submissions become captures before anything else runs, so the rest of the cycle
+# treats them exactly like scraped ones. Deliberately before `prepare`: a submission ingested
+# now is formatted, claimed and authored in the same pass rather than waiting four hours.
+phase_intake() {
+  acquire_lock
+  log "ingesting approved submissions"
+  node "$AI_OS_ROOT/tools/plans-pipeline/intake.mjs" \
+    ${DRY_RUN:+$([ "$DRY_RUN" -eq 1 ] && echo --dry-run)} --limit "$CAP" \
+    || die "intake failed"
 }
 
 phase_prepare() {
@@ -354,6 +366,7 @@ phase_status() {
 
 case "$PHASE" in
   scrape)  phase_scrape ;;
+  intake)  phase_intake ;;
   prepare) phase_prepare ;;
   verify)  phase_verify ;;
   ship)    phase_ship ;;
@@ -361,5 +374,5 @@ case "$PHASE" in
   ''|-h|--help|help)
     sed -n '2,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
     ;;
-  *) die "unknown phase: $PHASE (try: scrape prepare verify ship status)" ;;
+  *) die "unknown phase: $PHASE (try: scrape intake prepare verify ship status)" ;;
 esac
