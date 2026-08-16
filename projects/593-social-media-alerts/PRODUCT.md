@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "social-listening", "ai", "alerts"]
+tech: ["Next.js", "TypeScript", "OpenAI embeddings", "Reddit API", "X.com API", "Supabase", "Resend", "Stripe"]
 id: "593"
 slug: social-media-alerts
 title: Social Media Alerts
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voqu49/social_media_alerts/"
 category: saas
 date: "2026-08-15"
 ---
-# Social Media Alerts
+# I'm looking for a social media alert app for Reddit and X.com based on semantic search
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the semantic social-media alert app scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I'm looking for a social media alert app for Reddit and X.com based on semantic search, which I thought would be trivial to find. Any recommendations? Please no PR. I checked out a few (like Prowlo or Subredditsignals) but was quite disappointed on the first pass - they didn't have X.com, and they require me to specify keywords and subreddits for Reddit. Maybe I'm missing something, but if I have the exact keywords and subreddits, I can just have Claw/Claude run this search in the browser for me for free, no? submitted by /u/mr_pants99 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A founder can describe a concept in free text and get a daily digest of the most relevant Reddit + X.com posts, ranked by an embedding model — without keyword expansion tricks or per-platform silos.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Founders and indie hackers | Tracking brand mentions, competitor launches, niche conversations. |
+| Marketers running social-listening workflows | Want a single concept-watch surface. |
+| Researchers and journalists | Want topic-specific alerts across platforms. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Describe a concept and get a daily digest of relevant posts.
+2. **Functional job** — Route high / medium / low relevance to Slack or email.
+3. **Emotional job** — Stop losing track of what is being said about your niche.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first digest delivered within 7 days of signup.
+- **Retention:** at least 1 concept active per user after 30 days.
+- **Relevance precision:** ≥ 70% of digest posts rated "relevant" by the user.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 concept, Reddit only. Pro at $29/month: 5 concepts, Reddit + X.com, daily digest, Slack routing.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Prowlo / Subredditsignals** — keyword-based, Reddit-only, weak relevance (the source post's complaint).
+- **Brand24 / Mention** — enterprise social-listening, expensive, keyword-based.
+- **Manual RSS + keyword alerts** — what most founders do today.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1voqu49/social_media_alerts/) · **Posted:** 2026-08-15T02:31:05+00:00
+- [ ] X.com API pricing is volatile; per-user cost must be bounded.
+- [ ] Semantic relevance must beat keyword-based alternatives; an embedding model alone is not enough — a per-user relevance-feedback loop is the differentiator.

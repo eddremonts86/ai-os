@@ -1,37 +1,47 @@
 ---
+tags: ["saas", "developer-tools", "feedback", "changelog"]
+tech: ["Next.js", "TypeScript", "Vanilla JS", "Supabase", "Stripe"]
 id: "610"
 slug: how-do-you-handle-product-updates-for-users-like-change
 title: How do you handle product updates for users? Like changelog and stuff?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp1yfn/how_do_you_handle_product_updates_for_users_like/"
 category: saas
 date: "2026-08-15"
 ---
-# How do you handle product updates for users? Like changelog and stuff?
+# How do you handle product updates for users, like changelog?
 
 ## Problem
- I’ve been using AI coding tools heavily for a while now (Cursor, Claude Code, that whole workflow). I can ship features and fixes way faster than before. The annoying part is everything around the actual product for users. I started paying attention to the small SaaS tools I use day to day. A lot of them either: have no public changelog at all have a “What’s new” page that hasn’t moved in months have a help center that still describes old UI or missing features When something changes, I find out because something breaks, someone mentions it in Discord, or I randomly notice a new button. There’s no reliable place that says “this is what shipped. ”I’m also guilty of this on my own stuff. The repo has commits and PRs. That is not a customer-facing changelog. And help articles are the first thing I postpone when I’m in a shipping mood. I’m trying to understand what other small teams actually do, not what they wish they did. If you run a small SaaS or product: Do you have a public changelog or What’s new page that customers can open? If yes, where does it live and how often do you update it? When you merge something user-facing, is updating docs part of “done,” or does it usually slip? Where do your help docs live, and who is responsible for keeping them current when there’s no dedicated writer? Has shipping faster with AI coding made the gap worse for you, or do you have a process that still keeps up? Also curious if you think a public changelog even matters at the early stage, or if help docs matter more, or if both are optional until you have real support volume. and any tools recommendations to use that would work with coding agents like claude code? submitted by /u/decentBab [link] [comments]
 
----
+A founder using AI coding tools (Cursor, Claude Code) is shipping features and fixes faster than before, but everything around the actual product — announcing the changes, getting feedback, knowing who is affected — has become the bottleneck. They started paying attention to the small SaaS tools they use day-to-day and noticed many do not handle product updates well. The implicit product: a lightweight in-app changelog + feedback widget for small SaaS products, designed to fit into the founder's shipping pace.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define the MVP scope for an in-app changelog + feedback widget that small SaaS products can drop into their app: a per-product feed, a feedback widget, and a "you are affected" indicator for known issues.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Primary:** indie SaaS founders shipping multiple times a week who need an in-app announcement surface.
+- **Secondary:** small SaaS teams (2-5 engineers) who want a structured changelog without running a blog.
+- **Tertiary:** SaaS users who want a single place to see what's changed.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- In-app widget: a small bell icon in the app's chrome that opens a per-product feed.
+- Per-product changelog: the founder posts a changelog entry, the widget shows it to the right users.
+- Feedback widget: a small "?" icon that opens a feedback form, posts to the founder's dashboard.
+- "You are affected" indicator: when a known issue matches the user's environment, the widget surfaces it.
+- Free tier: 1 product, 50 changelog entries/month, 100 feedback submissions/month. Pro at $29/month: 5 products, unlimited entries + submissions.
+- Excluded in v1: AI-summarised changelogs, customer-segment-targeted announcements, native mobile widget.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens. Default visual: a single founder dashboard — the changelog composer on the left, the feedback inbox in the centre, the "you are affected" rules on the right. The in-app widget is a minimal bell icon. No marketing-site chrome; the product is the bell.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The in-app widget must add less than 20KB to the host app's bundle.
+- The widget must work without cookies (privacy-respecting by default).
+- The founder's dashboard must not require the founder to set up an account on every host app; one account, many apps.
