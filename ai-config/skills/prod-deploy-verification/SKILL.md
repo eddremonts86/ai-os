@@ -14,6 +14,27 @@ Production deploys fail for the same 12 reasons. Detecting them EARLY avoids:
 - Broken DB migrations
 - Leaked secrets
 
+## When the laptop and CI disagree, CI is right
+
+A local gate can go green on a state CI does not have: a warm `tsc` result, an artefact from an
+earlier run, a file that exists on this machine and in no checkout. A clean CI checkout has none of
+that, which is the entire reason it is worth running.
+
+The failure this comes from: a pre-push hook failed `typecheck`, then the same command passed locally
+twice in a row, so the first failure got written off as flaky. It was not — CI failed on it again with
+the real message (`TS7016`, a missing declaration file), and the two local greens were the wrong
+answer. Nearly an hour went to trusting the convenient result.
+
+- A gate that fails once and then passes with no change in between has **not** been explained. Get
+  the actual error before deciding it was noise.
+- Do not report a local green as evidence for something CI is about to check. Report it as "local
+  green, CI pending".
+- When they disagree, the clean checkout wins. Reproduce CI's conditions rather than re-running yours
+  until it agrees with you.
+
+The same applies to a test suite: a failure you cannot reproduce may be a real ordering or pollution
+bug, or the repository moving under you — check `git log` before concluding "flaky".
+
 ## The 12 checks (execution order)
 
 ### 1. **lockfile** — consistent package manager
@@ -308,6 +329,72 @@ your seeds (`if existing rows already have the new value, skip`).
 tells you the migration worked. If the "after" is still non-zero, the
 JOIN missed rows (typo, wrong column name, NULL in the source). Repeat
 until the count is 0.
+
+### A backfill that loops must assert it is making progress
+
+When the backfill is a script draining a set in batches — "select the rows that still need it,
+fix them, repeat" — the loop's exit condition is that the write stops matching the predicate
+that selected it. If the write does not do that, the loop never ends, and how it fails is the
+problem: not an error, but a process that grows until the OOM killer takes it, with nothing in
+the output pointing at the cause.
+
+Make the invariant explicit:
+
+```js
+let before = await remaining()
+for (;;) {
+  const rows = await selectBatch()
+  if (rows.length === 0) break
+  for (const row of rows) await fix(row)
+
+  const after = await remaining()
+  if (after >= before) {
+    throw new Error(`fixed ${rows.length} rows and ${after} still match (was ${before}) — the write does not satisfy the predicate that selected it`)
+  }
+  before = after
+}
+```
+
+Guard the preconditions before opening the connection, too. If the transform is a no-op when
+some environment variable is missing, every row stays selected and you get the same hang — refuse
+up front with a message instead of discovering it as a crash twenty minutes later.
+
+### `JSON.stringify` into a `jsonb` parameter encodes it twice
+
+The bug that produced exactly that hang, with `postgres.js`:
+
+```js
+await sql.unsafe(`UPDATE t SET col = $1::jsonb WHERE id = $2`,
+  [JSON.stringify(value), id])   // ❌ the driver serialises the string it was handed
+                                 //    the column ends up holding a JSON *string* whose text is an object
+                                 //    jsonb_exists(col,'k') finds no keys, and the predicate keeps matching
+
+await sql.unsafe(`UPDATE t SET col = $1 WHERE id = $2`,
+  [sql.json(value), id])         // ✅ pass the object
+```
+
+It is invisible in a status check — the UPDATE reports one row affected either time. Read a row
+back and assert its **shape**, not just that the write happened:
+
+```sql
+SELECT jsonb_typeof(col) FROM t LIMIT 1;   -- 'object', not 'string'
+```
+
+### Prove a data script against a throwaway database before production
+
+A one-shot script that rewrites rows deserves a rehearsal, and it costs about a minute:
+
+```bash
+docker run -d --rm --name probe -e POSTGRES_PASSWORD=probe -e POSTGRES_DB=probe \
+  -p 55432:5432 postgres:18-alpine
+# create the tables, seed rows in BOTH states — the ones needing the fix and the ones already fixed
+DATABASE_MIGRATION_URL=postgres://postgres:probe@localhost:55432/probe node scripts/db/thing.mjs
+docker stop probe
+```
+
+Seeding both states is the point: it proves the script fixes what it should **and leaves alone
+what it should not**, which a production run cannot tell you afterwards. Then run it twice and
+assert the second run is a no-op. Both bugs above were found this way, before touching real data.
 
 ## Manual pre-deploy checklist
 
