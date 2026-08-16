@@ -1,36 +1,38 @@
 ---
+tags: ["saas", "dev-tools", "ai-agents", "code-review"]
+tech: ["Next.js", "TypeScript", "Supabase", "Cloudflare R2", "Stripe", "Node.js"]
 id: "678"
 slug: i-built-a-small-tool-for-keeping-the-team-in-sync-while
 title: I built a small tool for keeping the team in sync while using coding agents
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpto26/i_built_a_small_tool_for_keeping_the_team_in_sync/"
 category: saas
 date: "2026-08-16"
----
-# I built a small tool for keeping the team in sync while using coding agents
+---## Phase 0: Scaffold
 
-## Phase 0: Scaffold
-
-- [ ] Crear carpeta del proyecto en `apps/`
-- [ ] Inicializar repo git
-- [ ] Copiar `edd-app-template` → `apps/678-i-built-a-small-tool-for-keeping-the-team-in-sync-while/`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Create `apps/678-i-built-a-small-tool-for-keeping-the-team-in-sync-while/` (Next.js + TypeScript)
+- [ ] Initialize git with `.gitignore` excluding CLI build artifacts
+- [ ] Write SPEC.md and the matching DESIGN.md tokens (review-surface visual identity)
+- [ ] Build the CLI hook skeleton (Bash + Node.js binary) and the `curl | bash` install script
+- [ ] Provision Supabase: auth, the plan store, the review-thread store, the audit log
+- [ ] Set up the hash-chained log-entry writer (tamper-evident)
+- [ ] Wire Cloudflare R2 for diff storage and Stripe in test mode
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] CLI hook (Bash + Node.js binary) with a single `curl | bash` install
+- [ ] Per-team registration: per-team API key, per-team workspace
+- [ ] Plan store (Supabase: plan body, target agent, target file, timestamp)
+- [ ] Review UI: list of pending plans, per-plan thread, approve / request-changes verdict
+- [ ] Audit log: plan → review → implementation diff → reviewer → timestamp
+- [ ] Hash-chained log entries (tamper-evident; SHA-256 chain with per-essay keys)
+- [ ] Cloudflare R2 for diff storage with signed URLs
+- [ ] Stripe paywall (free / $19 per-seat) + Slack notification integration
 
 ## Phase 2: Deploy
 
-- [ ] Crear repo en GitHub
-- [ ] Desplegar a Coolify
-- [ ] Verificar en producción
-
----
-
-_Lúa generó este análisis automáticamente el 2026-08-16_
+- [ ] Coolify deployment
+- [ ] 50-team closed beta via r/ClaudeCode and r/Codex
+- [ ] Post-mortem at week 10
