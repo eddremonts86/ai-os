@@ -16,7 +16,6 @@ scores:
   fun: 5
 tech: [web portal, bench-routing layer, NDA vault, client-file knowledge base, pause/resume subscription billing]
 ---
-
 # Trying to figure out if agencies would actually pay for this or if I'm solving a problem that doesn't exist
 
 ## Tech Stack
