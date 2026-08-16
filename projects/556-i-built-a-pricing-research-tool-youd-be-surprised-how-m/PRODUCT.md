@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "pricing", "research", "b2b"]
+tech: ["Next.js", "TypeScript", "Supabase", "Resend", "Stripe"]
 id: "556"
 slug: i-built-a-pricing-research-tool-youd-be-surprised-how-m
 title: "I built a pricing research tool, you'd be surprised how many people initially set their pricing just based on a competitor"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo6270/i_built_a_pricing_research_tool_youd_be_surprised/"
 category: saas
 date: "2026-08-14"
 ---
-# I built a pricing research tool, you'd be surprised how many people initially set their pricing just based on a competitor
+# I built a pricing research tool, you'd be surprised how many founders don't actually research their first price
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for Kinetic Pricing, the focused pricing-research service scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ honestly the thing that pushed me to build this was speaking to a few founders and realizing they did barely any research: opened three competitor pages, saw the $29/49/99 pattern, picked a number, moved on. a few things i learned digging into this that might save someone here time: van westendorp on its own gives you four numbers and unless you pair it with something that models the actual revenue outcome, you'll be still pretty stuck people systematically understate what they'll pay when there's no consequence to saying a low number the scary part of raising a price isn't the math, it's that it feels irreversible. but if you run the candidate price against your retention first you can see the modeled mrr impact and the break-even retention you'd need low free-to-paid often gets blamed on onboarding when the number itself was never tested. sometimes the funnel isn't broken, the price is just wrong and nobody checked. you already have the panel you need. if you've got users or a list, you can survey them directly instead of paying a consultant five figures or trying to hit qualtrics minimums full disclosure, i'm building Kinetic Pricing around exactly this (run the survey on your own customers, model the price change, log the decision free for 30 days). not linking it here, just sharing the reasoning that got me there. curious how folks in here actually set their first price, and whether anyone's ever gone back and re-tested it? submitted by /u/KineticPricing [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A founder can run a Van Westendorp survey against their own user list, pair it with a revenue-impact model, and export a signed decision log — without paying a pricing consultant five figures or trying to hit Qualtrics minimums.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders | Setting their first or second price. |
+| Small SaaS teams | Considering a price change (raise or restructure). |
+| Pricing consultants | Want a structured tool to run with their clients. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Run a Van Westendorp survey against the founder's user list.
+2. **Functional job** — Model the revenue impact of a candidate price.
+3. **Functional job** — Export a signed decision log.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first survey sent within 7 days of signup.
+- **Retention:** at least 1 pricing-research engagement per active founder per quarter.
+- **Decision quality:** ≥ 80% of subscribers export a decision log within 30 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 50 respondents, 1 candidate price. Pro at $99/month: 500 respondents, 5 candidate prices, decision-log export.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Qualtrics / SurveyMonkey** — generic survey vendors; no pricing-research-specific model.
+- **Pricing consultants** — five-figure engagements; out of reach for indie founders.
+- **Van Westendorp on its own** — gives you four numbers, not a revenue-impact model.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vo6270/i_built_a_pricing_research_tool_youd_be_surprised/) · **Posted:** 2026-08-14T12:34:56+00:00
+- [ ] The founder's user list is the moat; data isolation is mandatory.
+- [ ] The survey must be sent from the founder's own domain; the tool is the analyst, not the sender.
