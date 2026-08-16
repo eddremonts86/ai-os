@@ -1,50 +1,56 @@
 ---
+tags: ["saas", "developer-tools", "ai-agents", "knowledge-management"]
+tech: ["Node.js", "TypeScript", "SQLite", "FTS5", "Model Context Protocol", "GitHub API"]
 id: "540"
 slug: does-this-problem-actually-exist-for-people-using-codin
 title: Does this problem actually exist for people using coding agents daily?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voa7mx/does_this_problem_actually_exist_for_people_using/"
 category: saas
 date: "2026-08-14"
 ---
-# Does this problem actually exist for people using coding agents daily?
+# Does this problem actually exist for people using coding agents
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for `repobrain`, the project-memory CLI scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I’ve been using Claude Code / Cursor a lot and keep hitting the same issue. Agents (and new teammates) constantly re-ask or rediscover things like: Why did we reject approach X last month? What are our actual testing / error handling conventions? Why is this function written this way? Important decisions live in Slack threads, closed PRs, or someone’s head. Once the context is gone, the agent just invents something generic or repeats old mistakes. I’m thinking of building a small CLI tool that acts as persistent project memory. You run something like repobrain init once. It indexes git history, PR descriptions/comments, and optionally Slack/Notion. It builds a living store of decisions, rejected approaches, conventions, and architecture notes. Then both humans and agents can query it: repobrain query "what did we decide about error handling in payments?" Agents can call it via CLI, REST, or MCP before acting. It can also suggest new decision entries from recent PRs for human confirmation. The idea is that this becomes a durable, project-specific brain. Not another chat interface. If it disappeared, every agent session and every new hire would feel the loss. Questions for people who actually use agents: Do you feel this pain regularly, or is it rare? Would you install and use a CLI like this, or would it feel like extra work? What would make this actually sticky for you vs something you try once and forget? Would you pay for cloud sync / team sharing, or is local-only enough? Honest feedback appreciated, especially the “this is useless because…” kind. submitted by /u/letsrediit [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A coding agent (or a new teammate) can call `repobrain` before acting and get back the project's actual decisions, conventions, and rejected approaches — instead of inventing something generic that contradicts last month's PR.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Engineers using Claude Code / Cursor daily | Agents keep re-discovering decisions that already exist. |
+| Tech leads onboarding new engineers | Want the project's history to survive the Slack scrollback. |
+| Open-source maintainers | Want a public, queryable memory of design decisions. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Query the project's memory before writing code.
+2. **Functional job** — Confirm or correct a suggested memory entry.
+3. **Emotional job** — Stop watching the agent repeat last month's mistake.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first `repobrain init` completes and the first MCP query returns a relevant result within 7 days.
+- **Stickiness:** at least 10 MCP queries / week per active repo.
+- **Decision coverage:** ≥ 70% of decisions referenced by agents are matched against a memory entry (vs invented).
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free: local-only, single repo, single user. Pro at $19/seat/month: cloud sync, multi-repo, team workspace, Slack/Notion indexing.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Greptile / Cursor's codebase search** — search, not memory; no decision context.
+- **Notion / Confluence** — knowledge bases, but disconnected from the agent's runtime.
+- **Hand-written AGENTS.md / CLAUDE.md** — manual, stale, and rarely read.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1voa7mx/does_this_problem_actually_exist_for_people_using/) · **Posted:** 2026-08-14T15:21:33+00:00
+- [ ] The pain must be validated: the source poster is asking if the problem is real.
+- [ ] The suggestion engine must never auto-write; every entry is human-confirmed.
+- [ ] Cloud sync changes the privacy story; the local-first v1 is the honest bet.

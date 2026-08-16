@@ -1,37 +1,48 @@
 ---
+tags: ["saas", "ai", "video-generation", "ugc", "marketing"]
+tech: ["Next.js", "TypeScript", "Veo", "Topaz", "Cloudflare R2", "Cloudflare Workers", "Stripe"]
 id: "546"
 slug: i-spent-200-testing-ugc-ad-tools-but-they-expected-engi
 title: "I spent $200 testing UGC ad tools, but they expected engineering-level prompting"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo9490/i_spent_200_testing_ugc_ad_tools_but_they/"
 category: saas
 date: "2026-08-14"
 ---
-# I spent $200 testing UGC ad tools, but they expected engineering-level prompting
+# I spent $200 testing UGC ad tools but they expected engineering-grade prompting
 
 ## Problem
- I was trying to create UGC-style videos and product ads for my SaaS, so I started testing a few of the popular AI video tools. I tried Creatify, Runway and ElevenLabs. Spent around $100 on Creatify and another $100 on Runway. And honestly, the output can be really good. But I kept running into a weird problem. Getting the AI to understand exactly what I wanted often felt like a job in itself. Creatify's agent workflow was actually impressive. It could plan scenes, generate them, detect when something went wrong and auto-heal the scene. But at one point it generated a script that literally mentioned "Creatify" when I was making an ad for my own product. Their support basically told me to write a better prompt. And that's when I started thinking... Why does creating a simple product ad sometimes require me to write a 500-word prompt describing exactly how every scene, character, voice and product interaction should work? AI these are smart enough to handle that right? I'm a software engineer, for me writing an ad script or even coming up with a scene script feels like a distant dream. Runway solved another problem I had. I could actually see the creative process and visual progress instead of just waiting for an agent to finish everything. But then I ran into the other side of the problem. Less customization in the agent workflow, and the costs start getting painful once you use the more powerful models. So eventually I did the most predictable thing a developer could do. I built my own. I already had a creative studio planned inside my GTM product, so I extended it to handle UGC and product ads. My current setup is Veo 3.1 Lite + Flash for generation and Topaz for upscaling. The surprising part? I can get pretty close to the quality I was getting from the $200 worth of tools for roughly $10 in generation costs. Now I'm wondering if there's actually a product here. A simple creative studio where you don't need engineering-level prompting, where you can actually see what the agent is doing, and where you have enough control to fix things without fighting the AI. This also works when you have plans to creating multiple UGC or other form of videos, cost becomes a huge concern. $200 for 2 videos sounds super crazy! I won't have any room for product development if that goes on. But I'm already building in the ridiculously crowded GTM space, so I'm not sure I need another SaaS to keep me busy. Would you actually use something like this? Or is this just another classic founder story of "I couldn't find the exact tool I wanted, so I built it myself"? submitted by /u/Able_Green9662 [link] [comments]
 
----
+A SaaS founder with a creative studio planned inside their GTM product tried to create UGC-style videos and product ads. Tested Creatify (~$100) and Runway (~$100); output was good but the prompt-engineering burden was brutal — getting the AI to understand exactly what the founder wanted felt like a job in itself. Creatify's agent generated a script that literally mentioned "Creatify" when making an ad for the founder's product. Runway solved another problem (visibility into the creative process) but cost escalated on the more powerful models. The founder built their own with Veo 3.1 Lite + Flash for generation and Topaz for upscaling, achieving similar quality for ~$10 in generation cost per batch. They are wondering if there is actually a product here — a simple creative studio where you do not need engineering-grade prompting, you can see what the agent is doing, and you have enough control to fix things. The implicit product: a focused UGC / product-ad creative studio with visible intermediate state, prompt-free control, and predictable cost.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define the MVP scope for a UGC + product-ad creative studio that uses Veo + Topaz (or similar) under the hood, exposes a non-prompt UI for the per-shot controls (lighting, surface, angle), and shows the agent's intermediate state so the user can intervene before the final render.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Primary:** solo SaaS founders and indie hackers running paid acquisition who need to produce UGC ads weekly without a video editor or an engineering-grade prompt.
+- **Secondary:** small marketing teams at sub-50-person SaaS companies running product-ad creative in-house.
+- **Tertiary:** agencies preparing product-ad creative for clients.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Per-shot UI controls: lighting (relight), surface (replace), angle (recompose), voiceover script.
+- Visible agent state: per-shot progress, the current frame, the next frame, with a "pause and edit" affordance.
+- Brand-asset upload: logo, palette, product packshots used as references.
+- Cost estimate shown before render; hard cap at the per-render setting.
+- Render queue: 1080p MP4 output, vertical + horizontal + square variants.
+- Free tier: 2 renders/month at 720p with watermark. Pro at $49/month: 20 renders, 1080p, no watermark, brand asset library.
+- Excluded in v1: script writing, A/B test automation, platform-specific format optimisations, multi-language voiceover.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens. Default visual: a single creative surface — per-shot controls on the left, the visible agent state in the centre, the render queue on the right. No marketing-site chrome; the product is the shot.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Per-render cost must stay under $2.00 at default settings; runaway Veo / Topaz usage will eat margin.
+- The visible agent state must refresh at least every 2 seconds; a hidden agent is the failure mode the user is escaping.
+- Brand-asset references must not be uploaded to a third-party training set; BYOK or per-tenant isolation is the safety net.

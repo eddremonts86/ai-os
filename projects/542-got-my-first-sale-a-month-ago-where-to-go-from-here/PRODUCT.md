@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "b2b", "food", "inventory"]
+tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "542"
 slug: got-my-first-sale-a-month-ago-where-to-go-from-here
 title: "Got my first sale a month ago, where to go from here..?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo9tvt/got_my_first_sale_a_month_ago_where_to_go_from/"
 category: saas
 date: "2026-08-14"
 ---
-# Got my first sale a month ago, where to go from here..?
+# Got my first sale a month ago, where to go from here
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for CafeTally, the cafe-operations tool scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Hey everyone, I’m Sean. I own a cafe and recently launched CafeTally, a tool that helps cafes manage inventory, recipes, supplier costs, and margins without relying on spreadsheets. I’m happy I got the first sale, but it also made me realize that one sale does not mean a second one is coming. I’m considering spending a little on marketing and testing landing page variants. The product can solve a few different problems, so each page would lead with a different pain point, such as reducing stockouts, making inventory counts easier, or understanding recipe costs and margins. I’d send traffic to each version and see which message gets the most interest before putting more money behind it. Another thing I’m struggling with is that I’m holding weekly product meetings to make sure the product works the way I want it to. I know that does not scale, but I’m not sure what I should replace it with at this stage. For anyone who has been here before, is testing landing-page messaging a good next step after a first sale? What did you focus on to find a repeatable path to the second, third, and tenth customer? submitted by /u/kingoftheapes [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An independent cafe owner can manage inventory, recipes, supplier costs, and margins from a phone, without spreadsheets, without a daily sit-down at the desk.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Independent cafe owners | Spreadsheets do not survive a 12-hour day on the floor. |
+| Cafe managers | Need a tool the owner will adopt; today's spreadsheets are too painful. |
+| Ghost-kitchen operators | Same inventory and recipe-cost problem, smaller footprint. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Count stock during the day, from a phone.
+2. **Functional job** — See recipe cost and margin without leaving the kitchen.
+3. **Emotional job** — Stop worrying that the cafe is bleeding margin on a recipe the owner never costed.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first stock count completed within 7 days of signup.
+- **Retention:** at least 3 stock counts / week per active cafe after month 1.
+- **Conversion:** ≥ 4% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 cafe, 50 stock counts / month. Pro at $29/month: unlimited counts, recipes, supplier list, weekly margin report. Multi-location at $79/month per additional location.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **MarketMan / BlueCart** — restaurant inventory; built for chains, too complex for a single cafe.
+- **Spreadsheets + pen-and-paper** — what most cafes do today.
+- **POS add-ons (Square, Toast)** — cover inventory but at a higher total cost and POS lock-in.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vo9tvt/got_my_first_sale_a_month_ago_where_to_go_from/) · **Posted:** 2026-08-14T15:07:10+00:00
+- [ ] The founder must replace the weekly product meetings with a structured feedback loop before scaling.
+- [ ] Multi-location is the obvious upsell but is excluded from v1 by design.

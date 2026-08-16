@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "growth", "reddit", "indie"]
+tech: ["Next.js", "TypeScript", "Reddit API", "Anthropic Claude", "Supabase", "Stripe"]
 id: "544"
 slug: paid-ads-got-us-14-inactive-users-posting-organically-g
 title: Paid ads got us 14 inactive users. Posting organically got us 800. Here’s what changed
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo9mo7/paid_ads_got_us_14_inactive_users_posting/"
 category: saas
 date: "2026-08-14"
 ---
-# Paid ads got us 14 inactive users. Posting organically got us 800. Here’s what changed
+# Paid ads got us 14 inactive users, posting organically got us 100
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the organic-Reddit-launch playbook scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Once upon a time, I had a lot of spare time while in school and wanted to do something, a project that would grow and be able to sustain itself. Many failures later, me and my best friend joined forces, got burned out, and quit. A year later, we realized that we could build random ideas that sounded good, but never got any users on anything we made, and that we would overcome this, for everyone. With 0 users and no plan, we built a minimum viable product and bought ads on Reddit and Youtube, spent hundreds, and got 14 users to verify their email, none of whom were active. Then we kind of reset, realized it wasn’t working, cancelled our ad campaigns, and decided to post on Reddit (and Youtube/Instagram here and there). We looked at where other people posted to see where it was allowed, kept editing to see what worked, and more importantly kept posting. It was free, and in a week we got 100 users. One post happened to blow up, but t only did because of all the ones that didn’t before, that helped build confidence to keep going, and hone a message to clearly articulate what exactly we did and how we helped. A few people made purchases, and while that seemed lucky to it was a result of everything that happened before. Right now, we have a lot to figure out: we don’t know how to get more people to buy, why we got a recent influx, or what the future looks like. But we do know that we will keep going, keep posting, keep iterating, and are always open to advice. submitted by /u/herr_brandon [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An indie SaaS founder can find the relevant subreddits, draft posts that fit each room, and run a 3-5 posts/week cadence across 4-6 subreddits — without auto-posting, without burning money on ads that bring inactive signups.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders (first 6 months) | Have a working product but no users and no marketing budget. |
+| Solo developers with side projects | Want first 100 users without paying for ads. |
+| Bootstrapped marketing teams | Need a structured Reddit-launch workflow. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Find the relevant subreddits and their self-promotion rules.
+2. **Functional job** — Draft a post that fits each room.
+3. **Functional job** — Run a 3-5 posts/week cadence across 4-6 subreddits.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first post drafted and scheduled within 7 days of signup.
+- **Retention:** at least 3 posts/week per active founder.
+- **Conversion:** ≥ 20% of founders reach 100 users within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 3 subreddits tracked, 1 post/week. Pro at $29/month: unlimited subreddits, weekly cadence, weekly review report.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Manual posting + a notes app** — what most founders do today.
+- **Buffer / Hootsuite** — generic schedulers; do not handle subreddit rules.
+- **IndieHackers / HN launch posts** — one-shot, no cadence.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vo9mo7/paid_ads_got_us_14_inactive_users_posting/) · **Posted:** 2026-08-14T15:00:00+00:00
+- [ ] The tool must never auto-post; auto-posting violates every subreddit's rules.
+- [ ] Subreddit rules change; the parser must re-fetch on every visit.
