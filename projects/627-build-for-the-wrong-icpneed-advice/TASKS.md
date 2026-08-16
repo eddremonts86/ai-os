@@ -5,7 +5,7 @@ title: Build for the wrong ICP…need advice
 status: enriched
 source:
   name: Reddit
-  url: "https://www.reddit.com/r/SaaS/comments/1vozd65/build_for_the_wrong_icpneed-advice/"
+  url: "https://www.reddit.com/r/SaaS/comments/1vozd65/build_for_the_wrong_icpneed_advice/"
   captured: "2026-08-15"
 category: saas
 date: "2026-08-15"
@@ -16,7 +16,6 @@ scores:
   fun: 4
 tech: [Behavioural analytics, segmentation rules, LLM-generated outreach]
 ---
-
 # Build for the wrong ICP…need advice
 
 ## Phase 0: Scaffold

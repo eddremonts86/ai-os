@@ -4,7 +4,7 @@ The daily loop that keeps [plans.eduardoinerarte.dk](https://plans.eduardoinerar
 fed without anyone touching it.
 
 ```
-scrape → rank → format → [agent enriches a slice] → index + gate + tests → commit → dev → main → deploy
+scrape → intake → rank → format → [agent authors a slice] → index + gate + tests → commit → dev → main → deploy
 ```
 
 Driven by the Hermes cron job `plans-pipeline` (`~/.hermes/cron/jobs.json`, every **4 h**).
@@ -30,6 +30,7 @@ runs git, never decides what ships, and cannot merge anything.
 | Phase | What it does |
 |---|---|
 | `scrape` | Runs the ProblemHunt/Reddit scraper. Fails loudly with the tail of `last-run.log`. |
+| `intake` | Materialises approved community submissions into captures. Runs before `prepare` so a submission ingested on one tick is authored in the same pass. |
 | `prepare` | `ai-os plans format --write`, then picks the slice → `outputs/plans-pipeline/slice.json`. Exit **3** means nothing to enrich. |
 | `verify` | Index, `ai-os plans check --publishable`, formatter tests, explorer build, parser invariants. Non-zero means **do not ship**. |
 | `ship` | Commit → PR to `dev` → merge → PR `dev` → `main` → merge. Deploy triggers itself from the push. |
@@ -92,6 +93,24 @@ The pipeline merges to production unattended, so it is built to refuse rather th
   skip this tick; a dead one means reclaim, whatever the clock says.
 - **Green checks before every merge.** A missing check counts as a failure, not as
   permission.
+
+## Community submissions
+
+A submission is a capture from a second source, not a second kind of thing. The form on the
+site opens a GitHub issue, a human labels it `approved`, and `intake` writes it into
+`projects/` as a `draft` with `source.name: web`. Everything after that is the loop above,
+unchanged, and the gate applies the same 11 rules regardless of where a capture came from.
+
+Two gates stand between a submission and the site, and neither is sufficient alone: a person
+approves it, and the gate certifies it. There is no automatic approval.
+
+**The trust boundary.** Submission text is written by strangers and read by an agent. The
+split is that the agent classifies and `intake.mjs` writes: no value from an issue ever
+becomes a path, an id, a status or a command. Keep it that way when extending this.
+
+`intake` is loud about approved submissions it could not ingest, because an approved issue
+that never becomes a plan is invisible otherwise, and a queue that stops draining looks
+exactly like an empty one.
 
 ## Running it by hand
 

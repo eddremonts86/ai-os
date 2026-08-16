@@ -21,12 +21,7 @@ _Based on source brief:_ I’m looking to create systems around getting customer
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Startup founders | _[What pain they feel]_
-| _[How this solves it]_ |
-| Early-stage teams | _[What pain they feel]_
-| _[How this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 

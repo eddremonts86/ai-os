@@ -16,7 +16,6 @@ scores:
   fun: 4
 tech: [Behavioural analytics, segmentation rules, LLM-generated outreach]
 ---
-
 # Build for the wrong ICP…need advice
 
 ## Tech Stack
