@@ -1,36 +1,38 @@
 ---
+tags: ["saas", "legal", "ai", "b2b"]
+tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "623"
 slug: need-help-with-outreach-at-a-quotlocalquot-ai-law-saas-
 title: "need help with outreach at a \"local\" AI law SaaS (i will not promote)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp05qv/need_help_with_outreach_at_a_local_ai_law_saas_i/"
 category: saas
 date: "2026-08-15"
 ---
-# need help with outreach at a "local" AI law SaaS (i will not promote)
+# Need help with outreach at a "local" AI law SaaS
 
 ## Phase 0: Scaffold
 
-- [ ] Crear carpeta del proyecto en `apps/`
-- [ ] Inicializar repo git
-- [ ] Copiar `edd-app-template` → `apps/623-need-help-with-outreach-at-a-quotlocalquot-ai-law-saas-/`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Create `apps/623-need-help-with-outreach-at-a-quotlocalquot-ai-law-saas-/` (Next.js + TypeScript)
+- [ ] Initialize git with `.gitignore` excluding per-founder outreach data
+- [ ] Write SPEC.md (this document) and the matching DESIGN.md tokens
+- [ ] Provision Supabase: auth, weekly tracker, per-channel playbook
+- [ ] Document the founder's existing AI-lawyer platform (no code changes)
+- [ ] Wire Stripe for the Pro tier ($49/month)
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] 5-channel outreach playbook: LinkedIn, industry events, lawyer-association partnerships, content marketing, referral programme
+- [ ] Per-channel playbook: weekly outreach volume, expected response rate, expected conversion
+- [ ] Weekly outreach tracker
+- [ ] Free tier: playbook + tracker
+- [ ] Stripe paywall: Pro at $49/month (1:1 outreach coaching)
 
 ## Phase 2: Deploy
 
-- [ ] Crear repo en GitHub
-- [ ] Desplegar a Coolify
-- [ ] Verificar en producción
-
----
-
-_Lúa generó este análisis automáticamente el 2026-08-15_
+- [ ] Coolify deployment
+- [ ] First 30 paying founders via the founder's network
+- [ ] 90-day per-channel conversion audit
+- [ ] Post-mortem at week 7

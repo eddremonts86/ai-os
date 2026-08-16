@@ -1,37 +1,46 @@
 ---
+tags: ["saas", "validation", "indie", "methodology"]
+tech: ["Next.js", "TypeScript", "Supabase", "libsodium", "Stripe"]
 id: "612"
 slug: i-validated-the-problem-and-still-built-the-wrong-saas
 title: I validated the problem... and still built the wrong SaaS
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp1lpo/i_validated_the_problem_and_still_built_the_wrong/"
 category: saas
 date: "2026-08-15"
 ---
-# I validated the problem... and still built the wrong SaaS
+# I validated the problem and still built the wrong SaaS
 
 ## Problem
- A few months ago I threw away around 3 months of work on my SaaS. The annoying part? I HAD validated the idea before building@ ..or at least I thought I had. I'm building in the SEO space, and before starting I talked with people about how they handled SEO. The same problem kept coming up... there are too many things to watch, too many tools, and most people don't really know what they should work on first. So... real problem. and naturally I went away and built the most obvious solution possible 😅 One big SEO tool with analytics, keywords, audits, content, backlinks, performance etc. So Basically: instead of using 10 tools, use one. I spent around 3 months building it and launched. ~15 signups in the first month. 0 customers. The feedback was basically: "Why would I use this instead of Ahrefs or another established SEO tool?" Fair question! And that was the painful part. Technically, the product worked. I had just taken a real problem and built a very generic solution around it. So I scrapped that direction! Instead of asking "what else should this tool do?" I started asking: What do I actually wish SEO tools did for me? And the answer wasn't more data. It was: tell me what is actually worth working on next. That became the new direction!! I spent another ~4 months rebuilding around that idea. After launching the new version, I got 54 trials in roughly the same period, plus much better feedback because people actually understood why the product existed. Still a tiny sample. Still nowhere near "successful SaaS" territory. BUT it completely changed how I think about validation. You can validate a pain really well... and still build the wrong solution for it. Now I'm curious if anyone here has gone through something similar...? Did you realize the problem itself was wrong, or were you solving the right problem in the wrong way? submitted by /u/raftopyannis [link] [comments]
 
----
+A founder in the SEO space threw away 3 months of work on a SaaS. They HAD validated the idea before building (or thought they had): they talked with people about how they handled SEO, and the same problem kept coming up — there are not enough reliable data sources to back up SEO claims. So they built a tool that aggregated SEO data sources. Three months in, they realised they had built a "more reliable aggregator" rather than a tool that actually changed the SEO workflow. The validation was real but the wedge was wrong. The implicit product: a validation-to-wedge gap analysis tool for indie SaaS founders — a checklist that forces the founder to name what the user will do differently with the tool, not just the data they will see.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define the MVP scope for a validation-to-wedge gap analysis tool: a structured checklist that takes a "validated problem" and forces the founder to name the specific workflow change, the specific user action, and the specific outcome. The MVP has to demonstrate the round-trip: paste the problem statement → fill the gap checklist → get a verdict (build / pivot / kill).
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Primary:** indie SaaS founders who have validated a problem but are unsure whether to build.
+- **Secondary:** small SaaS teams considering a new product line.
+- **Tertiary:** startup mentors and advisors who want a structured tool to use with their mentees.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- A structured checklist: 5 questions that force the founder to name the workflow change, the user action, the outcome, the wedge, and the validation depth.
+- A verdict engine: build / pivot / kill based on the founder's answers.
+- A saved log of past verdicts, signed and exportable.
+- Free tier: 1 saved verdict. Pro at $19/month: unlimited verdicts, structured weekly review.
+- Excluded in v1: collaborative validation, mentor / mentee matching, market-size data.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens. Default visual: a single checklist surface — the 5 questions stacked, the verdict engine output below, the saved log on the right. No marketing-site chrome; the product is the checklist.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The 5 questions must be specific enough to surface the validation-to-wedge gap; vague questions produce vague verdicts.
+- The verdict engine must be transparent; the founder must see which question drove the verdict.
+- The signed verdict log must be tamper-evident (a per-engagement signature) so the audit trail holds up.

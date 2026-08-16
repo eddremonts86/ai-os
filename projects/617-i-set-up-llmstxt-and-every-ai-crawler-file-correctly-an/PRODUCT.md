@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "ai", "seo", "geo"]
+tech: ["Next.js", "TypeScript", "OpenAI API", "Anthropic API", "Perplexity API", "Google API", "Supabase", "Stripe"]
 id: "617"
 slug: i-set-up-llmstxt-and-every-ai-crawler-file-correctly-an
 title: I set up llms.txt and every AI crawler file correctly and got zero visibility. The problem was the domain being 3 days old
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp0suj/i_set_up_llmstxt_and_every_ai_crawler_file/"
 category: saas
 date: "2026-08-15"
 ---
-# I set up llms.txt and every AI crawler file correctly and got zero visibility. The problem was the domain being 3 days old
+# I set up llms.txt and every AI crawler file correctly and AI assistants still don't see my site
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the AI-retrieval-index checker scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Launched a site three days ago and wanted to know whether AI assistants could see it. Set up llms.txt, robots with 19 named AI crawler tokens, clean markup, the whole checklist. Then asked a few assistants about the site and got nothing. Assumed something was blocking the crawlers. Spent a while checking that, and it was all fine. Fetched the live domain as eight different user agents. Every one of them got the identical visible text a human gets. No redirects, no challenge pages, no bot walls. Files served with correct content types. The proxy wasn't touching anything. 4,634 words of real content on the homepage, no cookies set on seven different paths. Technically nothing was wrong. The site just wasn't in any index yet, because it's three days old. Assistants answer either from training data or from a search index, and a domain that new is in neither. The second thing I got wrong, which I think is the more useful one: llms.txt doesn't bring anyone. It's a file that helps an assistant that already arrived. It has no discovery function at all. What gets you crawled is other sites linking to you, same as it's always been. I had built the welcome mat and no road. If you launched recently and set this up, how long did it take before assistants could actually find you? Trying to work out whether this is a two week thing or a two month thing. submitted by /u/SSShken [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An indie SaaS founder who has set up llms.txt can probe whether AI assistants actually see their site — and get a concrete action list to close the gap between "crawlers can reach" and "assistant answers from".
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders | Set up llms.txt and want to know if AI assistants see them. |
+| Content marketers | Optimising for AI-driven discovery. |
+| SEO agencies | Adding AI-retrieval to their audits. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Probe whether a site is in each AI assistant's retrieval index.
+2. **Functional job** — Get a gap analysis: in the index vs expected.
+3. **Functional job** — Get a concrete action list to close the gap.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first probe run within 7 days of signup.
+- **Retention:** at least 1 weekly monitor per active founder.
+- **Action completion:** ≥ 50% of action-list items shipped within 30 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 site, 5 probes / day. Pro at $29/month: 5 sites, 100 probes / day, weekly monitor.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Manual probes on each assistant** — what most founders do today.
+- **Generic SEO tools** — do not cover AI-retrieval specifically.
+- **llms.txt validators** — check the file, not the retrieval index.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vp0suj/i_set_up_llmstxt_and_every_ai_crawler_file/) · **Posted:** 2026-08-15T11:48:33+00:00
+- [ ] The probe cannot guarantee what the assistant will answer on a future query; the tool surfaces a probability, not a promise.
+- [ ] The action list must be specific; generic advice is the failure mode.
