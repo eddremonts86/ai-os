@@ -1,8 +1,10 @@
 ---
+tags: ["saas", "ai", "video-generation", "marketing"]
+tech: ["Next.js", "TypeScript", "Playwright", "Anthropic Claude", "Remotion", "ElevenLabs", "Cloudflare R2", "Supabase", "Stripe"]
 id: "688"
 slug: ai-keeps-missing-what-my-saas-actually-does
 title: AI keeps missing what my SaaS actually does
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vppqhm/ai_keeps_missing_what_my_saas_actually_does/"
@@ -11,40 +13,43 @@ date: "2026-08-16"
 ---
 # AI keeps missing what my SaaS actually does
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the depth-crawl SaaS demo video generator scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I built a video generator for SaaS companies. Feed it a website, it creates a demo video. Simple enough. Except the videos kept coming out wrong. The AI would scan a homepage and grab the obvious stuff. "Streamline your workflow." "Boost productivity." All the generic marketing copy that tells you nothing. But the real value? That was always hidden. A Slack integration buried in the pricing page. A customer quote about fixing their Asana problem, three clicks deep. The actual reasons people buy the product. So I built a scraper. It crawls the entire site, maps how features connect to problems, tries to figure out what the product actually solves versus what the marketing team wrote. One day it nailed it. Generated a video highlighting a Gantt chart feature as the fix for teams frustrated with Asana's limitations. That pain point was mentioned once, in a random blog post. I thought I'd cracked it. Next ten attempts? Total garbage. Generic fluff. Completely missed the point. I've tried everything. More data. Better prompts. Structured inputs. Nothing works consistently. It's like trying to teach someone to read between the lines, except they're a machine that doesn't get subtext. The problem isn't the AI itself. It's getting it to understand the gap between what a product says and what it actually does. Between marketing language and real customer problems. I keep thinking there's something obvious I'm missing. Some way to structure the data or frame the problem that would make this click. But so far, nothing. Turns out the hard part of building AI tools isn't the technology. It's teaching a machine to think like a customer instead of a copywriter. submitted by /u/vasanth7781 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A SaaS marketing team can turn their own website into a demo video in under 10 minutes — with the buried differentiators (the Slack integration, the customer quote about the Asana problem) highlighted instead of the generic "boost productivity" copy.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| SaaS marketing teams | Need demo videos for landing pages, sales decks, and social. |
+| Indie hackers and solo founders | Want a demo video without learning video editing. |
+| SaaS sales teams | Need a custom demo video per prospect. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Generate a demo video from the SaaS website.
+2. **Functional job** — Surface the buried differentiators, not the homepage copy.
+3. **Emotional job** — Stop feeling like every SaaS demo video says the same thing.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first video rendered within 7 days of install.
+- **Retention:** at least 3 videos rendered per active team per month.
+- **Quality:** ≥ 60% of generated videos are used as-is without manual editing.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 video/month, 720p, watermark. Paid at $49/month: 10 videos, 1080p, no watermark, custom branding. Enterprise at $499/month: unlimited videos, white-label, sales-team workflow.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Synthesia / HeyGen** — AI avatar-based; do not crawl the customer's site.
+- **Loom / Vidyard** — recording-based; do not crawl.
+- **Off-the-shelf AI video providers** — produce generic output; do not surface buried differentiators.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vppqhm/ai_keeps_missing_what_my_saas_actually_does/) · **Posted:** 2026-08-16T06:39:37+00:00
+- [ ] The depth-crawl + feature-to-problem mapper is the moat; if the quality regresses, the product becomes a worse Synthesia.
+- [ ] The per-video inference cost must stay under $2.00; runaway inference cost will eat the margin.

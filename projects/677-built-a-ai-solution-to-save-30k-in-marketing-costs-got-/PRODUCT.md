@@ -2,49 +2,64 @@
 id: "677"
 slug: built-a-ai-solution-to-save-30k-in-marketing-costs-got-
 title: "Built a AI solution to save $30K in marketing costs, got paid $4K instead (Proof attached)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vptqll/built_a_ai_solution_to_save_30k_in_marketing/"
+  captured: "2026-08-16"
 category: saas
 date: "2026-08-16"
+tags: [saas, ai, content-marketing, video-generation]
+scores:
+  money: 7.5
+  learn: 5.5
+  fun: 6.5
+tech: [Remotion, ElevenLabs, Next.js, TypeScript, Cloudflare R2]
 ---
 # Built a AI solution to save $30K in marketing costs, got paid $4K instead (Proof attached)
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the blog-to-video pipeline described in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ [preview.redd.it/g97vuwt0tpjh1.png…](https://preview.redd.it/g97vuwt0tpjh1.png?width=643&format=png&auto=webp&s=43735dc01be7bf6cc0a184587afc9d3b0cd19547) Here is the story, I am a agency owner who used to get clients via his technical blogs but over the years blogs were not scaling, every one had shifted to videos. So I asked a video editor how much it would cost to translate my blogs into videos, they said $300-$500 per video. I couldn't afford that much, then I looked at existing AI video providers, they used AI video models which are $3/m or $180/hr of video + they don't translate my technical content into a good explainer video. So I built Blog2Video - so far it has generated over $4K in additional revenue almost all on autopilot. - It uses remotion for the video - It takes 3 min from link/upload->video - It has eleven labs voiceover + stock footage + AI image - It uses configurable human templates to base the video on. Has a generous free tier, only costs $0.6 per video much more affordable than AI video models or video editors Link: Blog2Video submitted by /u/phicreative1997 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A content marketer or indie hacker can turn one blog post into one explainer video in under 5 minutes at a per-video cost well below the $300-500 human-editor quote and well below the $3/minute off-the-shelf AI video providers — with output that does not look generic-AI-generated.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie hackers and founders | Primary traffic source is written content; cannot afford to translate every post into a $300-500 human-edited video. |
+| B2B SaaS content marketers | Run a doc → video pipeline at scale. |
+| SEO / GEO consultants | Package a "video repurpose" upsell for clients. |
+| Solo creators | Want to publish on YouTube Shorts / TikTok / LinkedIn video without learning video editing. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Turn a blog URL or document into a 2-4 minute explainer video.
+2. **Functional job** — Produce output that does not look generic-AI-generated.
+3. **Emotional job** — Stop feeling like every SaaS explainer video looks the same.
+4. **Social job** — Look like a serious content operation without the budget of one.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first video rendered within 7 days of signup.
+- **Retention:** at least 5 videos rendered per active user per month.
+- **Cost ceiling:** ≤ $1.00 per video on default settings (ElevenLabs + image-gen + stock).
+- **Quality:** ≥ 50% of generated videos are published as-is without manual editing.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 3 videos/month at 720p with a watermark. Paid at $19/month: 20 videos, 1080p, no watermark. Pro at $49/month: 100 videos, custom templates. Business at $99/month: unlimited, white-label.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Human video editors** — $300-500 per video; the cost basis the source post is anchored against.
+- **Synthesia / HeyGen** — AI avatar-based; not blog-to-video.
+- **Off-the-shelf AI video providers** — $3/minute of generated video; generic-AI-looking output.
+- **Pictory / Lumen5** — blog-to-video; weaker on the human-style template.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vptqll/built_a_ai_solution_to_save_30k_in_marketing/) · **Posted:** 2026-08-16T10:39:20+00:00
+- [ ] Per-video cost must stay under $1.00; each pipeline stage has its own cap.
+- [ ] The configurable human-style templates are the moat; without them the product is a worse Pictory.
+- [ ] ElevenLabs voiceover is the most expensive stage; must be skippable and replaceable with BYO TTS.

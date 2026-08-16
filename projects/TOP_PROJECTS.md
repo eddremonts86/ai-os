@@ -1,10 +1,10 @@
 # TOP_PROJECTS.md — ProblemHunt ranked
 
 > Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-16.
-> Source: 478 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
+> Source: 514 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
 > Scoring blends WTP (from SPEC/PRODUCT YAML or extracted from title), B2B/recurring signals, sticky-compliance verticals, tech-stack breadth (learn), and visual/agent/creative novelty (fun).
 
-## Top 5 — Real Revenue Potential
+## Top 7 — Real Revenue Potential
 
 1. **207-a-russian-developer-built-an-app-for-nigeria-but-cant-a** — score 8.4/10
    _Cross-border payment routing for app builders in sanctioned/restricted markets_
@@ -30,7 +30,11 @@
    _Blog2Video — Remotion + ElevenLabs pipeline at $0.6/video vs $300-500 human editors_
    Founder already earned $4K on the live product: a Remotion + ElevenLabs + stock-footage pipeline that turns blog URLs into 3-minute explainer videos at ~$0.6 cost per video. The $0.6 cost basis replaces $300-500/video human editors; a $50-100/mo SaaS tier leaves ~95% gross margin. Strongest revenue proof in the batch, ties the 7.5 ceiling without displacing 564/001.
 
-## Top 6 — Learning Potential
+7. **701-built-our-own-licensing-service-instead-of-paying-per-a** — score 7.0/10
+   _coolbeans — flat-fee licensing service for downloadable software_
+   SPEC cites a concrete incumbent pain (Keygen/Cryptlex/LicenseSpring charge per active user or take a percentage), explicit flat $99/yr pricing after a free 1-product / 500-active-licence tier, and a live MIT codebase with Stripe/PayPal webhook → licence key → offline-verifiable Swift + TypeScript SDKs sharing one fixture. B2B recurring at $99/yr is the strongest pricing signal in the batch; ties the 7.0 ceiling without displacing 573.
+
+## Top 7 — Learning Potential
 
 1. **252-startups-at-the-monetization-validation-stage-have-nowh** — score 7.0/10
    _Payment-onboarding sandbox for unincorporated startups (Morocco)_
@@ -52,15 +56,15 @@
    _Planlog — agent plan coordination for dev teams using Claude/Codex_
    B2B dev-tools wedge: agents push plans to Planlog before coding, the team reviews/approves them, and the implementation result is logged alongside the plan and reviewers. Stack spans agent CLI hook integration (single `curl | bash` install), plan DSL + structured storage, approval workflow, multi-agent orchestration (Claude/Codex), notification fan-out, and audit-log persistence. Displaces 621 (6.0) at Learn #5 by tying the 6.5 ceiling.
 
-6. **621-need-brutally-honest-feedback-before-i-build-this** — score 6.0/10
-   _Design-skill Chrome extension: website → design-system spec for AI codegen_
-   Founder explicitly lists $5 / $10 / $20 / month or one-time as WTP options. Stack spans DOM/CSS extraction, design-token mapping (typography/colors/spacing/components), serialization to an LLM-consumable skill spec, and a Chrome-extension Manifest V3 surface. Broader than 583 (LLM-facing output format) but lighter on security depth.
-
 6. **583-as-a-former-cyber-security-analyst-i-noticed-multiple-s** — score 6.0/10
    _Fully-local AI-code security scanner (OWASP top 10 + cred leak + .env hygiene)_
-   Stack spans AST-based static analysis for 7 languages (PHP/JS/Python/...), taint tracking for IDOR/CSRF/SQLi/CMDi, a CI token + attested-PDF report pipeline for agency-tier clients, and a "no code leaves the box" local-first deployment model. Rare corner where the demo is a red-team diff against a generated vuln, and the security domain forces the engineer to think about trust boundaries rather than just CRUD.
+   Stack spans AST-based static analysis for 7 languages (PHP/JS/Python/...), taint tracking for IDOR/CSRF/SQLi/CMDi, a CI token + attested-PDF report pipeline for agency-tier clients, and a "no code leaves the box" local-first deployment model. Narrower in scope than 621 (single use case: downloadable-software auth) but with a deeper security-domain surface.
 
-## Top 7 — Fun to Build
+7. **701-built-our-own-licensing-service-instead-of-paying-per-a** — score 5.5/10
+   _coolbeans — Stripe/PayPal webhook → licence key → offline-verifiable SDKs (Swift + TS)_
+   Stack spans payment-gateway webhook ingestion (Stripe + PayPal), licence-key generation/emailing, offline-friendly state-fixture sync between a Swift SDK and a TypeScript SDK that share one cryptographic decision file, plus self-hosted + hosted deployment modes. Narrower than 583 (single use case: downloadable-software auth) but a clean license-crypto surface that most engineers never touch.
+
+## Top 13 — Fun to Build
 
 1. **240-the-lack-of-a-service-that-creates-hyper-personalized-g** — score 7.5/10
    _Hyper-personalized gamified English courses_
@@ -102,11 +106,23 @@
     _GridMenu — prompt-free AI food photo editor with credit packs_
     Upload a dish photo, choose lighting / tabletop / backdrop / garnishes via UI buttons (no prompts), export for menus + delivery + social. The before/after food photo is the demo. B2B2C niche (menu designers, ghost kitchens, food marketers) with credit-pack pricing. Ties the 6.5 Fun ceiling.
 
+11. **707-built-a-micro-saas-to-translate-pdfs-without-wrecking-t** — score 6.0/10
+    _neuropdftranslate — layout-preserving PDF translation (Next.js + PostgreSQL + Railway)_
+    Side-by-side original-vs-translated PDF is the entire demo loop — the tables and graphics stay intact where every standard translator breaks them. Founder is explicit about the hardest problem in the build (long-running AI jobs vs API timeouts), which is the satisfying engineering payoff: webhook + background-job orchestration on Railway. B2B wedge (legal/medical/technical PDF translators) with credit-pack or per-document pricing. Ties the 6.0 Fun ceiling (583).
+
+12. **702-i-built-a-free-mac-app-for-screenshot-clutter-i-am-not-** — score 5.5/10
+    _Screenshoss — Mac-notch screenshot catcher, local-first + open source_
+    Lives in the Mac notch, catches screenshots, lets you triage and reuse them in one place — a clean, single-purpose macOS utility. The demo is the always-visible notch affordance itself: take a screenshot → see it pop into the notch → organize or delete. Free/FOSS so no money ceiling, but the Mac-native visual polish is the genuine fun payoff. Ties the 5.5 Fun ceiling (206/239) without displacing.
+
+13. **713-a-free-open-source-end-to-end-encrypted-journal-web-app** — score 5.0/10
+    _smbl-journal — E2E-encrypted text journal (SvelteKit + Rust + SQLite)_
+    Client-side encryption before storage, server never sees plaintext — the trust-boundary demo is showing the network panel reveal zero readable content. Stack spans SvelteKit frontend, Rust backend, SQLite persistence, and a real cryptography story (the engineer's first time shipping a security-shaped product). Open source, so the fun is in the engineering and the trust-boundary UX rather than revenue.
+
 ---
 
 ## Changelog
 
-- **2026-08-16 (cron run #9)** — re-ranked 478 projects after a fresh scrape added 31 new Reddit r/SaaS/r/startups captures (664–694). 25 of the 31 are meta-discussion posts (vibe-coding viability questions, churn-mechanism advice, GTM-experience questions for students, ISO 27001 toolkit questions, "$200/month SaaS overhead" breakdown, AI-assisted-portal audit story, first-paying-customer milestone, Spanish "cómo aseguráis login" advice thread, empty submissions 674/686, distribution-channel essays, build-in-public rants, founder/builder-vs-user opinion essays, "looking to contribute to a startup" GTM-internship post, etc.) — none displace the Money Top-5. Six real products land on the rankings: **677 Blog2Video** (Remotion + ElevenLabs, $0.6/video vs $300-500 human editors, already earned $4K on the live product) at **Money #6 (7.5)** — strongest revenue proof in the batch, ties 564/001 at the 7.5 ceiling without displacing them; **678 Planlog** (single-command agent CLI hook that pushes plans/reviews/shipped diff into a shared log for dev teams using Claude/Codex) at **Learn #5 (6.5)** — broadest stack in the batch (agent tool-call integration, plan DSL, approval workflow, multi-agent orchestration, notification fan-out, audit-log persistence), displaces 621 (6.0) by tying the 6.5 ceiling; **688 demo-video scraper** (crawls SaaS sites, maps features↔problems, surfaces buried differentiators like Slack integrations or deep customer quotes) at **Fun #8 (6.5)**; **682 essay-verifier** (14-year-old founder, keystroke + paste + typing-cadence replay with 25 anti-cheat methods) at **Fun #9 (6.5)**; **687 GridMenu** (prompt-free food photo editor, credit-pack pricing for menu designers / ghost kitchens / food marketers) at **Fun #10 (6.5)** — all three tie the 6.5 Fun ceiling (218/621/605) without displacing. The Fun #10 slot displaces no existing entry (the previous rank ended at Fun #7 / 239 at 5.5). 666 is an acquisition ("looking to sell X/Twitter SaaS for $6K") rather than a build — not ranked but worth authoring as a "how would you rebuild this" plan. New-batch score ceiling: money 7.5 (677), learn 6.5 (678), fun 6.5 (688/682/687). Replaces the 2026-08-15 cron-run #8 ranking.
+- **2026-08-16 (cron run #10)** — re-ranked 514 projects after a fresh scrape added 36 new Reddit r/SaaS/r/startups captures (695–730). 30 of the 36 are meta-discussion posts (SaaS-validation advice questions, "I can't imagine succeeding" mindset post, AI-restaurant-menu hype double-post 698/699, shiny-object-syndrome awareness post, Reddit-ads efficacy question, vibecoding-tools thread, "friend stole my startup idea" story, first-time-founder methodology essay, "preparing to inform main job of my startup" advice request, full-time jump advice, cold-feedback first-message wording question, "I want to do business where do I start" thread, "I built a free Mac app" advice-please post 702 with weak WTP, empty submission 704, English-essay-thanks follow-up 710 same-founder-as-682 duplicate, $850k-ARR French founder offering feedback 715 — strong revenue signal but no buildable product, combat-sports S&C app 717 first-time founder, 14-yrs-data-engineering GTM question 721, etc.) — none crack the Money Top-7 ceiling. Six real products land on the rankings: **701 coolbeans** (Stripe/PayPal webhook → licence key → offline-verifiable Swift + TypeScript SDKs sharing one fixture, $99/yr flat after a free 1-product / 500-active-licence tier, MIT, replacing Keygen/Cryptlex/LicenseSpring per-active-user pricing) lands at **Money #7 (7.0)** — strongest pricing signal in the batch and ties the existing 7.0 ceiling (573 SOC-2) without displacing it; same project lands at **Learn #7 (5.5)** — narrower stack than 583 (single use case: downloadable-software auth) but exercises payment-webhook ingestion + cross-SDK cryptographic-state-fixture sync that most engineers never touch; **707 neuropdftranslate** (Next.js + PostgreSQL + Railway, layout-preserving PDF translation, live product at neuropdftranslate.com) at **Fun #11 (6.0)** — original-vs-translated PDF is the demo, founder explicitly cites the long-running AI-job vs API-timeout problem as the satisfying engineering payoff; **702 Screenshoss** (Mac-notch screenshot catcher, FOSS, landing at screenshoss.app) at **Fun #12 (5.5)** — notch affordance is the demo, ties the 5.5 ceiling (206/239) without displacing; **713 smbl-journal** (SvelteKit + Rust + SQLite, E2E encrypted journal, client-side encryption before storage, GitHub: MrSheerluck/smbl-journal) at **Fun #13 (5.0)** — trust-boundary demo is showing the network panel reveal zero readable content, the engineer's first time shipping a security-shaped product. **710 Receipts** (same 14yo Acrobatic-Owl5700 founder as the already-ranked **682**) is a follow-up post — counted but not re-ranked to avoid double-counting the same product. Displaced: none. The Money #7 / Learn #7 / Fun #13 slots are append-only, no existing entry moves. New-batch score ceiling: money 7.0 (701), learn 5.5 (701), fun 6.0 (707). Replaces the 2026-08-16 cron-run #9 ranking.
 
 - **2026-08-15 (cron run #8)** — re-ranked 474 projects after a fresh scrape added 27 new Reddit r/SaaS captures (637–663). 22 of the 27 are meta-discussion posts (login-tool questions, "where to sell my failed startup", "80% of YC are AI wrappers", distribution-channel advice, build-in-public anxiety, vibe-coding critique, "how did you get your first customer", French-language "how to propose my services", CRM-cleanup asymptote, "what does SaaS even mean" essay, founder group-meup, TV-Time replacement GTM, "how do you get users to reply" outreach playbook, "usage-based billing" Stripe-metering hunt, "SaaS for public safety" 911-dispatcher marketing puzzle, "Control your computer with one hotkey" ScreenOS early build, "just made an app" SMB-transactions submission, etc.) — none displace the Money Top-5. Five real products land on the rankings: **655 LinkedIn-outreach + GEO** (\$606→\$2,042 MRR after publishing the rate-limit mechanics, B2B at \$39/mo, dogfooding outbound, GEO-rewritten site as the LLM-quotable wedge) lands at **Money #6 (7.0)** — strongest recurring-revenue signal in the batch and ties 573's 7.0 ceiling without displacing it; **647 public-safety shift handoff** (911-dispatcher founder, vertical SaaS path to police/fire agencies, slow to sell but sticky once installed) at **Money #7 (6.5)**; **645 Manzoma offline-first ERP** (React 19 + Electron + Prisma, 1.5M EGP / \$30k+ processed in live retail, Auditable Event-Replay sync) at **Learn #5 (6.5)** — broadest stack in the batch (offline-first architecture, local-SQLite ↔ PostgreSQL event-replay, POS-domain modeling) and ties 238's 6.5 ceiling without displacing; **641 ScreenOS** (Ctrl+Space desktop hotkey agent with Claude-skills-style /commands, multi-step task execution) at **Learn #6 (6.0)** and **Fun #7 (5.5)** — desktop-OS integration + LLM-orchestration breadth, visual payoff is the always-visible hotkey overlay; **654 usage-based billing** (Stripe-metering burn → credit-wallet + auto-topup, founder hunting a clean SaaS vendor) at **Learn #7 (6.0)** — billing-stack breadth (metering, entitlement gates, auto-reload logic) is the genuine novelty. Displaced: 564 (Learn #2 → Learn #2 stable, 645 ties ceiling); existing Fun #6/#7 unchanged (641 ties 239 at 5.5 but does not displace per cron tie-break). New-batch score ceiling: money 7.0 (655), learn 6.5 (645), fun 5.5 (641). Replaces the 2026-08-15 cron-run #7 ranking.
 

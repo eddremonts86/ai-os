@@ -10,11 +10,11 @@ source:
 category: saas
 date: "2026-08-16"
 tags: [saas, ai, content-marketing, video-generation]
-tech: [Remotion, ElevenLabs, Next.js, TypeScript, Cloudflare R2]
 scores:
   money: 7.5
   learn: 5.5
   fun: 6.5
+tech: [Remotion, ElevenLabs, Next.js, TypeScript, Cloudflare R2]
 ---
 # Built a AI solution to save $30K in marketing costs, got paid $4K instead (Proof attached)
 
