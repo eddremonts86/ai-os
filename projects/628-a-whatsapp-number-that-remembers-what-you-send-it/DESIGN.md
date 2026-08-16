@@ -5,29 +5,28 @@ source: "keepr.website"
 ---
 
 colors:
- primary:   "#0f7a55"
+ primary: "#0f7a55"
  secondary: "#4a544d"
- tertiary:  "#c2652b"
- neutral:   "#fbfaf7"
- dark:      "#0a1410"
- accent:    "#10b981"
- text:      "#131714"
- muted:     "#7c8781"
- bg:        "#fbfaf7"
- border:    "#e4e1d8"
+ tertiary: "#c2652b"
+ neutral: "#fbfaf7"
+ dark: "#0a1410"
+ accent: "#10b981"
+ text: "#131714"
+ muted: "#7c8781"
+ bg: "#fbfaf7"
+ border: "#e4e1d8"
 
 typography:
  heading:
-  fontFamily: "ui-serif, Georgia, \"Iowan Old Style\", \"Times New Roman\", serif"
-  fontSize: "2.5rem"
-  fontWeight: "700"
-  lineHeight: "1.15"
+ fontFamily: "ui-serif, Georgia, \"Iowan Old Style\", \"Times New Roman\", serif"
+ fontSize: "2.5rem"
+ fontWeight: "700"
+ lineHeight: "1.15"
  body:
-  fontFamily: "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
-  fontSize: "1.0625rem"
-  fontWeight: "400"
-  lineHeight: "1.6"
-
+ fontFamily: "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+ fontSize: "1.0625rem"
+ fontWeight: "400"
+ lineHeight: "1.6"
 
 rounded:
  sm: "10px"
@@ -43,32 +42,30 @@ spacing:
 
 components:
  button-primary:
-  backgroundColor: "{colors.primary}"
-  textColor: "#ffffff"
-  rounded: "{rounded.full}"
-  padding: "12px 24px"
+ backgroundColor: "{colors.primary}"
+ textColor: "#ffffff"
+ rounded: "{rounded.full}"
+ padding: "12px 24px"
  button-secondary:
-  backgroundColor: "transparent"
-  textColor: "{colors.text}"
-  rounded: "{rounded.full}"
-  border: "1.5px solid {colors.border}"
+ backgroundColor: "transparent"
+ textColor: "{colors.text}"
+ rounded: "{rounded.full}"
+ border: "1.5px solid {colors.border}"
  card:
-  backgroundColor: "{colors.bg}"
-  rounded: "{rounded.lg}"
-  shadow: "0 1px 2px rgba(19,23,20,.06), 0 4px 12px rgba(19,23,20,.04)"
+ backgroundColor: "{colors.bg}"
+ rounded: "{rounded.lg}"
+ shadow: "0 1px 2px rgba(19,23,20,.06), 0 4px 12px rgba(19,23,20,.04)"
  bubble-in:
-  backgroundColor: "#ffffff"
-  rounded: "{rounded.md}"
-  padding: "10px 14px"
+ backgroundColor: "#ffffff"
+ rounded: "{rounded.md}"
+ padding: "10px 14px"
  bubble-out:
-  backgroundColor: "#d8f5e4"
-  rounded: "{rounded.md}"
-  padding: "10px 14px"
+ backgroundColor: "#d8f5e4"
+ rounded: "{rounded.md}"
+ padding: "10px 14px"
 ---
 
 ## Keepr — Design System
-
-**Source:** keepr.website landing page (extracted from the live CSS custom properties on the marketing site; mirrored on the shipped product surface so the landing page reads like the product is already answering you).
 
 ### Colour palette
 
