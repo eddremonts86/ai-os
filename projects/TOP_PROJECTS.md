@@ -1,7 +1,7 @@
 # TOP_PROJECTS.md — ProblemHunt ranked
 
-> Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-15.
-> Source: 447 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
+> Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-16.
+> Source: 478 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
 > Scoring blends WTP (from SPEC/PRODUCT YAML or extracted from title), B2B/recurring signals, sticky-compliance verticals, tech-stack breadth (learn), and visual/agent/creative novelty (fun).
 
 ## Top 5 — Real Revenue Potential
@@ -26,6 +26,10 @@
    _SOC 2 fast-track service for pre-Series A B2B SaaS_
    Author cites $15k–$30k tooling-burn traps and the "blocked-deal" trigger pattern (external clock, not internal want). SPEC scopes plain-checklist + ownership-mapping workflow vs the typical automation-first playbook — strong WTP signal from the audience (B2B founders losing deals), and recurring revenue once the audit cycle restarts annually.
 
+6. **677-built-a-ai-solution-to-save-30k-in-marketing-costs-got-** — score 7.5/10
+   _Blog2Video — Remotion + ElevenLabs pipeline at $0.6/video vs $300-500 human editors_
+   Founder already earned $4K on the live product: a Remotion + ElevenLabs + stock-footage pipeline that turns blog URLs into 3-minute explainer videos at ~$0.6 cost per video. The $0.6 cost basis replaces $300-500/video human editors; a $50-100/mo SaaS tier leaves ~95% gross margin. Strongest revenue proof in the batch, ties the 7.5 ceiling without displacing 564/001.
+
 ## Top 6 — Learning Potential
 
 1. **252-startups-at-the-monetization-validation-stage-have-nowh** — score 7.0/10
@@ -44,7 +48,11 @@
    _Direct-sales music platform for under-banked regions (Lebanon)_
    Combines streaming, direct-checkout, regional PSP routing, and rights management — an unusual full-stack with content + payments + geo-restriction logic. Cold path: countries where Bandcamp/PayPal are blocked.
 
-5. **621-need-brutally-honest-feedback-before-i-build-this** — score 6.0/10
+5. **678-i-built-a-small-tool-for-keeping-the-team-in-sync-while** — score 6.5/10
+   _Planlog — agent plan coordination for dev teams using Claude/Codex_
+   B2B dev-tools wedge: agents push plans to Planlog before coding, the team reviews/approves them, and the implementation result is logged alongside the plan and reviewers. Stack spans agent CLI hook integration (single `curl | bash` install), plan DSL + structured storage, approval workflow, multi-agent orchestration (Claude/Codex), notification fan-out, and audit-log persistence. Displaces 621 (6.0) at Learn #5 by tying the 6.5 ceiling.
+
+6. **621-need-brutally-honest-feedback-before-i-build-this** — score 6.0/10
    _Design-skill Chrome extension: website → design-system spec for AI codegen_
    Founder explicitly lists $5 / $10 / $20 / month or one-time as WTP options. Stack spans DOM/CSS extraction, design-token mapping (typography/colors/spacing/components), serialization to an LLM-consumable skill spec, and a Chrome-extension Manifest V3 surface. Broader than 583 (LLM-facing output format) but lighter on security depth.
 
@@ -82,9 +90,25 @@
    _Visual parts-search for Chinese cars (Russia)_
    Multimodal search (photo → text query → part catalogue); interesting because it combines a real-world messy problem with a tight, satisfying demo and a niche user base that has few competitors.
 
+8. **688-ai-keeps-missing-what-my-saas-actually-does** — score 6.5/10
+   _Demo-video generator that scrapes the SaaS site and extracts the real value props_
+   The founder's scraper crawls the whole site, maps features to problems, and produces videos highlighting actual differentiators (Slack integration, a buried customer quote) instead of generic "boost productivity" copy. Side-by-side input-website vs output-video is the demo. Ties the 6.5 Fun ceiling without displacing 218/621/605.
+
+9. **682-im-14-and-my-mom-will-only-buy-me-a-domain-if-one-stran** — score 6.5/10
+   _Essay keystroke-replay verifier — 25 anti-cheat methods_
+   Records every keystroke + paste + typing-cadence; teacher clicks a link and watches a full replay of the student typing the essay, with paste spikes flagged. Demo is the replay itself — show, don't tell. B2C students with a teacher → student → parent viral loop. Ties the 6.5 Fun ceiling.
+
+10. **687-looking-for-saas-feedback-prompt-free-ai-food-photo-edi** — score 6.5/10
+    _GridMenu — prompt-free AI food photo editor with credit packs_
+    Upload a dish photo, choose lighting / tabletop / backdrop / garnishes via UI buttons (no prompts), export for menus + delivery + social. The before/after food photo is the demo. B2B2C niche (menu designers, ghost kitchens, food marketers) with credit-pack pricing. Ties the 6.5 Fun ceiling.
+
 ---
 
 ## Changelog
+
+- **2026-08-16 (cron run #9)** — re-ranked 478 projects after a fresh scrape added 31 new Reddit r/SaaS/r/startups captures (664–694). 25 of the 31 are meta-discussion posts (vibe-coding viability questions, churn-mechanism advice, GTM-experience questions for students, ISO 27001 toolkit questions, "$200/month SaaS overhead" breakdown, AI-assisted-portal audit story, first-paying-customer milestone, Spanish "cómo aseguráis login" advice thread, empty submissions 674/686, distribution-channel essays, build-in-public rants, founder/builder-vs-user opinion essays, "looking to contribute to a startup" GTM-internship post, etc.) — none displace the Money Top-5. Six real products land on the rankings: **677 Blog2Video** (Remotion + ElevenLabs, $0.6/video vs $300-500 human editors, already earned $4K on the live product) at **Money #6 (7.5)** — strongest revenue proof in the batch, ties 564/001 at the 7.5 ceiling without displacing them; **678 Planlog** (single-command agent CLI hook that pushes plans/reviews/shipped diff into a shared log for dev teams using Claude/Codex) at **Learn #5 (6.5)** — broadest stack in the batch (agent tool-call integration, plan DSL, approval workflow, multi-agent orchestration, notification fan-out, audit-log persistence), displaces 621 (6.0) by tying the 6.5 ceiling; **688 demo-video scraper** (crawls SaaS sites, maps features↔problems, surfaces buried differentiators like Slack integrations or deep customer quotes) at **Fun #8 (6.5)**; **682 essay-verifier** (14-year-old founder, keystroke + paste + typing-cadence replay with 25 anti-cheat methods) at **Fun #9 (6.5)**; **687 GridMenu** (prompt-free food photo editor, credit-pack pricing for menu designers / ghost kitchens / food marketers) at **Fun #10 (6.5)** — all three tie the 6.5 Fun ceiling (218/621/605) without displacing. The Fun #10 slot displaces no existing entry (the previous rank ended at Fun #7 / 239 at 5.5). 666 is an acquisition ("looking to sell X/Twitter SaaS for $6K") rather than a build — not ranked but worth authoring as a "how would you rebuild this" plan. New-batch score ceiling: money 7.5 (677), learn 6.5 (678), fun 6.5 (688/682/687). Replaces the 2026-08-15 cron-run #8 ranking.
+
+- **2026-08-15 (cron run #8)** — re-ranked 474 projects after a fresh scrape added 27 new Reddit r/SaaS captures (637–663). 22 of the 27 are meta-discussion posts (login-tool questions, "where to sell my failed startup", "80% of YC are AI wrappers", distribution-channel advice, build-in-public anxiety, vibe-coding critique, "how did you get your first customer", French-language "how to propose my services", CRM-cleanup asymptote, "what does SaaS even mean" essay, founder group-meup, TV-Time replacement GTM, "how do you get users to reply" outreach playbook, "usage-based billing" Stripe-metering hunt, "SaaS for public safety" 911-dispatcher marketing puzzle, "Control your computer with one hotkey" ScreenOS early build, "just made an app" SMB-transactions submission, etc.) — none displace the Money Top-5. Five real products land on the rankings: **655 LinkedIn-outreach + GEO** (\$606→\$2,042 MRR after publishing the rate-limit mechanics, B2B at \$39/mo, dogfooding outbound, GEO-rewritten site as the LLM-quotable wedge) lands at **Money #6 (7.0)** — strongest recurring-revenue signal in the batch and ties 573's 7.0 ceiling without displacing it; **647 public-safety shift handoff** (911-dispatcher founder, vertical SaaS path to police/fire agencies, slow to sell but sticky once installed) at **Money #7 (6.5)**; **645 Manzoma offline-first ERP** (React 19 + Electron + Prisma, 1.5M EGP / \$30k+ processed in live retail, Auditable Event-Replay sync) at **Learn #5 (6.5)** — broadest stack in the batch (offline-first architecture, local-SQLite ↔ PostgreSQL event-replay, POS-domain modeling) and ties 238's 6.5 ceiling without displacing; **641 ScreenOS** (Ctrl+Space desktop hotkey agent with Claude-skills-style /commands, multi-step task execution) at **Learn #6 (6.0)** and **Fun #7 (5.5)** — desktop-OS integration + LLM-orchestration breadth, visual payoff is the always-visible hotkey overlay; **654 usage-based billing** (Stripe-metering burn → credit-wallet + auto-topup, founder hunting a clean SaaS vendor) at **Learn #7 (6.0)** — billing-stack breadth (metering, entitlement gates, auto-reload logic) is the genuine novelty. Displaced: 564 (Learn #2 → Learn #2 stable, 645 ties ceiling); existing Fun #6/#7 unchanged (641 ties 239 at 5.5 but does not displace per cron tie-break). New-batch score ceiling: money 7.0 (655), learn 6.5 (645), fun 5.5 (641). Replaces the 2026-08-15 cron-run #7 ranking.
 
 - **2026-08-15 (cron run #7)** — re-ranked 447 projects after a fresh scrape added 27 new Reddit r/SaaS captures (610–636). 22 of the 27 are meta-discussion posts (advice questions, "best distribution channel", AI-era debate prompts, llms.txt visibility question, Onboarding-with-ClickUp help request, integrations research request, "build for wrong ICP" advice, ubiquity-era GTM essay, k8s BYOC hot-take) — none displace the Money Top-5. Three real products land on the rankings: **621 design-skill Chrome extension** ($5/10/20/mo or one-time WTP asked explicitly) slots at **Learn #5 (6.0)** and **Fun #5 (6.5)** — broader stack than 583 (DOM/CSS extraction + design-token mapping + Chrome MV3 surface) with a tight visual demo; **629 firefighter-union member platform** (live product, setup + annual recurring, vertical-SaaS path to police/public-sector unions) lands at **Money #6 (6.5)** — strongest recurring-revenue signal in the batch but doesn't crack the existing Money Top-5 ceiling of 7.0 (573 SOC-2); **624 Stepway white-label agency bench** (flat subscription, pause-when-slow feature, Designjoy comparator) at **Money #7 (6.0)** and **Learn #7 (4.5)**. Displaced: 583 (Learn #5 → #6); 605 (Fun #5 → #6); 239 (Fun #6 → #7). New-batch score ceiling: money 6.5 (629), learn 6.0 (621), fun 6.5 (621). Replaces the 2026-08-15 cron-run #6 ranking.
 
