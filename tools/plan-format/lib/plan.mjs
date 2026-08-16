@@ -27,14 +27,15 @@ export function loadSchema() {
 export function listPlanDirs() {
   if (!existsSync(PROJECTS_DIR)) return [];
   return readdirSync(PROJECTS_DIR)
-    .filter((n) => /^\d{3}-/.test(n))
+    .filter((n) => /^\d{3,}-/.test(n))
     .map((n) => join(PROJECTS_DIR, n))
     .filter((p) => statSync(p).isDirectory() && existsSync(join(p, 'SPEC.md')))
-    .sort();
+    // Numeric, not lexicographic: once ids pass 999 a plain sort puts 1000 before 999.
+    .sort((a, b) => parseInt(a.split('/').pop(), 10) - parseInt(b.split('/').pop(), 10));
 }
 
 export function planIdSlug(dirPath) {
-  const m = dirPath.split('/').pop().match(/^(\d{3})-(.+)$/);
+  const m = dirPath.split('/').pop().match(/^(\d{3,})-(.+)$/);
   return m ? { id: m[1], slug: m[2] } : null;
 }
 
@@ -224,4 +225,29 @@ export function writeDocText(dirPath, name, text) {
 export function isLegacy(dirPath) {
   const doc = readDoc(dirPath, 'SPEC.md');
   return !!doc && !doc.hasFrontmatter;
+}
+
+/**
+ * Which `source.*` fields are missing for this capture's origin.
+ *
+ * `source.url` is required for a scraped capture, which always has an upstream page to check
+ * a claim against, and must NOT be required for a web submission, which has none: demanding
+ * one would either block submissions or invite a fabricated URL, and a fabricated source is
+ * worse than an absent one. `source.consent` is the mirror case, required only for `web`.
+ *
+ * Lives here rather than inline in the gate so the condition can be tested directly. An
+ * unconditional check that silently never fires is the failure mode this is guarding against.
+ */
+export function missingSourceFields(source, schema) {
+  if (!source) return [];
+  const cond = schema.frontmatter.fields.source.conditionalRequired ?? {};
+  const absent = (v) => v === undefined || v === null || v === '';
+  return Object.entries(cond)
+    .filter(([field, rule]) => {
+      const applies = rule.whenNameIn
+        ? rule.whenNameIn.includes(source.name)
+        : !(rule.unlessNameIn ?? []).includes(source.name);
+      return applies && absent(source[field]);
+    })
+    .map(([field]) => field);
 }

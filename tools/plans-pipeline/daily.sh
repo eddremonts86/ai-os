@@ -12,6 +12,7 @@
 #
 # Phases, in order:
 #   scrape    fetch new captures (the ProblemHunt/Reddit scraper)
+#   intake    materialise approved community submissions into captures
 #   prepare   ai-os plans format --write, then pick the slice to enrich → slice manifest
 #   verify    index + gate + both test suites. Exit non-zero means DO NOT SHIP.
 #   ship      commit → PR to dev → merge → PR dev to main → merge (deploy triggers itself)
@@ -117,6 +118,17 @@ phase_scrape() {
   tail -1 "$SCRAPER_DIR/last-run.log" | sed 's/^/[plans-pipeline] /'
 }
 
+# Approved submissions become captures before anything else runs, so the rest of the cycle
+# treats them exactly like scraped ones. Deliberately before `prepare`: a submission ingested
+# now is formatted, claimed and authored in the same pass rather than waiting four hours.
+phase_intake() {
+  acquire_lock
+  log "ingesting approved submissions"
+  node "$AI_OS_ROOT/tools/plans-pipeline/intake.mjs" \
+    ${DRY_RUN:+$([ "$DRY_RUN" -eq 1 ] && echo --dry-run)} --limit "$CAP" \
+    || die "intake failed"
+}
+
 phase_prepare() {
   acquire_lock
   log "normalising documents to the schema (ai-os plans format --write)"
@@ -185,8 +197,8 @@ sync_corpus() {
   # `set -e` then kills the run on a perfectly ordinary "no matches" — which is exactly how
   # a first version of this script died silently right after passing its own safety check.
   local gone_dirs total pct
-  gone_dirs=$(printf '%s\n' "$gone" | { grep -oE '^projects/[0-9]{3}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
-  total=$(git -C "$wt" ls-files -- projects | { grep -oE '^projects/[0-9]{3}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  gone_dirs=$(printf '%s\n' "$gone" | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  total=$(git -C "$wt" ls-files -- projects | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
 
   if [ "$total" -gt 0 ] && [ "$gone_dirs" -gt 0 ]; then
     pct=$(( gone_dirs * 100 / total ))
@@ -246,7 +258,7 @@ phase_ship() {
 
   local added changed
   added=$(git -C "$wt" diff --cached --name-only --diff-filter=A -- projects \
-          | { grep -oE '^projects/[0-9]{3}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+          | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
   changed=$(git -C "$wt" diff --cached --name-only -- projects | wc -l | tr -d ' ')
   log "staged: $changed files across $added new plan dirs"
 
@@ -354,6 +366,7 @@ phase_status() {
 
 case "$PHASE" in
   scrape)  phase_scrape ;;
+  intake)  phase_intake ;;
   prepare) phase_prepare ;;
   verify)  phase_verify ;;
   ship)    phase_ship ;;
@@ -361,5 +374,5 @@ case "$PHASE" in
   ''|-h|--help|help)
     sed -n '2,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
     ;;
-  *) die "unknown phase: $PHASE (try: scrape prepare verify ship status)" ;;
+  *) die "unknown phase: $PHASE (try: scrape intake prepare verify ship status)" ;;
 esac
