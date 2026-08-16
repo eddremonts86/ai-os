@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "analytics", "revenue", "indie"]
+tech: ["Next.js", "TypeScript", "Stripe API", "Supabase", "Stripe"]
 id: "625"
 slug: traffic-up-62-signups-up-41-revenue-down-19-heres-why
 title: "traffic up 62%, signups up 41%, revenue down 19%. heres why"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vozoil/traffic_up_62_signups_up_41_revenue_down_19_heres/"
 category: saas
 date: "2026-08-15"
 ---
-# traffic up 62%, signups up 41%, revenue down 19%. heres why
+# Traffic up 62%, signups up 41%, revenue down 19%, here's why
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the revenue-impact analytics tool scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ we build analytics software (user maven), so we end up looking at a lot of other people's numbers. one from last quarter stuck with me. client put real money into paid social. it worked. traffic up 62%. signups up 41%. revenue down 19%. they spent a while looking in the wrong places. checked the funnel, fine. checked retention, flat. checked deal size, flat. nothing was broken. it was the paid social. it converted way worse than their organic and email, and it was big enough to drag the blended number down. they didn't get more customers, they got more visitors. those aren't the same thing and the top line doesn't tell you which one you got. what makes this hard to catch is that every chart is green. traffic green, signups green. you have to break conversion out by source and put the channels side by side, and most people don't think to look when the numbers are up. they capped the spend and fixed targeting. took about a quarter to unwind. submitted by /u/gavin_cole [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An indie SaaS founder running paid social can see whether the signups from each channel are actually converting to revenue — and get an alert when signup growth outpaces revenue growth beyond a threshold.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders running paid social | Need to know whether signups convert to revenue. |
+| Small SaaS teams | Optimising the revenue stage of the funnel. |
+| Growth marketers | Report on revenue impact, not just signups. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — See the revenue-impact stage of the funnel per channel.
+2. **Functional job** — Get an alert when signup growth outpaces revenue growth.
+3. **Functional job** — See per-channel cohort retention.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first revenue-impact report within 7 days of signup.
+- **Retention:** at least 4 weekly reports / month per active founder.
+- **Alert actionability:** ≥ 30% of alerts lead to a channel-budget change within 7 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 site, 30-day retention. Pro at $29/month: 5 sites, unlimited retention, the alert.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **UserMaven / Mixpanel / Amplitude** — full analytics; the revenue-impact stage is buried.
+- **Baremetrics** — Stripe-only; the alert is a dashboard, not a notification.
+- **Google Analytics 4** — too broad; the alert surface is not founder-friendly.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vozoil/traffic_up_62_signups_up_41_revenue_down_19_heres/) · **Posted:** 2026-08-15T10:47:35+00:00
+- [ ] The revenue-impact stage must be a first-class metric, not a buried tab.
+- [ ] The alert must be specific; a generic "your metrics changed" alert is the failure mode.
