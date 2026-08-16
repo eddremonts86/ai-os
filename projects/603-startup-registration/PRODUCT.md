@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "legal", "compliance", "b2b"]
+tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "603"
 slug: startup-registration
 title: Startup registration
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vow1pl/startup_registration/"
 category: saas
 date: "2026-08-15"
 ---
-# Startup registration
+# Startup registration (EU citizen, multiple ideas, subscription-based services)
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the non-resident EU founder registration guide scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Hello, I am a eu citizen (French) residing outside of Europe for now (Saudi Arabia). I am currently building a platform online and it can possibly provide subscription based services. I have multiple ideas, this is only one of them , but all of them provides this kind of product. The target users is worldwide. I want to have a real company and have this legal. Where do I start? Where should I open my company? - In Saudi Arabia I can’t open the company as a resident non saudi. - I want to be legal and doing the right thing if I ever go back to France or Europe. - for now no external investment, aiming to grow organically, should my decision be based on if I want to take profit out or no? - I have no legal background and more of a tech background so I dont know from where to start Thanks, submitted by /u/Puzzleheaded-Ad8442 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An EU citizen residing outside the EU can pick the right incorporation country, legal form, VAT registration, and payment rail for a subscription SaaS — without paying a lawyer for the basics.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| EU citizens residing outside the EU | Want to launch a subscription SaaS. |
+| EU citizens who have moved outside | Want to keep their company. |
+| Non-EU founders | Want an EU entity for market access. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Pick the right country + legal form for a subscription SaaS.
+2. **Functional job** — Set up VAT / OSS correctly.
+3. **Functional job** — Choose a payment rail that works from the founder's country of residence.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first decision-tree completion within 7 days of signup.
+- **Retention:** at least 1 template download per active founder.
+- **Conversion:** ≥ 10% of free users request the 1:1 review within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: decision tree + templates. Pro at $99: 1:1 review + partner recommendation.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Stripe Atlas / Firstbase** — incorporation + bank account; do not cover VAT / OSS at depth.
+- **Generic legal-services marketplaces** — expensive, no SaaS-specific focus.
+- **An accountant or lawyer** — what most founders do today; expensive for the basics.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vow1pl/startup_registration/) · **Posted:** 2026-08-15T07:09:16+00:00
+- [ ] The product is a guide, not a legal adviser; explicit "not legal advice" disclaimer is mandatory.
+- [ ] EU regulations change; the templates must be reviewed quarterly.
