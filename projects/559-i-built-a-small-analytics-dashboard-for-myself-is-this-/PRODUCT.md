@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "analytics", "indie", "dashboard"]
+tech: ["Next.js", "TypeScript", "Supabase", "PostHog API", "Stripe API", "RevenueCat API", "Resend"]
 id: "559"
 slug: i-built-a-small-analytics-dashboard-for-myself-is-this-
 title: I built a small analytics dashboard for myself. Is this actually useful to anyone else?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo5vt6/i_built_a_small_analytics_dashboard_for_myself_is/"
 category: saas
 date: "2026-08-14"
 ---
-# I built a small analytics dashboard for myself. Is this actually useful to anyone else?
+# I built a small analytics dashboard for myself, is this actually useful to anyone else?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the single-pane personal analytics dashboard scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I built a small analytics dashboard for myself. Is this actually useful to anyone else? I’ve been working on a few products and got tired of constantly switching between PostHog, Supabase, RevenueCat, Stripe, etc. just to get a quick idea of how things are going. So 2 days ago, I randomly started building a personal dashboard that pulls the important metrics from these tools into one place. Nothing complicated. Just things like: - Active and new users - Returning users - Top events - Revenue / subscriptions - Signups - Basic trends - Daily/weekly/monthly views - A daily notification with the most important changes Originally this was purely for myself. But I posted a screenshot on X and a couple of people mentioned that an “all your analytics at a glance” tool could actually be useful. Before I spend way too much time turning a random side project into yet another SaaS that nobody asked for: Would you actually use something like this? And if you already solve this problem, what are you using? Just trying to figure out whether this is a real problem or just my problem. submitted by /u/OfficialAydee [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An indie SaaS founder can see active users, new users, returning users, top events, revenue, signups, and trends from PostHog + Supabase + RevenueCat + Stripe in one daily view — without logging into four tools.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders (1-3 products) | Want a daily check-in without 4 logins. |
+| Small SaaS teams (2-5 engineers) | Want a shared daily metrics surface. |
+| Solo creators selling subscriptions | Want a single revenue + signups view. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Connect PostHog + Supabase + RevenueCat + Stripe to a single dashboard.
+2. **Functional job** — See the day's KPI without leaving the dashboard.
+3. **Functional job** — Get a daily notification with the most important changes.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first connector linked and first KPI rendered within 7 days of signup.
+- **Retention:** at least 5 dashboard opens per active user per week.
+- **Conversion:** ≥ 8% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 product, 2 connectors. Pro at $19/month: 5 products, all 4 connectors, Slack notifications.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Grafana / Metabase** — BI tools; too heavy for a daily personal check-in.
+- **Baremetrics / ChartMogul** — Stripe-only dashboards; ignore the PostHog / Supabase side.
+- **The four tools themselves** — what founders do today; the switching cost is real.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vo5vt6/i_built_a_small_analytics_dashboard_for_myself_is/) · **Posted:** 2026-08-14T12:27:02+00:00
+- [ ] The four connectors are the MVP; a fifth connector (Mixpanel, Amplitude) is roadmap.
+- [ ] The daily notification is the sticky feature; a noisy notification will lose trust fast.

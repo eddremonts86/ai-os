@@ -1,37 +1,45 @@
 ---
+tags: ["saas", "consumer", "free", "career"]
+tech: ["Next.js", "TypeScript", "jsPDF", "Supabase"]
 id: "589"
 slug: i-built-a-free-resume-builder-with-0-budget-what-should
 title: I built a free Resume Builder with $0 budget. What should I do next?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voij6e/i_built_a_free_resume_builder_with_0_budget_what/"
 category: saas
 date: "2026-08-14"
 ---
-# I built a free Resume Builder with $0 budget. What should I do next?
+# I built a free resume builder with $0 budget, what should I do next
 
 ## Problem
- For a long time, I kept thinking about building my own SaaS. I had ideas, thought about monetization, features, architecture, and whether the idea was good enough. But I kept thinking instead of building. So I decided to do something different. I stopped looking for the perfect SaaS idea and simply built something. I chose a very simple and probably very crowded idea: a Resume Builder. I built it, deployed it, and made it completely free. I'm not trying to monetize it, and I'm not trying to turn it into a business right now. The main reason I built it was to get real experience with the part of building a product that I had mostly only thought about before: What actually happens after you launch? And honestly, this is where I got stuck. I have almost no marketing budget, and I haven't had anyone actually use the product yet. So now I'm trying to understand whether this whole process is actually worth pursuing. For people who have built and launched SaaS products: What would you do in my position? How would you find the first users with basically $0 marketing budget? How would you get useful feedback instead of people simply visiting the website for 10 seconds and leaving? Would you keep improving the product, focus on finding users first, or move on and build something else? More generally, is building and launching small products like this actually a useful practice if the goal is to become a better developer and eventually build a real SaaS? I'm not expecting this Resume Builder to become a business. For me, the value right now is the experience of actually building and launching something instead of spending months thinking about what I could build. I'd really appreciate advice from people who have already gone through this process. I'm especially interested in hearing from people who started with little or no marketing budget. And if you want to see what I actually built, you can find it here: https://resumeio.online It's completely free. I'm mainly trying to figure out whether I should keep going with this experiment and, more importantly, what I should learn from it. submitted by /u/Mysterious-Side6514 [link] [comments]
 
----
+A founder spent a long time thinking about building a SaaS — ideas, monetisation, features, architecture — but kept thinking instead of building. They decided to stop looking for the perfect idea and just build something: a very simple and probably very crowded resume builder. They built it, deployed it, made it completely free, and are not trying to monetise it. The goal was to get real experience with what happens after launch. They have almost no marketing budget and have not had anyone actually use the product. They are asking what to do next: find first users with $0 budget, get useful feedback instead of 10-second website visits, whether to keep improving the product or move on. The implicit product: a free resume builder with $0 marketing, looking for the playbook to get to first users.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define the MVP scope for the resume builder and the $0-budget launch playbook. The MVP is the existing product; the work is the launch.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Primary:** recent graduates and first-job seekers who need a resume and do not want to pay for a resume builder.
+- **Secondary:** career switchers who want a clean resume without learning LaTeX.
+- **Tertiary:** university career centres that want a free tool for their students.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Resume builder web app: structured fields (experience, education, skills), live preview, PDF export.
+- 3-5 templates; one is enough to start.
+- Free forever; no paid tier in v1.
+- Excluded in v1: AI suggestions, ATS scoring, multi-language, cover letter builder.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens. Default visual: a single resume-builder surface — the structured fields on the left, the live preview on the right, the PDF export button at the top. No marketing-site chrome; the product is the resume.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- $0 marketing budget; every acquisition channel must be free.
+- The product must be useful without an account; an account is for saving multiple resumes, not for using the builder.
+- The PDF export must work in the browser (no server round-trip).
