@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "legal", "ai", "b2b"]
+tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "623"
 slug: need-help-with-outreach-at-a-quotlocalquot-ai-law-saas-
 title: "need help with outreach at a \"local\" AI law SaaS (i will not promote)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp05qv/need_help_with_outreach_at_a_local_ai_law_saas_i/"
 category: saas
 date: "2026-08-15"
 ---
-# need help with outreach at a "local" AI law SaaS (i will not promote)
+# Need help with outreach at a "local" AI law SaaS
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the AI-lawyer outreach playbook scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I am the founder of a central European AI lawyer platform. Right now all the leads come from Google SEO, people searching "lawyer AI" (in local language) When i made the SaaS it was very basic, almost like a PoC, unusable for real lawyers, however at the time i didnt care, i posted it on local reddit ("young local founder made AI law startup") and it gained a lot of traction and even got me an article at a local news site, which pulled a lot of traffic, but ever since then the traffic died down (obviously the product was bad). The obvious answer is to just make a reddit post bu the original one highlighted how I was a young founder and that it is a free project and now we became a bit more corporate. It's still doable and we offer free tiers, but I am putting it off. Emailing our previous users, already on the table and doing in waves. People are coming over. Other than that it's just the SEO, so I'm looking for some way to turn a dial and throw money at it and get some traffic of actual lawyers or practicioners that would be power users and work with documents a lot, I'm not expecting miracles just experiment with it and hopefully make some money. What would be the best way to reach them? Google ads? (I've never used GA, do I have to select keywords or something?), Facebook ads?, LinkedIn? submitted by /u/seruZ12 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A central-European AI-lawyer founder can run a structured 5-channel outreach playbook beyond SEO, with a weekly tracker and per-channel conversion expectations.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Central-European lawyers | Want AI-assisted contract review, document summarisation, case research. |
+| Small law firms | Cannot afford a junior associate for document review. |
+| In-house legal teams at SMBs | Need affordable AI tooling. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Run the AI-lawyer platform for real lawyers.
+2. **Functional job** — Run a structured outreach playbook beyond SEO.
+3. **Functional job** — Track weekly outreach across 5 channels.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first weekly tracker entry within 7 days of signup.
+- **Retention:** at least 1 weekly tracker entry per active founder.
+- **Outreach volume:** ≥ 20 outreach actions / week per active founder after month 1.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: the playbook + the weekly tracker. Pro at $49/month: 1:1 outreach coaching.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Harvey / Spellbook** — broader AI-lawyer platforms; the founder's regional focus is the wedge.
+- **Generic SEO-only acquisition** — what the founder is doing today; the playbook is the supplement.
+- **Lawyer-association directories** — what law firms use; the founder's outreach can plug into these.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vp05qv/need_help_with_outreach_at_a_local_ai_law_saas_i/) · **Posted:** 2026-08-15T11:14:08+00:00
+- [ ] Legal-services advertising is heavily regulated in the EU; paid acquisition is excluded.
+- [ ] The founder's existing SEO traction is the wedge; outreach must amplify, not replace.
