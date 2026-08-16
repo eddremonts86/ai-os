@@ -1,8 +1,10 @@
 ---
+tags: ["saas", "growth", "conversion", "organic-marketing"]
+tech: ["Next.js", "TypeScript", "Playwright", "SQLite", "Drizzle ORM"]
 id: "680"
 slug: i-hit-16k-views-in-a-post-for-my-saas-no-conversion-at-
 title: "I hit 16K views in a post for my SaaS, no conversion at all"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpsro3/i_hit_16k_views_in_a_post_for_my_saas_no/"
@@ -11,40 +13,43 @@ date: "2026-08-16"
 ---
 # I hit 16K views in a post for my SaaS, no conversion at all
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the conversion-audit workflow scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi all, I am new to marketing my projects, your average tech guy. I decided to do organic marketing via posting on YT, IG, Tiktok exactly a week ago. On Wednesday my post went kinda viral and got 16K views and around 200 likes and comments. Comments are mostly about my comment bait. I asked them to comment "X" so I send them the playbook which has a clear CTA to my website(in fact I hosted the article on my website but didn't make it obvious it was an ad, as I am posting on a made-up personas account). I only got around 4-5 sign-ups that day and the about the same number following days. I still kept posting daily and I avg around 1-2k on Instagram views. According to posthog, I see that people try my free trial and once they run out of credits check out my pricing, 1-2 initiated checkout but NONE converted to a paying user. This is so discouraging. I see that people average around 50-100 visitors, if not sign-ups per day(?) when they get about the same number of views. I am not sure what my problem is and whether I should kill the product. Do you have any recommendations for me? Should I keep posting, what needs to be changed? I know 16K is not big number, though because I have never done this stuff before, I thought I can get at least around 1% conversion or at least site visits from a single post. Desperately need help as I have put a lot of effort and time into this project. Thanks submitted by /u/Alert_Edge_8196 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A solo founder can triage a low-converting organic-marketing funnel in under an hour and walk away with a numbered, prioritised list of the highest-leverage fixes — without paying a growth consultant or installing a marketing analytics stack.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Solo founders | Have one viral post and want to fix the funnel before pushing more traffic. |
+| Early-stage growth marketers | Need a structured way to triage low-conversion funnels without spinning up A/B infra. |
+| Indie hackers | Shipping weekly; cannot afford a CRO retainer. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Identify which funnel stage is binding the conversion rate.
+2. **Functional job** — Get a prioritised list of the highest-leverage fixes.
+3. **Emotional job** — Stop blaming the traffic source when the page is the problem.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first audit completed within 7 days of install.
+- **Time saved:** audit completed in under 60 minutes for a solo founder.
+- **Leverage:** at least 1 fix from the prioritised list is shipped within 14 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: landing-page checklist + offer checklist. Pro at $29/month: traffic-source diagnostic + first-run audit + scored report. Engagement at $299: founder-led audit with a written report.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Hotjar / Microsoft Clarity** — analytics, not diagnostics.
+- **Conversion-rate-optimisation agencies** — expensive ($5K+ / month), slow.
+- **Generic CRO blog posts** — generic; not adapted to the founder's actual page.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vpsro3/i_hit_16k_views_in_a_post_for_my_saas_no/) · **Posted:** 2026-08-16T09:41:27+00:00
+- [ ] The audit's value depends on the founder actually shipping a fix; the product must make the top-3 fixes small enough to ship in a weekend.
+- [ ] The funnel stages are the same regardless of the source; the differentiator is the prioritisation rubric, which is the hardest part to encode.

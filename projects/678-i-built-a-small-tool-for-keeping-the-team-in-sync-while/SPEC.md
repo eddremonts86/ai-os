@@ -1,8 +1,10 @@
 ---
+tags: ["saas", "dev-tools", "ai-agents", "code-review"]
+tech: ["Next.js", "TypeScript", "Supabase", "Cloudflare R2", "Stripe", "Node.js"]
 id: "678"
 slug: i-built-a-small-tool-for-keeping-the-team-in-sync-while
 title: I built a small tool for keeping the team in sync while using coding agents
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpto26/i_built_a_small_tool_for_keeping_the_team_in_sync/"
@@ -12,26 +14,34 @@ date: "2026-08-16"
 # I built a small tool for keeping the team in sync while using coding agents
 
 ## Problem
- I've been working on a new product where I need to explain the architecture I'm going to implement to my senior / lead before I start coding, so we can catch changes early. At the same time, someone else is working on the frontend, so I need to explain the API structure, share collections, and make sure they're working with the same plan. As we're using coding agents and development is getting much faster, I noticed that this coordination is still taking a lot of time. [preview.redd.it/g0wt0we8tpjh1.png…](https://preview.redd.it/g0wt0we8tpjh1.png?width=1440&format=png&auto=webp&s=79481443f797aa51e193bcf654674bc59510b1fd) So I built Planlog. https://planlog.depak.dev The idea is that before an agent starts implementing something, it pushes the plan to Planlog I can then share the plan with my team, get it reviewed and approved, and notify the people who need to know about it. For example, once an API plan is approved, I can notify the frontend developer so they can work from the same context. After the implementation, the agent(claude or codex ) documents what was actually shipped. So we have the plan, the review/approval, who was notified, and what was eventually shipped in one place. It also gives us a history of the decisions instead of having them spread across chats and md files. The agent setup is currently one command: curl -fsSL https://planlog.depak.dev/install | bash It authenticates and configures the coding agent. It's still very early and me and my friends are the only users right now. I'm mainly trying to find out if this is a problem other teams are having too. If you're using coding agents with a team, how are you currently sharing plans, getting them reviewed, and keeping everyone who depends on the work informed? Repo: https://github.com/depak7/planlog If you try it and find it useful, a GitHub star would be appreciated too. submitted by /u/depak_7 [link] [comments]
 
----
+A solo developer was using coding agents on a product where they needed to explain the architecture they were about to implement to their senior / lead before coding started, and at the same time share the API structure and the collection shapes with a teammate working on the frontend. As coding agents accelerated the implementation, the coordination layer — the plan, the review, the shared understanding — became the bottleneck. The poster built Planlog, a hosted log that coding agents push plans into before implementing; the team can review, approve, or annotate the plan; the implementation result is logged alongside it. The implicit product: a single-command CLI hook (`curl | bash`) that every coding agent can call to push a plan into a shared workspace before writing code.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define a hosted coordination workspace for dev teams using Claude Code, Codex, Cursor, or any other coding agent: the agent pushes a plan, the team reviews, the implementation result is logged alongside it. The MVP is the CLI hook + a review UI + an audit log.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Primary:** small dev teams (2-5 engineers) using coding agents daily who need a coordination layer above the agent's output.
+- **Secondary:** tech leads who want to review what the agent is about to do before it does it.
+- **Tertiary:** open-source maintainers who want a public log of agent-driven changes to their projects.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- A single-command CLI install (`curl | bash`) that registers a hook in the user's coding agent of choice (Claude Code, Codex, Cursor).
+- A web UI for plan review: list of pending plans, per-plan review thread, approve / request-changes verdict.
+- An audit log: plan → review → implementation diff → reviewer → timestamp.
+- A per-team workspace with email-based invites.
+- Free tier: 1 team, 50 plans/month. Pro at $19/seat/month: unlimited plans, audit-log export, Slack integration.
+- Excluded in v1: AI-generated review summaries, plan-quality scoring, GitHub PR auto-link, multi-tenant.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens. Default visual: a single review surface — a sidebar with the plan queue, a centre pane with the plan body and the review thread, a right-hand panel with the implementation diff and the audit-log entry. No marketing-site chrome; the product is the review.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The CLI hook must work on macOS and Linux; Windows is a stretch goal.
+- The hook must be a single command (`curl | bash`); any complex setup will not be installed by the target user.
+- The audit log must be append-only; tampering is the failure mode, not the design constraint.
