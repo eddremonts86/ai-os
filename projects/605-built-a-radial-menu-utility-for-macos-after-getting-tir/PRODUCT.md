@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "macos", "utility", "swift"]
+tech: ["SwiftUI", "Swift", "NSEvent", "NSScreen", "StoreKit 2"]
 id: "605"
 slug: built-a-radial-menu-utility-for-macos-after-getting-tir
 title: Built a radial menu utility for macOS after getting tired of jumping between different tools
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vovskv/built_a_radial_menu_utility_for_macos_after/"
 category: saas
 date: "2026-08-15"
 ---
-# Built a radial menu utility for macOS after getting tired of jumping between different tools
+# Built a radial menu utility for macOS after getting tired of the existing options
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the macOS radial menu utility scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Really proud to share this finally. Hope you love it as much as I do! I truly believe it has the potential to save a lot of time jumping between various tasks. Problem A lot of everyday actions on a Mac live in completely different places. Opening an app or folder, searching something on a website, taking a screenshot, cleaning up copied text, accessing clipboard history, running a Shortcut, or changing a system setting. None of these are hard to get to, but constantly switching between apps, windows, menu bar utilities, and different shortcuts can break your flow. I wanted to see if all of that could work through one system, which is where the radial menu idea came from. Comparison There are already some really good radial menu apps for Mac, but most are built around a specific use case, such as launching apps, switching between them, or triggering app-specific shortcuts. Arc takes a broader approach. You can create multiple global radial menus for different workflows and decide what each slice does. A slice can perform a single action or chain multiple actions together. The idea is less about replacing the Dock and more about putting the small things you do throughout the day behind one quick interaction. Technical Getting a radial menu on screen was the easy part. Figuring out what actually belongs inside it, how multiple menus should behave, and keeping the interaction fast enough to use throughout the day took most of the iteration. It's built entirely in SwiftUI. One of the more interesting technical problems was getting the hit-testing right across every slice while keeping the menu correctly positioned under the cursor, even across multiple displays. Pricing $9.99 one time on the Mac App Store with a free 7 day trial built in. Solo project from India, launched yesterday. Happy to answer anything! :) Arc has become part of my own daily workflow, which is probably what I’m happiest about. Mac App Store: Link submitted by /u/shubham_iosdev [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A macOS power user can trigger a single global hotkey, see a radial pie of their most-used actions, and click a slice to launch the action — including multi-step action chains — without leaving the current app.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| macOS power users | Already use Spotlight / Raycast / Alfred; want a single-keyboard-shortcut entry point. |
+| Designers and developers | Take screenshots frequently; want a one-step capture flow. |
+| Anyone running repeated multi-step actions | Want a one-shot trigger. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Trigger a single hotkey and see the radial pie.
+2. **Functional job** — Click a slice to run a single action or a chain.
+3. **Functional job** — Configure the slices and the action chains.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first radial pie triggered within 7 days of install.
+- **Retention:** at least 10 pie triggers per active user per week.
+- **Conversion:** ≥ 4% trial-to-paid conversion within 14 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+$9.99 one-time with a 7-day trial.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Raycast / Alfred** — full launcher; the radial pie is a focused alternative for users who want one-hotkey access.
+- **Spotlight** — built-in; less configurable.
+- **Manual shortcuts + muscle memory** — what power users do today.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vovskv/built_a_radial_menu_utility_for_macos_after/) · **Posted:** 2026-08-15T06:54:55+00:00
+- [ ] B2C single-purchase caps money; the visual / interaction polish is the genuine fun payoff.
+- [ ] The multi-display hit-testing must work on every macOS display configuration.

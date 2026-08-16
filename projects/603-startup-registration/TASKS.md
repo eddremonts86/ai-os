@@ -1,36 +1,38 @@
 ---
+tags: ["saas", "legal", "compliance", "b2b"]
+tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "603"
 slug: startup-registration
 title: Startup registration
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vow1pl/startup_registration/"
 category: saas
 date: "2026-08-15"
 ---
-# Startup registration
+# Startup registration (EU citizen, multiple ideas, subscription-based services)
 
 ## Phase 0: Scaffold
 
-- [ ] Crear carpeta del proyecto en `apps/`
-- [ ] Inicializar repo git
-- [ ] Copiar `edd-app-template` → `apps/603-startup-registration/`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Create `apps/603-startup-registration/` (Next.js + TypeScript)
+- [ ] Initialize git with `.gitignore` excluding per-founder decision-tree state
+- [ ] Write SPEC.md (this document) and the matching DESIGN.md tokens
+- [ ] Provision Supabase: auth, templates, partner directory
+- [ ] Implement the decision-tree engine in TypeScript
+- [ ] Add the "not legal advice" disclaimer on every page
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Decision tree: country + legal form + tax + payment-rail
+- [ ] Templates: incorporation documents, VAT registration, OSS / MOSS forms
+- [ ] Partner directory: incorporation agents, accountants, payment-rail partners
+- [ ] Free tier: decision tree + templates
+- [ ] Stripe paywall: Pro at $99 (1:1 review + partner recommendation)
 
 ## Phase 2: Deploy
 
-- [ ] Crear repo en GitHub
-- [ ] Desplegar a Coolify
-- [ ] Verificar en producción
-
----
-
-_Lúa generó este análisis automáticamente el 2026-08-15_
+- [ ] Coolify deployment
+- [ ] First 30 Pro reviews from EU-citizen non-resident founders
+- [ ] 90-day regulatory-change audit cycle
+- [ ] Post-mortem at week 8
