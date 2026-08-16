@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "creator", "chrome-extension", "ai"]
+tech: ["Next.js", "TypeScript", "Chrome Extension MV3", "Anthropic Claude", "Supabase", "Stripe"]
 id: "543"
 slug: i-wrote-a-simple-script-to-automate-my-keywording-and-i
 title: "I wrote a simple script to automate my keywording, and it accidentally turned into a full app."
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo9quq/i_wrote_a_simple_script_to_automate_my_keywording/"
 category: saas
 date: "2026-08-14"
 ---
-# I wrote a simple script to automate my keywording, and it accidentally turned into a full app.
+# I wrote a simple script to automate my keywording and it became a Chrome extension
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for ExifGarden, the EXIF-keyword automation tool scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Hey everyone! I'm a student and a microstock contributor.A while ago, I wrote a simple script for myself just to auto-generate tags using Al. It saved me so much time that I ended up turning it into a full Chrome extension and web app called ExifGarden. My app writes the tags directly into the EXIF data of your image. You do it ONCE, and when you upload to multiple agencies, they all read the tags automatically. It's free to try. I'd love to get some feedback. Link: https://exifgarden.com/ Let me know what you think! submitted by /u/zarazavava [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A microstock contributor can drop a batch of images, get AI-generated keyword suggestions, and write them to EXIF once — every agency the image is uploaded to then reads the tags automatically.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Microstock contributors | Upload hundreds of images a week; keyword coverage is the bottleneck. |
+| Photographers | Want consistent, AI-assisted tagging without manual data entry. |
+| Digital asset managers at small studios | Similar tag-volume problem at a smaller scale. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Generate AI keywords for a batch of stock images.
+2. **Functional job** — Write the keywords to EXIF without losing other metadata.
+3. **Functional job** — Pre-fill the keyword field on a stock-agency upload page.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first batch of images tagged within 7 days of install.
+- **Retention:** at least 50 images tagged per active contributor per month.
+- **Conversion:** ≥ 5% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 50 images/month. Pro at $9/month: 1,000 images/month + bulk upload + per-keyword confidence thresholds.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Adobe Stock / Shutterstock built-in keyworders** — agency-specific, no cross-agency.
+- **StockSubmitter / Photo Mechanic** — bulk uploaders but no AI keyword generation.
+- **Manual tagging** — what most contributors do today; 10-30 minutes per image.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vo9quq/i_wrote_a_simple_script_to_automate_my_keywording/) · **Posted:** 2026-08-14T15:03:59+00:00
+- [ ] The AI must not invent copyrighted brand names in the tags; keyword hallucination is a regulatory risk.
+- [ ] The Chrome extension's compatibility with each agency's upload UI is the integration surface; if an agency redesigns, the extension breaks.
