@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "developer-tools", "feedback", "changelog"]
+tech: ["Next.js", "TypeScript", "Vanilla JS", "Supabase", "Stripe"]
 id: "610"
 slug: how-do-you-handle-product-updates-for-users-like-change
 title: How do you handle product updates for users? Like changelog and stuff?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp1yfn/how_do_you_handle_product_updates_for_users_like/"
 category: saas
 date: "2026-08-15"
 ---
-# How do you handle product updates for users? Like changelog and stuff?
+# How do you handle product updates for users, like changelog?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the in-app changelog + feedback widget scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I’ve been using AI coding tools heavily for a while now (Cursor, Claude Code, that whole workflow). I can ship features and fixes way faster than before. The annoying part is everything around the actual product for users. I started paying attention to the small SaaS tools I use day to day. A lot of them either: have no public changelog at all have a “What’s new” page that hasn’t moved in months have a help center that still describes old UI or missing features When something changes, I find out because something breaks, someone mentions it in Discord, or I randomly notice a new button. There’s no reliable place that says “this is what shipped. ”I’m also guilty of this on my own stuff. The repo has commits and PRs. That is not a customer-facing changelog. And help articles are the first thing I postpone when I’m in a shipping mood. I’m trying to understand what other small teams actually do, not what they wish they did. If you run a small SaaS or product: Do you have a public changelog or What’s new page that customers can open? If yes, where does it live and how often do you update it? When you merge something user-facing, is updating docs part of “done,” or does it usually slip? Where do your help docs live, and who is responsible for keeping them current when there’s no dedicated writer? Has shipping faster with AI coding made the gap worse for you, or do you have a process that still keeps up? Also curious if you think a public changelog even matters at the early stage, or if help docs matter more, or if both are optional until you have real support volume. and any tools recommendations to use that would work with coding agents like claude code? submitted by /u/decentBab [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A small SaaS founder can drop a single script into their app and get an in-app changelog, a feedback widget, and a "you are affected" indicator — without building the announcement infrastructure themselves.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders shipping weekly | Need an in-app announcement surface. |
+| Small SaaS teams (2-5 engineers) | Want a structured changelog without running a blog. |
+| SaaS users | Want a single place to see what's changed. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Post a changelog entry and target the right users.
+2. **Functional job** — Collect feedback from inside the app.
+3. **Functional job** — Surface known issues to the users they affect.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first changelog entry posted within 7 days of signup.
+- **Retention:** at least 4 changelog entries / month per active founder.
+- **Feedback volume:** at least 20 feedback submissions / month per active founder.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 product, 50 changelog entries/month, 100 feedback submissions/month. Pro at $29/month: 5 products, unlimited.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Canny / Productboard** — full product-management; too heavy for an indie founder.
+- **Headway / Beamer** — in-app changelog tools; expensive for an indie founder.
+- **A blog + a tweet** — what most indie founders do today.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vp1yfn/how_do_you_handle_product_updates_for_users_like/) · **Posted:** 2026-08-15T12:45:08+00:00
+- [ ] The in-app widget must add less than 20KB to the host app's bundle; bloat is the failure mode.
+- [ ] The founder's dashboard must work across many host apps from one account.

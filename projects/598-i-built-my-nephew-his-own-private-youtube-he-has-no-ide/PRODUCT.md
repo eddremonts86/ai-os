@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "consumer", "parenting", "video"]
+tech: ["Next.js", "TypeScript", "YouTube IFrame API", "Supabase", "Stripe"]
 id: "598"
 slug: i-built-my-nephew-his-own-private-youtube-he-has-no-ide
 title: I Built My Nephew His Own Private YouTube (He Has No Idea)
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voxk19/i_built_my_nephew_his_own_private_youtube_he_has/"
 category: saas
 date: "2026-08-15"
 ---
-# I Built My Nephew His Own Private YouTube (He Has No Idea)
+# I built my nephew his own private YouTube (he has no idea what YouTube is)
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the private child-safe video player scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ You choose what your child should watch by sharing a link. It took me three days to develop this application for my phupu's son. She complained about her three-year-old; these days, he watches YouTube all the time. I checked through digital wellbeing tools and discovered that the average watch time for YouTube alone was over four hours. A three-year-old watching YouTube for four hours straight is concerning. I asked her why she gives him the phone, and I told her, if you can't stop his couch potato habits, at least you can control what he watches. If you want, I can provide you with a secure APK file and it'll be on play store this weekend. submitted by /u/SectionResponsible10 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A parent of a toddler can curate a playlist of videos from YouTube links, then hand the device to the child knowing they see only the parent's content — no algorithm, no search, no autoplay-suggested.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Parents of toddlers (2-5 years old) | Want to limit YouTube consumption. |
+| Preschool teachers and daycare staff | Want a controlled video surface. |
+| Grandparents and relatives | Want a simple "share a link, child watches it". |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Curate a per-child playlist from YouTube links.
+2. **Functional job** — Hand the device to the child with only the playlist visible.
+3. **Emotional job** — Stop worrying about what the algorithm surfaces next.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first playlist created within 7 days of signup.
+- **Retention:** at least 3 videos watched per active child per week.
+- **Conversion:** ≥ 8% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 child, 50 videos. Pro at $4.99/month: 5 children, unlimited videos, watch-time alerts.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **YouTube Kids** — has parental controls but still has recommendations and a search bar.
+- **Kiddle / Kidoodle** — curated content but no parent-paste-link workflow.
+- **Manual playlist + device-restriction** — what parents do today; clumsy at best.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1voxk19/i_built_my_nephew_his_own_private_youtube_he_has/) · **Posted:** 2026-08-15T08:39:17+00:00
+- [ ] The product depends on YouTube links; a YouTube policy change could break it.
+- [ ] The child view must be PIN-protected; this is non-negotiable for the parent audience.

@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "gaming", "sports", "browser-game"]
+tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "606"
 slug: "7-days-after-launch-i-have-no-words-to-describe-what-i-"
 title: "7 days after launch... i have no words to describe what i am feeling right now (following my former post)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voupxz/7_days_after_launch_i_have_no_words_to_describe/"
 category: saas
 date: "2026-08-15"
 ---
-# 7 days after launch... i have no words to describe what i am feeling right now (following my former post)
+# 7 days after launch, I have no words to describe what I have done
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for Hoops GM, the basketball management browser game scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ I've been working on Hoops GM for so long, and now it has been a week since the launch. I received a lot of backlash in the previous post due to an IP lawsuit, as well as a lot of praise from people. The launch has been a MASSIVE success with now over 5000 visits to the game and an average of 50 new members everyday. now i am very confident that this project will go very far and i am very happy about it! THANK YOU to everyone who has checked it out, left a comment, or played a season. submitted by /u/omitousi [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A basketball-management game fan can draft a team, play a season, and manage the roster in the browser — with multi-season cloud sync on the Pro tier.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Sports-management game fans | Football Manager / OOTP / Basketball GM players who want a basketball-specific alternative. |
+| Basketball fans | Want to role-play as a GM. |
+| Streamers / content creators | Cover sports-management games. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Draft a team and play a season.
+2. **Functional job** — Manage the roster across seasons.
+3. **Functional job** — Save the career across devices (Pro tier).
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first season started within 7 days of signup.
+- **Retention:** at least 1 season completed per active user.
+- **Conversion:** ≥ 4% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 active career, no multiplayer. Pro at $4.99/month: unlimited careers, multiplayer leagues, custom leagues.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Basketball GM (game by Jeff Dickson)** — desktop-only, no multiplayer.
+- **Football Manager / OOTP** — broader (different sports), desktop-only.
+- **Browser sports-management clones** — most are abandoned; the founder's launch traction is the differentiator.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1voupxz/7_days_after_launch_i_have_no_words_to_describe/) · **Posted:** 2026-08-15T05:54:11+00:00
+- [ ] The IP lawsuit from the previous post is the working constraint; brand and visual identity must be defensible.
+- [ ] The launch traction (5K visits in week 1) implies the founder needs to scale hosting fast.

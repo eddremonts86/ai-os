@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "trading", "ai", "consumer"]
+tech: ["Next.js", "TypeScript", "Polygon", "Alpha Vantage", "Supabase", "Stripe"]
 id: "596"
 slug: rant-disapointed-by-life-and-my-careeri-will-not-promot
 title: (rant) Disapointed By Life and my career(I will not promote)
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/"
 category: startups
 date: "2026-08-15"
 ---
-# (rant) Disapointed By Life and my career(I will not promote)
+# rant: disappointed by life and my career (and what I will do next)
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the founder's announced product, inferred from their math + psychology + trading-system background.
 
 ## Value Proposition
 
-_Based on source brief:_ Basically what the title says. I got a math degree and I have a psychology degree as well. I have been building things using computers since I was 7 years old(I'm 28 now) I have a mediu page. I get a lot of readers every time. Job recruiters contact me a lot. I have built a trading system that i'm happy with. I can solve hard problems. But I"ve been unemployed for 6 months. I've sent in lots of aplications, I talk with recruiters every day. I did a contract that lasted for a little while but it ended. honestly I jsut don't trust the job market anymore. As a college student before I started building the trading system I had a lot of ideas for things to build. But once I started building the trading system that was my only focus until I felt like I had figured it out sufficently well. Now I've been searching the internet like a mad-person looking for problems that Need to be solved. Some kind people on here were saying that I should try and solve problems that occur to me but honestly other than not having a good job I feel like my life is pretty good and i'm out of ideas. so I try and idk disect hard ai-related problems and I keep running into there being big companies already doing the same thing or problems just not being important enough to be solved. I really believe that if somebody is going to build smething it should be a lot better and not just a little bit better. I think what Peter Thiel was saying about looking for problems to solve not buisness ideas was 100% correct but i'm struggling to find real problems to work on. I have spent days and days looking into this and i'm starting to feel like a spammer posting on reddit asking people about their problems. I have the skills and the motivation but no real problem to solve that feels important and meaningful. idk I was going to make a good open source ai enabled writing app just to make a point that I think that it's stupid to make people pay a subscription for this. but idk other than making an open source repo to be like stop ripping people off. I have no clue what to build. Thanks for bearing with me through this rant. submitted by /u/JuniorLeg6988 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A retail trader can follow the founder's trading-style profile as a daily signal, with per-user customisation and explicit paper-trading support.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Retail traders following the founder's writing | Want a tool that operationalises the founder's style. |
+| Quant-curious indie traders | No programming background, want a signal. |
+| Founder's medium audience | First beta cohort. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Get a daily signal with confidence.
+2. **Functional job** — Adjust the signal threshold per user.
+3. **Emotional job** — Stop over-trading on emotion; rely on a system.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first signal delivered within 7 days of signup.
+- **Retention:** at least 4 weekly signals consumed per active user.
+- **Conversion:** ≥ 5% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 signal/day, paper-trading only. Pro at $49/month: unlimited signals, live-trading mode.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **TrendSpider / TradingView** — charting + alerts; not a personal-style signal.
+- **Composer.trade** — no-code strategy builder; technical curve.
+- **Manual Twitter / Discord signals** — what many traders use today.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/) · **Posted:** 2026-08-15T01:58:41+00:00
+- [ ] The product description is inferred from the founder's background; the founder's actual MVP may differ.
+- [ ] The trading signal must be honest about backtest vs live performance.

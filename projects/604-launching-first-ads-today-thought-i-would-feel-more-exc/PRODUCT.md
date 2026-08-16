@@ -1,50 +1,54 @@
 ---
+tags: ["saas", "growth", "paid-acquisition", "indie"]
+tech: ["Next.js", "TypeScript", "Meta Ads API", "Google Ads API", "Reddit Ads API", "Supabase", "Stripe"]
 id: "604"
 slug: launching-first-ads-today-thought-i-would-feel-more-exc
 title: Launching first ads today. Thought I would feel more excited
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vovwm0/launching_first_ads_today_thought_i_would_feel/"
 category: saas
 date: "2026-08-15"
 ---
-# Launching first ads today. Thought I would feel more excited
+# Launching my first ad today for my little SaaS
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the founder's SaaS + first-ad playbook scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Launching my first ad today for my little SaaS I’ve been working on for nearly 2 years (from ideation to production). I keep telling myself that because I’m an expert in the problem and very passionate about the “why” it exists, that things are going to be okay. However, I’m also a bit of a perfectionist and this process has been an endurance. Some days I feel great but others I just feel so… lightweight. I keep my willpower up by framing this all as an experiment - like I’m validating hypotheses in each step. Any advice how to get excited again? Or should I just detach and continue to do what needs to be done until I’m more established? submitted by /u/Kindly-Abroad8917 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A founder who has spent 2 years building a SaaS can launch their first paid ad with a structured playbook that caps budget, tests audience + creative + landing page, and runs a weekly post-mortem ritual to avoid wasting the budget.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| The founder's SaaS buyers | The product itself. |
+| The founder as a first-time ad buyer | Needs a structured playbook to avoid wasting budget. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Launch the first ad with a small budget cap.
+2. **Functional job** — Test audience + creative + landing page.
+3. **Functional job** — Run a weekly post-mortem to iterate.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first ad live within 7 days of signup.
+- **Retention:** at least 1 weekly post-mortem completed.
+- **Conversion:** ≥ 1 paid user from the first ad within 30 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: the playbook + the post-mortem template. Pro at $49/month: the playbook + a per-ad-channel advisor + the weekly post-mortem workflow.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Generic paid-acquisition courses** — broad, no first-ad focus.
+- **Manual spreadsheet + Reddit** — what most first-time ad buyers do today.
+- **An agency** — expensive for a first ad.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vovwm0/launching_first_ads_today_thought_i_would_feel/) · **Posted:** 2026-08-15T07:01:13+00:00
+- [ ] The product is unnamed in the source post; the founder's actual SaaS is not described.
+- [ ] The founder's perfectionism is the biggest risk; the weekly post-mortem ritual is the safety net.

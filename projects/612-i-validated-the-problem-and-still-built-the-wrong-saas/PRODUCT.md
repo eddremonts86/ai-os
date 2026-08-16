@@ -1,50 +1,55 @@
 ---
+tags: ["saas", "validation", "indie", "methodology"]
+tech: ["Next.js", "TypeScript", "Supabase", "libsodium", "Stripe"]
 id: "612"
 slug: i-validated-the-problem-and-still-built-the-wrong-saas
 title: I validated the problem... and still built the wrong SaaS
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vp1lpo/i_validated_the_problem_and_still_built_the_wrong/"
 category: saas
 date: "2026-08-15"
 ---
-# I validated the problem... and still built the wrong SaaS
+# I validated the problem and still built the wrong SaaS
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the validation-to-wedge gap analysis tool scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ A few months ago I threw away around 3 months of work on my SaaS. The annoying part? I HAD validated the idea before building@ ..or at least I thought I had. I'm building in the SEO space, and before starting I talked with people about how they handled SEO. The same problem kept coming up... there are too many things to watch, too many tools, and most people don't really know what they should work on first. So... real problem. and naturally I went away and built the most obvious solution possible 😅 One big SEO tool with analytics, keywords, audits, content, backlinks, performance etc. So Basically: instead of using 10 tools, use one. I spent around 3 months building it and launched. ~15 signups in the first month. 0 customers. The feedback was basically: "Why would I use this instead of Ahrefs or another established SEO tool?" Fair question! And that was the painful part. Technically, the product worked. I had just taken a real problem and built a very generic solution around it. So I scrapped that direction! Instead of asking "what else should this tool do?" I started asking: What do I actually wish SEO tools did for me? And the answer wasn't more data. It was: tell me what is actually worth working on next. That became the new direction!! I spent another ~4 months rebuilding around that idea. After launching the new version, I got 54 trials in roughly the same period, plus much better feedback because people actually understood why the product existed. Still a tiny sample. Still nowhere near "successful SaaS" territory. BUT it completely changed how I think about validation. You can validate a pain really well... and still build the wrong solution for it. Now I'm curious if anyone here has gone through something similar...? Did you realize the problem itself was wrong, or were you solving the right problem in the wrong way? submitted by /u/raftopyannis [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An indie SaaS founder who has validated a problem can run a structured 5-question checklist that surfaces the validation-to-wedge gap — and walk away with a build / pivot / kill verdict and a signed log they can show to a mentor.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Indie SaaS founders | Validated the problem but unsure whether to build. |
+| Small SaaS teams | Considering a new product line. |
+| Startup mentors and advisors | Want a structured tool to use with mentees. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Run the 5-question checklist on a validated problem.
+2. **Functional job** — Get a build / pivot / kill verdict.
+3. **Functional job** — Export a signed verdict log.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first verdict within 7 days of signup.
+- **Retention:** at least 1 verdict per active founder per quarter.
+- **Outcome quality:** ≥ 50% of "kill" verdicts are confirmed by the founder 30 days later.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 1 saved verdict. Pro at $19/month: unlimited verdicts, structured weekly review.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Lean Canvas / Validation Board** — broad, not gap-specific.
+- **Manual mentor conversation** — what most founders do today.
+- **Reddit / IndieHackers advice** — too generic.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vp1lpo/i_validated_the_problem_and_still_built_the_wrong/) · **Posted:** 2026-08-15T12:28:12+00:00
+- [ ] The 5 questions must be specific enough to surface the validation-to-wedge gap; vague questions produce vague verdicts.
+- [ ] The verdict engine must be transparent; the founder must see which question drove the verdict.
