@@ -729,6 +729,91 @@ DOMAIN=example.com
 LETSENCRYPT_EMAIL=admin@example.com
 ```
 
+## Auditing a fleet that already exists (verified 2026-08-16)
+
+Everything above is about putting an app *on* Coolify. This section is about reading an instance you
+did not just build — taking inventory, and deciding what is safe to delete. Every item below is a
+wrong conclusion that was actually reached and had to be walked back.
+
+### Read the token with awk. Never `source` the dossier
+
+A Coolify API token is Laravel Sanctum shaped, `<id>|<hash>`, and the `|` is a shell metacharacter:
+
+```bash
+set -a; source .env; set +a      # ❌ bash reads the | as a pipe
+                                 #    COOLIFY_API_TOKEN becomes "5", and every call returns
+                                 #    401 Unauthenticated — identical to a revoked token
+T=$(awk -F= '/^COOLIFY_API_TOKEN=/{sub(/^[^=]*=/,""); print; exit}' "$ENV_FILE" | tr -d '"\r')  # ✅
+```
+
+The failure mode is the problem: a valid token looks revoked. Before telling anyone to rotate a
+credential, send a **known-bogus** token and compare. Same 401 for both means your reading is wrong,
+not the token. `GET /api/health` needs no auth and confirms the instance is up and the API enabled.
+
+### `fqdn` is empty on compose apps — the domain lives elsewhere
+
+For `build_pack: dockercompose`, the top-level `fqdn` is `null` and the real domain sits in
+`docker_compose_domains`:
+
+```json
+{"app":{"domain":"https://myapp.example.com"}}
+```
+
+Reading `fqdn` alone reports "no domain configured" for an app that has been serving traffic for days.
+
+### A 502 on an auto-assigned sslip.io domain is usually a worker, not an outage
+
+Coolify gives every application a `<uuid>.<ip>.sslip.io` domain whether or not it serves HTTP. An app
+with `ports_exposes: 0` — a scraper, a queue consumer — has nothing for Traefik to proxy, so that
+domain answers 502 **while the process is healthy and doing its job**.
+
+Classify by configuration, not by status code:
+
+```bash
+# ports_exposes 0 + a dedicated dockerfile => worker. 502 is expected and means nothing.
+curl -fsS -H "Authorization: Bearer $T" "$URL/api/v1/applications/<uuid>" \
+  | python3 -c "import json,sys; a=json.load(sys.stdin); print(a['ports_exposes'], a['dockerfile_location'])"
+```
+
+Deleting one of these because it "looked broken" removes the process that fills the database the
+dashboard reads.
+
+### Before deleting anything, find out what points at it
+
+Deleting a database destroys its volume. The connection string that proves a database is in use may
+not be in Coolify at all — for a compose app it lives in the repo's `docker-compose.yml` as a service
+name (`db:5432`), invisible to any API query.
+
+Check both, and check every app you are keeping, not just the one you are deleting:
+
+```bash
+# does any surviving app reference the doomed resource's uuid (its internal hostname)?
+for app in $KEEPERS; do
+  curl -fsS -H "Authorization: Bearer $T" "$URL/api/v1/applications/$app/envs" \
+    | grep -c "$DOOMED_UUID"
+done
+```
+
+A count of zero across the keepers, plus a read of the repo's compose file, is the evidence. An
+absence of alarm is not.
+
+### Resources cannot be moved between projects through the API
+
+`PATCH /api/v1/applications/<uuid>` rejects `project_uuid`, `environment_uuid` and `environment_name`
+with `422 — This field is not allowed.`, and there is no move endpoint. Reorganising a fleet is
+therefore API deletes and renames **plus a manual UI step** for every move, or recreating the resource
+in the target project and deleting the original. Say so before promising a tidy-up.
+
+Project `description` also rejects `:` — allowed characters are letters, numbers, spaces and
+`- _ . , ! ? ( ) ' " + = * / @ &`. A colon fails the whole PATCH with a validation error.
+
+### A read-capable API token is equivalent to root on the host
+
+`GET /api/v1/security/keys` returns **private keys**, including `localhost's key`, which is in the
+server's `authorized_keys` because that is how Coolify manages Docker on its own box. This is the
+documented way back in when no local key works (see the `hetzner-cloud-cli` skill) — and the reason a
+Coolify token is not a read-only credential in any meaningful sense. Treat it like a root password.
+
 ## Resources
 
 - [Coolify docs](https://coolify.io/docs)
@@ -776,11 +861,20 @@ curl -fsS -X PATCH -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
 Same family as the `is_build_time` rejection on the envs endpoint: this API's allow-lists differ per
 route, so **print the response body** instead of relying on `curl -f`, which hides it.
 
-### One project per app
+### One project per product, not per app
 
-Every app on this server sits in its own Coolify project (`ai-chat`, `builderhunt`, `budget-app`…).
-Create the project first, then the application inside it — `POST /api/v1/projects` takes just
-`{name, description}`.
+This used to read "one project per app", and naming projects after single apps is what produced eight
+projects for what turned out to be five products — one of them still called `My first project`, and
+another a catch-all holding a landing page, a plans explorer, a chat demo and a scraper that belonged
+with a dashboard in a different project.
+
+Group by the thing that fails together: an app plus the databases, caches and poolers it cannot run
+without. Create the project first, then the application inside it — `POST /api/v1/projects` takes just
+`{name, description}`, and the description is worth writing, because it is the only place the grouping
+explains itself.
+
+Get the name right at creation. Renaming a project is a `PATCH` away, but **moving a resource into a
+different project is not possible through the API at all** — see the auditing section below.
 
 ### Wildcard DNS is already in place
 
