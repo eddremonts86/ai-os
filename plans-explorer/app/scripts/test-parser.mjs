@@ -139,7 +139,8 @@ for (const r of results) console.log(r);
 console.log('\n[test] aggregate invariants:');
 const totalPlans = plans.length;
 const PROJECTS_DIR = join(ROOT, '..', 'projects');
-const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3}-/.test(n)
+const TOP_PROJECTS = join(PROJECTS_DIR, 'TOP_PROJECTS.md');
+const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3,}-/.test(n)
   && existsSync(join(PROJECTS_DIR, n, 'SPEC.md')));
 
 // The indexer publishes only authored plans, so the corpus size is the wrong yardstick —
@@ -159,13 +160,32 @@ const inv = [
   // the corpus was reset to 10 clean plans. What matters is that every plan the contract
   // considers publishable made it into the index — no more, and crucially no fewer.
   { name: 'plans.json has one entry per publishable plan', ok: totalPlans === publishableDirCount, got: `${totalPlans} indexed / ${publishableDirCount} publishable of ${planDirs.length} dirs` },
-  { name: 'rankings.money has 5 entries', ok: rankings.money.length === 5, got: rankings.money.length },
-  { name: 'rankings.learn has 5 entries', ok: rankings.learn.length === 5, got: rankings.learn.length },
-  { name: 'rankings.fun has 5 entries', ok: rankings.fun.length === 5, got: rankings.fun.length },
-  { name: 'rankings.money ids are 3-digit strings', ok: rankings.money.every((r) => /^\d{3}$/.test(r.id)), got: rankings.money.map((r) => r.id) },
+  // Relational against the heading rather than a hardcoded 5. A "## Top 5" section that
+  // contains six items is a real defect in TOP_PROJECTS.md, not a number this test should be
+  // taught to accept, and hardcoding the 5 would also go red the day the file becomes a Top 10.
+  // This catches both, and names which section drifted.
+  ...(() => {
+    const md = existsSync(TOP_PROJECTS) ? readFileSync(TOP_PROJECTS, 'utf8') : '';
+    const KEY = { revenue: 'money', money: 'money', learning: 'learn', fun: 'fun' };
+    const secs = [...md.matchAll(/^##\s+Top\s+(\d+)\s+[-—–]\s+(.+)$/gm)];
+    return secs.map((m, i) => {
+      const want = parseInt(m[1], 10);
+      const label = m[2].toLowerCase();
+      const key = Object.entries(KEY).find(([word]) => label.includes(word))?.[1];
+      const body = md.slice(m.index + m[0].length, i + 1 < secs.length ? secs[i + 1].index : md.length);
+      const written = (body.match(/^\d+\.\s+\*\*\d{3,}-/gm) || []).length;
+      const parsed = key ? rankings[key].length : null;
+      return {
+        name: `"${m[2].trim()}" holds the ${want} its heading promises, and all ${want} parse`,
+        ok: key !== null && written === want && parsed === want,
+        got: `heading says ${want}, file has ${written}, rankings.${key} has ${parsed}`,
+      };
+    });
+  })(),
+  { name: 'rankings.money ids are at least 3 digits', ok: rankings.money.every((r) => /^\d{3,}$/.test(r.id)), got: rankings.money.map((r) => r.id) },
   { name: 'rankings scores are 1..10', ok: rankings.money.every((r) => r.score >= 1 && r.score <= 10), got: rankings.money.map((r) => r.score) },
   { name: 'no plan is missing title', ok: plans.every((p) => typeof p.title === 'string' && p.title.length > 0), got: plans.filter((p) => !p.title || p.title.length === 0).length },
-  { name: 'no plan is missing id', ok: plans.every((p) => /^\d{3}$/.test(p.id)), got: plans.filter((p) => !/^\d{3}$/.test(p.id)).length },
+  { name: 'no plan is missing id', ok: plans.every((p) => /^\d{3,}$/.test(p.id)), got: plans.filter((p) => !/^\d{3,}$/.test(p.id)).length },
   { name: 'no plan has wtp.mrrMid negative', ok: plans.every((p) => !p.wtp || p.wtp.mrrMid == null || p.wtp.mrrMid >= 0), got: plans.filter((p) => p.wtp?.mrrMid < 0).length },
   { name: 'plans.json plans with sourceUrl have an excerpt', ok: plans.every((p) => !p.sourceUrl || (typeof p.excerpt === 'string' && p.excerpt.length > 0)), got: plans.filter((p) => p.sourceUrl && (!p.excerpt || p.excerpt.length === 0)).length },
   // Regression guards for the HTML→text pipeline. 178 of the then-525 plans once
