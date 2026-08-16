@@ -1,50 +1,58 @@
 ---
+tags: ["saas", "fintech", "trading", "marketplace"]
+tech: ["Next.js", "TypeScript", "Supabase", "Persona", "Prime Trust", "Plaid", "Stripe"]
 id: "536"
 slug: building-a-p2p-trading-saas-capytrader-feedback-on-my-m
 title: Building a P2P Trading SaaS (CapyTrader) – Feedback on my model
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vob6yi/building_a_p2p_trading_saas_capytrader_feedback/"
 category: saas
 date: "2026-08-14"
 ---
-# Building a P2P Trading SaaS (CapyTrader) – Feedback on my model
+# Building a P2P trading SaaS (CapyTrader) — feedback on my model
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the custodial P2P trading marketplace scoped in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Hey I've been designing a financial SaaS called CapyTrader that connects passive investors with skilled traders safely. The Problem: Investors have capital but no time; traders have talent but no large accounts. The Solution: A P2P marketplace featuring an Algorithmic Risk Firewall. Investors set a strict loss limit. If hit, the algorithm instantly freezes the account and protects the remaining funds. Monetization: A flat custody fee plus a performance fee charged strictly on profitable trades. Based on my simulations, handling volume across active users yields strong unit economics, but I want to stress-test the concept. What are the biggest regulatory or technical blind spots you see in this model? All honest feedback is welcome! submitted by /u/Own_Atmosphere5778 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A passive investor can deploy capital to a vetted trader with a per-trade loss cap that the platform enforces automatically — without picking individual trades, watching the market, or trusting the trader to honour the stop.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Accredited passive investors | Want exposure to active traders without managing positions. |
+| Skilled independent traders | Have skill but lack the capital base. |
+| Family offices | Looking for a marketplace to discover vetted traders. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Deploy capital to a trader with a hard loss cap that is enforced by the platform.
+2. **Functional job** — Settle monthly with a clear performance-fee breakdown.
+3. **Emotional job** — Stop worrying about whether the trader will respect the stop.
+4. **Social job** — Look like a serious allocator to the traders you attract.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first capital deployed within 30 days of investor onboarding.
+- **Retention:** at least 3 monthly settlement cycles completed without a manual dispute.
+- **Firewall precision:** the circuit breaker fires correctly on every loss-cap hit, zero missed hits.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Flat custody fee per investor per month (proposed: $25-50) plus a performance fee (proposed: 10-20%) charged only on profitable closed trades, computed monthly.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **eToro / ZuluTrade** — copy-trading social platforms; no hard loss-cap enforcement.
+- **Interactive Brokers / Alpaca** — self-directed brokerage; no marketplace layer.
+- **Managed-futures platforms** — closer in structure but require the user to pick the manager, not the marketplace to vet.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vob6yi/building_a_p2p_trading_saas_capytrader_feedback/) · **Posted:** 2026-08-14T15:58:05+00:00
+- [ ] Money-transmitter licensing in every served jurisdiction; this is the binding constraint.
+- [ ] SEC investment-adviser registration if the platform selects traders.
+- [ ] The performance-fee math must be computed only on realised profit, not on mark-to-market.
+- [ ] The firewall's tamper-evidence: every state-change signed and audited.
