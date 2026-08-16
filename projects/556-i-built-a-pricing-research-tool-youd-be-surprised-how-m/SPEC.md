@@ -1,37 +1,47 @@
 ---
+tags: ["saas", "pricing", "research", "b2b"]
+tech: ["Next.js", "TypeScript", "Supabase", "Resend", "Stripe"]
 id: "556"
 slug: i-built-a-pricing-research-tool-youd-be-surprised-how-m
 title: "I built a pricing research tool, you'd be surprised how many people initially set their pricing just based on a competitor"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vo6270/i_built_a_pricing_research_tool_youd_be_surprised/"
 category: saas
 date: "2026-08-14"
 ---
-# I built a pricing research tool, you'd be surprised how many people initially set their pricing just based on a competitor
+# I built a pricing research tool, you'd be surprised how many founders don't actually research their first price
 
 ## Problem
- honestly the thing that pushed me to build this was speaking to a few founders and realizing they did barely any research: opened three competitor pages, saw the $29/49/99 pattern, picked a number, moved on. a few things i learned digging into this that might save someone here time: van westendorp on its own gives you four numbers and unless you pair it with something that models the actual revenue outcome, you'll be still pretty stuck people systematically understate what they'll pay when there's no consequence to saying a low number the scary part of raising a price isn't the math, it's that it feels irreversible. but if you run the candidate price against your retention first you can see the modeled mrr impact and the break-even retention you'd need low free-to-paid often gets blamed on onboarding when the number itself was never tested. sometimes the funnel isn't broken, the price is just wrong and nobody checked. you already have the panel you need. if you've got users or a list, you can survey them directly instead of paying a consultant five figures or trying to hit qualtrics minimums full disclosure, i'm building Kinetic Pricing around exactly this (run the survey on your own customers, model the price change, log the decision free for 30 days). not linking it here, just sharing the reasoning that got me there. curious how folks in here actually set their first price, and whether anyone's ever gone back and re-tested it? submitted by /u/KineticPricing [link] [comments]
 
----
+A founder noticed that founders they spoke to did barely any pricing research: opened three competitor pages, saw the $29/49/99 pattern, picked a number, and moved on. The founder built a pricing research tool around Van Westendorp's Price Sensitivity Meter, paired with a revenue-impact model that runs the candidate price against retention, surfaces the break-even retention needed, and tests the price against a panel of the founder's existing users. The tool logs the decision. The implicit product: a focused pricing-research service that combines the Van Westendorp survey with a revenue-impact model, runs against the founder's own user list, and exports a signed pricing decision for the audit trail.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define the MVP scope for Kinetic Pricing as a focused pricing-research service that runs the Van Westendorp survey against the founder's user list, pairs it with a revenue-impact model, and exports a signed decision log. The MVP has to demonstrate the round-trip: upload the user list, run the survey, model the price change, log the decision.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Primary:** indie SaaS founders setting their first or second price.
+- **Secondary:** small SaaS teams considering a price change (raise or restructure).
+- **Tertiary:** pricing consultants who want a structured tool to run with their clients.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Van Westendorp survey (4 questions per respondent) sent to the founder's user list.
+- Revenue-impact model: candidate price × projected retention × existing conversion → projected MRR.
+- Break-even retention: the retention rate the founder needs to clear the current MRR at the new price.
+- Decision log: signed export of the survey results, the model inputs, and the chosen price.
+- Free tier: 50 respondents, 1 candidate price. Pro at $99/month: 500 respondents, 5 candidate prices, decision-log export.
+- Excluded in v1: conjoint analysis, Gabor-Granger, willingness-to-pay scoring, multi-product.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens. Default visual: a single pricing-research surface — the survey setup on the left, the model output in the centre, the decision log on the right. No marketing-site chrome; the product is the decision log.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The survey must be sent from the founder's own email (or a Sender domain they own); the tool is not a survey vendor, it is a pricing-research tool.
+- The decision log must be tamper-evident (signed with a per-engagement key) so the audit trail holds up.
+- Per-engagement data isolation: one founder's user list must never leak to another.
