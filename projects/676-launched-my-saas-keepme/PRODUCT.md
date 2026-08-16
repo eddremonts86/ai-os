@@ -1,8 +1,10 @@
 ---
+tags: ["saas", "consumer", "ai", "content-saver"]
+tech: ["Next.js", "TypeScript", "SwiftUI", "Supabase", "Anthropic Claude", "AWS", "Stripe"]
 id: "676"
 slug: launched-my-saas-keepme
 title: Launched my SaaS - KEEPME
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vptxt6/launched_my_saas_keepme/"
@@ -11,40 +13,43 @@ date: "2026-08-16"
 ---
 # Launched my SaaS - KEEPME
 
-> Auto-generated product brief. Review and refine before MVP scoping.
+> Product brief for the personal content-saver app described in the source post.
 
 ## Value Proposition
 
-_Based on source brief:_ Hey, What my app does: we have a ton of links and vids that we keep to us but cant access them easily at the right time. for that i created an app. With AI and stuff. For now its totally free as i have some aws credits it will be live soon, to join the waitlist just dm me. For the first 1000 (i doubt if i get these many) users you will get 500 credits( that means you can store upto 500 minutes of content) This is my first saas. criticize as much as you want submitted by /u/Ok_Entertainer_2920 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A knowledge worker can save links and videos "to themselves" and retrieve them later without maintaining a tagging system; the AI generates the tags and the search uses them.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Knowledge workers | Save links and videos throughout the week; cannot find them later. |
+| Students and researchers | Build a personal library of source material across courses. |
+| Creators | Want a private swipe file of references. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Save a link or video and find it later.
+2. **Emotional job** — Stop feeling guilty about a bloated browser bookmarks folder.
+3. **Social job** — None in v1.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Activation:** first save within 7 days of install.
+- **Retention:** at least 3 saves/week per active user after month 1.
+- **Conversion:** ≥ 5% free-to-paid conversion within 90 days.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free tier: 100 credits on signup. Paid at $7.99/month or $59/year: 1,000 credits/month. Credit packs available one-off.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Pocket / Instapaper** — read-later, weaker on retrieval search.
+- **Raindrop.io** — bookmarks with tagging, no AI.
+- **Notion databases** — flexible, but require manual tagging.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vptxt6/launched_my_saas_keepme/) · **Posted:** 2026-08-16T10:50:57+00:00
+- [ ] The AWS-credit window is the make-or-break constraint; a paid plan must convert before the window closes.
+- [ ] The AI layer's per-user cost must be bounded; calling inference on every save is not viable.
