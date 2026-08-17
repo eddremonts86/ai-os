@@ -60,7 +60,7 @@ If any of these turns out to be active (e.g. someone else works on it, or it has
 | **CubaProjects**                           | `~/Projects/eddremonts86/CubaProjects/`                           | (mixed)                                | 106,661 | Large legacy project (CubaProjects). Worth checking what it is.  |
 | **bash-automaticGenerators**               | `~/Projects/eddremonts86/bash-automaticGenerators/`               | (bash)                                 | 51      | Bash script generators. Legacy.                                  |
 | **budget-app**                             | `~/Projects/eddremonts86/budget-app/`                             | (mixed)                                | 928     | Budget app. Legacy.                                              |
-| **builderhunt**                            | `~/Projects/eddremonts86/builderhunt/`                            | (mixed)                                | 102     | Builder hunt project. Legacy.                                    |
+| **builderhunt**                            | `~/Projects/eddremonts86/builderhunt/`                            | TanStack Start + Drizzle + Postgres    | 102     | **THE REFERENCE APP.** Closest to production Edd has. Copy its patterns rather than inventing a second architecture — see the note below the table. |
 | **chucknorris**                            | `~/Projects/eddremonts86/chucknorris/`                            | (mixed)                                | 92      | Chuck Norris API project. Legacy.                                |
 | **cloudinaryDemo**                         | `~/Projects/eddremonts86/cloudinaryDemo/`                         | (cloud)                                | 39      | Cloudinary demo. Legacy.                                         |
 | **coolify-test**                           | `~/Projects/eddremonts86/coolify-test/`                           | (coolify)                              | 31      | Coolify test deployment. Legacy.                                 |
@@ -158,3 +158,28 @@ After creating or archiving a project:
 3. Update `Files` count via `find <path> -type f | wc -l`.
 4. Update `Last modified` via `stat -f '%Sm' <path>`.
 5. Get `Stack` from `cat <path>/package.json | python3 -c 'import json,sys; print(json.load(sys.stdin)["name"])'`.
+
+## The reference app — read this before designing anything
+
+**`~/Projects/eddremonts86/builderhunt/` is the closest-to-production app in this workspace**
+(Edd's instruction, 2026-08-14). When a new project needs a decision that builderhunt has already
+made, copy it instead of inventing a second answer. What it settles, with the file that settles it:
+
+| Decision | Where |
+| --- | --- |
+| Branch model: `master` = production and deploys on green, `dev` integrates, work on `feat/fix/chore` merged by PR | `CLAUDE.md` § Deploys |
+| The local quality gate, mirrored from CI, run by a pre-push hook on **every** branch | `scripts/ci/local-quality.sh`, `.githooks/pre-push` |
+| CI triggers: `pull_request` + push to `[master, dev]`, `paths-ignore` prose | `.github/workflows/quality.yml` |
+| Coolify deploy on `workflow_run` after Quality goes green, then verify from outside | `.github/workflows/deploy.yml` |
+| Database: Drizzle + Postgres, forward-only migrations, an idempotent deploy orchestrator | `scripts/deploy/orchestrate.mjs`, `docs/operations/deploy-runbook.md` |
+| Runtime DB roles created **without** passwords by migration, provisioned after `drizzle-kit migrate` | `drizzle/0002_database_roles.sql`, `docs/operations/database-roles.md` |
+| Review required on the paths where a mistake is invisible in a diff | `.github/CODEOWNERS` |
+| Dev server invoked as `./node_modules/.bin/vite` rather than through pnpm | `.claude/launch.json` (the `//` key records why) |
+
+**It is not "Convex".** A roadmap that says "matching the existing house stack (Convex)" is wrong
+about this workspace: the house stack is Drizzle + Postgres on Coolify. Check before believing a
+roadmap's claim about what already exists.
+
+Its `docs/operations/` is the deepest operational writing here — 50+ runbooks covering deploys, DB
+restore drills, role timeouts, Stripe, load testing and incident response. When a new project needs
+a runbook, start from the builderhunt one with the same name.

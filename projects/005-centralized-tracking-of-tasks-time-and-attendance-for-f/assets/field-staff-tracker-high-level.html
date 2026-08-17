@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>005 · High-level architecture · Field-staff tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #08090e;
+      --color-ink:     #f4f5f9;
+      --color-muted:   #a2a4ae;
+      --color-accent:  #b3ee55;
+      --font-sans:     'Space Grotesk', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1200px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">High-Level · Diagram Design</p>
+    <h1>Field-staff tracker · end-to-end stack</h1>
+
+    <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hl-005-title hl-005-desc">
+      <title id="hl-005-title">Field-staff tracker · end-to-end stack</title>
+      <desc id="hl-005-desc">High-level architecture showing the Flutter PWA writing check-ins to Firestore, Cloud Functions rolling them up to BigQuery in the EU region, and the manager dashboard reading from both.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#a2a4ae"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b3ee55"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3bdfef"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#08090e"/>
+
+      <!-- Phase banner -->
+      <text x="120" y="32" fill="#a2a4ae" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em" text-anchor="middle">CAPTURE</text>
+      <text x="380" y="32" fill="#a2a4ae" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em" text-anchor="middle">HOT PATH · EU</text>
+      <text x="640" y="32" fill="#a2a4ae" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em" text-anchor="middle">ROLLUP · EU</text>
+      <text x="880" y="32" fill="#a2a4ae" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em" text-anchor="middle">CONSUMERS</text>
+
+      <line x1="20" y1="44" x2="980" y2="44" stroke="rgba(244,245,249,0.10)" stroke-width="0.8"/>
+
+      <!-- Arrows drawn first (z-order: lines behind nodes) -->
+      <!-- PWA -> Firestore (accent: primary data path) -->
+      <path d="M 244,148 H 280 Q 296,148 296,164 V 200 Q 296,216 312,216" fill="none" stroke="#b3ee55" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <!-- Firestore -> Manager dashboard (live read) -->
+      <path d="M 480,216 H 720" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Firestore -> Cloud Functions (write trigger) -->
+      <path d="M 396,260 V 320 Q 396,336 412,336" fill="none" stroke="#a2a4ae" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <!-- Cloud Functions -> BigQuery (rollup) -->
+      <path d="M 528,360 H 600 Q 616,360 616,344 V 304 Q 616,288 632,288" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- BigQuery -> Manager dashboard (async rollup) -->
+      <path d="M 760,288 H 800" fill="none" stroke="#a2a4ae" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <!-- BigQuery -> Payroll CSV (async export) -->
+      <path d="M 760,304 V 408 Q 760,424 776,424 H 880" fill="none" stroke="#a2a4ae" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+      <!-- Arrow labels with mask + gap -->
+      <rect x="262" y="174" width="64" height="14" rx="2" fill="#08090e"/>
+      <text x="294" y="184" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">WRITE</text>
+
+      <rect x="582" y="208" width="64" height="14" rx="2" fill="#08090e"/>
+      <text x="614" y="218" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">LIVE READ</text>
+
+      <rect x="546" y="312" width="64" height="14" rx="2" fill="#08090e"/>
+      <text x="578" y="322" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">ROLLUP</text>
+
+      <rect x="786" y="376" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="814" y="386" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">EXPORT</text>
+
+      <!-- Nodes -->
+      <!-- 1. Field Phone (PWA) — accent focal -->
+      <rect x="20" y="100" width="200" height="96" rx="6" fill="rgba(179,238,85,0.12)" stroke="#b3ee55" stroke-width="1.2"/>
+      <rect x="28" y="108" width="48" height="14" rx="2" fill="transparent" stroke="rgba(179,238,85,0.55)" stroke-width="0.8"/>
+      <text x="52" y="118" fill="rgba(179,238,85,0.85)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CLIENT</text>
+      <text x="120" y="156" fill="#b3ee55" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Field Phone (PWA)</text>
+      <text x="120" y="174" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">Flutter · Android 9+</text>
+      <text x="120" y="186" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">offline queue · SQLite</text>
+
+      <!-- 2. Firestore (EU) -->
+      <rect x="320" y="172" width="160" height="88" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="328" y="180" width="56" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="356" y="190" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STORE</text>
+      <text x="400" y="222" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Firestore</text>
+      <text x="400" y="240" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">firebase · EU region</text>
+
+      <!-- 3. Manager Dashboard -->
+      <rect x="800" y="172" width="180" height="88" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="808" y="180" width="56" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="836" y="190" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">WEB UI</text>
+      <text x="890" y="222" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Manager Dashboard</text>
+      <text x="890" y="240" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">roster · hours · exceptions</text>
+
+      <!-- 4. Cloud Functions -->
+      <rect x="412" y="336" width="116" height="64" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="420" y="344" width="44" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="442" y="354" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="470" y="372" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Cloud Functions</text>
+      <text x="470" y="386" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">nightly rollup</text>
+
+      <!-- 5. BigQuery (EU) -->
+      <rect x="632" y="240" width="128" height="64" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="640" y="248" width="56" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="668" y="258" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">WAREHOUSE</text>
+      <text x="696" y="276" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">BigQuery</text>
+      <text x="696" y="290" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">bigquery · EU region</text>
+
+      <!-- 6. Payroll CSV -->
+      <rect x="880" y="408" width="100" height="48" rx="6" fill="rgba(244,245,249,0.05)" stroke="rgba(244,245,249,0.30)" stroke-width="1"/>
+      <text x="930" y="426" fill="#f4f5f9" font-size="11" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Payroll CSV</text>
+      <text x="930" y="442" fill="#a2a4ae" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle">per-provider schema</text>
+
+      <!-- Legend (bottom strip) -->
+      <line x1="20" y1="448" x2="980" y2="448" stroke="rgba(244,245,249,0.10)" stroke-width="0.8"/>
+      <text x="20" y="464" fill="#a2a4ae" font-size="8" font-family="'JetBrains Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+      <line x1="100" y1="461" x2="124" y2="461" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="132" y="465" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Primary write path (accent)</text>
+      <line x1="340" y1="461" x2="364" y2="461" stroke="#a2a4ae" stroke-width="1"/>
+      <text x="372" y="465" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Live read</text>
+      <line x1="480" y1="461" x2="504" y2="461" stroke="#a2a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="512" y="465" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Async rollup / export</text>
+      <rect x="680" y="454" width="24" height="14" rx="3" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="712" y="465" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">EU-resident data plane</text>
+    </svg>
+  </div>
+</body>
+</html>

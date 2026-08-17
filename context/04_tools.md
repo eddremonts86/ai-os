@@ -49,6 +49,20 @@ Inventory of installed tools. Update when something changes.
 - **14 superpowers skills** (REQUIRED for AI-OS).
 - **Source of truth:** `~/Projects/ai-os/ai-config/skills/`.
 
+### Diagrams
+
+- **`diagram-design`** — 27 editorial diagram types → self-contained HTML + inline SVG.
+  Third-party (MIT, `cathrynlavery/diagram-design`), vendored with local brand deltas; see
+  `ai-config/skills/diagram-design/VENDORED_FROM.md`.
+- Skinned with the AI-OS brand, dark-first. Tokens live in `context/06_brand.md` — the skill's
+  brand onboarding is **disabled on purpose** (it would rewrite the shared skill for every
+  project). Per-project override: `.ai-os/brand-tokens.md` in that project's root.
+- PNG export needs `playwright` + chromium in the AI-OS venv (`~/.ai-os/venv`). HTML and SVG
+  work without it. `setup/verify.sh` section 10b reports the browser as an optional check.
+- Routing vs other diagram tools: `rules/always_do.md` § "When a task needs a diagram".
+  The gstack `diagram` skill (excalidraw triplet) was retired 2026-08-13 — full trigger
+  collision with `diagram-design`.
+
 ## Environment config (secrets)
 
 - **Master merged `.env`:** `dev-env/env-config/.env` — single source of truth for
@@ -77,3 +91,30 @@ Inventory of installed tools. Update when something changes.
 - **1-command:** `bash ~/Projects/ai-os/setup/install-mac.sh`
 - **Verify:** `bash ~/Projects/ai-os/setup/verify.sh`
 - **CI:** GitHub Actions (`.github/workflows/test-{mac,linux,windows}.yml`).
+
+## The preview pane reads `launch.json` from the session root, not the project
+
+`preview_start` looks for `.claude/launch.json` relative to the **session's working directory**. When
+a session is opened at the scope root (`~/Projects`) rather than inside a project, a project-local
+`.claude/launch.json` is invisible to it — the tool reports "No .claude/launch.json found" and names
+the root path it wanted.
+
+Fix: put the config at the session root and have each entry cd into its own project.
+
+```json
+{
+  "name": "myapp-dev",
+  "runtimeExecutable": "bash",
+  "runtimeArgs": ["-lc", "cd ~/Projects/scope/myapp && exec ./node_modules/.bin/vite dev --port 3007"],
+  "port": 3007
+}
+```
+
+Two standing constraints on this machine:
+
+- **Port 3000 is taken** by the Hermes WhatsApp bridge (`hermes-agent/scripts/whatsapp-bridge/bridge.js`).
+  Port 5173 is also usually in use. Pick 3007+ for a new dev server, and record *why* in the config's
+  `//` key so nobody moves it back and kills the bridge.
+- **Invoke `./node_modules/.bin/vite` directly**, not `pnpm dev`: going through pnpm makes the dev
+  server depend on which pnpm is on PATH, and a pnpm of a different major refuses to run any script
+  until it has purged `node_modules` — which it cannot confirm without a TTY.

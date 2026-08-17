@@ -1,0 +1,122 @@
+/* Tokens shared with ../site/index.html — keep in sync if site/ changes. */
+:root {
+  --bg: #0b0d12;
+  --surface: #151922;
+  --surface-2: #1b2029;
+  /* Hairlines. --line separates content inside a surface; --line-strong outlines a
+     surface against the page. Neither reaches the 3:1 of WCAG 1.4.11 — on this
+     palette that needs a mid-grey (#59677f) that turns the UI into a wireframe —
+     and neither has to: cards are grouped by a 12px gap and their own content, so
+     the hairline is emphasis, not the identifying boundary. */
+  --line: #232a36;
+  --line-strong: #2d3644;
+  --text: #e8ebf2;
+  --text-dim: #9aa3b2;
+  /* --accent is the brand purple, used for FILLS, RAILS, BORDERS and the focus
+     ring. It measures 4.24:1 on --surface, which clears the 3:1 WCAG 1.4.11 floor
+     for non-text, but NOT the 4.5:1 for text. */
+  --accent: #7c5cff;
+  /* ...so accent-coloured TEXT uses this instead: the same hue lifted 15% toward
+     white. Measured on every surface the UI actually pairs it with — 5.38:1 on
+     --surface, 5.08:1 on --surface-2, 5.67:1 on --bg, and 4.89:1 on the 10%
+     accent tint the chips use. The old single token put 12px chip labels at
+     3.86:1. */
+  --accent-text: #9074ff;
+  --accent-2: #3ddc97;
+  --warn: #f5a524;
+  --danger: #ef4444;
+
+  /* Keyboard focus ring. Kept as its own token so the ring never silently
+     inherits a palette change that drops it below the 3:1 WCAG 1.4.11 floor. */
+  --focus: var(--accent);
+
+  /* Alpha derivations. These existed as 25 hand-written rgba() literals across 8
+     files, so changing --accent left every one of them purple. Named by source
+     colour and opacity so the relationship is legible. */
+  --accent-a05: rgba(124, 92, 255, 0.05);
+  --accent-a10: rgba(124, 92, 255, 0.1);
+  --accent-a30: rgba(124, 92, 255, 0.3);
+  --accent-2-a10: rgba(61, 220, 151, 0.1);
+  --accent-2-a30: rgba(61, 220, 151, 0.3);
+  --warn-a10: rgba(245, 165, 36, 0.1);
+  --warn-a30: rgba(245, 165, 36, 0.3);
+  /* Neutral wash for zebra striping and inset panels. */
+  --ink-a02: rgba(255, 255, 255, 0.02);
+
+  /* Fenced code. Was two bare literals in MarkdownReader; named here so a theme
+     change reaches them. --code-fg is 9.29:1 on --code-bg. */
+  --code-bg: #1a1d24;
+  --code-fg: #c0c5d0;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  --font-ui: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- shadcn/typeset bridge ---------- *
+ * typeset.css reads shadcn theme variable names. Rather than rename this app's
+ * tokens, alias them here so typeset picks up our palette and both naming schemes
+ * keep working. Its own fallbacks (currentColor, 0.5em) would otherwise silently
+ * flatten the prose to a single colour.
+ *
+ * --color-muted-foreground and --color-border have no fallback problem — typeset
+ * derives --typeset-muted / --typeset-rule from them with color-mix — but aliasing
+ * them keeps rules and secondary text on our exact tokens instead of an opacity
+ * approximation of the body colour.
+ */
+:root {
+  --color-foreground: var(--text);
+  --color-muted-foreground: var(--text-dim);
+  --color-border: var(--line);
+  /* typeset uses --color-primary only for task-list checkbox accent-color. */
+  --color-primary: var(--accent);
+  --color-ring: var(--focus);
+  --font-heading: var(--font-ui);
+  /* typeset applies --radius to code blocks and images; --radius-md matches the
+     rest of the app's surfaces. */
+  --radius: var(--radius-md);
+}
+
+/* ---------- Typeset presets ---------- */
+
+/* Plan documents: the reading surface for SPEC/PRODUCT/PLAN/DESIGN/TASKS.
+   Size 15px and leading 1.7 preserve what the hand-rolled prose used, so this is a
+   like-for-like swap rather than a redesign. Flow 1.25em is typeset's default
+   rhythm; the old CSS hand-set every margin instead. */
+.typeset-plan {
+  --typeset-font-body: var(--font-ui);
+  --typeset-font-heading: var(--font-ui);
+  --typeset-font-mono: var(--font-mono);
+  --typeset-size: 15px;
+  --typeset-leading: 1.7;
+  --typeset-flow: 1.25em;
+}

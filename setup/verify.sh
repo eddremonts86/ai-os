@@ -53,6 +53,41 @@ for dotfile in ".zshrc" ".p10k.zsh" ".gitignore_global"; do
   fi
 done
 
+# ─── 2b. Per-machine env is NOT baked into the tracked dotfile ───
+# ~/.zshrc is a symlink to dev-env/dotfiles/zsh/.zshrc, so anything appended to
+# ~/.zshrc lands in the repo. install-mac.sh step 5b writes ~/.ai-os/env.sh
+# instead; this catches a regression that starts committing machine paths again.
+section "2b. Per-machine env isolation"
+TRACKED_ZSHRC="$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc"
+if [ -f "$TRACKED_ZSHRC" ]; then
+  if grep -qF '$HOME/.ai-os/env.sh' "$TRACKED_ZSHRC"; then
+    req_ok "  tracked .zshrc sources ~/.ai-os/env.sh"
+  else
+    req_fail "  tracked .zshrc is missing the ~/.ai-os/env.sh source guard"
+  fi
+  # AI_OS_ROOT is the value the installer used to leak. Any absolute /Users/<name>
+  # or /home/<name> path in the tracked dotfile is a machine path in a shared file.
+  LEAKED=$(grep -nE '^[^#]*(/Users/|/home/)[a-zA-Z0-9._-]+/' "$TRACKED_ZSHRC" || true)
+  if [ -z "$LEAKED" ]; then
+    req_ok "  no hardcoded home paths in the tracked .zshrc"
+  else
+    warn "  tracked .zshrc has hardcoded home paths (third-party installers append through the symlink):"
+    echo "$LEAKED" | while IFS= read -r l; do warn "    $l"; done
+    opt_miss "hardcoded home paths in dev-env/dotfiles/zsh/.zshrc"
+  fi
+else
+  warn "  $TRACKED_ZSHRC not found — skipping"
+fi
+if [ -f "$HOME_DIR/.ai-os/env.sh" ]; then
+  if grep -q '^export AI_OS_ROOT=' "$HOME_DIR/.ai-os/env.sh"; then
+    opt_ok "  ~/.ai-os/env.sh present and exports AI_OS_ROOT"
+  else
+    opt_miss "~/.ai-os/env.sh present but does not export AI_OS_ROOT — re-run install-mac.sh"
+  fi
+else
+  opt_miss "~/.ai-os/env.sh missing — run install-mac.sh (AI_OS_ROOT/OLLAMA_URL won't be set)"
+fi
+
 # ─── 3. Global skills + CLI executables (exact name-set check, not count-only) ───
 # P0-4 fix: previously this only checked that a directory existed, so a client
 # missing 1+ skills (or an absent CLI executable) still counted as a pass. Each
@@ -483,6 +518,27 @@ if command -v uv >/dev/null 2>&1 && [ -x "$AIOS_VENV/bin/python" ] && [ -f "$PIP
   fi
 else
   warn "uv or AI-OS venv or pip-packages.txt missing — skipping pip check"
+fi
+
+# ─── 10b. Playwright chromium (optional — diagram-design PNG export) ───
+# The playwright wheel is covered by section 10; the browser binary is a
+# separate ~120MB download. Without it, diagram-design still produces HTML and
+# SVG — only PNG export fails — so this is optional, never a required check.
+section "10b. Playwright chromium (optional, diagram-design PNG export)"
+if [ -x "$AIOS_VENV/bin/python" ] \
+  && "$AIOS_VENV/bin/python" -c "import playwright" >/dev/null 2>&1; then
+  if "$AIOS_VENV/bin/python" - <<'PY' >/dev/null 2>&1
+from playwright.sync_api import sync_playwright
+with sync_playwright() as p:
+    p.chromium.launch().close()
+PY
+  then
+    opt_ok "Playwright chromium launches (diagram-design PNG export available)"
+  else
+    opt_miss "Playwright installed but chromium missing — run: $AIOS_VENV/bin/playwright install chromium"
+  fi
+else
+  opt_miss "playwright not installed in AI-OS venv — diagram-design PNG export unavailable (HTML/SVG unaffected)"
 fi
 
 # ─── 11. English-only rule (skill frontmatter) ───
