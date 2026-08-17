@@ -1,6 +1,8 @@
 # plans-explorer
 
-Static SPA that indexes and renders the 525 product plans living in `../projects/` (each plan has SPEC/PRODUCT/PLAN/DESIGN/TASKS) plus the auto-generated `TOP_PROJECTS.md` rankings (money / learn / fun).
+Static SPA that indexes and renders the **~525+ product plans** living in `../projects/` (each plan has SPEC/PRODUCT/PLAN/DESIGN/TASKS) plus the auto-generated `TOP_PROJECTS.md` rankings (money / learn / fun).
+
+Plan corpus grows via [`../tools/problemhunt-scraper/`](../tools/problemhunt-scraper/), a multi-source pipeline currently fetching from ProblemHunt, HN Ask/Show (Algolia), ProductHunt, and BetaList. See the scraper README for the full source list and `--source` flags.
 
 This is a **framework component of AI-OS**, not a personal/work project. It does NOT appear in `context/02_projects.md` — it's documented here and in the `plans-explorer` skill (see `ai-config/skills/plans-explorer/SKILL.md`).
 
