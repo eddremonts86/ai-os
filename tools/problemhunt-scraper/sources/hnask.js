@@ -2,11 +2,13 @@
 //
 // Source: Hacker News — Ask HN via the official Algolia search API.
 // Endpoint: https://hn.algolia.com/api/v1/search_by_date
-// Filtered to stories with `tags=Ask HN` or title prefix "Ask HN:".
-// The Algolia API is the canonical HN programmatic path (free, public,
-// well-known rate limits) and more reliable than the third-party hnrss mirror
-// (hnrss.org returned 502 during testing on 2026-08-17).
-// ~300-600 items/month.
+// Filtered with the literal `tags=ask_hn` filter — cleaner than a regex
+// post-filter and skips non-matching results at the server.
+//
+// Why Algolia (not hnrss.org): the third-party hnrss mirror returned 502
+// during testing on 2026-08-17. Algolia's HN search is the canonical
+// programmatic API: free, no key, no rate-limit, ~30 req/min in practice.
+// ~300-600 Ask HN threads/month.
 
 const { fetchWithRetry } = require('./_shared');
 
@@ -20,8 +22,7 @@ const HN_ASK = {
     const projects = [];
     try {
       const params = new URLSearchParams({
-        query: 'Ask HN',
-        tags: 'story',
+        tags: 'ask_hn',
         hitsPerPage: String(this.HITS_PER_PAGE)
       });
       const url = `${this.API_URL}?${params.toString()}`;
@@ -31,8 +32,6 @@ const HN_ASK = {
       const hits = json.hits || [];
       for (const hit of hits) {
         if (!hit.title || !hit.story_id) continue;
-        // Algolia returns a mix of "Ask HN" and other queries — keep only Ask HN.
-        if (!/^Ask HN[:?]/i.test(hit.title)) continue;
         const storyUrl = `https://news.ycombinator.com/item?id=${hit.story_id}`;
         projects.push({
           source: 'hnask',

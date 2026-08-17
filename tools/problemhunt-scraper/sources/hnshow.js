@@ -1,7 +1,7 @@
 // tools/problemhunt-scraper/sources/hnshow.js
 //
 // Source: Hacker News — Show HN via the official Algolia search API.
-// Same endpoint as hnask; filtered to "Show HN" prefixed titles.
+// Same endpoint as hnask; filtered with literal `tags=show_hn`.
 // Show HN = product launches but the body text typically starts with
 // "I built X to solve problem Y", so the first paragraph IS the problem.
 // Downstream LLM step filters items where the body lacks a problem framing.
@@ -19,8 +19,7 @@ const HN_SHOW = {
     const projects = [];
     try {
       const params = new URLSearchParams({
-        query: 'Show HN',
-        tags: 'story',
+        tags: 'show_hn',
         hitsPerPage: String(this.HITS_PER_PAGE)
       });
       const url = `${this.API_URL}?${params.toString()}`;
@@ -30,7 +29,6 @@ const HN_SHOW = {
       const hits = json.hits || [];
       for (const hit of hits) {
         if (!hit.title || !hit.story_id) continue;
-        if (!/^Show HN[:?]/i.test(hit.title)) continue;
         const storyUrl = `https://news.ycombinator.com/item?id=${hit.story_id}`;
         projects.push({
           source: 'hnshow',

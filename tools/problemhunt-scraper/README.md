@@ -9,11 +9,11 @@ and the `scraper.cjs` dispatcher composes them via the `SOURCES` registry.
 | Flag | Source | Access | Volume | Status |
 |------|--------|--------|--------|--------|
 | `--source=ph` | ProblemHunt | Tilda JSON feed | ~199 / scrape | OK |
-| `--source=hnask` | HN Ask HN | Algolia search API | ~153 / scrape | OK |
-| `--source=hnshow` | HN Show HN | Algolia search API | ~192 / scrape | OK |
+| `--source=hnask` | HN Ask HN | Algolia search API | ~200 / scrape | OK |
+| `--source=hnshow` | HN Show HN | Algolia search API | ~200 / scrape | OK |
 | `--source=producthunt` | ProductHunt Atom feed | `www.producthunt.com/feed` | ~50 / scrape | OK |
-| `--source=bitalist` | BetaList Atom feed | `betalist.com/startups/feed_original` | ~25 / scrape | OK |
-| `--source=indiehackers` | IndieHackers Algolia | `search.indiehackers.com` | 0 | DEAD — endpoint unresponsive as of 2026-08-17 |
+| `--source=betalist` | BetaList Atom feed | `betalist.com/startups/feed_original` | ~25 / scrape | OK |
+| `--source=indiehackers` | IndieHackers Firebase RTDB | `indie-hackers.firebaseio.com/{threads,interviews,articles}` | 0 fresh (~136 historical from 2018) | Data is historical — Firebase RTDB hasn't been written since 2018; ships because the schema is stable and free |
 | `--source=reddit` | Reddit RSS | `reddit.com/r/<sub>/new/.rss` | 0 | BROKEN — Reddit requires login since Aug 2026 |
 
 Without `--source`, the scraper runs every **enabled** source except `reddit` (skipped by

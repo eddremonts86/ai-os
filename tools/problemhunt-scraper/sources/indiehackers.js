@@ -1,72 +1,87 @@
 // tools/problemhunt-scraper/sources/indiehackers.js
 //
-// Source: Indie Hackers via the exposed public Algolia search-only key.
+// Source: Indie Hackers via the partial-public Firebase RTDB shim.
 //
-// The IH site uses Algolia for client-side search with a *search-only*
-// API key that is safe to use server-side for read access. The /ideas
-// index contains pre-vetted idea-board posts; /posts is the long-tail
-// forum. We use /posts because that is where founder-asks / problem
-// posts actually live.
+// Discovery (2026-08-17): IH has no public /api or /graphql endpoint. The
+// site reads from Firebase RTDB at https://indie-hackers.firebaseio.com/
+// Some collections (`interviews`, `products`, `threads`, `articles`,
+// `comments`, `groups`, `productUpdates`, `series`) are publicly readable
+// without auth; others (`posts`, `users`, `ideas`, `jobs`) return
+// Permission denied. We use `threads` (the closest analogue to a
+// founder-problem board) and `interviews` (high-quality problem stories
+// from indie founders).
 //
-// Key was harvested from the public site JS bundle; Algolia permits
-// client-side search usage and the key has been stable since 2017.
-// If/when IH deprecates this key, the adapter fails gracefully (no items).
+// ⚠ Data is HISTORICAL: the latest posts returned are from 2018. The IH
+// platform has clearly moved off Firebase RTDB (probably to a Firestore
+// or private backend) and the RTDB has not been written to in years.
+// This source still ships because it's free, the schema is stable, and
+// the historical corpus is a useful seed for the problem-stories index.
+// If you want FRESH IH content you must scrape the SPA HTML directly
+// (heavy Ember/Next bundle, ~600KB) or use the official OAuth flow.
+//
+// Contract:
+//   GET https://indie-hackers.firebaseio.com/threads.json
+//       ?orderBy="$key"&startAt="<ms_timestamp>"&limitToFirst=<N>
+// returns object {<key>: {title, content, username, createdAt, ...}, ...}.
+// Firebase RTDB requires `orderBy` whenever any other query param is set.
 
-const { fetchWithRetry } = require('./_shared');
-const { sleep } = require('./_shared');
+const { fetchWithRetry, sleep } = require('./_shared');
 
 const INDIEHACKERS = {
   name: 'indiehackers',
-  APP_ID: 'N86T1R3OWZ',
-  SEARCH_KEY: '5140dac5e87f47346abbda1a34ee70c3',
-  INDEX: 'posts',
-  BASE: 'https://search.indiehackers.com/1/indexes',
-  // Pull enough to get a meaningful sample; Algolia caps pages at 1000 hits.
-  HITS_PER_PAGE: 100,
+  BASE: 'https://indie-hackers.firebaseio.com',
+  // Look back ~5 years — Firebase RTDB keys are timestamp strings; queries
+  // outside this range return 200 with the data that exists, so this is
+  // just a soft cap to keep results focused.
+  LOOKBACK_MS: 5 * 365 * 24 * 60 * 60 * 1000,
+  HITS_PER_COLLECTION: 50,
+  COLLECTIONS: ['threads', 'interviews', 'articles'],
 
   async fetchAll() {
     const projects = [];
-    try {
-      const url = `${this.BASE}/${this.INDEX}/query`;
-      const body = JSON.stringify({
-        params: `hitsPerPage=${this.HITS_PER_PAGE}&attributesToRetrieve=objectID,title,body,authorUsername,createdAt&sort=createdAt:desc`
-      });
-      const res = await fetchWithRetry(url, {
-        method: 'POST',
-        headers: {
-          'X-Algolia-Application-Id': this.APP_ID,
-          'X-Algolia-API-Key': this.SEARCH_KEY,
-          'Content-Type': 'application/json'
-        },
-        body
-      });
-      if (!res.ok) {
-        // Key likely dead. Don't blow up the whole scrape run.
-        return { projects, total: 0, error: `algolia HTTP ${res.status}` };
+    const startAtMs = Date.now() - this.LOOKBACK_MS;
+    const errors = [];
+    for (const collection of this.COLLECTIONS) {
+      try {
+        const url = `${this.BASE}/${collection}.json`
+          + `?orderBy=%22%24key%22`
+          + `&startAt=%22${startAtMs}%22`
+          + `&limitToFirst=${this.HITS_PER_COLLECTION}`;
+        const res = await fetchWithRetry(url);
+        if (!res.ok) {
+          errors.push(`${collection} HTTP ${res.status}`);
+          continue;
+        }
+        const data = await res.json();
+        if (!data || typeof data !== 'object') continue;
+        const items = Object.entries(data);
+        for (const [key, item] of items) {
+          if (!item || !item.title) continue;
+          // Skip spam / deleted threads.
+          if (item.deletedAt) continue;
+          if (typeof item.title === 'string' && /deleted/i.test(item.title)) continue;
+          const url = `https://www.indiehackers.com/${collection}/${key}`;
+          const createdAt = item.createdAt || item.createdTimestamp || item.bumpedAt || 0;
+          projects.push({
+            source: 'indiehackers',
+            url,
+            uid: key,
+            title: String(item.title).slice(0, 120),
+            description: (item.content || item.description || '').replace(/<[^>]+>/g, ' ').slice(0, 1000),
+            category: collection,
+            tags: `IndieHackers,${collection}`,
+            date: createdAt ? new Date(createdAt).toISOString() : ''
+          });
+          await sleep(20);
+        }
+      } catch (e) {
+        errors.push(`${collection} ${e.message}`);
       }
-      const json = await res.json();
-      const hits = json.hits || [];
-      for (const hit of hits) {
-        if (!hit.title) continue;
-        const slug = hit.authorUsername || 'unknown';
-        const url = `https://www.indiehackers.com/post/${hit.objectID}`;
-        const ts = hit.createdAt ? new Date(hit.createdAt * 1000).toISOString() : '';
-        projects.push({
-          source: 'indiehackers',
-          url,
-          uid: hit.objectID,
-          title: String(hit.title).slice(0, 120),
-          description: (hit.body || '').replace(/<[^>]+>/g, ' ').slice(0, 1000),
-          category: 'indie-hackers',
-          tags: 'IndieHackers,Founder',
-          date: ts
-        });
-        await sleep(30);
-      }
-      return { projects, total: hits.length };
-    } catch (e) {
-      return { projects, total: 0, error: e.message };
     }
+    const note = projects.length === 0
+      ? 'indiehackers: Firebase RTDB responded but no recent items — data is historical (latest ~2018)'
+      : (errors.length ? `indiehackers: ${errors.join('; ')}` : null);
+    return { projects, total: projects.length, error: note };
   }
 };
 
