@@ -1,0 +1,21 @@
+{
+  "name": "plans-api",
+  "version": "0.1.0",
+  "description": "REST API that exposes the AI-OS plans corpus (~440 plans with tech, wtp, scores, tags) for read-only consumption by other apps (e.g. builderhunt). Reads the same plans.json + documents/ that plans-explorer/indexer produces.",
+  "type": "module",
+  "private": true,
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test:smoke": "node tests/smoke.mjs"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "fastify": "^4.28.1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
