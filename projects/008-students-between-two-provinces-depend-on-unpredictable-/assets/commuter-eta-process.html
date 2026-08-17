@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>008 · Process · GTFS-RT commuter ETA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #08090e;
+      --color-ink:     #f4f5f9;
+      --color-muted:   #a2a4ae;
+      --color-accent:  #b3ee55;
+      --font-sans:     'Space Grotesk', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1200px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Process · Diagram Design</p>
+    <h1>GTFS-RT commuter ETA · per-student pipeline</h1>
+
+    <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pr-008-title pr-008-desc">
+      <title id="pr-008-title">GTFS-RT commuter ETA · per-student pipeline</title>
+      <desc id="pr-008-desc">Process diagram showing the per-operator GTFS-RT cron poller writing live vehicle positions into Supabase, the per-student ETA engine matching them against saved recurring trips, threshold-crossing pushes via FCM and WhatsApp, and the one-tap university late-notice hand-off.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#a2a4ae"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b3ee55"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#08090e"/>
+
+      <!-- Arrows: linear pipeline with branching -->
+      <path d="M 220,148 H 296" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <path d="M 460,148 H 540" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <path d="M 700,148 H 780" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- Supabase Realtime push down -->
+      <path d="M 460,200 V 280 H 540" fill="none" stroke="#b3ee55" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <!-- Realtime push to FCM -->
+      <path d="M 700,308 H 540 Q 524,308 524,292 V 200 Q 524,184 540,184 H 540" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- FCM down to WhatsApp -->
+      <path d="M 620,332 H 700" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <!-- WhatsApp down to university -->
+      <path d="M 800,356 H 800 V 412" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+
+      <!-- Arrow labels -->
+      <rect x="232" y="132" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="256" y="142" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">POLL</text>
+
+      <rect x="478" y="132" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="502" y="142" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">MATCH</text>
+
+      <rect x="720" y="132" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="744" y="142" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">ETA</text>
+
+      <rect x="476" y="232" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="504" y="242" fill="#b3ee55" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CROSSED</text>
+
+      <rect x="620" y="260" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="644" y="270" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">REALTIME</text>
+
+      <rect x="540" y="234" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="564" y="244" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">PUSH</text>
+
+      <rect x="816" y="376" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="844" y="386" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">LATE-EMAIL</text>
+
+      <!-- Nodes -->
+      <!-- 1. GTFS-RT feeds -->
+      <rect x="20" y="100" width="200" height="96" rx="6" fill="rgba(244,245,249,0.05)" stroke="rgba(244,245,249,0.30)" stroke-width="1"/>
+      <rect x="28" y="108" width="36" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.25)" stroke-width="0.8"/>
+      <text x="46" y="118" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXT</text>
+      <text x="120" y="144" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">GTFS-RT Feeds</text>
+      <text x="120" y="162" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">bus operators · public</text>
+      <text x="120" y="178" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">fallback: scheduled</text>
+
+      <!-- 2. Cron poller (focal) -->
+      <rect x="296" y="100" width="164" height="96" rx="6" fill="rgba(179,238,85,0.12)" stroke="#b3ee55" stroke-width="1.2"/>
+      <rect x="304" y="108" width="36" height="14" rx="2" fill="transparent" stroke="rgba(179,238,85,0.55)" stroke-width="0.8"/>
+      <text x="322" y="118" fill="rgba(179,238,85,0.85)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">POLL</text>
+      <text x="378" y="144" fill="#b3ee55" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Cron Poller</text>
+      <text x="378" y="162" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">per operator</text>
+      <text x="378" y="178" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">writes Supabase</text>
+
+      <!-- 3. Supabase (live positions) -->
+      <rect x="540" y="100" width="160" height="96" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="548" y="108" width="44" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="570" y="118" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">DB</text>
+      <text x="620" y="144" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Supabase</text>
+      <text x="620" y="162" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">live vehicle positions</text>
+      <text x="620" y="178" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">+ recurring trips</text>
+
+      <!-- 4. ETA engine -->
+      <rect x="780" y="100" width="200" height="96" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="788" y="108" width="44" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="810" y="118" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PREDICT</text>
+      <text x="880" y="144" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">ETA Engine</text>
+      <text x="880" y="162" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">rolling on-time</text>
+      <text x="880" y="178" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">baseline per route</text>
+
+      <!-- 5. Realtime push channel -->
+      <rect x="540" y="280" width="160" height="56" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="548" y="288" width="44" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="570" y="298" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RT</text>
+      <text x="620" y="316" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Realtime Channel</text>
+
+      <!-- 6. FCM -->
+      <rect x="540" y="332" width="80" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="580" y="352" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">FCM</text>
+      <text x="580" y="368" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">mobile push</text>
+
+      <!-- 7. WhatsApp -->
+      <rect x="700" y="332" width="100" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="750" y="352" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">WhatsApp</text>
+      <text x="750" y="368" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">Business API</text>
+
+      <!-- 8. Student device (consumer) -->
+      <rect x="700" y="412" width="100" height="48" rx="6" fill="rgba(244,245,249,0.05)" stroke="rgba(244,245,249,0.30)" stroke-width="1"/>
+      <text x="750" y="432" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Student</text>
+      <text x="750" y="448" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">receives notification</text>
+
+      <!-- 9. University hand-off -->
+      <rect x="700" y="200" width="200" height="56" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <rect x="708" y="208" width="48" height="14" rx="2" fill="transparent" stroke="rgba(244,245,249,0.40)" stroke-width="0.8"/>
+      <text x="732" y="218" fill="rgba(244,245,249,0.65)" font-size="7" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXT</text>
+      <text x="800" y="232" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">University Attendance</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="420" x2="960" y2="420" stroke="rgba(244,245,249,0.10)" stroke-width="0.8"/>
+      <text x="40" y="436" fill="#a2a4ae" font-size="8" font-family="'JetBrains Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+      <line x1="120" y1="433" x2="144" y2="433" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="152" y="437" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Threshold-crossing notification</text>
+      <line x1="380" y1="433" x2="404" y2="433" stroke="#a2a4ae" stroke-width="1"/>
+      <text x="412" y="437" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Pipeline data flow</text>
+      <rect x="580" y="426" width="24" height="14" rx="3" fill="rgba(179,238,85,0.12)" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="612" y="437" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">GTFS-RT poller</text>
+    </svg>
+  </div>
+</body>
+</html>

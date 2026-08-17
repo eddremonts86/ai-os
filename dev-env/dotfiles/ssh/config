@@ -45,6 +45,22 @@ Host github.com
 #     IdentityFile ~/.ssh/id_ed25519_github_work
 #     IdentitiesOnly yes
 
+# ─── conductor-01 — the Hetzner box that runs Coolify and the whole fleet ───
+#
+# Addressed by name rather than by IP: the `*.eduardoinerarte.dk` wildcard already resolves there, so
+# the name survives a rebuild that the IP would not. `IdentitiesOnly` matters — without it ssh offers
+# every key in the agent first and the server closes the connection before reaching the right one.
+#
+# The key is per-machine and not in this repo. To authorise a new laptop, add its public half to
+# /root/.ssh/authorized_keys on the server from one that already has access.
+Host conductor conductor-01
+    HostName conductor-01.eduardoinerarte.dk
+    User root
+    IdentityFile ~/.ssh/id_ed25519_conductor
+    IdentitiesOnly yes
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+
 # ─── Hetzner Cloud (if you use SSH instead of the hcloud CLI) ───
 # Host hetzner-*
 #     User root
