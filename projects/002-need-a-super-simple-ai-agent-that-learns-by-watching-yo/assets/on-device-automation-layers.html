@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>002 · Layer stack · On-device automation runtime</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #08090e;
+      --color-ink:     #f4f5f9;
+      --color-muted:   #a2a4ae;
+      --color-accent:  #b3ee55;
+      --font-sans:     'Space Grotesk', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1200px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Layer Stack · Diagram Design</p>
+    <h1>On-device automation runtime · three-layer stack</h1>
+
+    <svg viewBox="0 0 1000 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ls-002-title ls-002-desc">
+      <title id="ls-002-title">On-device automation runtime · three-layer stack</title>
+      <desc id="ls-002-desc">Layer-stack diagram showing the recorder capturing OS events into a trace, the builder calling Claude to synthesise a procedure, and the runner re-executing the saved procedure offline against DuckDB-backed logs.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#a2a4ae"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b3ee55"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#08090e"/>
+
+      <!-- Layer 3: Runner (top) — accent focal -->
+      <rect x="40" y="64" width="920" height="116" rx="8" fill="rgba(179,238,85,0.10)" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="60" y="86" fill="rgba(179,238,85,0.85)" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em">LAYER 3 · RUNTIME</text>
+      <text x="60" y="100" fill="#b3ee55" font-size="11" font-weight="500" font-family="'Space Grotesk', sans-serif">Replays saved procedures offline; no cloud round-trip per execution.</text>
+
+      <!-- Runner sub-nodes -->
+      <rect x="120" y="116" width="200" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="220" y="138" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Runner</text>
+      <text x="220" y="154" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">Python · PyInstaller</text>
+
+      <rect x="400" y="116" width="200" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="500" y="138" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Procedure Library</text>
+      <text x="500" y="154" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">DuckDB · per-user</text>
+
+      <rect x="680" y="116" width="200" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="780" y="138" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Per-run Log</text>
+      <text x="780" y="154" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">screenshot · success/fail</text>
+
+      <!-- Layer 2: Builder -->
+      <rect x="40" y="212" width="920" height="116" rx="8" fill="rgba(244,245,249,0.04)" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="60" y="234" fill="#a2a4ae" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em">LAYER 2 · BUILD-TIME</text>
+      <text x="60" y="248" fill="#f4f5f9" font-size="11" font-weight="500" font-family="'Space Grotesk', sans-serif">Calls Claude once per trace; result is a procedure.json the runner can replay forever.</text>
+
+      <rect x="260" y="264" width="220" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="370" y="286" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Procedure Builder</text>
+      <text x="370" y="302" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">trace → steps draft</text>
+
+      <rect x="540" y="264" width="200" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="640" y="286" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Anthropic Claude</text>
+      <text x="640" y="302" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">build-time only</text>
+
+      <!-- Layer 1: Recorder -->
+      <rect x="40" y="360" width="920" height="116" rx="8" fill="rgba(244,245,249,0.04)" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="60" y="382" fill="#a2a4ae" font-size="7" font-family="'JetBrains Mono', monospace" letter-spacing="0.14em">LAYER 1 · CAPTURE</text>
+      <text x="60" y="396" fill="#f4f5f9" font-size="11" font-weight="500" font-family="'Space Grotesk', sans-serif">Watches the user's screen, emits a structured trace. Always-on; capped at +8% CPU.</text>
+
+      <rect x="220" y="412" width="240" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="340" y="434" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Recorder</text>
+      <text x="340" y="450" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">pynput · Quartz · pyobjc</text>
+
+      <rect x="540" y="412" width="200" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="640" y="434" fill="#f4f5f9" font-size="12" font-weight="600" font-family="'Space Grotesk', sans-serif" text-anchor="middle">Trace</text>
+      <text x="640" y="450" fill="#a2a4ae" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">click · key · focus · clipboard</text>
+
+      <!-- Arrows: recorder -> builder -> runner -->
+      <path d="M 640,412 V 340 Q 640,328 652,328 H 720" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <path d="M 480,288 V 200 Q 480,188 492,188 H 540 Q 552,188 552,200 V 240 Q 552,252 540,252" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+      <path d="M 740,264 V 200 Q 740,188 728,188" fill="none" stroke="#a2a4ae" stroke-width="1" marker-end="url(#arrow)"/>
+
+      <!-- Arrow labels -->
+      <rect x="660" y="354" width="44" height="14" rx="2" fill="#08090e"/>
+      <text x="682" y="364" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">TRACE</text>
+
+      <rect x="460" y="220" width="48" height="14" rx="2" fill="#08090e"/>
+      <text x="484" y="230" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">DRAFT</text>
+
+      <rect x="720" y="220" width="56" height="14" rx="2" fill="#08090e"/>
+      <text x="748" y="230" fill="#7d8089" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="0.06em">PROCEDURE</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="500" x2="960" y2="500" stroke="rgba(244,245,249,0.10)" stroke-width="0.8"/>
+      <text x="40" y="516" fill="#a2a4ae" font-size="8" font-family="'JetBrains Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+      <rect x="120" y="506" width="20" height="14" rx="3" fill="rgba(179,238,85,0.10)" stroke="#b3ee55" stroke-width="1.2"/>
+      <text x="148" y="517" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Focal layer · runtime (no cloud)</text>
+      <rect x="380" y="506" width="20" height="14" rx="3" fill="rgba(244,245,249,0.04)" stroke="#f4f5f9" stroke-width="1"/>
+      <text x="408" y="517" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Standard layer</text>
+      <line x1="560" y1="513" x2="584" y2="513" stroke="#a2a4ae" stroke-width="1"/>
+      <text x="592" y="517" fill="#a2a4ae" font-size="8.5" font-family="'Space Grotesk', sans-serif">Local IPC + filesystem</text>
+    </svg>
+  </div>
+</body>
+</html>

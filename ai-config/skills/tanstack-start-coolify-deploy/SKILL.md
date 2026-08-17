@@ -669,3 +669,61 @@ docker exec my-app-app-1 pnpm db:migrate:status
 - Related skill: `coolify-env-sync-and-postdeploy` (env sync + the idempotent DB deploy orchestrator)
 - Related skill: `pnpm-docker-deploy` (lockfile + build scripts)
 - Related skill: `prod-deploy-verification` (pre-flight checks)
+## Gotcha: an eagerly-constructed Postgres client kills hydration silently
+
+Learned in `builderhunt` and worth more than any other item on this page, because the symptom points
+nowhere near the cause.
+
+Constructing the DB client at **module scope**…
+
+```ts
+// ❌ runs the moment the module is imported, in the browser too
+export const db = drizzle(postgres(env.DATABASE_URL, poolOptions('app')))
+```
+
+…is enough to break the entire client bundle, without anyone calling it. TanStack Start's generated
+route tree pulls every `src/routes/api/**` module into the **client** bundle as well (a route module
+must exist client-side for client navigation, even when its only client-relevant export is
+`component: () => null`). Any repository imported transitively from such a route therefore *executes*
+in the browser, and `postgres`'s Node internals reference `Buffer`.
+
+The failure mode is the worst available:
+
+- `ReferenceError: Buffer is not defined` throws **before React mounts**
+- the server-rendered HTML still displays perfectly, so the page looks fine
+- every click handler, form submit and toggle silently does nothing
+- nothing appears in the console through normal means — it is only visible via
+  `window.addEventListener('unhandledrejection', …)`
+
+**The fix is a lazy holder**, so the bundle may *contain* the module without ever *running* the
+construction:
+
+```ts
+function lazyPostgresDb(role: PoolRole, resolveUrl: () => string): PostgresJsDatabase {
+  let instance: PostgresJsDatabase | null = null
+  const resolve = () => (instance ??= drizzle(postgres(resolveUrl(), poolOptions(role))))
+  // Proxy so property access triggers construction on first real use.
+  return new Proxy({} as PostgresJsDatabase, {
+    get: (_t, prop) => Reflect.get(resolve(), prop),
+  })
+}
+```
+
+See `builderhunt/src/shared/lib/db/client.ts`, which carries the full account in a comment. Related:
+the "server-only imports" section above — the explicit-subpath rule addresses the same underlying
+problem from the import side, and both are needed.
+
+## Database roles: created without passwords, provisioned out of band
+
+`builderhunt/drizzle/0002_database_roles.sql` creates every runtime role with **no credentials**:
+
+```sql
+CREATE ROLE builderhunt_owner NOLOGIN;
+CREATE ROLE builderhunt_app   LOGIN;   -- no password
+```
+
+Deployment automation provisions and rotates the LOGIN passwords afterwards, so a migration file in
+git never contains one and the web service never holds the owner identity. The consequence to
+remember: **`drizzle-kit migrate` alone leaves the app unable to authenticate.** Run the orchestrator
+(`pnpm deploy:db`) as the post-deployment command, never bare `drizzle-kit migrate` — builderhunt's
+runbook records four failed deploys learning that.

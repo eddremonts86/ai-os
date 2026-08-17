@@ -55,6 +55,10 @@ Thumbs.db
 # Unified env dossier with real secrets (generated locally, never versioned)
 dev-env/env-config/env.ts
 dev-env/env-config/env-reference.html
+# Local zip backup of the env-config dossier (contains real secrets)
+dev-env/env-config.zip
+# Timestamped copies taken before editing the master .env — same secrets, no protection
+.env.bak-*
 
 # Project-local Hermes runtime (may contain real secrets, e.g. desktop-attachments/env.ts)
 .hermes/
@@ -85,3 +89,14 @@ __pycache__/
 # `docker compose up`, never versioned.
 memory/falkordb/data/
 memory/falkordb/ollama-data/
+
+# plans-pipeline runtime state (per-machine cursor, not shared config).
+tools/plans-pipeline/state.json
+
+# Per-agent enrichment scratch: numbered/suffixed PROGRESS logs and agent working dirs.
+# These only ever run on one machine, so they are noise in the shared history.
+#
+# The pattern deliberately does NOT match bare `PROGRESS.md`, which is the tracked
+# ai-os-loop convention file (the loop's memory across runs) and must stay in git.
+PROGRESS.*.md
+_agent*/

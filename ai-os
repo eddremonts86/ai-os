@@ -31,9 +31,10 @@ ai-os — AI-OS top-level CLI
 Usage:
   ai-os memory <subcommand> [args]    Memory stack (status, browse, reindex, bootstrap, ...)
   ai-os loop   <subcommand> [args]    Loop runner (start, status, ...)
+  ai-os plans  <subcommand> [args]     Plan documents (check, format, test, enrich)
   ai-os bootstrap [--refresh]         First-time / on-demand full-stack setup + auto-index
 
-Run \`ai-os memory help\` or \`ai-os loop help\` for the subcommand list.
+Run \`ai-os memory help\`, \`ai-os loop help\` or \`ai-os plans help\` for the subcommand list.
 EOF
 }
 
@@ -45,6 +46,10 @@ case "${1:-}" in
   loop)
     shift
     exec bash "$AI_OS_ROOT/memory/ai-os-loop.sh" "$@"
+    ;;
+  plans)
+    shift
+    exec bash "$AI_OS_ROOT/tools/plan-format/ai-os-plans.sh" "$@"
     ;;
   bootstrap)
     shift

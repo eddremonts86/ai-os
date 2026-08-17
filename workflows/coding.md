@@ -39,7 +39,12 @@ Depending on the type of work:
 | Refactor                   | → Load skill `code-simplification` (if available, else `code-review-and-quality`) |
 | Tests                      | → Load skill `test-driven-development`                                            |
 | New skill                  | → Load skill `writing-skills`                                                     |
+| Architecture change        | → Load skill `diagram-design` for the before/after figure in the Spec             |
 | Hotfix (urgent)            | Skip Spec, do it directly, document later                                         |
+
+A diagram is worth it when the change moves boundaries — a new service, a new data path, a
+changed trust boundary. For a change inside one file, skip it. See
+`rules/always_do.md` § "When a task needs a diagram".
 
 ### 3. For bugs: → Load skill `systematic-debugging` (load skill)
 

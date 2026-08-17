@@ -100,6 +100,22 @@ hcloud ssh-key create --name work-laptop --public-key-from-file ~/.ssh/id_ed2551
 hcloud ssh-key delete <id>
 ```
 
+**`hcloud ssh-key list` does not tell you who can log in.** Project keys are injected into a server
+**at creation time only**. A key registered afterwards is in the project and not in the box, and
+nothing in the CLI output distinguishes the two — a key whose fingerprint matches a registered one
+can still be refused, which reads like a broken key rather than a key that was never installed.
+
+The authoritative list is on the server:
+
+```bash
+ssh-keygen -lf /root/.ssh/authorized_keys      # requires access you may not have yet — see below
+hcloud server describe <id> -o json | jq '.created'   # anything registered after this was not injected
+```
+
+Hetzner also prints MD5 fingerprints while `ssh-keygen` defaults to SHA256, so comparing them needs
+`ssh-keygen -lf key.pub -E md5`. Comparing the two formats directly finds no matches and proves
+nothing.
+
 ## Output formats
 
 ```bash
@@ -165,6 +181,28 @@ account password:
    ssh -i /tmp/k root@<server-ip>
    ```
    Zero friction, doesn't touch account credentials at all — try this first.
+
+   Check `sshd -T | grep permitrootlogin` once you are in. On these Ubuntu images provisioned with a
+   key it is `without-password`, which means **option 2 below cannot work for root** no matter what
+   password you obtain. Establish that before spending time on a password route.
+
+   Bootstrapping with this key is the beginning, not the end — it is Coolify's key, shared with
+   whatever else holds a Coolify token. Install a key of your own before doing anything else:
+
+   ```bash
+   ssh -i /tmp/k root@<ip> "cp /root/.ssh/authorized_keys /root/.ssh/authorized_keys.bak-\$(date +%F-%H%M%S)"
+   PUB=$(cat ~/.ssh/id_ed25519_<host>.pub)
+   ssh -i /tmp/k root@<ip> "grep -qF '$PUB' /root/.ssh/authorized_keys || echo '$PUB' >> /root/.ssh/authorized_keys"
+   shred -u /tmp/k          # the borrowed key does not stay on disk
+   ```
+
+   Append, never overwrite, and back the file up first: the entries already there are how the owner
+   and the platform get in, and replacing them is how a tidy-up becomes an outage. Then verify the new
+   key **on its own** with `-o IdentitiesOnly=yes` before trusting it.
+
+   Give it a `Host` block, and set `IdentitiesOnly yes` in it. Without that, ssh offers every key the
+   agent holds, and a server configured with a low `MaxAuthTries` closes the connection before
+   reaching the right one — which presents as "my new key does not work".
 
 2. **Hetzner Cloud API password reset**, if #1 isn't available:
    ```bash

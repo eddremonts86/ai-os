@@ -7,9 +7,9 @@
 #   2. Symlinks vendor/codex-plugin-cc/ -> ~/.claude/plugins/codex-plugin-cc
 #      so Claude Code discovers it as a plugin.
 #   3. Symlinks the 4 individual claude.tools skills (humanizer, caveman,
-#      notebooklm-skill, frontend-design-alt) and the 8 gstack skills
-#      (careful, context-restore, context-save, diagram, freeze, guard,
-#      spec, unfreeze) from ai-config/skills/ into the 5 CLIs.
+#      notebooklm-skill, frontend-design-alt) and the 7 gstack skills
+#      (careful, context-restore, context-save, freeze, guard, spec,
+#      unfreeze) from ai-config/skills/ into the 5 CLIs.
 #      (install-mac.sh step 5 already propagates ai-config/skills/ to
 #      ~/.claude/skills, so we only top up the other 4 CLIs here.)
 #   4. Symlinks the 3 codex-plugin-cc internal skills (codex-cli-runtime,
@@ -90,7 +90,6 @@ GSTACK_SKILLS=(
   careful
   context-restore
   context-save
-  diagram
   freeze
   guard
   spec
@@ -122,8 +121,8 @@ if [ ! -d "$CODEX_PLUGIN_SRC" ]; then
   warn "    git clone --depth=1 https://github.com/openai/codex-plugin-cc.git vendor/codex-plugin-cc"
   warn "    bash setup/install-claude-tools.sh"
   warn ""
-  warn "Continuing — the 12 individual skills (humanizer, caveman, notebooklm-skill,"
-  warn "frontend-design-alt, careful, context-restore, context-save, diagram, freeze,"
+  warn "Continuing — the 11 individual skills (humanizer, caveman, notebooklm-skill,"
+  warn "frontend-design-alt, careful, context-restore, context-save, freeze,"
   warn "guard, spec, unfreeze) will still be wired into the 4 non-Claude CLIs."
   HAS_PLUGIN=0
 elif [ ! -d "$CODEX_PLUGIN_INNER_SRC" ]; then
