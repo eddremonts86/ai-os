@@ -1,13 +1,35 @@
 // plans-api/tests/smoke.mjs
 //
 // End-to-end smoke: assumes the API is running on $BASE (default
-// http://127.0.0.1:8787). Hits every endpoint and validates basic shape.
+// http://127.0.0.1:8787). Hits every endpoint and validates basic shape
+// AND the auth gate (Bearer token, with /health public).
+//
+// Set PLANS_API_TOKEN in env, or the script reads ~/.hermes/.env for it.
 // Exits non-zero if anything is wrong.
 
 const BASE = process.env.BASE || 'http://127.0.0.1:8787';
+import { readFileSync, existsSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 
-async function get(path) {
-  const res = await fetch(`${BASE}${path}`);
+function loadToken() {
+  if (process.env.PLANS_API_TOKEN) return process.env.PLANS_API_TOKEN;
+  const p = join(homedir(), '.hermes', '.env');
+  if (!existsSync(p)) return null;
+  const m = readFileSync(p, 'utf8').match(/^PLANS_API_TOKEN=(\S+)/m);
+  return m ? m[1] : null;
+}
+const TOKEN = loadToken();
+if (!TOKEN) {
+  console.error('No PLANS_API_TOKEN in env or ~/.hermes/.env — aborting smoke.');
+  process.exit(1);
+}
+const AUTH = { Authorization: `Bearer ${TOKEN}` };
+
+async function get(path, { auth = true } = {}) {
+  const res = await fetch(`${BASE}${path}`, {
+    headers: auth ? AUTH : {}
+  });
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); } catch { json = text; }
@@ -21,15 +43,25 @@ function assert(cond, label) {
 
 const results = {};
 
-console.log('--- /health');
-results.health = await get('/health');
-assert(results.health.status === 200, '/health → 200');
+console.log('--- /health (no auth)');
+results.health = await get('/health', { auth: false });
+assert(results.health.status === 200, '/health → 200 (public)');
 assert(results.health.json.status === 'ok', '/health.status === ok');
 assert(typeof results.health.json.plans === 'number', '/health.plans is a number');
 assert(results.health.headers['cache-control']?.includes('max-age=300'), 'Cache-Control: max-age=300');
-assert(results.health.headers['access-control-allow-origin'] === '*', 'CORS open');
 
-console.log('--- /api/stats');
+console.log('--- /api/stats without token');
+results.statsNoAuth = await get('/api/stats', { auth: false });
+assert(results.statsNoAuth.status === 401, 'unauthenticated /api/stats → 401');
+assert(results.statsNoAuth.headers['www-authenticate']?.includes('Bearer'), 'WWW-Authenticate: Bearer');
+
+console.log('--- /api/stats with bad token');
+results.statsBadAuth = await get('/api/stats', { auth: false });
+// override with explicit bad header
+const badRes = await fetch(`${BASE}/api/stats`, { headers: { Authorization: 'Bearer wrongtoken123' } });
+assert(badRes.status === 401, 'bad token → 401');
+
+console.log('--- /api/stats with valid token');
 results.stats = await get('/api/stats');
 assert(results.stats.status === 200, '/api/stats → 200');
 assert(typeof results.stats.json.total === 'number', 'stats.total is a number');
