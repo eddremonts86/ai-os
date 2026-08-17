@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "consumer", "ai", "content-saver"]
-tech: ["Next.js", "TypeScript", "SwiftUI", "Supabase", "Anthropic Claude", "AWS", "Stripe"]
 id: "676"
 slug: launched-my-saas-keepme
 title: Launched my SaaS - KEEPME
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vptxt6/launched_my_saas_keepme/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, consumer, ai, content-saver]
+tech: [Next.js, TypeScript, SwiftUI, Supabase, Anthropic Claude, AWS, Stripe]
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/676-launched-my-saas-keepme/` (Next.js + TypeScript) and the parallel `apps/676-launched-my-saas-keepme-ios/` (SwiftUI)
 - [ ] Initialize git with the monorepo `.gitignore`

@@ -1,0 +1,51 @@
+---
+id: "2395"
+slug: tell-hn-claude-code-is-down
+title: "Tell HN: Claude Code Is Down"
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49286056"
+category: ask-hn
+date: "2026-08-13"
+tags: [Ask HN, Problem]
+---
+# Tell HN: Claude Code Is Down
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ API Error: 529 Overloaded. This is a server-side issue, usually temporary — try again in a moment. If it persists, check https://status.claude.com.
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://news.ycombinator.com/item?id=49286056) · **Category:** ask-hn · **Tags:** Ask HN,Problem

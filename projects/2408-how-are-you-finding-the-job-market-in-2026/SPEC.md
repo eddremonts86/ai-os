@@ -1,0 +1,39 @@
+---
+id: "2408"
+slug: how-are-you-finding-the-job-market-in-2026
+title: How are you finding the job market in 2026?
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49279790"
+category: ask-hn
+date: "2026-08-12"
+tags: [Ask HN, Problem]
+---
+# How are you finding the job market in 2026?
+
+## Problem
+
+Monitoring the past few months of HN whoishiring threads - seems there's more seekers than firms hiring.on LinkedIn - seems a bunch of jobs get rotated (reposted) - or are just spam.
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

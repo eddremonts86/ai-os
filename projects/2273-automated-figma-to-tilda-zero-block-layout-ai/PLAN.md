@@ -1,0 +1,30 @@
+---
+id: "2273"
+slug: automated-figma-to-tilda-zero-block-layout-ai
+title: Automated Figma-to-Tilda Zero Block layout AI
+status: draft
+source:
+  name: manual
+  url: "https://problemhunt.pro/en/no-code/yf3xyo1d31-automated-figma-to-tilda-zero-block-layo"
+category: no-code
+date: "2025-09-08"
+tags: [No-Code, Dev]
+country: Russia
+---
+# Automated Figma-to-Tilda Zero Block layout AI
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._

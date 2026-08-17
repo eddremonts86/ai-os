@@ -1,0 +1,51 @@
+---
+id: "2372"
+slug: how-are-you-preventing-brainrot
+title: How are you preventing brainrot?
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49294529"
+category: ask-hn
+date: "2026-08-14"
+tags: [Ask HN, Problem]
+---
+# How are you preventing brainrot?
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Hey there, full time software engineer of around 6 years here (post-grad). I’m using Claude Code half of the day now at work, I just can’t keep up with my team if I were to stop coding with AI. I’m more “productive” but my brain feels less sharp and am curious how others are staying sharp, I guess I just need to allocate time to learning new things again but wondering how others are dealing with this. Thanks!
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://news.ycombinator.com/item?id=49294529) · **Category:** ask-hn · **Tags:** Ask HN,Problem

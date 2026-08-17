@@ -1,0 +1,38 @@
+---
+id: "2116"
+slug: a-freelancer-often-loses-in-proposal-competitions-due-t
+title: A freelancer often loses in proposal competitions due to the inability to quickly create personalized and visual website concepts for each job order.
+status: draft
+source:
+  name: manual
+  url: "https://problemhunt.pro/en/freelance/c3y54z8xz1-a-freelancer-often-loses-in-proposal-com"
+category: freelance
+date: "2026-01-29"
+tags: [Freelance, AI, Marketing, Other]
+country: Australia
+---
+# A freelancer often loses in proposal competitions due to the inability to quickly create personalized and visual website concepts for each job order.
+
+## Phase 0: Scaffold
+
+- [ ] Crear carpeta del proyecto en `apps/`
+- [ ] Inicializar repo git
+- [ ] Copiar `edd-app-template` → `apps/2116-a-freelancer-often-loses-in-proposal-competitions-due-t/`
+- [ ] Escribir SPEC.md (este documento)
+- [ ] Escribir DESIGN.md (tokens + dirección visual)
+- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
+- [ ] Configurar entorno de desarrollo
+
+## Phase 1: Core
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Phase 2: Deploy
+
+- [ ] Crear repo en GitHub
+- [ ] Desplegar a Coolify
+- [ ] Verificar en producción
+
+---
+
+_Lúa generó este análisis automáticamente el 2026-08-17_

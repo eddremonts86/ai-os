@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "lead-generation", "ai", "b2b"]
-tech: ["Next.js", "TypeScript", "React Flow", "Anthropic Claude", "Supabase", "Stripe"]
 id: "557"
 slug: ive-been-building-this-for-the-last-8-months
 title: I’ve been building this for the last 8 months.
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo5zyk/ive_been_building_this_for_the_last_8_months/"
 category: saas
 date: "2026-08-14"
+tags: [saas, lead-generation, ai, b2b]
+tech: [Next.js, TypeScript, React Flow, Anthropic Claude, Supabase, Stripe]
 ---
 # I've been building this for the last 8 months — indiatrusty
 

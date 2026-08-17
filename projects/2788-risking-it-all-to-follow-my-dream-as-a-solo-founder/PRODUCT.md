@@ -1,0 +1,49 @@
+---
+id: "2788"
+slug: risking-it-all-to-follow-my-dream-as-a-solo-founder
+title: Risking It All to Follow My Dream as a Solo Founder
+status: draft
+source:
+  name: manual
+  url: "https://www.indiehackers.com/interviews/22917f62e1"
+category: interviews
+date: "2018-02-19"
+tags: [IndieHackers, interviews]
+---
+# Risking It All to Follow My Dream as a Solo Founder
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://www.indiehackers.com/interviews/22917f62e1) · **Category:** interviews · **Tags:** IndieHackers,interviews

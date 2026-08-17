@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "fintech", "growth", "conversion"]
-tech: ["Next.js", "TypeScript", "Playwright", "SQLite", "Drizzle ORM"]
 id: "684"
 slug: traffic-isnt-converting-tried-seo-geo-spent-37-on-reddi
 title: "traffic isn’t converting, tried SEO / GEO spent $37 on reddit ads - pls roast and advise"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vprg69/traffic_isnt_converting_tried_seo_geo_spent_37_on/"
 category: saas
 date: "2026-08-16"
+tags: [saas, fintech, growth, conversion]
+tech: [Next.js, TypeScript, Playwright, SQLite, Drizzle ORM]
 ---
 # traffic isn't converting, tried SEO / GEO spent $37 on reddit ads - pls roast and advise
 

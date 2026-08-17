@@ -1,0 +1,38 @@
+---
+id: "2078"
+slug: a-photographer-moving-to-the-us-needs-clients-platforms
+title: "A photographer moving to the US needs clients. Platforms require reviews, agencies are expensive. Wants a website + ads that bring bookings. Willing to pay $100–300/month."
+status: draft
+source:
+  name: manual
+  url: "https://problemhunt.pro/en/6t7ke01t41-a-photographer-moving-to-the-us-needs-cl"
+category: other
+date: "2026-07-17"
+tags: [Immigration, Freelance, Marketing, Career, Other]
+country: Serbia
+---
+# A photographer moving to the US needs clients. Platforms require reviews, agencies are expensive. Wants a website + ads that bring bookings. Willing to pay $100–300/month.
+
+## Problem
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

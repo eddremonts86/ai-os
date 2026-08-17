@@ -1,0 +1,39 @@
+---
+id: "2370"
+slug: duxpath-ai
+title: Duxpath AI
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49295396"
+category: ask-hn
+date: "2026-08-14"
+tags: [Ask HN, Problem]
+---
+# Duxpath AI
+
+## Problem
+
+_Pendiente de análisis manual._
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

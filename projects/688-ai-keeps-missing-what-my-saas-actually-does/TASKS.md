@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "ai", "video-generation", "marketing"]
-tech: ["Next.js", "TypeScript", "Playwright", "Anthropic Claude", "Remotion", "ElevenLabs", "Cloudflare R2", "Supabase", "Stripe"]
 id: "688"
 slug: ai-keeps-missing-what-my-saas-actually-does
 title: AI keeps missing what my SaaS actually does
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vppqhm/ai_keeps_missing_what_my_saas_actually_does/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, ai, video-generation, marketing]
+tech: [Next.js, TypeScript, Playwright, Anthropic Claude, Remotion, ElevenLabs, Cloudflare R2, Supabase, Stripe]
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/688-ai-keeps-missing-what-my-saas-actually-does/` (Next.js + TypeScript)
 - [ ] Initialize git with `.gitignore` excluding scraped customer data and rendered videos

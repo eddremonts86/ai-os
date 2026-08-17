@@ -1,0 +1,39 @@
+---
+id: "2784"
+slug: how-i-bought-a-100mo-business-and-grew-it-to-7000mo
+title: "How I Bought a $100/mo Business and Grew it to $7,000/mo"
+status: draft
+source:
+  name: manual
+  url: "https://www.indiehackers.com/interviews/206e0ccf44"
+category: interviews
+date: "2018-02-19"
+tags: [IndieHackers, interviews]
+---
+# How I Bought a $100/mo Business and Grew it to $7,000/mo
+
+## Problem
+
+_Pendiente de análisis manual._
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

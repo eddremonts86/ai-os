@@ -1,0 +1,52 @@
+---
+id: "2215"
+slug: problem-of-arabic-language-support-in-digital-services
+title: Problem of arabic language support in digital services
+status: draft
+source:
+  name: manual
+  url: "https://problemhunt.pro/en/other/taootfgpp1-problem-of-arabic-language-support-in-di"
+category: other
+date: "2025-10-29"
+tags: [Other]
+country: Morocco
+---
+# Problem of arabic language support in digital services
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Morocco
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://problemhunt.pro/en/other/taootfgpp1-problem-of-arabic-language-support-in-di) · **Category:** other · **Tags:** Other

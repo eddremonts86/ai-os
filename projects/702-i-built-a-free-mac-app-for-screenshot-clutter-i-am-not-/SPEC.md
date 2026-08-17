@@ -12,7 +12,7 @@ date: "2026-08-16"
 tags: [macos, b2c, free, foss, screenshots, productivity]
 scores:
   money: 4.5
-  learn: 5.0
+  learn: 5
   fun: 5.5
 tech: [Swift, SwiftUI, macOS, FileProvider, local-storage]
 ---

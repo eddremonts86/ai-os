@@ -1,0 +1,50 @@
+---
+id: "2154"
+slug: owners-of-niche-telegram-channels-lack-a-service-for-au
+title: Owners of niche Telegram channels lack a service for automatically finding and organizing cross-promotion with relevant channels without spending hours on manual selection and negotiations
+status: draft
+source:
+  name: manual
+  url: "https://problemhunt.pro/en/marketing/kfsnhgszj1-owners-of-niche-telegram-channels-lack-a"
+category: marketing
+date: "2025-12-22"
+tags: [Marketing, Other]
+country: USA
+---
+# Owners of niche Telegram channels lack a service for automatically finding and organizing cross-promotion with relevant channels without spending hours on manual selection and negotiations
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://problemhunt.pro/en/marketing/kfsnhgszj1-owners-of-niche-telegram-channels-lack-a) · **Category:** marketing · **Tags:** Marketing,Other

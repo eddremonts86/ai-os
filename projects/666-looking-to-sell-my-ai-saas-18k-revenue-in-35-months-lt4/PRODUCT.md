@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "twitter", "ai", "byok"]
-tech: ["Next.js", "TypeScript", "Tailwind CSS", "Cloudflare", "Dodo Payments", "Resend", "Umami"]
 id: "666"
 slug: looking-to-sell-my-ai-saas-18k-revenue-in-35-months-lt4
 title: "Looking to Sell my AI SaaS: $1.8K revenue in 3.5 months, <$45/month in costs"
@@ -10,10 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpvny2/looking_to_sell_my_ai_saas_18k_revenue_in_35/"
 category: saas
 date: "2026-08-16"
+tags: [saas, twitter, ai, byok]
+tech: [Next.js, TypeScript, Tailwind CSS, Cloudflare, Dodo Payments, Resend, Umami]
 ---
-# Looking to Sell my AI SaaS: $1.8K revenue in 3.5 months, <$45/month in costs
-
-> Product brief for the BYOK X/Twitter growth tool documented in the source acquisition listing. The poster is selling; the plan here is the underlying product spec.
+# Looking to Sell my AI SaaS: $1.8K revenue in 3.5 months, Product brief for the BYOK X/Twitter growth tool documented in the source acquisition listing. The poster is selling; the plan here is the underlying product spec.
 
 ## Value Proposition
 

@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "growth", "conversion", "organic-marketing"]
-tech: ["Next.js", "TypeScript", "Playwright", "SQLite", "Drizzle ORM"]
 id: "680"
 slug: i-hit-16k-views-in-a-post-for-my-saas-no-conversion-at-
 title: "I hit 16K views in a post for my SaaS, no conversion at all"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpsro3/i_hit_16k_views_in_a_post_for_my_saas_no/"
 category: saas
 date: "2026-08-16"
+tags: [saas, growth, conversion, organic-marketing]
+tech: [Next.js, TypeScript, Playwright, SQLite, Drizzle ORM]
 ---
 # I hit 16K views in a post for my SaaS, no conversion at all
 

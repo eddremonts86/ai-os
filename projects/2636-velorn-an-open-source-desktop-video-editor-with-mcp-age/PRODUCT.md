@@ -1,0 +1,52 @@
+---
+id: "2636"
+slug: velorn-an-open-source-desktop-video-editor-with-mcp-age
+title: Velorn – an open-source desktop video editor with MCP agent control
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49311785"
+category: show-hn
+date: "2026-08-15"
+tags: [Show HN, Product, Problem]
+---
+# Velorn – an open-source desktop video editor with MCP agent control
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Hi HN, I’m Jaime. I’m a VFX artist with over 20 years of experience, and I’ve been building Velorn as a solo developer.Velorn is a GPLv3 desktop video editor for Windows, macOS, and Linux. It has a multi track video/audio timeline and works as a normal editor without any AI generation setup. You can import existing media, edit and layer clips, add effects, text and keyframes, transcribe locally with Whisper, mix audio, and export through FFmpeg.For me, AI generated footage is raw material. The creative part is still what happens afterward: selection, timing, sound, pacing, effects, captions, and narrative structure. I wanted an app where generation and editing could exist in the same workflow, even editing live action footage with AI generations, so I started building Velorn.One of the parts I've been especially interested in is MCP.Velorn runs a local, loopback only MCP server that lets clients such as Codex and Claude Code interact with the project that's actually open in the editor.Rather than putting a chatbot next to the timeline, I wanted to expose structured editing operations to the agent. It can inspect the project and timeline, look at media and frames, propose and perform edits, work with captions and effects, organize assets, and prepare exports and generation jobs.Here's a short example using Codex:https://www.youtube.com/watch?v=Owel8zkMWkYFor this demo I gave Codex almost no creative direction. I basically told it, you're live on YouTube, use Velorn to create a really cool motion graphics video. Just make something.I wanted to see what would happen when the agent had access to an actual editing environment rather than asking it to execute a predetermined sequence of edits.The video is about 3.5 minutes. I fast forward through some of the time where the agent is thinking, but otherwise it shows the interaction and the resulting work inside Velorn.ComfyUI is not required for editing, captions, MCP, project management, or exporting. All generation in Velorn currently goes through a locally running ComfyUI instance on the same machine. For local models, your own GPU performs the work and Velorn doesn't charge credits. Generated results are brought back into the active project so they can immediately become part of the edit.Some ComfyUI workflows can also use paid Partner Nodes/API services. Those may perform the actual computation in the cloud and require Comfy.org credentials and credits, but the workflow is still submitted through the user's local ComfyUI. Velorn doesn't currently operate a separate cloud generation backend. So someone can download Velorn and use it as an editor with MCP without configuring ComfyUI at all. ComfyUI is only required when using Velorn's current generation features.Velorn uses Electron, React, Zustand for project/timeline state, FFmpeg for media processing and export, local Whisper for transcription, ComfyUI's API for generation, and a local MCP server exposing structured editorial operations.I chose Electron because it gave me one cross platform editor implementation while still allowing integration with the filesystem, FFmpeg, local processes, ComfyUI, and MCP.The project has picked up 400+ GitHub stars so far as a solo developer, I'm particularly interested in hearing from people who actually edit video or are experimenting with agents.I would really love some feedback.Velorn is free and open source. Try it!To see longer MCP interactions without the agent's thinking being fast forwarded, I also recorded two uncut examples:https://www.youtube.com/watch?v=_r4jf7ZDT2ohttps://www.youtube.com/watch?v=AT9usQS3m48Here's a music video that I made in just 2 days with Velorn that has gotten some attention:https://www.youtube.com/watch?v=iX-YdjVMDhgGitHub: https://github.com/VelornLabs/velorn
+Website: https://velorn.aiThanks for looking!
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://news.ycombinator.com/item?id=49311785) · **Category:** show-hn · **Tags:** Show HN,Product,Problem

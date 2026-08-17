@@ -1,0 +1,38 @@
+---
+id: "2207"
+slug: business-setup-and-launch-challenges-in-india
+title: Business setup and launch challenges in India
+status: draft
+source:
+  name: manual
+  url: "https://problemhunt.pro/en/ai/m7vsm5tpv1-business-setup-and-launch-challenges-in"
+category: ai
+date: "2025-10-30"
+tags: [AI, Business, Legal, Other]
+country: India
+---
+# Business setup and launch challenges in India
+
+## Problem
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

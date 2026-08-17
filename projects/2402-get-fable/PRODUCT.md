@@ -1,0 +1,51 @@
+---
+id: "2402"
+slug: get-fable
+title: Get-Fable
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49282787"
+category: ask-hn
+date: "2026-08-13"
+tags: [Ask HN, Problem]
+---
+# Get-Fable
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Make the model you already use work more like a frontier model with better planning, persistent context, skills, hooks, failure handling, and verificationhttps://github.com/imMamdouhaboammar/get-fable
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://news.ycombinator.com/item?id=49282787) · **Category:** ask-hn · **Tags:** Ask HN,Problem

@@ -11,12 +11,11 @@ category: saas
 date: "2026-08-16"
 tags: [saas, b2b, licensing, dev-tools, mit, downloadable-software]
 scores:
-  money: 7.0
+  money: 7
   learn: 5.5
-  fun: 5.0
+  fun: 5
 tech: [TypeScript, Node.js, Swift, PostgreSQL, Docker, Stripe webhooks, PayPal webhooks]
 ---
-
 # coolbeans — tasks
 
 ## Phase 0: Scaffold

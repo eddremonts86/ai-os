@@ -15,7 +15,8 @@ scores:
   learn: 5.5
   fun: 6.5
 tech: [Remotion, ElevenLabs, Next.js, TypeScript, Cloudflare R2]
----## Phase 0: Scaffold
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/677-built-a-ai-solution-to-save-30k-in-marketing-costs-got-/` (Next.js + TypeScript)
 - [ ] Initialize git, add `.gitignore` excluding the render-worker state

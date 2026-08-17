@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "creator", "chrome-extension", "ai"]
-tech: ["Next.js", "TypeScript", "Chrome Extension MV3", "Anthropic Claude", "Supabase", "Stripe"]
 id: "543"
 slug: i-wrote-a-simple-script-to-automate-my-keywording-and-i
 title: "I wrote a simple script to automate my keywording, and it accidentally turned into a full app."
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo9quq/i_wrote_a_simple_script_to_automate_my_keywording/"
 category: saas
 date: "2026-08-14"
+tags: [saas, creator, chrome-extension, ai]
+tech: [Next.js, TypeScript, Chrome Extension MV3, Anthropic Claude, Supabase, Stripe]
 ---
 # I wrote a simple script to automate my keywording and it became a Chrome extension
 

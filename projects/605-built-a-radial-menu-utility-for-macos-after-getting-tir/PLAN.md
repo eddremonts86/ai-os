@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "macos", "utility", "swift"]
-tech: ["SwiftUI", "Swift", "NSEvent", "NSScreen", "StoreKit 2"]
 id: "605"
 slug: built-a-radial-menu-utility-for-macos-after-getting-tir
 title: Built a radial menu utility for macOS after getting tired of jumping between different tools
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vovskv/built_a_radial_menu_utility_for_macos_after/"
 category: saas
 date: "2026-08-15"
+tags: [saas, macos, utility, swift]
+tech: [SwiftUI, Swift, NSEvent, NSScreen, StoreKit 2]
 ---
 # Built a radial menu utility for macOS after getting tired of the existing options
 

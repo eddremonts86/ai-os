@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "dev-tools", "ai-agents", "code-review"]
-tech: ["Next.js", "TypeScript", "Supabase", "Cloudflare R2", "Stripe", "Node.js"]
 id: "678"
 slug: i-built-a-small-tool-for-keeping-the-team-in-sync-while
 title: I built a small tool for keeping the team in sync while using coding agents
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpto26/i_built_a_small_tool_for_keeping_the_team_in_sync/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, dev-tools, ai-agents, code-review]
+tech: [Next.js, TypeScript, Supabase, Cloudflare R2, Stripe, Node.js]
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/678-i-built-a-small-tool-for-keeping-the-team-in-sync-while/` (Next.js + TypeScript)
 - [ ] Initialize git with `.gitignore` excluding CLI build artifacts
