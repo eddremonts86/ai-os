@@ -61,6 +61,24 @@ npm start                       # listens on :8787 by default
 PLANS_API_PORT=9000 PLANS_DATA_DIR=../plans-explorer/app/public/data npm start
 ```
 
+## Authentication
+
+Every `/api/*` route requires a Bearer token in the `Authorization` header
+(`/health` stays open). The token is read from `PLANS_API_TOKEN` env var, or
+from `~/.hermes/.env` if not set. The server refuses to start without it.
+
+```bash
+# Generate a new token
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+# Use it
+curl -H "Authorization: Bearer <token>" http://127.0.0.1:8787/api/stats
+```
+
+For full client guidance, see [`docs/API.md`](./docs/API.md) — covers every
+endpoint, the auth flow, common client patterns (curl, fetch, requests),
+troubleshooting, and how to rotate the token.
+
 ## Refresh after new plans
 
 The corpus grows whenever the `problemhunt-scraper` cron runs (or you trigger
