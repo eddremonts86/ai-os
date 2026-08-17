@@ -152,4 +152,4 @@ did not ship.
 - Do **not** edit `projects/_schema.json` or the gate to make a plan pass.
 - Do **not** approve, decline or relabel a submission issue. Intake relabels what it ingests;
   every other label is a human's decision.
-- Do **not** schedule additional cron jobs.
+- Do **not** schedule additional cron jobs. The LLM-free half (scrape + intake, 2x/day) is already on launchd via `ai.os.plans-pipeline`; this agent flow is the other half and you drive it.
