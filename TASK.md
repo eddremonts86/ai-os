@@ -5,20 +5,20 @@
 
 ## Goal
 
-Every plan under `projects/<id>-<slug>/` passes `ai-os plans check --id <id> --verbose`
+Every plan under `apps/data/projects/<id>-<slug>/` passes `ai-os plans check --id <id> --verbose`
 (section `sections-written` green, `problem-substantive` green). Status advances to
 `enriched` per plan; `web-ready` is granted by the gate, never by hand.
 
 ## Inputs
 
-- Contract: `projects/_schema.json` — sections, frontmatter fields, gate rules.
+- Contract: `apps/data/projects/_schema.json` — sections, frontmatter fields, gate rules.
 - Skill: `ai-config/skills/plan-authoring/SKILL.md` — read once at start.
-- Source per plan: `projects/<id>-<slug>/SPEC.md` (the captured problem + the frontmatter
+- Source per plan: `apps/data/projects/<id>-<slug>/SPEC.md` (the captured problem + the frontmatter
   `source.url`). Source is thin on purpose. **Do not invent facts.**
 
 ## Outputs
 
-- `projects/<id>-<slug>/SPEC.md`, `PRODUCT.md`, `PLAN.md`, `TASKS.md` rewritten with real
+- `apps/data/projects/<id>-<slug>/SPEC.md`, `PRODUCT.md`, `PLAN.md`, `TASKS.md` rewritten with real
   per-plan prose.
 - `outputs/enrich/<id>-<slug>/report.md` — one per plan, with sections filled, TODOs kept
   (and named), and any humanizer / illustrate notes.
@@ -53,11 +53,11 @@ Every plan under `projects/<id>-<slug>/` passes `ai-os plans check --id <id> --v
 
 | Agent | Range | Count | Touch only |
 |-------|-------|-------|------------|
-| 1 | 001..111 | 111 | `projects/0[0-9][0-9]-\*` and `1[0-1][0-9]-\*` |
-| 2 | 112..222 | 111 | `projects/1[1-2][0-9]-\*` and `2[0-2][0-9]-\*` |
-| 3 | 223..333 | 111 | `projects/2[2-3][0-9]-\*` and `3[0-3][0-9]-\*` |
-| 4 | 334..444 | 111 | `projects/3[3-4][0-9]-\*` and `4[0-4][0-9]-\*` |
-| 5 | 445..552 | 108 | `projects/4[4-5][0-9]-\*` and `5[0-5][0-9]-\*` |
+| 1 | 001..111 | 111 | `apps/data/projects/0[0-9][0-9]-\*` and `1[0-1][0-9]-\*` |
+| 2 | 112..222 | 111 | `apps/data/projects/1[1-2][0-9]-\*` and `2[0-2][0-9]-\*` |
+| 3 | 223..333 | 111 | `apps/data/projects/2[2-3][0-9]-\*` and `3[0-3][0-9]-\*` |
+| 4 | 334..444 | 111 | `apps/data/projects/3[3-4][0-9]-\*` and `4[0-4][0-9]-\*` |
+| 5 | 445..552 | 108 | `apps/data/projects/4[4-5][0-9]-\*` and `5[0-5][0-9]-\*` |
 
 Each agent only writes its slice of `PROGRESS.md` (`PROGRESS.1.md` … `PROGRESS.5.md`).
 A separate reconciliation step merges them after all 5 finish.

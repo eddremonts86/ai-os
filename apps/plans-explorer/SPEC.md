@@ -2,7 +2,7 @@
 
 ## Problema Detectado
 
-El repo AI-OS contiene **525 planes de productos** en `~/Projects/ai-os/projects/`, cada uno con hasta 5 documentos (`SPEC.md`, `PRODUCT.md`, `PLAN.md`, `DESIGN.md`, `TASKS.md`) y un ranking auto-generado en `TOP_PROJECTS.md` con tres ejes (money / learn / fun). Hoy no hay forma rápida de:
+El repo AI-OS contiene **525 planes de productos** en `~/Projects/ai-os/apps/data/projects/`, cada uno con hasta 5 documentos (`SPEC.md`, `PRODUCT.md`, `PLAN.md`, `DESIGN.md`, `TASKS.md`) y un ranking auto-generado en `TOP_PROJECTS.md` con tres ejes (money / learn / fun). Hoy no hay forma rápida de:
 
 - Buscar por **tema, keyword, tecnología, mercado o revenue previsto**.
 - Leer un plan en formato renderizado (md/mdx) sin abrir el repo.
@@ -52,7 +52,7 @@ Construir una SPA estática en `~/Projects/ai-os/plans-explorer/app/` que:
 
 ## Alcance MVP
 
-- ✅ Indexer build-time (`app/scripts/build-index.mjs`): escanea `../projects/*/SPEC.md`, extrae los metadatos listados arriba + parsea `../projects/TOP_PROJECTS.md`. Escribe `app/public/data/plans.json` + `app/public/data/rankings.json`.
+- ✅ Indexer build-time (`app/scripts/build-index.mjs`): escanea `../data/projects/*/SPEC.md`, extrae los metadatos listados arriba + parsea `../data/projects/TOP_PROJECTS.md`. Escribe `app/public/data/plans.json` + `app/public/data/rankings.json`.
 - ✅ Validador de extracción: el indexer corre tests de regresión sobre 5 planes reales (001, 016, 236, 419, 441).
 - ✅ SPA Vite + Vue 3 (Composition API) con client-side routing (`vue-router` 4).
 - ✅ Vista `/` (índice): grid de cards con filtro (search box + facetas categoría/tags/tech/country + slider income range + sort por score).
@@ -68,7 +68,7 @@ Ver `DESIGN.md` para tokens específicos del proyecto.
 
 ## Constraints
 
-- **Build-time, no runtime crawling**: la app se buildea una vez con datos frescos; un script de refresh rebuildea cuando cambia `projects/`.
+- **Build-time, no runtime crawling**: la app se buildea una vez con datos frescos; un script de refresh rebuildea cuando cambia `data/projects/`.
 - **Sin backend**: 100% estático, deployable igual que `site/`.
 - **Bundle pequeño**: <200KB JS gzipped, lazy-load del lector md solo en la ruta detalle.
 - **Misma paleta que `site/`**: dark `#0b0d12` base, accents `#7c5cff` / `#3ddc97`, type stack `Inter` + `JetBrains Mono`.

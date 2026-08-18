@@ -14,7 +14,7 @@
 
 ## Bloque 2 — Indexer build-time (M1)
 
-- [ ] Escribir `app/scripts/build-index.mjs`: walk a `../projects/*/` (relativo al script), filtra dirs que tengan `SPEC.md`.
+- [ ] Escribir `app/scripts/build-index.mjs`: walk a `../data/projects/*/` (relativo al script), filtra dirs que tengan `SPEC.md`.
 - [ ] Parser `parseSpec(planDir)` → extrae `title`, `category`, `tags`, `date`, `country`.
 - [ ] Parser `parsePlan(planDir)` → extrae `tech[]` con regex sobre `**Frontend:**`, `**Backend:**`, `**DB:**`.
 - [ ] Parser `parseWtp(problemText)` → extrae `willingnessToPay {raw, currency, min, max, period, mrrMid}`. Tabla de normalización: `per month → /1`, `per year → /12`, `per project → keep as one-shot`, `per deal → keep as one-shot`. Si no parsea → `null`.

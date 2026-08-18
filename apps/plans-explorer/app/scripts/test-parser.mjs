@@ -138,7 +138,7 @@ for (const r of results) console.log(r);
 
 console.log('\n[test] aggregate invariants:');
 const totalPlans = plans.length;
-const PROJECTS_DIR = join(ROOT, '..', '..', 'projects');
+const PROJECTS_DIR = join(ROOT, '..', 'data', 'projects');
 const TOP_PROJECTS = join(PROJECTS_DIR, 'TOP_PROJECTS.md');
 const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3,}-/.test(n)
   && existsSync(join(PROJECTS_DIR, n, 'SPEC.md')));

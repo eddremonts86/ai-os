@@ -48,7 +48,7 @@ const ORIGINS = (process.env.ALLOWED_ORIGIN || '')
 
 // The contract lives in the schema, not in this file, so the API and the gate cannot disagree
 // about what a usable submission is.
-const schema = JSON.parse(readFileSync(join(AI_OS_ROOT, 'projects', '_schema.json'), 'utf8'));
+const schema = JSON.parse(readFileSync(join(AI_OS_ROOT, 'apps', 'data', 'projects', '_schema.json'), 'utf8'));
 export const MIN_PROBLEM = schema.gate.rules.find((r) => r.id === 'problem-substantive').minProblemChars;
 
 const MAX_BODY_BYTES = 32 * 1024;

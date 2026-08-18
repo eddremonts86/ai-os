@@ -4,7 +4,7 @@
 
 ## What this is
 
-Static SPA (Vite + Vue 3) that indexes and renders the 525 product plans in `../projects/`. **Framework component of AI-OS**, not a personal/work project.
+Static SPA (Vite + Vue 3) that indexes and renders the 525 product plans in `../data/projects/`. **Framework component of AI-OS**, not a personal/work project.
 
 ## When you enter this dir
 
@@ -15,7 +15,7 @@ Static SPA (Vite + Vue 3) that indexes and renders the 525 product plans in `../
 
 ## Hard rules
 
-- **Do NOT modify `../projects/`.** Read-only. If a plan needs editing, edit the SPEC.md/PLAN.md inside its own folder.
+- **Do NOT modify `../data/projects/`.** Read-only. If a plan needs editing, edit the SPEC.md/PLAN.md inside its own folder.
 - **Do NOT touch `../site/index.html`** for design parity — copy tokens into `app/src/styles/tokens.css` instead. Document the copied values in `DESIGN.md`.
 - **Stack:** Vue 3 Composition API + `<script setup lang="ts">`. Skill `antfu-vue` applies. Do not introduce React, Svelte, or Options API without explicit user approval.
 - **Bundle budget:** <200KB JS gzipped. Lazy-load `markdown-it` + `highlight.js` only on `PlanView`.
@@ -37,9 +37,9 @@ From the repo root: `./refresh-data.sh` runs `npm run build` inside `app/`.
 
 ## Data flow
 
-- `app/scripts/build-index.mjs` walks `../projects/*/` and parses SPEC/PRODUCT/PLAN per plan.
+- `app/scripts/build-index.mjs` walks `../data/projects/*/` and parses SPEC/PRODUCT/PLAN per plan.
 - Writes `app/public/data/plans.json` + `app/public/data/documents/<id>.json` (lazy md).
-- Writes `app/public/data/rankings.json` from `../projects/TOP_PROJECTS.md`.
+- Writes `app/public/data/rankings.json` from `../data/projects/TOP_PROJECTS.md`.
 - 5 fixture tests in `app/scripts/test-parser.mjs` validate extraction accuracy.
 
 ## Components cheatsheet
@@ -61,7 +61,7 @@ From the repo root: `./refresh-data.sh` runs `npm run build` inside `app/`.
 
 - **Add a new facet:** extend `src/lib/search.ts` (Fuse.js config + facet filter function), add UI in `FacetPanel.vue`, add doc in `DESIGN.md`.
 - **Refresh data after corpus change:** `./refresh-data.sh` (or `cd app && npm run build`).
-- **Add a top-N plan to a ranking:** edit `../projects/TOP_PROJECTS.md` (cron handles), then `./refresh-data.sh`.
+- **Add a top-N plan to a ranking:** edit `../data/projects/TOP_PROJECTS.md` (cron handles), then `./refresh-data.sh`.
 
 ## Do NOT
 

@@ -3,7 +3,7 @@
  * Multi-Source Idea Scraper (ai-os edition) — ProblemHunt + Reddit
  *
  * Fetches fresh startup/project ideas from multiple sources and generates
- * per-project documentation under ~/Projects/ai-os/projects/(NNN-slug)/.
+ * per-project documentation under ~/Projects/ai-os/apps/data/projects/(NNN-slug)/.
  *
  * Each project folder contains 5 files:
  *   SPEC.md, PLAN.md, TASKS.md, DESIGN.md, PRODUCT.md
@@ -30,7 +30,7 @@ const { generateDesignMD } = require('./design-dna.js');
 const { allocatePlanIds } = require('../lib/plan-ids.cjs');
 
 const AI_OS_ROOT   = process.env.AI_OS_ROOT || path.join(os.homedir(), 'Projects', 'ai-os');
-const PROJECTS_DIR = path.join(AI_OS_ROOT, 'projects');
+const PROJECTS_DIR = path.join(AI_OS_ROOT, 'apps', 'data', 'projects');
 const SCRAPER_DIR  = __dirname;
 const STATE_FILE   = path.join(SCRAPER_DIR, 'state.json');
 const LOG_FILE     = path.join(SCRAPER_DIR, 'last-run.log');

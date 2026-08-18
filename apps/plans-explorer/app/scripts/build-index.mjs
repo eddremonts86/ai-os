@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..'); // .../plans-explorer/
-const PROJECTS_DIR = join(ROOT, '..', '..', 'projects'); // .../ai-os/projects
+const PROJECTS_DIR = join(ROOT, '..', 'data', 'projects'); // .../ai-os/projects
 const OUT_DATA = join(ROOT, 'app', 'public', 'data');
 const OUT_DOCS = join(OUT_DATA, 'documents');
 const CACHE_DIR = join(ROOT, 'app', '.cache', 'sources');
@@ -237,7 +237,7 @@ function stripMarkup(text) {
 // Decode AND strip, alternating to a fixed point. Two facts about this corpus
 // force the loop:
 //
-//  1. Entities are MIXED-depth. projects/204-*/SPEC.md carries 9x `&amp;amp;`,
+//  1. Entities are MIXED-depth. apps/data/projects/204-*/SPEC.md carries 9x `&amp;amp;`,
 //     3x `&amp;#32;` and 2x `&amp;#39;` (double-encoded) alongside single-encoded
 //     `&lt;`, `&gt;` and `&quot;`. One decode pass leaves the double-encoded half
 //     visible in the UI.
@@ -460,7 +460,7 @@ function parseRankings(topPath) {
 
 // ---------- Single plan parse ----------
 
-// ---------- Frontmatter (schema shape, see projects/_schema.json) ----------
+// ---------- Frontmatter (schema shape, see apps/data/projects/_schema.json) ----------
 
 /**
  * Read the YAML frontmatter a formatted plan carries.
@@ -538,7 +538,7 @@ function parsePlan(dirPath) {
 
   // Frontmatter first, prose second.
   //
-  // Formatted plans (projects/_schema.json) carry metadata in YAML frontmatter.
+  // Formatted plans (apps/data/projects/_schema.json) carry metadata in YAML frontmatter.
   // Legacy plans carry it as Spanish bold labels inside prose. Reading only the prose
   // is what broke this index the moment the corpus was migrated: category, date,
   // sourceUrl, country and originalExcerpt all went to 0/10, `excerpt` silently became
@@ -799,7 +799,7 @@ async function main() {
     for (const item of rankings[k]) scoreIndex[k].set(item.id, item.score);
   }
 
-  // `status` is a promise about the prose (see projects/_schema.json). Only plans that
+  // `status` is a promise about the prose (see apps/data/projects/_schema.json). Only plans that
   // have actually been authored get published; `legacy` and `draft` are raw capture and
   // template filler, and shipping them puts half-written pages on the web behind a green
   // build. Excluding them also keeps the build offline: unauthored plans are precisely the
@@ -847,7 +847,7 @@ async function main() {
 
   // Strip bulky per-doc dump from plans.json (kept in documents/<id>.json instead).
   // `assets` lists architecture-diagram HTML files copied from
-  // projects/<id>-<slug>/assets/*.html into public/projects/<id>-<slug>/assets/
+  // apps/data/projects/<id>-<slug>/assets/*.html into public/projects/<id>-<slug>/assets/
   // at build time, so the SPA can render them as iframes without HEAD-fishing
   // every candidate name (which on the Vite dev server returns 200 + the SPA
   // shell for any path that does not exist).

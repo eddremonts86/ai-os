@@ -10,12 +10,12 @@
 cd /Users/edd/Projects/ai-os
 
 # 1. read the contract and the skill (one time)
-cat projects/_schema.json | head -200
+cat apps/data/projects/_schema.json | head -200
 cat ai-config/skills/plan-authoring/SKILL.md
 
 # 2. confirm which plans are still in 'draft' for your slice
 #    (replace START and END with the agent's numeric range)
-for d in projects/{START..END}-*; do
+for d in apps/data/projects/{START..END}-*; do
   [ -d "$d" ] || continue
   status=$(awk '/^status:/ {print $2; exit}' "$d/SPEC.md")
   echo "$d -> $status"
@@ -26,7 +26,7 @@ done
 
 ```bash
 # pick the next draft plan in your slice
-PLAN="projects/<NNN>-<slug>"
+PLAN="apps/data/projects/<NNN>-<slug>"
 ID="<NNN>"
 
 # what does the gate complain about

@@ -91,7 +91,7 @@ TOKEN=$(grep -m1 '^COOLIFY_API_TOKEN=' dev-env/env-config/.env | cut -d= -f2- | 
 The explorer in [`apps/plans-explorer/`](../../apps/plans-explorer/) is a separate Coolify application
 built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), serving
 **https://plans.eduardoinerarte.dk**. Created via the API and deployed; both repo secrets are
-set, so pushes to `main` touching `apps/plans-explorer/**` or `projects/**` now deploy it
+set, so pushes to `main` touching `apps/plans-explorer/**` or `apps/data/projects/**` now deploy it
 automatically.
 
 Its settings — mirrored from `ai-os-landing`, same repo and deploy key, in project

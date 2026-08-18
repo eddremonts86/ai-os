@@ -11,7 +11,7 @@ metadata:
 # ProblemHunt Multi-Source Pipeline
 
 Fetches fresh startup/project ideas from multiple sources and generates
-per-project documentation under `~/Projects/ai-os/projects/(NNN-slug)/`.
+per-project documentation under `~/Projects/ai-os/apps/data/projects/(NNN-slug)/`.
 
 Each project folder contains **5 files**:
 
@@ -47,14 +47,14 @@ Rejected sources (see "Rejected" below for why):
 │   ├── design-dna.js        # 17 design-system palettes
 │   ├── state.json           # dedupe + per-source tracking
 │   └── package.json
-├── projects/                # OUTPUT — one folder per project
+├── apps/data/projects/                # OUTPUT — one folder per project
 │   └── NNN-slug/
 │       ├── SPEC.md
 │       ├── PLAN.md
 │       ├── TASKS.md
 │       ├── DESIGN.md
 │       └── PRODUCT.md
-├── projects/TOP_PROJECTS.md # ranked top 5 per dimension
+├── apps/data/projects/TOP_PROJECTS.md # ranked top 5 per dimension
 └── skills/problemhunt-pipeline/   # ← this skill
 ```
 
@@ -81,7 +81,7 @@ AI_OS_ROOT=/tmp/ai-os node scraper.cjs --dry-run
 ### 2. Verify output
 
 ```bash
-ls ~/Projects/ai-os/projects/ | grep -v "^TOP" | wc -l
+ls ~/Projects/ai-os/apps/data/projects/ | grep -v "^TOP" | wc -l
 # Should equal state.json analyzed count
 ```
 
@@ -129,7 +129,7 @@ Missing env is non-fatal — it logs and continues.
 
 - `node scraper.cjs --dry-run` should print "X nuevos (sin docs)" matching
   what the real run will write.
-- After a real run, `~/Projects/ai-os/projects/` should grow by N folders.
+- After a real run, `~/Projects/ai-os/apps/data/projects/` should grow by N folders.
 - Each new folder must contain all 5 .md files.
 - `state.json.analyzed` count should equal the folder count (excluding
   `TOP_PROJECTS.md`).

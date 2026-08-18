@@ -1,7 +1,7 @@
 {
   "name": "problemhunt-scraper",
   "version": "2.0.0",
-  "description": "ProblemHunt scraper — fetches project ideas and generates SPEC/PLAN/TASKS/DESIGN/PRODUCT docs under ~/Projects/ai-os/projects/",
+  "description": "ProblemHunt scraper — fetches project ideas and generates SPEC/PLAN/TASKS/DESIGN/PRODUCT docs under ~/Projects/ai-os/apps/data/projects/",
   "main": "scraper.cjs",
   "scripts": {
     "start": "node scraper.cjs",

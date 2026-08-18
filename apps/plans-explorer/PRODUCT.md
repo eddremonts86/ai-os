@@ -4,7 +4,7 @@
 
 ## Value Proposition
 
-A static, fast, searchable reader for the 455 product plans living in `~/Projects/ai-os/projects/`. Filter by category, tags, technology, and ranking scores (money / learn / fun) parsed from `TOP_PROJECTS.md`. Read any SPEC, PRODUCT or PLAN as rendered markdown without cloning the repo.
+A static, fast, searchable reader for the 455 product plans living in `~/Projects/ai-os/apps/data/projects/`. Filter by category, tags, technology, and ranking scores (money / learn / fun) parsed from `TOP_PROJECTS.md`. Read any SPEC, PRODUCT or PLAN as rendered markdown without cloning the repo.
 
 **One-liner:** _Browse, search and rank 455 AI-OS product plans in one place._
 
