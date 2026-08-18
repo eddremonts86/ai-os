@@ -1,8 +1,8 @@
 # -----------------------------------------------------------------------------
-# Deploy the AI-OS landing (site/) by triggering a Coolify deployment.
+# Deploy the AI-OS landing (apps/site/) by triggering a Coolify deployment.
 #
 # The landing runs as a Coolify application on a Hetzner VPS, built from the
-# repo-root Dockerfile (nginx serving site/) and routed by Traefik at
+# repo-root Dockerfile (nginx serving apps/site/) and routed by Traefik at
 # https://ai-os.eduardoinerarte.dk. Coolify clones the repo with its stored
 # deploy key/credentials, so this workflow only needs to POKE Coolify to pull
 # + rebuild on each push.
@@ -21,7 +21,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "site/**"
+      - "apps/site/**"
       - "Dockerfile"
       - ".github/workflows/deploy-site.yml"
   workflow_dispatch:
