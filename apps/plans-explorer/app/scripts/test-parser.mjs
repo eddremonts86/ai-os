@@ -138,7 +138,18 @@ for (const r of results) console.log(r);
 
 console.log('\n[test] aggregate invariants:');
 const totalPlans = plans.length;
-const PROJECTS_DIR = join(ROOT, '..', 'data', 'projects');
+// Resolved from the CLAUDE.md marker, not by counting `..` hops: hop counts broke on
+// every directory move during the reorganisation, and a wrong root yields an empty
+// glob that reads as "zero plans" while every downstream check still passes.
+const AI_OS_ROOT = (() => {
+  let d = __dirname;
+  while (d !== dirname(d)) {
+    if (existsSync(join(d, 'CLAUDE.md'))) return d;
+    d = dirname(d);
+  }
+  throw new Error(`cannot locate the AI-OS root above ${__dirname}`);
+})();
+const PROJECTS_DIR = join(AI_OS_ROOT, 'apps', 'data', 'projects');
 const TOP_PROJECTS = join(PROJECTS_DIR, 'TOP_PROJECTS.md');
 const planDirs = readdirSync(PROJECTS_DIR).filter((n) => /^\d{3,}-/.test(n)
   && existsSync(join(PROJECTS_DIR, n, 'SPEC.md')));

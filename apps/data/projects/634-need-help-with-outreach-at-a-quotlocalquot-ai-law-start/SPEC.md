@@ -2,7 +2,7 @@
 id: "634"
 slug: need-help-with-outreach-at-a-quotlocalquot-ai-law-start
 title: "need help with outreach at a \"local\" AI law startup (i will not promote)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vp036s/need_help_with_outreach_at_a_local_ai_law_startup/"
@@ -18,15 +18,36 @@ date: "2026-08-15"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Let the operator of a professional SaaS in a small-language market buy traffic from people who
+actually do the work, when the broad ad platforms have no targeting that reaches them.
+
+The poster's ask is exact: "some way to turn a dial and throw money at it and get some traffic of
+actual lawyers or practitioners that would be power users and work with documents a lot". Every
+word of that is a targeting requirement no keyword bid expresses — profession, seniority of use,
+and document volume, in one country's language.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **The founder in the source** — a central European AI lawyer platform whose entire lead flow
+ is local-language SEO for "lawyer AI", plus one news article that has stopped delivering.
+2. **Any operator of a small-language professional SaaS** — the constraint is the market size in
+ a single language, which makes broad platforms both expensive and imprecise.
+3. **A solo or near-solo team** — the poster is putting off a Reddit post because of how it would
+ have to be framed, which is the kind of decision nobody delegates.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Build a reachable list of practitioners in one profession and one language, from sources where
+ professional identity is public: bar association registers, firm sites, professional
+ directories.
+- Qualify on the trait the poster names — works with documents a lot — using observable signals
+ such as practice area, firm size and published document-heavy services.
+- One outreach channel to start, chosen for the profession rather than for reach.
+- Cost per qualified practitioner reached, so the "dial" the poster asked for has a number on it
+ rather than a spend figure.
+
+Out of scope: ad-network integrations, creative generation, and CRM. The poster does not lack
+tooling to send messages; they lack a list worth sending to.
 
 ## Design Direction
 
@@ -34,4 +55,13 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **Professional outreach is regulated, and lawyers are the strictest case.** Bar associations
+ restrict solicitation, and GDPR applies to every name on the list. A tool that ships without
+ the legal basis for contact is unusable by exactly the customer it is for.
+- **The market has a ceiling.** One profession in one language is a few thousand people. The
+ product has to be worth building for a list that small, or it has to be repeatable across
+ professions and languages.
+- **The poster's own framing problem is a real constraint.** Their first success came from being
+ "a young local founder with a free project" and they cannot use that story now. Whatever the
+ tool produces has to work for a company that has stopped being a scrappy underdog.
+- The source names no budget, no price and no conversion figure, so none is assumed.
