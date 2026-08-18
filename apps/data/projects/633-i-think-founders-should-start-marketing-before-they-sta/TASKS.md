@@ -2,7 +2,7 @@
 id: "633"
 slug: i-think-founders-should-start-marketing-before-they-sta
 title: I think founders should start marketing before they start building.
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voy6zq/i_think_founders_should_start_marketing_before/"
@@ -13,17 +13,19 @@ date: "2026-08-15"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/633-i-think-founders-should-start-marketing-before-they-sta/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] SvelteKit project, one route group for problems
+- [ ] PostgreSQL with the three tables: captures, outreach, problems
+- [ ] Full-text index on capture text — this is the one schema decision that matters
+- [ ] Deploy target: single container, no queue, no worker
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Add a capture: quote, source link, problem
+- [ ] Group captures into framings, and show competing framings side by side
+- [ ] Outreach log with the response types the source names
+- [ ] The single "does anybody care yet" view over captures + outreach
+- [ ] Export a problem's whole record as markdown
+- [ ] Test the framing query, which is the only non-obvious logic in the product
 
 ## Phase 2: Deploy
 
