@@ -9,7 +9,7 @@
 
 import { parseFrontmatter, stringifyFrontmatter, parseSections, loadSchema, missingSourceFields } from './lib/plan.mjs';
 import { htmlToText, markdownToText, linkifyLongUrls, unnestLinks, hasEntities, hasMarkup, hasZeroWidth } from './lib/normalize.mjs';
-import { renameHeadings, stripMetadataBlock, extractCountry, extractProblem, extractTech } from './lib/legacy.mjs';
+import { renameHeadings, stripMetadataBlock, extractCountry, extractProblem, extractTech, extractDate, extractCategory } from './lib/legacy.mjs';
 
 const schema = loadSchema();
 let pass = 0;
@@ -181,6 +181,32 @@ Crear una solución.
 
   const stripped = stripMetadataBlock(spec);
   ok('metadata block removed', !/\*\*(Fuente|Categoría primaria|Tags|Fecha):/.test(stripped));
+
+  // The scraper emits English metadata labels now. Extraction and stripping must handle both
+  // spellings: the migrated corpus carries the Spanish ones, every new capture the English.
+  const enSpec = [
+    '# SPEC.md — A thing',
+    '',
+    '## Problem',
+    '',
+    'Someone described a real problem here in enough words to count.',
+    '',
+    "**Source:** [ProblemHunt](https://betalist.com/startups/x)",
+    '**Primary category:** marketing',
+    '**Tags:** a,b',
+    '**Date:** 2026-08-18T19:00:00Z',
+    '',
+    '---',
+  ].join('\n');
+  ok('extracts date from **Date:**', extractDate(enSpec) === '2026-08-18', extractDate(enSpec));
+  ok('extracts date from **Fecha:**', extractDate('**Fecha:** 2026-07-20 23:11') === '2026-07-20');
+  ok('extracts category from **Primary category:**', extractCategory(enSpec) === 'marketing', extractCategory(enSpec));
+  ok('extracts category from **Categoría primaria:**',
+    extractCategory('**Categoría primaria:** design') === 'design');
+  const enStripped = stripMetadataBlock(enSpec);
+  ok('strips the English metadata block',
+    !/\*\*(Source|Primary category|Tags|Date):/.test(enStripped), enStripped);
+  ok('English strip keeps the prose', enStripped.includes('described a real problem'));
   ok('prose survives stripping', stripped.includes('Crear una solución'));
 
   const renamed = renameHeadings(stripped);

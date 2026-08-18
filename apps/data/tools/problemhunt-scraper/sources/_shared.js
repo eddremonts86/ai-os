@@ -48,6 +48,60 @@ async function fetchWithRetry(url, opts = {}, { maxAttempts = 3, baseDelayMs = 5
 // Returns array of {title, published, link, content}.
 // Lightweight regex-based; the scraper previously shipped its own parseRedditRSS,
 // kept here so other Atom feeds (HN, ProductHunt, BetaList) reuse it.
+// Atom/RSS carries HTML inside <content type="html"> ENTITY-ENCODED: `&lt;p&gt;…&lt;/p&gt;`.
+// The previous implementation stripped tags first and then replaced /&[a-z]+;/ with a SPACE,
+// which is backwards twice over: there are no real tags to strip yet, and turning `&lt;`,
+// `&gt;` and `&amp;` into spaces leaves the tag *contents* behind as prose while destroying
+// the ampersands inside URLs. Every betalist, producthunt and reddit capture came out as
+// `a href='https://x?u=1 m=atom' img src='…' width='500' / /a br / p Real sentence. /p`.
+//
+// Decode first, then strip, and alternate to a fixed point because feed content is sometimes
+// double-encoded (`&amp;lt;p&amp;gt;`). Mirrors plan-format/lib/normalize.mjs, which cannot be
+// imported here: this file is CommonJS and that one is ESM.
+const NAMED_ENTITIES = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', hellip: '…',
+  mdash: '—', ndash: '–', lsquo: '\u2018', rsquo: '\u2019', ldquo: '\u201c', rdquo: '\u201d',
+  middot: '·', bull: '•', deg: '°',
+};
+
+function decodeEntities(text) {
+  return text
+    .replace(/&#x([0-9a-f]+);/gi, (m, h) => {
+      const cp = parseInt(h, 16);
+      return Number.isFinite(cp) && cp > 0 && cp <= 0x10ffff && !(cp >= 0xd800 && cp <= 0xdfff)
+        ? String.fromCodePoint(cp) : m;
+    })
+    .replace(/&#(\d+);/g, (m, d) => {
+      const cp = parseInt(d, 10);
+      return Number.isFinite(cp) && cp > 0 && cp <= 0x10ffff && !(cp >= 0xd800 && cp <= 0xdfff)
+        ? String.fromCodePoint(cp) : m;
+    })
+    .replace(/&([a-z]+);/gi, (m, name) => {
+      const mapped = NAMED_ENTITIES[name.toLowerCase()];
+      return mapped === undefined ? m : mapped;
+    });
+}
+
+function stripTags(text) {
+  return text
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    // Block ends become a space so `<p>a</p><p>b</p>` is "a b", never "ab".
+    .replace(/<\/?(?:p|div|li|tr|td|h[1-6]|blockquote|pre|br)\s*\/?>/gi, ' ')
+    // A tag name starts with a letter and no tag spans a line break, so prose using `<` as
+    // "less than" survives.
+    .replace(/<\/?[a-zA-Z][^>\n]*>/g, '');
+}
+
+function htmlFieldToText(raw) {
+  let out = raw.replace(/<!\[CDATA\[/g, '').replace(/\]\]>/g, '');
+  for (let i = 0; i < 3; i++) {
+    const next = stripTags(decodeEntities(out));
+    if (next === out) break;
+    out = next;
+  }
+  return out.replace(/\s+/g, ' ').trim();
+}
+
 function parseAtomOrRSS(xml) {
   const entries = [];
   const blocks = [];
@@ -72,11 +126,7 @@ function parseAtomOrRSS(xml) {
     const contentMatch = block.match(/<content[^>]*>([\s\S]*?)<\/content>/) || block.match(/<description[^>]*>([\s\S]*?)<\/description>/);
     let contentStr = '';
     if (contentMatch) {
-      contentStr = contentMatch[1]
-        .replace(/<!\[CDATA\[/g, '').replace(/\]\]>/g, '')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/&[a-z]+;/g, ' ')
-        .replace(/\s+/g, ' ').trim();
+      contentStr = htmlFieldToText(contentMatch[1]);
     }
     if (title && link) entries.push({ title, link, published, content: contentStr });
   }
@@ -90,4 +140,4 @@ function cleanTitle(title) {
     .replace(/\s+/g, ' ').trim().substring(0, 120);
 }
 
-module.exports = { DEFAULT_UA, sleep, fetchWithRetry, parseAtomOrRSS, cleanTitle };
+module.exports = { DEFAULT_UA, sleep, fetchWithRetry, parseAtomOrRSS, cleanTitle, htmlFieldToText };

@@ -26,12 +26,9 @@ Value is not in feature breadth. It is in the removal of the specific obstacle t
 
 | Stakeholder | Why they care |
 |---|---|
-| Designers | _[What pain they feel]_
-| _[How this solves it]_ |
-| Creative agencies | _[What pain they feel]_
-| _[How this solves it]_ |
-| Founders | _[What pain they feel]_
-| _[How this solves it]_ |
+| Interior designer | A client hands over a mood-board photo and says "find me this". Text search fails because the designer does not know the product name, so the fallback is scrolling vendor sites, Houzz and 1stdibs by hand. Visual search turns that afternoon into one query. |
+| Architect specifying materials | Needs a match for a swatch or a finish rather than a named SKU, which is precisely the case keyword catalogues cannot serve. |
+| Creative agency | Runs the same search repeatedly across projects and staff; a per-project mood board makes the result reusable instead of re-found. |
 
 ## Jobs To Be Done
 
