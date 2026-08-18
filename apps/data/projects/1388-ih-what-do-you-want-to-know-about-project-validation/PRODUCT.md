@@ -1,0 +1,63 @@
+---
+id: "1388"
+slug: ih-what-do-you-want-to-know-about-project-validation
+title: "IH, what do you want to know about project validation?"
+status: draft
+source:
+  name: IndieHackers
+  url: "https://www.indiehackers.com/threads/1663ec3b15"
+category: threads
+date: "2018-04-14"
+tags: [IndieHackers, threads]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# IH, what do you want to know about project validation?
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ For the weekend, I'm doing research on project validation (types, comparison between case studies, common factors between successful cases, and so on).
+
+I've noticed validation is a recurring challenge, so my goal is to find answers to some of our questions, and compile what I find this weekend into an article to share with all of you.
+
+If you want me to send you a link to the article when it's published, say so in your comment and include your email (also fine if your email is on your IH profile) and I'll keep you up-to-date.
+
+Any thoughts or questions you have, post them and I'll include them.
+
+* If you have a specific project you're working on that needs validation, what's the project's name and what is your elevator pitch? _(Optional: website link?)_
+* What does "validation" entail for you?
+* What's your personal experience with validation? What have you tried (and what did or didn't work)? Ever built/used an MVP that didn't work out?
+* What part of validating is most difficult for
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [IndieHackers](https://www.indiehackers.com/threads/1663ec3b15) · **Category:** threads · **Tags:** IndieHackers,threads

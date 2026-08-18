@@ -266,6 +266,65 @@ console.log('\n[schema integrity]');
     !/scraper\.$/.test(schema.statusLifecycle.meaning.draft), schema.statusLifecycle.meaning.draft.slice(0, 40));
 }
 
+// ---------------------------------------------------------------------------
+// Single-pass convergence.
+//
+// `format` must reach a fixed point in ONE pass, and it has failed this twice the same way: the
+// clone tally fingerprints a NORMALISED body, so when the rewrite gained a normalisation the
+// tally did not apply, pass 1 hashed one string while isFiller hashed another and filler was
+// only recognised on a second run. The pipeline formats once per cycle, so a second-pass-only
+// fix leaves a plan a cycle behind in a half-migrated state.
+//
+// Tested by running the real command twice over a temp corpus in the scraper's own template
+// shape, and requiring the second run to report zero changes.
+console.log('\nsingle-pass convergence:');
+{
+  const { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync: rfs } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join: pjoin } = await import('node:path');
+  const { execFileSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+
+  const root = mkdtempSync(pjoin(tmpdir(), 'aios-conv-'));
+  try {
+    writeFileSync(pjoin(root, 'CLAUDE.md'), '# marker\n');
+    const projects = pjoin(root, 'apps', 'data', 'projects');
+    mkdirSync(projects, { recursive: true });
+    writeFileSync(pjoin(projects, '_schema.json'),
+      rfs(fileURLToPath(new URL('../../projects/_schema.json', import.meta.url)), 'utf8'));
+
+    // Enough plans to exceed the clone threshold, each carrying the untranslated filler that
+    // regressed, so the tally has to see it in its translated form on the first pass.
+    for (let i = 1; i <= 12; i++) {
+      const id = String(i).padStart(3, '0');
+      const dir = pjoin(projects, `${id}-convergence-fixture-${i}`);
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(pjoin(dir, 'SPEC.md'), [
+        `# SPEC.md — Fixture ${i}`, '', '## Problem', '',
+        '_Pendiente de análisis manual._', '',
+        `**Source:** [ProblemHunt](https://problemhunt.pro/en/x/${id})`,
+        '**Primary category:** other', '**Date:** 2026-08-18T00:00:00Z', '',
+        '---', '', '## Objective', '',
+        'Crear una solución que aborde este problema de forma clara y escalable.', '',
+        '## Target Users', '', '1. **[Usuario primario]** — descripción del usuario principal', '',
+        '## MVP Scope', '', '- Funcionalidad core', '',
+        '## Constraints', '', '- Mantener simple el MVP', '',
+      ].join('\n'));
+    }
+
+    const cli = fileURLToPath(new URL('./format-plans.mjs', import.meta.url));
+    const run = (args) => execFileSync(process.execPath, [cli, ...args],
+      { cwd: root, encoding: 'utf8', env: { ...process.env, AI_OS_ROOT: root } });
+
+    run(['--write']);
+    const second = run([]);
+    const m = second.match(/documents that would change:\s*(\d+)/);
+    ok('a second format pass changes nothing', Boolean(m) && m[1] === '0', m ? m[1] : second.slice(0, 200));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+}
+
 console.log(`\n[test] ${pass} pass, ${fails.length} fail`);
 if (fails.length) {
   console.log('[test] FAILED:\n  - ' + fails.join('\n  - '));
