@@ -175,7 +175,16 @@ export const handler = async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
     // Reports configuration, not just liveness: a container that is up but tokenless accepts
     // nothing, and "200 OK" on that is the same lie as a green deploy over a stale build.
-    return send(res, 200, { ok: true, configured: Boolean(TOKEN && REPO), repo: REPO || null });
+    // `configured` means "will actually accept a submission", which requires the allowlist as
+    // well as the credentials. A container with a token and no ALLOWED_ORIGIN is an open
+    // issue-creation endpoint, and the healthcheck greps this field, so a deploy that forgets the
+    // allowlist reports unhealthy instead of quietly accepting posts from anywhere.
+    return send(res, 200, {
+      ok: true,
+      configured: Boolean(TOKEN && REPO && ORIGINS.length),
+      repo: REPO || null,
+      originsConfigured: ORIGINS.length > 0,
+    });
   }
 
   if (req.method !== 'POST' || req.url !== '/submit') {
@@ -196,9 +205,13 @@ export const handler = async (req, res) => {
   const errors = validateSubmission(body);
   if (errors.length) return send(res, 400, { error: 'invalid submission', errors }, origin);
 
-  if (!TOKEN || !REPO) {
+  if (!TOKEN || !REPO || !ORIGINS.length) {
     // Explicitly not a 200. A form that reports success for something it never sent is the
     // worst outcome available to this design.
+    //
+    // The allowlist counts as configuration, not as an optional extra: with a token set and
+    // ALLOWED_ORIGIN unset, the origin check above is skipped entirely and this becomes an open
+    // endpoint that opens GitHub issues for anyone who finds it. Fail closed.
     return send(res, 503, { error: 'submissions are not configured on this server' }, origin);
   }
 
