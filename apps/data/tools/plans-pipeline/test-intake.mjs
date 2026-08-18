@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Tests for submission intake. Run: node tools/plans-pipeline/test-intake.mjs
+ * Tests for submission intake. Run: node apps/data/tools/plans-pipeline/test-intake.mjs
  *
  * The riskiest part of intake is parsing a GitHub issue-form body, because its shape is
  * GitHub's to change and nothing warns us when it does. Second riskiest is producing a
@@ -9,7 +9,8 @@
  */
 
 import { parseIssueForm, validate, buildDocs, slugify, FIELDS } from './intake.mjs';
-import { parseFrontmatter, parseSections, loadSchema } from '../plan-format/lib/plan.mjs';
+import { parseFrontmatter, parseSections, loadSchema, AI_OS_ROOT } from '../plan-format/lib/plan.mjs';
+import { join } from 'node:path';
 
 const schema = loadSchema();
 let pass = 0;
@@ -60,8 +61,11 @@ console.log('\n[test] submission intake\n');
   ok('treats _No response_ as absent', blank.country === '' && blank.submittedBy === '', blank.country);
 
   // Every label in FIELDS must exist in the real template, or intake silently reads nothing.
+  // Resolved from the marker-found repo root, not by counting `..` hops from this file:
+  // two hops meant the root until tools/ moved under apps/data, and then it silently meant
+  // apps/data instead. This is the same fragility the root resolver exists to remove.
   const template = (await import('node:fs')).readFileSync(
-    new URL('../../.github/ISSUE_TEMPLATE/submit-plan.yml', import.meta.url), 'utf8');
+    join(AI_OS_ROOT, '.github', 'ISSUE_TEMPLATE', 'submit-plan.yml'), 'utf8');
   const missing = Object.keys(FIELDS).filter((label) => !template.includes(label));
   ok('every field label intake expects exists in the template', missing.length === 0, missing);
 

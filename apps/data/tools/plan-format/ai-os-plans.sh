@@ -3,7 +3,13 @@
 set -uo pipefail
 
 HERE="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-AI_OS_ROOT="$(cd -P "$HERE/../.." && pwd)"
+# Walk up to the marker, not a fixed number of `..` hops: this script has moved twice and
+# each move silently changed what "two levels up" meant.
+AI_OS_ROOT="$HERE"
+while [ "$AI_OS_ROOT" != "/" ] && [ ! -f "$AI_OS_ROOT/CLAUDE.md" ]; do
+  AI_OS_ROOT="$(dirname "$AI_OS_ROOT")"
+done
+[ -f "$AI_OS_ROOT/CLAUDE.md" ] || { echo "cannot locate the AI-OS root above $HERE" >&2; exit 1; }
 
 usage() {
   cat <<EOF
@@ -31,7 +37,7 @@ Usage:
 
   ai-os plans pipeline <scrape|prepare|verify|ship|status> [--cap N] [--dry-run] [--yes]
       The daily unattended loop: scrape, format, pick a slice to enrich, gate,
-      commit, promote through dev to main, deploy. See tools/plans-pipeline/README.md.
+      commit, promote through dev to main, deploy. See apps/data/tools/plans-pipeline/README.md.
 
 Typical flow:
   ai-os plans check --summary        # where the corpus stands
@@ -50,12 +56,12 @@ case "${1:-}" in
     # Both suites, not just the formatter's: the id allocator has two callers that never
     # run in the same process, so it is exactly the kind of thing that rots unless the
     # pipeline's verify phase runs it on every cycle.
-    node "$AI_OS_ROOT/tools/lib/test-plan-ids.mjs" "$@" || exit 1
-    node "$AI_OS_ROOT/tools/plans-pipeline/test-intake.mjs" "$@" || exit 1
+    node "$AI_OS_ROOT/apps/data/tools/lib/test-plan-ids.mjs" "$@" || exit 1
+    node "$AI_OS_ROOT/apps/data/tools/plans-pipeline/test-intake.mjs" "$@" || exit 1
     node "$AI_OS_ROOT/apps/submission-api/test-server.mjs" "$@" || exit 1
     exec node "$HERE/test-plan-format.mjs" "$@"
     ;;
-  pipeline) shift; exec bash "$AI_OS_ROOT/tools/plans-pipeline/daily.sh" "$@" ;;
+  pipeline) shift; exec bash "$AI_OS_ROOT/apps/data/tools/plans-pipeline/daily.sh" "$@" ;;
   enrich)
     shift
     cat <<EOF

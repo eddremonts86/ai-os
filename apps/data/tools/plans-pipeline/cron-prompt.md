@@ -1,7 +1,7 @@
 Run the AI-OS daily plans pipeline: fetch new captures, rank them, author a slice of
 them, and ship the result to production.
 
-**The mechanics live in `tools/plans-pipeline/daily.sh`. Call it — do not reimplement it.**
+**The mechanics live in `apps/data/tools/plans-pipeline/daily.sh`. Call it — do not reimplement it.**
 Your only real job is Phase 3: writing prose. The script owns scraping, formatting, slice
 selection, the gate, the tests, git, and the deploy. Do not run git commands yourself.
 
@@ -12,7 +12,7 @@ Working directory: `~/Projects/ai-os`.
 ## Phase 1 — Fetch
 
 ```bash
-bash tools/plans-pipeline/daily.sh scrape
+bash apps/data/tools/plans-pipeline/daily.sh scrape
 ```
 
 If it exits non-zero it has already printed the tail of `last-run.log`. Report that and
@@ -23,7 +23,7 @@ If it exits non-zero it has already printed the tail of `last-run.log`. Report t
 ## Phase 2 — Ingest approved submissions
 
 ```bash
-bash tools/plans-pipeline/daily.sh intake
+bash apps/data/tools/plans-pipeline/daily.sh intake
 ```
 
 Materialises every issue labelled `approved` and not yet `ingested` into a plan directory.
@@ -42,7 +42,7 @@ approved submission that never becomes a plan is invisible otherwise.
 
 ## Phase 3 — Rank new captures
 
-Read `tools/problemhunt-scraper/state.json`. If `topProjectsEvaluatedAt` is absent or older
+Read `apps/data/tools/problemhunt-scraper/state.json`. If `topProjectsEvaluatedAt` is absent or older
 than the newest `state.analyzed[*].analyzedAt`, there are unranked projects.
 
 For each unranked project, read its `SPEC.md` and `PRODUCT.md` under `apps/data/projects/<id>-<slug>/`
@@ -77,7 +77,7 @@ If there were no new captures, skip to Phase 3 anyway: there may still be backlo
 ## Phase 4 — Author a slice
 
 ```bash
-bash tools/plans-pipeline/daily.sh prepare --cap 25
+bash apps/data/tools/plans-pipeline/daily.sh prepare --cap 25
 ```
 
 This normalises every document to the schema and picks what to work on. **Exit code 3 means
@@ -104,7 +104,7 @@ Rules that matter more than finishing:
 ## Phase 5 — Verify
 
 ```bash
-bash tools/plans-pipeline/daily.sh verify
+bash apps/data/tools/plans-pipeline/daily.sh verify
 ```
 
 Index, gate, formatter tests, explorer build, parser invariants. **If this fails, STOP.** Do
@@ -117,7 +117,7 @@ would put it on the live site.
 ## Phase 6 — Ship
 
 ```bash
-bash tools/plans-pipeline/daily.sh ship --yes
+bash apps/data/tools/plans-pipeline/daily.sh ship --yes
 ```
 
 Commits the corpus, opens a PR to `dev`, merges it once its checks are green, promotes `dev`

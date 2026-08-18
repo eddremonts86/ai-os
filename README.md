@@ -299,7 +299,7 @@ ai-os/
 │   ├── plans-explorer/            #   the plans SPA
 │   ├── submission-api/            #   submissions write path (not deployed)
 │   └── data/projects/             #   the plans corpus: machine-written data
-└── tools/                         # The machinery that produces it
+│       └── tools/                 #   the machinery that maintains it
     ├── problemhunt-scraper/       #   capture
     ├── plan-format/               #   contract + gate + formatter
     ├── plans-pipeline/            #   the daily loop

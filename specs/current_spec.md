@@ -203,7 +203,7 @@ formatter expects and the slice selector picks it up.
 
 #### Block 5: Cron prompt and docs (20 min)
 
-Add intake to `tools/plans-pipeline/cron-prompt.md` before Phase 1, and to the pipeline
+Add intake to `apps/data/tools/plans-pipeline/cron-prompt.md` before Phase 1, and to the pipeline
 README. Document what the agent does when a submission cannot be authored honestly: leave it
 `draft`, say which and why, let a human decline the issue.
 
@@ -309,7 +309,7 @@ ai-os plans pipeline status
 ai-os plans check --publishable
 npm --prefix plans-explorer/app run test:parser
 npm --prefix plans-explorer/app run build
-bash tools/plan-format/ai-os-plans.sh test
+bash apps/data/tools/plan-format/ai-os-plans.sh test
 ```
 
 Plus the browser pass on `/submit` and one real submission surviving the whole loop.
@@ -327,8 +327,8 @@ Plus the browser pass on `/submit` and one real submission surviving the whole l
 ## References
 
 - `apps/data/projects/_schema.json` — the contract a submission must satisfy
-- `tools/plans-pipeline/README.md` — the loop this plugs into
-- `tools/plans-pipeline/cron-prompt.md` — where intake gets added
+- `apps/data/tools/plans-pipeline/README.md` — the loop this plugs into
+- `apps/data/tools/plans-pipeline/cron-prompt.md` — where intake gets added
 - `ai-config/skills/plan-authoring/SKILL.md` — what the agent does with a draft
 - `setup/deploy/README.md` — creating and wiring a Coolify app
 - `Dockerfile.plans-explorer` — the container pattern the API follows

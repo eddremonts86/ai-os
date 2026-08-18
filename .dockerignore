@@ -18,9 +18,9 @@ apps/plans-explorer/app/public/projects
 apps/plans-explorer/app/.cache
 
 # Scraper state and its cache — the build is offline, enriched plans own their prose.
-tools/problemhunt-scraper/node_modules
-tools/problemhunt-scraper/state.json*
-tools/problemhunt-scraper/last-run.log
+apps/data/tools/problemhunt-scraper/node_modules
+apps/data/tools/problemhunt-scraper/state.json*
+apps/data/tools/problemhunt-scraper/last-run.log
 
 # Local environment and secrets. Never in an image layer.
 dev-env/env-config/.env
