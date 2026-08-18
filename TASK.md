@@ -59,5 +59,7 @@ Every plan under `apps/data/projects/<id>-<slug>/` passes `ai-os plans check --i
 | 4 | 334..444 | 111 | `apps/data/projects/3[3-4][0-9]-\*` and `4[0-4][0-9]-\*` |
 | 5 | 445..552 | 108 | `apps/data/projects/4[4-5][0-9]-\*` and `5[0-5][0-9]-\*` |
 
-Each agent only writes its slice of `PROGRESS.md` (`PROGRESS.1.md` … `PROGRESS.5.md`).
+Each agent only writes its own log under `apps/data/progress/`
+(`PROGRESS.1.md` … `PROGRESS.5.md`). The merged `PROGRESS.md` at the repo root is the
+loop's own memory and belongs to whoever runs the loop, not to a slice.
 A separate reconciliation step merges them after all 5 finish.

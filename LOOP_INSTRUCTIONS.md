@@ -1,7 +1,7 @@
 # LOOP_INSTRUCTIONS — Plan corpus enrichment
 
 > 5 sub-agents run in parallel. Each owns a fixed id range. They communicate via the
-> file system only — no shared mutable state in chat. Each writes a private PROGRESS
+> file system only — no shared mutable state in chat. Each writes a private log under `apps/data/progress/` (PROGRESS
 > file so appends never collide.
 
 ## Per-agent setup
@@ -61,13 +61,13 @@ printf '%s | %s | filled=%d | todos=%d\n' \
   "$ID-<slug>" \
   "<#sections filled>" \
   "<#sections kept as TODO>" \
-  >> PROGRESS.<AGENT_ID>.md
+  >> apps/data/progress/PROGRESS.<AGENT_ID>.md
 ```
 
 ## Do not
 
 - Touch any plan outside your id range.
-- Edit another agent's `PROGRESS.<n>.md`.
+- Edit another agent's `apps/data/progress/PROGRESS.<n>.md`.
 - Set `status: web-ready` by hand.
 - Commit anything — the orchestrator (Edd's CLI) reviews + merges.
 
