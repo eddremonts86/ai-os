@@ -1,7 +1,7 @@
 /**
  * HTML → display text, and text hygiene for plan documents.
  *
- * This is the authoritative copy. `plans-explorer/app/scripts/build-index.mjs`
+ * This is the authoritative copy. `apps/plans-explorer/app/scripts/build-index.mjs`
  * carries an equivalent pipeline on purpose: it is the reader's safety net for
  * plans that have not been formatted yet, and the app is a standalone npm package
  * that must build without reaching up into tools/. Once every plan is web-ready the

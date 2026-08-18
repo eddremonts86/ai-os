@@ -107,7 +107,7 @@ and why. If you left a TODO, name the section and what the source lacked.
 Then, if the plan is part of the web corpus:
 
 ```bash
-cd plans-explorer/app && npm run index && npm run test:parser
+cd apps/plans-explorer/app && npm run index && npm run test:parser
 ```
 
 The indexer's invariants catch entities, markup and zero-width characters that

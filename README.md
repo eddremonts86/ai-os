@@ -286,12 +286,30 @@ ai-os/
 │   ├── verify-windows.ps1         #   Windows health checks
 │   └── generate-mcp-config.py     #   Auto-install PyYAML + generate config
 │
-└── .github/workflows/             # CI (3 workflows)
-    ├── README.md
-    ├── test-mac.yml               #   macos-latest
-    ├── test-linux.yml             #   ubuntu-latest
-    └── test-windows.yml           #   windows-latest
+├── .github/workflows/             # CI + deploy
+│   ├── test-mac.yml               #   macos-latest
+│   ├── test-linux.yml             #   ubuntu-latest
+│   ├── test-windows.yml           #   windows-latest
+│   ├── deploy-site.yml            #   apps/site → Coolify
+│   └── deploy-plans-explorer.yml  #   apps/plans-explorer + projects → Coolify
+│
+│   # ───────────── what the framework produced ─────────────
+├── apps/                          # Deployable products, one directory each
+│   ├── site/                      #   the AI-OS landing
+│   ├── plans-explorer/            #   the plans SPA
+│   └── submission-api/            #   submissions write path (not deployed)
+├── projects/                      # The plans corpus: machine-written data
+└── tools/                         # The machinery that produces it
+    ├── problemhunt-scraper/       #   capture
+    ├── plan-format/               #   contract + gate + formatter
+    ├── plans-pipeline/            #   the daily loop
+    └── lib/                       #   shared id allocation
 ```
+
+Everything above `apps/` is the operating system. Everything from `apps/` down is what it
+produced. `Dockerfile*` stay at the repo root: they are deploy descriptors for the repository,
+and Coolify addresses them absolutely (`dockerfile_location=/Dockerfile`), so moving them
+would mean editing live production config to land a directory rename.
 
 ### ECC Integration (optional layer)
 
