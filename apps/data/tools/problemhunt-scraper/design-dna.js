@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DESIGN SYSTEMS — Palettes y tipografías reales de marcas conocidas
+// DESIGN SYSTEMS — real palettes and typefaces from known brands
 // ─────────────────────────────────────────────────────────────────────────────
 
 const DESIGN_SYSTEMS = {
@@ -20,7 +20,7 @@ const DESIGN_SYSTEMS = {
   // ── STRIPE ─────────────────────────────────────────────────────────────────
   stripe: {
     name: 'Stripe',
-    mood: 'Fintech premium. Pagos, bancos, dinero. Confianza + precisión.',
+    mood: 'Premium fintech. Payments, banking, money. Trust + precision.',
     palette: {
       primary:   '#0A2540',  // Deep navy
       secondary: '#635BFF',  // Stripe purple
@@ -355,7 +355,7 @@ const DESIGN_SYSTEMS = {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DESIGN DNA ENGINE
-// Analiza title + tags → devuelve el design system más apropiado
+// Analyse title + tags → return the most appropriate design system
 // ─────────────────────────────────────────────────────────────────────────────
 
 const KEYWORD_MAP = {
@@ -687,23 +687,23 @@ ${compLines}
 
   const markdown = `## ${ds.name} — Design System
 
-**Inspirado en:** ${ds.name} (${ds.mood})
+**Inspired by:** ${ds.name} (${ds.mood})
 
-### Paleta de colores
+### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | ${colorMap.primary} | Elementos principales, acciones |
-| secondary | ${colorMap.secondary} | Texto secundario, bordes |
-| tertiary | ${colorMap.tertiary} | Acentos, highlights |
-| neutral | ${colorMap.neutral} | Fondos neutros |
-| dark | ${colorMap.dark} | Paneles oscuros |
-| accent | ${colorMap.accent} | CTAs, notificaciones |
-| text | ${colorMap.text} | Texto principal |
-| muted | ${colorMap.muted} | Texto terciario |
-| bg | ${colorMap.bg} | Fondo página |
+| primary | ${colorMap.primary} | Primary elements, actions |
+| secondary | ${colorMap.secondary} | Secondary text, borders |
+| tertiary | ${colorMap.tertiary} | Accents, highlights |
+| neutral | ${colorMap.neutral} | Neutral backgrounds |
+| dark | ${colorMap.dark} | Dark panels |
+| accent | ${colorMap.accent} | CTAs, notifications |
+| text | ${colorMap.text} | Primary text |
+| muted | ${colorMap.muted} | Tertiary text |
+| bg | ${colorMap.bg} | Page background |
 
-### Tipografía
+### Typography
 
 - **Headings:** ${ds.typography.heading.family} · ${ds.typography.heading.size} · ${ds.typography.heading.weight} weight
 - **Body:** ${ds.typography.body.family} · ${ds.typography.body.size} · ${ds.typography.body.weight} weight
@@ -711,22 +711,22 @@ ${ds.typography.mono ? `- **Mono:** ${ds.typography.mono.family} · ${ds.typogra
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | ${ds.spacing.sm} | Elementos inline |
-| md | ${ds.spacing.md} | Componentes |
-| lg | ${ds.spacing.lg} | Secciones |
-| xl | ${ds.spacing.xl} | Espaciado grande |
+| sm | ${ds.spacing.sm} | Inline elements |
+| md | ${ds.spacing.md} | Components |
+| lg | ${ds.spacing.lg} | Sections |
+| xl | ${ds.spacing.xl} | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | ${ds.rounded.sm} | Inputs, badges |
-| md | ${ds.rounded.md} | Botones, cards |
-| lg | ${ds.rounded.lg} | Paneles, modales |
+| md | ${ds.rounded.md} | Buttons, cards |
+| lg | ${ds.rounded.lg} | Panels, modals |
 
-### Componentes
+### Components
 
 - **Button primary:** bg ${colorMap.primary}, text ${colorMap.text}, rounded ${ds.rounded.md}
 - **Button secondary:** outline, color ${colorMap.primary}, rounded ${ds.rounded.md}
@@ -735,16 +735,16 @@ ${ds.typography.mono ? `- **Mono:** ${ds.typography.mono.family} · ${ds.typogra
 
 ### Do's
 
-- Usar la tipografía ${ds.typography.body.family.split(',')[0]} de forma consistente
-- Aplicar spacing según la escala de ${ds.spacing.sm} / ${ds.spacing.md} / ${ds.spacing.lg}
-- Priorizar ${colorMap.primary} para acciones principales
-- Usar rounded ${ds.rounded.md} en todos los elementos interactivos
+- Use the ${ds.typography.body.family.split(',')[0]} typeface consistently
+- Apply spacing on the ${ds.spacing.sm} / ${ds.spacing.md} / ${ds.spacing.lg} scale
+- Favour ${colorMap.primary} for primary actions
+- Use rounded ${ds.rounded.md} on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

@@ -88,6 +88,21 @@ console.log('\n[normalisation]');
   ok('strips revealed markup', htmlToText('&lt;div class="md"&gt;hi&lt;/div&gt;').trim() === 'hi', htmlToText('&lt;div class="md"&gt;hi&lt;/div&gt;'));
   ok('strips SC_OFF comment', htmlToText('&lt;!-- SC_OFF --&gt;&lt;p&gt;text&lt;/p&gt;').trim() === 'text', htmlToText('&lt;!-- SC_OFF --&gt;&lt;p&gt;text&lt;/p&gt;'));
   ok('block ends become a space', htmlToText('<p>a</p><p>b</p>') === 'a b', htmlToText('<p>a</p><p>b</p>'));
+  // `<` as "less than" in prose is not a tag. The old /<[^>]+>/ ran across newlines and ate
+  // everything up to the next `>`, which in markdown is often a blockquote marker.
+  ok('keeps < used as less-than',
+    htmlToText('costs <$45/month here') === 'costs <$45/month here',
+    htmlToText('costs <$45/month here'));
+  ok('does not eat across a blockquote marker',
+    htmlToText('title <$45/month in costs\n\n> quoted brief').includes('$45/month in costs')
+      && htmlToText('title <$45/month in costs\n\n> quoted brief').includes('quoted brief'),
+    htmlToText('title <$45/month in costs\n\n> quoted brief'));
+  ok('keeps < 200ms style prose',
+    htmlToText('p95 < 200ms. End of week 6.') === 'p95 < 200ms. End of week 6.',
+    htmlToText('p95 < 200ms. End of week 6.'));
+  ok('still strips a real tag with attributes',
+    htmlToText('<a href="https://x.dev/a">link</a>').trim() === 'link',
+    htmlToText('<a href="https://x.dev/a">link</a>'));
   ok('drops zero-width', !hasZeroWidth(htmlToText('a​b')));
   ok('decodes &#32; to a space', htmlToText('a&#32;b') === 'a b', htmlToText('a&#32;b'));
   ok('leaves unknown entities alone', htmlToText('&notanentity;') === '&notanentity;', htmlToText('&notanentity;'));

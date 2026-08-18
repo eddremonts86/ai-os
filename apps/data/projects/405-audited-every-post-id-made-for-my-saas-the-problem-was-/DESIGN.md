@@ -66,18 +66,18 @@ components:
 
 ## Supabase — Design System
 
-**Inspirado en:** Supabase (Developer tools, database, open source. Technical + vibrant.)
+**Inspired by:** Supabase (Developer tools, database, open source. Technical + vibrant.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #1A1A1A | Elementos principales, acciones |
-| secondary | #666666 | Texto secundario, bordes |
+| primary | #1A1A1A | Primary elements, actions |
+| secondary | #666666 | Secondary text, borders |
 | accent | #3ECF8E | CTAs, highlights |
-| neutral | #FAFAFA | Fondos neutros |
-| text | #1A1A1A | Texto principal |
-| muted | #666666 | Texto terciario |
+| neutral | #FAFAFA | Neutral backgrounds |
+| text | #1A1A1A | Primary text |
+| muted | #666666 | Tertiary text |
 
 ### Typography
 
@@ -87,33 +87,33 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Do's
 
-- Tipografía Inter consistente
-- Escala 8px / 16px / 32px
-- Acciones principales en #1A1A1A
-- Rounded 8px en interactivos
+- Consistent Inter typography
+- Scale 8px / 16px / 32px
+- Primary actions in #1A1A1A
+- Rounded 8px on interactive elements
 
 ### Don'ts
 
-- No mezclar palettes de sistemas diferentes
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
+- Do not mix palettes from different systems
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
 
 --
 

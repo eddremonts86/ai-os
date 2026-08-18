@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "ai", "video-generation", "ugc", "marketing"]
-tech: ["Next.js", "TypeScript", "Veo", "Topaz", "Cloudflare R2", "Cloudflare Workers", "Stripe"]
 id: "546"
 slug: i-spent-200-testing-ugc-ad-tools-but-they-expected-engi
 title: "I spent $200 testing UGC ad tools, but they expected engineering-level prompting"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo9490/i_spent_200_testing_ugc_ad_tools_but_they/"
 category: saas
 date: "2026-08-14"
+tags: [saas, ai, video-generation, ugc, marketing]
+tech: [Next.js, TypeScript, Veo, Topaz, Cloudflare R2, Cloudflare Workers, Stripe]
 ---
 # I spent $200 testing UGC ad tools but they expected engineering-grade prompting
 

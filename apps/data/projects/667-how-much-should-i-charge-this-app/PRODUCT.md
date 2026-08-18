@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "consumer", "focus", "ios"]
-tech: ["SwiftUI", "Swift", "Lottie", "Supabase", "StoreKit 2", "TelemetryDeck"]
 id: "667"
 slug: how-much-should-i-charge-this-app
 title: How much should I charge this app?
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpvn9t/how_much_should_i_charge_this_app/"
 category: saas
 date: "2026-08-16"
+tags: [saas, consumer, focus, ios]
+tech: [SwiftUI, Swift, Lottie, Supabase, StoreKit 2, TelemetryDeck]
 ---
 # How much should I charge this app?
 

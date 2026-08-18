@@ -68,21 +68,21 @@ components:
 
 ## Supabase — Design System
 
-**Inspirado en:** Supabase (Developer tools, database, open source. Technical + vibrant.)
+**Inspired by:** Supabase (Developer tools, database, open source. Technical + vibrant.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #1A1A1A | Elementos principales, acciones |
-| secondary | #666666 | Texto secundario, bordes |
-| tertiary | #3ECF8E | Acentos, highlights |
-| neutral | #FAFAFA | Fondos neutros |
-| dark | #1A1A1A | Paneles oscuros |
-| accent | #3ECF8E | CTAs, notificaciones |
-| text | #1A1A1A | Texto principal |
-| muted | #666666 | Texto terciario |
-| bg | #FFFFFF | Fondo página |
+| primary | #1A1A1A | Primary elements, actions |
+| secondary | #666666 | Secondary text, borders |
+| tertiary | #3ECF8E | Accents, highlights |
+| neutral | #FAFAFA | Neutral backgrounds |
+| dark | #1A1A1A | Dark panels |
+| accent | #3ECF8E | CTAs, notifications |
+| text | #1A1A1A | Primary text |
+| muted | #666666 | Tertiary text |
+| bg | #FFFFFF | Page background |
 
 ### Typography
 
@@ -92,20 +92,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Components
 
@@ -116,16 +116,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #1A1A1A para acciones principales
-- Usar rounded 8px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #1A1A1A for primary actions
+- Use rounded 8px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

@@ -192,42 +192,42 @@ function generateSpec(project, folderSlug) {
   const docTitle = rawTitle || title;
   const sourceLabel = source === 'reddit'
     ? `**Source:** [Reddit r/${category}](${url})\n**Subreddit:** ${category}\n**Posted:** ${date}`
-    : `**Source:** [ProblemHunt](${url})\n**Categoría primaria:** ${category}\n${tags ? `**Tags:** ${tags}` : ''}\n**Fecha:** ${date}`;
+    : `**Source:** [ProblemHunt](${url})\n**Primary category:** ${category}\n${tags ? `**Tags:** ${tags}` : ''}\n**Date:** ${date}`;
 
   return `# SPEC.md — ${docTitle}
 
-## Problema Detectado
+## Problem
 
-${description || '_Pendiente de análisis manual._'}
+${description || '_Pending manual analysis._'}
 
 ${sourceLabel}
 
 ---
 
-## Objetivo Principal
+## Objective
 
-Crear una solución que aborde este problema de forma clara y escalable.
+Build a solution that addresses this problem clearly and at scale.
 
 ---
 
-## Usuarios Objetivo
+## Target Users
 
-1. **[Usuario primario]** — descripción del usuario principal
-2. **[Usuario secundario]** — otros usuarios relevantes
+1. **[Primary user]** — the main user this serves
+2. **[Secondary user]** — other relevant users
 
-## Alcance MVP
+## MVP Scope
 
-- Funcionalidad core
-- Evitar funcionalidades fuera del MVP
+- Core functionality
+- Leave out anything beyond the MVP
 
 ## Design Direction
 
-Ver \`DESIGN.md\` para tokens específicos del proyecto.
+See \`DESIGN.md\` for this project's design tokens.
 
 ## Constraints
 
-- Mantener simple el MVP
-- Sin dependencias externas innecesarias
+- Keep the MVP simple
+- No unnecessary external dependencies
 `;
 }
 
@@ -236,14 +236,14 @@ function generatePlan(project, folderSlug) {
   const docTitle = rawTitle || title;
   return `# PLAN.md — ${docTitle}
 
-## Tech Stack Propuesta
+## Tech Stack
 
 - **Frontend:** React + TypeScript
 - **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite con Drizzle ORM
-- **Despliegue:** Coolify + Docker
+- **DB:** SQLite with Drizzle ORM
+- **Deployment:** Coolify + Docker
 
-## Arquitectura
+## Architecture
 
 \`\`\`
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -253,15 +253,15 @@ function generatePlan(project, folderSlug) {
 
 ## Milestones
 
-1. **M0:** Setup proyecto + SPEC.md + DESIGN.md aprobado
+1. **M0:** Project setup + SPEC.md + DESIGN.md approved
 2. **M1:** Scaffold + auth
 3. **M2:** Core feature
 4. **M3:** Testing + deployment
 
-## Riesgos
+## Risks
 
-- Dependencia de APIs externas
-- Alcance ambiguo sin más detalles
+- Dependency on external APIs
+- Ambiguous scope without further detail
 `;
 }
 
@@ -273,30 +273,30 @@ function generateTasks(project, folderSlug) {
 
 ## Phase 0: Scaffold
 
-- [ ] Crear carpeta del proyecto en \`apps/\`
-- [ ] Inicializar repo git
+- [ ] Create the project folder under \`apps/\`
+- [ ] Initialise the git repo
 - [ ] Copiar \`edd-app-template\` → \`apps/${folderSlug}/\`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar \`tailwind.config.ts\` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire \`tailwind.config.ts\` to the DESIGN.md tokens
+- [ ] Set up the development environment
 
 ## Phase 1: Core
 
-- [ ] Implementar scaffold del proyecto
-- [ ] Implementar features core
-- [ ] Aplicar design tokens al components
-- [ ] Escribir tests
+- [ ] Implement the project scaffold
+- [ ] Implement the core features
+- [ ] Apply the design tokens to the components
+- [ ] Write tests
 
 ## Phase 2: Deploy
 
-- [ ] Crear repo en GitHub
-- [ ] Desplegar a Coolify
-- [ ] Verificar en producción
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
 
 ---
 
-_Lúa generó este análisis automáticamente el ${date2}_
+_Generated automatically by Lúa on ${date2}_
 `;
 }
 
@@ -491,10 +491,10 @@ async function main() {
   });
   state.nextNumber = nextNumber;
 
-  log(`🆕 Nuevos (sin docs): ${newProjects.length}`);
+  log(`🆕 New (no docs yet): ${newProjects.length}`);
 
   if (newProjects.length === 0) {
-    log('Nada nuevo. Saliendo.');
+    log('Nothing new. Exiting.');
     appendLog(`[${new Date().toISOString()}] === DONE (no new) ===`);
     return { newCount: 0, projects: [] };
   }
@@ -526,11 +526,11 @@ async function main() {
   if (analyzed.length > 0 && !DRY_RUN) {
     const list = analyzed.slice(0, 20).map(p => `• [${p.source}] ${p.rawTitle || p.title}`).join('\n');
     const more = analyzed.length > 20 ? `\n_...and ${analyzed.length - 20} more_` : '';
-    await notifyTelegram(`🫀 <b>Multi-Source Ideas (ai-os)</b>\n\n${analyzed.length} proyecto(s) nuevo(s):\n\n${list}${more}`);
+    await notifyTelegram(`🫀 <b>Multi-Source Ideas (ai-os)</b>\n\n${analyzed.length} new project(s):\n\n${list}${more}`);
   }
 
   appendLog(`[${new Date().toISOString()}] === DONE: ${analyzed.length} analyzed (PH=${phTotal}, Reddit=${redditTotal}) ===`);
-  log(`\n✅ ${analyzed.length} proyectos analizados.`);
+  log(`\n✅ ${analyzed.length} projects analysed.`);
 
   return { newCount: analyzed.length, projects: analyzed };
 }

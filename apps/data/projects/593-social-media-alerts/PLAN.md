@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "social-listening", "ai", "alerts"]
-tech: ["Next.js", "TypeScript", "OpenAI embeddings", "Reddit API", "X.com API", "Supabase", "Resend", "Stripe"]
 id: "593"
 slug: social-media-alerts
 title: Social Media Alerts
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1voqu49/social_media_alerts/"
 category: saas
 date: "2026-08-15"
+tags: [saas, social-listening, ai, alerts]
+tech: [Next.js, TypeScript, OpenAI embeddings, Reddit API, X.com API, Supabase, Resend, Stripe]
 ---
 # I'm looking for a social media alert app for Reddit and X.com based on semantic search
 

@@ -66,18 +66,18 @@ components:
 
 ## Stripe — Design System
 
-**Inspirado en:** Stripe (SaaS / fintech / API. Polished + trustworthy.)
+**Inspired by:** Stripe (SaaS / fintech / API. Polished + trustworthy.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #635BFF | Elementos principales, acciones |
-| secondary | #0A2540 | Texto secundario, bordes |
+| primary | #635BFF | Primary elements, actions |
+| secondary | #0A2540 | Secondary text, borders |
 | accent | #00D4FF | CTAs, highlights |
-| neutral | #F6F9FC | Fondos neutros |
-| text | #0A2540 | Texto principal |
-| muted | #425466 | Texto terciario |
+| neutral | #F6F9FC | Neutral backgrounds |
+| text | #0A2540 | Primary text |
+| muted | #425466 | Tertiary text |
 
 ### Typography
 
@@ -87,33 +87,33 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Do's
 
-- Tipografía Inter consistente
-- Escala 8px / 16px / 32px
-- Acciones principales en #635BFF
-- Rounded 8px en interactivos
+- Consistent Inter typography
+- Scale 8px / 16px / 32px
+- Primary actions in #635BFF
+- Rounded 8px on interactive elements
 
 ### Don'ts
 
-- No mezclar palettes de sistemas diferentes
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
+- Do not mix palettes from different systems
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
 
 --
 

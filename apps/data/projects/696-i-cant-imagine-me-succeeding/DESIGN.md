@@ -64,21 +64,21 @@ components:
 
 ## Airbnb — Design System
 
-**Inspirado en:** Airbnb (Travel, hospitality, marketplace. Warm, human, trustworthy.)
+**Inspired by:** Airbnb (Travel, hospitality, marketplace. Warm, human, trustworthy.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #FF385C | Elementos principales, acciones |
-| secondary | #717166 | Texto secundario, bordes |
-| tertiary | #00A699 | Acentos, highlights |
-| neutral | #FFFFFF | Fondos neutros |
-| dark | #F7F7F7 | Paneles oscuros |
-| accent | #FF385C | CTAs, notificaciones |
-| text | #222222 | Texto principal |
-| muted | #717166 | Texto terciario |
-| bg | #FFFFFF | Fondo página |
+| primary | #FF385C | Primary elements, actions |
+| secondary | #717166 | Secondary text, borders |
+| tertiary | #00A699 | Accents, highlights |
+| neutral | #FFFFFF | Neutral backgrounds |
+| dark | #F7F7F7 | Dark panels |
+| accent | #FF385C | CTAs, notifications |
+| text | #222222 | Primary text |
+| muted | #717166 | Tertiary text |
+| bg | #FFFFFF | Page background |
 
 ### Typography
 
@@ -87,20 +87,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 8px | Inputs, badges |
-| md | 12px | Botones, cards |
-| lg | 24px | Paneles, modales |
+| md | 12px | Buttons, cards |
+| lg | 24px | Panels, modals |
 
 ### Components
 
@@ -111,16 +111,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Circular de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #FF385C para acciones principales
-- Usar rounded 12px en todos los elementos interactivos
+- Use the Circular typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #FF385C for primary actions
+- Use rounded 12px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

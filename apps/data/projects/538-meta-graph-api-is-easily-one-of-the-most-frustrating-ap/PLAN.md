@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "developer-tools", "meta-api", "sdk"]
-tech: ["TypeScript", "Python", "Next.js", "Cloudflare Workers", "libsodium", "Stripe"]
 id: "538"
 slug: meta-graph-api-is-easily-one-of-the-most-frustrating-ap
 title: Meta Graph API is easily one of the most frustrating APIs I’ve ever integrated
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1voaiyf/meta_graph_api_is_easily_one_of_the_most/"
 category: saas
 date: "2026-08-14"
+tags: [saas, developer-tools, meta-api, sdk]
+tech: [TypeScript, Python, Next.js, Cloudflare Workers, libsodium, Stripe]
 ---
 # Meta Graph API is easily one of the most frustrating APIs I've worked with
 

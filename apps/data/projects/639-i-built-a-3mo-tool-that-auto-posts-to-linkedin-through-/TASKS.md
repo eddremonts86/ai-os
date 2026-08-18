@@ -14,13 +14,13 @@ wtp: "$3/mo basic, $6/mo higher tier"
 
 ## Phase 0: Scaffold
 
-- [ ] Crear carpeta del proyecto en `apps/`
-- [ ] Inicializar repo git
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
 - [ ] Copiar `edd-app-template` → `apps/639-i-built-a-3mo-tool-that-auto-posts-to-linkedin-through-/`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
 
 ## Phase 1: Core
 
@@ -33,10 +33,10 @@ wtp: "$3/mo basic, $6/mo higher tier"
 
 ## Phase 2: Deploy
 
-- [ ] Crear repo en GitHub
-- [ ] Desplegar a Coolify
-- [ ] Verificar en producción
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
 
 ---
 
-_Lúa generó este análisis automáticamente el 2026-08-15_
+_Generated automatically by Lúa on 2026-08-15_

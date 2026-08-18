@@ -72,11 +72,109 @@ const TODO = '_Not written yet — `ai-os plans enrich` fills this section._';
  */
 const FIXED_STRINGS = [
   ['Ver `DESIGN.md` para tokens específicos del proyecto.', 'See `DESIGN.md` for this project\'s design tokens.'],
+
+  // DESIGN.md token tables. The hex and px values vary per palette; the header row and the
+  // final "use" column do not — they are emitted verbatim by design-dna.js for every plan.
+  ['| Token | Valor | Uso |', '| Token | Value | Use |'],
+  ['| Token | Hex | Uso |', '| Token | Hex | Use |'],
+  ['| Elementos principales, acciones |', '| Primary elements, actions |'],
+  ['| Texto secundario, bordes |', '| Secondary text, borders |'],
+  ['| Acentos, highlights |', '| Accents, highlights |'],
+  ['| Fondos neutros |', '| Neutral backgrounds |'],
+  ['| Paneles oscuros |', '| Dark panels |'],
+  ['| CTAs, notificaciones |', '| CTAs, notifications |'],
+  ['| Texto principal |', '| Primary text |'],
+  ['| Texto terciario |', '| Tertiary text |'],
+  ['| Fondo página |', '| Page background |'],
+  ['| Elementos inline |', '| Inline elements |'],
+  ['| Componentes |', '| Components |'],
+  ['| Secciones |', '| Sections |'],
+  ['| Espaciado grande |', '| Large spacing |'],
+  ['| Botones, cards |', '| Buttons, cards |'],
+  ['| Paneles, modales |', '| Panels, modals |'],
+
+  // DESIGN.md Do's / Don'ts with no interpolated value.
+  ['- No usar más de 2 weights tipográficos en un mismo contexto',
+   '- Do not use more than 2 type weights in the same context'],
+  ['- No aplicar sombras mayores a 0.1 de opacity', '- Do not apply shadows above 0.1 opacity'],
+  ['- No mezclar palettes de diferentes sistemas', '- Do not mix palettes from different systems'],
+  ['- Tipografía Inter consistente', '- Consistent Inter typography'],
+
+  // A second, older DESIGN.md Do's/Don'ts shape that the current design-dna.js no longer
+  // emits. Present in 29 plans, so it needs a corpus rule but no generator change.
+  ['- No mezclar palettes de sistemas diferentes', '- Do not mix palettes from different systems'],
+  ['**Inspirado en:**', '**Inspired by:**'],
+  ['Fintech premium. Pagos, bancos, dinero. Confianza + precisión.',
+   'Premium fintech. Payments, banking, money. Trust + precision.'],
+
+  // TASKS.md / SPEC.md / PLAN.md template lines. Byte-identical across plans, emitted by
+  // scraper.cjs, and carrying no per-plan content.
+  ['- [ ] Escribir DESIGN.md (tokens + dirección visual)',
+   '- [ ] Write DESIGN.md (tokens + visual direction)'],
+  ['- [ ] Verificar en producción', '- [ ] Verify in production'],
+  ['- [ ] Crear carpeta del proyecto en `apps/`', '- [ ] Create the project folder under `apps/`'],
+  ['- [ ] Inicializar repo git', '- [ ] Initialise the git repo'],
+  ['- [ ] Escribir SPEC.md (este documento)', '- [ ] Write SPEC.md (this document)'],
+  ['- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md',
+   '- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens'],
+  ['- [ ] Configurar entorno de desarrollo', '- [ ] Set up the development environment'],
+  ['- [ ] Implementar scaffold del proyecto', '- [ ] Implement the project scaffold'],
+  ['- [ ] Implementar features core', '- [ ] Implement the core features'],
+  ['- [ ] Aplicar design tokens al components', '- [ ] Apply the design tokens to the components'],
+  ['- [ ] Escribir tests', '- [ ] Write tests'],
+  ['- [ ] Crear repo en GitHub', '- [ ] Create the GitHub repo'],
+  ['- [ ] Desplegar a Coolify', '- [ ] Deploy to Coolify'],
+  ['_Pendiente de análisis manual._', '_Pending manual analysis._'],
+  ['Crear una solución que aborde este problema de forma clara y escalable.',
+   'Build a solution that addresses this problem clearly and at scale.'],
+  ['1. **[Usuario primario]** — descripción del usuario principal',
+   '1. **[Primary user]** — the main user this serves'],
+  ['2. **[Usuario secundario]** — otros usuarios relevantes',
+   '2. **[Secondary user]** — other relevant users'],
+  ['- Funcionalidad core', '- Core functionality'],
+  ['- Evitar funcionalidades fuera del MVP', '- Leave out anything beyond the MVP'],
+  ['- Mantener simple el MVP', '- Keep the MVP simple'],
+  ['- Sin dependencias externas innecesarias', '- No unnecessary external dependencies'],
+  ['- **DB:** SQLite con Drizzle ORM', '- **DB:** SQLite with Drizzle ORM'],
+  ['- **Despliegue:** Coolify + Docker', '- **Deployment:** Coolify + Docker'],
+  ['1. **M0:** Setup proyecto + SPEC.md + DESIGN.md aprobado',
+   '1. **M0:** Project setup + SPEC.md + DESIGN.md approved'],
+  ['- Dependencia de APIs externas', '- Dependency on external APIs'],
+  ['- Alcance ambiguo sin más detalles', '- Ambiguous scope without further detail'],
+  ['**Categoría primaria:**', '**Primary category:**'],
+  ['**Fecha:**', '**Date:**'],
+];
+
+/**
+ * Boilerplate whose variable part must be carried across. Every pattern is anchored to the
+ * generator's exact wording, never to a bare Spanish word.
+ *
+ * The anchoring is the whole point. The corpus contains real Spanish and French that must
+ * survive untouched: an entire plan authored in French, verbatim quotations from source posts
+ * ("si alguien esta interesado directamente en comprar este ERP tambien lo vendo"), and domain
+ * terms inside authored prose (`libro de quejas`, `carta porte`, `pedimentos`,
+ * `commerces de proximité`). A loose word-level substitution would corrupt all of it, which is
+ * why these are full-line patterns.
+ */
+const FIXED_PATTERNS = [
+  [/^_Lúa generó este análisis automáticamente el (\d{4}-\d{2}-\d{2})_$/gm,
+   '_Generated automatically by Lúa on $1_'],
+  [/^- Usar la tipografía (.+?) de forma consistente$/gm,
+   '- Use the $1 typeface consistently'],
+  [/^- Aplicar spacing según la escala de (.+?)$/gm, '- Apply spacing on the $1 scale'],
+  [/^- Priorizar (.+?) para acciones principales$/gm, '- Favour $1 for primary actions'],
+  [/^- Usar rounded (.+?) en todos los elementos interactivos$/gm,
+   '- Use rounded $1 on every interactive element'],
+  // The older shape's three interpolated lines.
+  [/^- Escala (.+?)$/gm, '- Scale $1'],
+  [/^- Acciones principales en (.+?)$/gm, '- Primary actions in $1'],
+  [/^- Rounded (.+?) en interactivos$/gm, '- Rounded $1 on interactive elements'],
 ];
 
 function translateFixedStrings(body) {
   let out = body;
   for (const [from, to] of FIXED_STRINGS) out = out.split(from).join(to);
+  for (const [re, to] of FIXED_PATTERNS) out = out.replace(re, to);
   return out;
 }
 
@@ -272,8 +370,12 @@ for (const dir of dirs) {
 
     // DESIGN.md already carries an authored design-token block. Preserve it verbatim
     // rather than replacing it with schema frontmatter it was never meant to hold.
+    // DESIGN.md's own frontmatter is preserved rather than replaced, which means the body
+    // pass above never sees the Spanish `description:` design-dna.js wrote into it. Apply the
+    // same fixed translation there — the strings are exact generator output, so this cannot
+    // touch an authored value.
     const out = name === 'DESIGN.md' && doc.hasFrontmatter
-      ? `---\n${doc.frontmatterRaw}\n---\n\n${body}\n`
+      ? `---\n${translateFixedStrings(doc.frontmatterRaw)}\n---\n\n${body}\n`
       : stringifyFrontmatter(fm, schema) + body + '\n';
 
     if (out !== doc.text) {

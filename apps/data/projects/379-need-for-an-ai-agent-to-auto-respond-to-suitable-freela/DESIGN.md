@@ -65,21 +65,21 @@ components:
 
 ## Figma — Design System
 
-**Inspirado en:** Figma (Creative tool, design, collaboration. Bold + expressive.)
+**Inspired by:** Figma (Creative tool, design, collaboration. Bold + expressive.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #A259FF | Elementos principales, acciones |
-| secondary | #959595 | Texto secundario, bordes |
-| tertiary | #00D4AA | Acentos, highlights |
-| neutral | #1E1E1E | Fondos neutros |
-| dark | #2C2C2C | Paneles oscuros |
-| accent | #FF6B00 | CTAs, notificaciones |
-| text | #FFFFFF | Texto principal |
-| muted | #959595 | Texto terciario |
-| bg | #1E1E1E | Fondo página |
+| primary | #A259FF | Primary elements, actions |
+| secondary | #959595 | Secondary text, borders |
+| tertiary | #00D4AA | Accents, highlights |
+| neutral | #1E1E1E | Neutral backgrounds |
+| dark | #2C2C2C | Dark panels |
+| accent | #FF6B00 | CTAs, notifications |
+| text | #FFFFFF | Primary text |
+| muted | #959595 | Tertiary text |
+| bg | #1E1E1E | Page background |
 
 ### Typography
 
@@ -88,20 +88,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 48px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 48px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 12px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 12px | Panels, modals |
 
 ### Components
 
@@ -112,16 +112,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #A259FF para acciones principales
-- Usar rounded 8px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #A259FF for primary actions
+- Use rounded 8px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

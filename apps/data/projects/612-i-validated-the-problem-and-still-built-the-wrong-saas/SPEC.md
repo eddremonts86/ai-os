@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "validation", "indie", "methodology"]
-tech: ["Next.js", "TypeScript", "Supabase", "libsodium", "Stripe"]
 id: "612"
 slug: i-validated-the-problem-and-still-built-the-wrong-saas
 title: I validated the problem... and still built the wrong SaaS
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vp1lpo/i_validated_the_problem_and_still_built_the_wrong/"
 category: saas
 date: "2026-08-15"
+tags: [saas, validation, indie, methodology]
+tech: [Next.js, TypeScript, Supabase, libsodium, Stripe]
 ---
 # I validated the problem and still built the wrong SaaS
 

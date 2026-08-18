@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "analytics", "revenue", "indie"]
-tech: ["Next.js", "TypeScript", "Stripe API", "Supabase", "Stripe"]
 id: "625"
 slug: traffic-up-62-signups-up-41-revenue-down-19-heres-why
 title: "traffic up 62%, signups up 41%, revenue down 19%. heres why"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vozoil/traffic_up_62_signups_up_41_revenue_down_19_heres/"
 category: saas
 date: "2026-08-15"
+tags: [saas, analytics, revenue, indie]
+tech: [Next.js, TypeScript, Stripe API, Supabase, Stripe]
 ---
 # Traffic up 62%, signups up 41%, revenue down 19%, here's why
 

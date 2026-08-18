@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "ai", "image-editing", "food"]
-tech: ["Next.js", "TypeScript", "Stable Diffusion XL", "IC-Light", "Cloudflare R2", "Supabase", "Stripe"]
 id: "687"
 slug: looking-for-saas-feedback-prompt-free-ai-food-photo-edi
 title: "Looking for SaaS feedback: prompt-free AI food photo editor with credit-pack pricing"
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpq803/looking_for_saas_feedback_promptfree_ai_food/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, ai, image-editing, food]
+tech: [Next.js, TypeScript, Stable Diffusion XL, IC-Light, Cloudflare R2, Supabase, Stripe]
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/687-looking-for-saas-feedback-prompt-free-ai-food-photo-edi/` (Next.js + TypeScript)
 - [ ] Initialize git with `.gitignore` excluding photo uploads and AI model weights
