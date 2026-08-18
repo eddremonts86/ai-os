@@ -286,6 +286,7 @@
           "\\[Secondary user\\]",
           "\\[Placeholder\\]",
           "\\[TODO\\]",
+          "_\\[[^\\]]+\\]_",
           "_Pendiente de an\u00e1lisis manual\\._",
           "_Pending manual analysis\\._",
           "_Pending manual refinement\\._",
