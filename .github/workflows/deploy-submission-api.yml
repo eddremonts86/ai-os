@@ -1,0 +1,112 @@
+# -----------------------------------------------------------------------------
+# Deploy submission-api to Coolify.
+#
+# Mirrors deploy-site.yml and deploy-plans-explorer.yml: pokes the Coolify API on
+# push to main when the service, its Dockerfile or the contract it validates
+# against changed.
+#
+# SAFE BY DEFAULT: until the secrets below are set, this runs a green no-op.
+# A successful run is therefore not evidence of a deploy — read the annotation.
+#
+# Activation:
+#   gh secret set COOLIFY_API_URL
+#   gh secret set COOLIFY_API_TOKEN
+#   gh secret set COOLIFY_APP_UUID_SUBMISSION_API
+#   gh secret set SITE_URL_SUBMISSION_API      # optional, for the health probe
+#
+# The Coolify app itself must exist first, with:
+#   build_pack=dockerfile · dockerfile_location=/Dockerfile.submission-api
+#   base_directory=/      · ports_exposes=8080
+#
+# And its environment must carry ALL FOUR of these or the service refuses every
+# submission by design (see the fail-closed rule in apps/submission-api/server.mjs):
+#   GITHUB_TOKEN     fine-grained, issues:write, ONE repository
+#   GITHUB_REPO      owner/name
+#   ALLOWED_ORIGIN   https://plans.eduardoinerarte.dk
+#   TRUST_PROXY      1   (it sits behind Traefik; without this the rate limit
+#                        counts every request as coming from the proxy)
+# -----------------------------------------------------------------------------
+name: Deploy submission-api
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/submission-api/**"
+      # The service validates against the plan contract and reads it at startup, so a
+      # schema change alters what it accepts even when its own code is untouched.
+      - "apps/data/projects/_schema.json"
+      - "Dockerfile.submission-api"
+      - ".dockerignore"
+      - ".github/workflows/deploy-submission-api.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-submission-api
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Trigger Coolify deployment (submission-api)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Guard — is deploy configured?
+        id: guard
+        env:
+          COOLIFY_APP_UUID_SUBMISSION_API: ${{ secrets.COOLIFY_APP_UUID_SUBMISSION_API }}
+        run: |
+          if [ -z "$COOLIFY_APP_UUID_SUBMISSION_API" ]; then
+            echo "::notice title=Deploy skipped::COOLIFY_APP_UUID_SUBMISSION_API is not set — wired but not activated. See setup/deploy/README.md."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger Coolify deploy
+        if: steps.guard.outputs.configured == 'true'
+        env:
+          COOLIFY_API_URL: ${{ secrets.COOLIFY_API_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID_SUBMISSION_API: ${{ secrets.COOLIFY_APP_UUID_SUBMISSION_API }}
+        run: |
+          set -euo pipefail
+          echo "Requesting deployment of ${COOLIFY_APP_UUID_SUBMISSION_API} …"
+          code=$(curl -sS -o /tmp/deploy.json -w '%{http_code}' --max-time 30 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_API_URL%/}/api/v1/deploy?uuid=${COOLIFY_APP_UUID_SUBMISSION_API}&force=false")
+          echo "Coolify responded HTTP ${code}:"
+          cat /tmp/deploy.json; echo
+          case "$code" in
+            2*) echo "✓ Deployment queued." ;;
+            *)  echo "::error title=Deploy trigger failed::Coolify returned HTTP ${code}"; exit 1 ;;
+          esac
+
+      - name: Verify by content, not by status code
+        if: steps.guard.outputs.configured == 'true'
+        env:
+          SITE_URL_SUBMISSION_API: ${{ secrets.SITE_URL_SUBMISSION_API }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SITE_URL_SUBMISSION_API:-}" ]; then
+            echo "::notice::SITE_URL_SUBMISSION_API not set — skipping the health probe."
+            exit 0
+          fi
+          echo "Waiting ~40s for the build, then probing ${SITE_URL_SUBMISSION_API}/health …"
+          sleep 40
+          for i in 1 2 3 4 5; do
+            body=$(curl -fsS --max-time 15 "${SITE_URL_SUBMISSION_API%/}/health" || true)
+            echo "attempt ${i}: ${body:-（no response)}"
+            # `configured` is the whole point: a 200 with configured:false means the container is
+            # up and will refuse every submission, which is a failed deploy wearing a green tick.
+            case "$body" in
+              *'"configured":true'*) echo "✓ Live and configured."; exit 0 ;;
+              *'"configured":false'*)
+                echo "::error title=Deployed but not configured::/health reports configured:false. Check GITHUB_TOKEN, GITHUB_REPO and ALLOWED_ORIGIN in the Coolify environment — all three are required."
+                exit 1 ;;
+            esac
+            sleep 15
+          done
+          echo "::warning::No /health response yet — the Coolify build may still be running."
