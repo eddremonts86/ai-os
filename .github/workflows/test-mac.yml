@@ -8,6 +8,10 @@ on:
     branches: [main, dev]
   push:
     branches: [main]
+  # On demand. Direct pushes to dev trigger nothing — only PRs and pushes to main do — so 15
+  # commits can land on dev with no CI signal at all, which is exactly what happened. This makes
+  # the Linux and Windows checks runnable without opening a PR first.
+  workflow_dispatch:
 
 jobs:
   test:

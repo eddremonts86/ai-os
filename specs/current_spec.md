@@ -47,7 +47,7 @@ site even if everything upstream fails.
                                           daily.sh intake
                                                    │  script writes the files
                                                    ▼
-                                    projects/<id>-<slug>/  status: draft
+                                    apps/data/projects/<id>-<slug>/  status: draft
                                                    │
                                     format → claim → enrich → gate → ship
                                                    │
@@ -82,7 +82,7 @@ A submission is text written by a stranger that an agent will read and act on. T
 part most likely to be built wrong, so it is a design rule rather than a risk note:
 
 - **The agent classifies. A script writes.** Pre-triage returns a verdict and nothing else.
-  Materialising `projects/<id>-<slug>/` is done by `daily.sh intake`, mechanically, from the
+  Materialising `apps/data/projects/<id>-<slug>/` is done by `daily.sh intake`, mechanically, from the
   issue's structured fields. There is no path where model output becomes a file path, a
   command, an id, or a status.
 - **Submission text is quoted as data**, never concatenated into the instruction part of a
@@ -110,7 +110,7 @@ publication is not guaranteed or scheduled.
    receives a real issue reference on success.
 2. Nothing reaches the public site without **both** a human approving it and the gate passing
    it. Neither alone is sufficient.
-3. An approved submission is materialised into `projects/<id>-<slug>/` with `status: draft`
+3. An approved submission is materialised into `apps/data/projects/<id>-<slug>/` with `status: draft`
    and `source.kind: web`, and is thereafter indistinguishable to the pipeline from a scraped
    capture.
 4. Submitted ids never collide with scraper ids, proven by a test that runs both allocators.
@@ -144,7 +144,7 @@ public write path exists, which is the whole point of doing it first.
 
 #### Block 1: The submission contract (25 min)
 
-Extend `projects/_schema.json`:
+Extend `apps/data/projects/_schema.json`:
 
 - `source.kind` gains `web`.
 - `source.submittedBy` (optional, free text, never an email address).
@@ -163,7 +163,7 @@ authored.
 writer. A second writer makes that a race.
 
 Move allocation into a shared helper that derives the next id from **the filesystem**
-(`max(existing ids in projects/) + 1`), and have both the scraper and intake call it. The
+(`max(existing ids in apps/data/projects/) + 1`), and have both the scraper and intake call it. The
 filesystem is the only thing both writers already agree on. `state.json` keeps its counter as
 a hint, not as the source of truth.
 
@@ -190,7 +190,7 @@ notification design.
 A new phase running before `prepare`:
 
 - reads issues labelled `approved` and not `ingested` via `gh` (already authenticated)
-- allocates an id via Block 2 and writes `projects/<id>-<slug>/` with frontmatter from the
+- allocates an id via Block 2 and writes `apps/data/projects/<id>-<slug>/` with frontmatter from the
   issue's structured fields and the problem text as the SPEC's Problem section
 - comments the assigned id on the issue and relabels it `ingested`
 - reports the count, and reports approved-but-not-ingested as a warning so a stuck queue is
@@ -203,7 +203,7 @@ formatter expects and the slice selector picks it up.
 
 #### Block 5: Cron prompt and docs (20 min)
 
-Add intake to `tools/plans-pipeline/cron-prompt.md` before Phase 1, and to the pipeline
+Add intake to `apps/data/tools/plans-pipeline/cron-prompt.md` before Phase 1, and to the pipeline
 README. Document what the agent does when a submission cannot be authored honestly: leave it
 `draft`, say which and why, let a human decline the issue.
 
@@ -309,7 +309,7 @@ ai-os plans pipeline status
 ai-os plans check --publishable
 npm --prefix plans-explorer/app run test:parser
 npm --prefix plans-explorer/app run build
-bash tools/plan-format/ai-os-plans.sh test
+bash apps/data/tools/plan-format/ai-os-plans.sh test
 ```
 
 Plus the browser pass on `/submit` and one real submission surviving the whole loop.
@@ -326,9 +326,9 @@ Plus the browser pass on `/submit` and one real submission surviving the whole l
 
 ## References
 
-- `projects/_schema.json` — the contract a submission must satisfy
-- `tools/plans-pipeline/README.md` — the loop this plugs into
-- `tools/plans-pipeline/cron-prompt.md` — where intake gets added
+- `apps/data/projects/_schema.json` — the contract a submission must satisfy
+- `apps/data/tools/plans-pipeline/README.md` — the loop this plugs into
+- `apps/data/tools/plans-pipeline/cron-prompt.md` — where intake gets added
 - `ai-config/skills/plan-authoring/SKILL.md` — what the agent does with a draft
 - `setup/deploy/README.md` — creating and wiring a Coolify app
 - `Dockerfile.plans-explorer` — the container pattern the API follows

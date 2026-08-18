@@ -1,6 +1,6 @@
 ---
 name: plan-authoring
-description: Author and enrich AI-OS plan documents so they are web-ready. Use when asked to write, enrich, humanize or illustrate the SPEC/PRODUCT/PLAN/DESIGN/TASKS files under projects/, when a plan's status is draft or enriched, when `ai-os plans check` reports failures, or when a scraped problem needs turning into a real product plan. Enforces the contract in projects/_schema.json — YAML frontmatter, English headings, no template filler, no invented facts.
+description: Author and enrich AI-OS plan documents so they are web-ready. Use when asked to write, enrich, humanize or illustrate the SPEC/PRODUCT/PLAN/DESIGN/TASKS files under apps/data/projects/, when a plan's status is draft or enriched, when `ai-os plans check` reports failures, or when a scraped problem needs turning into a real product plan. Enforces the contract in apps/data/projects/_schema.json — YAML frontmatter, English headings, no template filler, no invented facts.
 license: MIT
 metadata:
   version: "1.0"
@@ -21,7 +21,7 @@ worse than an honest gap.
 ## 0. Setup — never skip
 
 ```bash
-cat projects/_schema.json          # the contract: fields, sections, gate rules
+cat apps/data/projects/_schema.json          # the contract: fields, sections, gate rules
 ai-os plans check --id <id>        # what this specific plan fails, and why
 ```
 
@@ -107,7 +107,7 @@ and why. If you left a TODO, name the section and what the source lacked.
 Then, if the plan is part of the web corpus:
 
 ```bash
-cd plans-explorer/app && npm run index && npm run test:parser
+cd apps/plans-explorer/app && npm run index && npm run test:parser
 ```
 
 The indexer's invariants catch entities, markup and zero-width characters that
@@ -125,7 +125,7 @@ sessions and nothing is enriched twice:
 ai-os plans check --json | jq -r '.plans[] | select(.status=="draft") | .id'
 ```
 
-Work in ranked order — `projects/TOP_PROJECTS.md` first. A plan nobody will read is
+Work in ranked order — `apps/data/projects/TOP_PROJECTS.md` first. A plan nobody will read is
 the wrong place to spend a context window.
 
 Record per plan in `PROGRESS.md`: id, status reached, sections left as TODO, and the
@@ -139,7 +139,7 @@ reason. That list is the honest inventory of what the corpus still lacks.
 - Writing the same MVP scope for two plans because both are "a marketplace".
 - Reaching for `diagram-design` on every plan.
 - Humanizing before there is content.
-- Editing `projects/TOP_PROJECTS.md` to make a plan look better ranked — that file is
+- Editing `apps/data/projects/TOP_PROJECTS.md` to make a plan look better ranked — that file is
   cron-owned input, not an output.
 - Inventing a `wtp` value. Absent means the poster never named a price, which is
   itself signal.

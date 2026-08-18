@@ -1,15 +1,15 @@
 # Deploy: AI-OS landing → Coolify (conductor-01 / Hetzner)
 
-The landing in [`site/`](../../site/) runs as a **Coolify application** on a
+The landing in [`apps/site/`](../../apps/site/) runs as a **Coolify application** on a
 single Hetzner VPS, built from the repo-root
-[`Dockerfile`](../../Dockerfile) (nginx serving `site/`) and routed by Traefik
+[`Dockerfile`](../../Dockerfile) (nginx serving `apps/site/`) and routed by Traefik
 at **https://ai-os.eduardoinerarte.dk** (a wildcard DNS entry already resolves
 to the server, so no DNS changes are needed).
 
 `push to main → GitHub Actions → Coolify /api/v1/deploy → Traefik + TLS`.
 
 The [`deploy-site`](../../.github/workflows/deploy-site.yml) workflow triggers a
-Coolify deployment on every push to `main` that touches `site/**` or the
+Coolify deployment on every push to `main` that touches `apps/site/**` or the
 `Dockerfile`. It is **safe-by-default**: until the repo secrets below exist it
 runs a green no-op.
 
@@ -88,10 +88,10 @@ TOKEN=$(grep -m1 '^COOLIFY_API_TOKEN=' dev-env/env-config/.env | cut -d= -f2- | 
 
 ## plans-explorer (second app — live since 2026-08-14)
 
-The explorer in [`plans-explorer/`](../../plans-explorer/) is a separate Coolify application
+The explorer in [`apps/plans-explorer/`](../../apps/plans-explorer/) is a separate Coolify application
 built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), serving
 **https://plans.eduardoinerarte.dk**. Created via the API and deployed; both repo secrets are
-set, so pushes to `main` touching `plans-explorer/**` or `projects/**` now deploy it
+set, so pushes to `main` touching `apps/plans-explorer/**` or `apps/data/projects/**` now deploy it
 automatically.
 
 Its settings — mirrored from `ai-os-landing`, same repo and deploy key, in project
@@ -101,7 +101,7 @@ Its settings — mirrored from `ai-os-landing`, same repo and deploy key, in pro
 |---|---|---|
 | `build_pack` | `dockerfile` | |
 | `dockerfile_location` | `/Dockerfile.plans-explorer` | |
-| `base_directory` | `/` | The indexer reads `../projects/`; scoping the context to `plans-explorer/` yields a green build serving **zero** plans |
+| `base_directory` | `/` | The indexer reads `../projects/`; scoping the context to `apps/plans-explorer/` yields a green build serving **zero** plans |
 | `ports_exposes` | `80` | |
 | domain | `https://plans.eduardoinerarte.dk` | Wildcard DNS already resolved to the box; no DNS change was needed |
 

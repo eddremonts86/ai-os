@@ -1,0 +1,57 @@
+---
+id: "796"
+slug: solar-installation-companies-lack-a-platform-for-end-to
+title: "Solar installation companies lack a platform for end-to-end tracking of a customer's project — from sale to official approval, causing complaints and dissatisfaction"
+status: draft
+source:
+  name: ProblemHunt
+  url: "https://problemhunt.pro/en/business/ldt9cicmy1-solar-installation-companies-lack-a-plat"
+category: business
+date: "2026-01-10"
+tags: [Business, Marketing, Other]
+country: Brazil
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Solar installation companies lack a platform for end-to-end tracking of a customer's project — from sale to official approval, causing complaints and dissatisfaction
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Brazil
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+| Stakeholder | Why they care |
+|---|---|
+| Founders | _[What pain they feel, and how this solves it]_ |
+| Small teams | _[What pain they feel, and how this solves it]_ |
+| Solo operators | _[What pain they feel, and how this solves it]_ |
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://problemhunt.pro/en/business/ldt9cicmy1-solar-installation-companies-lack-a-plat) · **Category:** business · **Tags:** Business,Marketing,Other

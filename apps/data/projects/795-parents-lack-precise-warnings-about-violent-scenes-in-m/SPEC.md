@@ -1,0 +1,41 @@
+---
+id: "795"
+slug: parents-lack-precise-warnings-about-violent-scenes-in-m
+title: Parents lack precise warnings about violent scenes in movies to safely watch films with their children
+status: draft
+source:
+  name: ProblemHunt
+  url: "https://problemhunt.pro/en/media/ar3ebnm6c1-parents-lack-precise-warnings-about-viol"
+category: media
+date: "2026-01-10"
+tags: [Media, Other]
+country: India
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Parents lack precise warnings about violent scenes in movies to safely watch films with their children
+
+## Problem
+
+India
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,11 +1,11 @@
-# Static build for the AI-OS landing (site/), served by nginx.
+# Static build for the AI-OS landing (apps/site/), served by nginx.
 # Coolify builds this from the repo root (dockerfile_location=/Dockerfile,
 # base_directory=/). ports_exposes must be 80.
 FROM nginx:1.27-alpine
 
 # Drop the default nginx site and add ours.
 RUN rm -rf /usr/share/nginx/html/*
-COPY site/ /usr/share/nginx/html/
+COPY apps/site/ /usr/share/nginx/html/
 
 # SPA-style fallback + long cache on static assets, no-cache on HTML.
 RUN printf '%s\n' \

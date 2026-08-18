@@ -1,0 +1,54 @@
+---
+id: "1498"
+slug: how-my-wifes-etsy-business-led-to-my-first-saas-product
+title: "How my wife's Etsy business led to my first SaaS product"
+status: draft
+source:
+  name: IndieHackers
+  url: "https://www.indiehackers.com/articles/@AlexDaro|aea08ae056"
+category: articles
+date: "2017-11-09"
+tags: [IndieHackers, articles]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# How my wife's Etsy business led to my first SaaS product
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_
+
+ Want to hear my favorite perk of getting married? Beware, it's pretty dorky... You ready? ACCESS TO MY WIFE'S DATA. I was in search of my next side project about four months ago. My wife quickly volunteered me to handle her Etsy product advertising on Facebook. She wanted to take her listings on Etsy and quickly create marketing campaigns using product images, titles, and descriptions. After a night of painfully searching for the same images used on Etsy while copying/pasting endless descriptions and titles I started to think to myself, "There's got to be an easier way." My engineering brain kicked into gear. I spent the rest of that night researching the Etsy and Facebook APIs. If you aren't sure what an API is, good for you, you probably have a life, enjoying bottomless mimosa brunches with your besties. Essentially it's a way for programmers to gain access to data. I put two and two together. I could use the Etsy API to take my wife's listings a
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [IndieHackers](https://www.indiehackers.com/articles/@AlexDaro|aea08ae056) · **Category:** articles · **Tags:** IndieHackers,articles
