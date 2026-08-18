@@ -12,7 +12,7 @@ The job is the *driver*; the mechanics live in [`daily.sh`](daily.sh). Its promp
 version-controlled in [`cron-prompt.md`](cron-prompt.md) — edit that, then apply it with:
 
 ```bash
-hermes cron edit 59b1562e8007 --prompt "$(cat tools/plans-pipeline/cron-prompt.md)"
+hermes cron edit 59b1562e8007 --prompt "$(cat apps/data/tools/plans-pipeline/cron-prompt.md)"
 ```
 
 ## Why it is split this way
@@ -115,13 +115,13 @@ exactly like an empty one.
 ## Running it by hand
 
 ```bash
-bash tools/plans-pipeline/daily.sh prepare --cap 5
+bash apps/data/tools/plans-pipeline/daily.sh prepare --cap 5
 ```
 
 Then enrich the ids in the manifest, and:
 
 ```bash
-bash tools/plans-pipeline/daily.sh verify && bash tools/plans-pipeline/daily.sh ship --dry-run
+bash apps/data/tools/plans-pipeline/daily.sh verify && bash apps/data/tools/plans-pipeline/daily.sh ship --dry-run
 ```
 
 `--dry-run` does everything except push, PR and merge. Drop it and add `--yes` to ship for

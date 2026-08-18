@@ -91,7 +91,7 @@ memory/falkordb/data/
 memory/falkordb/ollama-data/
 
 # plans-pipeline runtime state (per-machine cursor, not shared config).
-tools/plans-pipeline/state.json
+apps/data/tools/plans-pipeline/state.json
 
 # Per-agent enrichment scratch: numbered/suffixed PROGRESS logs and agent working dirs.
 # These only ever run on one machine, so they are noise in the shared history.
