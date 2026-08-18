@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "education", "consumer", "anti-cheat"]
-tech: ["Next.js", "TypeScript", "ProseMirror", "Supabase", "Cloudflare R2", "Stripe"]
 id: "682"
 slug: im-14-and-my-mom-will-only-buy-me-a-domain-if-one-stran
 title: "I'm 14 and my mom will only buy me a domain if one stranger actually pays for my app."
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpskax/im_14_and_my_mom_will_only_buy_me_a_domain_if_one/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, education, consumer, anti-cheat]
+tech: [Next.js, TypeScript, ProseMirror, Supabase, Cloudflare R2, Stripe]
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/682-im-14-and-my-mom-will-only-buy-me-a-domain-if-one-stran/` (Next.js + TypeScript)
 - [ ] Initialize git with `.gitignore` excluding essay recordings

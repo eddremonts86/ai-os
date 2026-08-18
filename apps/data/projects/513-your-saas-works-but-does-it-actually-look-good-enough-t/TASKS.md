@@ -43,4 +43,4 @@ tech: [Astro, Tailwind CSS, Resend, Stripe, Neon Postgres]
 
 ---
 
-_Lúa generó este análisis automáticamente el 2026-08-14_
+_Generated automatically by Lúa on 2026-08-14_

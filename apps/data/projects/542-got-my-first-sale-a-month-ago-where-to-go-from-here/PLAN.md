@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "b2b", "food", "inventory"]
-tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "542"
 slug: got-my-first-sale-a-month-ago-where-to-go-from-here
 title: "Got my first sale a month ago, where to go from here..?"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo9tvt/got_my_first_sale_a_month_ago_where_to_go_from/"
 category: saas
 date: "2026-08-14"
+tags: [saas, b2b, food, inventory]
+tech: [Next.js, TypeScript, Supabase, Stripe]
 ---
 # Got my first sale a month ago, where to go from here
 

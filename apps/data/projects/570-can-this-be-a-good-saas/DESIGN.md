@@ -65,21 +65,21 @@ components:
 
 ## Loom — Design System
 
-**Inspirado en:** Loom (Video messaging, async comms, screen recording. Fun + fast.)
+**Inspired by:** Loom (Video messaging, async comms, screen recording. Fun + fast.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #625DF5 | Elementos principales, acciones |
-| secondary | #7B799C | Texto secundario, bordes |
-| tertiary | #EE4D3A | Acentos, highlights |
-| neutral | #FFFFFF | Fondos neutros |
-| dark | #1D1D1F | Paneles oscuros |
-| accent | #625DF5 | CTAs, notificaciones |
-| text | #1D1D1F | Texto principal |
-| muted | #7B799C | Texto terciario |
-| bg | #F7F7F7 | Fondo página |
+| primary | #625DF5 | Primary elements, actions |
+| secondary | #7B799C | Secondary text, borders |
+| tertiary | #EE4D3A | Accents, highlights |
+| neutral | #FFFFFF | Neutral backgrounds |
+| dark | #1D1D1F | Dark panels |
+| accent | #625DF5 | CTAs, notifications |
+| text | #1D1D1F | Primary text |
+| muted | #7B799C | Tertiary text |
+| bg | #F7F7F7 | Page background |
 
 ### Typography
 
@@ -88,20 +88,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 12px | Botones, cards |
-| lg | 20px | Paneles, modales |
+| md | 12px | Buttons, cards |
+| lg | 20px | Panels, modals |
 
 ### Components
 
@@ -112,16 +112,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #625DF5 para acciones principales
-- Usar rounded 12px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #625DF5 for primary actions
+- Use rounded 12px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

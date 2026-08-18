@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "analytics", "indie", "dashboard"]
-tech: ["Next.js", "TypeScript", "Supabase", "PostHog API", "Stripe API", "RevenueCat API", "Resend"]
 id: "559"
 slug: i-built-a-small-analytics-dashboard-for-myself-is-this-
 title: I built a small analytics dashboard for myself. Is this actually useful to anyone else?
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo5vt6/i_built_a_small_analytics_dashboard_for_myself_is/"
 category: saas
 date: "2026-08-14"
+tags: [saas, analytics, indie, dashboard]
+tech: [Next.js, TypeScript, Supabase, PostHog API, Stripe API, RevenueCat API, Resend]
 ---
 # I built a small analytics dashboard for myself, is this actually useful to anyone else?
 

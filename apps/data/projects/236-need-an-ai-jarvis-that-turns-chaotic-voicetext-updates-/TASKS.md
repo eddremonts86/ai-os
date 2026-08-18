@@ -16,13 +16,13 @@ tech: [Python, FastAPI, OpenAI Whisper + GPT-4o, PostgreSQL with pgvector, Next.
 
 ## Phase 0: Scaffold
 
-- [ ] Crear carpeta del proyecto en `apps/`
-- [ ] Inicializar repo git
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
 - [ ] Copiar `edd-app-template` → `apps/236-need-an-ai-jarvis-that-turns-chaotic-voicetext-updates-/`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
 
 ## Phase 1: Core
 

@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "consumer", "focus", "ios"]
-tech: ["SwiftUI", "Swift", "Lottie", "Supabase", "StoreKit 2", "TelemetryDeck"]
 id: "667"
 slug: how-much-should-i-charge-this-app
 title: How much should I charge this app?
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpvn9t/how_much_should_i_charge_this_app/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, consumer, focus, ios]
+tech: [SwiftUI, Swift, Lottie, Supabase, StoreKit 2, TelemetryDeck]
+---
+## Phase 0: Scaffold
 
 - [ ] Create a fresh Xcode project `apps/667-how-much-should-i-charge-this-app/` (SwiftUI app lifecycle, iOS 16+ deployment target)
 - [ ] Initialize git and add `.gitignore` excluding `*.xcuserdata`, `DerivedData`, `.build`

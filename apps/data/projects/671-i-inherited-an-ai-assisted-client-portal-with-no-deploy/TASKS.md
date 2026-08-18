@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "incident-response", "ai-governance", "devops"]
-tech: ["Next.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Docker", "1Password CLI"]
 id: "671"
 slug: i-inherited-an-ai-assisted-client-portal-with-no-deploy
 title: I inherited an AI-assisted client portal with no deployment history. Where should the cleanup end and ownership begin?
@@ -10,7 +8,10 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vpur3q/i_inherited_an_aiassisted_client_portal_with_no/"
 category: saas
 date: "2026-08-16"
----## Phase 0: Scaffold
+tags: [saas, incident-response, ai-governance, devops]
+tech: [Next.js, TypeScript, PostgreSQL, Drizzle ORM, Docker, "1Password CLI"]
+---
+## Phase 0: Scaffold
 
 - [ ] Create `apps/671-i-inherited-an-ai-assisted-client-portal-with-no-deploy/` from the playbook template
 - [ ] Initialize git with `.gitignore` excluding customer engagement data

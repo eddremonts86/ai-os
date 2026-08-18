@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "gaming", "sports", "browser-game"]
-tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "606"
 slug: "7-days-after-launch-i-have-no-words-to-describe-what-i-"
 title: "7 days after launch... i have no words to describe what i am feeling right now (following my former post)"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1voupxz/7_days_after_launch_i_have_no_words_to_describe/"
 category: saas
 date: "2026-08-15"
+tags: [saas, gaming, sports, browser-game]
+tech: [Next.js, TypeScript, Supabase, Stripe]
 ---
 # 7 days after launch, I have no words to describe what I have done
 

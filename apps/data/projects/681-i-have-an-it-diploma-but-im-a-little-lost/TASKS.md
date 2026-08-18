@@ -13,13 +13,13 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Crear carpeta del proyecto en `apps/`
-- [ ] Inicializar repo git
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
 - [ ] Copiar `edd-app-template` → `apps/681-i-have-an-it-diploma-but-im-a-little-lost/`
-- [ ] Escribir SPEC.md (este documento)
-- [ ] Escribir DESIGN.md (tokens + dirección visual)
-- [ ] Configurar `tailwind.config.ts` con los tokens de DESIGN.md
-- [ ] Configurar entorno de desarrollo
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
 
 ## Phase 1: Core
 
@@ -27,10 +27,10 @@ _Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 
-- [ ] Crear repo en GitHub
-- [ ] Desplegar a Coolify
-- [ ] Verificar en producción
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
 
 ---
 
-_Lúa generó este análisis automáticamente el 2026-08-16_
+_Generated automatically by Lúa on 2026-08-16_

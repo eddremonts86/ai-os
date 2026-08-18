@@ -64,21 +64,21 @@ components:
 
 ## Headspace — Design System
 
-**Inspirado en:** Headspace (Mental health, therapy, wellness. Calm + approachable.)
+**Inspired by:** Headspace (Mental health, therapy, wellness. Calm + approachable.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #FFFFFF | Elementos principales, acciones |
-| secondary | #B0B8C1 | Texto secundario, bordes |
-| tertiary | #F7C59F | Acentos, highlights |
-| neutral | #3C3C3C | Fondos neutros |
-| dark | #1F1F1F | Paneles oscuros |
-| accent | #83C586 | CTAs, notificaciones |
-| text | #3C3C3C | Texto principal |
-| muted | #B0B8C1 | Texto terciario |
-| bg | #F7F7F7 | Fondo página |
+| primary | #FFFFFF | Primary elements, actions |
+| secondary | #B0B8C1 | Secondary text, borders |
+| tertiary | #F7C59F | Accents, highlights |
+| neutral | #3C3C3C | Neutral backgrounds |
+| dark | #1F1F1F | Dark panels |
+| accent | #83C586 | CTAs, notifications |
+| text | #3C3C3C | Primary text |
+| muted | #B0B8C1 | Tertiary text |
+| bg | #F7F7F7 | Page background |
 
 ### Typography
 
@@ -87,20 +87,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 12px | Inputs, badges |
-| md | 20px | Botones, cards |
-| lg | 32px | Paneles, modales |
+| md | 20px | Buttons, cards |
+| lg | 32px | Panels, modals |
 
 ### Components
 
@@ -111,16 +111,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Nunito de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #FFFFFF para acciones principales
-- Usar rounded 20px en todos los elementos interactivos
+- Use the Nunito typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #FFFFFF for primary actions
+- Use rounded 20px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

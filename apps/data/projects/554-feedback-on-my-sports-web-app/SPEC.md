@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "sports", "analytics", "consumer"]
-tech: ["Next.js", "TypeScript", "Supabase", "nflfastR", "Stripe"]
 id: "554"
 slug: feedback-on-my-sports-web-app
 title: Feedback on my sports web app
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo6lsh/feedback_on_my_sports_web_app/"
 category: saas
 date: "2026-08-14"
+tags: [saas, sports, analytics, consumer]
+tech: [Next.js, TypeScript, Supabase, nflfastR, Stripe]
 ---
 # Feedback on my sports web app
 
