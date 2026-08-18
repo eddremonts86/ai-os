@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Multi-Source Idea Scraper (ai-os edition) — ProblemHunt + Reddit
+ * Multi-Source Idea Scraper (ai-os edition) — 7 sources as of feat/plans-sources
  *
  * Fetches fresh startup/project ideas from multiple sources and generates
  * per-project documentation under ~/Projects/ai-os/apps/data/projects/(NNN-slug)/.
@@ -8,19 +8,25 @@
  * Each project folder contains 5 files:
  *   SPEC.md, PLAN.md, TASKS.md, DESIGN.md, PRODUCT.md
  *
- * Sources:
- *   - ProblemHunt (Tilda feed, EN) — verified startup problems
- *   - Reddit RSS (r/SaaS, r/IndieHackers, r/startups, r/SideProject) — pain points
+ * Sources (each a drop-in {name, fetchAll() -> {projects, total}} in sources/):
+ *   - ProblemHunt (Tilda feed, EN)  --source=ph
+ *   - Reddit RSS                     --source=reddit      [BROKEN: login required as of 2026-08]
+ *   - HN Ask HN (hnrss)              --source=hnask
+ *   - HN Show HN (hnrss)             --source=hnshow
+ *   - ProductHunt Atom                --source=producthunt
+ *   - IndieHackers Algolia            --source=indiehackers
+ *   - BetaList Atom                   --source=betalist
  *
  * Telegram notification is optional (no hard failure if env is missing).
  *
  * Invocation:
- *   node scraper.cjs                  # incremental (skip already analyzed)
- *   node scraper.cjs --force          # re-generate everything
- *   node scraper.cjs --dry-run        # do not write files
- *   node scraper.cjs --quiet          # suppress per-project logs
- *   node scraper.cjs --source=ph      # only ProblemHunt
- *   node scraper.cjs --source=reddit  # only Reddit
+ *   node scraper.cjs                       # all enabled sources, incremental
+ *   node scraper.cjs --force              # re-generate everything
+ *   node scraper.cjs --dry-run            # do not write files
+ *   node scraper.cjs --quiet              # suppress per-project logs
+ *   node scraper.cjs --source=ph          # only ProblemHunt
+ *   node scraper.cjs --source=hnask       # only HN Ask
+ *   node scraper.cjs --source=producthunt # only ProductHunt feed
  */
 
 const fs = require('fs');
@@ -29,7 +35,67 @@ const os = require('os');
 const { generateDesignMD } = require('./design-dna.js');
 const { allocatePlanIds } = require('../lib/plan-ids.cjs');
 
-const AI_OS_ROOT   = process.env.AI_OS_ROOT || path.join(os.homedir(), 'Projects', 'ai-os');
+// ── Source registry ────────────────────────────────────────────────────────────
+// Each module exports { name, fetchAll() -> { projects: [], total: N } } and
+// each project is { source, url, uid, title, rawTitle, description, category, tags, date }.
+// Adding a new source is: drop a file in sources/, append it here, done.
+const SOURCES = [
+  require('./sources/problemhunt.js'),
+  require('./sources/reddit.js'),
+  require('./sources/hnask.js'),
+  require('./sources/hnshow.js'),
+  require('./sources/producthunt.js'),
+  require('./sources/indiehackers.js'),
+  require('./sources/betalist.js')
+];
+
+// CLI alias -> module.name (so users can keep typing --source=ph etc.)
+const SOURCE_ALIASES = {
+  ph: 'problemhunt',
+  problemhunt: 'problemhunt',
+  reddit: 'reddit',
+  hnask: 'hnask',
+  hnshow: 'hnshow',
+  producthunt: 'producthunt',
+  phfeed: 'producthunt',
+  indiehackers: 'indiehackers',
+  ih: 'indiehackers',
+  betalist: 'betalist'
+};
+
+// Pick the sources the user actually wants this run.
+// Unset SOURCE_FLAG  => all enabled (excludes broken ones).
+// Set SOURCE_FLAG    => only the matching one(s).
+function activeSources() {
+  if (! SOURCE_FLAG) {
+    // Reddit is silently broken since 2026-08 — skip by default. Re-enable
+    // by passing --source=reddit explicitly if the user wants the noise.
+    return SOURCES.filter(s => s.name !== 'reddit');
+  }
+  const wanted = SOURCE_ALIASES[SOURCE_FLAG];
+  if (! wanted) {
+    log(`⚠ Unknown --source=${SOURCE_FLAG}; valid: ${Object.keys(SOURCE_ALIASES).join(', ')}`);
+    return [];
+  }
+  return SOURCES.filter(s => s.name === wanted);
+}
+
+// Resolve the repo root by walking up to the CLAUDE.md marker. The previous fallback was a
+// hardcoded path.join(os.homedir(), 'Projects', 'ai-os'), which silently scraped into the
+// wrong tree on any clone that lives elsewhere; hop counting has the same failure mode from a
+// different direction. An explicit AI_OS_ROOT still wins, for callers that set it. Throwing is
+// deliberate: a wrong root yields an empty corpus and a run that reports success. See
+// docs/repo-layout.md.
+function findAiOsRoot(from) {
+  let dir = from;
+  while (dir !== path.dirname(dir)) {
+    if (fs.existsSync(path.join(dir, 'CLAUDE.md'))) return dir;
+    dir = path.dirname(dir);
+  }
+  throw new Error(`cannot locate the AI-OS root above ${from}`);
+}
+
+const AI_OS_ROOT   = process.env.AI_OS_ROOT || findAiOsRoot(__dirname);
 const PROJECTS_DIR = path.join(AI_OS_ROOT, 'apps', 'data', 'projects');
 const SCRAPER_DIR  = __dirname;
 const STATE_FILE   = path.join(SCRAPER_DIR, 'state.json');
@@ -64,118 +130,21 @@ function cleanTitle(title) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ── Source: ProblemHunt ──────────────────────────────────────────────────────
-const PROBLEMHUNT = {
-  name: 'problemhunt',
-  FEED_UID: '108885097871',
-  REC_ID: '1651102281',
-  API_BASE: 'https://feeds.tildaapi.com/api/getfeed',
-
-  async fetchAll() {
-    const allProjects = [];
-    let slice = 1;
-    let total = 0;
-    while (true) {
-      const ts = Date.now();
-      const url = `${this.API_BASE}/?feeduid=${this.FEED_UID}&recid=${this.REC_ID}&c=${ts}&size=20&slice=${slice}&sort%5Bdate%5D=desc`;
-      try {
-        const res = await fetch(url);
-        if (!res.ok) { log(`  [ph] slice ${slice} HTTP ${res.status}`); break; }
-        const json = await res.json();
-        if (!json.posts || json.posts.length === 0) break;
-        total = json.total || total;
-        json.posts.forEach(post => {
-          if (post.url && post.url.includes('/en/')) {
-            allProjects.push({
-              source: 'problemhunt',
-              url: post.url,
-              uid: post.uid || null,
-              title: cleanTitle(post.title),
-              rawTitle: post.title || '',
-              description: post.descr || post.text || '',
-              category: post.url.match(/\/en\/([^/]+)\//)?.[1] || 'other',
-              tags: post.parts || '',
-              date: post.date || ''
-            });
-          }
-        });
-        if (!json.nextslice || slice >= 50) break;
-        slice = json.nextslice;
-        await sleep(300);
-      } catch (e) {
-        log(`  [ph] slice ${slice} error: ${e.message}`);
-        break;
-      }
-    }
-    return { projects: allProjects, total };
-  }
-};
-
-// ── Source: Reddit (RSS) ─────────────────────────────────────────────────────
-const REDDIT = {
-  name: 'reddit',
-  SUBREDDITS: ['SaaS', 'IndieHackers', 'startups', 'SideProject'],
-  BASE: 'https://www.reddit.com',
-  UA: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-
-  async fetchAll() {
-    const allProjects = [];
-    for (const sub of this.SUBREDDITS) {
-      const url = `${this.BASE}/r/${sub}/new/.rss?limit=25`;
-      try {
-        const res = await fetch(url, { headers: { 'User-Agent': this.UA } });
-        if (!res.ok) {
-          log(`  [reddit] r/${sub} HTTP ${res.status}`);
-          if (res.status === 429) {
-            const resetSec = parseInt(res.headers.get('x-ratelimit-reset') || '30', 10);
-            log(`  [reddit] rate-limited, sleeping ${resetSec}s`);
-            await sleep((resetSec + 1) * 1000);
-            continue;
-          }
-          continue;
-        }
-        const xml = await res.text();
-        if (xml.length === 0) { log(`  [reddit] r/${sub} empty body`); continue; }
-        const entries = parseRedditRSS(xml);
-        entries.forEach(entry => {
-          allProjects.push({
-            source: 'reddit',
-            url: entry.link,
-            uid: null,
-            title: cleanTitle(entry.title),
-            rawTitle: entry.title,
-            description: entry.contentSnippet || entry.content || '',
-            category: sub,
-            tags: '',
-            date: entry.published || ''
-          });
-        });
-        log(`  [reddit] r/${sub}: +${entries.length}`);
-        await sleep(2000);
-      } catch (e) {
-        log(`  [reddit] r/${sub} error: ${e.message}`);
-      }
-    }
-    return { projects: allProjects, total: allProjects.length };
-  }
-};
-
-// Minimal Reddit Atom parser
-function parseRedditRSS(xml) {
-  const entries = [];
-  const entryBlocks = xml.split(/<entry>/).slice(1);
-  for (const block of entryBlocks) {
-    const closeIdx = block.indexOf('</entry>');
-    const entry = closeIdx >= 0 ? block.slice(0, closeIdx) : block;
-    const title = (entry.match(/<title>([^<]+)<\/title>/) || [])[1] || '';
-    const link = (entry.match(/<link[^>]*href="([^"]+)"/) || [])[1] || '';
-    const published = (entry.match(/<published>([^<]+)<\/published>/) || [])[1] || '';
-    const contentMatch = entry.match(/<content type="html">([\s\S]*?)<\/content>/);
-    const content = contentMatch ? contentMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : '';
-    if (title && link) entries.push({ title, link, published, content, contentSnippet: content });
-  }
-  return entries;
+function cleanTitle(title) {
+  if (!title) return 'Untitled';
+  return title.replace(/[^a-zA-Z0-9 \-.,!?'"]/g, '')
+    .replace(/\s+/g, ' ').trim().substring(0, 120);
 }
+
+const REDDIT = require('./sources/reddit.js');
+
+// Re-export so legacy call sites keep working.
+module.exports.cleanTitle = cleanTitle;
+
+// ── Source: ProblemHunt ──────────────────────────────────────────────────────
+const PROBLEMHUNT = require('./sources/problemhunt.js');
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ── State ────────────────────────────────────────────────────────────────────
 function findAnalyzedProject(url, title, state) {
@@ -206,6 +175,10 @@ function loadState() {
 }
 
 function saveState(state) {
+  // Guarded here, not at the call sites. A --dry-run that advances the scrape cursor is the
+  // worst failure this script has: it reports "would write" while marking every capture as
+  // already seen, so the next real run skips them and the items are lost until --force.
+  if (DRY_RUN) return;
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
@@ -404,8 +377,11 @@ ${sourceLine}
 
 function generateDocs(project, folderSlug) {
   const dir = path.join(PROJECTS_DIR, folderSlug);
-  fs.mkdirSync(dir, { recursive: true });
 
+  // Generate everything before touching the filesystem. mkdirSync used to run here, above the
+  // DRY_RUN return, so a --dry-run left one empty directory per capture behind — 810 of them in
+  // a single run. An empty plan dir is worse than noise: listPlanDirs() counts it, so the corpus
+  // size and the enrichment backlog both silently inflate.
   const spec    = generateSpec(project, folderSlug);
   const plan    = generatePlan(project, folderSlug);
   const tasks   = generateTasks(project, folderSlug);
@@ -417,6 +393,7 @@ function generateDocs(project, folderSlug) {
     return;
   }
 
+  fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'SPEC.md'),    spec);
   fs.writeFileSync(path.join(dir, 'PLAN.md'),    plan);
   fs.writeFileSync(path.join(dir, 'TASKS.md'),   tasks);
@@ -458,20 +435,25 @@ async function main() {
   let phTotal = 0;
   let redditTotal = 0;
 
-  if (!SOURCE_FLAG || SOURCE_FLAG === 'ph' || SOURCE_FLAG === 'problemhunt') {
-    log('📡 Fetching ProblemHunt...');
-    const { projects, total } = await PROBLEMHUNT.fetchAll();
-    phTotal = total;
-    allProjects = allProjects.concat(projects);
-    log(`  [ph] fetched ${projects.length} (of ${total})`);
+  const active = activeSources();
+  if (active.length === 0) {
+    log('⚠ No sources selected — nothing to do');
+    appendLog(`[${new Date().toISOString()}] === DONE (no sources) ===`);
+    return { newCount: 0, projects: [] };
   }
 
-  if (!SOURCE_FLAG || SOURCE_FLAG === 'reddit') {
-    log('📡 Fetching Reddit (r/SaaS, r/IndieHackers, r/startups, r/SideProject)...');
-    const { projects } = await REDDIT.fetchAll();
-    redditTotal = projects.length;
-    allProjects = allProjects.concat(projects);
-    log(`  [reddit] fetched ${projects.length}`);
+  for (const src of active) {
+    log(`📡 Fetching ${src.name}...`);
+    try {
+      const { projects, total, error } = await src.fetchAll();
+      if (error) log(`  [${src.name}] source error: ${error}`);
+      allProjects = allProjects.concat(projects);
+      if (src.name === 'problemhunt') phTotal = total || 0;
+      else if (src.name === 'reddit') redditTotal = total || 0;
+      log(`  [${src.name}] fetched ${projects.length}${total ? ` (of ${total})` : ''}`);
+    } catch (e) {
+      log(`  [${src.name}] crashed: ${e.message}`);
+    }
   }
 
   if (allProjects.length === 0) {
