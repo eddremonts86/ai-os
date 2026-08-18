@@ -77,6 +77,21 @@ const activeSource = computed(() => {
 // exist and rendered 6 wrong iframes per plan.
 const planAssets = computed(() => plan.value?.assets ?? []);
 
+// The sidebar link used to assert "View on ProblemHunt" for every plan, including the 267 whose
+// url is reddit.com. Prefer the recorded source name; fall back to the host so a plan with no
+// name still gets an honest label rather than a wrong one.
+const sourceLabel = computed(() => {
+  const name = plan.value?.sourceName;
+  if (name && name !== 'manual') return name;
+  const url = plan.value?.sourceUrl;
+  if (!url) return 'source';
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return 'source';
+  }
+});
+
 const countryFlag = computed(() => {
   const c = plan.value?.country;
   if (!c) return null;
@@ -184,7 +199,7 @@ function goBack() {
       <section v-if="plan.sourceUrl" class="sidebar-section">
         <h3 class="sidebar-title">Source</h3>
         <a :href="plan.sourceUrl" target="_blank" rel="noopener" class="sidebar-link">
-          ↗ View on ProblemHunt
+          ↗ View on {{ sourceLabel }}
         </a>
       </section>
 

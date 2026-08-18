@@ -17,7 +17,7 @@ const ROOT = resolve(__dirname, '..', '..'); // .../plans-explorer/
 // Resolved from the CLAUDE.md marker, not by counting `..` hops: hop counts broke on
 // every directory move during the reorganisation, and a wrong root yields an empty
 // glob that reads as "zero plans" while every downstream check still passes.
-const AI_OS_ROOT = (() => {
+const AI_OS_ROOT = process.env.AI_OS_ROOT || (() => {
   let d = __dirname;
   while (d !== dirname(d)) {
     if (existsSync(join(d, 'CLAUDE.md'))) return d;
@@ -569,6 +569,10 @@ function parsePlan(dirPath) {
   // prose scraper here: that is what produced the fragment garbage above.
   const tech = fm ? (Array.isArray(fm.tech) ? fm.tech : []) : extractTech(planText);
   const sourceUrl = fm?.source?.url ?? extractSourceUrl(specText, slug, category);
+  // The name too, not just the url. The plan page said "View on ProblemHunt" for every plan,
+  // including the 267 whose url is reddit.com. source.name is accurate for the whole corpus now,
+  // so the label can come from the data instead of being asserted in the template.
+  const sourceName = fm?.source?.name ?? null;
   const status = fm?.status ?? 'legacy';
 
   // The Problem section is `## Problem` once formatted, `## Problema Detectado` before.
@@ -598,6 +602,7 @@ function parsePlan(dirPath) {
     country,
     tech,
     sourceUrl,
+    sourceName,
     wtp,
     excerpt: localExcerpt,
     hasSpec: !!specText,
@@ -867,8 +872,8 @@ async function main() {
     const assets = existsSync(assetsDir)
       ? readdirSync(assetsDir).filter((n) => n.endsWith('.html')).sort()
       : [];
-    const { id, slug, title, status, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores } = p;
-    return { id, slug, title, status, category, categories, tags, date, country, tech, sourceUrl, wtp, excerpt, originalExcerpt, scores, assets };
+    const { id, slug, title, status, category, categories, tags, date, country, tech, sourceUrl, sourceName, wtp, excerpt, originalExcerpt, scores } = p;
+    return { id, slug, title, status, category, categories, tags, date, country, tech, sourceUrl, sourceName, wtp, excerpt, originalExcerpt, scores, assets };
   });
 
   writeFileSync(join(OUT_DATA, 'plans.json'), JSON.stringify(slim));

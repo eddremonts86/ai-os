@@ -27,6 +27,12 @@ RUN --mount=type=cache,target=/root/.npm \
 COPY apps/data/projects/ ./apps/data/projects/
 COPY apps/plans-explorer/ ./apps/plans-explorer/
 
+# The indexer resolves the repo root by walking up to the CLAUDE.md marker, and this image is a
+# deliberate partial copy — the corpus and the app, nothing else — so that marker does not exist
+# here and the walk would throw. Name the root explicitly instead of copying an instructions file
+# into a web image just to satisfy a search.
+ENV AI_OS_ROOT=/repo
+
 # `npm run build` runs prebuild (the indexer) then vue-tsc + vite. Type errors and a
 # broken corpus both fail the image rather than shipping quietly.
 RUN cd apps/plans-explorer/app && npm run build
