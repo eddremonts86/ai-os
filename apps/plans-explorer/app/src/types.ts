@@ -28,6 +28,7 @@ export interface Plan {
   country: string | null;
   tech: string[];
   sourceUrl: string | null;
+  sourceName: string | null;
   wtp: Wtp | null;
   excerpt: string;
   originalExcerpt?: string;

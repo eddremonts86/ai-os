@@ -141,7 +141,7 @@ const totalPlans = plans.length;
 // Resolved from the CLAUDE.md marker, not by counting `..` hops: hop counts broke on
 // every directory move during the reorganisation, and a wrong root yields an empty
 // glob that reads as "zero plans" while every downstream check still passes.
-const AI_OS_ROOT = (() => {
+const AI_OS_ROOT = process.env.AI_OS_ROOT || (() => {
   let d = __dirname;
   while (d !== dirname(d)) {
     if (existsSync(join(d, 'CLAUDE.md'))) return d;
