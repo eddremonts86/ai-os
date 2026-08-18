@@ -4,7 +4,7 @@
 # and base_directory=/. ports_exposes must be 80.
 #
 # Why the whole repo is the build context and not just apps/plans-explorer/:
-# the indexer reads the corpus from `../../projects/` relative to apps/plans-explorer/
+# the indexer reads the corpus from `../data/projects/` relative to apps/plans-explorer/
 # (build-index.mjs: PROJECTS_DIR = join(ROOT, '..', 'projects')), and plans.json is
 # generated, not committed. Copying only the app would give a green build serving an
 # empty explorer — 0 plans, every facet blank. `.dockerignore` keeps the context small.
@@ -22,9 +22,9 @@ COPY apps/plans-explorer/app/package.json apps/plans-explorer/app/package-lock.j
 RUN --mount=type=cache,target=/root/.npm \
     cd apps/plans-explorer/app && npm ci --no-audit --no-fund
 
-# The corpus and the app. projects/ is listed first for the same layer-cache reason:
+# The corpus and the app. The corpus is listed first for the same layer-cache reason:
 # app source changes far more often than the plans do.
-COPY projects/ ./projects/
+COPY apps/data/projects/ ./apps/data/projects/
 COPY apps/plans-explorer/ ./apps/plans-explorer/
 
 # `npm run build` runs prebuild (the indexer) then vue-tsc + vite. Type errors and a
@@ -37,7 +37,7 @@ RUN cd apps/plans-explorer/app && npm run build
 RUN set -eu; \
     plans=$(node -e "const p=require('/repo/apps/plans-explorer/app/public/data/plans.json');console.log(p.length)"); \
     echo "indexed plans: $plans"; \
-    [ "$plans" -gt 0 ] || { echo "FATAL: indexer produced 0 plans — is projects/ in the build context?" >&2; exit 1; }
+    [ "$plans" -gt 0 ] || { echo "FATAL: indexer produced 0 plans — is apps/data/projects/ in the build context?" >&2; exit 1; }
 
 # ---------- runtime ----------
 FROM nginx:1.27-alpine

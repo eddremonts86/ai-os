@@ -2,7 +2,7 @@
 /**
  * ai-os plans check — the web-readiness gate.
  *
- * Reports, per plan, every rule in projects/_schema.json#gate that fails. Read-only:
+ * Reports, per plan, every rule in apps/data/projects/_schema.json#gate that fails. Read-only:
  * it never writes a plan. It is the only thing allowed to certify `status: web-ready`,
  * and it refuses to certify anything it did not verify.
  *

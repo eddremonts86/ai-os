@@ -178,11 +178,12 @@ ai-os/
 ├── docs/                        # documentation (README + guides)
 │
 │   # ── the products the framework produces ────────────────────────────
-├── apps/                        # deployable products, one directory each
+├── apps/                        # the products, one directory each
 │   ├── site/                    # the AI-OS landing (ai-os.eduardoinerarte.dk)
 │   ├── plans-explorer/          # the plans SPA (plans.eduardoinerarte.dk)
-│   └── submission-api/          # the submissions write path (not deployed yet)
-├── projects/                    # the plans corpus: machine-written data, not an app
+│   ├── submission-api/          # the submissions write path (not deployed yet)
+│   └── data/
+│       └── projects/            # the plans corpus: machine-written, 466 dirs
 └── tools/                       # the machinery that produces it
     ├── problemhunt-scraper/     #   capture
     ├── plan-format/             #   the contract, the gate, the formatter

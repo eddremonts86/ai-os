@@ -71,7 +71,7 @@ The pipeline merges to production unattended, so it is built to refuse rather th
 - **An isolated worktree.** `ship` never touches the caller's checkout or current branch.
   This repo is shared with interactive agents; their uncommitted work must not be swept
   into a 3am commit.
-- **A bounded path list.** Only `projects/` and the scraper's `state.json` are staged, and
+- **A bounded path list.** Only `apps/data/projects/` and the scraper's `state.json` are staged, and
   the run aborts if anything else ends up staged.
 - **A mass-deletion brake.** The corpus is the source of truth for the branch, so `ship`
   deletes plans that vanished locally. Above `MAX_DELETE_PCT` (10%) it refuses instead —
@@ -98,7 +98,7 @@ The pipeline merges to production unattended, so it is built to refuse rather th
 
 A submission is a capture from a second source, not a second kind of thing. The form on the
 site opens a GitHub issue, a human labels it `approved`, and `intake` writes it into
-`projects/` as a `draft` with `source.name: web`. Everything after that is the loop above,
+`apps/data/projects/` as a `draft` with `source.name: web`. Everything after that is the loop above,
 unchanged, and the gate applies the same 11 rules regardless of where a capture came from.
 
 Two gates stand between a submission and the site, and neither is sufficient alone: a person

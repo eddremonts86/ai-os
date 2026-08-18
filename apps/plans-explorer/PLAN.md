@@ -61,7 +61,7 @@
 │               ├── IndexView.vue
 │               ├── PlanView.vue
 │               └── RankingsView.vue
-└── projects/                              ← corpus (intacto, solo lectura)
+└── data/projects/                              ← corpus (intacto, solo lectura)
     ├── 001-.../
     ├── 002-.../
     └── TOP_PROJECTS.md
@@ -92,7 +92,7 @@
        - devuelve `{raw, currency, min, max, period, mrrMid}` con normalización: `per month → /1`, `per year → /12`, `per project/deal → /12` (heurística), si no parsea → `null`.
      - `date` = match `\*\*Fecha:\*\*\s*(\d{4}-\d{2}-\d{2})`.
      - `sourceUrl` = reconstruir `https://problemhunt.pro/en/{primaryCategory}/{slug}`.
-   - Parsea `../projects/TOP_PROJECTS.md` → `rankings.json` con `{money: [{id, score, hook}], learn: [...], fun: [...]}`.
+   - Parsea `../data/projects/TOP_PROJECTS.md` → `rankings.json` con `{money: [{id, score, hook}], learn: [...], fun: [...]}`.
    - Enriquecer cada plan con `scores: {money, learn, fun}` (o `null`).
 2. Escribe `app/public/data/plans.json` (metadata completa, sin md) + `app/public/data/documents/<id>.json` (md crudo por doc, lazy).
 3. `vite build` produce `app/dist/` listo para static host.

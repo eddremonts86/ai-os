@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const AI_OS_ROOT = resolve(HERE, '..', '..', '..');
-export const PROJECTS_DIR = join(AI_OS_ROOT, 'projects');
+export const PROJECTS_DIR = join(AI_OS_ROOT, 'apps', 'data', 'projects');
 export const SCHEMA_PATH = join(PROJECTS_DIR, '_schema.json');
 
 export const DOC_NAMES = ['SPEC.md', 'PRODUCT.md', 'PLAN.md', 'DESIGN.md', 'TASKS.md'];

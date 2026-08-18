@@ -294,11 +294,11 @@ ai-os/
 │   └── deploy-plans-explorer.yml  #   apps/plans-explorer + projects → Coolify
 │
 │   # ───────────── what the framework produced ─────────────
-├── apps/                          # Deployable products, one directory each
+├── apps/                          # The products, one directory each
 │   ├── site/                      #   the AI-OS landing
 │   ├── plans-explorer/            #   the plans SPA
-│   └── submission-api/            #   submissions write path (not deployed)
-├── projects/                      # The plans corpus: machine-written data
+│   ├── submission-api/            #   submissions write path (not deployed)
+│   └── data/projects/             #   the plans corpus: machine-written data
 └── tools/                         # The machinery that produces it
     ├── problemhunt-scraper/       #   capture
     ├── plan-format/               #   contract + gate + formatter
