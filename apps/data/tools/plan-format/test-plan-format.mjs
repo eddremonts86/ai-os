@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Tests for the plan formatter. Run: node tools/plan-format/test-plan-format.mjs
+ * Tests for the plan formatter. Run: node apps/data/tools/plan-format/test-plan-format.mjs
  *
  * These cover the two things that would silently corrupt 552 plans if wrong:
  * frontmatter round-tripping, and the normalisation pipeline. Everything asserts on

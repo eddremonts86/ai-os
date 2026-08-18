@@ -25,16 +25,16 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
-import { loadSchema, stringifyFrontmatter } from '../plan-format/lib/plan.mjs';
+import { loadSchema, stringifyFrontmatter, AI_OS_ROOT as LIB_AI_OS_ROOT } from '../plan-format/lib/plan.mjs';
 
 const require = createRequire(import.meta.url);
 const { allocatePlanIds, saveHighWater } = require('../lib/plan-ids.cjs');
 const { generateDesignMD } = require('../problemhunt-scraper/design-dna.js');
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const AI_OS_ROOT = resolve(HERE, '..', '..');
+const AI_OS_ROOT = LIB_AI_OS_ROOT;
 const PROJECTS_DIR = join(AI_OS_ROOT, 'apps', 'data', 'projects');
-const STATE_FILE = join(AI_OS_ROOT, 'tools', 'problemhunt-scraper', 'state.json');
+const STATE_FILE = join(AI_OS_ROOT, 'apps', 'data', 'tools', 'problemhunt-scraper', 'state.json');
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);

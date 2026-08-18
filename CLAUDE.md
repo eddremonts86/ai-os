@@ -184,7 +184,7 @@ ai-os/
 │   ├── submission-api/          # the submissions write path (not deployed yet)
 │   └── data/
 │       └── projects/            # the plans corpus: machine-written, 466 dirs
-└── tools/                       # the machinery that produces it
+│       └── tools/               # the machinery: scraper, contract, gate, pipeline
     ├── problemhunt-scraper/     #   capture
     ├── plan-format/             #   the contract, the gate, the formatter
     ├── plans-pipeline/          #   the daily loop

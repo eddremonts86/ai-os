@@ -14,7 +14,20 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-export const AI_OS_ROOT = resolve(HERE, '..', '..', '..');
+/**
+ * The repo root, found by walking up to CLAUDE.md rather than by counting `..` hops.
+ * Hop-counting is why moving this directory broke every consumer twice; a marker search
+ * survives any future move.
+ */
+function findRoot(from) {
+  let d = from;
+  while (d !== dirname(d)) {
+    if (existsSync(join(d, 'CLAUDE.md'))) return d;
+    d = dirname(d);
+  }
+  throw new Error(`cannot locate the AI-OS root above ${from}`);
+}
+export const AI_OS_ROOT = findRoot(HERE);
 export const PROJECTS_DIR = join(AI_OS_ROOT, 'apps', 'data', 'projects');
 export const SCHEMA_PATH = join(PROJECTS_DIR, '_schema.json');
 

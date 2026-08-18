@@ -42,7 +42,7 @@ Rejected sources (see "Rejected" below for why):
 
 ```text
 ~/Projects/ai-os/
-├── tools/problemhunt-scraper/
+├── apps/data/tools/problemhunt-scraper/
 │   ├── scraper.cjs          # main entry, multi-source
 │   ├── design-dna.js        # 17 design-system palettes
 │   ├── state.json           # dedupe + per-source tracking
@@ -97,7 +97,7 @@ for the exact scoring rubric.
 ### 4. Notify (optional)
 
 If `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` are exported (or in
-`tools/problemhunt-scraper/.env`), the scraper sends a Telegram summary.
+`apps/data/tools/problemhunt-scraper/.env`), the scraper sends a Telegram summary.
 Missing env is non-fatal — it logs and continues.
 
 ## Rejected Sources (and why)

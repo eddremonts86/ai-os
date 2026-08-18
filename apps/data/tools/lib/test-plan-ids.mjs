@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Tests for the shared plan id allocator. Run: node tools/lib/test-plan-ids.mjs
+ * Tests for the shared plan id allocator. Run: node apps/data/tools/lib/test-plan-ids.mjs
  *
  * These exist because the allocator has two callers that never run in the same process, so
  * "it worked when I ran the scraper" proves nothing about intake. Every case builds a real

@@ -16,7 +16,7 @@
  * The queue needs state, deduplication, an audit trail and a moderation UI. GitHub Issues has
  * all four already: labels are the state machine, the issue number is the key, the thread is
  * the trail, and the maintainer gets an email without us sending one. See
- * tools/plans-pipeline/README.md.
+ * apps/data/tools/plans-pipeline/README.md.
  *
  * ## The body format is a contract
  *

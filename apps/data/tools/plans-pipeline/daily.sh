@@ -6,7 +6,7 @@
 #
 # Everything mechanical lives here. The single step this script cannot do is enrichment:
 # turning a scraped forum post into a plan a reader would trust needs judgement, not regex
-# (see tools/plan-format/ai-os-plans.sh, `enrich`). So the cron agent drives this script,
+# (see apps/data/tools/plan-format/ai-os-plans.sh, `enrich`). So the cron agent drives this script,
 # does the writing between `prepare` and `verify`, and the script owns every other step —
 # which keeps the agent's job small and the risky parts deterministic and reviewable.
 #
@@ -32,7 +32,18 @@
 
 set -euo pipefail
 
-AI_OS_ROOT="${AI_OS_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+# Walk up to the marker rather than counting `..` hops. Counting hops means every script
+# that resolves the repo root breaks the moment a directory moves, which is exactly what this
+# file has now paid for twice.
+find_ai_os_root() {
+  local d; d="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  while [ "$d" != "/" ]; do
+    [ -f "$d/CLAUDE.md" ] && { printf '%s' "$d"; return 0; }
+    d="$(dirname "$d")"
+  done
+  return 1
+}
+AI_OS_ROOT="${AI_OS_ROOT:-$(find_ai_os_root)}" || { echo "cannot locate the AI-OS root (no CLAUDE.md above this script)" >&2; exit 1; }
 cd "$AI_OS_ROOT"
 
 PHASE="${1:-}"; shift || true
@@ -50,7 +61,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-SCRAPER_DIR="$AI_OS_ROOT/tools/problemhunt-scraper"
+SCRAPER_DIR="$AI_OS_ROOT/apps/data/tools/problemhunt-scraper"
 EXPLORER_DIR="$AI_OS_ROOT/apps/plans-explorer/app"
 SLICE_MANIFEST="$AI_OS_ROOT/outputs/plans-pipeline/slice.json"
 LOG_DIR="$AI_OS_ROOT/outputs/plans-pipeline"
@@ -59,7 +70,7 @@ LOCK="$LOG_DIR/.lock"
 # Paths this pipeline is allowed to commit. Anything else in the tree belongs to a human or
 # another agent and is none of our business — an unattended `git add -A` here would be a way
 # to silently ship somebody's half-finished refactor.
-COMMIT_PATHS=(apps/data/projects tools/problemhunt-scraper/state.json)
+COMMIT_PATHS=(apps/data/projects apps/data/tools/problemhunt-scraper/state.json)
 
 # Refuse to mirror away more than this share of the corpus. The corpus is the source of
 # truth for the branch, so ship deletes plans that vanished locally — which is right for one
@@ -124,7 +135,7 @@ phase_scrape() {
 phase_intake() {
   acquire_lock
   log "ingesting approved submissions"
-  node "$AI_OS_ROOT/tools/plans-pipeline/intake.mjs" \
+  node "$AI_OS_ROOT/apps/data/tools/plans-pipeline/intake.mjs" \
     ${DRY_RUN:+$([ "$DRY_RUN" -eq 1 ] && echo --dry-run)} --limit "$CAP" \
     || die "intake failed"
 }
@@ -132,13 +143,13 @@ phase_intake() {
 phase_prepare() {
   acquire_lock
   log "normalising documents to the schema (ai-os plans format --write)"
-  bash "$AI_OS_ROOT/tools/plan-format/ai-os-plans.sh" format --write
+  bash "$AI_OS_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" format --write
 
   log "selecting the slice to enrich (cap $CAP)"
   set +e
   # A long manual catch-up run needs a TTL that outlasts it, or the cron reclaims its
   # plans mid-run and two agents write the same ones.
-  node "$AI_OS_ROOT/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" \
+  node "$AI_OS_ROOT/apps/data/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" \
     ${CLAIM_TTL:+--claim-ttl "$CLAIM_TTL"}
   local rc=$?
   set -e
@@ -159,11 +170,11 @@ phase_verify() {
   # would block forever. The question that matters is whether everything about to go on the
   # web is sound.
   log "gate: are all publishable plans web-ready?"
-  node "$AI_OS_ROOT/tools/plan-format/check-plans.mjs" --publishable --summary \
+  node "$AI_OS_ROOT/apps/data/tools/plan-format/check-plans.mjs" --publishable --summary \
     || die "gate failed — publishable plans are not web-ready. NOT shipping."
 
   log "formatter test suite"
-  bash "$AI_OS_ROOT/tools/plan-format/ai-os-plans.sh" test || die "plan-format tests failed"
+  bash "$AI_OS_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" test || die "plan-format tests failed"
 
   log "explorer build + parser invariants"
   ( cd "$EXPLORER_DIR" && npm run build && npm run test:parser ) || die "explorer build/tests failed"
@@ -185,7 +196,8 @@ sync_corpus() {
   # apps/data/projects and the worktree was still based on a branch carrying the old layout.
   mkdir -p "$wt/apps/data/projects"
   cp -R "$AI_OS_ROOT/apps/data/projects/." "$wt/apps/data/projects/"
-  cp "$SCRAPER_DIR/state.json" "$wt/tools/problemhunt-scraper/state.json"
+  mkdir -p "$wt/apps/data/tools/problemhunt-scraper"
+  cp "$SCRAPER_DIR/state.json" "$wt/apps/data/tools/problemhunt-scraper/state.json"
 
   # Removals: tracked under apps/data/projects/ on the branch, but gone from the local corpus.
   local gone
@@ -268,13 +280,13 @@ phase_ship() {
   # Guard against the pipeline having staged anything outside its remit.
   local stray
   stray=$(git -C "$wt" diff --cached --name-only \
-          | grep -vE '^(apps/data/projects/|tools/problemhunt-scraper/state\.json$)' || true)
+          | grep -vE '^(apps/data/projects/|apps/data/tools/problemhunt-scraper/state\.json$)' || true)
   [ -z "$stray" ] || die "refusing to commit paths outside the pipeline's remit:"$'\n'"$stray"
 
   git -C "$wt" -c user.name="ai-os-pipeline" -c user.email="ei@schilling.dk" \
     commit -q --no-verify -m "chore(plans): daily corpus refresh $stamp
 
-Automated by tools/plans-pipeline/daily.sh. $added plan dirs touched.
+Automated by apps/data/tools/plans-pipeline/daily.sh. $added plan dirs touched.
 Publishable plans passed \`ai-os plans check --publishable\`, the formatter
 test suite, the explorer build and its parser invariants before this commit
 was created.
@@ -313,7 +325,7 @@ merge_through() {
   log "opening PR $head → $base"
   local url
   url=$(gh pr create --head "$head" --base "$base" --title "$title" \
-        --body "Automated by \`tools/plans-pipeline/daily.sh\`. Gate, formatter tests, explorer build and parser invariants all passed before the commit was created." \
+        --body "Automated by \`apps/data/tools/plans-pipeline/daily.sh\`. Gate, formatter tests, explorer build and parser invariants all passed before the commit was created." \
         2>/dev/null) || url=$(gh pr list --head "$head" --base "$base" --json url -q '.[0].url')
   [ -n "$url" ] || die "could not open or find a PR for $head → $base"
   log "PR: $url"
@@ -361,10 +373,10 @@ merge_through() {
 
 phase_status() {
   log "corpus"
-  node "$AI_OS_ROOT/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" \
+  node "$AI_OS_ROOT/apps/data/tools/plans-pipeline/select-slice.mjs" --cap "$CAP" \
     ${CLAIM_TTL:+--claim-ttl "$CLAIM_TTL"} --dry-run || true
   log "gate (publishable only)"
-  node "$AI_OS_ROOT/tools/plan-format/check-plans.mjs" --publishable --summary || true
+  node "$AI_OS_ROOT/apps/data/tools/plan-format/check-plans.mjs" --publishable --summary || true
 }
 
 case "$PHASE" in
