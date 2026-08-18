@@ -4,7 +4,7 @@ slug: low-trust-level-in-nigerian-e-commerce-due-to-lack-of-r
 title: Low trust level in Nigerian e-commerce due to lack of reliable logistics service
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/8msk10fu31-low-trust-level-in-nigerian-e-commerce-d"
 category: logistics
 date: "2025-11-13"

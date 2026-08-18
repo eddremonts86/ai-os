@@ -4,7 +4,7 @@ slug: gps-based-taxi-and-delivery-solution-for-zimbabwe
 title: GPS-based taxi and delivery solution for Zimbabwe
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/qkqb82u8i1-gps-based-taxi-and-delivery-solution"
 category: logistics
 date: "2025-11-12"

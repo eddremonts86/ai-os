@@ -4,7 +4,7 @@ slug: daily-routine-after-every-client-meeting-i-need-to-writ
 title: "Daily routine: after every client meeting, I need to write a structured report for colleagues. Existing tools are slow, opinionated, or forget the context."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: productivity
 date: "2026-02-10"

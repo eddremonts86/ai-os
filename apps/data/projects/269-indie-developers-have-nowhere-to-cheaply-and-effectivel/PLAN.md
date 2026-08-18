@@ -4,7 +4,7 @@ slug: indie-developers-have-nowhere-to-cheaply-and-effectivel
 title: Indie developers have nowhere to cheaply and effectively find the first 50-100 active users to test new niche products
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/tok505klc1-indie-developers-have-nowhere-to-cheaply"
 category: marketing
 date: "2025-12-11"

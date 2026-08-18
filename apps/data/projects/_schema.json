@@ -85,6 +85,10 @@
             "enum": [
               "ProblemHunt",
               "Reddit",
+              "HackerNews",
+              "ProductHunt",
+              "IndieHackers",
+              "BetaList",
               "manual",
               "web"
             ],

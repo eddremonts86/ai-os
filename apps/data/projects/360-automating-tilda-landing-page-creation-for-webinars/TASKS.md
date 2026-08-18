@@ -4,7 +4,7 @@ slug: automating-tilda-landing-page-creation-for-webinars
 title: Automating Tilda landing page creation for webinars
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/tp6dgyysf1-automation-of-creating-a-tilda-landing-page-for-webinars"
 category: marketing
 date: "2025-10-10"

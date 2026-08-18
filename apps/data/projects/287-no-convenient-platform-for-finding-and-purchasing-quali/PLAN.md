@@ -4,7 +4,7 @@ slug: no-convenient-platform-for-finding-and-purchasing-quali
 title: No convenient platform for finding and purchasing quality products from local fa
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/food/8ypvtt1my1-no-convenient-platform-for-finding-and-purchas"
 category: food
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: problem-of-promoting-on-reddit-for-beginners
 title: Problem of promoting on Reddit for beginners
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/uya9j4sm41-problem-of-promoting-on-reddit-for-begi"
 category: marketing
 date: "2025-11-12"

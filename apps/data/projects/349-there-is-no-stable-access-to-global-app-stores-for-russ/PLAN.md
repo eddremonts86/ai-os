@@ -4,7 +4,7 @@ slug: there-is-no-stable-access-to-global-app-stores-for-russ
 title: There is no stable access to global app stores for Russian developers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/legal/jg3la3g2k1-there-is-no-stable-access-to-global-app"
 category: legal
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: the-problem-of-ai-agent-instability-and-regression-on-t
 title: The problem of AI agent instability and regression on the path from prototype to stable product
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/bacfrvck91-the-problem-of-ai-agent-instability-and"
 category: ai
 date: "2025-10-29"

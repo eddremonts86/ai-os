@@ -4,7 +4,7 @@ slug: no-quick-cheap-fix-for-leaky-faucets-no-clear-diy-guide
 title: "No quick, cheap fix for leaky faucets: no clear DIY guide or affordable plumber"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/e59sb30221-no-quick-cheap-fix-for-leaky-faucets-no"
 category: other
 date: "2025-12-01"

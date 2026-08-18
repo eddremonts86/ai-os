@@ -4,7 +4,7 @@ slug: need-a-tool-that-automatically-finds-people-in-social-m
 title: Need a tool that automatically finds people in social media using deeper criteria. Willing to pay $50/month.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/social/6stv96yp21-need-a-tool-that-automatically-finds-peo"
 category: social
 date: "2026-04-28"

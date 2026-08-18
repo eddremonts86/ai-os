@@ -4,7 +4,7 @@ slug: need-for-a-service-to-package-website-deliveries-profes
 title: Need for a service to package website deliveries professionally
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/kb6ioy7hb1-need-for-a-service-to-package-website-de"
 category: freelance
 date: "2025-09-19"

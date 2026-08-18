@@ -4,7 +4,7 @@ slug: a-startup-founder-loses-focus-and-productivity-juggling
 title: "A startup founder loses focus and productivity juggling 5-7 tools for a single project. Existing 'all-in-one' tools are bloated, expensive, or stack-specific."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: productivity
 date: "2026-02-09"

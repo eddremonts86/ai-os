@@ -4,7 +4,7 @@ slug: a-pre-check-of-the-approval-chances-for-a-construction-
 title: A pre-check of the approval chances for a construction project with the Australian council before making significant investments
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/realty/38t2m50py1-a-pre-check-of-the-approval-chances-for"
 category: realty
 date: "2026-01-18"

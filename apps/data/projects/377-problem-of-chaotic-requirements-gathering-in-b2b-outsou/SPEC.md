@@ -4,7 +4,7 @@ slug: problem-of-chaotic-requirements-gathering-in-b2b-outsou
 title: Problem of chaotic requirements gathering in b2b outsourcing
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/0yof53jk01-problem-of-chaotic-requirements-gatherin"
 category: dev
 date: "2025-09-12"

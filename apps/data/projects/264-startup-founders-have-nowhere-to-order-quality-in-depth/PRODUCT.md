@@ -4,7 +4,7 @@ slug: startup-founders-have-nowhere-to-order-quality-in-depth
 title: "Startup founders have nowhere to order quality, in-depth research on specific projects or niches \u2014 existing services provide superficial and unreliable reports"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/startups/l74cvddaj1-startup-founders-have-nowhere-to-order-q"
 category: startups
 date: "2026-01-03"

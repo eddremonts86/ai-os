@@ -4,7 +4,7 @@ slug: no-orders-without-a-portfolio-a-beginner-freelancers-pr
 title: "No orders without a portfolio: a beginner freelancer's problem"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/bhk2hd8zp1-no-orders-without-a-portfolio-a-beginner"
 category: freelance
 date: "2025-09-08"

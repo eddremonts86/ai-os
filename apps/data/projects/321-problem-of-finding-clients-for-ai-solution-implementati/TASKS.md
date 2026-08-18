@@ -4,7 +4,7 @@ slug: problem-of-finding-clients-for-ai-solution-implementati
 title: Problem of finding clients for AI solution implementation in Europe and Eastern
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/05sf6nd821-problem-of-finding-clients-for-ai-solution-imp"
 category: ai
 date: "2025-10-29"

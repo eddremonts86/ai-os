@@ -4,7 +4,7 @@ slug: solar-installation-companies-lack-a-platform-for-end-to
 title: "Solar installation companies lack a platform for end-to-end tracking of a customer's project — from sale to official approval, causing complaints and dissatisfaction"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/ldt9cicmy1-solar-installation-companies-lack-a-plat"
 category: business
 date: "2026-01-10"

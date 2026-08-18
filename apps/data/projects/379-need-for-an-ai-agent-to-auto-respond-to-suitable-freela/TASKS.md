@@ -4,7 +4,7 @@ slug: need-for-an-ai-agent-to-auto-respond-to-suitable-freela
 title: Need for an AI agent to auto-respond to suitable freelance orders
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/8jzg4eu451-need-for-an-ai-agent-to-auto-respond-to"
 category: marketing
 date: "2025-09-10"

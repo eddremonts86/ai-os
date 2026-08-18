@@ -84,7 +84,10 @@ const entries = parseAtomOrRSS(feed);
 ok('parses both entries', entries.length === 2, entries.length);
 ok('content is clean prose', entries[0].content === 'Solves a real problem for teams.', entries[0].content);
 ok('inline tags leave no gap', entries[1].content === 'Another thing.', entries[1].content);
-ok('link is captured', entries[0].link === 'https://x.dev/widget?a=1&amp;b=2', entries[0].link);
+// The href is entity-encoded in the feed. Leaving it encoded put a literal `&amp;` into every
+// source URL written to frontmatter, so the link is decoded too.
+ok('link is captured and decoded', entries[0].link === 'https://x.dev/widget?a=1&b=2', entries[0].link);
+ok('title is decoded', entries[0].title === 'Widget & Co', entries[0].title);
 ok('published is captured', entries[0].published === '2026-08-18T19:00:00Z', entries[0].published);
 ok('no entry content carries attribute noise',
   entries.every((e) => !/href=|src=/.test(e.content)));

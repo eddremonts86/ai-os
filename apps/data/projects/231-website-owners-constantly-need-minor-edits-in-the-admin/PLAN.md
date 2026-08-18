@@ -4,7 +4,7 @@ slug: website-owners-constantly-need-minor-edits-in-the-admin
 title: Website owners constantly need minor edits in the admin panel. They are forced to pay specialists for 5-minute changes. Need an AI that resolves those edits in plain English.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-01-28"

@@ -4,7 +4,7 @@ slug: search-for-an-effective-cleaning-business-management-so
 title: Search for an effective cleaning business management solution
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/bh5ylhzh51-search-for-an-effective-cleaning-business-ma"
 category: business
 date: "2025-10-29"

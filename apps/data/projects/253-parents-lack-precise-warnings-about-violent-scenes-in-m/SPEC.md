@@ -4,7 +4,7 @@ slug: parents-lack-precise-warnings-about-violent-scenes-in-m
 title: Parents lack precise warnings about violent scenes in movies to safely watch films with their children
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/ar3ebnm6c1-parents-lack-precise-warnings-about-viol"
 category: media
 date: "2026-01-10"

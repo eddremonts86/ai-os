@@ -4,7 +4,7 @@ slug: need-for-affordable-legal-protection-service-for-freela
 title: Need for affordable legal protection service for freelancers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/legal/mfxod8viz1-need-for-affordable-legal-protection-ser"
 category: legal
 date: "2025-09-18"

@@ -4,7 +4,7 @@ slug: problem-of-entering-the-ai-automation-market-without-te
 title: Problem of entering the AI automation market without technical experience
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/49sdtft4o1-problem-of-entering-the-ai-automation-market"
 category: ai
 date: "2025-11-12"

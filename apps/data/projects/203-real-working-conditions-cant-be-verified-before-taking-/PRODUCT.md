@@ -4,7 +4,7 @@ slug: real-working-conditions-cant-be-verified-before-taking-
 title: "Real working conditions can't be verified before taking a job — reviews lie. Need a service for direct, anonymous, verified reports from current employees."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: hr
 date: "2026-04-24"

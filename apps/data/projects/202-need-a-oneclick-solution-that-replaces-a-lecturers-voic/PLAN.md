@@ -4,7 +4,7 @@ slug: need-a-oneclick-solution-that-replaces-a-lecturers-voic
 title: "Need a one-click solution that replaces a lecturer's voice with clear English directly inside YouTube lectures."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-04-27"

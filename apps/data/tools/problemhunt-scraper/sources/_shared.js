@@ -119,9 +119,11 @@ function parseAtomOrRSS(xml) {
     }
   }
   for (const block of blocks) {
-    const title = (block.match(/<title>(?:<!\[CDATA\[)?([^<\]]+)/) || [])[1] || '';
+    // Titles and hrefs are entity-encoded in the feed as well. Leaving them encoded put a
+    // literal `&amp;` inside every source URL written to frontmatter.
+    const title = decodeEntities((block.match(/<title>(?:<!\[CDATA\[)?([^<\]]+)/) || [])[1] || '');
     const linkMatch = block.match(/<link[^>]*href="([^"]+)"/) || block.match(/<link>([^<]+)<\/link>/);
-    const link = linkMatch ? linkMatch[1] : '';
+    const link = linkMatch ? decodeEntities(linkMatch[1]) : '';
     const published = (block.match(/<published>([^<]+)<\/published>/) || block.match(/<pubDate>([^<]+)<\/pubDate>/) || [])[1] || '';
     const contentMatch = block.match(/<content[^>]*>([\s\S]*?)<\/content>/) || block.match(/<description[^>]*>([\s\S]*?)<\/description>/);
     let contentStr = '';

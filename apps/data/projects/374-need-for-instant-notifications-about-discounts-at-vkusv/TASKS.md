@@ -4,7 +4,7 @@ slug: need-for-instant-notifications-about-discounts-at-vkusv
 title: Need for instant notifications about discounts at \u00abVkusvill\u00bb and \u00abPerekrestok\u00bb
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/retail/lfz3mtpit1-need-for-instant-notifications-about-dis"
 category: retail
 date: "2025-09-16"

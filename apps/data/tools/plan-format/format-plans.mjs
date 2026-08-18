@@ -36,7 +36,7 @@ import { markdownToText, linkifyLongUrls, unnestLinks } from './lib/normalize.mj
 import {
   extractTitle, extractCategory, extractTags, extractDate, extractSource,
   extractCountry, extractProblem, extractTech, stripMetadataBlock, renameHeadings,
-  HEADING_MAP,
+  HEADING_MAP, sourceNameForUrl,
 } from './lib/legacy.mjs';
 
 const argv = process.argv.slice(2);
@@ -227,8 +227,20 @@ function buildFrontmatter(dir, specText, planText, productText, existing) {
   // run twice is worse than one that refuses to run.
   if (existing) {
     const { problem, problemWasOnlyCountry } = extractProblem(specText);
+    const fm = { ...existing, id, slug };
+
+    // Repair provenance the first migration could not record. extractSource only recognised the
+    // Spanish `**Fuente:**` label and Reddit, so 189 plans were stamped `manual` while their url
+    // is problemhunt.pro. The prose label is gone by now — stripMetadataBlock removed it — so the
+    // host is the only evidence left, and it is unambiguous. Only `manual` is touched: a name
+    // that was actually determined is never overwritten.
+    if (fm.source?.name === 'manual') {
+      const derived = sourceNameForUrl(fm.source.url);
+      if (derived) fm.source = { ...fm.source, name: derived };
+    }
+
     return {
-      fm: { ...existing, id, slug },
+      fm,
       problem,
       problemWasOnlyCountry: false,   // already handled on the migrating run
       droppedLegacyStack: false,

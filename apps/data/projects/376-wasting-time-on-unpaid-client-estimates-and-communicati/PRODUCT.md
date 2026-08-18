@@ -4,7 +4,7 @@ slug: wasting-time-on-unpaid-client-estimates-and-communicati
 title: Wasting time on unpaid client estimates and communication
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/72kngh5xp1-wasting-time-on-unpaid-client-estimates"
 category: marketing
 date: "2025-09-12"

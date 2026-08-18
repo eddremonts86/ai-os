@@ -4,7 +4,7 @@ slug: problem-of-access-to-loans-for-immigrants-in-the-eu
 title: Problem of access to loans for immigrants in the EU
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/mebr1a5hi1-problem-of-access-to-loans-for-immigrant"
 category: finance
 date: "2025-11-12"

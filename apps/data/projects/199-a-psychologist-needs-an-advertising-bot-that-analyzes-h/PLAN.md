@@ -4,7 +4,7 @@ slug: a-psychologist-needs-an-advertising-bot-that-analyzes-h
 title: A psychologist needs an advertising bot that analyzes her workload and automatically adjusts her ads. She is willing to pay for a solution and is open to discussing the details.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/f9domkol61-a-psychologist-needs-an-advertising-bot"
 category: marketing
 date: "2026-07-20"

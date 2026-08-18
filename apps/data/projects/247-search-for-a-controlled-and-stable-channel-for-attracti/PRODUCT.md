@@ -4,7 +4,7 @@ slug: search-for-a-controlled-and-stable-channel-for-attracti
 title: "Search for a controlled and stable channel for attracting clients to a banquet hall, as an alternative to unpredictable social media advertising"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/g9lxp72ug1-search-for-a-controlled-and-stable-chann"
 category: marketing
 date: "2026-01-18"

@@ -4,7 +4,7 @@ slug: the-systemic-crisis-of-athlete-transition
 title: The systemic crisis of athlete transition
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/fitness/6k2z8m4uw1-the-systemic-crisis-of-athlete-transition"
 category: fitness
 date: "2025-10-29"

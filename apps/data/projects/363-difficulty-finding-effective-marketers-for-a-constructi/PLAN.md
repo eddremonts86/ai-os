@@ -4,7 +4,7 @@ slug: difficulty-finding-effective-marketers-for-a-constructi
 title: Difficulty finding effective marketers for a construction business
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/hc75uckma1-difficulty-finding-effective-marketers-f"
 category: freelance
 date: "2025-10-29"

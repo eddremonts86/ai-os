@@ -4,7 +4,7 @@ slug: lack-of-a-simple-and-convenient-reminder-system-in-what
 title: Lack of a simple and convenient reminder system in WhatsApp
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/0bwf3l7wh1-lack-of-a-simple-and-convenient-reminder-sy"
 category: productivity
 date: "2025-10-29"

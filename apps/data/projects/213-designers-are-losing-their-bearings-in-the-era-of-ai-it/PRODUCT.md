@@ -4,7 +4,7 @@ slug: designers-are-losing-their-bearings-in-the-era-of-ai-it
 title: "Designers are losing their bearings in the era of AI — it's unclear which direction to develop in, who reviews work, and how to keep the craft."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: design
 date: "2026-03-16"

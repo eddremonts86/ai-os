@@ -4,7 +4,7 @@ slug: lack-of-convenient-service-for-buying-and-selling-used-
 title: Lack of convenient service for buying and selling used cars
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/retail/a40dcs4621-lack-of-convenient-service-for-buying-an"
 category: retail
 date: "2025-10-29"

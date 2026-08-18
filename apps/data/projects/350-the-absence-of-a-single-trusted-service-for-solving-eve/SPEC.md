@@ -4,7 +4,7 @@ slug: the-absence-of-a-single-trusted-service-for-solving-eve
 title: The absence of a single trusted service for solving everyday tasks
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/c371yg3cu1-the-absence-of-a-single-trusted-service"
 category: freelance
 date: "2025-10-29"

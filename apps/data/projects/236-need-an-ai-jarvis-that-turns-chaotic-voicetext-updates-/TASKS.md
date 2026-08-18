@@ -4,7 +4,7 @@ slug: need-an-ai-jarvis-that-turns-chaotic-voicetext-updates-
 title: "Need an AI \u00abJarvis\u00bb that turns chaotic voice/text updates into automatically structured tasks, projects, and dashboards for managing all of life and work"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/kmtor7kz31-need-an-ai-jarvis-that-turns-chaotic-voi"
 category: ai
 date: "2026-01-21"

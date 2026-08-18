@@ -4,7 +4,7 @@ slug: voice-control-for-ai-coding-breaks-when-i-change-my-min
 title: Voice control for AI coding breaks when I change my mind mid-sentence. Need an AI intermediary that understands my actual intent after the corrections.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-02-23"

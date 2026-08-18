@@ -4,7 +4,7 @@ slug: regional-media-outlets-lack-news-there-is-no-service-fo
 title: "Regional media outlets lack news: there is no service for automatically finding local events and topics not yet covered by competitors"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/hap6bnpjo1-regional-media-outlets-lack-news-there-i"
 category: media
 date: "2026-01-03"
