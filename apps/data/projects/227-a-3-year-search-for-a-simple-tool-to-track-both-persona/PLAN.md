@@ -4,7 +4,7 @@ slug: a-3-year-search-for-a-simple-tool-to-track-both-persona
 title: "A 3-year search for a simple tool to track both personal and business finances in one place. Nothing matches because the reports are split, the UX is heavy, or the price is wrong."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: fintech
 date: "2026-01-29"

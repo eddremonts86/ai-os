@@ -4,7 +4,7 @@ slug: no-access-to-mentors-from-real-experts-to-start-in-the-
 title: No access to mentors from real experts to start in the real estate field
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/education/x9ojkb1fc1-no-access-to-mentors-from-real-experts-t"
 category: education
 date: "2025-12-01"

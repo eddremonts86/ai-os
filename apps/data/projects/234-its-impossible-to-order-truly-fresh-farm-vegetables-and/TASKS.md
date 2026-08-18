@@ -4,7 +4,7 @@ slug: its-impossible-to-order-truly-fresh-farm-vegetables-and
 title: "It's impossible to order truly fresh farm vegetables and bread through delivery aggregators \u2014 product quality is low, and you have to go to the market yourself"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/food/a6dgf1icc1-its-impossible-to-order-truly-fresh-farm"
 category: food
 date: "2026-01-22"

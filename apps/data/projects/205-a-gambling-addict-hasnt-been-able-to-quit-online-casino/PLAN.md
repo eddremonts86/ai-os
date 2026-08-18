@@ -4,7 +4,7 @@ slug: a-gambling-addict-hasnt-been-able-to-quit-online-casino
 title: "A gambling addict hasn't been able to quit online casinos for years. All known methods have failed. Need a long-term accountability system that adapts to relapse."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: health
 date: "2026-04-20"

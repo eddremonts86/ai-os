@@ -4,7 +4,7 @@ slug: traders-lose-money-due-to-emotional-decisions-fear-gree
 title: "Traders lose money due to emotional decisions (fear, greed) and lack a tool for real-time control of their psychological state during trading"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/psychology/vhe68ui8b1-traders-lose-money-due-to-emotional-deci"
 category: psychology
 date: "2025-12-06"

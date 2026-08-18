@@ -4,7 +4,7 @@ slug: a-beginner-in-online-business-needs-not-a-course-but-a-
 title: "A beginner in online business needs not a course, but a personalized AI guide that will create and lead them through an individual step-by-step plan"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/h0x8gh7a71-a-beginner-in-online-business-needs-not"
 category: ai
 date: "2026-01-18"

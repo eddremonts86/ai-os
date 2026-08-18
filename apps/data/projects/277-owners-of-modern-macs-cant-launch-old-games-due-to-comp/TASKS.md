@@ -4,7 +4,7 @@ slug: owners-of-modern-macs-cant-launch-old-games-due-to-comp
 title: "Owners of modern Macs can't launch old games due to complex instructions involving emulators and file conversion"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/ff5gcnrro1-owners-of-modern-macs-cant-launch-old-ga"
 category: other
 date: "2025-12-04"

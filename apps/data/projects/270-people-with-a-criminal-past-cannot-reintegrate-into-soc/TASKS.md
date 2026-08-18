@@ -4,7 +4,7 @@ slug: people-with-a-criminal-past-cannot-reintegrate-into-soc
 title: People with a criminal past cannot reintegrate into society because their real skills are \u00abinvisible\u00bb
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/career/krxg2n1ge1-people-with-a-criminal-past-cannot-reint"
 category: career
 date: "2025-12-11"

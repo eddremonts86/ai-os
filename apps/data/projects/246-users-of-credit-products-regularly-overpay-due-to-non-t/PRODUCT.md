@@ -4,7 +4,7 @@ slug: users-of-credit-products-regularly-overpay-due-to-non-t
 title: Users of credit products regularly overpay due to non-transparent bank terms. There is no advocate service that would analyze their spending and find hidden fees.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/jtv11ju831-users-of-credit-products-regularly-overp"
 category: finance
 date: "2026-01-18"

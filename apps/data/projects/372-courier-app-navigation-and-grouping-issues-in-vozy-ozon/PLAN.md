@@ -4,7 +4,7 @@ slug: courier-app-navigation-and-grouping-issues-in-vozy-ozon
 title: Courier app navigation and grouping issues in \u00abVozy Ozon\u00bb
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/69hxkoys91-courier-app-navigation-and-grouping-issu"
 category: logistics
 date: "2025-09-17"

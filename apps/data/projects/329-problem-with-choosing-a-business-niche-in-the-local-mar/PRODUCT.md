@@ -4,7 +4,7 @@ slug: problem-with-choosing-a-business-niche-in-the-local-mar
 title: Problem with choosing a business niche in the local market
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/tl9r966991-problem-with-choosing-a-business-niche-i"
 category: ai
 date: "2025-10-29"

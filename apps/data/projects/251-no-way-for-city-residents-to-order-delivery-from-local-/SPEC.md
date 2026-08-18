@@ -4,7 +4,7 @@ slug: no-way-for-city-residents-to-order-delivery-from-local-
 title: No way for city residents to order delivery from local stores to their elderly relatives in remote villages
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/kos2aznku1-no-way-for-city-residents-to-order-deliv"
 category: logistics
 date: "2026-01-13"

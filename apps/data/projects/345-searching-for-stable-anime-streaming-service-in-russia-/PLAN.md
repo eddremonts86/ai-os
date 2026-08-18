@@ -4,7 +4,7 @@ slug: searching-for-stable-anime-streaming-service-in-russia-
 title: Searching for stable anime streaming service in Russia without VPN requirement
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/ycnydla351-searching-for-stable-anime-streaming-ser"
 category: media
 date: "2025-10-29"

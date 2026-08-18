@@ -4,7 +4,7 @@ slug: universal-tracking-service-for-all-mobile-devices
 title: Universal tracking service for all mobile devices
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/kiv6i361e1-universal-tracking-service-for-all-mobil"
 category: other
 date: "2025-10-29"

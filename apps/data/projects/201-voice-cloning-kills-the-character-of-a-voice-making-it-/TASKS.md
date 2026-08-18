@@ -4,7 +4,7 @@ slug: voice-cloning-kills-the-character-of-a-voice-making-it-
 title: "Voice cloning kills the character of a voice, making it too perfect and lifeless. Need a way to preserve natural imperfections without sacrificing quality."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-04-27"

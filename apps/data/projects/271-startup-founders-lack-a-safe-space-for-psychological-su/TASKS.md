@@ -4,7 +4,7 @@ slug: startup-founders-lack-a-safe-space-for-psychological-su
 title: Startup founders lack a safe space for psychological support during moments of burnout and loneliness
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/psychology/r15v6zgeg1-startup-founders-lack-a-safe-space-for-p"
 category: psychology
 date: "2025-12-11"

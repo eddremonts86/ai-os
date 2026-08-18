@@ -4,7 +4,7 @@ slug: cant-start-a-photography-and-videography-business-due-t
 title: "Can't start a photography and videography business due to lack of clients and sy"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/3zqee2a4x1-cant-start-a-photography-and-videography-bus"
 category: business
 date: "2025-10-29"

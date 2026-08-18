@@ -4,7 +4,7 @@ slug: systemic-problem-of-unenforceable-contracts-and-slow-di
 title: Systemic problem of unenforceable contracts and slow dispute resolution
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/legal/0i3lmdtm71-systemic-problem-of-unenforceable-contra"
 category: legal
 date: "2025-10-29"

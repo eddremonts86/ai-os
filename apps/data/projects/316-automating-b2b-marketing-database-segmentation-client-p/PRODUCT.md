@@ -4,7 +4,7 @@ slug: automating-b2b-marketing-database-segmentation-client-p
 title: "Automating B2B Marketing: database segmentation, client profiling, and contact p"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/6yr1d3qgw1-automating-b2b-marketing-database-segmentatio"
 category: marketing
 date: "2025-10-29"

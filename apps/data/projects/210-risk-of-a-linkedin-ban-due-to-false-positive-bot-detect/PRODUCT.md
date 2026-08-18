@@ -4,7 +4,7 @@ slug: risk-of-a-linkedin-ban-due-to-false-positive-bot-detect
 title: Risk of a LinkedIn ban due to false positive bot detection. Official support is unhelpful. Need a tool that produces human-readable audit trails and warning signals before the ban.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: productivity
 date: "2026-03-26"

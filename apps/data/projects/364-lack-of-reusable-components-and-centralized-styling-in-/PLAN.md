@@ -4,7 +4,7 @@ slug: lack-of-reusable-components-and-centralized-styling-in-
 title: Lack of reusable components and centralized styling in Tilda
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/91cnbgco21-lack-of-reusable-components-and-centrali"
 category: dev
 date: "2025-10-29"

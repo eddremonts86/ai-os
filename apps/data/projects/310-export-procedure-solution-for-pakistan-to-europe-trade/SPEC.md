@@ -4,7 +4,7 @@ slug: export-procedure-solution-for-pakistan-to-europe-trade
 title: Export procedure solution for Pakistan to Europe trade
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/3yrnl32wb1-export-procedure-solution-for-pakistan-to"
 category: business
 date: "2025-11-12"

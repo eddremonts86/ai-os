@@ -4,7 +4,7 @@ slug: the-monthly-headache-of-being-remote-tech-support-for-e
 title: The monthly headache of being remote tech support for elderly relatives who constantly need help with the same computer problems
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/u9prt4av11-the-monthly-headache-of-being-remote-tec"
 category: ai
 date: "2026-01-20"

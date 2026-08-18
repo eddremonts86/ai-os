@@ -4,7 +4,7 @@ slug: a-teacher-needs-a-specialized-chatgpt-for-video-editing
 title: A teacher needs a specialized «ChatGPT for video editing»
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/education/fhq9kxog51-a-teacher-needs-a-specialized-chatgpt-for-vid"
 category: education
 date: "2025-10-29"

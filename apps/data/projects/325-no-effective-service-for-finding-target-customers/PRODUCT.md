@@ -4,7 +4,7 @@ slug: no-effective-service-for-finding-target-customers
 title: No effective service for finding target customers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/8bz4qkj921-no-effective-service-for-finding-target-custo"
 category: marketing
 date: "2025-10-29"

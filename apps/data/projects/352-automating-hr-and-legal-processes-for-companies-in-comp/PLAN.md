@@ -4,7 +4,7 @@ slug: automating-hr-and-legal-processes-for-companies-in-comp
 title: "Automating HR and legal processes for companies, in compliance with the Russian Labor Code"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/career/cdysjhl381-automating-hr-and-legal-processes-for-co"
 category: career
 date: "2025-10-29"

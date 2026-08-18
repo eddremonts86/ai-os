@@ -4,7 +4,7 @@ slug: protection-against-fraudulent-schemes-in-trading-and-cr
 title: Protection against fraudulent schemes in trading and cryptocurrency investments
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/3ix68wvr71-protection-against-fraudulent-schemes-in-tra"
 category: finance
 date: "2025-10-29"

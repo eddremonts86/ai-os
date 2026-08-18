@@ -4,7 +4,7 @@ slug: the-problem-of-manual-processing-of-logistics-documenta
 title: The problem of manual processing of logistics documentation and lack of unified
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/80bgjnm951-the-problem-of-manual-processing-of-logistics"
 category: logistics
 date: "2025-10-29"

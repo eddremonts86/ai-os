@@ -4,7 +4,7 @@ slug: peer-to-peer-platform-for-verified-generic-drugs
 title: Peer-to-peer platform for verified generic drugs
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/health/tp6dgyysf1-peer-to-peer-platform-for-verified-gener"
 category: health
 date: "2025-10-10"

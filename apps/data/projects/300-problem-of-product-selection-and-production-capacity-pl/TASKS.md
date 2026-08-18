@@ -4,7 +4,7 @@ slug: problem-of-product-selection-and-production-capacity-pl
 title: Problem of product selection and production capacity planning
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/cbc7zd9891-problem-of-product-selection-and-product"
 category: business
 date: "2025-11-13"

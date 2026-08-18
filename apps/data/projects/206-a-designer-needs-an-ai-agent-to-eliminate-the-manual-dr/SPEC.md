@@ -4,7 +4,7 @@ slug: a-designer-needs-an-ai-agent-to-eliminate-the-manual-dr
 title: A designer needs an AI agent to eliminate the manual drudgery of adapting designs for mobile and tablet breakpoints.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: design
 date: "2026-04-20"

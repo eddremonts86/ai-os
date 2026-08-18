@@ -4,7 +4,7 @@ slug: vpn-users-have-nowhere-to-find-out-if-a-service-will-wo
 title: VPN users have nowhere to find out if a service will work reliably on their network \u2014 there is no up-to-date rating based on real-time quality monitoring
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/a20h8f74z1-vpn-users-have-nowhere-to-find-out-if-a"
 category: productivity
 date: "2026-01-21"

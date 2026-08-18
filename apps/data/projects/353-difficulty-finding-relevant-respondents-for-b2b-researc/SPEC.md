@@ -4,7 +4,7 @@ slug: difficulty-finding-relevant-respondents-for-b2b-researc
 title: Difficulty finding relevant respondents for b2b research
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/tphf0sjeg1-difficulty-finding-relevant-respondents"
 category: other
 date: "2025-10-29"

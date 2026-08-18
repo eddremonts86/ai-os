@@ -4,7 +4,7 @@ slug: live-threat-monitoring-for-soc-teams-with-incident-visu
 title: Live threat monitoring for SOC teams with incident visualization and prioritization
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/pijugc1v31-live-threat-monitoring-for-soc-teams-wit"
 category: dev
 date: "2025-10-29"

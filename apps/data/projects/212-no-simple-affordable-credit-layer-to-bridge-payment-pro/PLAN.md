@@ -4,7 +4,7 @@ slug: no-simple-affordable-credit-layer-to-bridge-payment-pro
 title: "No simple, affordable credit layer to bridge payment processors with user balances — developers resort to internal IOUs."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: fintech
 date: "2026-03-20"

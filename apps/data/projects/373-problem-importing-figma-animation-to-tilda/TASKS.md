@@ -4,7 +4,7 @@ slug: problem-importing-figma-animation-to-tilda
 title: Problem importing Figma animation to Tilda
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/no-code/o9hindv9z1-problem-importing-figma-animation-to-til"
 category: no-code
 date: "2025-09-17"

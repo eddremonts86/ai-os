@@ -4,7 +4,7 @@ slug: problem-of-marketing-automation-for-saas-products
 title: Problem of marketing automation for SaaS products
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/d9kmrt4211-problem-of-marketing-automation-for-saas"
 category: marketing
 date: "2025-11-12"

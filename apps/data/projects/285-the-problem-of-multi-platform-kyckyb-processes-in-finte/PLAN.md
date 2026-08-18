@@ -4,7 +4,7 @@ slug: the-problem-of-multi-platform-kyckyb-processes-in-finte
 title: The problem of multi-platform KYC/KYB processes in fintech leading to specialist
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/bqzh0d2au1-the-problem-of-multi-platform-kyckyb-processes-i"
 category: ai
 date: "2025-10-29"

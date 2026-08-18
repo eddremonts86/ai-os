@@ -4,7 +4,7 @@ slug: searching-for-direct-hotel-contacts-to-book-without-ove
 title: "Searching for direct hotel contacts to book without overpaying to aggregators, which markup prices by 15-30%"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/travel/kymbn6kp61-searching-for-direct-hotel-contacts-to-b"
 category: travel
 date: "2026-01-19"

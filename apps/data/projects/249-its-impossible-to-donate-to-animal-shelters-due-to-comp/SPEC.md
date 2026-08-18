@@ -4,7 +4,7 @@ slug: its-impossible-to-donate-to-animal-shelters-due-to-comp
 title: "It's impossible to donate to animal shelters due to complete distrust in charity fundraisers. There is no service with guaranteed transparency and audit"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/1adxzgi7b1-its-impossible-to-donate-to-animal-shelt"
 category: other
 date: "2026-01-17"

@@ -4,7 +4,7 @@ slug: frustration-with-news-overload-and-need-for-a-personali
 title: Frustration with news overload and need for a personalized telegram bot
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/09eoroiy71-frustration-with-news-overload-and-need"
 category: media
 date: "2025-09-16"

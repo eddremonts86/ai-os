@@ -4,7 +4,7 @@ slug: need-a-simple-action-tracker-for-busy-people
 title: Need a simple action tracker for busy people
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/bngxaaugn1-need-a-simple-action-tracker-for-busy-pe"
 category: productivity
 date: "2025-10-29"

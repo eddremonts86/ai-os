@@ -4,7 +4,7 @@ slug: automated-hosting-comparison-tool-for-developers
 title: Automated hosting comparison tool for developers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/djk3np9401-automated-hosting-comparison-tool-for-de"
 category: dev
 date: "2025-10-29"

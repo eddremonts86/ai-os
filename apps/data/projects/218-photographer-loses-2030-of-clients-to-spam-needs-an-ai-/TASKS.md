@@ -4,7 +4,7 @@ slug: photographer-loses-2030-of-clients-to-spam-needs-an-ai-
 title: "Photographer loses 20–30% of clients to spam — needs an AI clone with a copy of her voice to answer and book or deflect."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-03-03"

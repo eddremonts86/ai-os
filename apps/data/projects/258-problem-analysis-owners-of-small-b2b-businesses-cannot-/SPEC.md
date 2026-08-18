@@ -4,7 +4,7 @@ slug: problem-analysis-owners-of-small-b2b-businesses-cannot-
 title: "Problem Analysis: Owners of small B2B businesses cannot build a growth system. Do they need a fractional CMO, or can a SaaS be built?"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/3pb7gtrku1-problem-analysis-owners-of-small-b2b-bus"
 category: business
 date: "2026-01-06"

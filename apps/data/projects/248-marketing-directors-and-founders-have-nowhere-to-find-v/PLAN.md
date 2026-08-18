@@ -4,7 +4,7 @@ slug: marketing-directors-and-founders-have-nowhere-to-find-v
 title: "Marketing directors and founders have nowhere to find verified contractors (targeting specialists, SMM managers) — the existing search process is a lottery that wastes time and budget"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/lk4uc1xvl1-marketing-directors-and-founders-have-no"
 category: marketing
 date: "2026-01-17"

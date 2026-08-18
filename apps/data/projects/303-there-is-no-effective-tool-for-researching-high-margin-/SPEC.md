@@ -4,7 +4,7 @@ slug: there-is-no-effective-tool-for-researching-high-margin-
 title: There is no effective tool for researching high-margin and small e-commerce products
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ecommerce/uwa5w0mc31-there-is-no-effective-tool-for-researc"
 category: ecommerce
 date: "2025-11-13"

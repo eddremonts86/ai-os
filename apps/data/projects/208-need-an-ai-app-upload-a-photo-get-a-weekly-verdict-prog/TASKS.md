@@ -4,7 +4,7 @@ slug: need-an-ai-app-upload-a-photo-get-a-weekly-verdict-prog
 title: "Need an AI app: upload a photo → get a weekly verdict «progress / no progress» and advice on when to retake the photo."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-03-29"

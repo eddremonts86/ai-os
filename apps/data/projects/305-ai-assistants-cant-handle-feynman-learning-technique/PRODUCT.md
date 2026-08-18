@@ -4,7 +4,7 @@ slug: ai-assistants-cant-handle-feynman-learning-technique
 title: "AI assistants can't handle Feynman learning technique"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/education/tnjlstt8s1-ai-assistants-cant-handle-feynman-learni"
 category: education
 date: "2025-11-12"

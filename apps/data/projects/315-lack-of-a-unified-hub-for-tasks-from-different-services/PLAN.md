@@ -4,7 +4,7 @@ slug: lack-of-a-unified-hub-for-tasks-from-different-services
 title: Lack of a unified hub for tasks from different services
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/3bwf3l7wh1-lack-of-a-unified-hub-for-tasks-from-differen"
 category: productivity
 date: "2025-10-29"

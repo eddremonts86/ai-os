@@ -4,7 +4,7 @@ slug: business-setup-and-launch-challenges-in-india
 title: Business setup and launch challenges in India
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/xnzvy42z31-business-setup-and-launch-challenges-in-indi"
 category: ai
 date: "2025-10-29"

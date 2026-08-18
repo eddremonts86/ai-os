@@ -4,7 +4,7 @@ slug: no-auto-reply-for-orders-in-the-photographers-chat
 title: "No auto-reply for orders in the photographers' chat"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/r3sxzzfh11-no-auto-reply-for-orders-in-the-photogra"
 category: freelance
 date: "2025-09-08"

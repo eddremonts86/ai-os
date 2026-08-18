@@ -85,13 +85,38 @@ export function extractDate(specText) {
   return reddit ? reddit[1] : null;
 }
 
+/** Host → the `source.name` the schema allows. The host is the only durable evidence: the prose
+ *  label is removed by stripMetadataBlock on the migrating run, so a plan that has already been
+ *  formatted has nothing else left to identify where it came from. */
+const SOURCE_BY_HOST = [
+  [/(^|\.)problemhunt\.pro$/i, 'ProblemHunt'],
+  [/(^|\.)reddit\.com$/i, 'Reddit'],
+  [/(^|\.)ycombinator\.com$/i, 'HackerNews'],
+  [/(^|\.)producthunt\.com$/i, 'ProductHunt'],
+  [/(^|\.)indiehackers\.com$/i, 'IndieHackers'],
+  [/(^|\.)betalist\.com$/i, 'BetaList'],
+];
+
+export function sourceNameForUrl(url) {
+  if (!url) return null;
+  let host;
+  try { host = new URL(url).hostname; } catch { return null; }
+  for (const [re, name] of SOURCE_BY_HOST) if (re.test(host)) return name;
+  return null;
+}
+
 export function extractSource(specText) {
-  const ph = specText.match(/\*\*Fuente:\*\*\s*\[(?:ProblemHunt|.+?)\]\((https?:\/\/[^)]+)\)/);
-  if (ph) return { name: 'ProblemHunt', url: ph[1] };
-  const rd = specText.match(/\*\*Source:\*\*\s*\[(?:Reddit[^\]]*)\]\((https?:\/\/[^)]+)\)/);
+  // The label carries the name directly now: `**Source:** [BetaList](url)`. Reddit keeps its
+  // `r/<sub>` suffix, so match it separately and first.
+  const rd = specText.match(/\*\*(?:Source|Fuente):\*\*\s*\[(?:Reddit[^\]]*)\]\((https?:\/\/[^)]+)\)/);
   if (rd) return { name: 'Reddit', url: rd[1] };
+  const named = specText.match(
+    /\*\*(?:Source|Fuente):\*\*\s*\[(ProblemHunt|HackerNews|ProductHunt|IndieHackers|BetaList)\]\((https?:\/\/[^)]+)\)/,
+  );
+  if (named) return { name: named[1], url: named[2] };
   const any = specText.match(/\*\*(?:Source|Fuente):\*\*\s*\[[^\]]+\]\((https?:\/\/[^)]+)\)/);
-  return any ? { name: 'manual', url: any[1] } : null;
+  if (!any) return null;
+  return { name: sourceNameForUrl(any[1]) ?? 'manual', url: any[1] };
 }
 
 /**

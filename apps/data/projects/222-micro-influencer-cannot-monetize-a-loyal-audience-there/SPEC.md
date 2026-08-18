@@ -4,7 +4,7 @@ slug: micro-influencer-cannot-monetize-a-loyal-audience-there
 title: "Micro-influencer cannot monetize a loyal audience: there is no safe and effective platform for deals, direct sales, or tip jars that works in India."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: creator
 date: "2026-02-11"

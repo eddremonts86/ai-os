@@ -4,7 +4,7 @@ slug: a-complex-saas-needs-a-tool-for-adaptive-and-visual-exp
 title: A complex SaaS needs a tool for adaptive and visual explanation of the product to different audiences
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/kvgpxv6py1-a-complex-saas-needs-a-tool-for-adaptive"
 category: marketing
 date: "2025-12-01"

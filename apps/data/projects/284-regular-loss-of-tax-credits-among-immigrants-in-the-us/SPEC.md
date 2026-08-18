@@ -4,7 +4,7 @@ slug: regular-loss-of-tax-credits-among-immigrants-in-the-us
 title: Regular loss of tax credits among immigrants in the US
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/dpxn6fcl71-regular-loss-of-tax-credits-among-immigra"
 category: other
 date: "2025-10-29"

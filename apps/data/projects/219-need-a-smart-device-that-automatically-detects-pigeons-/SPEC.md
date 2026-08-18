@@ -4,7 +4,7 @@ slug: need-a-smart-device-that-automatically-detects-pigeons-
 title: Need a smart device that automatically detects pigeons and permanently deters them. Everything on the market is one-shot or habituation-prone.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: iot
 date: "2026-02-23"

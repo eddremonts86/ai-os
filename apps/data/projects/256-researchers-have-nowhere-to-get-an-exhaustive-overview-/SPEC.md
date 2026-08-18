@@ -4,7 +4,7 @@ slug: researchers-have-nowhere-to-get-an-exhaustive-overview-
 title: "Researchers have nowhere to get an exhaustive overview of what has been done in their field, leading to the risk of duplicating work"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/t3i6ddxjb1-researchers-have-nowhere-to-get-an-exhau"
 category: ai
 date: "2026-01-08"

@@ -4,7 +4,7 @@ slug: difficulty-of-remote-housing-rental-in-the-usa-for-fore
 title: Difficulty of remote housing rental in the USA for foreigners without credit his
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/real-estate/v0rk4jlts1-difficulty-of-remote-housing-rental-in-the-"
 category: other
 date: "2025-10-29"

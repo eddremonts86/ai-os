@@ -4,7 +4,7 @@ slug: looking-for-interested-buyers-for-export-of-dehydrated-
 title: Looking for interested buyers for export of dehydrated products from India
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/p158tshc81-looking-for-interested-buyers-for-export"
 category: marketing
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: linkedin-content-creators-operate-blindly-they-see-the-
 title: "LinkedIn content creators operate blindly: they see the results but don't understand the reasons behind their posts' success or failure"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/ja0oyjzdd1-linkedin-content-creators-operate-blindl"
 category: media
 date: "2025-12-02"

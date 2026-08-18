@@ -4,7 +4,7 @@ slug: startups-at-the-monetization-validation-stage-have-nowh
 title: Startups at the monetization validation stage have nowhere to quickly start accepting payments without company registration to test demand for their MVP.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/startups/elj91ej9k1-startups-at-the-monetization-validation"
 category: startups
 date: "2026-01-10"

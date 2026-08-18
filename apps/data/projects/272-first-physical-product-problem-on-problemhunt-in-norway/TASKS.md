@@ -4,7 +4,7 @@ slug: first-physical-product-problem-on-problemhunt-in-norway
 title: "First physical product problem on ProblemHunt: In Norway, you can't enter a building wearing shoes with spikes or roll in a bicycle with winter tires \u2014 no convenient protective pads exist"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/hardware/0xut3v4y21-first-physical-product-problem-on-proble"
 category: hardware
 date: "2025-12-10"

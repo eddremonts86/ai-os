@@ -4,7 +4,7 @@ slug: an-indie-hacker-spends-20-30-hours-manually-cold-launch
 title: "An indie hacker spends 20-30 hours manually 'cold launching' each new product in directories, Reddit, and X. Need a launching service that automates the boring parts."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: marketing
 date: "2026-01-29"

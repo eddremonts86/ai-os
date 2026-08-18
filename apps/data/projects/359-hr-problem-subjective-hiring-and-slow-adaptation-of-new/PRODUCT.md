@@ -4,7 +4,7 @@ slug: hr-problem-subjective-hiring-and-slow-adaptation-of-new
 title: "HR problem: subjective hiring and slow adaptation of new employees"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/hr/tp6dgyysf1-hr-problem-subjective-assessment-of-candidates-and-slow"
 category: hr
 date: "2025-10-10"

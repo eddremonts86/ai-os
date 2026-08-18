@@ -4,7 +4,7 @@ slug: healthcare-professionals-want-ai-for-diagnosis-document
 title: "Healthcare professionals want AI for diagnosis, documentation, and patient care — but training doesn't prepare them and no existing tool is built for their workflow."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: health
 date: "2026-03-12"

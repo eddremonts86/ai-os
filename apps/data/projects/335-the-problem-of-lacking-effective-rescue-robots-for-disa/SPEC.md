@@ -4,7 +4,7 @@ slug: the-problem-of-lacking-effective-rescue-robots-for-disa
 title: The problem of lacking effective rescue robots for disaster situations
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/m5ks0dxi31-the-problem-of-lacking-effective-rescue"
 category: other
 date: "2025-10-29"

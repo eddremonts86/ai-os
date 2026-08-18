@@ -4,7 +4,7 @@ slug: daily-content-adaptation-grind-for-marketing-teams
 title: Daily content adaptation grind for marketing teams
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/s69dtmhcb1-daily-content-adaptation-grind-for-marke"
 category: marketing
 date: "2025-09-22"

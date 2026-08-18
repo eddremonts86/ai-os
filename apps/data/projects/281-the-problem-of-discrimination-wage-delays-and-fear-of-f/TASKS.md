@@ -4,7 +4,7 @@ slug: the-problem-of-discrimination-wage-delays-and-fear-of-f
 title: "The problem of discrimination, wage delays, and fear of firing/deportation among immigrant construction workers in the USA"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ydplsur631-the-problem-of-discrimination-wage-delay"
 category: other
 date: "2025-12-01"

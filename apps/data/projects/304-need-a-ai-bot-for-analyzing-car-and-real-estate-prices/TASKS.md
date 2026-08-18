@@ -4,7 +4,7 @@ slug: need-a-ai-bot-for-analyzing-car-and-real-estate-prices
 title: Need a AI-bot for analyzing car and real estate prices
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/lbdzym5un1-need-a-ai-bot-for-analyzing-car-and-real"
 category: ai
 date: "2025-11-13"

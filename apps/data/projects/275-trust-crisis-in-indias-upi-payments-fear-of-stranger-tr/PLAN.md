@@ -4,7 +4,7 @@ slug: trust-crisis-in-indias-upi-payments-fear-of-stranger-tr
 title: "Trust crisis in India's UPI payments: fear of stranger transfers hurts business"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/jrrxhgsoh1-trust-crisis-in-indias-upi-payments-fear"
 category: finance
 date: "2025-12-07"

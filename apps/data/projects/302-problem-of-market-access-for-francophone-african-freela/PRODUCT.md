@@ -4,7 +4,7 @@ slug: problem-of-market-access-for-francophone-african-freela
 title: Problem of market access for francophone African freelancers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/kh7v4kr3i1-problem-of-market-access-for-francophone"
 category: freelance
 date: "2025-11-13"

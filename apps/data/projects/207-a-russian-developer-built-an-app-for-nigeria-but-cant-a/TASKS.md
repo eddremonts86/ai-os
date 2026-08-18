@@ -4,7 +4,7 @@ slug: a-russian-developer-built-an-app-for-nigeria-but-cant-a
 title: "A Russian developer built an app for Nigeria but can't accept payments. App stores are unavailable, PayPal and Stripe are blocked."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: fintech
 date: "2026-04-04"

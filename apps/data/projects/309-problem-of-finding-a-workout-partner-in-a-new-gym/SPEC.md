@@ -4,7 +4,7 @@ slug: problem-of-finding-a-workout-partner-in-a-new-gym
 title: Problem of finding a workout partner in a new gym
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/fitness/r2fyzjpa11-problem-of-finding-a-workout-partner-in"
 category: fitness
 date: "2025-11-12"

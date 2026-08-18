@@ -4,7 +4,7 @@ slug: problem-of-automating-culturally-relevant-content-creat
 title: Problem of automating culturally relevant content creation
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/2lqksf9vw1-problem-of-automating-culturally-relevant-cont"
 category: media
 date: "2025-10-29"

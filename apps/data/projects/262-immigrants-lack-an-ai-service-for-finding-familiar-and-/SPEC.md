@@ -4,7 +4,7 @@ slug: immigrants-lack-an-ai-service-for-finding-familiar-and-
 title: "Immigrants lack an AI service for finding familiar and verified places (pharmacies, doctors, banks) in a new country, causing daily stress and time loss"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/zlt9tnxv31-immigrants-lack-an-ai-service-for-findin"
 category: other
 date: "2026-01-03"

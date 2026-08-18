@@ -4,7 +4,7 @@ slug: search-for-an-ai-tool-to-create-high-quality-and-natura
 title: Search for an AI tool to create high-quality and natural-looking animation
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/8p64cdskm1-search-for-an-ai-tool-to-create-high-qua"
 category: ai
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: uk-property-investors-have-nowhere-to-quickly-and-relia
 title: "UK property investors have nowhere to quickly and reliably assess refurbishment costs and find verified contractors, leading to weeks of delays and financial risks."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/pu341olhc1-uk-property-investors-have-nowhere-to-qu"
 category: business
 date: "2026-01-03"

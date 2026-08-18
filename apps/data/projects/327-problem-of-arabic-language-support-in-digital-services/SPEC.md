@@ -4,7 +4,7 @@ slug: problem-of-arabic-language-support-in-digital-services
 title: Problem of arabic language support in digital services
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/taootfgpp1-problem-of-arabic-language-support-in-di"
 category: other
 date: "2025-10-29"

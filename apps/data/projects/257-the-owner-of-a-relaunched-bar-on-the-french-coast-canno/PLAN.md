@@ -4,7 +4,7 @@ slug: the-owner-of-a-relaunched-bar-on-the-french-coast-canno
 title: The owner of a relaunched bar on the French coast cannot attract an audience in the evening due to the legacy of its past format (nightclub) and its isolated location
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/tuolr4jo61-the-owner-of-a-relaunched-bar-on-the-fre"
 category: business
 date: "2026-01-07"

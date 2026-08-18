@@ -4,7 +4,7 @@ slug: high-costs-and-complexity-of-api-integration-for-launch
 title: High costs and complexity of API integration for launching a travel website
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/travel/cgh3qpuuy1-high-costs-and-complexity-of-api-integration-f"
 category: dev
 date: "2025-10-29"

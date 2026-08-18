@@ -4,7 +4,7 @@ slug: automating-the-referral-program-for-teachers-on-tilda
 title: Automating the referral program for teachers on Tilda
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/stn9lyfeo1-automating-the-referral-program-for-teac"
 category: marketing
 date: "2025-09-10"

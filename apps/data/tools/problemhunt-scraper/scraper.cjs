@@ -95,6 +95,21 @@ function findAiOsRoot(from) {
   throw new Error(`cannot locate the AI-OS root above ${from}`);
 }
 
+// Display name per source slug, for the prose label and for the frontmatter `source.name` the
+// formatter derives from it. This used to be a two-way branch — reddit, or "ProblemHunt" for
+// everything else — so every betalist, Hacker News, ProductHunt and IndieHackers capture claimed
+// to come from ProblemHunt. The values must stay inside the source.name enum in
+// apps/data/projects/_schema.json.
+const SOURCE_LABELS = {
+  problemhunt: 'ProblemHunt',
+  reddit: 'Reddit',
+  hnask: 'HackerNews',
+  hnshow: 'HackerNews',
+  producthunt: 'ProductHunt',
+  indiehackers: 'IndieHackers',
+  betalist: 'BetaList',
+};
+
 const AI_OS_ROOT   = process.env.AI_OS_ROOT || findAiOsRoot(__dirname);
 const PROJECTS_DIR = path.join(AI_OS_ROOT, 'apps', 'data', 'projects');
 const SCRAPER_DIR  = __dirname;
@@ -192,7 +207,7 @@ function generateSpec(project, folderSlug) {
   const docTitle = rawTitle || title;
   const sourceLabel = source === 'reddit'
     ? `**Source:** [Reddit r/${category}](${url})\n**Subreddit:** ${category}\n**Posted:** ${date}`
-    : `**Source:** [ProblemHunt](${url})\n**Primary category:** ${category}\n${tags ? `**Tags:** ${tags}` : ''}\n**Date:** ${date}`;
+    : `**Source:** [${SOURCE_LABELS[source] || 'ProblemHunt'}](${url})\n**Primary category:** ${category}\n${tags ? `**Tags:** ${tags}` : ''}\n**Date:** ${date}`;
 
   return `# SPEC.md — ${docTitle}
 
@@ -325,7 +340,7 @@ function generateProduct(project, folderSlug) {
 
   const sourceLine = source === 'reddit'
     ? `_Source:_ [Reddit r/${category}](${url}) · **Posted:** ${project.date || 'unknown'}`
-    : `_Source:_ [ProblemHunt](${url}) · **Category:** ${category} ${tags ? `· **Tags:** ${tags}` : ''}`;
+    : `_Source:_ [${SOURCE_LABELS[source] || 'ProblemHunt'}](${url}) · **Category:** ${category} ${tags ? `· **Tags:** ${tags}` : ''}`;
 
   return `# PRODUCT.md — ${docTitle}
 

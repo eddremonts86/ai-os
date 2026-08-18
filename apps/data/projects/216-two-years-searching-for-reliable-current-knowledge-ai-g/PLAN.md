@@ -4,7 +4,7 @@ slug: two-years-searching-for-reliable-current-knowledge-ai-g
 title: "Two years searching for reliable, current knowledge. AI gives generic answers, search engines thousands of low-quality links. Need a trustworthy digest in the user's domain."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: ai
 date: "2026-03-12"

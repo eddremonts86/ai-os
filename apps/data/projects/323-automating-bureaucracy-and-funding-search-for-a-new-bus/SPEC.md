@@ -4,7 +4,7 @@ slug: automating-bureaucracy-and-funding-search-for-a-new-bus
 title: Automating bureaucracy and funding search for a new business
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/legal/4mwk9rpy21-automating-bureaucracy-and-funding-search-for-"
 category: legal
 date: "2025-10-29"
