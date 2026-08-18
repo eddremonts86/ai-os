@@ -1,0 +1,39 @@
+---
+id: "2932"
+slug: smplkit-feature-flags-remote-config-dynamic-log-levels-
+title: "Smplkit – feature flags, remote config, dynamic log levels – solo dev"
+status: draft
+source:
+  name: manual
+  url: "https://news.ycombinator.com/item?id=49331968"
+category: show-hn
+date: "2026-08-17"
+tags: [Show HN, Product, Problem]
+---
+# Smplkit – feature flags, remote config, dynamic log levels – solo dev
+
+## Problem
+
+https://www.smplkit.com/
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

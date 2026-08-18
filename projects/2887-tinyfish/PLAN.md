@@ -1,28 +1,29 @@
-# PLAN.md — TinyFish
+---
+id: "2887"
+slug: tinyfish
+title: TinyFish
+status: draft
+source:
+  name: manual
+  url: "https://www.producthunt.com/products/tinyfish-2"
+category: product-launch
+date: "2026-08-16"
+tags: [ProductHunt, Product Launch]
+---
+# TinyFish
 
-## Tech Stack Propuesta
+## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite con Drizzle ORM
-- **Despliegue:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Arquitectura
+## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Setup proyecto + SPEC.md + DESIGN.md aprobado
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Riesgos
+## Risks
 
-- Dependencia de APIs externas
-- Alcance ambiguo sin más detalles
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -14,9 +14,7 @@ tags: [IndieHackers, interviews]
 
 ## Problem
 
-_Pendiente de análisis manual._
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Objective
 

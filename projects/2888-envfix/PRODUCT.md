@@ -1,4 +1,16 @@
-# PRODUCT.md — envfix
+---
+id: "2888"
+slug: envfix
+title: envfix
+status: draft
+source:
+  name: manual
+  url: "https://www.producthunt.com/products/envfix"
+category: product-launch
+date: "2026-08-10"
+tags: [ProductHunt, Product Launch]
+---
+# envfix
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
@@ -10,26 +22,15 @@ _Based on source brief:_ p A tiny .env doctor for Node.js projects /p p a href="
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel]_
-| _[How this solves it]_ |
-| Founders | _[What pain they feel]_
-| _[How this solves it]_ |
-| SMEs | _[What pain they feel]_
-| _[How this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -37,7 +38,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

@@ -1,4 +1,16 @@
-# TASKS.md — TinyFish
+---
+id: "2887"
+slug: tinyfish
+title: TinyFish
+status: draft
+source:
+  name: manual
+  url: "https://www.producthunt.com/products/tinyfish-2"
+category: product-launch
+date: "2026-08-16"
+tags: [ProductHunt, Product Launch]
+---
+# TinyFish
 
 ## Phase 0: Scaffold
 
@@ -12,10 +24,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implementar scaffold del proyecto
-- [ ] Implementar features core
-- [ ] Aplicar design tokens al components
-- [ ] Escribir tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

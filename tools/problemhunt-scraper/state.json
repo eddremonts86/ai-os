@@ -1,7 +1,7 @@
 {
   "lastSeenId": "730",
-  "lastRun": "2026-08-17T09:52:59.972Z",
-  "topProjectsEvaluatedAt": "2026-08-17T09:49:43Z",
+  "lastRun": "2026-08-18T10:40:59.927Z",
+  "topProjectsEvaluatedAt": "2026-08-18T10:40:59.927Z",
   "analyzed": {
     "2077-a-psychologist-needs-an-advertising-bot-that-analyzes-h": {
       "url": "https://problemhunt.pro/en/marketing/f9domkol61-a-psychologist-needs-an-advertising-bot",
@@ -15,7 +15,7 @@
     "2078-a-photographer-moving-to-the-us-needs-clients-platforms": {
       "url": "https://problemhunt.pro/en/6t7ke01t41-a-photographer-moving-to-the-us-needs-cl",
       "uid": "6t7ke01t41",
-      "title": "A photographer moving to the US needs clients. Platforms require reviews, agencies are expensive. Wants a website + ads that bring bookings. Willing to pay $100–300/month.",
+      "title": "A photographer moving to the US needs clients. Platforms require reviews, agencies are expensive. Wants a website + ads that bring bookings. Willing to pay $100\u2013300/month.",
       "category": "other",
       "tags": "Immigration,Freelance,Marketing,Career,Other",
       "source": "problemhunt",
@@ -24,7 +24,7 @@
     "2079-need-a-super-simple-ai-agent-that-learns-by-watching-yo": {
       "url": "https://problemhunt.pro/en/ai/0jcnxkipi1-need-a-super-simple-ai-agent-that-learns",
       "uid": "0jcnxkipi1",
-      "title": "Need a super simple AI agent that learns by watching your screen and automates routine tasks. Existing solutions are complex or expensive. Willing to pay $10–30/month.",
+      "title": "Need a super simple AI agent that learns by watching your screen and automates routine tasks. Existing solutions are complex or expensive. Willing to pay $10\u201330/month.",
       "category": "ai",
       "tags": "AI,Productivity,Other",
       "source": "problemhunt",
@@ -42,7 +42,7 @@
     "2081-lack-of-trusted-inspection-and-shipping-for-expensive-i": {
       "url": "https://problemhunt.pro/en/logistics/c1i0ydfpt1-lack-of-trusted-inspection-and-shipping",
       "uid": "c1i0ydfpt1",
-      "title": "Lack of trusted inspection and shipping for expensive items when selling between cities. Willing to pay $80–130 per deal.",
+      "title": "Lack of trusted inspection and shipping for expensive items when selling between cities. Willing to pay $80\u2013130 per deal.",
       "category": "logistics",
       "tags": "Logistics,Transportation,Business,Retail,Other",
       "source": "problemhunt",
@@ -123,7 +123,7 @@
     "2090-need-a-oneclick-solution-that-replaces-a-lecturers-voic": {
       "url": "https://problemhunt.pro/en/education/cuglmz7oz1-need-a-oneclick-solution-that-replaces-a",
       "uid": "cuglmz7oz1",
-      "title": "Need a one‑click solution that replaces a lecturer's voice with clear English directly inside YouTube. Current services are inconvenient. Willing to pay $12/month.",
+      "title": "Need a one\u2011click solution that replaces a lecturer's voice with clear English directly inside YouTube. Current services are inconvenient. Willing to pay $12/month.",
       "category": "education",
       "tags": "Education,Productivity,AI,Other",
       "source": "problemhunt",
@@ -132,7 +132,7 @@
     "2091-real-working-conditions-cant-be-verified-before-taking-": {
       "url": "https://problemhunt.pro/en/career/f50s1ke0t1-real-working-conditions-cant-be-verified",
       "uid": "f50s1ke0t1",
-      "title": "Real working conditions can't be verified before taking a job — reviews lie. Need a service for direct contact with former employees. Willing to pay: £50–100 when I successfully get hired.",
+      "title": "Real working conditions can't be verified before taking a job \u2014 reviews lie. Need a service for direct contact with former employees. Willing to pay: \u00a350\u2013100 when I successfully get hired.",
       "category": "career",
       "tags": "Career,AI,Other",
       "source": "problemhunt",
@@ -150,7 +150,7 @@
     "2093-a-gambling-addict-hasnt-been-able-to-quit-online-casino": {
       "url": "https://problemhunt.pro/en/psychology/dopyur7701-a-gambling-addict-hasnt-been-able-to-qui",
       "uid": "dopyur7701",
-      "title": "A gambling addict hasn’t been able to quit online casinos for years. All known methods have failed. He has three hypotheses for solving his own problem. Willing to pay $15–30/month.",
+      "title": "A gambling addict hasn\u2019t been able to quit online casinos for years. All known methods have failed. He has three hypotheses for solving his own problem. Willing to pay $15\u201330/month.",
       "category": "psychology",
       "tags": "Psychology,Other",
       "source": "problemhunt",
@@ -159,7 +159,7 @@
     "2094-a-designer-needs-an-ai-agent-to-eliminate-the-manual-dr": {
       "url": "https://problemhunt.pro/en/design/j8ay8xay71-a-designer-needs-an-ai-agent-to-eliminat",
       "uid": "j8ay8xay71",
-      "title": "A designer needs an AI agent to eliminate the manual drudgery of adapting designs for mobile/tablet. Willing to pay €20–30 per project.",
+      "title": "A designer needs an AI agent to eliminate the manual drudgery of adapting designs for mobile/tablet. Willing to pay \u20ac20\u201330 per project.",
       "category": "design",
       "tags": "Design,AI,Productivity,Other",
       "source": "problemhunt",
@@ -168,7 +168,7 @@
     "2095-a-russian-developer-built-an-app-for-nigeria-but-cant-a": {
       "url": "https://problemhunt.pro/en/finance/y3ik6f8sr1-a-russian-developer-built-an-app-for-nig",
       "uid": "y3ik6f8sr1",
-      "title": "A Russian developer built an app for Nigeria but can't accept payments. App stores are unavailable, direct providers are complex. Needs a simple solution. Budget $500–700.",
+      "title": "A Russian developer built an app for Nigeria but can't accept payments. App stores are unavailable, direct providers are complex. Needs a simple solution. Budget $500\u2013700.",
       "category": "finance",
       "tags": "Finance,Legal,Dev,Other",
       "source": "problemhunt",
@@ -177,7 +177,7 @@
     "2096-need-an-ai-app-upload-a-photo-get-a-weekly-verdict-prog": {
       "url": "https://problemhunt.pro/en/fitness/xhutexah41-need-an-ai-app-upload-a-photo-get-a-week",
       "uid": "xhutexah41",
-      "title": "Need an AI app: upload a photo → get a weekly verdict «progress / no progress» and advice on when to increase load. Existing trackers either lack AI or are too complex. Willing to pay $100/year.",
+      "title": "Need an AI app: upload a photo \u2192 get a weekly verdict \u00abprogress / no progress\u00bb and advice on when to increase load. Existing trackers either lack AI or are too complex. Willing to pay $100/year.",
       "category": "fitness",
       "tags": "Fitness,AI,Other",
       "source": "problemhunt",
@@ -213,7 +213,7 @@
     "2100-no-simple-affordable-credit-layer-to-bridge-payment-pro": {
       "url": "https://problemhunt.pro/en/dev/of852me891-no-simple-affordable-credit-layer-to-bri",
       "uid": "of852me891",
-      "title": "No simple, affordable «credit layer» to bridge payment processors with user balances — developers rebuild credit tracking, consumption logic, and refunds for every app.",
+      "title": "No simple, affordable \u00abcredit layer\u00bb to bridge payment processors with user balances \u2014 developers rebuild credit tracking, consumption logic, and refunds for every app.",
       "category": "dev",
       "tags": "Dev,Business,Finance,Other",
       "source": "problemhunt",
@@ -222,7 +222,7 @@
     "2101-designers-are-losing-their-bearings-in-the-era-of-ai-it": {
       "url": "https://problemhunt.pro/en/design/b17z60rdb1-designers-are-losing-their-bearings-in-t",
       "uid": "b17z60rdb1",
-      "title": "Designers are losing their bearings in the era of AI — it's unclear which direction to develop in, which stack to master, and how to become a «highly valuable specialist».",
+      "title": "Designers are losing their bearings in the era of AI \u2014 it's unclear which direction to develop in, which stack to master, and how to become a \u00abhighly valuable specialist\u00bb.",
       "category": "design",
       "tags": "Design,Education,Career,AI,Other",
       "source": "problemhunt",
@@ -231,7 +231,7 @@
     "2102-5-partners-5-different-cv-templates-managers-spend-2040": {
       "url": "https://problemhunt.pro/en/career/u2jsc5fxc1-5-partners-5-different-cv-templates-mana",
       "uid": "u2jsc5fxc1",
-      "title": "5 partners — 5 different CV templates. Managers spend 20–40 minutes on each adaptation, up to 15 times a week. Over a year of this routine. No ready-made solutions found.",
+      "title": "5 partners \u2014 5 different CV templates. Managers spend 20\u201340 minutes on each adaptation, up to 15 times a week. Over a year of this routine. No ready-made solutions found.",
       "category": "career",
       "tags": "Career,AI,Other",
       "source": "problemhunt",
@@ -240,7 +240,7 @@
     "2103-healthcare-professionals-want-ai-for-diagnosis-document": {
       "url": "https://problemhunt.pro/en/education/6p14z4bz51-healthcare-professionals-want-ai-for-dia",
       "uid": "6p14z4bz51",
-      "title": "Healthcare professionals want AI for diagnosis, documentation, and patient care — but training doesn't scale and tools feel too technical. Need a simple, clinically relevant path.",
+      "title": "Healthcare professionals want AI for diagnosis, documentation, and patient care \u2014 but training doesn't scale and tools feel too technical. Need a simple, clinically relevant path.",
       "category": "education",
       "tags": "Education,Health,AI,Other",
       "source": "problemhunt",
@@ -258,7 +258,7 @@
     "2105-procurement-data-quality-suffers-supplier-contacts-outd": {
       "url": "https://problemhunt.pro/en/business/1xuloij3k1-procurement-data-quality-suffers-supplie",
       "uid": "1xuloij3k1",
-      "title": "Procurement data quality suffers — supplier contacts outdated, prices stale, history lost. Existing solutions too expensive or don't fix data quality. Need a simple tool for $10/month.",
+      "title": "Procurement data quality suffers \u2014 supplier contacts outdated, prices stale, history lost. Existing solutions too expensive or don't fix data quality. Need a simple tool for $10/month.",
       "category": "business",
       "tags": "Business,Finance,Other",
       "source": "problemhunt",
@@ -267,7 +267,7 @@
     "2106-photographer-loses-2030-of-clients-to-spam-needs-an-ai-": {
       "url": "https://problemhunt.pro/en/marketing/rlr11kl8y1-photographer-loses-2030-of-clients-to-sp",
       "uid": "rlr11kl8y1",
-      "title": "Photographer loses 20–30% of clients to spam — needs an AI clone with a copy of her voice to answer calls and book sessions.",
+      "title": "Photographer loses 20\u201330% of clients to spam \u2014 needs an AI clone with a copy of her voice to answer calls and book sessions.",
       "category": "marketing",
       "tags": "Marketing,AI,Freelance,Business,Other",
       "source": "problemhunt",
@@ -339,7 +339,7 @@
     "2114-a-startup-founder-loses-focus-and-productivity-juggling": {
       "url": "https://problemhunt.pro/en/productivity/nglbafr5o1-a-startup-founder-loses-focus-and-produc",
       "uid": "nglbafr5o1",
-      "title": "A startup founder loses focus and productivity juggling 5-7 tools for a single project. Existing «all-in-one» platforms don't provide the feel of a unified workspace.",
+      "title": "A startup founder loses focus and productivity juggling 5-7 tools for a single project. Existing \u00aball-in-one\u00bb platforms don't provide the feel of a unified workspace.",
       "category": "productivity",
       "tags": "Productivity,Startups,Other",
       "source": "problemhunt",
@@ -375,7 +375,7 @@
     "2118-an-indie-hacker-spends-20-30-hours-manually-cold-launch": {
       "url": "https://problemhunt.pro/en/ai/1trzcj1cz1-an-indie-hacker-spends-20-30-hours-manua",
       "uid": "1trzcj1cz1",
-      "title": "An indie hacker spends 20-30 hours manually «cold launching» each new product in directories, Reddit, and blogs. There is no tool that fully automates this and proves its effectiveness.",
+      "title": "An indie hacker spends 20-30 hours manually \u00abcold launching\u00bb each new product in directories, Reddit, and blogs. There is no tool that fully automates this and proves its effectiveness.",
       "category": "ai",
       "tags": "AI,Media,Marketing,Startups,Other",
       "source": "problemhunt",
@@ -402,7 +402,7 @@
     "2121-constantly-forgetting-minor-tasks-due-to-the-impulsive-": {
       "url": "https://problemhunt.pro/en/productivity/6hmyvb2mk1-constantly-forgetting-minor-tasks-due-to",
       "uid": "6hmyvb2mk1",
-      "title": "Constantly forgetting minor tasks due to the impulsive habit of «swiping» reminders away. Needs a tool that breaks this behavioral pattern.",
+      "title": "Constantly forgetting minor tasks due to the impulsive habit of \u00abswiping\u00bb reminders away. Needs a tool that breaks this behavioral pattern.",
       "category": "productivity",
       "tags": "Productivity,Psychology,Other",
       "source": "problemhunt",
@@ -411,7 +411,7 @@
     "2122-its-impossible-to-order-truly-fresh-farm-vegetables-and": {
       "url": "https://problemhunt.pro/en/food/a6dgf1icc1-its-impossible-to-order-truly-fresh-farm",
       "uid": "a6dgf1icc1",
-      "title": "It's impossible to order truly fresh farm vegetables and bread through delivery aggregators — product quality is low, and you have to go to the market yourself.",
+      "title": "It's impossible to order truly fresh farm vegetables and bread through delivery aggregators \u2014 product quality is low, and you have to go to the market yourself.",
       "category": "food",
       "tags": "Food,Logistics,Retail,Other",
       "source": "problemhunt",
@@ -429,7 +429,7 @@
     "2124-need-an-ai-jarvis-that-turns-chaotic-voicetext-updates-": {
       "url": "https://problemhunt.pro/en/ai/kmtor7kz31-need-an-ai-jarvis-that-turns-chaotic-voi",
       "uid": "kmtor7kz31",
-      "title": "Need an AI «Jarvis» that turns chaotic voice/text updates into automatically structured tasks, projects, and dashboards for managing all of life and work.",
+      "title": "Need an AI \u00abJarvis\u00bb that turns chaotic voice/text updates into automatically structured tasks, projects, and dashboards for managing all of life and work.",
       "category": "ai",
       "tags": "AI,Productivity,Other",
       "source": "problemhunt",
@@ -438,7 +438,7 @@
     "2125-vpn-users-have-nowhere-to-find-out-if-a-service-will-wo": {
       "url": "https://problemhunt.pro/en/productivity/a20h8f74z1-vpn-users-have-nowhere-to-find-out-if-a",
       "uid": "a20h8f74z1",
-      "title": "VPN users have nowhere to find out if a service will work reliably on their network — there is no up-to-date rating based on real-time quality monitoring.",
+      "title": "VPN users have nowhere to find out if a service will work reliably on their network \u2014 there is no up-to-date rating based on real-time quality monitoring.",
       "category": "productivity",
       "tags": "Productivity,Other",
       "source": "problemhunt",
@@ -537,7 +537,7 @@
     "2136-marketing-directors-and-founders-have-nowhere-to-find-v": {
       "url": "https://problemhunt.pro/en/marketing/lk4uc1xvl1-marketing-directors-and-founders-have-no",
       "uid": "lk4uc1xvl1",
-      "title": "Marketing directors and founders have nowhere to find verified contractors (targeting specialists, SMM managers) — the existing search process is a lottery that wastes time and budget",
+      "title": "Marketing directors and founders have nowhere to find verified contractors (targeting specialists, SMM managers) \u2014 the existing search process is a lottery that wastes time and budget",
       "category": "marketing",
       "tags": "Marketing,Business,Freelance,Career,Other",
       "source": "problemhunt",
@@ -555,7 +555,7 @@
     "2138-aviation-safety-expert-seeks-a-technical-co-founder-to-": {
       "url": "https://problemhunt.pro/en/ai/9g9de9og51-aviation-safety-expert-seeks-a-technical",
       "uid": "9g9de9og51",
-      "title": "Aviation safety expert seeks a technical co-founder to develop an AI solution that prevents daily collisions between aircraft and birds/drones — a problem causing massive losses.",
+      "title": "Aviation safety expert seeks a technical co-founder to develop an AI solution that prevents daily collisions between aircraft and birds/drones \u2014 a problem causing massive losses.",
       "category": "ai",
       "tags": "AI,Dev,Logistics,Travel,Hardware,Other",
       "source": "problemhunt",
@@ -591,7 +591,7 @@
     "2142-solar-installation-companies-lack-a-platform-for-end-to": {
       "url": "https://problemhunt.pro/en/business/ldt9cicmy1-solar-installation-companies-lack-a-plat",
       "uid": "ldt9cicmy1",
-      "title": "Solar installation companies lack a platform for end-to-end tracking of a customer's project — from sale to official approval, causing complaints and dissatisfaction",
+      "title": "Solar installation companies lack a platform for end-to-end tracking of a customer's project \u2014 from sale to official approval, causing complaints and dissatisfaction",
       "category": "business",
       "tags": "Business,Marketing,Other",
       "source": "problemhunt",
@@ -600,7 +600,7 @@
     "2143-its-difficult-for-parents-of-newborns-in-india-to-organ": {
       "url": "https://problemhunt.pro/en/health/o94v8yjuj1-its-difficult-for-parents-of-newborns-in",
       "uid": "o94v8yjuj1",
-      "title": "It's difficult for parents of newborns in India to organize vaccination: there is no service for easy doctor search and a «turnkey» process provision.",
+      "title": "It's difficult for parents of newborns in India to organize vaccination: there is no service for easy doctor search and a \u00abturnkey\u00bb process provision.",
       "category": "health",
       "tags": "Health,Other",
       "source": "problemhunt",
@@ -681,7 +681,7 @@
     "2152-startup-founders-have-nowhere-to-order-quality-in-depth": {
       "url": "https://problemhunt.pro/en/startups/l74cvddaj1-startup-founders-have-nowhere-to-order-q",
       "uid": "l74cvddaj1",
-      "title": "Startup founders have nowhere to order quality, in-depth research on specific projects or niches — existing services provide superficial and unreliable reports",
+      "title": "Startup founders have nowhere to order quality, in-depth research on specific projects or niches \u2014 existing services provide superficial and unreliable reports",
       "category": "startups",
       "tags": "Startups,AI,Other",
       "source": "problemhunt",
@@ -690,7 +690,7 @@
     "2153-clients-struggle-to-verify-the-competence-and-pricing-h": {
       "url": "https://problemhunt.pro/en/freelance/ousnmj63l1-clients-struggle-to-verify-the-competenc",
       "uid": "ousnmj63l1",
-      "title": "Clients struggle to verify the competence and pricing honesty of freelancers when creating websites — there is no AI tool for real-time proposal analysis.",
+      "title": "Clients struggle to verify the competence and pricing honesty of freelancers when creating websites \u2014 there is no AI tool for real-time proposal analysis.",
       "category": "freelance",
       "tags": "Freelance,AI,Other",
       "source": "problemhunt",
@@ -735,7 +735,7 @@
     "2158-people-with-a-criminal-past-cannot-reintegrate-into-soc": {
       "url": "https://problemhunt.pro/en/career/krxg2n1ge1-people-with-a-criminal-past-cannot-reint",
       "uid": "krxg2n1ge1",
-      "title": "People with a criminal past cannot reintegrate into society because their real skills are «invisible»",
+      "title": "People with a criminal past cannot reintegrate into society because their real skills are \u00abinvisible\u00bb",
       "category": "career",
       "tags": "Career,Legal,AI,Other",
       "source": "problemhunt",
@@ -753,7 +753,7 @@
     "2160-first-physical-product-problem-on-problemhunt-in-norway": {
       "url": "https://problemhunt.pro/en/hardware/0xut3v4y21-first-physical-product-problem-on-proble",
       "uid": "0xut3v4y21",
-      "title": "First physical product problem on ProblemHunt: In Norway, you can't enter a building wearing shoes with spikes or roll in a bicycle with winter tires — no convenient protective pads exist",
+      "title": "First physical product problem on ProblemHunt: In Norway, you can't enter a building wearing shoes with spikes or roll in a bicycle with winter tires \u2014 no convenient protective pads exist",
       "category": "hardware",
       "tags": "Hardware,Other",
       "source": "problemhunt",
@@ -924,7 +924,7 @@
     "2179-automation-of-resume-filling-for-recruiters-saving-40-6": {
       "url": "https://problemhunt.pro/en/career/0s98al0y01-automation-of-resume-filling-for-recruit",
       "uid": "0s98al0y01",
-      "title": "Automation of resume filling for recruiters — saving 40-60 minutes on each candidate",
+      "title": "Automation of resume filling for recruiters \u2014 saving 40-60 minutes on each candidate",
       "category": "career",
       "tags": "Career,AI,Other",
       "source": "problemhunt",
@@ -987,7 +987,7 @@
     "2186-a-teacher-needs-a-specialized-chatgpt-for-video-editing": {
       "url": "https://problemhunt.pro/en/education/15ig65exr1-a-teacher-needs-a-specialized-chatgpt-fo",
       "uid": "15ig65exr1",
-      "title": "A teacher needs a specialized «ChatGPT for video editing»",
+      "title": "A teacher needs a specialized \u00abChatGPT for video editing\u00bb",
       "category": "education",
       "tags": "Education,Media,AI,Other",
       "source": "problemhunt",
@@ -1653,7 +1653,7 @@
     "2260-courier-app-navigation-and-grouping-issues-in-vozy-ozon": {
       "url": "https://problemhunt.pro/en/logistics/69hxkoys91-courier-app-navigation-and-grouping-issu",
       "uid": "69hxkoys91",
-      "title": "Courier app navigation and grouping issues in «Vozy Ozon»",
+      "title": "Courier app navigation and grouping issues in \u00abVozy Ozon\u00bb",
       "category": "logistics",
       "tags": "Logistics",
       "source": "problemhunt",
@@ -1671,7 +1671,7 @@
     "2262-need-for-instant-notifications-about-discounts-at-vkusv": {
       "url": "https://problemhunt.pro/en/retail/lfz3mtpit1-need-for-instant-notifications-about-dis",
       "uid": "lfz3mtpit1",
-      "title": "Need for instant notifications about discounts at «Vkusvill» and «Perekrestok»",
+      "title": "Need for instant notifications about discounts at \u00abVkusvill\u00bb and \u00abPerekrestok\u00bb",
       "category": "retail",
       "tags": "Retail",
       "source": "problemhunt",
@@ -1842,7 +1842,7 @@
     "2281-book-review-animal-farm": {
       "url": "https://news.ycombinator.com/item?id=49326904",
       "uid": "49326904",
-      "title": "Book Review – Animal Farm",
+      "title": "Book Review \u2013 Animal Farm",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -2022,7 +2022,7 @@
     "2301-truemath-an-open-source-exact-symbolic-math-tool": {
       "url": "https://news.ycombinator.com/item?id=49318921",
       "uid": "49318921",
-      "title": "TrueMath – An open-source exact symbolic math tool",
+      "title": "TrueMath \u2013 An open-source exact symbolic math tool",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -2301,7 +2301,7 @@
     "2332-open-commonplace-protecting-knowledge-from-being-genera": {
       "url": "https://news.ycombinator.com/item?id=49308416",
       "uid": "49308416",
-      "title": "Open Commonplace – Protecting knowledge from being generalized by AI",
+      "title": "Open Commonplace \u2013 Protecting knowledge from being generalized by AI",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -2850,7 +2850,7 @@
     "2393-small-team-devs-how-do-you-collab-with-uiux-designers-i": {
       "url": "https://news.ycombinator.com/item?id=49286334",
       "uid": "49286334",
-      "title": "Small team devs – how do you collab with UI/UX designers in the AI era?",
+      "title": "Small team devs \u2013 how do you collab with UI/UX designers in the AI era?",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -3291,7 +3291,7 @@
     "2442-storecraft-multipurpose-woocommerce-theme": {
       "url": "https://news.ycombinator.com/item?id=49267867",
       "uid": "49267867",
-      "title": "StoreCraft – Multipurpose WooCommerce Theme",
+      "title": "StoreCraft \u2013 Multipurpose WooCommerce Theme",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -3318,7 +3318,7 @@
     "2445-live-hn-project-show-and-tell-on-fediverse-happening-ny": {
       "url": "https://news.ycombinator.com/item?id=49267833",
       "uid": "49267833",
-      "title": "Live HN Project Show and Tell on \"Fediverse\" – Happening NYOW",
+      "title": "Live HN Project Show and Tell on \"Fediverse\" \u2013 Happening NYOW",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -3408,7 +3408,7 @@
     "2455-p-a-simple-and-clear-programming-language": {
       "url": "https://news.ycombinator.com/item?id=49262401",
       "uid": "49262401",
-      "title": "P/ – A simple and clear programming language",
+      "title": "P/ \u2013 A simple and clear programming language",
       "category": "ask-hn",
       "tags": "Ask HN,Problem",
       "source": "hnask",
@@ -3606,7 +3606,7 @@
     "2477-octoweb-a-keyboard-first-browser-with-ai-as-a-citizen": {
       "url": "https://news.ycombinator.com/item?id=49328342",
       "uid": "49328342",
-      "title": "Octoweb – A Keyboard-First Browser with AI as a Citizen",
+      "title": "Octoweb \u2013 A Keyboard-First Browser with AI as a Citizen",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3624,7 +3624,7 @@
     "2479-mdv-preview-share-verify-and-fix-markdown-from-your-ter": {
       "url": "https://news.ycombinator.com/item?id=49328175",
       "uid": "49328175",
-      "title": "Mdv – preview, share, verify and fix Markdown from your terminal",
+      "title": "Mdv \u2013 preview, share, verify and fix Markdown from your terminal",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3633,7 +3633,7 @@
     "2480-selvum-a-password-manager-designed-to-outlive-its-devel": {
       "url": "https://news.ycombinator.com/item?id=49328153",
       "uid": "49328153",
-      "title": "Selvum – a password manager designed to outlive its developer",
+      "title": "Selvum \u2013 a password manager designed to outlive its developer",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3642,7 +3642,7 @@
     "2481-hrconvert2-a-public-facing-self-hosted-file-conversion-": {
       "url": "https://news.ycombinator.com/item?id=49328010",
       "uid": "49328010",
-      "title": "HRConvert2 – A public facing self hosted file conversion server",
+      "title": "HRConvert2 \u2013 A public facing self hosted file conversion server",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3660,7 +3660,7 @@
     "2483-winuse-cross-platform-desktop-gui-automation-for-ai-age": {
       "url": "https://news.ycombinator.com/item?id=49327992",
       "uid": "49327992",
-      "title": "Winuse – Cross-platform desktop GUI automation for AI agents",
+      "title": "Winuse \u2013 Cross-platform desktop GUI automation for AI agents",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3669,7 +3669,7 @@
     "2484-bratify-live-speech-into-charlie-xcx-brat": {
       "url": "https://news.ycombinator.com/item?id=49327725",
       "uid": "49327725",
-      "title": "Bratify – Live speech into charlie xcx brat",
+      "title": "Bratify \u2013 Live speech into charlie xcx brat",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3687,7 +3687,7 @@
     "2486-desktopcolorscom-a-museum-for-solid-background-colors-o": {
       "url": "https://news.ycombinator.com/item?id=49327643",
       "uid": "49327643",
-      "title": "Desktopcolors.com – A museum for solid background colors of classic OS",
+      "title": "Desktopcolors.com \u2013 A museum for solid background colors of classic OS",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3696,7 +3696,7 @@
     "2487-rax-compute-gateway-one-api-for-openai-anthropic-and-ge": {
       "url": "https://news.ycombinator.com/item?id=49327446",
       "uid": "49327446",
-      "title": "RAX Compute Gateway – One API for OpenAI, Anthropic, and Gemini",
+      "title": "RAX Compute Gateway \u2013 One API for OpenAI, Anthropic, and Gemini",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3714,7 +3714,7 @@
     "2489-tapdiary-a-one-tap-time-and-count-tracker-works-offline": {
       "url": "https://news.ycombinator.com/item?id=49327347",
       "uid": "49327347",
-      "title": "TapDiary – a one-tap time and count tracker, works offline",
+      "title": "TapDiary \u2013 a one-tap time and count tracker, works offline",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3795,7 +3795,7 @@
     "2498-continuum-financial-simulations-for-diy-multimillionair": {
       "url": "https://news.ycombinator.com/item?id=49325445",
       "uid": "49325445",
-      "title": "Continuum – Financial simulations for DIY multimillionaires",
+      "title": "Continuum \u2013 Financial simulations for DIY multimillionaires",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3804,7 +3804,7 @@
     "2499-convertix-fast-100-in-browser-media-and-qr-tools": {
       "url": "https://news.ycombinator.com/item?id=49325283",
       "uid": "49325283",
-      "title": "Convertix – Fast, 100% in-browser media and QR tools",
+      "title": "Convertix \u2013 Fast, 100% in-browser media and QR tools",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3822,7 +3822,7 @@
     "2501-slick-i-built-a-search-engine-where-you-control-the-ran": {
       "url": "https://news.ycombinator.com/item?id=49324673",
       "uid": "49324673",
-      "title": "Slick – I built a search engine where you control the ranking",
+      "title": "Slick \u2013 I built a search engine where you control the ranking",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3831,7 +3831,7 @@
     "2502-punyecs-a-puny-ecs-library-based-on-class-attributes-an": {
       "url": "https://news.ycombinator.com/item?id=49324566",
       "uid": "49324566",
-      "title": "Punyecs – A puny ECS library based on class attributes and querying",
+      "title": "Punyecs \u2013 A puny ECS library based on class attributes and querying",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3840,7 +3840,7 @@
     "2503-tkeeper-oss-machine-identities-without-a-single-point-o": {
       "url": "https://news.ycombinator.com/item?id=49324484",
       "uid": "49324484",
-      "title": "TKeeper – OSS machine identities without a single point of compromise",
+      "title": "TKeeper \u2013 OSS machine identities without a single point of compromise",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3867,7 +3867,7 @@
     "2506-one-page-per-betting-market-21-books-odds-every-outcome": {
       "url": "https://news.ycombinator.com/item?id=49323991",
       "uid": "49323991",
-      "title": "One page per betting market – 21 books' odds, every outcome graded",
+      "title": "One page per betting market \u2013 21 books' odds, every outcome graded",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3876,7 +3876,7 @@
     "2507-vocalcode-push-to-talk-dictation-for-ai-coding-agents-o": {
       "url": "https://news.ycombinator.com/item?id=49323797",
       "uid": "49323797",
-      "title": "VocalCode – push-to-talk dictation for AI coding agents, on-device",
+      "title": "VocalCode \u2013 push-to-talk dictation for AI coding agents, on-device",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3885,7 +3885,7 @@
     "2508-gitfc-turn-your-github-profile-into-a-football-card": {
       "url": "https://news.ycombinator.com/item?id=49323756",
       "uid": "49323756",
-      "title": "GitFC – Turn your GitHub profile into a football card",
+      "title": "GitFC \u2013 Turn your GitHub profile into a football card",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3894,7 +3894,7 @@
     "2509-remarc-provide-more-contextual-and-structured-feedback-": {
       "url": "https://news.ycombinator.com/item?id=49323749",
       "uid": "49323749",
-      "title": "Remarc – provide more contextual and structured feedback to AI agents",
+      "title": "Remarc \u2013 provide more contextual and structured feedback to AI agents",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3912,7 +3912,7 @@
     "2511-solidsync-poormans-solidworks-pdm": {
       "url": "https://news.ycombinator.com/item?id=49323730",
       "uid": "49323730",
-      "title": "SolidSync – Poorman's Solidworks PDM",
+      "title": "SolidSync \u2013 Poorman's Solidworks PDM",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3930,7 +3930,7 @@
     "2513-conwai-independent-local-ai-platform-and-developer-api": {
       "url": "https://news.ycombinator.com/item?id=49323625",
       "uid": "49323625",
-      "title": "Conw.ai – Independent local AI platform and developer API",
+      "title": "Conw.ai \u2013 Independent local AI platform and developer API",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3966,7 +3966,7 @@
     "2517-world-pop-a-world-map-with-countries-resized-by-populat": {
       "url": "https://news.ycombinator.com/item?id=49323189",
       "uid": "49323189",
-      "title": "World Pop – A world map with countries resized by population, 1800–2100",
+      "title": "World Pop \u2013 A world map with countries resized by population, 1800\u20132100",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -3993,7 +3993,7 @@
     "2520-terraforming-with-minimal-founders-method-for-diversity": {
       "url": "https://news.ycombinator.com/item?id=49323094",
       "uid": "49323094",
-      "title": "Terraforming with Minimal Founders – Method for Diversity from Two?",
+      "title": "Terraforming with Minimal Founders \u2013 Method for Diversity from Two?",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4020,7 +4020,7 @@
     "2523-agent6-coding-agent-with-jailed-commands-and-editable-s": {
       "url": "https://news.ycombinator.com/item?id=49322630",
       "uid": "49322630",
-      "title": "Agent6 – coding agent with jailed commands and editable state machines",
+      "title": "Agent6 \u2013 coding agent with jailed commands and editable state machines",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4029,7 +4029,7 @@
     "2524-declarative-forms-await-an-object-the-way-prompt-awaits": {
       "url": "https://news.ycombinator.com/item?id=49322603",
       "uid": "49322603",
-      "title": "Declarative-forms – await an object the way prompt() awaits a string",
+      "title": "Declarative-forms \u2013 await an object the way prompt() awaits a string",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4038,7 +4038,7 @@
     "2525-wiredoctor-spring-boot-startup-and-bean-cycle-analyzer": {
       "url": "https://news.ycombinator.com/item?id=49322570",
       "uid": "49322570",
-      "title": "WireDoctor – Spring Boot startup and bean cycle analyzer",
+      "title": "WireDoctor \u2013 Spring Boot startup and bean cycle analyzer",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4047,7 +4047,7 @@
     "2526-swarmsim-computational-simulations-of-emergent-flocking": {
       "url": "https://news.ycombinator.com/item?id=49322337",
       "uid": "49322337",
-      "title": "SwarmSim – Computational simulations of emergent flocking",
+      "title": "SwarmSim \u2013 Computational simulations of emergent flocking",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4065,7 +4065,7 @@
     "2528-local-first-note-taking-web-app-powered-by-sqlite-wasm-": {
       "url": "https://news.ycombinator.com/item?id=49322163",
       "uid": "49322163",
-      "title": "Local-first note taking web app powered by SQLite WASM – notem",
+      "title": "Local-first note taking web app powered by SQLite WASM \u2013 notem",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4074,7 +4074,7 @@
     "2529-atlasnvim-review-prs-inside-neovim": {
       "url": "https://news.ycombinator.com/item?id=49322106",
       "uid": "49322106",
-      "title": "Atlas.nvim – Review PRs Inside Neovim",
+      "title": "Atlas.nvim \u2013 Review PRs Inside Neovim",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4083,7 +4083,7 @@
     "2530-flyntjs-22kb-zero-build-csp-safe-reactivity-library-for": {
       "url": "https://news.ycombinator.com/item?id=49322015",
       "uid": "49322015",
-      "title": "Flynt.js – 2.2kb, zero-build, CSP-safe reactivity library for MPAs",
+      "title": "Flynt.js \u2013 2.2kb, zero-build, CSP-safe reactivity library for MPAs",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4110,7 +4110,7 @@
     "2533-shippinio-your-saas-product-deserves-to-be-discovered": {
       "url": "https://news.ycombinator.com/item?id=49321928",
       "uid": "49321928",
-      "title": "Shippin.io – Your SaaS product deserves to be discovered",
+      "title": "Shippin.io \u2013 Your SaaS product deserves to be discovered",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4119,7 +4119,7 @@
     "2534-the-wanderer-cozy-weekend-game-with-no-objective": {
       "url": "https://news.ycombinator.com/item?id=49321877",
       "uid": "49321877",
-      "title": "The wanderer – cozy weekend game with no objective",
+      "title": "The wanderer \u2013 cozy weekend game with no objective",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4128,7 +4128,7 @@
     "2535-the-gateless-gate-ancient-zen-text-as-50-procedural-3d-": {
       "url": "https://news.ycombinator.com/item?id=49321831",
       "uid": "49321831",
-      "title": "The Gateless Gate – Ancient Zen text as 50 procedural 3D scenes",
+      "title": "The Gateless Gate \u2013 Ancient Zen text as 50 procedural 3D scenes",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4146,7 +4146,7 @@
     "2537-diamonds-dots-and-boxes-but-with-diagonals-and-area-sco": {
       "url": "https://news.ycombinator.com/item?id=49321516",
       "uid": "49321516",
-      "title": "Diamonds – Dots and Boxes, but with diagonals and area scoring",
+      "title": "Diamonds \u2013 Dots and Boxes, but with diagonals and area scoring",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4164,7 +4164,7 @@
     "2539-rungraph-see-your-ai-coding-agent-runs-as-a-graph": {
       "url": "https://news.ycombinator.com/item?id=49321388",
       "uid": "49321388",
-      "title": "Rungraph – See your AI coding-agent runs as a graph",
+      "title": "Rungraph \u2013 See your AI coding-agent runs as a graph",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4173,7 +4173,7 @@
     "2540-vianj-an-app-that-makes-nj-transit-ticketing-less-painf": {
       "url": "https://news.ycombinator.com/item?id=49321344",
       "uid": "49321344",
-      "title": "ViaNJ – an app that makes NJ Transit ticketing less painful",
+      "title": "ViaNJ \u2013 an app that makes NJ Transit ticketing less painful",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4182,7 +4182,7 @@
     "2541-swarmsim-computational-simulations-of-emergent-flocking": {
       "url": "https://news.ycombinator.com/item?id=49321098",
       "uid": "49321098",
-      "title": "SwarmSim – Computational simulations of emergent flocking",
+      "title": "SwarmSim \u2013 Computational simulations of emergent flocking",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4227,7 +4227,7 @@
     "2546-ablaut-an-open-source-german-verb-conjugator": {
       "url": "https://news.ycombinator.com/item?id=49320822",
       "uid": "49320822",
-      "title": "Ablaut – an open source German verb conjugator",
+      "title": "Ablaut \u2013 an open source German verb conjugator",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4254,7 +4254,7 @@
     "2549-kad-open-source-habit-tracker-for-ios": {
       "url": "https://news.ycombinator.com/item?id=49320375",
       "uid": "49320375",
-      "title": "Kadō – open-source habit tracker for iOS",
+      "title": "Kad\u014d \u2013 open-source habit tracker for iOS",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4263,7 +4263,7 @@
     "2550-titan-fast-lightweight-real-time-message-dispatch-made-": {
       "url": "https://news.ycombinator.com/item?id=49320338",
       "uid": "49320338",
-      "title": "Titan – Fast, lightweight real-time message dispatch made simple",
+      "title": "Titan \u2013 Fast, lightweight real-time message dispatch made simple",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4281,7 +4281,7 @@
     "2552-selfuniversity-learn-system-engineering-via-interactive": {
       "url": "https://news.ycombinator.com/item?id=49320280",
       "uid": "49320280",
-      "title": "SelfUniversity – learn system engineering via interactive puzzles",
+      "title": "SelfUniversity \u2013 learn system engineering via interactive puzzles",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4290,7 +4290,7 @@
     "2553-offshoot-copy-on-write-branching-for-stock-sqlite-files": {
       "url": "https://news.ycombinator.com/item?id=49320181",
       "uid": "49320181",
-      "title": "Offshoot – Copy-on-write branching for stock SQLite files",
+      "title": "Offshoot \u2013 Copy-on-write branching for stock SQLite files",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4299,7 +4299,7 @@
     "2554-amitabhc-a-programming-language-made-of-amitabh-bachcha": {
       "url": "https://news.ycombinator.com/item?id=49320178",
       "uid": "49320178",
-      "title": "AmitabhC – a programming language made of Amitabh Bachchan dialogues",
+      "title": "AmitabhC \u2013 a programming language made of Amitabh Bachchan dialogues",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4308,7 +4308,7 @@
     "2555-ponzyio-i-made-a-casual-trading-game-you-can-play-in-th": {
       "url": "https://news.ycombinator.com/item?id=49320174",
       "uid": "49320174",
-      "title": "ponzy.io – I made a casual trading game you can play in the browser",
+      "title": "ponzy.io \u2013 I made a casual trading game you can play in the browser",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4317,7 +4317,7 @@
     "2556-looktwice-validation-apis-that-dont-turn-outages-into-i": {
       "url": "https://news.ycombinator.com/item?id=49320139",
       "uid": "49320139",
-      "title": "LookTwice – validation APIs that don't turn outages into invalid data",
+      "title": "LookTwice \u2013 validation APIs that don't turn outages into invalid data",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4326,7 +4326,7 @@
     "2557-kungfu-keep-coding-agent-work-alive-across-sessions-and": {
       "url": "https://news.ycombinator.com/item?id=49320095",
       "uid": "49320095",
-      "title": "Kungfu – Keep coding-agent work alive across sessions and handoffs",
+      "title": "Kungfu \u2013 Keep coding-agent work alive across sessions and handoffs",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4335,7 +4335,7 @@
     "2558-trustband-hire-operator-personas-as-markdown-you-paste-": {
       "url": "https://news.ycombinator.com/item?id=49320089",
       "uid": "49320089",
-      "title": "TrustBand Hire – operator personas as Markdown you paste into Grok Bot",
+      "title": "TrustBand Hire \u2013 operator personas as Markdown you paste into Grok Bot",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4443,7 +4443,7 @@
     "2570-plc-lint-static-analysis-for-codesysplcopenxml": {
       "url": "https://news.ycombinator.com/item?id=49319285",
       "uid": "49319285",
-      "title": "PLC Lint – static analysis for CODESYS/PLCopenXML",
+      "title": "PLC Lint \u2013 static analysis for CODESYS/PLCopenXML",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4470,7 +4470,7 @@
     "2573-muchita-a-free-chrome-extension-that-looks-for-better-p": {
       "url": "https://news.ycombinator.com/item?id=49319135",
       "uid": "49319135",
-      "title": "Muchita – a free Chrome extension that looks for better prices",
+      "title": "Muchita \u2013 a free Chrome extension that looks for better prices",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4488,7 +4488,7 @@
     "2575-peekcss-a-css-inspector-built-for-firefox-not-ported-fr": {
       "url": "https://news.ycombinator.com/item?id=49318976",
       "uid": "49318976",
-      "title": "PeekCSS – a CSS inspector built for Firefox, not ported from Chrome",
+      "title": "PeekCSS \u2013 a CSS inspector built for Firefox, not ported from Chrome",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4515,7 +4515,7 @@
     "2578-dunx-nest-style-di-for-bun-without-reflect-metadata": {
       "url": "https://news.ycombinator.com/item?id=49318624",
       "uid": "49318624",
-      "title": "dunx – Nest-style DI for Bun without reflect-metadata",
+      "title": "dunx \u2013 Nest-style DI for Bun without reflect-metadata",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4524,7 +4524,7 @@
     "2579-hn-glance-a-visual-reader-for-hacker-news-links-and-dis": {
       "url": "https://news.ycombinator.com/item?id=49318594",
       "uid": "49318594",
-      "title": "HN Glance – a visual reader for Hacker News links and discussions",
+      "title": "HN Glance \u2013 a visual reader for Hacker News links and discussions",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4533,7 +4533,7 @@
     "2580-sol-luna-adaptive-codex-orchestration-that-can-choose-z": {
       "url": "https://news.ycombinator.com/item?id=49318535",
       "uid": "49318535",
-      "title": "Sol-Luna – adaptive Codex orchestration that can choose zero workers",
+      "title": "Sol-Luna \u2013 adaptive Codex orchestration that can choose zero workers",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4551,7 +4551,7 @@
     "2582-the-data-forge-generate-up-to-100k-rows-of-jsoncsvsql-t": {
       "url": "https://news.ycombinator.com/item?id=49318441",
       "uid": "49318441",
-      "title": "The Data Forge – Generate up to 100K rows of JSON/CSV/SQL test data",
+      "title": "The Data Forge \u2013 Generate up to 100K rows of JSON/CSV/SQL test data",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4560,7 +4560,7 @@
     "2583-customhouse-deterministic-mcp-proxy-that-blocks-agent-e": {
       "url": "https://news.ycombinator.com/item?id=49318414",
       "uid": "49318414",
-      "title": "Customhouse – deterministic MCP proxy that blocks agent exfiltration",
+      "title": "Customhouse \u2013 deterministic MCP proxy that blocks agent exfiltration",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4578,7 +4578,7 @@
     "2585-rnet-ai-token-service-provider": {
       "url": "https://news.ycombinator.com/item?id=49318304",
       "uid": "49318304",
-      "title": "RNet – AI token service provider",
+      "title": "RNet \u2013 AI token service provider",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4587,7 +4587,7 @@
     "2586-harbor-a-lightweight-ats-and-crm-for-independent-recrui": {
       "url": "https://news.ycombinator.com/item?id=49318246",
       "uid": "49318246",
-      "title": "Harbor – A lightweight ATS and CRM for independent recruiters",
+      "title": "Harbor \u2013 A lightweight ATS and CRM for independent recruiters",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4596,7 +4596,7 @@
     "2587-turk-sem-chrome-sidepanel-seo-inspector-with-javascript": {
       "url": "https://news.ycombinator.com/item?id=49318152",
       "uid": "49318152",
-      "title": "Turk SEM – Chrome SidePanel SEO Inspector with JavaScript Render Diff",
+      "title": "Turk SEM \u2013 Chrome SidePanel SEO Inspector with JavaScript Render Diff",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4641,7 +4641,7 @@
     "2592-alertchecker-get-emailed-when-a-plain-english-statement": {
       "url": "https://news.ycombinator.com/item?id=49317809",
       "uid": "49317809",
-      "title": "AlertChecker – get emailed when a plain-English statement comes true",
+      "title": "AlertChecker \u2013 get emailed when a plain-English statement comes true",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4695,7 +4695,7 @@
     "2598-spread-real-time-new-zealand-supermarket-data-via-api-a": {
       "url": "https://news.ycombinator.com/item?id=49317344",
       "uid": "49317344",
-      "title": "Spread – Real-Time New Zealand Supermarket Data via API and MCP",
+      "title": "Spread \u2013 Real-Time New Zealand Supermarket Data via API and MCP",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4713,7 +4713,7 @@
     "2600-dsh-plugin-directory-every-deepseek-harness-plugin": {
       "url": "https://news.ycombinator.com/item?id=49316849",
       "uid": "49316849",
-      "title": "DSH Plugin Directory – Every DeepSeek Harness Plugin",
+      "title": "DSH Plugin Directory \u2013 Every DeepSeek Harness Plugin",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4776,7 +4776,7 @@
     "2607-techflare-chrome-extension-to-see-if-a-website-uses-clo": {
       "url": "https://news.ycombinator.com/item?id=49315249",
       "uid": "49315249",
-      "title": "Techflare – Chrome extension to see if a website uses Cloudflare",
+      "title": "Techflare \u2013 Chrome extension to see if a website uses Cloudflare",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4785,7 +4785,7 @@
     "2608-stratum-rate-books-films-and-music-to-find-users-with-s": {
       "url": "https://news.ycombinator.com/item?id=49314936",
       "uid": "49314936",
-      "title": "Stratum – Rate books, films, and music to find users with similar taste",
+      "title": "Stratum \u2013 Rate books, films, and music to find users with similar taste",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4803,7 +4803,7 @@
     "2610-bribesfyi-compare-bribes-statistics-department-wise": {
       "url": "https://news.ycombinator.com/item?id=49314765",
       "uid": "49314765",
-      "title": "Bribes.fyi – Compare bribes statistics department wise",
+      "title": "Bribes.fyi \u2013 Compare bribes statistics department wise",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4830,7 +4830,7 @@
     "2613-personal-stock-share-a-stake-in-your-lifetime-wealth": {
       "url": "https://news.ycombinator.com/item?id=49314368",
       "uid": "49314368",
-      "title": "Personal Stock – share a stake in your lifetime wealth",
+      "title": "Personal Stock \u2013 share a stake in your lifetime wealth",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4848,7 +4848,7 @@
     "2615-native-experience-for-mobile-web-raylers": {
       "url": "https://news.ycombinator.com/item?id=49314320",
       "uid": "49314320",
-      "title": "Native experience for mobile web – Raylers",
+      "title": "Native experience for mobile web \u2013 Raylers",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4893,7 +4893,7 @@
     "2620-glad-ai-tor-ai-tools-ranked-by-user-votes-not-by-who-pa": {
       "url": "https://news.ycombinator.com/item?id=49314034",
       "uid": "49314034",
-      "title": "Glad-AI-Tor – AI tools ranked by user votes, not by who pays",
+      "title": "Glad-AI-Tor \u2013 AI tools ranked by user votes, not by who pays",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4938,7 +4938,7 @@
     "2625-premiss-coding-agents-for-building-trading-strategies": {
       "url": "https://news.ycombinator.com/item?id=49313271",
       "uid": "49313271",
-      "title": "Premiss – Coding agents for building trading strategies",
+      "title": "Premiss \u2013 Coding agents for building trading strategies",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4956,7 +4956,7 @@
     "2627-jovethra-prepaid-openai-compatible-api-with-hard-usage-": {
       "url": "https://news.ycombinator.com/item?id=49312761",
       "uid": "49312761",
-      "title": "Jovethra – prepaid OpenAI-compatible API with hard usage limits",
+      "title": "Jovethra \u2013 prepaid OpenAI-compatible API with hard usage limits",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -4983,7 +4983,7 @@
     "2630-klisi-a-gtk4adwaita-callgrind-profile-viewer-and-genera": {
       "url": "https://news.ycombinator.com/item?id=49312354",
       "uid": "49312354",
-      "title": "Klisi – a GTK4/Adwaita callgrind profile viewer and generator",
+      "title": "Klisi \u2013 a GTK4/Adwaita callgrind profile viewer and generator",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5001,7 +5001,7 @@
     "2632-bento-term-native-tmux-client-with-agent-states-and-voi": {
       "url": "https://news.ycombinator.com/item?id=49312011",
       "uid": "49312011",
-      "title": "Bento Term – native tmux client with agent states and voice input",
+      "title": "Bento Term \u2013 native tmux client with agent states and voice input",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5010,7 +5010,7 @@
     "2633-clair-apis-an-active-jobs-dataset-from-public-ats-board": {
       "url": "https://news.ycombinator.com/item?id=49311896",
       "uid": "49311896",
-      "title": "Clair APIs – an active jobs dataset from public ATS boards",
+      "title": "Clair APIs \u2013 an active jobs dataset from public ATS boards",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5037,7 +5037,7 @@
     "2636-velorn-an-open-source-desktop-video-editor-with-mcp-age": {
       "url": "https://news.ycombinator.com/item?id=49311785",
       "uid": "49311785",
-      "title": "Velorn – an open-source desktop video editor with MCP agent control",
+      "title": "Velorn \u2013 an open-source desktop video editor with MCP agent control",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5046,7 +5046,7 @@
     "2637-myfirstnews-ai-generated-podcast-for-curious-kids": {
       "url": "https://news.ycombinator.com/item?id=49311773",
       "uid": "49311773",
-      "title": "MyFirst.News – AI-generated podcast for curious kids",
+      "title": "MyFirst.News \u2013 AI-generated podcast for curious kids",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5055,7 +5055,7 @@
     "2638-ansimd-everything-i-know-about-building-modern-cli-apps": {
       "url": "https://news.ycombinator.com/item?id=49311751",
       "uid": "49311751",
-      "title": "Ansi.md – Everything I know about building modern CLI apps",
+      "title": "Ansi.md \u2013 Everything I know about building modern CLI apps",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5064,7 +5064,7 @@
     "2639-kungfu-one-human-agents-and-3467-merged-prs-in-30-days": {
       "url": "https://news.ycombinator.com/item?id=49311657",
       "uid": "49311657",
-      "title": "Kungfu – One human, agents, and 3,467 merged PRs in 30 days",
+      "title": "Kungfu \u2013 One human, agents, and 3,467 merged PRs in 30 days",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5073,7 +5073,7 @@
     "2640-mimi-the-free-language-learning-app-that-anyone-can-edi": {
       "url": "https://news.ycombinator.com/item?id=49311646",
       "uid": "49311646",
-      "title": "Mimi – the free language learning app that anyone can edit",
+      "title": "Mimi \u2013 the free language learning app that anyone can edit",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5100,7 +5100,7 @@
     "2643-between-tokens-an-interactive-piece-where-you-are-the-l": {
       "url": "https://news.ycombinator.com/item?id=49311484",
       "uid": "49311484",
-      "title": "Between Tokens – an interactive piece where you are the language model",
+      "title": "Between Tokens \u2013 an interactive piece where you are the language model",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5109,7 +5109,7 @@
     "2644-lots-of-agents-infinite-logged-in-grok-bots-on-one-mac": {
       "url": "https://news.ycombinator.com/item?id=49311360",
       "uid": "49311360",
-      "title": "Lots of Agents – Infinite Logged in Grok Bots on One Mac",
+      "title": "Lots of Agents \u2013 Infinite Logged in Grok Bots on One Mac",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5118,7 +5118,7 @@
     "2645-hibi-a-calendar-app-to-remember-your-days": {
       "url": "https://news.ycombinator.com/item?id=49311185",
       "uid": "49311185",
-      "title": "Hibi – a calendar app to remember your days",
+      "title": "Hibi \u2013 a calendar app to remember your days",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5145,7 +5145,7 @@
     "2648-browser-based-autodesk-inventor-file-viewer-no-autodesk": {
       "url": "https://news.ycombinator.com/item?id=49311060",
       "uid": "49311060",
-      "title": "Browser-based Autodesk Inventor file viewer – no Autodesk required",
+      "title": "Browser-based Autodesk Inventor file viewer \u2013 no Autodesk required",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5217,7 +5217,7 @@
     "2656-back-in-time-200-release-candidate-1": {
       "url": "https://news.ycombinator.com/item?id=49310114",
       "uid": "49310114",
-      "title": "Back In Time 2.0.0 – Release Candidate 1",
+      "title": "Back In Time 2.0.0 \u2013 Release Candidate 1",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5226,7 +5226,7 @@
     "2657-hopsum-making-routers-do-arithmetic-with-expired-packet": {
       "url": "https://news.ycombinator.com/item?id=49310097",
       "uid": "49310097",
-      "title": "Hopsum – making routers do arithmetic with expired packets",
+      "title": "Hopsum \u2013 making routers do arithmetic with expired packets",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5235,7 +5235,7 @@
     "2658-tempered-ai-powered-pc-optimizer": {
       "url": "https://news.ycombinator.com/item?id=49309989",
       "uid": "49309989",
-      "title": "Tempered – AI Powered PC Optimizer",
+      "title": "Tempered \u2013 AI Powered PC Optimizer",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5244,7 +5244,7 @@
     "2659-digitalescapetools-privacy-tools": {
       "url": "https://news.ycombinator.com/item?id=49309959",
       "uid": "49309959",
-      "title": "DigitalEscapeTools – Privacy Tools",
+      "title": "DigitalEscapeTools \u2013 Privacy Tools",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5271,7 +5271,7 @@
     "2662-agent-shell-vendor-neutral-chat-with-ai-agents-in-emacs": {
       "url": "https://news.ycombinator.com/item?id=49309755",
       "uid": "49309755",
-      "title": "Agent-shell – vendor-neutral chat with AI agents in Emacs",
+      "title": "Agent-shell \u2013 vendor-neutral chat with AI agents in Emacs",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5298,7 +5298,7 @@
     "2665-gogc98-live-visualisation-of-the-go-allocator-and-gc": {
       "url": "https://news.ycombinator.com/item?id=49309370",
       "uid": "49309370",
-      "title": "Gogc98 – live visualisation of the go allocator and GC",
+      "title": "Gogc98 \u2013 live visualisation of the go allocator and GC",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5307,7 +5307,7 @@
     "2666-remindlink-reminders-for-bookmarks-you-forgot-to-revisi": {
       "url": "https://news.ycombinator.com/item?id=49309141",
       "uid": "49309141",
-      "title": "RemindLink – reminders for bookmarks you forgot to revisit",
+      "title": "RemindLink \u2013 reminders for bookmarks you forgot to revisit",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5343,7 +5343,7 @@
     "2670-ultimatexo-open-source-ultimate-tic-tac-toe-web-game": {
       "url": "https://news.ycombinator.com/item?id=49308870",
       "uid": "49308870",
-      "title": "UltimateXO – Open-Source Ultimate Tic-Tac-Toe Web Game",
+      "title": "UltimateXO \u2013 Open-Source Ultimate Tic-Tac-Toe Web Game",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5361,7 +5361,7 @@
     "2672-chemistry-ai-step-by-step-chemistry-solver": {
       "url": "https://news.ycombinator.com/item?id=49308749",
       "uid": "49308749",
-      "title": "Chemistry AI – step-by-step chemistry solver",
+      "title": "Chemistry AI \u2013 step-by-step chemistry solver",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5370,7 +5370,7 @@
     "2673-homelander-free-desktop-app-that-applies-for-apartments": {
       "url": "https://news.ycombinator.com/item?id=49308742",
       "uid": "49308742",
-      "title": "Homelander – free desktop app that applies for apartments in Germany",
+      "title": "Homelander \u2013 free desktop app that applies for apartments in Germany",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5388,7 +5388,7 @@
     "2675-tidsos-a-private-cloud-os-for-office-pcs-that-sleep-and": {
       "url": "https://news.ycombinator.com/item?id=49308454",
       "uid": "49308454",
-      "title": "TidsOS – a private cloud OS for office PCs that sleep and roam",
+      "title": "TidsOS \u2013 a private cloud OS for office PCs that sleep and roam",
       "category": "show-hn",
       "tags": "Show HN,Product,Problem",
       "source": "hnshow",
@@ -5433,7 +5433,7 @@
     "2680-schol-scenarios": {
       "url": "https://www.producthunt.com/products/schole-2",
       "uid": null,
-      "title": "Scholé Scenarios",
+      "title": "Schol\u00e9 Scenarios",
       "category": "product-launch",
       "tags": "ProductHunt,Product Launch",
       "source": "producthunt",
@@ -5775,7 +5775,7 @@
     "2718-occasio": {
       "url": "https://www.producthunt.com/products/occasio-2",
       "uid": null,
-      "title": "Occasio®",
+      "title": "Occasio\u00ae",
       "category": "product-launch",
       "tags": "ProductHunt,Product Launch",
       "source": "producthunt",
@@ -6081,7 +6081,7 @@
     "2752-show-ih-driverjs-a-lightweight-engine-to-drive-users-fo": {
       "url": "https://www.indiehackers.com/threads/16911232bc",
       "uid": "16911232bc",
-      "title": "Show IH: Driver.js – A lightweight engine to drive user's focus across the page",
+      "title": "Show IH: Driver.js \u2013 A lightweight engine to drive user's focus across the page",
       "category": "threads",
       "tags": "IndieHackers,threads",
       "source": "indiehackers",
@@ -6621,7 +6621,7 @@
     "2812-what-its-like-building-an-app-for-multiple-mobile-platf": {
       "url": "https://www.indiehackers.com/articles/@1hakr|902ee9f219",
       "uid": "@1hakr|902ee9f219",
-      "title": "What it’s like building an app for multiple mobile platforms",
+      "title": "What it\u2019s like building an app for multiple mobile platforms",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6639,7 +6639,7 @@
     "2814-indie-hackers-journey-at-the-end-is-it-just-destiny": {
       "url": "https://www.indiehackers.com/articles/@1hakr|f457c51aaa",
       "uid": "@1hakr|f457c51aaa",
-      "title": "Indie hacker’s journey: at the end, is it just Destiny?",
+      "title": "Indie hacker\u2019s journey: at the end, is it just Destiny?",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6675,7 +6675,7 @@
     "2818-5-deadly-mistakes-thatll-kill-your-saas-business": {
       "url": "https://www.indiehackers.com/articles/@AEdsonCEO|06af229f76",
       "uid": "@AEdsonCEO|06af229f76",
-      "title": "5 Deadly Mistakes That’ll Kill Your SaaS Business",
+      "title": "5 Deadly Mistakes That\u2019ll Kill Your SaaS Business",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6720,7 +6720,7 @@
     "2823-startup-wisdom-from-jeff-bezos-and-my-cleaning-service": {
       "url": "https://www.indiehackers.com/articles/@AFairbro|11e723ff05",
       "uid": "@AFairbro|11e723ff05",
-      "title": "Startup Wisdom from Jeff Bezos — and My Cleaning Service",
+      "title": "Startup Wisdom from Jeff Bezos\u200a\u2014\u200aand My Cleaning Service",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6729,7 +6729,7 @@
     "2824-the-entrepreneurs-dilemma-change-course-or-press-on": {
       "url": "https://www.indiehackers.com/articles/@AFairbro|85f949c393",
       "uid": "@AFairbro|85f949c393",
-      "title": "The Entrepreneur’s Dilemma: Change Course Or Press On?",
+      "title": "The Entrepreneur\u2019s Dilemma: Change Course Or Press On?",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6792,7 +6792,7 @@
     "2831-coinverse-beta-launch-the-1st-crypto-news-audiocast-app": {
       "url": "https://www.indiehackers.com/articles/@AdamHurwitz|197800511d",
       "uid": "@AdamHurwitz|197800511d",
-      "title": "Coinverse Beta Launch - The 1st Crypto News Audiocast App 🚀",
+      "title": "Coinverse Beta\u00a0Launch - The 1st Crypto News Audiocast App\u00a0\ud83d\ude80",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6936,7 +6936,7 @@
     "2847-find-your-next-startup-idea-in-the-trough-of-the-hype-c": {
       "url": "https://www.indiehackers.com/articles/@AlexGilleran|40c10c0c18",
       "uid": "@AlexGilleran|40c10c0c18",
-      "title": "Find Your Next Startup Idea in the Trough of the Hype Cycle",
+      "title": "Find Your Next Startup Idea in the Trough of the Hype\u00a0Cycle",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -6945,7 +6945,7 @@
     "2848-the-assholes-guide-to-product-validation-how-to-test-yo": {
       "url": "https://www.indiehackers.com/articles/@AlexGilleran|e49ee422ca",
       "uid": "@AlexGilleran|e49ee422ca",
-      "title": "The Asshole’s Guide to Product Validation:\nHow to Test Your Idea With a Decoy Sales Page",
+      "title": "The Asshole\u2019s Guide to Product Validation:\nHow to Test Your Idea With a Decoy Sales Page",
       "category": "articles",
       "tags": "IndieHackers,articles",
       "source": "indiehackers",
@@ -7071,7 +7071,7 @@
     "2862-ego-lite-let-your-ai-agents-drive-your-logged-in-browse": {
       "url": "https://betalist.com/startups/ego-lite?utm_campaign=startup-181777&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "ego-lite",
-      "title": "ego lite – Let your AI agents drive your logged-in browser to automate the web",
+      "title": "ego lite \u2013 Let your AI agents drive your logged-in browser to automate the web",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7080,7 +7080,7 @@
     "2863-embercard-generate-flashcards-and-schedule-reviews-to-p": {
       "url": "https://betalist.com/startups/embercard?utm_campaign=startup-182335&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "embercard",
-      "title": "Embercard – Generate flashcards and schedule reviews to peak before exams",
+      "title": "Embercard \u2013 Generate flashcards and schedule reviews to peak before exams",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7089,7 +7089,7 @@
     "2864-wizard-ai-assistant-that-connects-inboxes-and-surfaces-": {
       "url": "https://betalist.com/startups/wizard?utm_campaign=startup-182321&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "wizard",
-      "title": "Wizard – AI assistant that connects inboxes and surfaces important messages",
+      "title": "Wizard \u2013 AI assistant that connects inboxes and surfaces important messages",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7098,7 +7098,7 @@
     "2865-sneakstory-watch-tiktok-stories-anonymously-and-downloa": {
       "url": "https://betalist.com/startups/sneakstory?utm_campaign=startup-179741&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "sneakstory",
-      "title": "SneakStory – Watch TikTok stories anonymously and download HD videos without login",
+      "title": "SneakStory \u2013 Watch TikTok stories anonymously and download HD videos without login",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7107,7 +7107,7 @@
     "2866-rocely-decide-dinner-together-plan-meals-and-share-a-sh": {
       "url": "https://betalist.com/startups/rocely?utm_campaign=startup-179918&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "rocely",
-      "title": "Rocely – Decide dinner together, plan meals, and share a shopping list",
+      "title": "Rocely \u2013 Decide dinner together, plan meals, and share a shopping list",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7116,7 +7116,7 @@
     "2867-monthlet-turn-brain-dumps-into-finished-notes-with-ai-b": {
       "url": "https://betalist.com/startups/monthlet?utm_campaign=startup-179908&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "monthlet",
-      "title": "monthlet – Turn brain dumps into finished notes with AI-built layout",
+      "title": "monthlet \u2013 Turn brain dumps into finished notes with AI-built layout",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7125,7 +7125,7 @@
     "2868-replivo-ai-turn-missed-calls-into-booked-meetings-with-": {
       "url": "https://betalist.com/startups/replivo-ai?utm_campaign=startup-179901&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "replivo-ai",
-      "title": "Replivo AI – Turn missed calls into booked meetings with instant AI SMS follow-ups",
+      "title": "Replivo AI \u2013 Turn missed calls into booked meetings with instant AI SMS follow-ups",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7134,7 +7134,7 @@
     "2869-airo-mail-email-client-for-solo-founders-with-gmail-int": {
       "url": "https://betalist.com/startups/airo-mail?utm_campaign=startup-179893&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "airo-mail",
-      "title": "Airo Mail – Email client for solo founders with Gmail integration and task guidance",
+      "title": "Airo Mail \u2013 Email client for solo founders with Gmail integration and task guidance",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7143,7 +7143,7 @@
     "2870-tickerseer-stock-research-that-keeps-score-in-public": {
       "url": "https://betalist.com/startups/tickerseer?utm_campaign=startup-179890&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "tickerseer",
-      "title": "tickerseer – Stock research that keeps score in public",
+      "title": "tickerseer \u2013 Stock research that keeps score in public",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7152,7 +7152,7 @@
     "2871-1scrape-extract-tiktok-instagram-and-google-maps-data-t": {
       "url": "https://betalist.com/startups/1scrape?utm_campaign=startup-179872&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "1scrape",
-      "title": "1Scrape – Extract TikTok, Instagram, and Google Maps data to CSV in seconds",
+      "title": "1Scrape \u2013 Extract TikTok, Instagram, and Google Maps data to CSV in seconds",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7161,7 +7161,7 @@
     "2872-sellantica-optimize-amazon-ppc-profitably-with-transpar": {
       "url": "https://betalist.com/startups/sellantica?utm_campaign=startup-179841&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "sellantica",
-      "title": "Sellantica – Optimize Amazon PPC profitably with transparent AI-powered bids",
+      "title": "Sellantica \u2013 Optimize Amazon PPC profitably with transparent AI-powered bids",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7170,7 +7170,7 @@
     "2873-adsafee-stop-bots-draining-your-budget-with-real-time-a": {
       "url": "https://betalist.com/startups/adsafee?utm_campaign=startup-169242&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "adsafee",
-      "title": "Adsafee – Stop bots draining your budget with real-time ad fraud detection",
+      "title": "Adsafee \u2013 Stop bots draining your budget with real-time ad fraud detection",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7179,7 +7179,7 @@
     "2874-lexyno-every-sentence-cites-the-record-so-you-can-defen": {
       "url": "https://betalist.com/startups/lexyno?utm_campaign=startup-179736&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "lexyno",
-      "title": "Lexyno – Every sentence cites the record so you can defend the whole letter",
+      "title": "Lexyno \u2013 Every sentence cites the record so you can defend the whole letter",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7188,7 +7188,7 @@
     "2875-deklip-generate-and-test-ready-to-publish-vertical-vide": {
       "url": "https://betalist.com/startups/deklip?utm_campaign=startup-179709&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "deklip",
-      "title": "Deklip – Generate and test ready-to-publish vertical videos",
+      "title": "Deklip \u2013 Generate and test ready-to-publish vertical videos",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7197,7 +7197,7 @@
     "2876-easytools-set-up-market-and-sell-digital-products-in-mi": {
       "url": "https://betalist.com/startups/easytools?utm_campaign=startup-179688&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "easytools",
-      "title": "Easytools – Set up, market, and sell digital products in minutes",
+      "title": "Easytools \u2013 Set up, market, and sell digital products in minutes",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7206,7 +7206,7 @@
     "2877-startup-hq-validate-and-launch-your-startup-with-an-ai-": {
       "url": "https://betalist.com/startups/startup-hq?utm_campaign=startup-179685&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "startup-hq",
-      "title": "Startup HQ – Validate and launch your startup with an AI co-founder and agents",
+      "title": "Startup HQ \u2013 Validate and launch your startup with an AI co-founder and agents",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7215,7 +7215,7 @@
     "2878-cimanote-notes-that-build-living-knowledge-with-underst": {
       "url": "https://betalist.com/startups/cimanote?utm_campaign=startup-176474&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "cimanote",
-      "title": "Cimanote – Notes that build living knowledge with understanding and sources",
+      "title": "Cimanote \u2013 Notes that build living knowledge with understanding and sources",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7224,7 +7224,7 @@
     "2879-beauvyn-halal-certified-bovine-collagen-with-10-g-of-ty": {
       "url": "https://betalist.com/startups/beauvyn?utm_campaign=startup-179664&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "beauvyn",
-      "title": "Beauvyn – Halal-certified bovine collagen with 10 g of Type I and III peptides",
+      "title": "Beauvyn \u2013 Halal-certified bovine collagen with 10 g of Type I and III peptides",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7233,7 +7233,7 @@
     "2880-the-founder-toolbox-free-tools-and-ai-resources-to-buil": {
       "url": "https://betalist.com/startups/the-founder-toolbox?utm_campaign=startup-179663&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "the-founder-toolbox",
-      "title": "The Founder Toolbox – Free tools and AI resources to build, fund, and scale your startup",
+      "title": "The Founder Toolbox \u2013 Free tools and AI resources to build, fund, and scale your startup",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7242,7 +7242,7 @@
     "2881-impactrackr-capture-wins-in-30-seconds-and-prepare-for-": {
       "url": "https://betalist.com/startups/impactrackr?utm_campaign=startup-179460&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "impactrackr",
-      "title": "impactrackr – Capture wins in 30 seconds and prepare for reviews with receipts",
+      "title": "impactrackr \u2013 Capture wins in 30 seconds and prepare for reviews with receipts",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7251,7 +7251,7 @@
     "2882-copatch-unify-your-team-and-ai-agents-in-one-secure-sha": {
       "url": "https://betalist.com/startups/copatch?utm_campaign=startup-179646&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "copatch",
-      "title": "CoPatch – Unify your team and AI agents in one secure, shared workspace",
+      "title": "CoPatch \u2013 Unify your team and AI agents in one secure, shared workspace",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7260,7 +7260,7 @@
     "2883-figeditor-generate-and-edit-scientific-figures-from-tex": {
       "url": "https://betalist.com/startups/figeditor?utm_campaign=startup-179642&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "figeditor",
-      "title": "FigEditor – Generate and edit scientific figures from text, sketches, or references",
+      "title": "FigEditor \u2013 Generate and edit scientific figures from text, sketches, or references",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7269,7 +7269,7 @@
     "2884-features-vote-collect-feedback-prioritize-your-roadmap-": {
       "url": "https://betalist.com/startups/features-vote?utm_campaign=startup-179637&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "features-vote",
-      "title": "Features Vote – Collect feedback, prioritize your roadmap, and ship updates fast",
+      "title": "Features Vote \u2013 Collect feedback, prioritize your roadmap, and ship updates fast",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7278,7 +7278,7 @@
     "2885-taxifi-outsource-bookkeeping-payroll-and-taxes-with-ai-": {
       "url": "https://betalist.com/startups/taxifi?utm_campaign=startup-179536&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "taxifi",
-      "title": "taxifi – Outsource bookkeeping, payroll, and taxes with AI and an accountant",
+      "title": "taxifi \u2013 Outsource bookkeeping, payroll, and taxes with AI and an accountant",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7287,7 +7287,7 @@
     "2886-ielts-writing-checker-get-ielts-writing-scores-and-targ": {
       "url": "https://betalist.com/startups/ielts-writing-checker?utm_campaign=startup-178629&amp;utm_medium=atom&amp;utm_source=newsfeed",
       "uid": "ielts-writing-checker",
-      "title": "IELTS Writing Checker – Get IELTS Writing scores and targeted fixes in about 20 seconds",
+      "title": "IELTS Writing Checker \u2013 Get IELTS Writing scores and targeted fixes in about 20 seconds",
       "category": "beta",
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
@@ -7310,7 +7310,1825 @@
       "tags": "ProductHunt,Product Launch",
       "source": "producthunt",
       "analyzedAt": "2026-08-17T09:52:59.972Z"
+    },
+    "2889-is-kimi-down-for-anyone-else": {
+      "url": "https://news.ycombinator.com/item?id=49334862",
+      "uid": "49334862",
+      "title": "Is Kimi down for anyone else?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.615Z"
+    },
+    "2890-whats-the-best-agent-harness": {
+      "url": "https://news.ycombinator.com/item?id=49333747",
+      "uid": "49333747",
+      "title": "What's the Best Agent Harness?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.617Z"
+    },
+    "2891-how-can-we-care-more-about-fewer-things": {
+      "url": "https://news.ycombinator.com/item?id=49333404",
+      "uid": "49333404",
+      "title": "How can we care more about fewer things?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.623Z"
+    },
+    "2892-if-youre-burning-tokens-at-scale-what-are-you-using-the": {
+      "url": "https://news.ycombinator.com/item?id=49333379",
+      "uid": "49333379",
+      "title": "If you're burning tokens at scale, what are you using them for?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.624Z"
+    },
+    "2893-trivially-bypass-text-watermarks-by-requesting-a-base64": {
+      "url": "https://news.ycombinator.com/item?id=49333167",
+      "uid": "49333167",
+      "title": "Trivially bypass text watermarks by requesting a Base64 response",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.625Z"
+    },
+    "2894-is-github-fried-today": {
+      "url": "https://news.ycombinator.com/item?id=49333136",
+      "uid": "49333136",
+      "title": "Is GitHub Fried Today?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.626Z"
+    },
+    "2895-github-employees-whats-going-on-why": {
+      "url": "https://news.ycombinator.com/item?id=49332495",
+      "uid": "49332495",
+      "title": "GitHub employees what's going on? Why?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.627Z"
+    },
+    "2896-is-this-the-worst-time-to-be-human": {
+      "url": "https://news.ycombinator.com/item?id=49332387",
+      "uid": "49332387",
+      "title": "Is this the worst time to be human?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.629Z"
+    },
+    "2897-is-mockup-data-a-thing-you-can-ask-from-saas-salesperso": {
+      "url": "https://news.ycombinator.com/item?id=49331243",
+      "uid": "49331243",
+      "title": "Is Mockup Data a thing you can ask from SaaS Salesperson?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.630Z"
+    },
+    "2898-alternatives-to-github": {
+      "url": "https://news.ycombinator.com/item?id=49331033",
+      "uid": "49331033",
+      "title": "Alternatives to GitHub",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.631Z"
+    },
+    "2899-how-are-teams-sharing-aiagent-setups-internally": {
+      "url": "https://news.ycombinator.com/item?id=49330900",
+      "uid": "49330900",
+      "title": "How are teams sharing AI/agent setups internally?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.632Z"
+    },
+    "2900-github-down-again-no-pr-access": {
+      "url": "https://news.ycombinator.com/item?id=49330632",
+      "uid": "49330632",
+      "title": "GitHub down again? no PR access",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.634Z"
+    },
+    "2901-is-classical-ai-research-still-being-done-because-it-he": {
+      "url": "https://news.ycombinator.com/item?id=49330503",
+      "uid": "49330503",
+      "title": "Is classical AI research still being done because it helps modern AI?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.635Z"
+    },
+    "2902-what-did-you-learn-when-you-stopped-following-tutorials": {
+      "url": "https://news.ycombinator.com/item?id=49330384",
+      "uid": "49330384",
+      "title": "What did you learn when you stopped following tutorials?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.636Z"
+    },
+    "2903-300mo-to-capture-work-youre-doing-tips-how-to-reach-rig": {
+      "url": "https://news.ycombinator.com/item?id=49329291",
+      "uid": "49329291",
+      "title": "\u20ac300/mo to capture work you're doing. Tips how to reach right people?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.637Z"
+    },
+    "2904-which-plugins-or-extensions-do-you-most-enjoy-using-wit": {
+      "url": "https://news.ycombinator.com/item?id=49329068",
+      "uid": "49329068",
+      "title": "Which plugins or extensions do you most enjoy using with the Pi agent?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.638Z"
+    },
+    "2905-i-built-a-bracket-website-and-was-wondering-if-you-coul": {
+      "url": "https://news.ycombinator.com/item?id=49328982",
+      "uid": "49328982",
+      "title": "I built a bracket website and was wondering if you could check it out?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.639Z"
+    },
+    "2906-how-to-create-a-cursor-plugin-context-engineering-you-c": {
+      "url": "https://news.ycombinator.com/item?id=49328890",
+      "uid": "49328890",
+      "title": "How to Create a Cursor Plugin: Context Engineering You Can Install",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.640Z"
+    },
+    "2907-how-long-would-it-take-dr-house-to-catch-dexter": {
+      "url": "https://news.ycombinator.com/item?id=49328821",
+      "uid": "49328821",
+      "title": "How Long Would It Take Dr. House to Catch Dexter?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T17:59:31.641Z"
+    },
+    "2908-schemagic-visual-json-schema-editor": {
+      "url": "https://news.ycombinator.com/item?id=49334928",
+      "uid": "49334928",
+      "title": "Schemagic \u2013 visual JSON Schema editor",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.642Z"
+    },
+    "2909-an-hacker-news-tui-reader-handcrafted-in-rust": {
+      "url": "https://news.ycombinator.com/item?id=49334829",
+      "uid": "49334829",
+      "title": "An Hacker News TUI Reader, handcrafted in Rust",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.644Z"
+    },
+    "2910-i-gave-my-job-search-data-an-mcp-interface": {
+      "url": "https://news.ycombinator.com/item?id=49334815",
+      "uid": "49334815",
+      "title": "I gave my job search data an MCP interface",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.645Z"
+    },
+    "2911-tesana-an-ai-game-engine-that-builds-quality-games-end-": {
+      "url": "https://news.ycombinator.com/item?id=49334754",
+      "uid": "49334754",
+      "title": "Tesana \u2013 An AI game engine that builds quality games end-to-end",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.646Z"
+    },
+    "2912-skybits-a-document-editor-for-humans-and-agents": {
+      "url": "https://news.ycombinator.com/item?id=49334358",
+      "uid": "49334358",
+      "title": "Skybits \u2013 A document editor for humans and agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.647Z"
+    },
+    "2913-augur-see-what-is-hidden-inside-your-skills": {
+      "url": "https://news.ycombinator.com/item?id=49334301",
+      "uid": "49334301",
+      "title": "Augur \u2013 see what is hidden inside your skills",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.650Z"
+    },
+    "2914-i-turned-the-ending-of-trainspotting-into-a-tiny-web-ar": {
+      "url": "https://news.ycombinator.com/item?id=49334291",
+      "uid": "49334291",
+      "title": "I turned the ending of Trainspotting into a tiny web art installation",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.651Z"
+    },
+    "2915-the-naturalists-walk-a-web-game-based-on-william-jardin": {
+      "url": "https://news.ycombinator.com/item?id=49334072",
+      "uid": "49334072",
+      "title": "The Naturalist's Walk \u2013 A Web Game Based on William Jardine's Library",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.652Z"
+    },
+    "2916-ai-text-watermarking-playground": {
+      "url": "https://news.ycombinator.com/item?id=49333808",
+      "uid": "49333808",
+      "title": "AI Text Watermarking Playground",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.653Z"
+    },
+    "2917-making-every-company-programmable-like-a-computer-video": {
+      "url": "https://news.ycombinator.com/item?id=49333327",
+      "uid": "49333327",
+      "title": "Making every company programmable like a computer [video]",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.654Z"
+    },
+    "2918-classifier-and-browser-extension-to-detect-rule-violati": {
+      "url": "https://news.ycombinator.com/item?id=49333213",
+      "uid": "49333213",
+      "title": "Classifier and browser extension to detect rule violating HN comments",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.657Z"
+    },
+    "2919-openwebsearch-a-router-for-web-search-indexes": {
+      "url": "https://news.ycombinator.com/item?id=49333187",
+      "uid": "49333187",
+      "title": "OpenWebSearch \u2013 A router for web search indexes",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.658Z"
+    },
+    "2920-ul-smf-open-source-linear-complexity-300x-kv-cache-comp": {
+      "url": "https://news.ycombinator.com/item?id=49333084",
+      "uid": "49333084",
+      "title": "UL-SMF \u2013 Open-source linear-complexity ~300x KV-cache compression",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.659Z"
+    },
+    "2921-ai-generated-flash-fiction-arena": {
+      "url": "https://news.ycombinator.com/item?id=49332976",
+      "uid": "49332976",
+      "title": "AI-Generated Flash Fiction Arena",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.660Z"
+    },
+    "2922-an-ai-produced-news-podcast-for-curious-kids": {
+      "url": "https://news.ycombinator.com/item?id=49332933",
+      "uid": "49332933",
+      "title": "An AI-produced news podcast for curious kids",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.661Z"
+    },
+    "2923-machogs-find-out-whats-hogging-your-mac-in-plain-englis": {
+      "url": "https://news.ycombinator.com/item?id=49332932",
+      "uid": "49332932",
+      "title": "Machogs \u2013 Find out what's hogging your Mac, in plain English",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.663Z"
+    },
+    "2924-pagelm-open-source-notebooklm-alternative-reactnodelang": {
+      "url": "https://news.ycombinator.com/item?id=49332584",
+      "uid": "49332584",
+      "title": "PageLM \u2013 Open-Source NotebookLM Alternative (React/Node/LangChain)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.664Z"
+    },
+    "2925-lingerlet-a-tool-that-formats-text-to-look-like-physica": {
+      "url": "https://news.ycombinator.com/item?id=49332548",
+      "uid": "49332548",
+      "title": "Lingerlet \u2013 a tool that formats text to look like physical letter",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.665Z"
+    },
+    "2926-curia-personal-radio-and-ai-podcasts": {
+      "url": "https://news.ycombinator.com/item?id=49332496",
+      "uid": "49332496",
+      "title": "Curia \u2013 Personal Radio and AI Podcasts",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.666Z"
+    },
+    "2927-nomoads-a-local-dns-ad-blocker-for-ios": {
+      "url": "https://news.ycombinator.com/item?id=49332344",
+      "uid": "49332344",
+      "title": "Nomoads \u2013 a local DNS ad blocker for iOS",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.667Z"
+    },
+    "2928-lumon-industries-severance-game-a-retro-pixel-browser-a": {
+      "url": "https://news.ycombinator.com/item?id=49332331",
+      "uid": "49332331",
+      "title": "Lumon Industries Severance game \u2013 a retro-pixel browser adventure",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.668Z"
+    },
+    "2929-agent-mesh-shared-memory-for-multi-agent-coordination": {
+      "url": "https://news.ycombinator.com/item?id=49332326",
+      "uid": "49332326",
+      "title": "Agent Mesh \u2013 Shared memory for multi-Agent coordination",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.670Z"
+    },
+    "2930-the-ai-reputation-manager": {
+      "url": "https://news.ycombinator.com/item?id=49332320",
+      "uid": "49332320",
+      "title": "The AI Reputation Manager",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.672Z"
+    },
+    "2931-sslcanary-ssl-and-domain-name-expiry-monitoring-across-": {
+      "url": "https://news.ycombinator.com/item?id=49332242",
+      "uid": "49332242",
+      "title": "SSLCanary \u2013 SSL and domain-name expiry monitoring across many domains",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.673Z"
+    },
+    "2932-smplkit-feature-flags-remote-config-dynamic-log-levels-": {
+      "url": "https://news.ycombinator.com/item?id=49331968",
+      "uid": "49331968",
+      "title": "Smplkit \u2013 feature flags, remote config, dynamic log levels \u2013 solo dev",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.674Z"
+    },
+    "2933-convert-documents-to-markdown": {
+      "url": "https://news.ycombinator.com/item?id=49331884",
+      "uid": "49331884",
+      "title": "Convert Documents to Markdown",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.678Z"
+    },
+    "2934-a-distributed-experiment-in-structured-prime-search": {
+      "url": "https://news.ycombinator.com/item?id=49331879",
+      "uid": "49331879",
+      "title": "A distributed experiment in structured prime search",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.679Z"
+    },
+    "2935-moba-go-go-with-alternating-long-thinks-and-rapid-burst": {
+      "url": "https://news.ycombinator.com/item?id=49331670",
+      "uid": "49331670",
+      "title": "Moba Go \u2013 Go with alternating long thinks and rapid bursts",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.680Z"
+    },
+    "2936-eve-software-factory": {
+      "url": "https://news.ycombinator.com/item?id=49331599",
+      "uid": "49331599",
+      "title": "Eve Software Factory",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.681Z"
+    },
+    "2937-saggar-a-mac-terminal-that-keeps-sessions-and-your-atte": {
+      "url": "https://news.ycombinator.com/item?id=49331551",
+      "uid": "49331551",
+      "title": "Saggar, a Mac terminal that keeps sessions and your attention organized",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.682Z"
+    },
+    "2938-all-roads-lead-home-a-google-timeline-replacement": {
+      "url": "https://news.ycombinator.com/item?id=49331512",
+      "uid": "49331512",
+      "title": "All roads lead home \u2013 a Google timeline replacement",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.683Z"
+    },
+    "2939-i-backtested-my-own-stock-sites-signals-and-published-w": {
+      "url": "https://news.ycombinator.com/item?id=49331447",
+      "uid": "49331447",
+      "title": "I backtested my own stock site's signals and published what failed",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.684Z"
+    },
+    "2940-learn-flags-quiz": {
+      "url": "https://news.ycombinator.com/item?id=49331288",
+      "uid": "49331288",
+      "title": "Learn Flags Quiz",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.686Z"
+    },
+    "2941-vectoratlas-a-free-80kb-svg-world-map-with-per-country-": {
+      "url": "https://news.ycombinator.com/item?id=49330851",
+      "uid": "49330851",
+      "title": "VectorAtlas \u2013 a free 80KB SVG world map with per-country IDs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.687Z"
+    },
+    "2942-good-web-design-inspiration-for-makers-focused-on-resul": {
+      "url": "https://news.ycombinator.com/item?id=49330831",
+      "uid": "49330831",
+      "title": "Good web design inspiration for makers focused on results not awards",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.688Z"
+    },
+    "2943-deepseek-harness-plugin-turn-ds-into-trading-analyst": {
+      "url": "https://news.ycombinator.com/item?id=49330671",
+      "uid": "49330671",
+      "title": "Deepseek Harness Plugin - Turn DS into Trading Analyst",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.689Z"
+    },
+    "2944-stressing-llms-complexity-benchmark": {
+      "url": "https://news.ycombinator.com/item?id=49330655",
+      "uid": "49330655",
+      "title": "Stressing LLMs \u2013 Complexity Benchmark",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.690Z"
+    },
+    "2945-1667-a-terminal-ui-for-writing-fiction-with-language-mo": {
+      "url": "https://news.ycombinator.com/item?id=49330604",
+      "uid": "49330604",
+      "title": "1667, a terminal UI for writing fiction with language models",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.691Z"
+    },
+    "2946-rate-any-us-neighborhood-0-to-10-and-the-api-behind-it": {
+      "url": "https://news.ycombinator.com/item?id=49330480",
+      "uid": "49330480",
+      "title": "Rate any US neighborhood 0 to 10, and the API behind it",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.692Z"
+    },
+    "2947-slivingdoc-conflict-resolving-notebook-for-agents-w-s3-": {
+      "url": "https://news.ycombinator.com/item?id=49330403",
+      "uid": "49330403",
+      "title": "Slivingdoc, conflict-resolving notebook for agents w. S3 backend",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.693Z"
+    },
+    "2948-llms-each-trading-100k-vs-a-frozen-rulebook-the-ruleboo": {
+      "url": "https://news.ycombinator.com/item?id=49330386",
+      "uid": "49330386",
+      "title": "LLMs each trading $100K vs. a frozen rulebook \u2013 the rulebook leads",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.694Z"
+    },
+    "2949-raisfast-a-single-binary-baas-and-headless-cms-in-rust": {
+      "url": "https://news.ycombinator.com/item?id=49330318",
+      "uid": "49330318",
+      "title": "RaisFast \u2013 A single-binary BaaS and headless CMS in Rust",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.695Z"
+    },
+    "2950-a-community-library-for-claude-code-status-lines": {
+      "url": "https://news.ycombinator.com/item?id=49330285",
+      "uid": "49330285",
+      "title": "A community library for Claude Code status lines",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.696Z"
+    },
+    "2951-sokoban-ai-solver": {
+      "url": "https://news.ycombinator.com/item?id=49330215",
+      "uid": "49330215",
+      "title": "Sokoban AI Solver",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.697Z"
+    },
+    "2952-an-rss-feed-for-deepswe-benchmarks": {
+      "url": "https://news.ycombinator.com/item?id=49330174",
+      "uid": "49330174",
+      "title": "An RSS Feed for DeepSWE Benchmarks",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.699Z"
+    },
+    "2953-kubesentry-self-hosted-runtime-threat-detection-for-kub": {
+      "url": "https://news.ycombinator.com/item?id=49330052",
+      "uid": "49330052",
+      "title": "KubeSentry \u2013 Self-hosted runtime threat detection for Kubernetes",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.700Z"
+    },
+    "2954-call-my-laptop-give-your-laptop-a-phone-number": {
+      "url": "https://news.ycombinator.com/item?id=49329819",
+      "uid": "49329819",
+      "title": "Call My Laptop \u2013 Give your laptop a phone number",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.701Z"
+    },
+    "2955-repliflow-a-node-canvas-for-chaining-replicate-image-an": {
+      "url": "https://news.ycombinator.com/item?id=49329569",
+      "uid": "49329569",
+      "title": "Repliflow \u2013 a node canvas for chaining Replicate image and video models",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.702Z"
+    },
+    "2956-lips-scheme-100-beta22-with-full-callcc-and-tco": {
+      "url": "https://news.ycombinator.com/item?id=49329449",
+      "uid": "49329449",
+      "title": "Lips Scheme 1.0.0-beta.22 with full call/cc and TCO",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.703Z"
+    },
+    "2957-logofolio-fresh-logo-design-daily": {
+      "url": "https://news.ycombinator.com/item?id=49329263",
+      "uid": "49329263",
+      "title": "Logofolio: fresh logo design, daily",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.704Z"
+    },
+    "2958-find-images-by-what-they-show-ai-rename-them-and-sort-t": {
+      "url": "https://news.ycombinator.com/item?id=49329074",
+      "uid": "49329074",
+      "title": "Find images by what they show, AI-rename them, and sort them easily",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.705Z"
+    },
+    "2959-port-light-a-self-hosted-dashboard-to-show-your-servers": {
+      "url": "https://news.ycombinator.com/item?id=49328995",
+      "uid": "49328995",
+      "title": "Port-Light \u2013 A self-hosted dashboard to show your server's port usage",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.706Z"
+    },
+    "2960-chatpack-open-chat-infrastructure": {
+      "url": "https://news.ycombinator.com/item?id=49328931",
+      "uid": "49328931",
+      "title": "ChatPack \u2013 Open Chat Infrastructure",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.707Z"
+    },
+    "2961-fix-every-weak-social-cardog-preview-on-your-site": {
+      "url": "https://news.ycombinator.com/item?id=49328874",
+      "uid": "49328874",
+      "title": "Fix every weak social card/OG preview on your site",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.708Z"
+    },
+    "2962-cite-hustle-seo-agent-that-does-your-content-marketing": {
+      "url": "https://news.ycombinator.com/item?id=49328818",
+      "uid": "49328818",
+      "title": "Cite Hustle \u2013 SEO agent that does your content marketing",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.710Z"
+    },
+    "2963-agenticschema-turn-structured-web-data-schemaorg-into-m": {
+      "url": "https://news.ycombinator.com/item?id=49328791",
+      "uid": "49328791",
+      "title": "AgenticSchema \u2013 Turn structured web data (Schema.org) into MCP tools",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.711Z"
+    },
+    "2964-particle-a-read-later-app-for-when-sites-make-reading-u": {
+      "url": "https://news.ycombinator.com/item?id=49328762",
+      "uid": "49328762",
+      "title": "Particle \u2013 a read-later app for when sites make reading unbearable",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T17:59:31.712Z"
+    },
+    "2965-openmotion": {
+      "url": "https://www.producthunt.com/products/openmotion",
+      "uid": null,
+      "title": "Openmotion",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-17T17:59:31.713Z"
+    },
+    "2966-muse": {
+      "url": "https://www.producthunt.com/products/muse-19",
+      "uid": null,
+      "title": "Muse",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-17T17:59:31.714Z"
+    },
+    "2967-cartpause-beat-impulse-buying-and-save-money": {
+      "url": "https://betalist.com/startups/cartpause?utm_campaign=startup-182469&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "cartpause",
+      "title": "CartPause \u2013 Beat impulse buying and save money",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T17:59:31.715Z"
+    },
+    "2968-themys-turn-your-tracked-project-hours-into-paid-invoic": {
+      "url": "https://betalist.com/startups/themys?utm_campaign=startup-181234&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "themys",
+      "title": "Themys \u2013 Turn your tracked project hours into paid invoices with one click",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T17:59:31.716Z"
+    },
+    "2969-lunar-log-capture-dreams-before-they-fade-and-find-patt": {
+      "url": "https://betalist.com/startups/lunar-log?utm_campaign=startup-182408&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "lunar-log",
+      "title": "Lunar Log \u2013 Capture dreams before they fade and find patterns over time",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T17:59:31.718Z"
+    },
+    "2970-kawze-website-monitoring-and-downtime-alerts-for-small-": {
+      "url": "https://betalist.com/startups/kawze?utm_campaign=startup-181343&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "kawze",
+      "title": "Kawze \u2013 Website monitoring and downtime alerts for small teams",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T17:59:31.719Z"
+    },
+    "2971-waterchamp-caffeine-and-hydration-tracker-with-smart-re": {
+      "url": "https://betalist.com/startups/waterchamp?utm_campaign=startup-182369&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "waterchamp",
+      "title": "WaterChamp \u2013 Caffeine and hydration tracker with smart reminders",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T17:59:31.720Z"
+    },
+    "2972-shieldlabs-assess-traffic-quality-detect-anonymity-and-": {
+      "url": "https://betalist.com/startups/shieldlabs?utm_campaign=startup-182522&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "shieldlabs",
+      "title": "ShieldLabs \u2013 Assess traffic quality, detect anonymity, and stop multi-accounting",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T18:00:33.450Z"
+    },
+    "2973-is-there-a-shortage-of-talent-at-early-stage-deep-tech-": {
+      "url": "https://news.ycombinator.com/item?id=49337904",
+      "uid": "49337904",
+      "title": "Is there a shortage of talent at early-stage deep-tech startups?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.694Z"
+    },
+    "2974-an-open-protocol-for-knowledgememory-management": {
+      "url": "https://news.ycombinator.com/item?id=49337475",
+      "uid": "49337475",
+      "title": "An Open Protocol for Knowledge/Memory Management",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.696Z"
+    },
+    "2975-ai-haters-and-ai-usage": {
+      "url": "https://news.ycombinator.com/item?id=49337191",
+      "uid": "49337191",
+      "title": "AI-Haters and AI-Usage",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.698Z"
+    },
+    "2976-tell-hn-i-never-mean-to-flag-anything": {
+      "url": "https://news.ycombinator.com/item?id=49337179",
+      "uid": "49337179",
+      "title": "Tell HN: I never mean to flag anything",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.699Z"
+    },
+    "2977-whats-the-best-way-to-raise-our-kids": {
+      "url": "https://news.ycombinator.com/item?id=49336879",
+      "uid": "49336879",
+      "title": "What's the best way to raise our kids?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.701Z"
+    },
+    "2978-who-needs-funding-for-db-research": {
+      "url": "https://news.ycombinator.com/item?id=49336154",
+      "uid": "49336154",
+      "title": "Who needs funding for DB research?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.702Z"
+    },
+    "2979-who-wants-to-fund-db-research": {
+      "url": "https://news.ycombinator.com/item?id=49336147",
+      "uid": "49336147",
+      "title": "Who wants to fund DB research?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.703Z"
+    },
+    "2980-does-xpals-privacy-model-solve-problems-other-messenger": {
+      "url": "https://news.ycombinator.com/item?id=49335676",
+      "uid": "49335676",
+      "title": "Does xPal's privacy model solve problems other messengers have not?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.705Z"
+    },
+    "2981-best-code-editor-without-ai": {
+      "url": "https://news.ycombinator.com/item?id=49335601",
+      "uid": "49335601",
+      "title": "Best code editor without AI?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-17T22:04:34.706Z"
+    },
+    "2982-i-made-a-3d-globe-platform-to-promote-your-startup-base": {
+      "url": "https://news.ycombinator.com/item?id=49338015",
+      "uid": "49338015",
+      "title": "I made a 3D Globe platform to promote your startup based on your MRR",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.708Z"
+    },
+    "2983-a-blockchain-that-proves-instead-of-storing": {
+      "url": "https://news.ycombinator.com/item?id=49337918",
+      "uid": "49337918",
+      "title": "A blockchain that proves instead of storing",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.709Z"
+    },
+    "2984-encrypted-git-remote-server": {
+      "url": "https://news.ycombinator.com/item?id=49337799",
+      "uid": "49337799",
+      "title": "Encrypted Git Remote Server",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.710Z"
+    },
+    "2985-solo-portable-linux-binaries-solved": {
+      "url": "https://news.ycombinator.com/item?id=49337618",
+      "uid": "49337618",
+      "title": "Solo \u2013 portable Linux binaries, solved",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.712Z"
+    },
+    "2986-personal-ai-tutor-that-builds-and-probes-your-understan": {
+      "url": "https://news.ycombinator.com/item?id=49337613",
+      "uid": "49337613",
+      "title": "Personal AI tutor that builds and probes your understanding",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.713Z"
+    },
+    "2987-provenance-a-daily-game-about-art-theft": {
+      "url": "https://news.ycombinator.com/item?id=49337592",
+      "uid": "49337592",
+      "title": "Provenance, a daily game about art theft",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.715Z"
+    },
+    "2988-klar-a-simple-and-opinionated-programming-language": {
+      "url": "https://news.ycombinator.com/item?id=49337555",
+      "uid": "49337555",
+      "title": "Klar, a simple and opinionated programming language",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.716Z"
+    },
+    "2989-openleetcode-local-leetcode-runner-where-tests-live-in-": {
+      "url": "https://news.ycombinator.com/item?id=49337367",
+      "uid": "49337367",
+      "title": "Openleetcode \u2013 local LeetCode runner where tests live in the repo",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.718Z"
+    },
+    "2990-engelbart-mange-goals-and-todos-for-claude-code": {
+      "url": "https://news.ycombinator.com/item?id=49337325",
+      "uid": "49337325",
+      "title": "Engelbart \u2013 Mange Goals and TODOs for Claude Code",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.719Z"
+    },
+    "2991-slaunt-control-what-ai-agents-can-access-do-and-execute": {
+      "url": "https://news.ycombinator.com/item?id=49337228",
+      "uid": "49337228",
+      "title": "Slaunt \u2013 control what AI agents can access, do, and execute",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.720Z"
+    },
+    "2992-gene-inspector-pro-i-built-a-tool-for-exploring-your-ow": {
+      "url": "https://news.ycombinator.com/item?id=49337198",
+      "uid": "49337198",
+      "title": "Gene Inspector Pro \u2013 I built a tool for exploring your own genome",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.722Z"
+    },
+    "2993-doberman-the-ai-watchdog-that-stops-claude-from-deletin": {
+      "url": "https://news.ycombinator.com/item?id=49336757",
+      "uid": "49336757",
+      "title": "Doberman: The AI watchdog that stops Claude from deleting your database",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.723Z"
+    },
+    "2994-yet-another-opencode-plugin": {
+      "url": "https://news.ycombinator.com/item?id=49336496",
+      "uid": "49336496",
+      "title": "Yet Another OpenCode Plugin",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.724Z"
+    },
+    "2995-love": {
+      "url": "https://news.ycombinator.com/item?id=49336238",
+      "uid": "49336238",
+      "title": "Love",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.726Z"
+    },
+    "2996-cronloop-run-claude-code-or-codex-on-a-schedule": {
+      "url": "https://news.ycombinator.com/item?id=49336157",
+      "uid": "49336157",
+      "title": "Cronloop, run Claude Code or Codex on a schedule",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.727Z"
+    },
+    "2997-tidy-a-mac-app-that-names-files-by-reading-whats-inside": {
+      "url": "https://news.ycombinator.com/item?id=49336092",
+      "uid": "49336092",
+      "title": "Tidy \u2013 a Mac app that names files by reading what's inside them",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.728Z"
+    },
+    "2998-lightweight-in-browser-qr-generator-with-vector-and-png": {
+      "url": "https://news.ycombinator.com/item?id=49335827",
+      "uid": "49335827",
+      "title": "Lightweight In-Browser QR Generator with Vector and PNG Export",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.730Z"
+    },
+    "2999-llm-choose-your-own-adventure-game-to-go-undercover-as-": {
+      "url": "https://news.ycombinator.com/item?id=49335622",
+      "uid": "49335622",
+      "title": "LLM choose-your-own-adventure game to go undercover as top CEOs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.731Z"
+    },
+    "3000-a-buyers-editor-to-fix-b2b-procurement-pdf-hell-with-ap": {
+      "url": "https://news.ycombinator.com/item?id=49335602",
+      "uid": "49335602",
+      "title": "A Buyer's Editor to Fix B2B Procurement PDF Hell with API and MCP",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.733Z"
+    },
+    "3001-harnessrouter-unified-interface-for-agent-harnesses": {
+      "url": "https://news.ycombinator.com/item?id=49335595",
+      "uid": "49335595",
+      "title": "HarnessRouter: Unified interface for agent harnesses",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.735Z"
+    },
+    "3002-visimer-open-source-visual-editor-for-mermaid-diagrams": {
+      "url": "https://news.ycombinator.com/item?id=49335470",
+      "uid": "49335470",
+      "title": "Visimer \u2013 open-source visual editor for Mermaid diagrams",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.736Z"
+    },
+    "3003-nikala-ui-ui-component-library-for-solidjs-and-tailwind": {
+      "url": "https://news.ycombinator.com/item?id=49335353",
+      "uid": "49335353",
+      "title": "Nikala UI \u2013 UI Component Library for SolidJS and Tailwind CSS v4",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.738Z"
+    },
+    "3004-open-source-comment-section-widget-disqus-alternative": {
+      "url": "https://news.ycombinator.com/item?id=49335166",
+      "uid": "49335166",
+      "title": "Open-source comment section widget, Disqus alternative",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-17T22:04:34.739Z"
+    },
+    "3005-geocopy-publish-ai-citable-articles-that-drive-traffic-": {
+      "url": "https://betalist.com/startups/geocopy?utm_campaign=startup-182556&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "geocopy",
+      "title": "GeoCopy \u2013 Publish AI-citable articles that drive traffic from chatbots",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T22:04:34.740Z"
+    },
+    "3006-majlisdesk-unify-whatsapp-and-email-in-one-shared-team-": {
+      "url": "https://betalist.com/startups/majlisdesk?utm_campaign=startup-182508&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "majlisdesk",
+      "title": "MajlisDesk \u2013 Unify WhatsApp and email in one shared team inbox",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-17T22:04:34.742Z"
+    },
+    "3007-does-anyone-else-feel-like-nothing-matters-anymore": {
+      "url": "https://news.ycombinator.com/item?id=49340013",
+      "uid": "49340013",
+      "title": "Does anyone else feel like nothing matters anymore?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T02:09:14.084Z"
+    },
+    "3008-svbtle-nudges": {
+      "url": "https://news.ycombinator.com/item?id=49338991",
+      "uid": "49338991",
+      "title": "Svbtle Nudges?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T02:09:14.086Z"
+    },
+    "3009-can-you-still-tell-ai-generated-text-apart-in-your-own-": {
+      "url": "https://news.ycombinator.com/item?id=49338865",
+      "uid": "49338865",
+      "title": "Can you still tell AI-generated text apart in your own language?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T02:09:14.088Z"
+    },
+    "3010-sacredcal-a-13-month-364-day-calendar-built-around-seve": {
+      "url": "https://news.ycombinator.com/item?id=49340221",
+      "uid": "49340221",
+      "title": "SacredCal \u2013 A 13-month, 364-day calendar built around seven-day cycles",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.089Z"
+    },
+    "3011-tsampi-bft-leaderless-one-round-voting-with-parameteriz": {
+      "url": "https://news.ycombinator.com/item?id=49340061",
+      "uid": "49340061",
+      "title": "Tsampi BFT \u2013 Leaderless One-Round Voting with Parameterized Finality [pdf]",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.091Z"
+    },
+    "3012-cogni-mcp-memory-for-llms-with-no-llm-in-the-retrieval-": {
+      "url": "https://news.ycombinator.com/item?id=49339547",
+      "uid": "49339547",
+      "title": "Cogni: MCP memory for LLMs, with no LLM in the retrieval path",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.092Z"
+    },
+    "3013-flashframe-free-browser-based-fast-multiplayer-movie-gu": {
+      "url": "https://news.ycombinator.com/item?id=49339210",
+      "uid": "49339210",
+      "title": "FlashFrame-Free Browser-Based Fast Multiplayer Movie Guessing Game",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.094Z"
+    },
+    "3014-particle-extract-and-save-articles-in-a-clean-self-host": {
+      "url": "https://news.ycombinator.com/item?id=49339175",
+      "uid": "49339175",
+      "title": "Particle \u2013 Extract and save articles in a clean, self-hosted reader",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.095Z"
+    },
+    "3015-a-multiplayer-coding-environment-for-dev-teams-and-agen": {
+      "url": "https://news.ycombinator.com/item?id=49339145",
+      "uid": "49339145",
+      "title": "A multiplayer coding environment for dev teams and agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.097Z"
+    },
+    "3016-ai-generated-music-box-version-of-any-song-for-baby": {
+      "url": "https://news.ycombinator.com/item?id=49338988",
+      "uid": "49338988",
+      "title": "AI-generated music box version of any song (for baby)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.099Z"
+    },
+    "3017-a-benchmark-for-ai-agent-guardrails-that-caught-my-own-": {
+      "url": "https://news.ycombinator.com/item?id=49338963",
+      "uid": "49338963",
+      "title": "A benchmark for AI agent guardrails that caught my own plugin",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.101Z"
+    },
+    "3018-graphlib-a-new-way-to-create-directional-graphs-in-c": {
+      "url": "https://news.ycombinator.com/item?id=49338367",
+      "uid": "49338367",
+      "title": "Graphlib -- A new way to create directional graphs in C++",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T02:09:14.102Z"
+    },
+    "3019-adkit-run-research-launch-and-optimize-ads-with-your-ai": {
+      "url": "https://betalist.com/startups/adkit?utm_campaign=startup-182664&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "adkit",
+      "title": "AdKit \u2013 Run research, launch, and optimize ads with your AI agent",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T02:09:14.104Z"
+    },
+    "3020-fromimage-ai-transform-reference-photos-into-new-images": {
+      "url": "https://betalist.com/startups/fromimage-ai?utm_campaign=startup-182635&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "fromimage-ai",
+      "title": "FromImage AI \u2013 Transform reference photos into new images with controllable edits",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T02:09:14.105Z"
+    },
+    "3021-sourcegpu-buy-or-rent-enterprise-gpu-infrastructure-fro": {
+      "url": "https://betalist.com/startups/sourcegpu?utm_campaign=startup-182581&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "sourcegpu",
+      "title": "SourceGPU \u2013 Buy or rent enterprise GPU infrastructure from vetted providers",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T02:09:14.107Z"
+    },
+    "3022-is-google-search-down": {
+      "url": "https://news.ycombinator.com/item?id=49341715",
+      "uid": "49341715",
+      "title": "Is Google Search Down?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T06:00:39.971Z"
+    },
+    "3023-email-client-for-the-terminal": {
+      "url": "https://news.ycombinator.com/item?id=49340284",
+      "uid": "49340284",
+      "title": "Email Client for the Terminal?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T06:00:39.973Z"
+    },
+    "3024-textcompare-local-first-diff-tools-for-text-files-and-c": {
+      "url": "https://news.ycombinator.com/item?id=49341502",
+      "uid": "49341502",
+      "title": "TextCompare \u2013 Local-first diff tools for text, files, and code",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:00:39.974Z"
+    },
+    "3025-an-open-source-alternative-to-googles-critique": {
+      "url": "https://news.ycombinator.com/item?id=49340849",
+      "uid": "49340849",
+      "title": "An open source alternative to Google's Critique",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:00:39.975Z"
+    },
+    "3026-an-n8n-like-orchestration-toolkit-for-deepseek-harnesse": {
+      "url": "https://news.ycombinator.com/item?id=49340759",
+      "uid": "49340759",
+      "title": "An n8n-like orchestration toolkit for DeepSeek harnesses",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:00:39.977Z"
+    },
+    "3027-honeymatchaio-connect-your-grok-bots-for-dating-meetups": {
+      "url": "https://news.ycombinator.com/item?id=49340634",
+      "uid": "49340634",
+      "title": "Honeymatcha.io connect your Grok bots for dating, meetups, anything",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:00:39.978Z"
+    },
+    "3028-build-beautiful-web-apps-faster-with-uisvelte": {
+      "url": "https://news.ycombinator.com/item?id=49340621",
+      "uid": "49340621",
+      "title": "Build beautiful web apps faster with UiSvelte",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:00:39.979Z"
+    },
+    "3029-turtle-web-browser-written-from-scratch-for-2-years": {
+      "url": "https://news.ycombinator.com/item?id=49340294",
+      "uid": "49340294",
+      "title": "Turtle \u2013 Web Browser written from scratch for 2 years",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:00:39.980Z"
+    },
+    "3030-deepseek-harness": {
+      "url": "https://www.producthunt.com/products/deepseek",
+      "uid": null,
+      "title": "DeepSeek Harness",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T06:00:39.982Z"
+    },
+    "3031-ofoxai-access-100-leading-ai-models-through-one-fast-un": {
+      "url": "https://betalist.com/startups/ofox?utm_campaign=startup-182362&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "ofox",
+      "title": "OfoxAI \u2013 Access 100+ leading AI models through one fast, unified API",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T06:00:39.983Z"
+    },
+    "3032-splici-auto-split-every-purchase-across-two-cards-witho": {
+      "url": "https://betalist.com/startups/splici?utm_campaign=startup-182617&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "splici",
+      "title": "Splici \u2013 Auto-split every purchase across two cards without hassle",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T06:00:39.985Z"
+    },
+    "3033-bauhas-personal-styling-service-for-men-who-want-to-loo": {
+      "url": "https://betalist.com/startups/bauhaus?utm_campaign=startup-182531&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "bauhaus",
+      "title": "Bauha\u00fcs \u2013 Personal styling service for men who want to look good but hate to shop",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T06:00:39.986Z"
+    },
+    "3034-convex-clients-in-100-programming-languages": {
+      "url": "https://news.ycombinator.com/item?id=49342107",
+      "uid": "49342107",
+      "title": "Convex clients in 100 programming languages",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:35:25.569Z"
+    },
+    "3035-agents-workbook-watch-claude-code-codex-write-down-thei": {
+      "url": "https://news.ycombinator.com/item?id=49342012",
+      "uid": "49342012",
+      "title": "Agents Workbook watch Claude Code, Codex write down their working notes",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:35:25.570Z"
+    },
+    "3036-vyral-portable-contracts-for-data-retrieval-durable-wor": {
+      "url": "https://news.ycombinator.com/item?id=49341873",
+      "uid": "49341873",
+      "title": "Vyral \u2013 Portable contracts for data, retrieval, durable work, and MCP",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T06:35:25.572Z"
+    },
+    "3037-global-collaboration-group-for-people-worldwide": {
+      "url": "https://news.ycombinator.com/item?id=49343400",
+      "uid": "49343400",
+      "title": "Global collaboration group for people worldwide",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.855Z"
+    },
+    "3038-github-runner-related-pages-down": {
+      "url": "https://news.ycombinator.com/item?id=49343132",
+      "uid": "49343132",
+      "title": "GitHub runner related pages down",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.856Z"
+    },
+    "3039-forced-system": {
+      "url": "https://news.ycombinator.com/item?id=49342884",
+      "uid": "49342884",
+      "title": "Forced System",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.858Z"
+    },
+    "3040-ai-is-like-farming-and-the-purpose-behind-what-im-build": {
+      "url": "https://news.ycombinator.com/item?id=49342690",
+      "uid": "49342690",
+      "title": "AI is like farming. (and the purpose behind what I'm building)",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.859Z"
+    },
+    "3041-is-cloudflare-reporting-abuse-system-flawed": {
+      "url": "https://news.ycombinator.com/item?id=49342509",
+      "uid": "49342509",
+      "title": "Is Cloudflare reporting abuse system flawed?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.861Z"
+    },
+    "3042-part-of-your-job-llms-replaced-and-which-part-got-harde": {
+      "url": "https://news.ycombinator.com/item?id=49342406",
+      "uid": "49342406",
+      "title": "Part of your job LLMs replaced and which part got harder?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.862Z"
+    },
+    "3043-should-we-regulate-first-party-ads": {
+      "url": "https://news.ycombinator.com/item?id=49342319",
+      "uid": "49342319",
+      "title": "Should we regulate first party ads?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-18T10:40:59.864Z"
+    },
+    "3044-the-hacker-news-puzzle": {
+      "url": "https://news.ycombinator.com/item?id=49343596",
+      "uid": "49343596",
+      "title": "The Hacker News Puzzle",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.865Z"
+    },
+    "3045-samuel-a-silly-speech-model": {
+      "url": "https://news.ycombinator.com/item?id=49343584",
+      "uid": "49343584",
+      "title": "Samuel, a Silly Speech Model",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.866Z"
+    },
+    "3046-anycreature-making-3d-creature-by-agent-harness-by-3d-a": {
+      "url": "https://news.ycombinator.com/item?id=49343561",
+      "uid": "49343561",
+      "title": "AnyCreature. making 3D creature by agent. harness by 3D assets pipeline",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.868Z"
+    },
+    "3047-meetmoves-videogif-backgrounds-for-google-meet-no-obs-n": {
+      "url": "https://news.ycombinator.com/item?id=49343514",
+      "uid": "49343514",
+      "title": "MeetMoves \u2013 video/GIF backgrounds for Google Meet, no OBS needed",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.869Z"
+    },
+    "3048-reproof-a-non-linear-writing-app-for-perfectionists": {
+      "url": "https://news.ycombinator.com/item?id=49343323",
+      "uid": "49343323",
+      "title": "Reproof \u2013 A non-linear writing app for perfectionists",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.871Z"
+    },
+    "3049-roadmark-roadmaps-that-branch-instead-of-overwriting-th": {
+      "url": "https://news.ycombinator.com/item?id=49343198",
+      "uid": "49343198",
+      "title": "Roadmark \u2013 roadmaps that branch instead of overwriting the plan",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.872Z"
+    },
+    "3050-dozenal-daily-spatial-math-puzzle": {
+      "url": "https://news.ycombinator.com/item?id=49343148",
+      "uid": "49343148",
+      "title": "Dozenal \u2013 Daily Spatial Math Puzzle",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.874Z"
+    },
+    "3051-phi-a-browser-native-and-desktop-game-engine": {
+      "url": "https://news.ycombinator.com/item?id=49343128",
+      "uid": "49343128",
+      "title": "Phi \u2013 A browser-native and desktop game engine",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.875Z"
+    },
+    "3052-vianta-connect-file-transfer-and-clipboard-sync-for-and": {
+      "url": "https://news.ycombinator.com/item?id=49343039",
+      "uid": "49343039",
+      "title": "Vianta Connect \u2013 file transfer and clipboard sync for Android and Mac",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.876Z"
+    },
+    "3053-there-are-many-factories-but-this-ones-yours": {
+      "url": "https://news.ycombinator.com/item?id=49342987",
+      "uid": "49342987",
+      "title": "There are many factories, but this one's *yours",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.878Z"
+    },
+    "3054-amz-cli-a-command-line-for-amazon": {
+      "url": "https://news.ycombinator.com/item?id=49342785",
+      "uid": "49342785",
+      "title": "Amz-CLI \u2013 A command line for Amazon",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.879Z"
+    },
+    "3055-lilo-a-lightweight-markdown-notes-app-built-with-rust-a": {
+      "url": "https://news.ycombinator.com/item?id=49342689",
+      "uid": "49342689",
+      "title": "Lilo \u2013 a lightweight Markdown notes app built with Rust and egui",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.880Z"
+    },
+    "3056-classicalbot-classical-concerts-database": {
+      "url": "https://news.ycombinator.com/item?id=49342474",
+      "uid": "49342474",
+      "title": "ClassicalBot \u2013 Classical Concerts Database",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.882Z"
+    },
+    "3057-lteee-gives-you-a-little-thing-to-spark-joy-every-day": {
+      "url": "https://news.ycombinator.com/item?id=49342433",
+      "uid": "49342433",
+      "title": "Lteee gives you a little thing to spark joy every day",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.883Z"
+    },
+    "3058-unifi-os-server-in-docker": {
+      "url": "https://news.ycombinator.com/item?id=49342401",
+      "uid": "49342401",
+      "title": "UniFi OS Server in Docker",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.884Z"
+    },
+    "3059-i-built-an-m2m-payment-loop-where-ai-agents-pay-for-dat": {
+      "url": "https://news.ycombinator.com/item?id=49342345",
+      "uid": "49342345",
+      "title": "I built an M2M payment loop where AI Agents pay for data via x402",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.886Z"
+    },
+    "3060-aijarvi-80-free-ai-tools-for-creators-in-one-workspace": {
+      "url": "https://news.ycombinator.com/item?id=49342307",
+      "uid": "49342307",
+      "title": "AiJarvi \u2013 80 free AI tools for creators in one workspace",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.887Z"
+    },
+    "3061-anql-is-offline-workspace-for-notes-math-and-structured": {
+      "url": "https://news.ycombinator.com/item?id=49342160",
+      "uid": "49342160",
+      "title": "Anql is offline workspace for notes, math, and structured work",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.888Z"
+    },
+    "3062-code-and-sea-building-privacy-first-apps-without-subscr": {
+      "url": "https://news.ycombinator.com/item?id=49342140",
+      "uid": "49342140",
+      "title": "Code and Sea \u2013 Building privacy-first apps without subscriptions",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-18T10:40:59.890Z"
+    },
+    "3063-whisperstream": {
+      "url": "https://www.producthunt.com/products/whisperstream",
+      "uid": null,
+      "title": "Whisperstream",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.891Z"
+    },
+    "3064-salem-robotics": {
+      "url": "https://www.producthunt.com/products/salem-robotics",
+      "uid": null,
+      "title": "Salem Robotics",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.892Z"
+    },
+    "3065-taku-ai": {
+      "url": "https://www.producthunt.com/products/taku-ai",
+      "uid": null,
+      "title": "Taku AI",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.893Z"
+    },
+    "3066-monolog": {
+      "url": "https://www.producthunt.com/products/monolog-2",
+      "uid": null,
+      "title": "monolog",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.895Z"
+    },
+    "3067-clara-ai-sdr": {
+      "url": "https://www.producthunt.com/products/clara-ai-sdr",
+      "uid": null,
+      "title": "Clara AI SDR",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.896Z"
+    },
+    "3068-clipwing-autopilot": {
+      "url": "https://www.producthunt.com/products/clipwing",
+      "uid": null,
+      "title": "Clipwing Autopilot",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.898Z"
+    },
+    "3069-reckon": {
+      "url": "https://www.producthunt.com/products/reckon",
+      "uid": null,
+      "title": "Reckon",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.899Z"
+    },
+    "3070-hubble": {
+      "url": "https://www.producthunt.com/products/hubble-11",
+      "uid": null,
+      "title": "Hubble",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.901Z"
+    },
+    "3071-skim-recap": {
+      "url": "https://www.producthunt.com/products/skim-recap",
+      "uid": null,
+      "title": "Skim Recap",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.902Z"
+    },
+    "3072-superflow-ai": {
+      "url": "https://www.producthunt.com/products/superflow-webflow-plugin-for-revisions",
+      "uid": null,
+      "title": "Superflow AI",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.903Z"
+    },
+    "3073-gauge": {
+      "url": "https://www.producthunt.com/products/gauge",
+      "uid": null,
+      "title": "Gauge",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.905Z"
+    },
+    "3074-transept-ai": {
+      "url": "https://www.producthunt.com/products/transept-ai",
+      "uid": null,
+      "title": "Transept AI",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.906Z"
+    },
+    "3075-tiny-funnel": {
+      "url": "https://www.producthunt.com/products/tiny-funnel",
+      "uid": null,
+      "title": "Tiny Funnel",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.907Z"
+    },
+    "3076-deepmark": {
+      "url": "https://www.producthunt.com/products/deepmark",
+      "uid": null,
+      "title": "Deepmark",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.909Z"
+    },
+    "3077-crewtower": {
+      "url": "https://www.producthunt.com/products/crew-tower",
+      "uid": null,
+      "title": "CrewTower",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.910Z"
+    },
+    "3078-dates-by-agenda-hero": {
+      "url": "https://www.producthunt.com/products/dates-by-agenda-hero",
+      "uid": null,
+      "title": "Dates by Agenda Hero",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.911Z"
+    },
+    "3079-shepherd-terminal": {
+      "url": "https://www.producthunt.com/products/shepherd-terminal-designed-for-agent",
+      "uid": null,
+      "title": "Shepherd Terminal",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.912Z"
+    },
+    "3080-finch": {
+      "url": "https://www.producthunt.com/products/finch-6",
+      "uid": null,
+      "title": "Finch",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.914Z"
+    },
+    "3081-meterlessai": {
+      "url": "https://www.producthunt.com/products/meterless-ai",
+      "uid": null,
+      "title": "Meterless.ai",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.915Z"
+    },
+    "3082-layerproof-matte-30": {
+      "url": "https://www.producthunt.com/products/layerproof-social-content-generation",
+      "uid": null,
+      "title": "LayerProof Matte 3.0",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.916Z"
+    },
+    "3083-open-index": {
+      "url": "https://www.producthunt.com/products/open-brain",
+      "uid": null,
+      "title": "Open Index",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.918Z"
+    },
+    "3084-atlas-by-workos": {
+      "url": "https://www.producthunt.com/products/workos",
+      "uid": null,
+      "title": "Atlas by WorkOS",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.919Z"
+    },
+    "3085-controller-ai": {
+      "url": "https://www.producthunt.com/products/insight-ai",
+      "uid": null,
+      "title": "Controller AI",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.920Z"
+    },
+    "3086-elevenlabs-mcp-in-claude": {
+      "url": "https://www.producthunt.com/products/elevenlabs-mcp-2",
+      "uid": null,
+      "title": "ElevenLabs MCP in Claude",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.921Z"
+    },
+    "3087-airbuddy-3": {
+      "url": "https://www.producthunt.com/products/airbuddy-2",
+      "uid": null,
+      "title": "AirBuddy 3",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-18T10:40:59.923Z"
+    },
+    "3088-salaryhow-convert-hourly-pay-to-yearly-monthly-and-take": {
+      "url": "https://betalist.com/startups/salaryhow?utm_campaign=startup-179931&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "salaryhow",
+      "title": "SalaryHow \u2013 Convert hourly pay to yearly, monthly, and take-home income fast",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T10:40:59.924Z"
+    },
+    "3089-camera-for-obs-studio-turn-your-iphone-into-a-low-laten": {
+      "url": "https://betalist.com/startups/camera-for-obs-studio?utm_campaign=startup-182855&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "camera-for-obs-studio",
+      "title": "Camera for OBS Studio \u2013 Turn your iPhone into a low-latency pro camera for OBS Studio",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T10:40:59.926Z"
+    },
+    "3090-studioeditor-edit-record-and-enhance-audio-in-your-brow": {
+      "url": "https://betalist.com/startups/studioeditor?utm_campaign=startup-182774&amp;utm_medium=atom&amp;utm_source=newsfeed",
+      "uid": "studioeditor",
+      "title": "StudioEditor \u2013 Edit, record, and enhance audio in your browser for free",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-18T10:40:59.927Z"
     }
   },
-  "nextNumber": 2889
+  "nextNumber": 3091
 }

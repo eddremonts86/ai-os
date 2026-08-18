@@ -66,7 +66,7 @@ components:
 
 **Inspirado en:** Framer (Landing pages, creative web, prototyping. Bold + modern.)
 
-### Paleta de colores
+### Colour palette
 
 | Token | Hex | Uso |
 |-------|-----|-----|
@@ -80,11 +80,10 @@ components:
 | muted | #636366 | Texto terciario |
 | bg | #FFFFFF | Fondo página |
 
-### Tipografía
+### Typography
 
 - **Headings:** Inter, system-ui, sans-serif · 2.5rem · 800 weight
 - **Body:** Inter, system-ui, sans-serif · 1rem · 400 weight
-
 
 ### Spacing (8px base)
 
@@ -103,7 +102,7 @@ components:
 | md | 12px | Botones, cards |
 | lg | 24px | Paneles, modales |
 
-### Componentes
+### Components
 
 - **Button primary:** bg #000000, text #000000, rounded 12px
 - **Button secondary:** outline, color #000000, rounded 12px
