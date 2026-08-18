@@ -4,7 +4,7 @@ slug: the-lack-of-a-service-that-creates-hyper-personalized-g
 title: "The lack of a service that creates hyper-personalized, gamified English courses (in the Duolingo format) for narrow professional niches (e.g., for a barista in a vegan coffee shop or a startup founder pitching to VCs)"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/education/jdez9r0101-the-lack-of-a-service-that-creates-hyper"
 category: education
 date: "2026-01-20"

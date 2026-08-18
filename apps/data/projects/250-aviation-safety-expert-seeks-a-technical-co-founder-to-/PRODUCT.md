@@ -4,7 +4,7 @@ slug: aviation-safety-expert-seeks-a-technical-co-founder-to-
 title: Aviation safety expert seeks a technical co-founder to develop an AI solution that prevents daily collisions between aircraft and birds/drones — a problem causing massive losses.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/9g9de9og51-aviation-safety-expert-seeks-a-technical"
 category: ai
 date: "2026-01-13"

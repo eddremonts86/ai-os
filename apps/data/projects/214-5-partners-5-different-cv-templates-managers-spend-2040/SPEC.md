@@ -4,7 +4,7 @@ slug: "5-partners-5-different-cv-templates-managers-spend-2040"
 title: "5 partners — 5 different CV templates. Managers spend 20–40 minutes on each adaptation, up to 15 times a month."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: hr
 date: "2026-03-13"

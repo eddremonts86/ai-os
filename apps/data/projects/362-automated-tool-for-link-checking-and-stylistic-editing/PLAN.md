@@ -4,7 +4,7 @@ slug: automated-tool-for-link-checking-and-stylistic-editing
 title: Automated tool for link checking and stylistic editing
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/gvks1brdf1-automated-tool-for-link-checking-and-sty"
 category: media
 date: "2025-10-29"

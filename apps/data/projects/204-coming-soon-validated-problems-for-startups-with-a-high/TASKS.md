@@ -4,7 +4,7 @@ slug: coming-soon-validated-problems-for-startups-with-a-high
 title: "Coming soon: validated problems for startups with a high chance of success. Our mission: 0% failed startups."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: startup
 date: "2026-04-23"

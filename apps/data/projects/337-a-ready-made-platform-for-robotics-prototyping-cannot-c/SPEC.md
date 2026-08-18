@@ -4,7 +4,7 @@ slug: a-ready-made-platform-for-robotics-prototyping-cannot-c
 title: A ready-made platform for robotics prototyping cannot create an active user community
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/4jgemm3td1-a-ready-made-platform-for-robotics-proto"
 category: marketing
 date: "2025-10-29"

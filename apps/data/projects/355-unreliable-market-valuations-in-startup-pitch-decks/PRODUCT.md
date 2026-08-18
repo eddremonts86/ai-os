@@ -4,7 +4,7 @@ slug: unreliable-market-valuations-in-startup-pitch-decks
 title: Unreliable market valuations in startup pitch decks
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/startups/45pkeu8rb1-unreliable-market-valuations-in-startup"
 category: startups
 date: "2025-10-29"

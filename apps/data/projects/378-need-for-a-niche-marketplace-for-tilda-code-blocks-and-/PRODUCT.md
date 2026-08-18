@@ -4,7 +4,7 @@ slug: need-for-a-niche-marketplace-for-tilda-code-blocks-and-
 title: Need for a niche marketplace for Tilda code blocks and solutions
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/rsx7rzckd1-need-for-a-niche-marketplace-for-tilda-c"
 category: dev
 date: "2025-09-11"

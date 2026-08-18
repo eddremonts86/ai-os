@@ -4,7 +4,7 @@ slug: retail-store-profitability-problem
 title: Retail store profitability problem
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/retail/a8z3g4sod1-retail-store-profitability-problem"
 category: retail
 date: "2025-10-29"

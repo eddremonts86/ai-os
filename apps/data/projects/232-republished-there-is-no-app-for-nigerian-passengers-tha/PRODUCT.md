@@ -4,7 +4,7 @@ slug: republished-there-is-no-app-for-nigerian-passengers-tha
 title: "Republished: There is no app for Nigerian passengers that shows the real-time flight status and helps with transit, hotel, and the embassy line."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: travel
 date: "2026-01-26"

@@ -4,7 +4,7 @@ slug: procurement-data-quality-suffers-supplier-contacts-outd
 title: "Procurement data quality suffers — supplier contacts outdated, prices stale, history lost. Existing tools are slow, expensive, or built for the wrong region."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: b2b
 date: "2026-03-10"

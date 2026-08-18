@@ -4,7 +4,7 @@ slug: problem-of-finding-and-obtaining-grants-for-small-busin
 title: Problem of finding and obtaining grants for small businesses
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/gkrcgpelx1-problem-of-finding-and-obtaining-grants"
 category: finance
 date: "2025-10-29"

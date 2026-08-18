@@ -4,7 +4,7 @@ slug: need-for-try-on-service-in-telegram-second-hand-stores
 title: Need for try-on service in Telegram second-hand stores
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/retail/dknrnh1581-need-for-try-on-service-in-telegram-seco"
 category: retail
 date: "2025-09-08"

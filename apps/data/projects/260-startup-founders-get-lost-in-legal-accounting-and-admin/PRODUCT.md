@@ -4,7 +4,7 @@ slug: startup-founders-get-lost-in-legal-accounting-and-admin
 title: "Startup founders get lost in legal, accounting, and administrative tasks after incorporation, leading to stress and risks due to the lack of a clear, step-by-step plan."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/legal/6rdbp6php1-startup-founders-get-lost-in-legal-accou"
 category: legal
 date: "2026-01-06"

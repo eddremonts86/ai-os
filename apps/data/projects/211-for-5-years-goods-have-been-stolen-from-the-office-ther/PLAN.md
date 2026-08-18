@@ -4,7 +4,7 @@ slug: for-5-years-goods-have-been-stolen-from-the-office-ther
 title: "For 5 years, goods have been stolen from the office. There is no available service that automatically distinguishes visitors from staff and alerts on suspicious patterns."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: security
 date: "2026-03-25"

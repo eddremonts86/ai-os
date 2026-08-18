@@ -4,7 +4,7 @@ slug: search-for-an-affordable-way-to-get-pr-in-forbes-and-ot
 title: Search for an affordable way to get PR in Forbes and other top media outlets
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/xi1ox0v161-search-for-an-affordable-way-to-get-pr-i"
 category: marketing
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: global-problem-dating-apps-fail-for-complex-lives-illne
 title: "Global problem: Dating apps fail for complex lives (illness, relocation, unfulfilled youth). A platform built for those still in motion does not exist."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: social
 date: "2026-02-11"

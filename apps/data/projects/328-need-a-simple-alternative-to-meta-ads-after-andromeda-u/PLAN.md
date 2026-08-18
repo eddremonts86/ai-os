@@ -4,7 +4,7 @@ slug: need-a-simple-alternative-to-meta-ads-after-andromeda-u
 title: Need a simple alternative to Meta Ads after Andromeda update
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/8xk7k4gx31-need-a-simple-alternative-to-meta-ads-af"
 category: marketing
 date: "2025-10-29"

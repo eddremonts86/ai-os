@@ -4,7 +4,7 @@ slug: need-for-a-unified-tilda-extension-combining-nolim-and-
 title: Need for a unified Tilda extension combining Nolim and Annexx features
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/82uz45nni1-need-for-a-unified-tilda-extension-combi"
 category: dev
 date: "2025-09-09"

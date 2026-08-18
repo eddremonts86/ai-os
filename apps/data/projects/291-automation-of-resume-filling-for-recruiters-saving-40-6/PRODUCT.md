@@ -4,7 +4,7 @@ slug: automation-of-resume-filling-for-recruiters-saving-40-6
 title: Automation of resume filling for recruiters — saving 40-60 minutes on each candidate
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/career/0s98al0y01-automation-of-resume-filling-for-recruit"
 category: career
 date: "2025-11-18"

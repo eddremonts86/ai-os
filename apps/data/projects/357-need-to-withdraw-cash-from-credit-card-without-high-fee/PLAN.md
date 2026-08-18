@@ -4,7 +4,7 @@ slug: need-to-withdraw-cash-from-credit-card-without-high-fee
 title: Need to withdraw cash from credit card without high fees
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/tp6dgyysf1-need-to-withdraw-cash-from-credit-card-safe"
 category: finance
 date: "2025-10-10"

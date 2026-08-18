@@ -4,7 +4,7 @@ slug: tildas-terrible-support-and-the-need-for-a-premium-help
 title: "Tilda's terrible support and the need for a premium help service"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/other/t6oxa8m3d1-tildas-terrible-support-and-the-need-for"
 category: other
 date: "2025-09-19"

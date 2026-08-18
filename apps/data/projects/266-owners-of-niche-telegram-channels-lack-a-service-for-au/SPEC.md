@@ -4,7 +4,7 @@ slug: owners-of-niche-telegram-channels-lack-a-service-for-au
 title: Owners of niche Telegram channels lack a service for automatically finding and organizing cross-promotion with relevant channels without spending hours on manual selection and negotiations
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/kfsnhgszj1-owners-of-niche-telegram-channels-lack-a"
 category: marketing
 date: "2025-12-22"

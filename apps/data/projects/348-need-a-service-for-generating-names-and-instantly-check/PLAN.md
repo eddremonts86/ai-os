@@ -4,7 +4,7 @@ slug: need-a-service-for-generating-names-and-instantly-check
 title: Need a service for generating names and instantly checking domain availability
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/s4e5ajoj91-need-a-service-for-generating-names-and"
 category: marketing
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: need-for-a-built-in-audio-player-in-tilda-product-catal
 title: Need for a built-in audio player in tilda product catalog
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/no-code/9gfljgt4l1-need-for-a-built-in-audio-player-in-tild"
 category: no-code
 date: "2025-09-20"

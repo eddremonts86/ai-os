@@ -4,7 +4,7 @@ slug: a-universal-solution-is-required-to-convert-voice-to-cl
 title: A universal solution is required to convert voice to clear text
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/uam90ckxn1-a-universal-solution-is-required-to-conv"
 category: marketing
 date: "2025-09-09"

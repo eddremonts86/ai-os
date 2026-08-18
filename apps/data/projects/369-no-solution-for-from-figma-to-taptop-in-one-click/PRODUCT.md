@@ -4,7 +4,7 @@ slug: no-solution-for-from-figma-to-taptop-in-one-click
 title: No solution for From Figma to TapTop in one click
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/design/m1m3pi5e11-no-solution-for-from-figma-to-taptop-in"
 category: design
 date: "2025-09-19"

@@ -4,7 +4,7 @@ slug: a-year-of-searching-for-an-affordable-solution-for-remo
 title: A year of searching for an affordable solution for remote US business opening wi
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/xnzvy42z31-a-year-of-searching-for-an-affordable-solution"
 category: business
 date: "2025-10-29"

@@ -4,7 +4,7 @@ slug: student-needs-a-reliable-and-affordable-tool-for-exam-p
 title: Student needs a reliable and affordable tool for exam preparation
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/education/mf1bmc02s1-student-needs-a-reliable-and-affordable"
 category: education
 date: "2025-10-29"

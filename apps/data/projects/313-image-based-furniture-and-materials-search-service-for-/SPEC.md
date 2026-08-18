@@ -4,7 +4,7 @@ slug: image-based-furniture-and-materials-search-service-for-
 title: Image-based furniture and materials search service for designers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/design/4jr9hzuc81-image-based-furniture-and-materials-search"
 category: design
 date: "2025-11-12"

@@ -4,7 +4,7 @@ slug: need-simple-application-testing-tool-without-programmin
 title: Need simple application testing tool without programming
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/dev/1ic9wdywx1-need-simple-application-testing-tool-without-p"
 category: dev
 date: "2025-10-29"

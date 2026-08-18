@@ -4,7 +4,7 @@ slug: automating-cross-posting-of-an-indie-hackers-technical-
 title: "Automating cross-posting of an indie hacker's technical content across multiple platforms (Twitter, LinkedIn, Product Hunt) while adhering to each platform's best practices"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/3i2dy4ryd1-automating-cross-posting-of-an-indie-hac"
 category: media
 date: "2026-01-20"

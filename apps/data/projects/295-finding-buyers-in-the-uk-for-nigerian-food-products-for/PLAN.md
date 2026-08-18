@@ -4,7 +4,7 @@ slug: finding-buyers-in-the-uk-for-nigerian-food-products-for
 title: Finding buyers in the UK for Nigerian food products for export
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/business/8wwv1nzz31-finding-buyers-in-the-uk-for-nigerian-food-p"
 category: business
 date: "2025-10-29"

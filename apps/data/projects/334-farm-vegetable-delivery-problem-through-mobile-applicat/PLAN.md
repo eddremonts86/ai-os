@@ -4,7 +4,7 @@ slug: farm-vegetable-delivery-problem-through-mobile-applicat
 title: Farm vegetable delivery problem through mobile application
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/retail/mnvzelo5i1-farm-vegetable-delivery-problem-through"
 category: retail
 date: "2025-10-29"

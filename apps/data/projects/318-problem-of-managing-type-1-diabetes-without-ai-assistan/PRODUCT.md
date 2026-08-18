@@ -4,7 +4,7 @@ slug: problem-of-managing-type-1-diabetes-without-ai-assistan
 title: Problem of managing type 1 diabetes without AI assistance
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/health/bx6kjqfm21-problem-of-managing-type-1-diabetes-without-ai"
 category: health
 date: "2025-10-29"

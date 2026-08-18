@@ -4,7 +4,7 @@ slug: there-is-no-simple-and-secure-way-to-pass-bitcoin-to-he
 title: "There is no simple and secure way to pass bitcoin to heirs in the event of sudden death. Without complex multisig, heirs lose access forever."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: fintech
 date: "2026-03-29"

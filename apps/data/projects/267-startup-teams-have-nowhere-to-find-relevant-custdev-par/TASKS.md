@@ -4,7 +4,7 @@ slug: startup-teams-have-nowhere-to-find-relevant-custdev-par
 title: Startup teams have nowhere to find relevant custdev participants (people for interviews) to test early ideas and prototypes without overpaying for biased feedback
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/startups/frug7pmx31-startup-teams-have-nowhere-to-find-relev"
 category: startups
 date: "2025-12-15"

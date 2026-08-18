@@ -4,7 +4,7 @@ slug: an-african-entrepreneur-cannot-accept-international-pay
 title: "An African entrepreneur cannot accept international payments on Shopify. PayPal blocks, Stripe is unavailable, and local processors are limited to local cards."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: fintech
 date: "2026-02-11"

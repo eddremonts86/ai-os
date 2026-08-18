@@ -4,7 +4,7 @@ slug: a-freelancer-often-loses-in-proposal-competitions-due-t
 title: A freelancer often loses in proposal competitions due to the inability to quickly create personalized proposals — weeks of work wasted.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: freelance
 date: "2026-01-29"

@@ -4,7 +4,7 @@ slug: fans-of-paper-planners-lack-an-ipad-app-that-would-allo
 title: Fans of paper planners lack an iPad app that would allow importing PDF layout templates and using them as a foundation for digital notes
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/l3grb6t2f1-fans-of-paper-planners-lack-an-ipad-app"
 category: productivity
 date: "2026-01-06"

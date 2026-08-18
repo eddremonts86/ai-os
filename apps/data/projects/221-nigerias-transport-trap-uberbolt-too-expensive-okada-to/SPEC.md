@@ -4,7 +4,7 @@ slug: nigerias-transport-trap-uberbolt-too-expensive-okada-to
 title: "Nigeria's transport trap: Uber/Bolt too expensive, okada too deadly, Danfo buses a nightmare. Millions stuck without a safe, affordable option."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: mobility
 date: "2026-02-13"

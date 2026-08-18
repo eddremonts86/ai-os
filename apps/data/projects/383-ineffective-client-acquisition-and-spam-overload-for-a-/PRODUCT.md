@@ -4,7 +4,7 @@ slug: ineffective-client-acquisition-and-spam-overload-for-a-
 title: Ineffective client acquisition and spam overload for a lawyer
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/freelance/7vyumtmek1-ineffective-client-acquisition-and-spam"
 category: freelance
 date: "2025-09-08"

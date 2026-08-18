@@ -4,7 +4,7 @@ slug: constantly-forgetting-minor-tasks-due-to-the-impulsive-
 title: Constantly forgetting minor tasks due to the impulsive habit of \u00abswiping\u00bb reminders away. Needs a tool that breaks this behavioral pattern
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/6hmyvb2mk1-constantly-forgetting-minor-tasks-due-to"
 category: productivity
 date: "2026-01-24"

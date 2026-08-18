@@ -4,7 +4,7 @@ slug: automated-submission-of-utility-meter-readings-to-multi
 title: Automated submission of utility meter readings to multiple management companies
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/utilities/tp6dgyysf1-automatic-submission-of-readings-of-counters"
 category: utilities
 date: "2025-10-10"

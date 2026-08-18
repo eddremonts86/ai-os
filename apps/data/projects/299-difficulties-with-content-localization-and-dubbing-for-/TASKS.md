@@ -4,7 +4,7 @@ slug: difficulties-with-content-localization-and-dubbing-for-
 title: Difficulties with content localization and dubbing for TV ch
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/0pmscqkvw1-difficulties-with-content-localization-and-du"
 category: media
 date: "2025-10-29"

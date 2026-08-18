@@ -4,7 +4,7 @@ slug: no-device-allows-a-4-year-old-child-to-independently-st
 title: "No device allows a 4-year-old child to independently stream music to a speaker over Wi-Fi without using a phone, tablet, or increasing screen time"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/hardware/eopralbt51-no-device-allows-a-4-year-old-child-to-i"
 category: hardware
 date: "2025-12-15"

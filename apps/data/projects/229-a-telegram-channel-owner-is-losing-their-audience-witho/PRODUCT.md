@@ -4,7 +4,7 @@ slug: a-telegram-channel-owner-is-losing-their-audience-witho
 title: A Telegram channel owner is losing their audience without understanding the reasons for unsubscriptions. No analytics service explains what content is turning subscribers away.
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/"
 category: analytics
 date: "2026-01-29"

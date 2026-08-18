@@ -4,7 +4,7 @@ slug: nigerians-cant-access-local-movies-due-to-expensive-sub
 title: "Nigerians can't access local movies due to expensive subscriptions and piracy"
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/media/pypg9yzgy1-nigerians-cant-access-local-movies-due-t"
 category: media
 date: "2025-10-29"

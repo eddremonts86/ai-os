@@ -4,7 +4,7 @@ slug: inability-to-get-a-response-to-complaints-from-companie
 title: Inability to get a response to complaints from companies
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/legal/avqi69p261-inability-to-get-a-response-to-complaints-from-"
 category: legal
 date: "2025-10-29"

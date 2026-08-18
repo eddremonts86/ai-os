@@ -4,7 +4,7 @@ slug: its-difficult-for-parents-of-newborns-in-india-to-organ
 title: "It's difficult for parents of newborns in India to organize vaccination: there is no service for easy doctor search and a «turnkey» process provision."
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/health/o94v8yjuj1-its-difficult-for-parents-of-newborns-in"
 category: health
 date: "2026-01-09"

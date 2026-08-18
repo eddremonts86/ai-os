@@ -4,7 +4,7 @@ slug: an-educator-seeks-a-tool-for-automatically-creating-coh
 title: An educator seeks a tool for automatically creating coherent video lessons from multiple fragments
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/design/oy3gtd71l1-an-educator-seeks-a-tool-for-automatical"
 category: design
 date: "2025-10-29"

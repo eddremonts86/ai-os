@@ -4,7 +4,7 @@ slug: search-for-personal-business-niche-considering-psycholo
 title: Search for personal business niche considering psychological barriers
 status: enriched
 source:
-  name: manual
+  name: ProblemHunt
   url: "https://problemhunt.pro/en/psychology/u4o11i24f1-search-for-personal-business-niche-consi"
 category: psychology
 date: "2025-10-29"
