@@ -124,6 +124,53 @@ This exists **because** of this reorganisation. Every `../..` hop count in the t
 the moment a directory moved, and the failures were silent (an empty glob reads as "zero plans"
 and every downstream check passes). Anything new that needs the repo root must use the marker.
 
+### An explicit `AI_OS_ROOT` beats the marker, and the container has no marker
+
+The marker walk is the rule inside the repository. It is not sufficient everywhere, and the
+exception cost a deploy:
+
+`Dockerfile.plans-explorer` copies **only** `apps/data/projects/` and `apps/plans-explorer/`.
+There is no `CLAUDE.md` in that tree, so converting `build-index.mjs` from hop counting to the
+marker walk made the image stop building with `cannot locate the AI-OS root above
+/repo/apps/plans-explorer/app/scripts`. The local `npm run build` passed the whole time — a green
+local build says nothing about an image whose context is a subset of the repo.
+
+So the precedence is: **`process.env.AI_OS_ROOT` wins; the marker walk is the fallback; throw if
+neither works.** Every entry point honours that now — `plan.mjs`, `build-index.mjs`,
+`test-parser.mjs`, `select-slice.mjs`, the scraper and `scrape-cron.sh`. The Dockerfile sets
+`ENV AI_OS_ROOT=/repo` rather than copying an instructions file into a web image to satisfy a
+search.
+
+`plan.mjs` was the one that ignored the variable, and the consequence was worse than a wrong
+path: a regression test that set `AI_OS_ROOT` to a temp fixture ran against the **real** corpus
+instead, and passed while proving nothing. If a tool cannot be pointed at a fixture corpus, its
+tests are not testing it.
+
+### Two copies of a normalisation will drift, and the drift is invisible
+
+`ai-os plans format` must reach a fixed point in one pass, and it has failed that twice for the
+same reason. The clone tally fingerprints a normalised section body; `isFiller` tests a body that
+has been through `rewriteBody`. When the two apply different normalisations, pass 1 finds no
+clones and pass 2 finds them all.
+
+The metadata block is why it bites hardest: before it is lifted into frontmatter each plan's
+Problem section is unique, because the source URL differs. After it is lifted, they are identical.
+A tally that runs before the strip cannot see the clones the strip creates.
+
+There is now one `normaliseForClone` shared by both, and a test that runs the real command twice
+over a temp corpus and requires the second run to report zero changes. That test was watched to
+fail with the fix reverted — a regression test nobody has seen fail is not evidence.
+
+### Provenance comes from the host, because the label does not survive
+
+`source.name` was wrong for 189 published plans (`manual`, with a `problemhunt.pro` URL) and for
+five whole sources, which all claimed to be ProblemHunt. Two rules came out of fixing it:
+
+- The prose label is **not** durable. `stripMetadataBlock` removes it on the migrating run, so a
+  formatted plan has only its URL left as evidence of origin. Derive from the host.
+- The display label belongs to the data. The plan page hardcoded "View on ProblemHunt" beside a
+  link that pointed at reddit.com for 220 of 419 plans.
+
 ## Ledger: what moved on 2026-08-18, and why
 
 | From                                             | To                                       | Why                                                                                                                                             |
