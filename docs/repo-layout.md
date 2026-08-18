@@ -151,6 +151,22 @@ Earlier stages of the same reorganisation: `site/` → `apps/site/`, `plans-expl
 | `_agent5/`   | 268 KB of Python scratch from the aborted batch-3 enrichment. Gitignored via `_agent*/`, so invisible to git                                                        |
 | `plans-api/` | 13 MB containing **only `node_modules`**. Its source lives on the unmerged `feat/plans-api` branch. When that branch lands, the source belongs at `apps/plans-api/` |
 
+## Work that is deliberately not here yet
+
+Three branches predated the reorganisation and held finished work at the old paths. A plain
+merge would have resurrected `projects/` and `tools/` at the root, so each was resolved by hand
+on 2026-08-18. Recorded because "why is this still a branch?" is otherwise unanswerable:
+
+| Branch                         | Disposition                                                                                                                                                                                                                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `feat/plans-cron`              | **absorbed.** Its `scrape-cron.sh` was ported to `apps/data/tools/plans-pipeline/`, because the launchd plist already pointed at the new path and the file existed nowhere. Its README rewrite was *not* taken — dev's version is later and documents the 4 h cadence and the real Hermes job id |
+| `chore/cron-corpus-2026-08-17` | **partially taken.** The scraper's modular `sources/` refactor and its HN/IndieHackers fixes landed. Its 1,014 draft plans and its `state.json` did not: the corpus will re-capture them from source, and importing the cursor would have marked them seen and prevented exactly that            |
+| `feat/plans-api`               | **deferred, branch intact.** A Fastify read-only API over the corpus, built for builderhunt to consume. Nothing consumes it yet. When it lands it belongs at `apps/plans-api/`, and the zero-dependency shape of `apps/submission-api/` is worth reconsidering against it first                  |
+
+The general rule these follow: a branch older than a layout change is ported, not merged. Take
+its content, re-apply the current paths, and re-verify by running the thing — the scraper port
+is why `--dry-run` is now actually dry.
+
 ## When you add something new
 
 - A new deployed product → `apps/<name>/`, and its Dockerfile at the root as
