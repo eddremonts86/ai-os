@@ -31,7 +31,7 @@ runs git, never decides what ships, and cannot merge anything.
 |---|---|
 | `scrape` | Runs the ProblemHunt/Reddit scraper. Fails loudly with the tail of `last-run.log`. |
 | `intake` | Materialises approved community submissions into captures. Runs before `prepare` so a submission ingested on one tick is authored in the same pass. |
-| `prepare` | `ai-os plans format --write`, then picks the slice → `outputs/plans-pipeline/slice.json`. Exit **3** means nothing to enrich. |
+| `prepare` | `ai-os plans format --write`, then picks the slice → `apps/data/outputs/plans-pipeline/slice.json`. Exit **3** means nothing to enrich. |
 | `verify` | Index, `ai-os plans check --publishable`, formatter tests, explorer build, parser invariants. Non-zero means **do not ship**. |
 | `ship` | Commit → PR to `dev` → merge → PR `dev` → `main` → merge. Deploy triggers itself from the push. |
 | `status` | Read-only. Where the corpus stands. |

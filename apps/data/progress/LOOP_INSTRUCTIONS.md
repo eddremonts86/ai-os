@@ -39,8 +39,8 @@ ID="<NNN>"
 # (no invented facts; keep numbers, role, country)
 
 # write the per-plan report
-mkdir -p "outputs/enrich/$ID-<slug>"
-cat > "outputs/enrich/$ID-<slug>/report.md" <<EOF
+mkdir -p "apps/data/outputs/enrich/$ID-<slug>"
+cat > "apps/data/outputs/enrich/$ID-<slug>/report.md" <<EOF
 # $ID <title>
 
 sections filled: Problem, Objective, Target Users, MVP Scope, Constraints, Value

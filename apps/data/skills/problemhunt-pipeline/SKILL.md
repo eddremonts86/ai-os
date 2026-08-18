@@ -1,6 +1,6 @@
 ---
 name: problemhunt-pipeline
-description: Use when fetching fresh project ideas and generating per-project plans. Multi-source: ProblemHunt + Reddit. Triggers on "problemhunt", "fetch project ideas", "scrape reddit", "generate plans", "new projects". Runs the multi-source scraper under ai-os/tools/problemhunt-scraper.
+description: Use when fetching fresh project ideas and generating per-project plans. Multi-source: ProblemHunt + Reddit. Triggers on "problemhunt", "fetch project ideas", "scrape reddit", "generate plans", "new projects". Runs the multi-source scraper under ai-os/apps/data/tools/problemhunt-scraper.
 license: MIT
 metadata:
   hermes:
@@ -55,7 +55,7 @@ Rejected sources (see "Rejected" below for why):
 │       ├── DESIGN.md
 │       └── PRODUCT.md
 ├── apps/data/projects/TOP_PROJECTS.md # ranked top 5 per dimension
-└── skills/problemhunt-pipeline/   # ← this skill
+└── apps/data/skills/problemhunt-pipeline/  # ← this skill
 ```
 
 ## Steps
@@ -63,7 +63,7 @@ Rejected sources (see "Rejected" below for why):
 ### 1. Run the scraper
 
 ```bash
-cd ~/Projects/ai-os/tools/problemhunt-scraper
+cd ~/Projects/ai-os/apps/data/tools/problemhunt-scraper
 node scraper.cjs                  # all sources, incremental
 node scraper.cjs --force          # re-generate everything
 node scraper.cjs --dry-run        # fetch but do not write files

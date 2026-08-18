@@ -1,6 +1,7 @@
-# Keep the Docker build context small. Both images build from the repo root:
+# Keep the Docker build context small. All three images build from the repo root:
 #   Dockerfile                  → the landing (apps/site/)
-#   Dockerfile.plans-explorer   → the explorer (needs projects/ + apps/plans-explorer/)
+#   Dockerfile.plans-explorer   → the explorer (apps/data/projects/ + apps/plans-explorer/)
+#   Dockerfile.submission-api   → the write path (apps/submission-api/ + the schema)
 #
 # Nothing here is required by either build. Excluding node_modules matters most:
 # the image runs `npm ci` itself, and shipping a host-built tree into the context
@@ -44,6 +45,14 @@ rules
 verifiers
 workflows
 apps/plans-explorer/app/node_modules
+
+# Product material that is not an image input. A bare `outputs` above matches only the
+# root-level one, so the plans product's own outputs dir needs naming explicitly — it is
+# 3.7 MB of generated run artifacts that would otherwise ride along in every build context.
+apps/data/outputs
+apps/data/progress
+apps/data/skills
+apps/create-ai-os
 
 # Editor and OS noise.
 .DS_Store

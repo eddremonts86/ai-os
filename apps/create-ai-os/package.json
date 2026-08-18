@@ -20,7 +20,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddremonts86/ai-os.git",
-    "directory": "packages/create-ai-os"
+    "directory": "apps/create-ai-os"
   },
   "bugs": {
     "url": "https://github.com/eddremonts86/ai-os/issues"

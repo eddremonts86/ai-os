@@ -156,46 +156,67 @@ See `rules/never_do.md`. In short:
 
 ## 11. Project structure
 
+**The rule: everything above `apps/` is the operating system; everything from `apps/` down is
+what it produced.** Full decision record, including the entries that look like clutter and are
+load-bearing: [`docs/repo-layout.md`](docs/repo-layout.md).
+
 ```
 ai-os/
 ├── CLAUDE.md                    # this file (master instructions)
+├── AGENTS.md                    # symlink → CLAUDE.md, for CLIs that read that name
+├── Dockerfile*                  # deploy descriptors; root by necessity (see below)
+├── ai-os                        # the CLI entry point
 │
 │   # ── the framework ──────────────────────────────────────────────────
 ├── context/                     # persistent context (profile, prefs, projects, tools)
 ├── rules/                       # hard rules (always/ask/never)
 ├── specs/                       # active Specs
 ├── verifiers/                   # quality gates (post-task)
-├── skills/                      # local skills (workspace-specific)
+├── skills/                      # the skill template + README only
 ├── workflows/                   # recurring processes
 ├── archive/                     # completed Specs
-├── outputs/                     # generated artifacts
-├── prompts/                      # original Karpathy prompts (English)
+├── outputs/                     # the framework's artifacts: research, audits, diagrams
+├── memory/                      # loop registry + graph state
+├── prompts/                     # original Karpathy prompts (English)
 ├── ai-config/                   # AI config: skills, MCP, commands
 ├── dev-env/                     # dev env: dotfiles, Brewfile, packages
 ├── setup/                       # install scripts (Mac + Windows + dry-run)
 ├── vendor/                      # third-party vendored skills (gstack, ecc, codex-plugin-cc)
-├── .github/                     # CI workflows (test-mac/linux/windows)
+├── .github/                     # CI workflows (test-mac/linux/windows) + deploys
 ├── docs/                        # documentation (README + guides)
 │
 │   # ── the products the framework produces ────────────────────────────
-├── apps/                        # the products, one directory each
-│   ├── site/                    # the AI-OS landing (ai-os.eduardoinerarte.dk)
-│   ├── plans-explorer/          # the plans SPA (plans.eduardoinerarte.dk)
-│   ├── submission-api/          # the submissions write path (not deployed yet)
-│   └── data/
-│       └── projects/            # the plans corpus: machine-written, 466 dirs
-│       └── tools/               # the machinery: scraper, contract, gate, pipeline
-    ├── problemhunt-scraper/     #   capture
-    ├── plan-format/             #   the contract, the gate, the formatter
-    ├── plans-pipeline/          #   the daily loop
-    └── lib/                     #   shared id allocation
+└── apps/                        # the products, one directory each
+    ├── site/                    # the AI-OS landing (ai-os.eduardoinerarte.dk)
+    ├── plans-explorer/          # the plans SPA (plans.eduardoinerarte.dk)
+    ├── submission-api/          # the submissions write path (not deployed yet)
+    ├── create-ai-os/            # published npm package @edd_remonts/create-ai-os
+    └── data/                    # the plans product
+        ├── projects/            #   the corpus: 466 machine-written plan dirs
+        ├── tools/               #   the machinery
+        │   ├── problemhunt-scraper/  # capture
+        │   ├── plan-format/          # the contract, the gate, the formatter
+        │   ├── plans-pipeline/       # the daily loop
+        │   └── lib/                  # shared id allocation
+        ├── skills/              #   skills documenting this product's machinery
+        ├── progress/            #   the enrichment loop's 4-file set + per-agent logs
+        └── outputs/             #   the product's run artifacts (ignored, machine-local)
 ```
 
-The split above is the point: everything before `apps/` is the operating system, everything
-from `apps/` down is what it produced. `Dockerfile*` stay at the repo root rather than moving
-into each app, because they are deploy descriptors for the repository and Coolify addresses
-them by absolute path (`dockerfile_location=/Dockerfile`); moving them would mean editing live
-production configuration to land a directory rename.
+Three things in that tree are deliberate and must not be "tidied":
+
+- **`AGENTS.md` is a symlink to `CLAUDE.md`.** It is how Codex and Antigravity find these
+  instructions. Deleting it breaks them silently — they start with no instructions at all.
+- **`Dockerfile*` stay at the repo root.** They are deploy descriptors for the repository, and
+  Coolify addresses them by absolute path (`dockerfile_location=/Dockerfile`, `base_directory=/`);
+  moving them would mean editing live production configuration to land a directory rename.
+- **`outputs/` exists twice.** The root one holds the framework's research and audits; the one
+  under `apps/data/` holds the plans product's run artifacts. Both are ignored with a tracked
+  `.gitkeep`, separately, so either can start being tracked without the other.
+
+Tooling never counts `..` hops to find the root — it walks up to the `CLAUDE.md` marker
+(`apps/data/tools/plan-format/lib/plan.mjs`). Hop counting broke silently on every move: an
+empty glob reads as "zero plans" and every downstream check still passes.
 
 ## 12. Commands quick reference
 
