@@ -26,7 +26,11 @@ import { listPlanDirs, planIdSlug, readDoc, AI_OS_ROOT } from '../plan-format/li
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const STATE_PATH = join(HERE, 'state.json');
-const OUT_DIR = join(AI_OS_ROOT, 'outputs', 'plans-pipeline');
+// Must stay in step with daily.sh's SLICE_MANIFEST. This read `outputs/plans-pipeline`
+// after the corpus moved under apps/data/, so a fresh manifest landed at the old path
+// while daily.sh pointed the agent at the new one — a stale slice, silently enriching
+// the wrong ids.
+const OUT_DIR = join(AI_OS_ROOT, 'apps', 'data', 'outputs', 'plans-pipeline');
 const SLICE_PATH = join(OUT_DIR, 'slice.json');
 
 const argv = process.argv.slice(2);
