@@ -159,6 +159,8 @@ See `rules/never_do.md`. In short:
 ```
 ai-os/
 ├── CLAUDE.md                    # this file (master instructions)
+│
+│   # ── the framework ──────────────────────────────────────────────────
 ├── context/                     # persistent context (profile, prefs, projects, tools)
 ├── rules/                       # hard rules (always/ask/never)
 ├── specs/                       # active Specs
@@ -173,8 +175,26 @@ ai-os/
 ├── setup/                       # install scripts (Mac + Windows + dry-run)
 ├── vendor/                      # third-party vendored skills (gstack, ecc, codex-plugin-cc)
 ├── .github/                     # CI workflows (test-mac/linux/windows)
-└── docs/                        # documentation (README + guides)
+├── docs/                        # documentation (README + guides)
+│
+│   # ── the products the framework produces ────────────────────────────
+├── apps/                        # deployable products, one directory each
+│   ├── site/                    # the AI-OS landing (ai-os.eduardoinerarte.dk)
+│   ├── plans-explorer/          # the plans SPA (plans.eduardoinerarte.dk)
+│   └── submission-api/          # the submissions write path (not deployed yet)
+├── projects/                    # the plans corpus: machine-written data, not an app
+└── tools/                       # the machinery that produces it
+    ├── problemhunt-scraper/     #   capture
+    ├── plan-format/             #   the contract, the gate, the formatter
+    ├── plans-pipeline/          #   the daily loop
+    └── lib/                     #   shared id allocation
 ```
+
+The split above is the point: everything before `apps/` is the operating system, everything
+from `apps/` down is what it produced. `Dockerfile*` stay at the repo root rather than moving
+into each app, because they are deploy descriptors for the repository and Coolify addresses
+them by absolute path (`dockerfile_location=/Dockerfile`); moving them would mean editing live
+production configuration to land a directory rename.
 
 ## 12. Commands quick reference
 

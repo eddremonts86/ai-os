@@ -2,7 +2,7 @@
  * Read the pre-schema plan shape so `format` can migrate it faithfully.
  *
  * The patterns here are deliberately the same ones
- * `plans-explorer/app/scripts/build-index.mjs` uses today. Migration must extract
+ * `apps/plans-explorer/app/scripts/build-index.mjs` uses today. Migration must extract
  * exactly what the web currently shows, otherwise the format command silently
  * changes the site's data while claiming to only restructure it.
  */

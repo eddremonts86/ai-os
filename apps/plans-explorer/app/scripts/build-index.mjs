@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..'); // .../plans-explorer/
-const PROJECTS_DIR = join(ROOT, '..', 'projects'); // .../ai-os/projects
+const PROJECTS_DIR = join(ROOT, '..', '..', 'projects'); // .../ai-os/projects
 const OUT_DATA = join(ROOT, 'app', 'public', 'data');
 const OUT_DOCS = join(OUT_DATA, 'documents');
 const CACHE_DIR = join(ROOT, 'app', '.cache', 'sources');

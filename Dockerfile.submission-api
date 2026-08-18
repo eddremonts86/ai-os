@@ -1,4 +1,4 @@
-# The submission API (tools/submission-api), the plans product's only write path.
+# The submission API (apps/submission-api), the plans product's only write path.
 #
 # Coolify builds this from the REPO ROOT with dockerfile_location=/Dockerfile.submission-api
 # and base_directory=/. ports_exposes must be 8080.
@@ -16,7 +16,7 @@ WORKDIR /app
 # The contract the API validates against. Copied rather than vendored so the running service
 # and the gate can never disagree about what a usable submission is.
 COPY projects/_schema.json ./projects/_schema.json
-COPY tools/submission-api/server.mjs ./tools/submission-api/server.mjs
+COPY apps/submission-api/server.mjs ./apps/submission-api/server.mjs
 
 # Drop root. The service reads two files and makes outbound HTTPS calls; it has no reason to
 # be able to write anything.
@@ -31,4 +31,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -qO- http://127.0.0.1:8080/health | grep -q '"configured":true' || exit 1
 
-CMD ["node", "tools/submission-api/server.mjs"]
+CMD ["node", "apps/submission-api/server.mjs"]
