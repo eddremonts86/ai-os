@@ -341,7 +341,7 @@ ${description ? `_Based on source brief:_ ${description}` : '_Pending manual ref
 
 | Stakeholder | Why they care |
 |---|---|
-${stakeholders.slice(0, 5).map(s => `| ${s} | _[What pain they feel]_\n| _[How this solves it]_ |`).join('\n')}
+${stakeholders.slice(0, 5).map(s => `| ${s} | _[What pain they feel, and how this solves it]_ |`).join('\n')}
 
 ## Jobs To Be Done
 

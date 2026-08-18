@@ -56,7 +56,7 @@ export function extractTitle(md, fallback) {
 }
 
 export function extractCategory(specText) {
-  const m = specText.match(/\*\*Categoría primaria:\*\*\s*([a-z][a-z-]*)/i)
+  const m = specText.match(/\*\*(?:Categoría primaria|Primary category):\*\*\s*([a-z][a-z-]*)/i)
     || specText.match(/\*\*Subreddit:\*\*\s*([A-Za-z][\w-]*)/);
   return m ? m[1].toLowerCase() : 'other';
 }
@@ -75,7 +75,11 @@ export function extractTags(specText, productText) {
 }
 
 export function extractDate(specText) {
-  const iso = specText.match(/\*\*Fecha:\*\*\s*(\d{4}-\d{2}-\d{2})/);
+  // `Date` as well as `Fecha`: the scraper emits the English label now, and `date` is a
+  // REQUIRED frontmatter field, so recognising only the Spanish one made every freshly
+  // scraped plan fail `frontmatter-present` with "missing required: date" — a break that no
+  // existing plan could reveal, because all 466 were already migrated.
+  const iso = specText.match(/\*\*(?:Fecha|Date):\*\*\s*(\d{4}-\d{2}-\d{2})/);
   if (iso) return iso[1];
   const reddit = specText.match(/\*\*Posted:\*\*\s*(\d{4}-\d{2}-\d{2})/);
   return reddit ? reddit[1] : null;
@@ -106,7 +110,7 @@ export function extractCountry(specText) {
   for (const line of lines) {
     if (/^[A-Z][a-zA-Z\s]+$/.test(line) && line.length < 40 && !line.startsWith('#')) {
       if (KNOWN_CATEGORIES.has(line.toLowerCase())) continue;
-      if (/^(Problema|Objetivo|Alcance|Design|Constraints|MVP|Source|Subreddit|Posted|Tags|Categoría|Fecha)$/i.test(line)) continue;
+      if (/^(Problema|Problem|Objetivo|Objective|Alcance|Design|Constraints|MVP|Source|Subreddit|Posted|Tags|Categoría|Fecha|Date)$/i.test(line)) continue;
       return line;
     }
   }
@@ -139,9 +143,9 @@ export function extractTech(planText) {
 export function stripMetadataBlock(body) {
   return body
     .replace(/^\*\*(?:Fuente|Source):\*\*[^\n]*\n?/gm, '')
-    .replace(/^\*\*(?:Categoría primaria|Subreddit):\*\*[^\n]*\n?/gm, '')
+    .replace(/^\*\*(?:Categoría primaria|Primary category|Subreddit):\*\*[^\n]*\n?/gm, '')
     .replace(/^\*\*Tags:\*\*[^\n]*\n?/gm, '')
-    .replace(/^\*\*(?:Fecha|Posted):\*\*[^\n]*\n?/gm, '')
+    .replace(/^\*\*(?:Fecha|Date|Posted):\*\*[^\n]*\n?/gm, '')
     .replace(/\n{3,}/g, '\n\n');
 }
 
