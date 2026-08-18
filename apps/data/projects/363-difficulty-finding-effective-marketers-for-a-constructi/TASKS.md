@@ -1,0 +1,43 @@
+---
+id: "363"
+slug: difficulty-finding-effective-marketers-for-a-constructi
+title: Difficulty finding effective marketers for a construction business
+status: enriched
+source:
+  name: ProblemHunt
+  url: "https://problemhunt.pro/en/freelance/hc75uckma1-difficulty-finding-effective-marketers-f"
+category: freelance
+date: "2025-10-29"
+tags: [Freelance, Marketing]
+country: Russia
+tech: [Next.js, Postgres, Yandex Direct API + VK Ads API, Yandex.Metrica + call-tracking (Calltouch / Callibri) integration, Stripe / YuKassa]
+---
+# Difficulty finding effective marketers for a construction business
+
+## Phase 0: Scaffold
+
+- [ ] Read the source at `https://problemhunt.pro/en/freelance/hc75uckma1-difficulty-finding-effective-marketers-f` and quote the original problem statement into a `source-quote.md` for traceability.
+- [ ] Create the project folder under `apps/363-difficulty-finding-effective-marketers-f/` (or per the chosen deployment target).
+- [ ] Initialize git, pin dependencies for: Next.js, Postgres, Yandex Direct API + VK Ads API, and confirm versions resolve in CI.
+- [ ] Write DESIGN.md with country-appropriate defaults (`country: Russia`) — color, type, density, motion tokens — not the global default.
+- [ ] Scaffold the auth + persistence layer with data-residency configured for Russia.
+- [ ] Wire Stripe (or the regional PSP for {country}) in test mode and document the price model in PRODUCT.md.
+- [ ] Set up the framework router, server actions, and a typed API client for the read/write endpoints listed in PLAN.md.
+## Phase 1: Core
+
+- [ ] Marketer profile with vertical, geo, prior contract values, references
+- [ ] Marketer vetting: reference check + 30-day trial campaign with cost-per-lead cap
+- [ ] Yandex Direct + VK Ads campaign setup with per-region bid modifier
+- [ ] Call-tracking (Calltouch / Callibri) integration + weekly QA reports
+- [ ] Contract-attribution via builder-supplied CRM webhook or manual upload
+- [ ] Success fee on signed-contract value (5-10% per listing)
+- [ ] Pilot with 30 Russian construction businesses and 20 vetted marketers across 90 days
+
+## Phase 2: Deploy
+
+- [ ] Confirm the chosen deployment target for the stack (Next.js, Postgres, Yandex Direct API + VK Ads API) and set the prod-equivalent env vars.
+- [ ] Run a single end-to-end smoke test of the 363-difficulty-finding-effective-market MVP against the source post's stated use case.
+- [ ] Capture a 60-second screen recording showing the primary user flow in Russia completing the core task.
+- [ ] Set up the on-call rotation (or, for a single-founder MVP, the personal alert path) for Next.js, Postgres, Yandex Direct API + VK Ads API errors.
+- [ ] Publish the post-mortem template and the rollback procedure specific to this deployment target.
+- [ ] Mark the milestone: either the plan graduates to v2 or it is archived with a written reason in `decisions.md`.

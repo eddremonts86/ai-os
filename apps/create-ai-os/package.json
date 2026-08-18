@@ -1,0 +1,47 @@
+{
+  "name": "@edd_remonts/create-ai-os",
+  "version": "0.1.1",
+  "description": "Bootstrap Edd's AI Operating System (skills, workflows, MCP servers, dev-env) with one command.",
+  "type": "module",
+  "bin": {
+    "create-ai-os": "bin/create-ai-os.js"
+  },
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test 'test/**/*.test.js'"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddremonts86/ai-os.git",
+    "directory": "apps/create-ai-os"
+  },
+  "bugs": {
+    "url": "https://github.com/eddremonts86/ai-os/issues"
+  },
+  "homepage": "https://github.com/eddremonts86/ai-os#readme",
+  "keywords": [
+    "ai-os",
+    "ai",
+    "cli",
+    "claude-code",
+    "skills",
+    "dotfiles",
+    "dev-environment",
+    "scaffold",
+    "create",
+    "karpathy"
+  ],
+  "author": "Eduardo Inerarte <eddremonts86@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}
