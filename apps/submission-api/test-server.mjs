@@ -12,7 +12,7 @@
 
 import { createServer } from 'node:http';
 import { validateSubmission, renderIssueBody, allowedOrigin, handler, CATEGORIES, MIN_PROBLEM } from './server.mjs';
-import { parseIssueForm, validate as validateParsed, FIELDS } from '../plans-pipeline/intake.mjs';
+import { parseIssueForm, validate as validateParsed, FIELDS } from '../../tools/plans-pipeline/intake.mjs';
 
 let pass = 0;
 const fails = [];

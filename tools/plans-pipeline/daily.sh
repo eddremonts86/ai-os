@@ -51,7 +51,7 @@ while [ $# -gt 0 ]; do
 done
 
 SCRAPER_DIR="$AI_OS_ROOT/tools/problemhunt-scraper"
-EXPLORER_DIR="$AI_OS_ROOT/plans-explorer/app"
+EXPLORER_DIR="$AI_OS_ROOT/apps/plans-explorer/app"
 SLICE_MANIFEST="$AI_OS_ROOT/outputs/plans-pipeline/slice.json"
 LOG_DIR="$AI_OS_ROOT/outputs/plans-pipeline"
 LOCK="$LOG_DIR/.lock"

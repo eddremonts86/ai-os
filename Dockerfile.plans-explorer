@@ -1,10 +1,10 @@
-# Static build for the AI-OS Plans Explorer (plans-explorer/), served by nginx.
+# Static build for the AI-OS Plans Explorer (apps/plans-explorer/), served by nginx.
 #
 # Coolify builds this from the REPO ROOT with dockerfile_location=/Dockerfile.plans-explorer
 # and base_directory=/. ports_exposes must be 80.
 #
-# Why the whole repo is the build context and not just plans-explorer/:
-# the indexer reads the corpus from `../projects/` relative to plans-explorer/
+# Why the whole repo is the build context and not just apps/plans-explorer/:
+# the indexer reads the corpus from `../../projects/` relative to apps/plans-explorer/
 # (build-index.mjs: PROJECTS_DIR = join(ROOT, '..', 'projects')), and plans.json is
 # generated, not committed. Copying only the app would give a green build serving an
 # empty explorer — 0 plans, every facet blank. `.dockerignore` keeps the context small.
@@ -18,24 +18,24 @@ FROM node:22-alpine AS build
 WORKDIR /repo
 
 # Dependencies first, so a corpus-only change reuses the install layer.
-COPY plans-explorer/app/package.json plans-explorer/app/package-lock.json ./plans-explorer/app/
+COPY apps/plans-explorer/app/package.json apps/plans-explorer/app/package-lock.json ./apps/plans-explorer/app/
 RUN --mount=type=cache,target=/root/.npm \
-    cd plans-explorer/app && npm ci --no-audit --no-fund
+    cd apps/plans-explorer/app && npm ci --no-audit --no-fund
 
 # The corpus and the app. projects/ is listed first for the same layer-cache reason:
 # app source changes far more often than the plans do.
 COPY projects/ ./projects/
-COPY plans-explorer/ ./plans-explorer/
+COPY apps/plans-explorer/ ./apps/plans-explorer/
 
 # `npm run build` runs prebuild (the indexer) then vue-tsc + vite. Type errors and a
 # broken corpus both fail the image rather than shipping quietly.
-RUN cd plans-explorer/app && npm run build
+RUN cd apps/plans-explorer/app && npm run build
 
 # Fail loudly if the corpus did not make it into the context. A container serving an
 # explorer with zero plans is the failure mode this whole file exists to prevent, and
 # it is indistinguishable from success without this check.
 RUN set -eu; \
-    plans=$(node -e "const p=require('/repo/plans-explorer/app/public/data/plans.json');console.log(p.length)"); \
+    plans=$(node -e "const p=require('/repo/apps/plans-explorer/app/public/data/plans.json');console.log(p.length)"); \
     echo "indexed plans: $plans"; \
     [ "$plans" -gt 0 ] || { echo "FATAL: indexer produced 0 plans — is projects/ in the build context?" >&2; exit 1; }
 
@@ -43,7 +43,7 @@ RUN set -eu; \
 FROM nginx:1.27-alpine
 
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=build /repo/plans-explorer/app/dist/ /usr/share/nginx/html/
+COPY --from=build /repo/apps/plans-explorer/app/dist/ /usr/share/nginx/html/
 
 # The SPA uses hash routing (createWebHashHistory), so deep links never hit nginx as a
 # path — but keep the fallback anyway for /assets and any future history-mode switch.
