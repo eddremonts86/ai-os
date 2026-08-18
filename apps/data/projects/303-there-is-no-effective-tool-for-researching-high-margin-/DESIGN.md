@@ -64,21 +64,21 @@ components:
 
 ## Notion — Design System
 
-**Inspirado en:** Notion (Personal workspace, notes, wiki, knowledge. Warm + calm.)
+**Inspired by:** Notion (Personal workspace, notes, wiki, knowledge. Warm + calm.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #1A1A1A | Elementos principales, acciones |
-| secondary | #9B9A97 | Texto secundario, bordes |
-| tertiary | #EB5757 | Acentos, highlights |
-| neutral | #FFFFFF | Fondos neutros |
-| dark | #F7F6F3 | Paneles oscuros |
-| accent | #2383E2 | CTAs, notificaciones |
-| text | #37352F | Texto principal |
-| muted | #9B9A97 | Texto terciario |
-| bg | #F7F6F3 | Fondo página |
+| primary | #1A1A1A | Primary elements, actions |
+| secondary | #9B9A97 | Secondary text, borders |
+| tertiary | #EB5757 | Accents, highlights |
+| neutral | #FFFFFF | Neutral backgrounds |
+| dark | #F7F6F3 | Dark panels |
+| accent | #2383E2 | CTAs, notifications |
+| text | #37352F | Primary text |
+| muted | #9B9A97 | Tertiary text |
+| bg | #F7F6F3 | Page background |
 
 ### Typography
 
@@ -87,20 +87,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 4px | Elementos inline |
-| md | 12px | Componentes |
-| lg | 24px | Secciones |
-| xl | 48px | Espaciado grande |
+| sm | 4px | Inline elements |
+| md | 12px | Components |
+| lg | 24px | Sections |
+| xl | 48px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 4px | Inputs, badges |
-| md | 6px | Botones, cards |
-| lg | 0px | Paneles, modales |
+| md | 6px | Buttons, cards |
+| lg | 0px | Panels, modals |
 
 ### Components
 
@@ -111,16 +111,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 4px / 12px / 24px
-- Priorizar #1A1A1A para acciones principales
-- Usar rounded 6px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 4px / 12px / 24px scale
+- Favour #1A1A1A for primary actions
+- Use rounded 6px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

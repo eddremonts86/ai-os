@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "consumer", "parenting", "video"]
-tech: ["Next.js", "TypeScript", "YouTube IFrame API", "Supabase", "Stripe"]
 id: "598"
 slug: i-built-my-nephew-his-own-private-youtube-he-has-no-ide
 title: I Built My Nephew His Own Private YouTube (He Has No Idea)
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1voxk19/i_built_my_nephew_his_own_private_youtube_he_has/"
 category: saas
 date: "2026-08-15"
+tags: [saas, consumer, parenting, video]
+tech: [Next.js, TypeScript, YouTube IFrame API, Supabase, Stripe]
 ---
 # I built my nephew his own private YouTube (he has no idea what YouTube is)
 

@@ -71,21 +71,21 @@ components:
 
 ## Northone — Design System
 
-**Inspirado en:** Northone (Banking for small business, emerging markets. Warm + accessible.)
+**Inspired by:** Northone (Banking for small business, emerging markets. Warm + accessible.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #1A1A1A | Elementos principales, acciones |
-| secondary | #6B6B6B | Texto secundario, bordes |
-| tertiary | #7B61FF | Acentos, highlights |
-| neutral | #FFFFFF | Fondos neutros |
-| dark | #F5F5F0 | Paneles oscuros |
-| accent | #00E5BE | CTAs, notificaciones |
-| text | #1A1A1A | Texto principal |
-| muted | #6B6B6B | Texto terciario |
-| bg | #F5F5F0 | Fondo página |
+| primary | #1A1A1A | Primary elements, actions |
+| secondary | #6B6B6B | Secondary text, borders |
+| tertiary | #7B61FF | Accents, highlights |
+| neutral | #FFFFFF | Neutral backgrounds |
+| dark | #F5F5F0 | Dark panels |
+| accent | #00E5BE | CTAs, notifications |
+| text | #1A1A1A | Primary text |
+| muted | #6B6B6B | Tertiary text |
+| bg | #F5F5F0 | Page background |
 
 ### Typography
 
@@ -94,20 +94,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 8px | Inputs, badges |
-| md | 12px | Botones, cards |
-| lg | 20px | Paneles, modales |
+| md | 12px | Buttons, cards |
+| lg | 20px | Panels, modals |
 
 ### Components
 
@@ -118,16 +118,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #1A1A1A para acciones principales
-- Usar rounded 12px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #1A1A1A for primary actions
+- Use rounded 12px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

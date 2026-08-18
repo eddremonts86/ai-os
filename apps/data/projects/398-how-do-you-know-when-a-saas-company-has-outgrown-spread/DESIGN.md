@@ -66,18 +66,18 @@ components:
 
 ## Linear — Design System
 
-**Inspirado en:** Linear (Productivity / developer tools. Sharp + minimal.)
+**Inspired by:** Linear (Productivity / developer tools. Sharp + minimal.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #5E6AD2 | Elementos principales, acciones |
-| secondary | #1F1F1F | Texto secundario, bordes |
+| primary | #5E6AD2 | Primary elements, actions |
+| secondary | #1F1F1F | Secondary text, borders |
 | accent | #9D8DF1 | CTAs, highlights |
-| neutral | #F7F8F8 | Fondos neutros |
-| text | #1F1F1F | Texto principal |
-| muted | #8A8F98 | Texto terciario |
+| neutral | #F7F8F8 | Neutral backgrounds |
+| text | #1F1F1F | Primary text |
+| muted | #8A8F98 | Tertiary text |
 
 ### Typography
 
@@ -87,33 +87,33 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Do's
 
-- Tipografía Inter consistente
-- Escala 8px / 16px / 32px
-- Acciones principales en #5E6AD2
-- Rounded 8px en interactivos
+- Consistent Inter typography
+- Scale 8px / 16px / 32px
+- Primary actions in #5E6AD2
+- Rounded 8px on interactive elements
 
 ### Don'ts
 
-- No mezclar palettes de sistemas diferentes
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
+- Do not mix palettes from different systems
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
 
 --
 

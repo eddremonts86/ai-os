@@ -64,21 +64,21 @@ components:
 
 ## Cal.com — Design System
 
-**Inspirado en:** Cal.com (Scheduling, booking, calendar. Clean + professional.)
+**Inspired by:** Cal.com (Scheduling, booking, calendar. Clean + professional.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #000000 | Elementos principales, acciones |
-| secondary | #666666 | Texto secundario, bordes |
-| tertiary | #2563EB | Acentos, highlights |
-| neutral | #FAFAFA | Fondos neutros |
-| dark | #111111 | Paneles oscuros |
-| accent | #EA580C | CTAs, notificaciones |
-| text | #000000 | Texto principal |
-| muted | #666666 | Texto terciario |
-| bg | #FFFFFF | Fondo página |
+| primary | #000000 | Primary elements, actions |
+| secondary | #666666 | Secondary text, borders |
+| tertiary | #2563EB | Accents, highlights |
+| neutral | #FAFAFA | Neutral backgrounds |
+| dark | #111111 | Dark panels |
+| accent | #EA580C | CTAs, notifications |
+| text | #000000 | Primary text |
+| muted | #666666 | Tertiary text |
+| bg | #FFFFFF | Page background |
 
 ### Typography
 
@@ -87,20 +87,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 12px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 12px | Panels, modals |
 
 ### Components
 
@@ -111,16 +111,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #000000 para acciones principales
-- Usar rounded 8px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #000000 for primary actions
+- Use rounded 8px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

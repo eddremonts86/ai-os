@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "legal", "compliance", "b2b"]
-tech: ["Next.js", "TypeScript", "Supabase", "Stripe"]
 id: "603"
 slug: startup-registration
 title: Startup registration
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vow1pl/startup_registration/"
 category: saas
 date: "2026-08-15"
+tags: [saas, legal, compliance, b2b]
+tech: [Next.js, TypeScript, Supabase, Stripe]
 ---
 # Startup registration (EU citizen, multiple ideas, subscription-based services)
 

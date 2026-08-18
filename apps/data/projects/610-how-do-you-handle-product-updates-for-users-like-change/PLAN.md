@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "developer-tools", "feedback", "changelog"]
-tech: ["Next.js", "TypeScript", "Vanilla JS", "Supabase", "Stripe"]
 id: "610"
 slug: how-do-you-handle-product-updates-for-users-like-change
 title: How do you handle product updates for users? Like changelog and stuff?
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vp1yfn/how_do_you_handle_product_updates_for_users_like/"
 category: saas
 date: "2026-08-15"
+tags: [saas, developer-tools, feedback, changelog]
+tech: [Next.js, TypeScript, Vanilla JS, Supabase, Stripe]
 ---
 # How do you handle product updates for users, like changelog?
 

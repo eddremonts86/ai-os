@@ -66,18 +66,18 @@ components:
 
 ## Framer — Design System
 
-**Inspirado en:** Framer (Web / design. Black + blue + minimal.)
+**Inspired by:** Framer (Web / design. Black + blue + minimal.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #0055FF | Elementos principales, acciones |
-| secondary | #1A1A1A | Texto secundario, bordes |
+| primary | #0055FF | Primary elements, actions |
+| secondary | #1A1A1A | Secondary text, borders |
 | accent | #0099FF | CTAs, highlights |
-| neutral | #FFFFFF | Fondos neutros |
-| text | #1A1A1A | Texto principal |
-| muted | #666666 | Texto terciario |
+| neutral | #FFFFFF | Neutral backgrounds |
+| text | #1A1A1A | Primary text |
+| muted | #666666 | Tertiary text |
 
 ### Typography
 
@@ -87,33 +87,33 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Do's
 
-- Tipografía Inter consistente
-- Escala 8px / 16px / 32px
-- Acciones principales en #0055FF
-- Rounded 8px en interactivos
+- Consistent Inter typography
+- Scale 8px / 16px / 32px
+- Primary actions in #0055FF
+- Rounded 8px on interactive elements
 
 ### Don'ts
 
-- No mezclar palettes de sistemas diferentes
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
+- Do not mix palettes from different systems
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
 
 --
 

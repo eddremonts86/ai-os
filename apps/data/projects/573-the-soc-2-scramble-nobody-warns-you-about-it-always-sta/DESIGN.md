@@ -69,21 +69,21 @@ components:
 
 ## Linear — Design System
 
-**Inspirado en:** Linear (Developer tool, project management, productivity. Dark + precise.)
+**Inspired by:** Linear (Developer tool, project management, productivity. Dark + precise.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #FFFFFF | Elementos principales, acciones |
-| secondary | #8A8F98 | Texto secundario, bordes |
-| tertiary | #655DE6 | Acentos, highlights |
-| neutral | #0D0D0F | Fondos neutros |
-| dark | #191919 | Paneles oscuros |
-| accent | #10B981 | CTAs, notificaciones |
-| text | #FFFFFF | Texto principal |
-| muted | #8A8F98 | Texto terciario |
-| bg | #0D0D0F | Fondo página |
+| primary | #FFFFFF | Primary elements, actions |
+| secondary | #8A8F98 | Secondary text, borders |
+| tertiary | #655DE6 | Accents, highlights |
+| neutral | #0D0D0F | Neutral backgrounds |
+| dark | #191919 | Dark panels |
+| accent | #10B981 | CTAs, notifications |
+| text | #FFFFFF | Primary text |
+| muted | #8A8F98 | Tertiary text |
+| bg | #0D0D0F | Page background |
 
 ### Typography
 
@@ -93,20 +93,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 4px | Elementos inline |
-| md | 12px | Componentes |
-| lg | 24px | Secciones |
-| xl | 48px | Espaciado grande |
+| sm | 4px | Inline elements |
+| md | 12px | Components |
+| lg | 24px | Sections |
+| xl | 48px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 4px | Inputs, badges |
-| md | 6px | Botones, cards |
-| lg | 8px | Paneles, modales |
+| md | 6px | Buttons, cards |
+| lg | 8px | Panels, modals |
 
 ### Components
 
@@ -117,16 +117,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 4px / 12px / 24px
-- Priorizar #FFFFFF para acciones principales
-- Usar rounded 6px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 4px / 12px / 24px scale
+- Favour #FFFFFF for primary actions
+- Use rounded 6px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

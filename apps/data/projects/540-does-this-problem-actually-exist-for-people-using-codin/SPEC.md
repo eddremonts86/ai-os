@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "developer-tools", "ai-agents", "knowledge-management"]
-tech: ["Node.js", "TypeScript", "SQLite", "FTS5", "Model Context Protocol", "GitHub API"]
 id: "540"
 slug: does-this-problem-actually-exist-for-people-using-codin
 title: Does this problem actually exist for people using coding agents daily?
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1voa7mx/does_this_problem_actually_exist_for_people_using/"
 category: saas
 date: "2026-08-14"
+tags: [saas, developer-tools, ai-agents, knowledge-management]
+tech: [Node.js, TypeScript, SQLite, FTS5, Model Context Protocol, GitHub API]
 ---
 # Does this problem actually exist for people using coding agents
 

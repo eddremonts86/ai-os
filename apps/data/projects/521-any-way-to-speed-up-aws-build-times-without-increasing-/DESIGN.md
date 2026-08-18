@@ -68,21 +68,21 @@ components:
 
 ## Vercel — Design System
 
-**Inspirado en:** Vercel (Deployment, developer tools, cloud. Minimal + precise.)
+**Inspired by:** Vercel (Deployment, developer tools, cloud. Minimal + precise.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #FFFFFF | Elementos principales, acciones |
-| secondary | #666666 | Texto secundario, bordes |
-| tertiary | #FF5B4F | Acentos, highlights |
-| neutral | #000000 | Fondos neutros |
-| dark | #171717 | Paneles oscuros |
-| accent | #0072F5 | CTAs, notificaciones |
-| text | #171717 | Texto principal |
-| muted | #666666 | Texto terciario |
-| bg | #000000 | Fondo página |
+| primary | #FFFFFF | Primary elements, actions |
+| secondary | #666666 | Secondary text, borders |
+| tertiary | #FF5B4F | Accents, highlights |
+| neutral | #000000 | Neutral backgrounds |
+| dark | #171717 | Dark panels |
+| accent | #0072F5 | CTAs, notifications |
+| text | #171717 | Primary text |
+| muted | #666666 | Tertiary text |
+| bg | #000000 | Page background |
 
 ### Typography
 
@@ -92,20 +92,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 4px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 4px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 4px | Inputs, badges |
-| md | 6px | Botones, cards |
-| lg | 8px | Paneles, modales |
+| md | 6px | Buttons, cards |
+| lg | 8px | Panels, modals |
 
 ### Components
 
@@ -116,16 +116,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 4px / 16px / 32px
-- Priorizar #FFFFFF para acciones principales
-- Usar rounded 6px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 4px / 16px / 32px scale
+- Favour #FFFFFF for primary actions
+- Use rounded 6px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

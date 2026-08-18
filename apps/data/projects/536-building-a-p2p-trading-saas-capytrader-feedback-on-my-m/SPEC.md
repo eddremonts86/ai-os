@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "fintech", "trading", "marketplace"]
-tech: ["Next.js", "TypeScript", "Supabase", "Persona", "Prime Trust", "Plaid", "Stripe"]
 id: "536"
 slug: building-a-p2p-trading-saas-capytrader-feedback-on-my-m
 title: Building a P2P Trading SaaS (CapyTrader) – Feedback on my model
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vob6yi/building_a_p2p_trading_saas_capytrader_feedback/"
 category: saas
 date: "2026-08-14"
+tags: [saas, fintech, trading, marketplace]
+tech: [Next.js, TypeScript, Supabase, Persona, Prime Trust, Plaid, Stripe]
 ---
 # Building a P2P trading SaaS (CapyTrader) — feedback on my model
 

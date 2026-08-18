@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "consumer", "free", "career"]
-tech: ["Next.js", "TypeScript", "jsPDF", "Supabase"]
 id: "589"
 slug: i-built-a-free-resume-builder-with-0-budget-what-should
 title: I built a free Resume Builder with $0 budget. What should I do next?
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1voij6e/i_built_a_free_resume_builder_with_0_budget_what/"
 category: saas
 date: "2026-08-14"
+tags: [saas, consumer, free, career]
+tech: [Next.js, TypeScript, jsPDF, Supabase]
 ---
 # I built a free resume builder with $0 budget, what should I do next
 

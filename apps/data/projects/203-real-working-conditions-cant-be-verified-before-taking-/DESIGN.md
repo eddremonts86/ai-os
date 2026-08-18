@@ -1,6 +1,6 @@
 ---
 name: "203-real-working-conditions-cant-be-verified-before-taking-"
-description: "Fintech premium. Pagos, bancos, dinero. Confianza + precisión."
+description: "Premium fintech. Payments, banking, money. Trust + precision."
 source: "Stripe"
 
 colors:
@@ -75,21 +75,21 @@ components:
 
 ## Stripe — Design System
 
-**Inspirado en:** Stripe (Fintech premium. Pagos, bancos, dinero. Confianza + precisión.)
+**Inspired by:** Stripe (Premium fintech. Payments, banking, money. Trust + precision.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #0A2540 | Elementos principales, acciones |
-| secondary | #635BFF | Texto secundario, bordes |
-| tertiary | #00D4FF | Acentos, highlights |
-| neutral | #F6F9FC | Fondos neutros |
-| dark | #1A1F36 | Paneles oscuros |
-| accent | #22C55E | CTAs, notificaciones |
-| text | #1A1F36 | Texto principal |
-| muted | #8898AA | Texto terciario |
-| bg | #F6F9FC | Fondo página |
+| primary | #0A2540 | Primary elements, actions |
+| secondary | #635BFF | Secondary text, borders |
+| tertiary | #00D4FF | Accents, highlights |
+| neutral | #F6F9FC | Neutral backgrounds |
+| dark | #1A1F36 | Dark panels |
+| accent | #22C55E | CTAs, notifications |
+| text | #1A1F36 | Primary text |
+| muted | #8898AA | Tertiary text |
+| bg | #F6F9FC | Page background |
 
 ### Typography
 
@@ -99,20 +99,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 4px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 12px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 12px | Panels, modals |
 
 ### Components
 
@@ -123,16 +123,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía SF Pro Text de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #0A2540 para acciones principales
-- Usar rounded 8px en todos los elementos interactivos
+- Use the SF Pro Text typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #0A2540 for primary actions
+- Use rounded 8px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

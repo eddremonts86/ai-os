@@ -66,18 +66,18 @@ components:
 
 ## PostHog — Design System
 
-**Inspirado en:** PostHog (Analytics / dev. Yellow + bold.)
+**Inspired by:** PostHog (Analytics / dev. Yellow + bold.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #1D4AFF | Elementos principales, acciones |
-| secondary | #F9BD2B | Texto secundario, bordes |
+| primary | #1D4AFF | Primary elements, actions |
+| secondary | #F9BD2B | Secondary text, borders |
 | accent | #1D4AFF | CTAs, highlights |
-| neutral | #F5F5F5 | Fondos neutros |
-| text | #1A1A1A | Texto principal |
-| muted | #5C5C5C | Texto terciario |
+| neutral | #F5F5F5 | Neutral backgrounds |
+| text | #1A1A1A | Primary text |
+| muted | #5C5C5C | Tertiary text |
 
 ### Typography
 
@@ -87,33 +87,33 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 8px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 8px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Do's
 
-- Tipografía Inter consistente
-- Escala 8px / 16px / 32px
-- Acciones principales en #1D4AFF
-- Rounded 8px en interactivos
+- Consistent Inter typography
+- Scale 8px / 16px / 32px
+- Primary actions in #1D4AFF
+- Rounded 8px on interactive elements
 
 ### Don'ts
 
-- No mezclar palettes de sistemas diferentes
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
+- Do not mix palettes from different systems
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
 
 --
 

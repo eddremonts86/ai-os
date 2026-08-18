@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "trading", "ai", "consumer"]
-tech: ["Next.js", "TypeScript", "Polygon", "Alpha Vantage", "Supabase", "Stripe"]
 id: "596"
 slug: rant-disapointed-by-life-and-my-careeri-will-not-promot
 title: (rant) Disapointed By Life and my career(I will not promote)
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/startups/comments/1voq62g/rant_disapointed_by_life_and_my_careeri_will_not/"
 category: startups
 date: "2026-08-15"
+tags: [saas, trading, ai, consumer]
+tech: [Next.js, TypeScript, Polygon, Alpha Vantage, Supabase, Stripe]
 ---
 # rant: disappointed by life and my career (and what I will do next)
 

@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "video", "ai", "desktop"]
-tech: ["Swift", "C#", "WinUI", "Adobe CEP", "SQLite", "Stripe", "Paddle"]
 id: "551"
 slug: i-actually-cooked-something-but-perfecting-it-is-killin
 title: "I actually cooked something, but perfecting it is killing my productivity."
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo7dla/i_actually_cooked_something_but_perfecting_it_is/"
 category: saas
 date: "2026-08-14"
+tags: [saas, video, ai, desktop]
+tech: [Swift, "C#", WinUI, Adobe CEP, SQLite, Stripe, Paddle]
 ---
 # I actually cooked something but perfecting it is killing me
 

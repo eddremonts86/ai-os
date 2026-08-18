@@ -65,21 +65,21 @@ components:
 
 ## Clerk — Design System
 
-**Inspirado en:** Clerk (Auth, identity, security. Dark + trustworthy.)
+**Inspired by:** Clerk (Auth, identity, security. Dark + trustworthy.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #7435F1 | Elementos principales, acciones |
-| secondary | #5E60CE | Texto secundario, bordes |
-| tertiary | #00C9C7 | Acentos, highlights |
-| neutral | #151515 | Fondos neutros |
-| dark | #1F1F1F | Paneles oscuros |
-| accent | #7435F1 | CTAs, notificaciones |
-| text | #FFFFFF | Texto principal |
-| muted | #8A8A8A | Texto terciario |
-| bg | #0F0F0F | Fondo página |
+| primary | #7435F1 | Primary elements, actions |
+| secondary | #5E60CE | Secondary text, borders |
+| tertiary | #00C9C7 | Accents, highlights |
+| neutral | #151515 | Neutral backgrounds |
+| dark | #1F1F1F | Dark panels |
+| accent | #7435F1 | CTAs, notifications |
+| text | #FFFFFF | Primary text |
+| muted | #8A8A8A | Tertiary text |
+| bg | #0F0F0F | Page background |
 
 ### Typography
 
@@ -88,20 +88,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 8px | Inputs, badges |
-| md | 12px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 12px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Components
 
@@ -112,16 +112,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #7435F1 para acciones principales
-- Usar rounded 12px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #7435F1 for primary actions
+- Use rounded 12px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 

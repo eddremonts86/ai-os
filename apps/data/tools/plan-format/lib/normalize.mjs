@@ -53,7 +53,13 @@ function stripMarkup(text) {
     .replace(/<br\s*\/?>/gi, ' ')
     // Closing block tags become a space: `<p>a</p><p>b</p>` is "a b", never "ab".
     .replace(/<\/(?:p|div|li|tr|td|h[1-6]|blockquote|pre)>/gi, ' ')
-    .replace(/<[^>]+>/g, '');
+    // A tag name starts with a letter, and no tag spans a line break. `[^>]+` matched both,
+    // so prose using `<` as "less than" was eaten up to the next `>` ANYWHERE in the document
+    // — including a markdown blockquote marker lines below. A title reading
+    // "$1.8K revenue in 3.5 months, <$45/month in costs" lost everything from `<` through the
+    // following `> ` quote marker and swallowed the paragraph after it. 39 plans in the corpus
+    // use `<` this way, so this deleted authored text on every format run over them.
+    .replace(/<\/?[a-zA-Z][^>\n]*>/g, '');
 }
 
 /**

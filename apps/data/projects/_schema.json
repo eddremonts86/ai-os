@@ -282,10 +282,15 @@
         "patterns": [
           "\\[Usuario primario\\]",
           "\\[Usuario secundario\\]",
+          "\\[Primary user\\]",
+          "\\[Secondary user\\]",
           "\\[Placeholder\\]",
           "\\[TODO\\]",
           "_Pendiente de an\u00e1lisis manual\\._",
-          "descripci\u00f3n del usuario principal"
+          "_Pending manual analysis\\._",
+          "_Pending manual refinement\\._",
+          "descripci\u00f3n del usuario principal",
+          "the main user this serves"
         ]
       },
       {

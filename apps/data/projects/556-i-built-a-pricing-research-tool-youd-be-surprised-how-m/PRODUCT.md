@@ -1,6 +1,4 @@
 ---
-tags: ["saas", "pricing", "research", "b2b"]
-tech: ["Next.js", "TypeScript", "Supabase", "Resend", "Stripe"]
 id: "556"
 slug: i-built-a-pricing-research-tool-youd-be-surprised-how-m
 title: "I built a pricing research tool, you'd be surprised how many people initially set their pricing just based on a competitor"
@@ -10,6 +8,8 @@ source:
   url: "https://www.reddit.com/r/SaaS/comments/1vo6270/i_built_a_pricing_research_tool_youd_be_surprised/"
 category: saas
 date: "2026-08-14"
+tags: [saas, pricing, research, b2b]
+tech: [Next.js, TypeScript, Supabase, Resend, Stripe]
 ---
 # I built a pricing research tool, you'd be surprised how many founders don't actually research their first price
 

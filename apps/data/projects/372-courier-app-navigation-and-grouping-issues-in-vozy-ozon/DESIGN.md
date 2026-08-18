@@ -65,21 +65,21 @@ components:
 
 ## DoorDash — Design System
 
-**Inspirado en:** DoorDash (Delivery, logistics, food. Dark mode + orange energy.)
+**Inspired by:** DoorDash (Delivery, logistics, food. Dark mode + orange energy.)
 
 ### Colour palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |-------|-----|-----|
-| primary | #FF3008 | Elementos principales, acciones |
-| secondary | #909090 | Texto secundario, bordes |
-| tertiary | #00F1D4 | Acentos, highlights |
-| neutral | #FFFFFF | Fondos neutros |
-| dark | #1C1C1C | Paneles oscuros |
-| accent | #FF3008 | CTAs, notificaciones |
-| text | #1C1C1C | Texto principal |
-| muted | #909090 | Texto terciario |
-| bg | #FFFFFF | Fondo página |
+| primary | #FF3008 | Primary elements, actions |
+| secondary | #909090 | Secondary text, borders |
+| tertiary | #00F1D4 | Accents, highlights |
+| neutral | #FFFFFF | Neutral backgrounds |
+| dark | #1C1C1C | Dark panels |
+| accent | #FF3008 | CTAs, notifications |
+| text | #1C1C1C | Primary text |
+| muted | #909090 | Tertiary text |
+| bg | #FFFFFF | Page background |
 
 ### Typography
 
@@ -88,20 +88,20 @@ components:
 
 ### Spacing (8px base)
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
-| sm | 8px | Elementos inline |
-| md | 16px | Componentes |
-| lg | 32px | Secciones |
-| xl | 64px | Espaciado grande |
+| sm | 8px | Inline elements |
+| md | 16px | Components |
+| lg | 32px | Sections |
+| xl | 64px | Large spacing |
 
 ### Border radius
 
-| Token | Valor | Uso |
+| Token | Value | Use |
 |-------|-------|-----|
 | sm | 6px | Inputs, badges |
-| md | 10px | Botones, cards |
-| lg | 16px | Paneles, modales |
+| md | 10px | Buttons, cards |
+| lg | 16px | Panels, modals |
 
 ### Components
 
@@ -112,16 +112,16 @@ components:
 
 ### Do's
 
-- Usar la tipografía Inter de forma consistente
-- Aplicar spacing según la escala de 8px / 16px / 32px
-- Priorizar #FF3008 para acciones principales
-- Usar rounded 10px en todos los elementos interactivos
+- Use the Inter typeface consistently
+- Apply spacing on the 8px / 16px / 32px scale
+- Favour #FF3008 for primary actions
+- Use rounded 10px on every interactive element
 
 ### Don'ts
 
-- No usar más de 2 weights tipográficos en un mismo contexto
-- No aplicar sombras mayores a 0.1 de opacity
-- No mezclar palettes de diferentes sistemas
+- Do not use more than 2 type weights in the same context
+- Do not apply shadows above 0.1 opacity
+- Do not mix palettes from different systems
 
 ---
 
