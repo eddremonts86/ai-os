@@ -206,11 +206,13 @@ ai-os/
 │   ├── README.md
 │   └── skill_template.md
 │
-├── docs/                         # Documentation (4 files)
+├── docs/                         # Documentation
 │   ├── getting-started.md         # Onboarding for new users
+│   ├── repo-layout.md             # The framework/product split + what must not be "tidied"
 │   ├── cross-platform.md          # Mac vs Windows differences
 │   ├── sharing.md                 # How to contribute
-│   └── architecture.md            # Internal organization
+│   ├── architecture.md            # Internal organization
+│   └── ...                        # model-routing, ecc-integration, claude-tools-integration
 │
 ├── prompts/                       # Original Karpathy prompts (8 files)
 │   ├── README.md
@@ -220,7 +222,8 @@ ai-os/
 │   └── skill-creation/            # When discovering patterns (1 file)
 │
 ├── archive/                      # Versioned completed Specs
-├── outputs/                      # Generated artifacts (gitignored content)
+├── outputs/                      # The FRAMEWORK's artifacts: research, audits, diagrams
+│                                 #   (gitignored; the plans product has its own under apps/data/)
 │
 ├── ai-config/                    # AI config (replicable, 1297 files)
 │   ├── skills/                    #   flat skills + nested plugin bundles
@@ -294,22 +297,32 @@ ai-os/
 │   └── deploy-plans-explorer.yml  #   apps/plans-explorer + projects → Coolify
 │
 │   # ───────────── what the framework produced ─────────────
-├── apps/                          # The products, one directory each
-│   ├── site/                      #   the AI-OS landing
-│   ├── plans-explorer/            #   the plans SPA
-│   ├── submission-api/            #   submissions write path (not deployed)
-│   └── data/projects/             #   the plans corpus: machine-written data
-│       └── tools/                 #   the machinery that maintains it
-    ├── problemhunt-scraper/       #   capture
-    ├── plan-format/               #   contract + gate + formatter
-    ├── plans-pipeline/            #   the daily loop
-    └── lib/                       #   shared id allocation
+└── apps/                          # The products, one directory each
+    ├── site/                      #   the AI-OS landing
+    ├── plans-explorer/            #   the plans SPA
+    ├── submission-api/            #   submissions write path (not deployed)
+    ├── create-ai-os/              #   published npm package @edd_remonts/create-ai-os
+    └── data/                      #   the plans product
+        ├── projects/              #     the corpus: 466 machine-written plan dirs
+        ├── tools/                 #     the machinery that maintains it
+        │   ├── problemhunt-scraper/     # capture
+        │   ├── plan-format/             # contract + gate + formatter
+        │   ├── plans-pipeline/          # the daily loop
+        │   └── lib/                     # shared id allocation
+        ├── skills/                #     skills documenting that machinery
+        ├── progress/              #     the enrichment loop's 4-file set + agent logs
+        └── outputs/               #     the product's run artifacts (gitignored)
 ```
 
 Everything above `apps/` is the operating system. Everything from `apps/` down is what it
-produced. `Dockerfile*` stay at the repo root: they are deploy descriptors for the repository,
-and Coolify addresses them absolutely (`dockerfile_location=/Dockerfile`), so moving them
-would mean editing live production config to land a directory rename.
+produced — the full decision record, including which root entries look like clutter but are
+load-bearing, is [`docs/repo-layout.md`](docs/repo-layout.md).
+
+Two that catch people out: **`AGENTS.md` is a symlink to `CLAUDE.md`** (that is how Codex and
+Antigravity find these instructions — deleting it breaks them silently), and **`Dockerfile*`
+stay at the repo root** because they are deploy descriptors for the repository and Coolify
+addresses them absolutely (`dockerfile_location=/Dockerfile`), so moving them would mean
+editing live production config to land a directory rename.
 
 ### ECC Integration (optional layer)
 

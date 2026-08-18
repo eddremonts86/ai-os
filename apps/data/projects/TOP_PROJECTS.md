@@ -1,7 +1,7 @@
 # TOP_PROJECTS.md — ProblemHunt ranked
 
 > Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-16.
-> Source: 514 projects in `~/Projects/ai-os/projects/` (ProblemHunt + Reddit r/SaaS).
+> Source: 514 projects in `~/Projects/ai-os/apps/data/projects/` (ProblemHunt + Reddit r/SaaS).
 > Scoring blends WTP (from SPEC/PRODUCT YAML or extracted from title), B2B/recurring signals, sticky-compliance verticals, tech-stack breadth (learn), and visual/agent/creative novelty (fun).
 
 ## Top 7 — Real Revenue Potential

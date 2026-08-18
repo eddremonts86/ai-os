@@ -63,8 +63,8 @@ done
 
 SCRAPER_DIR="$AI_OS_ROOT/apps/data/tools/problemhunt-scraper"
 EXPLORER_DIR="$AI_OS_ROOT/apps/plans-explorer/app"
-SLICE_MANIFEST="$AI_OS_ROOT/outputs/plans-pipeline/slice.json"
-LOG_DIR="$AI_OS_ROOT/outputs/plans-pipeline"
+SLICE_MANIFEST="$AI_OS_ROOT/apps/data/outputs/plans-pipeline/slice.json"
+LOG_DIR="$AI_OS_ROOT/apps/data/outputs/plans-pipeline"
 LOCK="$LOG_DIR/.lock"
 
 # Paths this pipeline is allowed to commit. Anything else in the tree belongs to a human or

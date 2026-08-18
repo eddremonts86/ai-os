@@ -83,7 +83,7 @@ bash apps/data/tools/plans-pipeline/daily.sh prepare --cap 25
 This normalises every document to the schema and picks what to work on. **Exit code 3 means
 nothing needs authoring** — skip straight to Phase 4.
 
-Otherwise read `outputs/plans-pipeline/slice.json` and, for **every** id in `ids`, use the
+Otherwise read `apps/data/outputs/plans-pipeline/slice.json` and, for **every** id in `ids`, use the
 **`plan-authoring`** skill to write the plan.
 
 Rules that matter more than finishing:
