@@ -187,6 +187,25 @@ if (dirs.length === 0) {
   process.exit(2);
 }
 
+/**
+ * The normalisation a section body undergoes before it is compared for cloning.
+ *
+ * This MUST mirror the head of rewriteBody(). Keeping two copies is what broke single-pass
+ * convergence twice: the tally hashed raw text while isFiller hashed rewritten text, so pass 1
+ * saw no clones and pass 2 saw them all. The metadata block is the reason it matters most —
+ * before it is lifted into frontmatter each plan's Problem section is unique (different source
+ * url), and after it is lifted they are identical. A tally that runs before the strip cannot
+ * see the clones the strip creates.
+ */
+function normaliseForClone(body) {
+  let b = stripMetadataBlock(body);
+  b = renameHeadings(b);
+  b = translateFixedStrings(b);
+  b = markdownToText(b);
+  b = unnestLinks(b);
+  return b;
+}
+
 // ---------- Pass 1: find the template bodies ----------
 // A section body repeated across most of the corpus is template filler, not content.
 // Identifying it needs the whole corpus, so it happens before any rewrite.
@@ -201,7 +220,7 @@ for (const dir of allDirs) {
     const doc = readDoc(dir, name);
     if (!doc) continue;
     for (const s of doc.sections) {
-      const norm = markdownToText(s.body);
+      const norm = normaliseForClone(s.body);
       const digest = createHash('sha256').update(norm).digest('hex').slice(0, 12);
       for (const heading of new Set([s.heading, HEADING_MAP[s.heading] ?? s.heading])) {
         const key = `${name}::${heading}::${digest}`;
@@ -212,7 +231,7 @@ for (const dir of allDirs) {
 }
 const cloneThreshold = Math.max(2, Math.floor(allDirs.length * cloneRule.maxIdenticalRatio));
 const isFiller = (name, heading, body) => {
-  const key = `${name}::${heading}::${createHash('sha256').update(markdownToText(body)).digest('hex').slice(0, 12)}`;
+  const key = `${name}::${heading}::${createHash('sha256').update(normaliseForClone(body)).digest('hex').slice(0, 12)}`;
   return (bodyCounts.get(key) ?? 0) > cloneThreshold;
 };
 

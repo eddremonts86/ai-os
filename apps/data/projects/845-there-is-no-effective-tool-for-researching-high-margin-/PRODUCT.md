@@ -1,0 +1,53 @@
+---
+id: "845"
+slug: there-is-no-effective-tool-for-researching-high-margin-
+title: There is no effective tool for researching high-margin and small e-commerce products
+status: draft
+source:
+  name: ProblemHunt
+  url: "https://problemhunt.pro/en/retail/yjz80tm2z1-there-is-no-effective-tool-for-researchi"
+category: retail
+date: "2025-11-13"
+tags: [Retail, Business, AI, Other]
+country: Australia
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# There is no effective tool for researching high-margin and small e-commerce products
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Australia
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [ProblemHunt](https://problemhunt.pro/en/retail/yjz80tm2z1-there-is-no-effective-tool-for-researchi) · **Category:** retail · **Tags:** Retail,Business,AI,Other

@@ -27,7 +27,14 @@ function findRoot(from) {
   }
   throw new Error(`cannot locate the AI-OS root above ${from}`);
 }
-export const AI_OS_ROOT = findRoot(HERE);
+/**
+ * An explicit AI_OS_ROOT wins over the marker search. Every other entry point already honours it
+ * — the scraper, select-slice.mjs and scrape-cron.sh all do — and this module silently did not,
+ * which made the whole plan-format toolchain impossible to point at a fixture corpus: a test that
+ * set the variable and formatted a temp directory was in fact formatting the real one, and passed
+ * while measuring nothing.
+ */
+export const AI_OS_ROOT = process.env.AI_OS_ROOT || findRoot(HERE);
 export const PROJECTS_DIR = join(AI_OS_ROOT, 'apps', 'data', 'projects');
 export const SCHEMA_PATH = join(PROJECTS_DIR, '_schema.json');
 
