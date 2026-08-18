@@ -15,6 +15,25 @@ version-controlled in [`cron-prompt.md`](cron-prompt.md) — edit that, then app
 hermes cron edit 59b1562e8007 --prompt "$(cat apps/data/tools/plans-pipeline/cron-prompt.md)"
 ```
 
+## Two schedulers, and why
+
+The Hermes cron above drives the **whole** loop, because ranking and authoring need an LLM.
+A second, LLM-free scheduler runs only the two deterministic input phases:
+
+| Scheduler | Runs | Phases | Needs an LLM |
+|---|---|---|---|
+| Hermes cron `59b1562e8007` | every 4 h | all of them | yes |
+| launchd `ai.os.plans-pipeline` | on its own schedule | `scrape`, `intake` | no |
+
+The launchd side fires [`scrape-cron.sh`](scrape-cron.sh), which exists so captures keep
+arriving even when no agent is available to author them. It is safe to run alongside the
+Hermes job: both go through `daily.sh`, which holds a single PID lock, so whichever arrives
+second logs a skip and exits 0 rather than racing.
+
+`scrape-cron.sh` resolves the repo root by walking up to `CLAUDE.md`. It must never go back
+to counting `..` hops — from `apps/data/tools/plans-pipeline/` two hops up is `apps/data`,
+which is a wrong root that scrapes into nothing and still exits green.
+
 ## Why it is split this way
 
 Exactly one step in this loop needs judgement: turning a scraped forum post into a plan a
