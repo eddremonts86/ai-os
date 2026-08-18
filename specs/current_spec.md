@@ -3,7 +3,9 @@
 ## Metadata
 
 - **Date:** 2026-08-14
-- **Status:** proposed, not started
+- **Status:** Phase A done; Blocks 8 and 9 done 2026-08-19. Block 10 (agent pre-triage)
+  and Block 11 (production rehearsal) remain — 11 is blocked on the Coolify app and its
+  four environment values, which are the owner's to create.
 - **Blocks:** 11 across 3 phases, each <=30 min
 - **Surfaces:** `plans-explorer/app`, `tools/plans-pipeline`, `.github/`, one new Coolify app
 - **Supersedes:** the four-option comparison in the previous draft. The shape below is chosen.
