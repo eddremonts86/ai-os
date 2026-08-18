@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/eddremonts86/ai-os/projects/_schema.json",
+  "$id": "https://github.com/eddremonts86/ai-os/apps/data/projects/_schema.json",
   "title": "AI-OS plan document contract",
   "version": "1.0.0",
   "description": "Machine-readable contract for the plan documents under projects/<id>-<slug>/.",

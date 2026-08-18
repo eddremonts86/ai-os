@@ -20,9 +20,9 @@ Every plan under `apps/data/projects/<id>-<slug>/` passes `ai-os plans check --i
 
 - `apps/data/projects/<id>-<slug>/SPEC.md`, `PRODUCT.md`, `PLAN.md`, `TASKS.md` rewritten with real
   per-plan prose.
-- `outputs/enrich/<id>-<slug>/report.md` — one per plan, with sections filled, TODOs kept
+- `apps/data/outputs/enrich/<id>-<slug>/report.md` — one per plan, with sections filled, TODOs kept
   (and named), and any humanizer / illustrate notes.
-- `outputs/enrich/<id>-<slug>/frontmatter-changes.md` — when frontmatter fields are added
+- `apps/data/outputs/enrich/<id>-<slug>/frontmatter-changes.md` — when frontmatter fields are added
   (e.g. `tech`, `wtp`), record what was inferred from source and what was left absent.
 - One line per plan appended to `PROGRESS.md` (do not edit lines you did not write).
 
