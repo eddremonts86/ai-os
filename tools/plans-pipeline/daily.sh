@@ -59,7 +59,7 @@ LOCK="$LOG_DIR/.lock"
 # Paths this pipeline is allowed to commit. Anything else in the tree belongs to a human or
 # another agent and is none of our business — an unattended `git add -A` here would be a way
 # to silently ship somebody's half-finished refactor.
-COMMIT_PATHS=(projects tools/problemhunt-scraper/state.json)
+COMMIT_PATHS=(apps/data/projects tools/problemhunt-scraper/state.json)
 
 # Refuse to mirror away more than this share of the corpus. The corpus is the source of
 # truth for the branch, so ship deletes plans that vanished locally — which is right for one
@@ -180,13 +180,16 @@ phase_verify() {
 sync_corpus() {
   local wt="$1"
 
-  # Additions and updates.
-  cp -R "$AI_OS_ROOT/projects/." "$wt/projects/"
+  # Additions and updates. mkdir first: cp will not create the destination, and the corpus
+  # path is one the branch may not have yet — which is exactly what happened when it moved to
+  # apps/data/projects and the worktree was still based on a branch carrying the old layout.
+  mkdir -p "$wt/apps/data/projects"
+  cp -R "$AI_OS_ROOT/apps/data/projects/." "$wt/apps/data/projects/"
   cp "$SCRAPER_DIR/state.json" "$wt/tools/problemhunt-scraper/state.json"
 
-  # Removals: tracked under projects/ on the branch, but gone from the local corpus.
+  # Removals: tracked under apps/data/projects/ on the branch, but gone from the local corpus.
   local gone
-  gone=$(git -C "$wt" ls-files -z -- projects \
+  gone=$(git -C "$wt" ls-files -z -- apps/data/projects \
          | while IFS= read -r -d '' f; do
              [ -e "$AI_OS_ROOT/$f" ] || printf '%s\n' "$f"
            done)
@@ -197,8 +200,8 @@ sync_corpus() {
   # `set -e` then kills the run on a perfectly ordinary "no matches" — which is exactly how
   # a first version of this script died silently right after passing its own safety check.
   local gone_dirs total pct
-  gone_dirs=$(printf '%s\n' "$gone" | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
-  total=$(git -C "$wt" ls-files -- projects | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  gone_dirs=$(printf '%s\n' "$gone" | { grep -oE '^apps/data/projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  total=$(git -C "$wt" ls-files -- apps/data/projects | { grep -oE '^apps/data/projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
 
   if [ "$total" -gt 0 ] && [ "$gone_dirs" -gt 0 ]; then
     pct=$(( gone_dirs * 100 / total ))
@@ -257,15 +260,15 @@ phase_ship() {
   fi
 
   local added changed
-  added=$(git -C "$wt" diff --cached --name-only --diff-filter=A -- projects \
-          | { grep -oE '^projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
-  changed=$(git -C "$wt" diff --cached --name-only -- projects | wc -l | tr -d ' ')
+  added=$(git -C "$wt" diff --cached --name-only --diff-filter=A -- apps/data/projects \
+          | { grep -oE '^apps/data/projects/[0-9]{3,}-[^/]+' || true; } | sort -u | wc -l | tr -d ' ')
+  changed=$(git -C "$wt" diff --cached --name-only -- apps/data/projects | wc -l | tr -d ' ')
   log "staged: $changed files across $added new plan dirs"
 
   # Guard against the pipeline having staged anything outside its remit.
   local stray
   stray=$(git -C "$wt" diff --cached --name-only \
-          | grep -vE '^(projects/|tools/problemhunt-scraper/state\.json$)' || true)
+          | grep -vE '^(apps/data/projects/|tools/problemhunt-scraper/state\.json$)' || true)
   [ -z "$stray" ] || die "refusing to commit paths outside the pipeline's remit:"$'\n'"$stray"
 
   git -C "$wt" -c user.name="ai-os-pipeline" -c user.email="ei@schilling.dk" \

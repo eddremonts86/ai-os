@@ -7,7 +7,7 @@ AI_OS_ROOT="$(cd -P "$HERE/../.." && pwd)"
 
 usage() {
   cat <<EOF
-ai-os plans — the plan document contract (projects/_schema.json)
+ai-os plans — the plan document contract (apps/data/projects/_schema.json)
 
 Usage:
   ai-os plans check  [--json] [--verbose] [--summary] [--id <id>] [--rule <id>] [--publishable]
@@ -64,7 +64,7 @@ Enrichment is an agent task. Open any AI-OS CLI in $AI_OS_ROOT and ask for the
 
     "use the plan-authoring skill on plan ${2:-<id>}"
 
-It reads projects/_schema.json, writes the varying sections, runs humanizer, and
+It reads apps/data/projects/_schema.json, writes the varying sections, runs humanizer, and
 adds a diagram only when one carries information. Then:
 
     ai-os plans check --id ${2:-<id>} --verbose

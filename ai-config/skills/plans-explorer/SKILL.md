@@ -19,7 +19,7 @@ Static SPA inside the AI-OS framework that indexes 525 product plans (in `../pro
 
 ## When NOT to use
 
-- The user is working on a plan inside `~/Projects/ai-os/projects/NNN-.../`. That is its own plan with its own SPEC/PLAN/TASKS — not the explorer.
+- The user is working on a plan inside `~/Projects/ai-os/apps/data/projects/NNN-.../`. That is its own plan with its own SPEC/PLAN/TASKS — not the explorer.
 - The user wants to modify `apps/site/index.html` (that's the landing page, separate).
 - The user is editing `TOP_PROJECTS.md` directly (that's done by the `problemhunt-scraper` cron).
 
@@ -102,7 +102,7 @@ Currently undecided. Options:
 
 ## Related
 
-- Corpus: `~/Projects/ai-os/projects/`
-- Rankings source: `~/Projects/ai-os/projects/TOP_PROJECTS.md`
+- Corpus: `~/Projects/ai-os/apps/data/projects/`
+- Rankings source: `~/Projects/ai-os/apps/data/projects/TOP_PROJECTS.md`
 - Visual reference: `~/Projects/ai-os/site/index.html`
 - AI-OS master: `~/Projects/ai-os/CLAUDE.md`

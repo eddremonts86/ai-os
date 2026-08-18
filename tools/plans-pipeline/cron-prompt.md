@@ -45,7 +45,7 @@ approved submission that never becomes a plan is invisible otherwise.
 Read `tools/problemhunt-scraper/state.json`. If `topProjectsEvaluatedAt` is absent or older
 than the newest `state.analyzed[*].analyzedAt`, there are unranked projects.
 
-For each unranked project, read its `SPEC.md` and `PRODUCT.md` under `projects/<id>-<slug>/`
+For each unranked project, read its `SPEC.md` and `PRODUCT.md` under `apps/data/projects/<id>-<slug>/`
 and score it 0-10 on three dimensions, justifying each in 1-2 lines from the document:
 
 - **money** — real revenue potential. B2B/SaaS over B2C. Recurring over one-time. Explicit
@@ -54,7 +54,7 @@ and score it 0-10 on three dimensions, justifying each in 1-2 lines from the doc
   depth.
 - **fun** — enjoyment building it: visual polish, creativity, novelty, low grunt-work.
 
-Then rewrite the three Top-5 sections of `projects/TOP_PROJECTS.md` and **append** (never
+Then rewrite the three Top-5 sections of `apps/data/projects/TOP_PROJECTS.md` and **append** (never
 erase) a changelog entry at the bottom. Preserve this exact item shape — the explorer parses
 it, and a format drift silently empties the rankings page with no error anywhere:
 
@@ -122,7 +122,7 @@ bash tools/plans-pipeline/daily.sh ship --yes
 
 Commits the corpus, opens a PR to `dev`, merges it once its checks are green, promotes `dev`
 to `main`, and lets the deploy workflows fire. It refuses to merge on a red or missing
-check, and it will not touch anything outside `projects/` and the scraper state.
+check, and it will not touch anything outside `apps/data/projects/` and the scraper state.
 
 If it aborts on the mass-deletion brake or a stray-path guard, **do not work around it**.
 Report the message verbatim — those guards exist because the alternative is a wiped corpus
@@ -149,7 +149,7 @@ did not ship.
 - Do **not** pass `--force` to the scraper.
 - Do **not** run git yourself. `ship` owns git, inside an isolated worktree, precisely so an
   unattended run cannot disturb the interactive agents sharing this checkout.
-- Do **not** edit `projects/_schema.json` or the gate to make a plan pass.
+- Do **not** edit `apps/data/projects/_schema.json` or the gate to make a plan pass.
 - Do **not** approve, decline or relabel a submission issue. Intake relabels what it ingests;
   every other label is a human's decision.
 - Do **not** schedule additional cron jobs.

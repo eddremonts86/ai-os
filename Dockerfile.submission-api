@@ -15,7 +15,7 @@ WORKDIR /app
 
 # The contract the API validates against. Copied rather than vendored so the running service
 # and the gate can never disagree about what a usable submission is.
-COPY projects/_schema.json ./projects/_schema.json
+COPY apps/data/projects/_schema.json ./apps/data/projects/_schema.json
 COPY apps/submission-api/server.mjs ./apps/submission-api/server.mjs
 
 # Drop root. The service reads two files and makes outbound HTTPS calls; it has no reason to

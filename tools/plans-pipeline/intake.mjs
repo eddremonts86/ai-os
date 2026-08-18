@@ -33,7 +33,7 @@ const { generateDesignMD } = require('../problemhunt-scraper/design-dna.js');
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const AI_OS_ROOT = resolve(HERE, '..', '..');
-const PROJECTS_DIR = join(AI_OS_ROOT, 'projects');
+const PROJECTS_DIR = join(AI_OS_ROOT, 'apps', 'data', 'projects');
 const STATE_FILE = join(AI_OS_ROOT, 'tools', 'problemhunt-scraper', 'state.json');
 
 const argv = process.argv.slice(2);
