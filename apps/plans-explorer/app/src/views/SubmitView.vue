@@ -28,7 +28,24 @@ const CATEGORIES = [
 const MIN_PROBLEM = 120;
 const MAX = { title: 160, problem: 8000, country: 60, wtp: 80, source: 300, solution: 2000, submittedBy: 60 };
 
-const API = import.meta.env.VITE_SUBMISSION_API ?? '';
+/**
+ * Where the form posts.
+ *
+ * Derived from the host rather than injected at build time. A build-time-only variable is a
+ * thing to forget: the first production build of this form shipped without it and the form was
+ * live with no endpoint at all. And a hardcoded default would be worse — running the dev server
+ * would open real GitHub issues.
+ *
+ * So: the production host knows its endpoint, everywhere else gets nothing and falls back to the
+ * GitHub link, and VITE_SUBMISSION_API still overrides both for anyone testing against a real
+ * backend.
+ */
+const PROD_HOSTS: Record<string, string> = {
+  'plans.eduardoinerarte.dk': 'https://submissions.eduardoinerarte.dk',
+};
+const API = import.meta.env.VITE_SUBMISSION_API
+  ?? PROD_HOSTS[typeof location === 'undefined' ? '' : location.hostname]
+  ?? '';
 const REPO_NEW_ISSUE =
   'https://github.com/eddremonts86/ai-os/issues/new?template=submit-plan.yml';
 
