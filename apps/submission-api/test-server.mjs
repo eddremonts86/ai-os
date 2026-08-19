@@ -11,7 +11,7 @@
  */
 
 import { createServer } from 'node:http';
-import { validateSubmission, renderIssueBody, allowedOrigin, handler, CATEGORIES, MIN_PROBLEM } from './server.mjs';
+import { validateSubmission, renderIssueBody, allowedOrigin, handler, CATEGORIES, MIN_PROBLEM, clientIp, rateLimited } from './server.mjs';
 import { parseIssueForm, validate as validateParsed, FIELDS } from '../data/tools/plans-pipeline/intake.mjs';
 
 let pass = 0;
@@ -176,6 +176,54 @@ console.log('\n[test] submission api\n');
   } finally {
     child.kill('SIGKILL');
   }
+}
+
+// ---------- abuse controls ----------
+//
+// The honeypot and the rate limit exist to protect the maintainer's attention, not the corpus —
+// moderation is mandatory, so the worst spam can do is make the queue noisy. They are still
+// checked here because the failure mode of a broken limiter is silent.
+console.log('\nabuse controls:');
+{
+  // X-Forwarded-For is client-settable. Reading it unconditionally hands anyone an unlimited
+  // quota by rotating a header, so it is only honoured when the deployment says to trust it,
+  // and then only the last entry — the one the nearest proxy appended.
+  const req = (xff, remote) => ({ headers: xff ? { 'x-forwarded-for': xff } : {}, socket: { remoteAddress: remote } });
+  ok('ignores x-forwarded-for unless trusted',
+    clientIp(req('9.9.9.9', '10.0.0.1'), false) === '10.0.0.1',
+    clientIp(req('9.9.9.9', '10.0.0.1'), false));
+  ok('trusts the LAST forwarded entry, not the client-claimed first',
+    clientIp(req('1.1.1.1, 2.2.2.2, 3.3.3.3', '10.0.0.1'), true) === '3.3.3.3',
+    clientIp(req('1.1.1.1, 2.2.2.2, 3.3.3.3', '10.0.0.1'), true));
+  ok('falls back to the socket when the header is empty',
+    clientIp(req('   ', '10.0.0.1'), true) === '10.0.0.1',
+    clientIp(req('   ', '10.0.0.1'), true));
+  ok('never throws without a socket', typeof clientIp({ headers: {} }) === 'string');
+
+  const t0 = 1_000_000;
+  const ip = 'test-ip-a';
+  let blocked = 0;
+  for (let i = 0; i < 3; i++) if (rateLimited(ip, t0, 3, 60_000)) blocked++;
+  ok('lets the quota through', blocked === 0, blocked);
+  ok('blocks the one past the quota', rateLimited(ip, t0, 3, 60_000) === true);
+  ok('a different address is unaffected', rateLimited('test-ip-b', t0, 3, 60_000) === false);
+  ok('the window expires', rateLimited(ip, t0 + 61_000, 3, 60_000) === false);
+}
+
+// ---------- honeypot over HTTP ----------
+{
+  const srv2 = createServer(handler);
+  await new Promise((r) => srv2.listen(0, r));
+  const base2 = `http://127.0.0.1:${srv2.address().port}`;
+  const res = await fetch(`${base2}/submit`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ ...good(), website: 'http://spam.example' }),
+  });
+  ok('a filled honeypot is accepted and discarded', res.status === 202, res.status);
+  const j = await res.json();
+  ok('and no issue number is invented', j.number === undefined, j);
+  await new Promise((r) => srv2.close(r));
 }
 
 console.log(`\n[test] ${pass} pass, ${fails.length} fail`);
