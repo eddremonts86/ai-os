@@ -268,7 +268,13 @@ const titleOf = (id: string | undefined) =>
     <section class="close">
       <div class="container close-inner">
         <h2>{{ planCount === null ? 'Every plan' : planCount + ' plans' }}, nothing to sign up for.</h2>
-        <RouterLink to="/plans" class="btn btn-primary btn-lg">Browse plans</RouterLink>
+        <div class="close-actions">
+          <RouterLink to="/plans" class="btn btn-primary btn-lg">Browse plans</RouterLink>
+          <RouterLink to="/submit" class="btn btn-lg">Submit a problem</RouterLink>
+        </div>
+        <p class="close-fine">
+          Seen one worth building? Send it. A person reads every submission.
+        </p>
       </div>
     </section>
   </div>
@@ -277,6 +283,19 @@ const titleOf = (id: string | undefined) =>
 <style scoped>
 /* Shape rule for this page: media frames and cells use --radius-lg, buttons --radius-md,
    pills fully rounded. Applied without exception below. */
+
+.close-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.close-fine {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: var(--text-dim);
+}
 
 .landing {
   padding-bottom: 96px;
