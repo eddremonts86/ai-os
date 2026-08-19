@@ -32,6 +32,7 @@ onMounted(async () => {
       <nav class="app-nav" aria-label="Main">
         <RouterLink to="/plans" active-class="is-active">Plans</RouterLink>
         <RouterLink to="/rankings" active-class="is-active">Rankings</RouterLink>
+        <RouterLink to="/submit" active-class="is-active">Submit</RouterLink>
         <RouterLink to="/about" active-class="is-active">About</RouterLink>
       </nav>
     </header>

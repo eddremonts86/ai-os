@@ -61,6 +61,50 @@ export const CATEGORIES = [
   'productivity', 'retail', 'saas', 'sideproject', 'startups',
 ];
 
+/**
+ * Per-IP rate limit, in memory.
+ *
+ * In memory is correct here and not a shortcut: this is one container with no sibling, so a
+ * shared store would be infrastructure guarding nothing. It resets on restart, which is
+ * acceptable — the limit protects the maintainer's queue from a flood, and moderation is
+ * mandatory anyway, so the worst case of a reset is a few extra issues to decline.
+ */
+const RATE_MAX = Number(process.env.RATE_LIMIT_MAX || 5);
+const RATE_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 10 * 60 * 1000);
+const hits = new Map();
+
+/**
+ * The client's address.
+ *
+ * X-Forwarded-For is client-settable, so trusting it unconditionally hands anyone an unlimited
+ * quota by rotating a header. It is only read when TRUST_PROXY is set, which is correct behind
+ * Traefik and wrong anywhere the service is directly reachable. The LAST entry is the one the
+ * nearest trusted proxy appended; the leftmost is whatever the client claimed.
+ */
+export function clientIp(req, trustProxy = process.env.TRUST_PROXY === '1') {
+  if (trustProxy) {
+    const xff = req.headers?.['x-forwarded-for'];
+    if (typeof xff === 'string' && xff.trim()) {
+      const parts = xff.split(',').map((x) => x.trim()).filter(Boolean);
+      if (parts.length) return parts[parts.length - 1];
+    }
+  }
+  return req.socket?.remoteAddress || 'unknown';
+}
+
+/** True when this address has spent its quota. Prunes as it goes; the map cannot grow unbounded. */
+export function rateLimited(ip, now = Date.now(), max = RATE_MAX, windowMs = RATE_WINDOW_MS) {
+  const seen = (hits.get(ip) || []).filter((t) => now - t < windowMs);
+  if (seen.length >= max) {
+    hits.set(ip, seen);
+    return true;
+  }
+  seen.push(now);
+  hits.set(ip, seen);
+  for (const [k, v] of hits) if (!v.some((t) => now - t < windowMs)) hits.delete(k);
+  return false;
+}
+
 export function validateSubmission(b) {
   const e = [];
   const s = (v) => (typeof v === 'string' ? v.trim() : '');
@@ -195,11 +239,24 @@ export const handler = async (req, res) => {
     return send(res, 403, { error: 'origin not allowed' });
   }
 
+  // Before reading the body: a flood should cost as little as possible to refuse.
+  if (rateLimited(clientIp(req))) {
+    return send(res, 429, { error: 'too many submissions from this address, try later' }, origin);
+  }
+
   let body;
   try {
     body = await readBody(req);
   } catch (err) {
     return send(res, 413, { error: err.message }, origin);
+  }
+
+  // Honeypot. The form renders `website` off-screen, so a person never fills it and a bot that
+  // fills every input does. Discard without filing, and answer as if accepted — telling a bot
+  // which check caught it is free help.
+  if (typeof body?.website === 'string' && body.website.trim()) {
+    console.log('[submission-api] honeypot filled, discarded');
+    return send(res, 202, { ok: true }, origin);
   }
 
   const errors = validateSubmission(body);

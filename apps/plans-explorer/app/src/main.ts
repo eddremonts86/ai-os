@@ -11,6 +11,7 @@ import LandingView from './views/LandingView.vue';
 import IndexView from './views/IndexView.vue';
 import PlanView from './views/PlanView.vue';
 import RankingsView from './views/RankingsView.vue';
+import SubmitView from '@/views/SubmitView.vue';
 import AboutView from './views/AboutView.vue';
 
 const router = createRouter({
@@ -24,6 +25,7 @@ const router = createRouter({
     { path: '/plans/:id', name: 'plan', component: PlanView, props: true },
     { path: '/rankings', name: 'rankings', component: RankingsView },
     { path: '/about', name: 'about', component: AboutView },
+    { path: '/submit', name: 'submit', component: SubmitView },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 });
