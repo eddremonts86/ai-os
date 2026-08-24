@@ -1,0 +1,40 @@
+---
+id: "2231"
+slug: progressive-web-app-to-explore-paris-while-solving-puzz
+title: Progressive web-app to explore Paris while solving puzzles without app
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49361975"
+category: show-hn
+date: "2026-08-19"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Progressive web-app to explore Paris while solving puzzles without app
+
+## Problem
+
+https://flanori.com/
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

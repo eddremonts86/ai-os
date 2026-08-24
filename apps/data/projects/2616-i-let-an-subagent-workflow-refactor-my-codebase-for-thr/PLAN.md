@@ -1,0 +1,30 @@
+---
+id: "2616"
+slug: i-let-an-subagent-workflow-refactor-my-codebase-for-thr
+title: I let an subagent workflow refactor my codebase for three days
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49396071"
+category: show-hn
+date: "2026-08-22"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I let an subagent workflow refactor my codebase for three days
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._

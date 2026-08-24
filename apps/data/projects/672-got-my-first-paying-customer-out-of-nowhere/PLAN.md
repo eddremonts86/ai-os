@@ -13,16 +13,19 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The author is a long-time software engineer but the post says nothing about the Splitceipt stack.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. Any architecture described here would be invented.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Record the first-customer milestone in the corpus.
+2. M1 — Capture the 3–4 additional users detail as a soft retention signal.
+3. M2 — If a real product plan is later needed, gather scope from the author — the post is not enough on its own.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Fabrication risk: the post is celebratory; it is easy to invent a feature list and pricing model the founder never stated.
+- Sample size of one: a single customer plus 3–4 referred users is not a retention curve. Do not extrapolate.

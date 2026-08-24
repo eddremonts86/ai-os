@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit post where a 3rd-year BTech CSE student offers to do unpaid GTM/PMM work for an early-stage startup in exchange for hands-on access to real customer conversations, sales pipelines and conversion data. The post is a job-seek, not a product spec. The plan documents the underlying structural gap — students who can analyse positioning from the outside but cannot access the in-house data that GTM decisions actually run on — without inventing a product that would close it.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: a 3rd-year BTech CSE student with PM internships/volunteer work behind them, who has built PMM case studies on public SaaS products and now wants real in-house exposure.
+- Secondary: other students in the same position who would trade unpaid work for access to startup data, plus early-stage founders who might consider such an arrangement.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source post is a job-seek / collaboration request. No MVP is proposed. If anything were extracted, it would be a 'student-in-residence' matching tool, but the post never asks for one. Scope here is limited to documenting the gap and the offer.
 
 ## Design Direction
 
@@ -34,4 +35,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No WTP signal in the source: the student explicitly says they will work unpaid, which means the supply side of any future tool is free but the demand side (founders paying for help) is not in the post.
+- No compliance, payment, or platform requirements are mentioned.
+- Plan is captured as a discussion entry, not a buildable brief.

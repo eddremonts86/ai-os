@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit learning-path post from someone with an IT diploma who knows the basics of HTML, CSS, JS, databases and rough backend, has tried to build a SaaS multiple times from scratch, and is overwhelmed by YouTube roadmaps. They ask for the minimum stack to build a working SaaS with real users, plus resource recommendations. The post is a learning-path question, not a buildable product brief.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, who has an IT diploma, knows the basics, and is overwhelmed by full-stack roadmaps.
+- Secondary: other IT-diploma graduates or self-taught beginners who have tried to build a SaaS from scratch and got stuck.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source is a learning-path question. No MVP is proposed. What is captured here is the underlying gap: tutorial-driven learning produces fragmented knowledge, and YouTube roadmaps are too broad to act on. The poster wants a minimum stack to ship a working SaaS with real users.
 
 ## Design Direction
 
@@ -34,4 +35,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No product is on offer.
+- No willingness-to-pay stated.
+- No compliance or platform requirements mentioned.
+- The poster explicitly apologises for being a newbie — plan should not fabricate sophisticated scope on top of that signal.

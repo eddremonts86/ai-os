@@ -13,16 +13,20 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The post is about accelerator strategy, not engineering stack.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is an analysis post, not a product spec. The system it analyses (YC + the broader accelerator ecosystem) is referenced in narrative form only.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Record this as an analysis/opinion capture, not a buildable plan.
+2. M1 — Capture the paper citation (~750,000 startups across 329 accelerators; 60–80% appear worse than no accelerator) as the source's claim, with explicit 'not independently verified in this post' framing.
+3. M2 — Capture the three-cause hypothesis (batch size scaling, founder experience drop, AI paradigm shift) and the network-moat warning as thesis content.
+4. M3 — If a downstream agent converts this into a real plan, require the underlying paper to be linked and verified.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Fabrication risk: the post cites a paper without linking it; quoting the paper as fact would be inventing provenance.
+- Hot-take drift: the thesis is provocative; do not extract a product (alternative accelerator, AI-founder matching tool, network-data startup) that the post never asks for.

@@ -2,7 +2,7 @@
 id: "631"
 slug: hot-take-pmf-can-overcompensate-for-marketing-but-onboa
 title: "Hot take: PMF can overcompensate for marketing, but onboarding journeys are pre-requisite for them"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voyunq/hot_take_pmf_can_overcompensate_for_marketing_but/"
@@ -23,7 +23,14 @@ date: "2026-08-15"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post has no product, so there is nothing to "build" in the engineering sense. If the reader wants to act on the author's advice, the operational work is:
+
+- [ ] List every step in your signup → first-value path, in order
+- [ ] Define the single step where a user first experiences the value your SaaS promises
+- [ ] Add (or pull from existing analytics) the funnel counts: how many users reach each step
+- [ ] Identify the largest drop and form a hypothesis for why that step is the bottleneck
+- [ ] Make that one step easier (reduce fields, prefill defaults, remove a click, add inline guidance) before re-running the funnel
+- [ ] Only after the funnel is reasonably unblocked, re-evaluate whether the product has PMF — the author argues this is a prerequisite to that question being answerable
 
 ## Phase 2: Deploy
 

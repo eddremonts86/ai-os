@@ -2,7 +2,7 @@
 id: "700"
 slug: i-finally-launched-my-first-own-saas-after-10-years-of-
 title: I finally launched my first own SaaS after 10+ years of building software for others
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vq0u1v/i_finally_launched_my_first_own_saas_after_10/"
@@ -15,36 +15,58 @@ date: "2026-08-16"
 
 ## Value Proposition
 
-_Based on source brief:_ I've been a developer for over 10 years, most of which I've spent building mobile apps, web apps and larger systems for other companies. I recently decided it was time to build something of my own, and ended up building Sqanna, a platform for managing smart QR codes. I've had the idea for a really long time ever since we had issues with static QR codes at my old corporate job, so I figured I'd try to solve it. The basic idea is that you create a QR code once and can then change where it leads without reprinting it. I've tried to keep the product intentionally simple rather than filling it with features most businesses will never use. And one of the more interesting features I ended up building was scheduled destinations, which allows the same QR code to lead somewhere different depending on the day and time. I'm getting close to properly launching it now and would love some feedback from other SaaS builders, particularly on the positioning and product itself. Does the value proposition make sense immediately? And is there anything you think I'm obviously missing? Any feedback on the UI/UX is also greatly appreciated (and for those asking; yes, I've had a great deal of AI-help designing the UI). Sqanna: sqanna.com submitted by /u/flutteradaptive [link] [comments]
+A QR code whose destination the owner can change any time, without reprinting the art — and that can route to different URLs on a schedule (morning menu / evening menu, weekday promo / weekend event) from the same printed code.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Smart QR codes: print once, edit the destination forever, and route by day and time.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Small / mid-sized business that prints QR codes (restaurant, retail, event, real estate) | Wants the QR to keep working even when the URL changes; wants one QR for day-parted destinations. |
+| Marketing / operations lead who has been burned by a static-QR mistake | The author himself, once. The product is the fix for that pain. |
+| Agency or designer who prints QR codes on behalf of clients | Wants to hand the destination layer to the client without reissuing the artwork. |
+| End-user who scans the QR | Implicit stakeholder; they should still land on the right page. |
+
+The source frames the buyer as the operator of the QR, not the end-user who scans it.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Create a QR once, change its destination any time** — A business prints a QR on a menu, a poster, or packaging; later, the URL behind it changes (site redesign, menu update, new landing page) and the business wants to fix it without reissuing the art.
+2. **Schedule multiple destinations behind one QR** — A restaurant wants the same QR to lead to the breakfast menu in the morning and the dinner menu in the evening; an event wants the same poster QR to lead to different pages on weekdays vs. weekends.
+3. **See whether the QR is actually being scanned** — A basic scan counter (count over time) tells the operator whether the printed art is doing anything at all.
+4. **Hand the destination layer to a non-technical owner** — A designer or agency sets up the QR; the restaurant or store manager later edits the URL themselves without involving the designer.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source does not state metrics. Reasonable proxies for the founder to consider (none invented as facts):
+
+- Number of paying customers (the source has no number).
+- Repeat edits per QR per month (a proxy for whether the "edit destination" promise is actually being used).
+- Scheduled destinations configured per account (a proxy for whether the headline differentiator is landing).
+- Free → paid conversion (the source has no number).
+
+The founder is the right person to set targets after seeing real usage; the plan does not pick numbers for him.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The author has not published a price. The shape of the product — a small number of QR codes per customer, a console to edit them, scheduled routing, basic analytics — supports either a freemium with a usage cap or a simple monthly subscription, but the source does not pick one. Setting a number here would be invention.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post does not name competitors. The closest existing categories are:
+
+- **Generic URL shorteners with QR generation** — solve the "print once, change later" problem for free, but have no scheduled destinations and no SaaS console aimed at small businesses.
+- **Static QR generators** — solve the creation step but explicitly cannot solve the edit-destination step.
+- **Restaurant-menu QR platforms** — overlap on the restaurant use case but bundle ordering / payment features the author has explicitly chosen not to build.
+
+Naming a specific named competitor beyond these categories would be invention.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vq0u1v/i_finally_launched_my_first_own_saas_after_10/) · **Posted:** 2026-08-16T16:02:13+00:00
+- **Positioning is unvalidated.** The author is explicitly asking the community whether the value proposition makes sense immediately. The plan captures what is built; whether the positioning lands is for the community to decide.
+- **"Smart" is a fuzzy word.** The headline ("smart QR codes") must mean something a static QR cannot do. Scheduled destinations is the obvious differentiator; if the founder buries it, the product risks looking like a URL shortener with extra steps.
+- **Simplicity vs. feature parity.** The author has explicitly rejected features most businesses will not use. The risk is that, in doing so, Sqanna looks under-built next to incumbents that bundle QR + menu + ordering + loyalty. The plan does not pick a side.
+- **Pricing not stated.** Setting a price is the founder's call after usage signal; the plan does not invent one.
+- **Scan analytics depth.** The source does not state whether scans are tracked at all, or how granular. If analytics is the only paid value, the line between free and paid must be obvious to the buyer.
+- **UI/UX risk.** The author flags AI-assistance in UI design and asks for UI/UX feedback. The plan captures the build, not a verdict on the design.

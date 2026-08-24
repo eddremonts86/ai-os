@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is a career question, not a product brief
+- [ ] Note that the author already does personal-project GTM work — do not frame this as 'no GTM knowledge'
+- [ ] If a future plan proposes a tool, gate on founder-side demand evidence
 
 ## Phase 2: Deploy
 
