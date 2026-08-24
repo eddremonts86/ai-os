@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is a buyer question, not a product brief
+- [ ] Note that no specific vendor is named — category-only scope
+- [ ] If a future plan proposes a tool, gate it on real six-month user evidence
 
 ## Phase 2: Deploy
 

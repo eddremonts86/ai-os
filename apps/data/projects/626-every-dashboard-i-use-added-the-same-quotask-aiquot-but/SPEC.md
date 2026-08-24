@@ -2,7 +2,7 @@
 id: "626"
 slug: every-dashboard-i-use-added-the-same-quotask-aiquot-but
 title: "Every dashboard I use added the same \"Ask AI\" button this year"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vozdqc/every_dashboard_i_use_added_the_same_ask_ai/"
@@ -18,20 +18,24 @@ date: "2026-08-15"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The author is exploring a small embeddable "Ask AI" action button for SaaS products that cannot afford to build their own — the same kind of natural-language dashboard action that AWS, GCP, Firebase, Supabase, Hostinger and Cloudflare have rolled out this year. The product is being built by one person (the author) and is currently being offered to 15–20 founder-design partners to validate whether the use case generalises beyond their own trading tool.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: founders of small (≈ 5-person) SaaS products whose users now expect an "Ask AI" action in the dashboard because Supabase / Vercel have trained them to.
+- Secondary: solo / two-person SaaS teams with the same UX gap and no engineering runway to build an internal action model.
+- Not a target in the source: enterprise teams that already have in-house platform engineers (per the author, "they've got the engineers").
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Per the source, the product is the same idea the big platforms ship: a natural-language prompt in the dashboard that, instead of linking to docs, executes an admin action (e.g. "Give Priya the same access as Jamie but read only on production", "Add a redirect from /pricing to /plans"), shows the user the diff it is about to apply, and waits for an explicit "yes" before persisting. The author is recruiting 15–20 design partners to test the first build; no pricing, no distribution channel, and no go-to-market is specified in the source.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens (Vercel-inspired: minimal, Inter / Geist Mono, black/white with a single accent).
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The author explicitly says they do not yet know whether the product is useful to anyone other than themselves — that is the main reason for the post.
+- The author is not pitching in the thread; recruitment is via DM and only the link is shared off-thread.
+- No statements about pricing, target revenue, or scale targets appear in the source.
