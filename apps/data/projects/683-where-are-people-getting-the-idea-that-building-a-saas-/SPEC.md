@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit cost-of-doing-business post in which the poster itemises their lean AI/SaaS monthly burn — website hosting ~$20, server hosting ~$15, database ~$25, APIs $50+, mailing list ~$12, business email ~$7, LLC/admin/compliance ~$40+ — totalling roughly $200/month ($2400/year) before any customer acquisition spend. The poster pushes back against the 'AI has made starting a business basically free, bro, just ship something' narrative. The post is a reality-check, not a product brief.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a beginner with no customers who is surprised that a lean AI/SaaS already costs ~$200/month.
+- Secondary: other early-stage founders comparing their burn against the 'basically free' narrative.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source is a cost-itemised reality-check, not a product brief. No MVP is proposed. What is captured here is the cost stack the poster itemised and the implied request (a tool that helps lower the burn, or at least makes it predictable) — neither is stated as a request in the post.
 
 ## Design Direction
 
@@ -34,4 +35,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No product is on offer.
+- No willingness-to-pay stated; the poster is at the spend side, not the sell side.
+- All numbers are rough ('~$X/month') and the poster is asking the community what they are missing — do not over-precision these figures.

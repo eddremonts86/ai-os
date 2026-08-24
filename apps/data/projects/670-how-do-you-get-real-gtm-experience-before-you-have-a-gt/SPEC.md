@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit career-advice post from a 3rd-year BTech student asking how to break into product marketing/GTM without a formal GTM role. The post is a question, not a product. It frames the structural gap between personal-project GTM work and in-house GTM work, and asks the community how others crossed it (internships, volunteering, helping early-stage founders, freelancing).
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: students or career-changers who have done the public-data version of GTM (ICP research, positioning analysis, lifecycle mapping on real SaaS products) and hit the ceiling where outside analysis cannot replicate inside work.
+- Secondary: career-changers and junior PMs asking the same 'how do I get the first one' question.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post is a career question, not a product brief. There is no MVP. What is captured here is the gap between outside analysis (which the author already does well) and inside work (which they cannot access).
 
 ## Design Direction
 
@@ -34,4 +35,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No product is on offer.
+- No willingness-to-pay signal — the post is about getting a job, not buying tooling.
+- No compliance or platform requirements are mentioned.

@@ -2,7 +2,7 @@
 id: "662"
 slug: trying-to-automate-lead-generation-but-everything-autom
 title: trying to automate lead generation but everything automated feels spammy?i will not promote
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vp4cvt/trying_to_automate_lead_generation_but_everything/"
@@ -18,20 +18,31 @@ date: "2026-08-15"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The author is a 3-year B2B SaaS operator trying to find a middle ground between fully automated lead generation (which feels spammy and tanks domain reputation through bounce rates) and hand-writing every email (which has lifted their response rate from ~2% to 8–10% but is slow). The post is asking the community for that middle ground, not pitching a product.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: B2B SaaS founders and growth leads who have hit the same wall — automated outbound feels robotic and burns domain reputation, hand-written is too slow to scale.
+- Secondary: small B2B teams (the author is a 3-year, presumably small, B2B SaaS) who cannot staff a sales-development team.
+- Tertiary: tooling vendors (Apollo, Seamless.AI, Clay, Prospeo) whose products are named in the post as having been tried.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No product is described. The post is a question thread. The "what's been tried" is the most concrete content:
+
+- **Apollo** — decent filters, but templated email feel.
+- **Seamless.AI** — phone numbers, but high disconnect rate.
+- **Clay** — powerful, but slow to set up complex workflows and still feels impersonal.
+- **Prospeo** — used for verified contacts in the current minimal-automation workflow.
+
+The author's working approach is: use tools to build targeted lists, then hand-write each email. They are explicitly asking whether "good cold email outreach simply can't be fully automated".
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens (Vercel-inspired: minimal, Inter / Geist Mono, black/white with a single accent).
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No product, no pricing, no go-to-market — anything beyond what's named in the source is invented.
+- The single quantitative claim is the response-rate comparison: ~2% with full automation, ~8–10% with the lists + hand-written hybrid.
+- Tools named (Apollo, Seamless.AI, Clay, Prospeo) are the only ones the author has tried; do not add others.

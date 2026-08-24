@@ -1,0 +1,30 @@
+---
+id: "2511"
+slug: "26-node-n8n-workflow-for-scoring-and-routing-b2b-leads"
+title: "26-node n8n workflow for scoring and routing B2B leads"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49407619"
+category: show-hn
+date: "2026-08-23"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# 26-node n8n workflow for scoring and routing B2B leads
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._

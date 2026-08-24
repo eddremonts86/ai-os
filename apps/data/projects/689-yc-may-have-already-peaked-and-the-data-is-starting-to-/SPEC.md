@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit analysis post arguing that YC's value-add has fallen sharply by 2022, citing a paper that studied ~750,000 American startups across 329 accelerators and found 60–80% of accelerators appear worse than building without one. The author hypothesises three compounding causes (larger batches without proportional partner/investor attention, younger founders with less domain context, AI as a paradigm shift that disrupts YC's accumulated pattern recognition) and warns that the network moat (Bookface) can compound downward if fewer defining AI companies are selected. The post is opinion/analysis, not a buildable product brief.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the author, who is making a thesis-driven argument about accelerator effectiveness in the AI era.
+- Secondary: founders and investors evaluating whether to apply to / back YC in 2026.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source is an opinion/analysis post. No MVP is proposed. What is captured here is the underlying claim (paper-based accelerator value-add evidence + three-cause hypothesis + network-moat warning). Any product extraction would be invention.
 
 ## Design Direction
 
@@ -34,4 +35,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No product is on offer.
+- No willingness-to-pay signal in the source.
+- The post cites external research (a paper studying ~750,000 startups across 329 accelerators); cite it as the source's own claim, not as verified fact.
+- Plan stays as an analysis capture; not a buildable brief.

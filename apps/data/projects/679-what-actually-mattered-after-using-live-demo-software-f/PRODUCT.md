@@ -17,27 +17,31 @@ date: "2026-08-16"
 
 _Based on source brief:_ Looking at a few platforms right now and every sales call is basically the same feature dump. AI this, analytics that, personalization, templates... cool but what actually matters once the shiny stuff wears off? For anyone who has been using live demo software for six months or longer, what features actually made a difference? And what sounded great during the sales call but turned out to be kinda useless? Would be way more interested in the real long term stuff than another feature list. submitted by /u/PrizeRole8645 [link] [comments]
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Not a product pitch. The closest framing is 'show me which features actually survived six months of real use, not what was promised on the sales call.'
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, who is shopping for a live demo platform and is tired of feature-dump sales calls.
+- Secondary: anyone evaluating live demo software who wants long-term signal rather than launch-time features.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — pick a live demo platform based on long-term value, not sales-call shine.
+2. Emotional — avoid the regret pattern of buying on launch features and discovering they decay.
+3. Social — learn from other buyers who have actually used the tool for six months or longer.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies with concrete 'this mattered, that did not' signals from long-time users.
+- Not measurable in product terms.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster says 'every sales call is basically the same feature dump' but names no specific vendor.
 
 ## Risks & Open Questions
 

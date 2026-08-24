@@ -17,27 +17,31 @@ date: "2026-08-16"
 
 _Based on source brief:_ I did it for 6 months. Only figured it out when someone outside my head finally used it. Here's what it looks like from the inside. You have a problem. A real one. You feel it daily. So you build something that solves it exactly the way you would want it solved. Every decision makes sense because you are simultaneously the builder and the ideal user. The product feels complete because it fits your brain perfectly. Then a stranger uses it. And you watch them get confused at the thing you thought was obvious. Hesitate at the step you thought was seamless. Ignore the feature you thought was the whole point. That experience is genuinely destabilizing the first time. Because you can't dismiss it. They're not wrong. They just don't have the 6 months of context living in your head that makes everything feel logical. The dangerous part is how long you can go without that moment happening. If you're only showing it to people who know you, people who are rooting for you, people who understand the vision because you explained it to them you can build in completely the wrong direction for a very long time and never know. Supportive people will not save your product. Strangers will. The founder who gets honest feedback from someone who owes them nothing in month one is miles ahead of the founder who gets encouraging feedback from friends for six months. Most of us choose the friends. It's more comfortable. It's also how you end up building something nobody actually needs in the exact way you built it. When was the first time a complete stranger used your product and what did it break? submitted by /u/Fragrant-Status-9634 [link] [comments]
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Not a product pitch — the post is a founder confessional about how long you can ship the wrong thing when everyone around you already understands your vision. The closest one-liner: 'Supportive feedback feels like progress; a stranger's confusion is the only signal that matters in month one.' No product is on offer; this is recorded as a corpus entry, not a SaaS brief.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: solo SaaS founders in their first 0–6 months of building, who are still the only user of their own product.
+- Secondary: indie hackers in the same window who are about to ship a v1 and have not yet seen a stranger use it.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — figure out whether what you built actually solves the problem for someone who has not lived inside your head for six months.
+2. Emotional — recover from the destabilising moment of watching a stranger get stuck on the thing you thought was obvious.
+3. Social — find early users who owe you nothing, instead of relying on friends who already believe in you.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Conversation signals: number and tone of replies from founders who recognise the trap.
+- Not measurable in product terms; the post itself is the artefact.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. No product, no competitor, no market mapping.
 
 ## Risks & Open Questions
 

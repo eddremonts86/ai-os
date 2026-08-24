@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm no feature scope, pricing or stack is stated
+- [ ] Note the milestone (first paying customer + 3–4 referred users) as the only hard signal
+- [ ] If a downstream agent extracts a real plan, gate it on a follow-up with the author
 
 ## Phase 2: Deploy
 

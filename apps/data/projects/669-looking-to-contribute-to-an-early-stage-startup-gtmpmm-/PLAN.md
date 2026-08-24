@@ -13,16 +13,19 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The post is a job-seek, not a tech brief.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a Reddit collaboration request, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Record this as a discussion post: student supply side only.
+2. M1 — Capture the gap (no access to in-house data) so future agents do not invent a paid tool the student never asked for.
+3. M2 — If anyone wants to convert this into a real plan, require demand evidence from founders before scoping.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Fabrication risk: the unpaid angle makes it tempting to invent a 'student-in-residence marketplace' that the post does not request.
+- Demand asymmetry: student supply is on offer in the post; founder demand is not evidenced anywhere.
