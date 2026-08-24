@@ -2,7 +2,7 @@
 id: "663"
 slug: i-will-not-promote-i-want-to-do-business-where-should-i
 title: "I will not promote: I want to do business. Where should I start?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vp3cx3/i_will_not_promote_i_want_to_do_business_where/"
@@ -18,20 +18,32 @@ date: "2026-08-15"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The author is at the very beginning of a founder journey — has a business background but no business yet, no product, no idea chosen. The post is a long, structured list of questions to experienced founders about how to think about idea selection, validation, differentiation, learning a new industry, common mistakes, and recommended resources. The objective of the source is to ask, not to build.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the author themselves, who is asking the questions — a person with a business background who does not yet feel confident and wants to learn how experienced founders think before starting.
+- Secondary: r/startups readers who have actually started businesses and can speak from experience.
+- Tertiary: other pre-founders in the same position who might find the consolidated question list useful as a self-onboarding checklist.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No product. The post is a request for advice. The closest thing to a deliverable is the question list itself (paraphrased):
+
+1. How do you know whether an idea is worth pursuing? How do you research and validate before significant time or money?
+2. How important is the idea itself vs. the customer / problem / product / execution / sales / distribution?
+3. With a business background, can you start in a completely different field? How do you learn that industry?
+4. First business: copy an existing model and improve it, or come up with something genuinely unique?
+5. If building on an existing idea, how different does it actually need to be? How do you differentiate without copying?
+6. What are the biggest mistakes new founders make? What do you wish you had known?
+7. What books, courses, resources would you recommend before starting?
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens (Vercel-inspired: minimal, Inter / Geist Mono, black/white with a single accent).
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The source contains no product, no tech, no pricing, no target customer. Anything beyond the seven questions is invented.
+- The author is explicitly at the very beginning and has not started anything — the "plan" is to learn first, build later.
+- The post is long, but the question list above is the entire actionable content; do not pad with synthesised answers.

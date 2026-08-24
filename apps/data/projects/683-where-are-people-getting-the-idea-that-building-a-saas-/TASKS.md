@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is a cost reality-check, not a product brief
+- [ ] Record the line-item breakdown (~$20 hosting, ~$15 server, ~$25 database, $50+ APIs, ~$12 mailing list, ~$7 email, ~$40+ LLC/admin) as poster-supplied rough figures
+- [ ] If a future plan proposes a tool, gate it on cross-founder validation of the $200/month baseline
 
 ## Phase 2: Deploy
 

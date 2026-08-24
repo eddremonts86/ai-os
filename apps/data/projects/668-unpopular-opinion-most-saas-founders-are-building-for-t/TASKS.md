@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source post and confirm it defines no concrete product
+- [ ] Record in the plan notes that this is a founder-advice entry, not a buildable brief
+- [ ] If a downstream agent wants to extract a feedback tool, require new user interviews as the gate, not interpretation of this post
 
 ## Phase 2: Deploy
 

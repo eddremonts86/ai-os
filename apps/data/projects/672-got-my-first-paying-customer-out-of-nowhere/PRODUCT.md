@@ -17,27 +17,32 @@ date: "2026-08-16"
 
 _Based on source brief:_ It might just be a dollar after taxes and what not but it matters so much to me as its my first time building my own product and someone buying it that it almost made me cry lol. I have been working as a SE for many past years but that's just you know your job, this is my own so it feels so different. I have been working on Splitceipt for past couple of months. And the best part of it all is, they brought like 3-4 users along them which makes it even better 😄It just came with a rush of motivation & good feelings. I would love to hear stories from the rest of the folks here, how did they land their first customer or just anything. Onwards and Upwards 🤞 submitted by /u/legolas427 [link] [comments]
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Not stated in product terms. The closest framing: 'I shipped something on my own and someone paid for it, and brought friends.' Any feature-level value prop would be invented.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the Splitceipt author and the first paying customer plus the 3–4 additional users that customer brought.
+- Secondary: groups of people who split a receipt (roommates, diners, travel companions) — the implied audience, not confirmed by the post.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — split a receipt across multiple people.
+2. Emotional — for the founder, ship something of your own and see a stranger pay for it; for the customer, solve the receipt-splitting problem without doing the maths in a group chat.
+3. Social — bring friends along; the first customer brought 3–4 others.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- First paying customer (achieved).
+- 3–4 additional users from that customer (achieved).
+- No retention, revenue, or expansion numbers are in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. Receipt-splitting is a known category (Splitwise et al.) but the post does not mention any competitor or positioning.
 
 ## Risks & Open Questions
 
