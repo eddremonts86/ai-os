@@ -2,7 +2,7 @@
 id: "665"
 slug: how-do-you-stop-customer-churn
 title: How do you stop customer churn?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpvohc/how_do_you_stop_customer_churn/"
@@ -23,7 +23,12 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post is a question thread; there is no engineering work. If the author wants to act on the answers they get, the operational work is:
+
+- [ ] Read the r/SaaS replies and extract the working definitions (logo churn, revenue churn, gross vs. net, voluntary vs. involuntary)
+- [ ] Catalogue the win-back mechanisms the comments name (re-engagement email, dunning, save flows, downgrade offers)
+- [ ] If/when the author is operating a real SaaS, revisit this thread and pick the mechanisms that map to that SaaS's actual churn pattern
+- [ ] Treat the thread as a primer, not a playbook — it gives vocabulary, not a turnkey solution
 
 ## Phase 2: Deploy
 

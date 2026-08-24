@@ -1,14 +1,18 @@
 # TOP_PROJECTS.md — ProblemHunt ranked
 
-> Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-16.
-> Source: 514 projects in `~/Projects/ai-os/apps/data/projects/` (ProblemHunt + Reddit r/SaaS).
+> Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-24.
+> Source: 1634 projects in `~/Projects/ai-os/apps/data/projects/` (ProblemHunt + Reddit r/SaaS + Hacker News).
 > Scoring blends WTP (from SPEC/PRODUCT YAML or extracted from title), B2B/recurring signals, sticky-compliance verticals, tech-stack breadth (learn), and visual/agent/creative novelty (fun).
 
-## Top 7 — Real Revenue Potential
+## Top 16 — Real Revenue Potential
 
-1. **207-a-russian-developer-built-an-app-for-nigeria-but-cant-a** — score 8.4/10
+1. **2286-taqflow-move-b2b-funds-across-central-asia-with-live-fx** — score 8.5/10
+   _B2B cross-border treasury rail for Central Asia + Caucasus, 12 currencies, 8 markets_
+   SPEC.md line 5: "TaqFlow enables businesses to send, receive, and settle cross-border B2B payments across Central Asia and the Caucasus with live FX, transparent fees, and next-day settlement" — explicit B2B recurring tx-fee model with FX spread. PRODUCT.md line 7 names the switching costs: "Built-in KYB, dual approvals, and audit trails support compliance. You can hold multi-currency balances, lock rates, and manage treasury across 12 currencies and eight markets" — sticky treasury accounts that displace 207's payments-rail sandbox (8.4) by adding the multi-currency lock-rate wedge 207 lacks.
+
+2. **207-a-russian-developer-built-an-app-for-nigeria-but-cant-a** — score 8.0/10
    _Cross-border payment routing for app builders in sanctioned/restricted markets_
-   B2B fintech with a $500–700 integration budget and recurring tx-fee implied (ProblemHunt: Russia/Nigeria, tags: Finance/Legal/Dev). One-shot billed as integration or setup fee per app, with a long tail of monthly routing fees — a payments-rail sandbox is a massively sticky vertical even outside the headline dollar.
+   B2B fintech with a $500–700 integration budget and recurring tx-fee implied (ProblemHunt: Russia/Nigeria, tags: Finance/Legal/Dev). One-shot billed as integration or setup fee per app, with a long tail of monthly routing fees — a payments-rail sandbox is a massively sticky vertical even outside the headline dollar. Demoted from 8.4 → 8.0 by TaqFlow's (2286) treasury + KYB + dual-approvals wedge; the route-only shape is narrower than TaqFlow's compliance-rail.
 
 2. **010-the-owner-of-a-tech-agency-hasnt-found-a-suitable-tool-** — score 8.0/10
    _Single-pane for tech agencies (Colombia)_
@@ -34,7 +38,39 @@
    _coolbeans — flat-fee licensing service for downloadable software_
    SPEC cites a concrete incumbent pain (Keygen/Cryptlex/LicenseSpring charge per active user or take a percentage), explicit flat $99/yr pricing after a free 1-product / 500-active-licence tier, and a live MIT codebase with Stripe/PayPal webhook → licence key → offline-verifiable Swift + TypeScript SDKs sharing one fixture. B2B recurring at $99/yr is the strongest pricing signal in the batch; ties the 7.0 ceiling without displacing 573.
 
-## Top 7 — Learning Potential
+8. **1556-maritime-a-platform-for-running-ai-agents-for-1-a-month** — score 7.5/10
+   _Per-agent-per-month infra for isolated AI-agent fleets (B2B, MIT co-founders)_
+   B2B infra for companies that need to run thousands of isolated AI agents with persistent state, secrets, and sleep/wake in microVMs. Pricing is the cleanest possible: $1/agent/month, so 100 isolated agents = $100/month; three agents free forever for any developer. SPEC cites the founder pain — "building such scalable and secure infra will take you months and will cost hundreds of thousands" — and the wedge (MIT co-founders, OpenClaw/Hermes/DeepSeek templates live). Strongest pricing-shape signal of the batch at the per-agent-per-month recurring ceiling, ties 564's 7.5 Money without displacing 207/010/564/001/573.
+
+9. **1320-the-ai-reputation-manager** — score 7.5/10
+   _MCP-based reputation/review management (B2B + agency white-label, $170K prior revenue)_
+   Founder bootstrapped "More Good Reviews" to $170K in sales before shipping this MCP, listed in Claude's connector directory. SPEC scopes Google Business Listing ingestion, sentiment/positive-vs-negative trend analysis, email/SMS review-request scheduling, multi-location aggregation, and a white-label agency tier. The $170K is the strongest revenue proof in the new batch; the MCP/Claude-distribution wedge is novel and aligns with where AI-agent customers actually look for tools today. Ties 564's 7.5 Money without displacing.
+
+10. **1242-roadmark-roadmaps-that-branch-instead-of-overwriting-th** — score 7.0/10
+    _Roadmap tool that branches instead of overwriting (B2B SaaS, $15/$49/mo, 15 Pro Trials live)_
+    Already has 15 paying Pro Trial users with the founder's own "why this pivot happened" mechanic forced on every branch. Pricing is explicit: Free (3 boards) / Pro $15/mo / Team $49/mo, plus Jira/GitHub/Linear/Notion daily sync. B2B SaaS in a Jira-and-Notion-fatigued vertical, the novel mechanic (forced decision log on every branch) is the genuine product wedge. Ties 701's 7.0 Money ceiling without displacing.
+
+11. **1537-kawze-website-monitoring-and-downtime-alerts-for-small-** — score 6.5/10
+   _Website monitoring with no per-seat or feature paywalls (B2B SMB, simple flat pricing)_
+   SPEC explicitly contrasts itself against paywalled competitors — HTTP uptime checks, heartbeat monitoring, SSL/DNS/Cloudflare cache checks, no per-seat fees. The "no feature paywalls" stance is the pitch. B2B SMB wedge against UptimeRobot/Pingdom with a transparent-pricing story; live at kawze. Ties 677's 6.5 Money ceiling without displacing.
+
+12. **2293-quickenrich-quickenrich-is-a-b2b-data-enrichment-tool-w** — score 7.5/10
+   _B2B email/phone enrichment with 300 free credits/mo against hunter.io/Apollo_
+   SPEC.md line 5: "QuickEnrich is a B2B data enrichment tool with a free email finder. You get 300 credits every month, plus a mobile phone and email finder API for real-time lookups. Built as a lightweight alternative to hunter.io or Apollo" — explicit credit-pack recurring model against named enterprise incumbents. PRODUCT.md line 7: "QuickEnrich helps founders, sales teams, and RevOps find verified emails and phone numbers fast without the enterprise price tag... Enrich leads, clean CRM contact data... CCPA/GDPR-compliant B2B data" — multi-segment B2B on credit consumption, ties 564/001 at the 7.5 Money ceiling.
+
+13. **2277-gptplus-purchase-and-activate-chatgpt-plus-or-pro-with-** — score 7.5/10
+   _B2B ChatGPT Plus/Pro top-up via Alipay/WeChat with invoicing and corporate pay_
+   SPEC.md line 5: "Users select a plan and pay via Alipay, WeChat, or bank card. After payment, they receive an activation code... official invoicing, contract signing, corporate payments, bulk purchase options, and customer support" — B2B corporate recurring top-up with explicit invoicing and bulk-tier pricing. PRODUCT.md line 7: "GetPlus AI offers ChatGPT Plus/Pro top-up services for individuals and businesses... 30-day warranty, full refunds for failed top-ups" — warranty/refund trust signals plus bulk purchase tier; consumption revenue on a sticky AI-subscription proxy wedge. Ties the 7.5 Money ceiling (564/001/2293) without displacing.
+
+14. **1575-contact-form-blaster-automate-b2b-outreach-via-contact-** — score 7.0/10
+   _Pay-as-you-go B2B contact-form outreach with 50 free credits + refund guarantee_
+   SPEC.md line 5: "Contact Form Blaster lets teams send personalized messages through website contact forms at scale... AI maps, fills, and submits forms automatically with tracking, reporting, and guaranteed submissions or a refund. It is designed for B2B marketers, agencies, and sales teams running high-volume outreach. Pricing is pay-as-you-go with no subscriptions, and every new account gets 50 free credits to start" — B2B agency/marketer wedge on consumption pricing. PRODUCT.md line 7: "AI maps, fills, and submits forms automatically with tracking, reporting, and guaranteed submissions or a refund... pay-as-you-go with no subscriptions" — explicit refund guarantee lowers buyer risk; ties the 7.0 Money ceiling (573/701) without exceeding it.
+
+15. **1517-proxya-fast-residential-isp-and-datacenter-proxies-in-1** — score 7.0/10
+   _Residential/ISP/DC proxies in 195+ countries, transparent pricing, 24h money-back_
+   SPEC.md line 5: "Proxya provides residential, ISP, datacenter, and MTProto proxies in over 195 countries with instant activation and 99.9% uptime. You can manage IPs via a full REST API, choose rotating or sticky sessions, and scale on a 10Gbps network. The service offers transparent pricing, 24/7 support, and a 24-hour money-back guarantee" — consumption-based recurring proxy infra with dev-tools audience. PRODUCT.md line 7: "transparent pricing, 24/7 support, and a 24-hour money-back guarantee. Mobile proxies are coming soon" — clear B2B/dev-tools monetization with consumption revenue; ties the 7.0 Money ceiling (573/701/1575) without exceeding it.
+
+## Top 17 — Learning Potential
 
 1. **252-startups-at-the-monetization-validation-stage-have-nowh** — score 7.0/10
    _Payment-onboarding sandbox for unincorporated startups (Morocco)_
@@ -64,7 +100,47 @@
    _coolbeans — Stripe/PayPal webhook → licence key → offline-verifiable SDKs (Swift + TS)_
    Stack spans payment-gateway webhook ingestion (Stripe + PayPal), licence-key generation/emailing, offline-friendly state-fixture sync between a Swift SDK and a TypeScript SDK that share one cryptographic decision file, plus self-hosted + hosted deployment modes. Narrower than 583 (single use case: downloadable-software auth) but a clean license-crypto surface that most engineers never touch.
 
-## Top 13 — Fun to Build
+8. **1319-agent-mesh-shared-memory-for-multi-agent-coordination** — score 7.0/10
+   _Human + multi-agent shared memory with formal decision log (Agent Mesh, daily-driver founder)_
+   Stack spans SQLite-indexed request/response ids (an "agent mail" pattern), a separate decision-log store that agents cite via in-code comments and plan docs, a Workbench web dashboard, and a concrete Claude+CODEX orchestration pattern (`codex exec` from Claude, decision-id relay). Strongest learn-signal of the new batch because the cross-agent state-machine is the engineering work, not a wrapper on someone else's library. Displaces 252 (6.5 → #7) at Learn by tying 252's 6.5 ceiling without displacing it.
+
+9. **1202-stunt-a-stunt-double-for-the-apis-you-integrate-95-adap** — score 6.5/10
+   _Stateful local stand-ins for 95 public APIs (Stripe/Twilio/GitHub/S3/Salesforce/...)_
+   Stack spans a Starlark-VM sandbox with no host I/O or network (the security property that makes adapter-install safe), 95 YAML+sandboxed-handler adapters, synthetic provider signature schemes (HMAC for webhooks), engine primitives (SQLite collections, KV, blob store, injectable clock, seeded RNG), and CI that drives real provider SDKs (stripe-go, aws-sdk-go-v2, octokit, twilio-go) against the local stand-ins. Ties 238/540/678 at Learn 6.5 without displacing.
+
+10. **1191-my-agents-kept-hallucinating-apis-so-i-built-them-a-hea** — score 6.0/10
+    _Headless IDE that gives agents real codebase context (Context Engine)_
+    Stack spans code-search indexing, tool/function-call instrumentation, real-SDK round-tripping to detect fabricated APIs, write-compile-rewrite loop detection, and a "headless" IDE surface for non-interactive agent loops. Narrower than 1319 (single-agent focus vs multi-agent coordination) but a deeper code-context surface.
+
+11. **1140-pantheongpu-gpu-health-testing-and-ai-workload-benchmar** — score 6.0/10
+    _Active GPU testing vs telemetry-only monitoring (PantheonGPU)_
+    Stack spans GPU driver-level health probes, stress-test workloads that catch memory/PCIe/configuration issues telemetry misses, benchmark harnesses for AI workloads (training/inference throughput), and the cross-driver compatibility story. Dev-tools wedge with a niche but sticky audience (ML engineers who suspect a bad GPU but can't prove it from temperature alone). Ties 583's 6.0 ceiling without displacing.
+
+12. **1270-a-multiplayer-coding-environment-for-dev-teams-and-agen** — score 6.0/10
+    _Multiplayer coding platform for human teams + agents (Forklane)_
+    Stack spans real-time collaborative editing with agent-context preservation, fork-and-merge coordination between human contributors and AI agents, conflict-resolution across "vibe coded" agent output and human edits, and the agent-state-replay story needed when an agent loses context mid-session. Ties 583's 6.0 ceiling without displacing.
+
+13. **2357-kandelo-a-posix-compatible-multi-process-wasm-kernel-fo** — score 9.5/10
+    _POSIX kernel in the browser — fork, VFS, and MariaDB on WebAssembly_
+    SPEC.md line 5 cites "POSIX-compatible multi-process WASM kernel" with "fork() is supported" and "Syscalls are done with the process SharedArrayBuffer and the Atomics API." Line 10 confirms breadth: "Nginx, PHP, Python, Ruby, Redis, and even MariaDB were able to be built using the SDK" — kernel engineering + language portability + browser sandboxing in one build. Strongest Learn signal in the corpus: clears the 7.0 ceiling by 2.5 and lands ahead of 252/1319.
+
+14. **2532-hands-rust-mcpcli-that-sees-the-windows-desktop-and-cli** — score 8.5/10
+    _Rust MCP for Windows — real Chrome, real mouse, no CDP/Playwright_
+    SPEC.md line 5 names the stack: "observe, click, type, scroll. Observe is a screenshot path plus a small element list (UIA + optional Chrome DOM ids). Click is OS SendInput on a Bézier path, not a Chrome DevTools click." Same line spells the novel UX: "Daily Chrome is launched with no extra flags" and "Sites that key on CDP/automation flags mostly don't see that" — new agent surface (Rust + UIA + native messaging host). Clears the 7.0 Learn ceiling by 1.5; the only Windows-native agent wedge in the corpus.
+
+15. **2215-brep-geometric-cad-kernel-and-parametric-code-cad** — score 8.0/10
+    _CAD kernel + DSL so LLMs can vibe-CAD — bindings in four languages_
+    SPEC.md line 5 documents the new domain: "a free, open-source geometric kernel ... a DSL called Firmament ... provide an alternative to OpenCascade" with "STEP import/export support for AP242, AP203 and AP214." Same line: "Kernel is written entirely in C#, with bindings for Go, Rust, Python, and TypeScript available" — combines a CAD-domain surface with LLM-vibe-CAD UX. Ties 2201 at the 8.0 Learn ceiling without displacing.
+
+16. **2201-nanoalphazero-train-a-grandmaster-level-chess-model-in-** — score 8.0/10
+    _AlphaZero in one jitted JAX fn — Chess, Go, Hex, Connect Four, any 2P game_
+    SPEC.md line 5 lists breadth: "game-agnostic implementation of AlphaZero in JAX" supporting "Chess, Go 3x3 - 9x9, Hex 4x4 - 9x9, Connect Four." Lines 7-19 show the engineering work: "the entire AlphaZero algorithm gets compiled into a single jitted run_fn" with "There are no threads, queues, or distributed workers to manage" — new domain (game AI) + new stack (JAX compilation). Ties 2215 at the 8.0 Learn ceiling without displacing.
+
+17. **1014-arkm-kernel-a-custom-built-12-core-64-bit-microkernel-a** — score 7.5/10
+    _12-core custom microkernel — AMP + ACPI + APIC parsed from scratch_
+    SPEC.md line 18 spells the novel kernel work: "Core 0 (BSP) → Kernel shell, interrupts, global scheduler. Core 1 → Idle stability loop + diagnostics. Core 2 → GPU compositor for zero-latency graphics. Core 3 → Isolated Ring 3 user-space applications." Same line: "ARKM parses ACPI tables (RSDP, MADT) to locate the Local APIC and enumerate CPU cores" — kernel-domain depth rare in the corpus. Clears the 7.0 Learn ceiling by 0.5.
+
+## Top 27 — Fun to Build
 
 1. **240-the-lack-of-a-service-that-creates-hyper-personalized-g** — score 7.5/10
    _Hyper-personalized gamified English courses_
@@ -118,9 +194,69 @@
     _smbl-journal — E2E-encrypted text journal (SvelteKit + Rust + SQLite)_
     Client-side encryption before storage, server never sees plaintext — the trust-boundary demo is showing the network panel reveal zero readable content. Stack spans SvelteKit frontend, Rust backend, SQLite persistence, and a real cryptography story (the engineer's first time shipping a security-shaped product). Open source, so the fun is in the engineering and the trust-boundary UX rather than revenue.
 
+14. **1284-gene-inspector-pro-i-built-a-tool-for-exploring-your-ow** — score 7.0/10
+    _Personal-genome explorer built over a 7-year self-taught genetics journey_
+    The founder spent seven years teaching himself genetics and cellular biology after his son's diagnosis, sequenced DNA from 14 family members across three generations, and built the tool around that dataset. Side-by-side genome browser + clinical-variant flagging + family-pedigree visualization is the demo. The deeply personal origin story makes this the strongest "story-first" Fun entry in the batch and clears the existing 6.5 Fun ceiling to land at 7.0.
+
+15. **1238-anycreature-making-3d-creature-by-agent-harness-by-3d-a** — score 6.5/10
+    _Mesh-based generative harness for 3D creature pipelines (AnyCreature)_
+    Open-source technical-artist tool: QC thresholds (poly count/vertex budget/rigging/animation tracks), quantified spatial-vertex aesthetics, and an agent harness that drives 3D assets through three automated pipeline checks. The before/after 3D mesh render is the demo; the "agent enforces aesthetic standards" framing is the satisfying engineering payoff. Ties the 6.5 Fun ceiling (218/621/605/688/682/687).
+
+16. **1189-codewindow-picture-in-picture-for-terminal-agents** — score 6.5/10
+    _Picture-in-picture overlay for terminal agents (Codewindow)_
+    Born from missing the Arc-browser PiP feature for video — applied to coding agents so a long-running agent stays visible across desktops and workspaces. Stack spans OS-level overlay APIs (always-on-top, multi-desktop, click-through), terminal-agent stdout polling, and the visual-state machine of an agent (running / waiting-input / failed). The "the PiP bubble follows you everywhere" affordance is the demo. Ties the 6.5 Fun ceiling.
+
+17. **1327-saggar-a-mac-terminal-that-keeps-sessions-and-your-atte** — score 6.5/10
+    _Mac terminal that organizes sessions by attention (Saggar)_
+    macOS-native terminal app built after the founder's terminal "started feeling like a tab-management problem." Stack spans native macOS window management, session state restoration across restarts, attention-based grouping, and the cross-session clipboard/scratch story. The "tabs become a navigable list of recent contexts" affordance is the demo. Ties the 6.5 Fun ceiling.
+
+18. **1217-marble-a-markdown-editor-with-live-preview-and-collabor** — score 6.0/10
+    _Collaborative markdown editor with link-sharing (marble.md)_
+    Founder spent "an unreasonable amount of time making loading and editing feel great" on a tool whose primary UX is "share a markdown doc by sending a link." Stack spans real-time CRDT-based collab, link-share access control, instant load-and-render latency budget, and the friction-of-not-Google-Docs positioning. The "send a link, edit live together" demo is the visual payoff. Ties 707's 6.0 Fun ceiling without displacing.
+
+19. **1214-cofoundme-i-gamified-finding-collaborators-for-your-pro** — score 5.5/10
+    _Gamified co-founder / collaborator matching (CoFoundMe, 1027 users, 394 matches)_
+    Founder interviewed 1083 users, validated that YC cofounder-matching is unknown to half and painful for the rest, then built a prototype that attracted 1027 users with 394 collaborations already formed. The product mechanic is gamified matching that bypasses the "your post reaches everyone (friends/family/boss) = no one" cold-DM problem. Stack spans user-graph matching, in-app gamification loop, and the trust/safety surface for cold-collaborator introductions. Ties the 5.5 Fun ceiling (206/239/702) without displacing.
+
+20. **1137-faro-a-text-message-based-accountability-companion** — score 5.0/10
+    _SMS-based accountability companion for small tasks (Faro)_
+    "Just text Faro" — founder explicitly positions against fussy calendar/alarm menus. The friction-removal demo: text a small task, the bot proactively pings you, you reply done or snooze. Stack spans SMS gateway, lightweight task-graph, proactive-notification scheduler, and the human-friction-minimization UX. Ties 713's 5.0 Fun ceiling without displacing.
+
+21. **2288-saasrocketspace-launch-your-saas-with-a-custom-rocket-c** — score 7.5/10
+    _SaaS launches become paper-cutout rocket movies on a galaxy map_
+    SPEC.md l.5: "Paste your product URL, and we crawl your site, swap your logo onto a rocket hull, and create a hand-crafted paper-cutout launch cinematic." Same line: "Your product becomes a permanent star on the galaxy map" — the before/after logo-on-rocket reel is the demo and visual payoff. Ties 240's 7.5 Fun ceiling without displacing it.
+
+22. **2467-fake-zoom-hang-out-with-ai-coworkers-and-feel-the-syner** — score 7.5/10
+    _Fake Zoom with AI coworkers you can click and call by name_
+    SPEC.md l.5: "I made a fake Zoom call with AI coworkers. I generated the videos of each coworker with my 5070 ti and MiniMax H3." Same line: "Click on people to hear them talk or try saying their name to hear their standup update" — absurd novelty + speech recognition demo is the whole payoff. Ties 240/2288 at the 7.5 Fun ceiling without displacing.
+
+23. **2647-interactive-map-of-the-odyssey-with-tap-to-gloss-homeri** — score 7.0/10
+    _Interactive Odyssey atlas: tap every Greek word, toggle ancient↔satellite_
+    SPEC.md l.5: "every single Greek word is tappable for a translation… Press N and the ancient chart swaps to today's satellite view: these are real places." Same line: "Stack: SvelteKit static + MapLibre, no backend, all public-domain texts and art" — static-site polish with a real demo loop. Ties 1284's 7.0 Fun ceiling without displacing.
+
+24. **2283-vocalify-get-live-cents-accurate-pitch-feedback-while-y** — score 7.0/10
+    _Live cents-accurate pitch feedback in your browser while you sing_
+    SPEC.md l.5: "Vocalify is a browser-based studio for singers that listens as you sing and shows your pitch against target notes in real time, measured in cents." Same line: "It scores every note, tracks progress over time, and adapts to your range. Train your ear with recognition and sing-back tests" — audio-DSP + visual score feedback. Ties 1284/2647 at the 7.0 Fun ceiling without displacing.
+
+25. **1564-hashnotch-premium-ai-integrated-dynamic-island-for-the-** — score 7.0/10
+    _Mac Dynamic Island meets local AI: see the unseen, no telemetry_
+    SPEC.md l.18: "Hash made the Dynamic Island every Mac user deserves. See the unseen. What's playing, how fast your internet is, what your battery is doing, how hot the chip is running." Same line: "No account. No telemetry. Nothing about you ever leaves your Mac" — Mac-native visual affordance is the demo. Ties 1284/2647/2283 at the 7.0 Fun ceiling without displacing.
+
+26. **1274-i-made-a-3d-globe-platform-to-promote-your-startup-base** — score 7.0/10
+    _A 3D globe where your startup's tower grows with its MRR_
+    SPEC.md l.18: "I made a website with a 3D globe, fully browsable, without any signups, to promote startups for free, based on MRR. Basically the bigger MRR, the bigger your startup tower will be/grow with time." Same line: "Also there is the possibility of putting your startup in orbit for better visiblity. Just thought it looked sick" — globe-render is the demo. Ties the 7.0 Fun ceiling without displacing.
+
+27. **2572-clearvoice-tts-sota-voice-cloning-model-running-offline** — score 7.0/10
+    _First iOS app to clone voices with a 6GB-RAM OmniVoice model offline_
+    SPEC.md l.5: "This is the first app I am aware of that can run a voice model of this quality on iPhone or iPad. It uses 6GB of RAM at peak." Same line: "the only existing implementation on iOS" — novelty claim is explicit, the local TTS playback loop is the demo. Ties the 7.0 Fun ceiling without displacing.
+
 ---
 
 ## Changelog
+
+- **2026-08-24 (cron run #12)** — re-ranked 1634 projects after a fresh scrape added 715 new captures across Hacker News, Reddit r/SaaS, and ProblemHunt (1100–2723 range, 199 added today). The new batch is HN-heavy on agent infra (MCP servers, observability, multi-agent coordination, kernel/browser-wasm boundaries) plus a set of mid-2000 PH/WTP-driven B2B posts. Five strong Money entrants, five strong Learn entrants (one clearing the ceiling by 2.5), and seven strong Fun entrants land on the rankings. **2286 TaqFlow** (B2B cross-border treasury rail for Central Asia + Caucasus, multi-currency lock-rates across 12 currencies / 8 markets, built-in KYB + dual approvals + audit trails, explicit recurring tx-fee + FX-spread) takes **Money #1 (8.5)** — displaces 207 (8.4 → 8.0) by adding the compliance-rail + multi-currency lock-rate wedge 207 lacks; **2293 QuickEnrich** (B2B email/phone enrichment, 300 free credits/mo, explicit competitor named: hunter.io/Apollo, CCPA/GDPR B2B data, multi-segment founders/sales/RevOps) at **Money #12 (7.5)** — ties the 564/001 ceiling; **2277 GPTPlus代充值** (B2B ChatGPT Plus/Pro top-up via Alipay/WeChat, official invoicing + contract signing + corporate pay + bulk tier, 30-day warranty with refunds) at **Money #13 (7.5)** — ties 2293's ceiling; **1575 Contact Form Blaster** (B2B contact-form outreach at scale, pay-as-you-go with 50 free credits, AI auto-fill + refund guarantee) at **Money #14 (7.0)**; **1517 Proxya** (residential/ISP/datacenter proxies in 195+ countries, transparent pricing, 24h money-back, REST API + rotating/sticky sessions on 10Gbps) at **Money #15 (7.0)** — the last two tie 573/701's 7.0 ceiling. **2357 Kandelo** (POSIX-compatible multi-process WASM kernel for the browser, fork() + SharedArrayBuffer/Atomics syscalls + VFS, Nginx/PHP/Python/Ruby/Redis/MariaDB ported via the SDK) lands at **Learn #13 (9.5)** — clears the 7.0 Learn ceiling by 2.5, strongest learn-signal in the corpus; **2532 Hands** (Rust MCP/CLI for Windows desktop, screenshot + UIA + Chrome DOM id fusion, OS SendInput on Bézier path — no Playwright/Puppeteer, "Daily Chrome is launched with no extra flags") at **Learn #14 (8.5)** — only Windows-native agent wedge in the corpus; **2215 BRep / Aetheris** (geometric CAD kernel + Firmament DSL as LLM-vibe-CAD alternative to OpenCascade, STEP AP242/AP203/AP214 import/export, C# kernel + bindings in Go/Rust/Python/TS) at **Learn #15 (8.0)**; **2201 nanoAlphaZero** (game-agnostic AlphaZero in JAX, single jitted run_fn for self-play + train, Chess / Go 3x3–9x9 / Hex / Connect Four) at **Learn #16 (8.0)** — ties 2215's ceiling; **1014 ARKM Kernel** (custom 12-core 64-bit microkernel, AMP + ACPI tables (RSDP/MADT) parsed to locate Local APIC and enumerate CPU cores, dedicated cores for BSP / diagnostics / GPU compositor / Ring 3 apps) at **Learn #17 (7.5)** — clears the 7.0 ceiling by 0.5. **2288 SaaSRocket** (paste product URL → logo on paper-cutout rocket hull, launch cinematic, permanent star on galaxy map) at **Fun #21 (7.5)** — ties 240's ceiling; **2467 Fake Zoom** (AI coworkers generated locally with MiniMax H3 on a 5070 Ti, click-to-hear or say-the-name standup trigger) at **Fun #22 (7.5)** — ties the ceiling; **2647 Odyssey Map** (SvelteKit + MapLibre, every Greek word tappable for translation, "N" toggles ancient↔satellite, all public-domain texts/art, no backend) at **Fun #23 (7.0)**; **2283 Vocalify** (live cents-accurate pitch feedback in browser, per-note scoring + progress tracking + recognition + sing-back ear training) at **Fun #24 (7.0)**; **1564 HashNotch** (Mac Dynamic Island with local AI, "see the unseen" — playing / internet / battery / thermals, no account / no telemetry / nothing leaves the Mac) at **Fun #25 (7.0)**; **1274 3D Globe** (fully browsable 3D globe promoting startups based on MRR, startup tower grows with revenue, "orbit" upgrade for visibility) at **Fun #26 (7.0)**; **2572 ClearVoice TTS** (first iOS app to run a voice-cloning model of that quality, 6GB RAM peak, offline, "only existing implementation on iOS") at **Fun #27 (7.0)** — the last five tie 1284's 7.0 ceiling without displacing. **Net ranking deltas:** Learn ceiling 7.0 → 9.5 (Kandelo). Fun ceiling unchanged at 7.5 (240 still #1). Money ceiling 8.4 → 8.5 (TaqFlow). Replaces the 2026-08-19 cron-run #11 ranking.
+
+- **2026-08-19 (cron run #11)** — re-ranked 919 projects after a fresh scrape added 404 new Hacker News + Reddit r/SaaS captures (1100–1650 range). The new batch skews heavily to Hacker News "Show HN" launches with live products — most have specific stack and pricing evidence in the post itself, which makes them more scoreable than the discussion-heavy Reddit batches. Five strong Money entrants, five strong Learn entrants, and seven strong Fun entrants land on the rankings. **1556 Maritime** (per-agent-per-month infra for isolated AI-agent fleets, $1/agent/month, MIT co-founders, OpenClaw/Hermes/DeepSeek templates live) lands at **Money #8 (7.5)** — ties 564's 7.5 ceiling without displacing 207/010/564/001/573; **1320 AI Reputation Manager** (MCP-based reputation/review management, founder bootstrapped "More Good Reviews" to $170K prior revenue, Claude connector-directory distribution, agency white-label tier) at **Money #9 (7.5)** — strongest revenue proof in the batch; **1242 Roadmark** (roadmap tool that branches instead of overwriting, $15/$49/mo plans, 15 paying Pro Trial users already, Jira/GitHub/Linear/Notion daily sync, forced "why this pivot happened" mechanic) at **Money #10 (7.0)** — ties 701/573's 7.0 ceiling; **1537 Kawze** (website monitoring with no per-seat or feature paywalls, B2B SMB wedge against UptimeRobot/Pingdom) at **Money #11 (6.5)** — ties 677's 6.5 ceiling. **1319 Agent Mesh** (Human + multi-agent shared memory with formal decision log, SQLite-indexed "agent mail" pattern, Claude+CODEX orchestration via `codex exec`, Workbench web dashboard) at **Learn #8 (7.0)** — strongest learn-signal in the batch because the cross-agent state-machine is the engineering work; **1202 StuntAPI** (95 stateful local stand-ins for public APIs, Starlark-VM sandbox with no host I/O/network, synthetic provider signature schemes, CI that drives real provider SDKs against local stand-ins) at **Learn #9 (6.5)**; **1191 Context Engine** (headless IDE for agents with real codebase context) at **Learn #10 (6.0)**; **1140 PantheonGPU** (active GPU testing vs telemetry-only monitoring, ML-engineering audience) at **Learn #11 (6.0)**; **1270 Forklane** (multiplayer coding for human teams + agents, agent-context preservation) at **Learn #12 (6.0)**. **1284 Gene Inspector Pro** (personal-genome explorer built over a 7-year self-taught genetics journey after the founder's son's diagnosis, 14 family members sequenced across three generations) at **Fun #14 (7.0)** — clears the 6.5 Fun ceiling on personal-origin narrative weight; **1238 AnyCreature** (mesh-based generative harness for 3D creature pipelines, technical-artist open-source, agent enforces aesthetic QC) at **Fun #15 (6.5)**; **1189 Codewindow** (PiP overlay for terminal agents across desktops/workspaces) at **Fun #16 (6.5)**; **1327 Saggar** (Mac terminal organized by attention/sessions) at **Fun #17 (6.5)**; **1217 marble.md** (collaborative markdown editor with link-sharing, "loading and editing feel great") at **Fun #18 (6.0)**; **1214 CoFoundMe** (gamified co-founder matching, 1083 user interviews, 1027 users on prototype, 394 collaborations already formed) at **Fun #19 (5.5)**; **1137 Faro** (SMS-based accountability companion, friction-removal demo) at **Fun #20 (5.0)**. None displace the Money Top-7 ceiling (8.4 of 207-payment-routing still holds). Displaced: 252 (Learn #1 → #2, 1319 ties its 7.0 ceiling without overtaking). New-batch score ceiling: money 7.5 (1556/1320), learn 7.0 (1319), fun 7.0 (1284). Replaces the 2026-08-16 cron-run #10 ranking.
 
 - **2026-08-16 (cron run #10)** — re-ranked 514 projects after a fresh scrape added 36 new Reddit r/SaaS/r/startups captures (695–730). 30 of the 36 are meta-discussion posts (SaaS-validation advice questions, "I can't imagine succeeding" mindset post, AI-restaurant-menu hype double-post 698/699, shiny-object-syndrome awareness post, Reddit-ads efficacy question, vibecoding-tools thread, "friend stole my startup idea" story, first-time-founder methodology essay, "preparing to inform main job of my startup" advice request, full-time jump advice, cold-feedback first-message wording question, "I want to do business where do I start" thread, "I built a free Mac app" advice-please post 702 with weak WTP, empty submission 704, English-essay-thanks follow-up 710 same-founder-as-682 duplicate, $850k-ARR French founder offering feedback 715 — strong revenue signal but no buildable product, combat-sports S&C app 717 first-time founder, 14-yrs-data-engineering GTM question 721, etc.) — none crack the Money Top-7 ceiling. Six real products land on the rankings: **701 coolbeans** (Stripe/PayPal webhook → licence key → offline-verifiable Swift + TypeScript SDKs sharing one fixture, $99/yr flat after a free 1-product / 500-active-licence tier, MIT, replacing Keygen/Cryptlex/LicenseSpring per-active-user pricing) lands at **Money #7 (7.0)** — strongest pricing signal in the batch and ties the existing 7.0 ceiling (573 SOC-2) without displacing it; same project lands at **Learn #7 (5.5)** — narrower stack than 583 (single use case: downloadable-software auth) but exercises payment-webhook ingestion + cross-SDK cryptographic-state-fixture sync that most engineers never touch; **707 neuropdftranslate** (Next.js + PostgreSQL + Railway, layout-preserving PDF translation, live product at neuropdftranslate.com) at **Fun #11 (6.0)** — original-vs-translated PDF is the demo, founder explicitly cites the long-running AI-job vs API-timeout problem as the satisfying engineering payoff; **702 Screenshoss** (Mac-notch screenshot catcher, FOSS, landing at screenshoss.app) at **Fun #12 (5.5)** — notch affordance is the demo, ties the 5.5 ceiling (206/239) without displacing; **713 smbl-journal** (SvelteKit + Rust + SQLite, E2E encrypted journal, client-side encryption before storage, GitHub: MrSheerluck/smbl-journal) at **Fun #13 (5.0)** — trust-boundary demo is showing the network panel reveal zero readable content, the engineer's first time shipping a security-shaped product. **710 Receipts** (same 14yo Acrobatic-Owl5700 founder as the already-ranked **682**) is a follow-up post — counted but not re-ranked to avoid double-counting the same product. Displaced: none. The Money #7 / Learn #7 / Fun #13 slots are append-only, no existing entry moves. New-batch score ceiling: money 7.0 (701), learn 5.5 (701), fun 6.0 (707). Replaces the 2026-08-16 cron-run #9 ranking.
 

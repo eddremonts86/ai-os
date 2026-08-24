@@ -2,7 +2,7 @@
 id: "665"
 slug: how-do-you-stop-customer-churn
 title: How do you stop customer churn?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpvohc/how_do_you_stop_customer_churn/"
@@ -18,20 +18,28 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The author is a curious newcomer asking r/SaaS a beginner-level question: how do SaaS products think about customer churn, and what kind of win-back mechanisms do they use? The post opens by asking if churn is a big deal in SaaS. It is not a product pitch and contains no specific SaaS the author is building.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the author themselves, who is "really curious" about churn and is at the start of learning about it.
+- Secondary: r/SaaS readers who can answer from experience, especially operators of SaaS products that have had to deal with churn.
+- Tertiary: other newcomers to SaaS who share the same gap in understanding.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No product. The post is a one-paragraph question. The only "scope" of the source is two sub-questions:
+
+1. How do SaaS products think about customer churn?
+2. What kind of win-back mechanisms do they use?
+
+…and a framing question: is churn a big deal in SaaS businesses?
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens (Vercel-inspired: minimal, Inter / Geist Mono, black/white with a single accent).
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The source is extremely short (two sentences plus a question). It does not identify a specific SaaS, a specific product, a specific market, or a specific customer cohort. Anything beyond the three sub-questions is invented.
+- The author signals they are early in their SaaS learning journey; the post should not assume they have a real product with real churn data.

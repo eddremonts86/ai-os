@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit buyer-question post asking what features actually mattered after six months of using live demo software, and what sales-call features turned out to be useless. The post is a buyer's honest question, not a buildable product brief. The plan documents the gap (sales-call features versus long-term value) and the implied audience (people evaluating live demo software now) without inventing a product.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, who is shopping for a live demo platform and is tired of feature-dump sales calls.
+- Secondary: anyone evaluating live demo software who wants long-term signal rather than launch-time features.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source is a buyer question, not a product brief. No MVP is proposed. What is captured here is the buyer's actual evaluation criteria (six-month signal over launch-time features).
 
 ## Design Direction
 
@@ -34,4 +35,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No product is on offer.
+- No willingness-to-pay is stated.
+- No vendor names or specific feature lists are in the source beyond the generic 'AI, analytics, personalization, templates'.
