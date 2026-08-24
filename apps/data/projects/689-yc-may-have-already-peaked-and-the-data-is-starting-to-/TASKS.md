@@ -23,7 +23,10 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is an analysis/opinion, not a product brief
+- [ ] Record the paper citation (~750,000 startups across 329 accelerators; 60–80% appear worse than no accelerator) as the source's claim only
+- [ ] Capture the three-cause hypothesis and network-moat warning as thesis content
+- [ ] If a future plan proposes a tool, gate it on the paper being linked and the underlying claim being independently verified
 
 ## Phase 2: Deploy
 

@@ -2,7 +2,7 @@
 id: "663"
 slug: i-will-not-promote-i-want-to-do-business-where-should-i
 title: "I will not promote: I want to do business. Where should I start?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vp3cx3/i_will_not_promote_i_want_to_do_business_where/"
@@ -15,35 +15,38 @@ date: "2026-08-15"
 
 ## Value Proposition
 
-_Based on source brief:_ Hi everyone, I want to do business. Although I have a business background, I still don’t feel confident enough, and I feel like I don’t have much practical knowledge about actually starting and running a business. I’m genuinely at the very beginning and haven’t started anything yet. Before I begin this journey, I want to learn from people who have actually started businesses and understand how experienced founders think about starting one. Some questions I have: • How do I know whether a business idea is actually worth pursuing? How do I research and validate an idea before putting significant time or money into it? • How important is the idea itself? Is the idea the most important part, or are the customer, the problem being solved, product or service, execution, sales, distribution, or something else more important? • As someone with a business background, can I start a business in a completely different field where I don’t have an academic or professional background? If so, how should I approach learning that industry? • When starting your first business, is it better to take an existing business idea or model that already works and create your own version, or should you try to come up with something genuinely unique? I have both kinds of ideas in mind, so I’m curious which approach makes more sense for a first time founder. • If you are building something that already exists, how different does it actually need to be? How can you take an existing idea and improve or differentiate it rather than simply copying it? • What are the biggest mistakes new founders commonly make, and what do you wish you had known before starting your first business? • What books, courses, resources, or other things would you recommend learning before starting? I know its too many points but im just putting my thoughts into a post I’m genuinely at the very beginning and haven’t started anything yet. I want to understand how experienced founders think about starting a business and what they prioritize before taking that first step. submitted by /u/Maximum-Page3433 [link] [comments]
+None. The post is a question, not a product. Its value to the r/startups community is a beginner's well-structured set of starter questions that experienced founders can answer from their own journey.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A pre-founder's starter list of seven questions about how to start a business.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| The author (a pre-founder) | Wants to learn from experienced founders before committing time or money. |
+| Experienced r/startups reader | Has direct answers to give. |
+| Other pre-founders | May use the question list as a self-onboarding checklist. |
+| Educator / advisor | Implicit audience: the question list is roughly a syllabus. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Get answers from people who have done it** — The author wants experiential answers, not theory.
+2. **Build a personal starting checklist** — The question list, once answered, is a personal pre-flight before the author begins.
+3. **Find recommended resources** — Question 7 explicitly asks for books / courses / resources.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post does not state a metric. The implicit success criteria are (a) detailed replies from experienced founders, (b) book / course recommendations the author can actually read, and (c) enough signal for the author to pick a first step.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Risks & Open Questions
-
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- **Books / courses on starting a business** — the source asks for recommendations; this is the only "competition" implicitly named.
+- **r/startups threads on "where do I start"** — many prior threads exist; the post is one of that genre, not a unique entry.
+- No named products, services, or tools.
 
 ---
 

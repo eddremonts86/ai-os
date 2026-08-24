@@ -2,7 +2,7 @@
 id: "664"
 slug: for-how-long-is-vibe-coding-viable
 title: For how long is vibe coding viable?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpvr2y/for_how_long_is_vibe_coding_viable/"
@@ -15,35 +15,39 @@ date: "2026-08-16"
 
 ## Value Proposition
 
-_Based on source brief:_ AI has enabled creation of many vibe coded software. But while it may be easy to release a simple app, a vibe-coder, especially someone with no software dev experience will struggle with a full fledged app. Now that AI coding has been around for some time, is the impact to SaaS really overstated? Given the rising costs of AI, how long can a vibe-coder be able to develop and release software? Also when he finds that the app that he releases does not have traction, won't he just give up, stop vibe coding and exit the SaaS scene? How much money can a vibe-coder burn anyway, before he realizes that it is not possible to make money? So I feel that given a bit more time, things will stabilize, in terms of the SaaS market. And the ones left in the scene, will be the real software developers, with the needed experience to release proper software. What are your thoughts? submitted by /u/gittrics [link] [comments]
+None. The post is a market-thesis opinion. Its value to r/SaaS is a contrarian-leaning prediction to react to: AI coding lowers the cost of building, but raises the cost of building *well*, and the SaaS market will eventually re-stabilise around developers who can ship proper software.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A founder's prediction that vibe-coded SaaS will be transient, and that experienced developers will be the survivors.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| r/SaaS reader (general) | The author is asking for their take on a stabilisation thesis. |
+| Vibe-coder | Reads this as either a warning or a challenge. |
+| Experienced SaaS developer | The "survivor" the author names; may agree or push back. |
+| AI-coding tooling vendor | Implicit stakeholder; the "rising costs of AI" argument touches their pricing. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Articulate a contrarian thesis** — Position the post against the AI-coding hype by saying it will be transient, not permanent.
+2. **Invite community reaction** — The post ends with "What are your thoughts?"; that is the design.
+3. **Imply a survival guide for experienced devs** — Implicit: if the author is right, experienced developers are about to be in higher demand once the wrapper wave washes out.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post does not state a metric. The implicit success criteria are replies from people on either side of the debate and upvotes that signal whether the thesis resonates.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Risks & Open Questions
-
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- **"Vibe coding" practitioners** — the author's implicit target group, framed as the cohort that will be transient.
+- **"Real" software developers** — the author's predicted survivors.
+- **AI-coding tooling** — the implied cost driver behind the thesis (no specific vendor named).
+- No named products, services, or companies.
 
 ---
 

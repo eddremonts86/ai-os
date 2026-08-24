@@ -2,7 +2,7 @@
 id: "632"
 slug: if-youre-using-kubernetes-to-ship-into-customer-clouds-
 title: "if you’re using kubernetes to ship into customer clouds, you’re doing it wrong"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voyt7f/if_youre_using_kubernetes_to_ship_into_customer/"
@@ -18,20 +18,30 @@ date: "2026-08-15"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The author is building "alien dev" around a thesis: when shipping a single application into a customer's cloud (BYOC), running a full Kubernetes control plane per customer is the wrong shape and explodes the ops load at scale. The post positions a build-in-public stance that explicitly contrasts with Databricks publicly walking back from GKE to VMs on GCP.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: engineering teams shipping software into customer-owned cloud accounts (BYOC / customer-hosted deployments) who are evaluating whether to put their app on a per-customer Kubernetes cluster.
+- Secondary: platform / infra leads at companies already running k8s and looking at the multi-tenant BYOC pattern.
+- Mentioned in the source: Databricks (used as a cautionary reference, not a customer — they walked GKE back to VMs on GCP).
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Per the source:
+
+- The product itself ("alien dev") is being built around NOT repeating Databricks' pattern.
+- The author is asking for feedback on the build, not pitching an existing product.
+- The implied deliverable is a single-app-per-customer deployment story that avoids N independent Kubernetes control planes.
+
+No specific feature list, pricing, or release timeline is in the source.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens (Vercel-inspired: minimal, Inter / Geist Mono, black/white with a single accent).
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The author positions their build as explicitly *not* using k8s-per-customer — that is the design constraint, not a thing to be scoped.
+- The Databricks reference is the only competitive signal in the source; no other named competitors.
+- The post ends with "feedbacks?" — engagement is the explicit ask, not a signup CTA.

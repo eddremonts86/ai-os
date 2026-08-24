@@ -2,7 +2,7 @@
 id: "631"
 slug: hot-take-pmf-can-overcompensate-for-marketing-but-onboa
 title: "Hot take: PMF can overcompensate for marketing, but onboarding journeys are pre-requisite for them"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voyunq/hot_take_pmf_can_overcompensate_for_marketing_but/"
@@ -15,35 +15,37 @@ date: "2026-08-15"
 
 ## Value Proposition
 
-_Based on source brief:_ In a lot of posts lately in this community, I've seen that almost every SaaS founder (including me) have struggled in marketing at some point or another. As a solo tech co-founder with 150k+ users in my app and 4+ years of experience in building for a very niche market of event tech, here are some of my learning that could be helpful for fellow founders: There's been a growing narrative of Marketing is more important than building product - which is true for most part. But fundamentally I argue that in SaaS, Marketing and building should be looked upon as same thing rather than different. Here's what I mean: Every Founder should ask themselves: When a user signs up on their platform, at what step should they consider the "Value" from their SaaS being delivered? How many steps does it take for the user to reach that milestone? How far are users actually able to reach in this funnel? If there's a significant drop at any particular step, that's your signal that this step needs to be easier. Once you have maximum people who are able to see the value your platform is providing, only then they are at a stage to "Decide" whether your product is worth buying or not. Otherwise, they might be losing interest before even understanding what exact value your product offers. You could get 100 sign-ups but people 90% of them might get bored or lose interest because they didn't know what next to do at any step. (Sucks to be in a short attention economy really) Therefore, your product needs to be self-guiding such that even a very distracted person can understand the Value at almost no mindful effort. This post is already too long, but in a different post I'll share some good references that I have followed for a smooth onboarding experience. Without that, the fundamental analysis of whether you have a PMF completely fails, because people aren't even realizing what value your product adds to their life/business. Hope this helps! :) submitted by /u/viditmittal99 [link] [comments]
+The post has no product. Its value proposition is a piece of advice to SaaS founders: diagnose your onboarding funnel step-by-step before concluding you have or do not have product-market fit, because a broken funnel silently invalidates the PMF read.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A founder's argument that onboarding is a prerequisite to measuring PMF at all.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| SaaS founder struggling with marketing | Tempted to conclude "no PMF" when the actual issue is that most users never reach the value moment. |
+| Solo tech co-founder in a niche market | Same diagnostic applies; the author is writing from this vantage point. |
+| Founding team about to redesign onboarding | Needs a small set of funnel questions to drive that redesign. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Diagnostic job** — Re-frame "we don't have PMF" as possibly "users never see the value because of the onboarding funnel" before changing the product.
+2. **Educational job** — Convince the reader that marketing and product are the same problem, not separate workstreams.
+3. **Promotional job (for the author)** — Position the author as a credible voice in event-tech / niche SaaS who can later share references and lessons.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post is an opinion thread, not a product. The author does not state a metric. The implicit success criteria are engagement on the post and, presumably, upvotes / follow-on replies from other SaaS founders.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable. The source contains no product or pricing.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Risks & Open Questions
-
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- **"Marketing > product" narrative** — the author is responding to this dominant framing in r/SaaS, arguing it is incomplete.
+- **"Marketing and product are separate" framing** — explicitly rejected; the author argues they are the same thing viewed from different steps of the funnel.
+- No competing products, tools, or services are named.
 
 ---
 

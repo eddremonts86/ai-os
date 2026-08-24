@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a founder-advice Reddit post arguing that most solo SaaS founders design for their own mental model, then only realise it when a stranger uses the product and gets confused. The post is opinion-driven; no product is being proposed. The plan exists to keep the discussion in the corpus as a reminder that early user feedback from someone who owes the founder nothing is worth more than months of supportive friend-testing.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: solo SaaS founders in their first 0–6 months of building, who are still the only user of their own product.
+- Secondary: indie hackers in the same window who are about to ship a v1 and have not yet seen a stranger use it.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source post is a discussion, not a product brief. There is no MVP to build. What is captured here is the underlying insight: the founder who gets honest feedback from a stranger in month one is ahead of the founder who ships comfortable feedback loops from friends for six months. If anything were to be built from this post, it would be a thin feedback-routing tool (not in scope for this plan).
 
 ## Design Direction
 
@@ -34,4 +35,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No fabrication: this source defines no product, no user pain beyond the founder's own blind spot, and no willingness-to-pay signal.
+- Plan stays in the corpus as a discussion capture, not as a buildable product brief.
+- Avoid generalising into a 'feedback tool' spec; the post is about founder behaviour, not tooling.

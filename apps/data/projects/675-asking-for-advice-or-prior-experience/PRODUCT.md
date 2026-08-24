@@ -17,27 +17,31 @@ date: "2026-08-16"
 
 _Based on source brief:_ We are thinking of buying an iso27001 toolkit for our newly founded llc ( only SaaS certification ), anyone has good experience kickstarting iso 27001 implementation? Or tried any of these toolkits (ClausePass27001, hightable, certikit…) ? submitted by /u/Sudden-Emergency1267 [link] [comments]
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Not a product pitch. The post is a tooling choice between compliance toolkits; the closest one-liner is 'we want ISO 27001 SaaS-only and we want prior experience before we buy.'
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the LLC founder who posted, who is at the start of an ISO 27001 path and wants prior experience from anyone who has used a compliance toolkit.
+- Secondary: other newly-formed SaaS LLCs in the same situation.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — pick a compliance toolkit that fits a newly-founded SaaS LLC, without wasting money on something that does not cover SaaS-only scope.
+2. Emotional — avoid the trap of starting an ISO 27001 project without any internal compliance experience.
+3. Social — learn from founders who have already walked the path.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies with concrete toolkit recommendations, including what worked and what did not.
+- Not measurable in product terms.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Three toolkits named by the source: ClausePass27001, Hightable and Certikit. The post asks which the community has tried; no further comparison is in the source.
 
 ## Risks & Open Questions
 

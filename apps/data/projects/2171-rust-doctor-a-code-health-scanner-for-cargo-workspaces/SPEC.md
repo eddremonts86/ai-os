@@ -1,0 +1,40 @@
+---
+id: "2171"
+slug: rust-doctor-a-code-health-scanner-for-cargo-workspaces
+title: "Rust Doctor, a code health scanner for Cargo workspaces"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49366807"
+category: show-hn
+date: "2026-08-19"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Rust Doctor, a code health scanner for Cargo workspaces
+
+## Problem
+
+https://github.com/arthjean/rust-doctor
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

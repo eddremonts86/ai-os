@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is a job-seek, not a product brief
+- [ ] Note that the student explicitly accepts unpaid work — do not fabricate a pricing model
+- [ ] If a future plan extracts a matching tool, gate on founder-side interviews, not on student-side supply
 
 ## Phase 2: Deploy
 

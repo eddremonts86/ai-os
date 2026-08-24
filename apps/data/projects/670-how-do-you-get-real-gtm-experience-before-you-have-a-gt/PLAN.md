@@ -13,16 +13,19 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The post is about career strategy, not technology.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a career-advice Reddit question, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Record this as a career-question capture, not a product brief.
+2. M1 — Capture the in-house-data gap so future agents do not invent a product around it.
+3. M2 — If a downstream agent converts this into a real plan, require evidence of demand from founders offering the kind of exposure the author is asking for.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Fabrication risk: career-question posts are easy to over-extract into tools (gig boards, mentor matching, course catalogs) that nobody asked for.
+- Asymmetric supply: the author is supply (willing to work); founder demand for that supply is not in the post.
