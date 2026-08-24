@@ -1,0 +1,40 @@
+---
+id: "2452"
+slug: workbase-local-first-project-manager-where-a-project-is
+title: WorkBase – local-first project manager where a project is a tree
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49425095"
+category: show-hn
+date: "2026-08-24"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# WorkBase – local-first project manager where a project is a tree
+
+## Problem
+
+https://github.com/vocso-com/WorkBase
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

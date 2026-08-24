@@ -2,7 +2,7 @@
 id: "665"
 slug: how-do-you-stop-customer-churn
 title: How do you stop customer churn?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpvohc/how_do_you_stop_customer_churn/"
@@ -15,35 +15,38 @@ date: "2026-08-16"
 
 ## Value Proposition
 
-_Based on source brief:_ Hi everyone? I’ve been really curious about how SaaS products think about customer churn and what kind of win back mechanisms they use. Is churn a big deal in SaaS businesses? submitted by /u/vanillaunicorn3 [link] [comments]
+None. The post is a beginner question about a topic (SaaS churn and win-back) rather than a product. Its value to r/SaaS is opening a thread where experienced operators can share what has worked for them.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A newcomer's question: how do SaaS products deal with churn and win-back?
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| The author (a newcomer to SaaS) | Wants to learn the vocabulary and the practice. |
+| r/SaaS operator with churn experience | Has practical mechanisms to share (email, dunning, save flows, win-back campaigns). |
+| Other newcomers | The thread can be a primer. |
+| Customer-success / lifecycle-marketing tooling vendor | Implicit stakeholder; their products are typically what the answers will name. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Get a primer on churn** — The author wants to know whether churn is "a big deal" in SaaS, which is itself a sign they have not seen the standard framing.
+2. **Learn about win-back mechanisms** — The second sub-question is a request for specific tactics, not theory.
+3. **Build a starter mental model** — The combined answer to the three sub-questions is meant to give the author a working mental model of churn.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The post does not state a metric. The implicit success criteria are replies that actually answer the three sub-questions, not generic "churn is bad, retain users" platitudes.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Risks & Open Questions
-
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- **Customer-success platforms** (Gainsight, Totango, Vitally, etc.) — implicit; the win-back mechanisms the answers will likely name are products in this category.
+- **Lifecycle / win-back email tools** (Customer.io, Iterable, etc.) — implicit; another category the answers will likely touch.
+- **No specific product, vendor, or company is named in the source.**
 
 ---
 

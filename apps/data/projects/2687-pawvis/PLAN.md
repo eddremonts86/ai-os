@@ -1,0 +1,30 @@
+---
+id: "2687"
+slug: pawvis
+title: Pawvis
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/pawvis"
+category: product-launch
+date: "2026-08-09"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Pawvis
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._

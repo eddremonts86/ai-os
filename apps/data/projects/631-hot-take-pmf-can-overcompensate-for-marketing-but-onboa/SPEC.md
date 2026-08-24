@@ -2,7 +2,7 @@
 id: "631"
 slug: hot-take-pmf-can-overcompensate-for-marketing-but-onboa
 title: "Hot take: PMF can overcompensate for marketing, but onboarding journeys are pre-requisite for them"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1voyunq/hot_take_pmf_can_overcompensate_for_marketing_but/"
@@ -18,20 +18,31 @@ date: "2026-08-15"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The author is a solo tech co-founder in a niche event-tech market (150k+ users, 4+ years) arguing a thesis: PMF analysis fails if the onboarding funnel is broken, because users never reach the step where they can decide if the product is worth buying. The post is framed as advice to other SaaS founders, not as a product pitch — there is no software proposal in the source.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: SaaS founders (including the author themselves) who are struggling with marketing and trying to interpret whether they have PMF.
+- Secondary: solo technical co-founders in small or niche SaaS markets; the author positions the post from that vantage point.
+- Implicit audience: people who can ask "at what step does the user see the value, and how many drop off there?".
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No product is described in the source. The post is a written argument. The closest thing to a deliverable is the four diagnostic questions the author says every founder should ask themselves:
+
+1. At what step is the value delivered?
+2. How many steps does it take to reach it?
+3. How far do users actually get?
+4. If a particular step has a significant drop, that step is the one to make easier.
+
+The author explicitly says they will share references in a separate post, so even the supporting material is not in this thread.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+See `DESIGN.md` for this project's design tokens (Vercel-inspired: minimal, Inter / Geist Mono, black/white with a single accent).
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The source is an opinion post, not a product spec. Any plan derived from it must not invent a software product that is not in the post.
+- The author explicitly defers the supporting references ("good references that I have followed for a smooth onboarding experience") to a different post.
+- No benchmarks, no conversion numbers, no industry data are cited; the framing is qualitative.

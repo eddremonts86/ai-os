@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is a learning-path question
+- [ ] Note that the poster already has IT-diploma basics (HTML, CSS, JS, databases, rough backend)
+- [ ] If a future plan proposes a tool, gate it on minimum-stack evidence from shipped beginners
 
 ## Phase 2: Deploy
 

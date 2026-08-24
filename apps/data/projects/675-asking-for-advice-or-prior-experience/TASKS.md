@@ -23,7 +23,9 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the source and confirm the post is a tooling-shopping question
+- [ ] Record the three named toolkits (ClausePass27001, Hightable, Certikit) as the only concrete product surface in the source
+- [ ] If a future plan extracts a new product, gate it on founder-side demand and explicit ISO 27001 SaaS-only scope
 
 ## Phase 2: Deploy
 

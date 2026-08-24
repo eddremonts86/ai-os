@@ -17,27 +17,31 @@ date: "2026-08-16"
 
 _Based on source brief:_ Tbh I was not the most studious person but I do understand the basics of html css js, databases and very rough backend. So I tried multiple times to build my own web app from scratch without following some kinda tutorial but I always get stuck at some portion of it and get confused. I'd like to relearn everything so I have a stronger fundamental so I went to YouTube and searched full stack and web app roadmaps and whatnot. But it's so overwhelming, can someone simplify the minimum tech stack to build a working Saas with actual users? And any resources would be much appreciated, sorry if this is considered a newbie post submitted by /u/Historical_Song7703 [link] [comments]
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Not a product pitch. The closest one-liner: 'give me the minimum stack to ship a working SaaS with real users, not another roadmap.'
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, who has an IT diploma, knows the basics, and is overwhelmed by full-stack roadmaps.
+- Secondary: other IT-diploma graduates or self-taught beginners who have tried to build a SaaS from scratch and got stuck.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — find a realistic minimum stack to build a working SaaS with real users.
+2. Emotional — escape the overwhelm of competing roadmaps.
+3. Social — get pointed at resources by people who have actually shipped.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that name a concrete minimum stack and resource path the poster can act on.
+- Not measurable in product terms.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster references YouTube roadmaps and tutorials but names no specific stack, course, or platform.
 
 ## Risks & Open Questions
 

@@ -2,7 +2,7 @@
 id: "626"
 slug: every-dashboard-i-use-added-the-same-quotask-aiquot-but
 title: "Every dashboard I use added the same \"Ask AI\" button this year"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vozdqc/every_dashboard_i_use_added_the_same_ask_ai/"
@@ -15,35 +15,37 @@ date: "2026-08-15"
 
 ## Value Proposition
 
-_Based on source brief:_ I've spent the last year or so building a trading tool. Somewhere in the middle of that I started noticing the same thing everywhere. AWS has it. GCP has it. Firebase, Supabase, Hostinger, Cloudflare. They've all quietly put an "Ask AI" button in their dashboard. And it isn't a chatbot that links you to docs. You ask for something and it does it. "Give Priya the same access as Jamie but read only on production." "Add a redirect from /pricing to /plans." It goes and does that, shows you what it's about to change, and you say yes. Makes sense for them. They've got the engineers. What I keep thinking about is everyone else. If you run a five person SaaS, your users have already been trained by Supabase and Vercel to expect that button. They're going to go looking for it in your product. And you are not spending two quarters and three engineers building one. So that's what I've been building. The same thing, for products that can't afford to build it themselves. I'm not going to pitch it here. Honestly I don't know yet whether it's useful to anyone other than me, which is most of why I'm posting. I'm looking for 15 to 20 founders with a real SaaS and real users who want to be first. If that's you, DM me and I'll send you the link. Happy to answer anything below. submitted by /u/Southern_Kitchen3426 [link] [comments]
+Bring the "Ask AI" action button that AWS, Supabase, Vercel and Cloudflare now ship inside their own dashboards to the long tail of small SaaS products that cannot spend two quarters and three engineers building one of their own.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** The "Ask AI" action button that big SaaS ships, drop-in for every other SaaS.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Founder of a ~5-person SaaS | Their users already expect an "Ask AI" button (trained by Supabase / Vercel), but they have no engineering runway to build one. |
+| Solo / two-person SaaS team | Same UX gap, even less engineering capacity. |
+| Power user / admin in the customer's product | Wants to type "give Priya the same access as Jamie but read-only on production" and have it actually happen, with a confirmation step. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. **Functional job** — Execute a common admin action in the dashboard by typing a sentence, instead of clicking through nested forms.
+2. **Emotional job** — Feel that the product is keeping up with the AI-native UX that bigger competitors are already shipping.
+3. **Social job** — Match the "modern dashboard" appearance that users have come to expect from Supabase / Vercel / Cloudflare.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Pricing & Monetization
-
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+- The author does not state explicit metrics. The single success criterion in the source is qualitative: 15–20 design-partner founders with a real SaaS and real users agree to try it.
+- Implicit proxy: enough of those 15–20 stay engaged after the first build to validate that the use case generalises beyond the author's own trading tool.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- **In-house "Ask AI"** in AWS, GCP, Firebase, Supabase, Hostinger and Cloudflare dashboards — the author explicitly notes these exist and are the UX bar; the product is "the same thing, for products that can't afford to build it themselves".
+- **Doc-linking chatbots** — explicitly called out as not the goal: the author is building an action button, not a chatbot that links to docs.
 
-## Risks & Open Questions
+## Pricing & Monetization
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+Source does not mention pricing or a model. The author is recruiting design partners via DM, not selling.
 
 ---
 

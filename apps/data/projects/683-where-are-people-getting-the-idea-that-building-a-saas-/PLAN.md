@@ -13,16 +13,19 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source beyond the line-item cost categories the poster named: website hosting, server hosting, database, APIs, mailing list, business email, LLC/admin/compliance. Specific vendors are not named.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a cost-of-doing-business reality-check, not a product spec. Any architecture described here would be invented.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Record this as a burn-reality-check capture, not a buildable plan.
+2. M1 — Capture the line-item breakdown as the only concrete signal in the source.
+3. M2 — If a downstream plan converts this into a real product, require evidence from other founders that the $200/month baseline is real or wrong.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Fabrication risk: cost-pushback posts are easy to over-extract into 'cheap stack recommendations' or 'burn dashboards' the poster did not ask for.
+- Number provenance: figures are rough ('~$X/month') and the poster is asking whether they are right — do not lock them in as authoritative.

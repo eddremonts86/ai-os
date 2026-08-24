@@ -18,15 +18,16 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture a Reddit advice request from a founder of a newly-formed LLC that wants to pursue ISO 27001 (SaaS certification only) and is shopping between toolkits — ClausePass27001, Hightable, Certikit and similar. The post is a comparison-shopping question, not a buildable product brief. The plan documents the gap (new LLC, no internal compliance expertise, only SaaS scope) and the named toolkit alternatives without inventing features, pricing or scope.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the LLC founder who posted, who is at the start of an ISO 27001 path and wants prior experience from anyone who has used a compliance toolkit.
+- Secondary: other newly-formed SaaS LLCs in the same situation.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The source names three toolkits (ClausePass27001, Hightable, Certikit) and a scope (SaaS certification only). It defines no product to build. Scope here is the purchase decision the founder is trying to make.
 
 ## Design Direction
 
@@ -34,4 +35,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- No willingness-to-pay stated. The author is the buyer, not the seller.
+- No compliance gap beyond 'newly founded LLC, only SaaS certification'.
+- No product to build is mentioned; plan stays as an advice-capture entry.
