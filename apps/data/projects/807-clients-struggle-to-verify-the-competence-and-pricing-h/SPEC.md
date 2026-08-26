@@ -1,7 +1,7 @@
 ---
 id: "807"
 slug: clients-struggle-to-verify-the-competence-and-pricing-h
-title: "Clients struggle to verify the competence and pricing honesty of freelancers when creating websites — there is no AI tool for real-time proposal analysis."
+title: Clients struggle to verify the competence and pricing honesty of freelancers when creating websites — there is no AI tool for real-time proposal analysis.
 status: enriched
 source:
   name: ProblemHunt
