@@ -2,7 +2,7 @@
 id: "3094"
 slug: oneenv-govern-shared-config-with-pr-style-reviews-and-p
 title: OneEnv – Govern shared config with PR-style reviews and per-service approval
-status: draft
+status: enriched
 source:
   name: BetaList
   url: "https://betalist.com/startups/oneenv?utm_campaign=startup-184259&utm_medium=atom&utm_source=newsfeed"
