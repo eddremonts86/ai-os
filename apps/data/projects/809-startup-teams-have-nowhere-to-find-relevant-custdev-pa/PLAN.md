@@ -1,7 +1,7 @@
 ---
 id: "809"
 slug: startup-teams-have-nowhere-to-find-relevant-custdev-pa
-title: "Startup teams have nowhere to find relevant custdev participants (people for interviews) to test early ideas and prototypes without overpaying for biased feedback"
+title: Startup teams have nowhere to find relevant custdev participants (people for interviews) to test early ideas and prototypes without overpaying for biased feedback
 status: enriched
 source:
   name: ProblemHunt

@@ -1,7 +1,7 @@
 {
   "lastSeenId": "730",
-  "lastRun": "2026-08-26T05:00:39.012Z",
-  "topProjectsEvaluatedAt": "2026-08-26T05:03:13.000Z",
+  "lastRun": "2026-08-26T09:13:06.591Z",
+  "topProjectsEvaluatedAt": "2026-08-26T09:16:44.803Z",
   "analyzed": {
     "731-a-psychologist-needs-an-advertising-bot-that-analyzes-h": {
       "url": "https://problemhunt.pro/en/marketing/f9domkol61-a-psychologist-needs-an-advertising-bot",
@@ -17561,7 +17561,511 @@
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
       "analyzedAt": "2026-08-26T05:00:39.012Z"
+    },
+    "3041-open-source-in-browser-log-sanitizer-feedback-required": {
+      "url": "https://news.ycombinator.com/item?id=49445741",
+      "uid": "49445741",
+      "title": "Open source in-browser log sanitizer, feedback required",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.439Z"
+    },
+    "3042-is-what-open-commonplace-legal": {
+      "url": "https://news.ycombinator.com/item?id=49445695",
+      "uid": "49445695",
+      "title": "Is what Open Commonplace legal?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.442Z"
+    },
+    "3043-why-do-you-use-ubuntu": {
+      "url": "https://news.ycombinator.com/item?id=49445382",
+      "uid": "49445382",
+      "title": "Why do you use Ubuntu?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.445Z"
+    },
+    "3044-what-are-you-using-to-access-xcom-at-the-moment": {
+      "url": "https://news.ycombinator.com/item?id=49445356",
+      "uid": "49445356",
+      "title": "What are you using to access x.com at the moment?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.448Z"
+    },
+    "3045-global-all-purpose-script": {
+      "url": "https://news.ycombinator.com/item?id=49445217",
+      "uid": "49445217",
+      "title": "Global All Purpose Script",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.451Z"
+    },
+    "3046-how-do-you-code-review": {
+      "url": "https://news.ycombinator.com/item?id=49444984",
+      "uid": "49444984",
+      "title": "How do you code review?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.453Z"
+    },
+    "3047-looking-for-people-to-follow-designing-systems-to-ship-": {
+      "url": "https://news.ycombinator.com/item?id=49444955",
+      "uid": "49444955",
+      "title": "Looking for people to follow designing systems to ship code with AI agents",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.456Z"
+    },
+    "3048-the-wise-do-not-hurry-the-seasons": {
+      "url": "https://news.ycombinator.com/item?id=49444839",
+      "uid": "49444839",
+      "title": "The wise do not hurry the seasons",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.459Z"
+    },
+    "3049-why-are-claude-models-so-verbose": {
+      "url": "https://news.ycombinator.com/item?id=49444272",
+      "uid": "49444272",
+      "title": "Why are Claude models so verbose?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.462Z"
+    },
+    "3050-xiaomis-xring-series-suggests-more-oems-switching-to-in": {
+      "url": "https://news.ycombinator.com/item?id=49444271",
+      "uid": "49444271",
+      "title": "Xiaomi's Xring Series suggests more OEM's switching to in-house SoCs",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.465Z"
+    },
+    "3051-tell-hn-hn-was-down": {
+      "url": "https://news.ycombinator.com/item?id=49444203",
+      "uid": "49444203",
+      "title": "Tell HN: HN Was Down",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T09:13:06.467Z"
+    },
+    "3052-wfy24-weather-widget-with-hyper-local-forecasting": {
+      "url": "https://news.ycombinator.com/item?id=49445943",
+      "uid": "49445943",
+      "title": "WFY24 weather widget with hyper-local forecasting",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.470Z"
+    },
+    "3053-banking-access-index-19-us-banking-providers-8-countrie": {
+      "url": "https://news.ycombinator.com/item?id=49445908",
+      "uid": "49445908",
+      "title": "Banking Access Index – 19 US banking providers, 8 countries, CC-BY",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.473Z"
+    },
+    "3054-the-great-mountains-and-the-weather-that-defines-them": {
+      "url": "https://news.ycombinator.com/item?id=49445889",
+      "uid": "49445889",
+      "title": "The Great Mountains and the Weather That Defines Them",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.476Z"
+    },
+    "3055-buslens-where-can-i-get-to-by-bus-uk": {
+      "url": "https://news.ycombinator.com/item?id=49445286",
+      "uid": "49445286",
+      "title": "Buslens – where can I get to by bus? (UK)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.478Z"
+    },
+    "3056-octomind-routines-scheduled-agents-on-persistent-cloud-": {
+      "url": "https://news.ycombinator.com/item?id=49445150",
+      "uid": "49445150",
+      "title": "Octomind Routines – scheduled agents on persistent cloud machines",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.481Z"
+    },
+    "3057-hostflip-a-macos-etchosts-switcher-that-detects-externa": {
+      "url": "https://news.ycombinator.com/item?id=49444897",
+      "uid": "49444897",
+      "title": "Hostflip – a macOS /etc/hosts switcher that detects external edits",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.484Z"
+    },
+    "3058-postrank-paid-leaderboard-with-comments-boosts-and-earn": {
+      "url": "https://news.ycombinator.com/item?id=49444796",
+      "uid": "49444796",
+      "title": "PostRank – Paid Leaderboard with Comments, Boosts, and Earned Credit",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.486Z"
+    },
+    "3059-spinifex-run-ec2s3iameks-on-your-own-hardware-aws-cli-u": {
+      "url": "https://news.ycombinator.com/item?id=49444782",
+      "uid": "49444782",
+      "title": "Spinifex – run EC2/S3/IAM/EKS on your own hardware, AWS CLI unchanged",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.489Z"
+    },
+    "3060-scribblewrite-on-your-desktop-with-any-phonetablet": {
+      "url": "https://news.ycombinator.com/item?id=49444779",
+      "uid": "49444779",
+      "title": "Scribble/write on your desktop, with any phone/tablet",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.492Z"
+    },
+    "3061-launched-free-browser-agent-the-catch-ads": {
+      "url": "https://news.ycombinator.com/item?id=49444628",
+      "uid": "49444628",
+      "title": "Launched free browser agent (the catch: ads)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.495Z"
+    },
+    "3062-multiplayer-laser-simulator": {
+      "url": "https://news.ycombinator.com/item?id=49444579",
+      "uid": "49444579",
+      "title": "Multiplayer Laser Simulator",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.498Z"
+    },
+    "3063-llm-powered-webapp-to-build-llm-powered-webapps": {
+      "url": "https://news.ycombinator.com/item?id=49444234",
+      "uid": "49444234",
+      "title": "LLM-powered webapp to build LLM-powered webapps",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.500Z"
+    },
+    "3064-propose-and-dual-control-for-dns-changes": {
+      "url": "https://news.ycombinator.com/item?id=49444218",
+      "uid": "49444218",
+      "title": "Propose and Dual-Control for DNS Changes",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.503Z"
+    },
+    "3065-openspender-gives-your-agents-wallets": {
+      "url": "https://news.ycombinator.com/item?id=49444196",
+      "uid": "49444196",
+      "title": "Openspender gives your agents wallets",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.506Z"
+    },
+    "3066-masker-pdf-redaction": {
+      "url": "https://news.ycombinator.com/item?id=49444084",
+      "uid": "49444084",
+      "title": "Masker – PDF Redaction",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.509Z"
+    },
+    "3067-handwrought-an-ai-editor-inside-your-document-not-a-tab": {
+      "url": "https://news.ycombinator.com/item?id=49444067",
+      "uid": "49444067",
+      "title": "HandWrought – an AI editor inside your document, not a tab away",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T09:13:06.512Z"
+    },
+    "3068-loupekit": {
+      "url": "https://www.producthunt.com/products/loupekit",
+      "uid": null,
+      "title": "LoupeKit",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.515Z"
+    },
+    "3069-opencomputer": {
+      "url": "https://www.producthunt.com/products/opencomputer",
+      "uid": null,
+      "title": "OpenComputer",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.517Z"
+    },
+    "3070-macadress": {
+      "url": "https://www.producthunt.com/products/macadress",
+      "uid": null,
+      "title": "macadress",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.520Z"
+    },
+    "3071-x1": {
+      "url": "https://www.producthunt.com/products/x1-2",
+      "uid": null,
+      "title": "x1",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.523Z"
+    },
+    "3072-warren": {
+      "url": "https://www.producthunt.com/products/warren-5",
+      "uid": null,
+      "title": "Warren",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.525Z"
+    },
+    "3073-choclift-for-ipad": {
+      "url": "https://www.producthunt.com/products/choclift-workflow-sweetener",
+      "uid": null,
+      "title": "choclift for iPad",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.528Z"
+    },
+    "3074-screenify-studio": {
+      "url": "https://www.producthunt.com/products/screenify-studio",
+      "uid": null,
+      "title": "Screenify Studio",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.531Z"
+    },
+    "3075-hevn-us": {
+      "url": "https://www.producthunt.com/products/hevn-u-s-accounts-for-non-us-companies",
+      "uid": null,
+      "title": "HEVN U.S.",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.533Z"
+    },
+    "3076-evidence-core": {
+      "url": "https://www.producthunt.com/products/evidence",
+      "uid": null,
+      "title": "Evidence Core",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.536Z"
+    },
+    "3077-lore-machine": {
+      "url": "https://www.producthunt.com/products/lore-machine",
+      "uid": null,
+      "title": "Lore Machine",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.538Z"
+    },
+    "3078-taskshell-20": {
+      "url": "https://www.producthunt.com/products/taskshell",
+      "uid": null,
+      "title": "TaskShell 2.0",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.541Z"
+    },
+    "3079-chatcut-desktop": {
+      "url": "https://www.producthunt.com/products/chatcut-ai-video-editor",
+      "uid": null,
+      "title": "ChatCut Desktop",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.544Z"
+    },
+    "3080-message-album": {
+      "url": "https://www.producthunt.com/products/message-album",
+      "uid": null,
+      "title": "Message Album",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.547Z"
+    },
+    "3081-deployhermes": {
+      "url": "https://www.producthunt.com/products/deployhermes",
+      "uid": null,
+      "title": "DeployHermes",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.549Z"
+    },
+    "3082-expertise-ai": {
+      "url": "https://www.producthunt.com/products/expertise-ai",
+      "uid": null,
+      "title": "Expertise AI",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.551Z"
+    },
+    "3083-knack-mcp-server": {
+      "url": "https://www.producthunt.com/products/knack",
+      "uid": null,
+      "title": "Knack MCP Server",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.554Z"
+    },
+    "3084-mac-mini": {
+      "url": "https://www.producthunt.com/products/apple",
+      "uid": null,
+      "title": "Mac mini",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.556Z"
+    },
+    "3085-mcp-builderai": {
+      "url": "https://www.producthunt.com/products/mcp-builder-ai",
+      "uid": null,
+      "title": "MCP-Builder.ai",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.560Z"
+    },
+    "3086-tellie-prompter-15": {
+      "url": "https://www.producthunt.com/products/tellie-2",
+      "uid": null,
+      "title": "Tellie Prompter 1.5",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.563Z"
+    },
+    "3087-posthog-desktop": {
+      "url": "https://www.producthunt.com/products/posthog",
+      "uid": null,
+      "title": "PostHog Desktop",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.566Z"
+    },
+    "3088-reweaver-ai-driftdetector": {
+      "url": "https://www.producthunt.com/products/reweaver-driftdetector",
+      "uid": null,
+      "title": "ReWeaver AI DriftDetector",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.568Z"
+    },
+    "3089-arena-ai-agent": {
+      "url": "https://www.producthunt.com/products/arena-5",
+      "uid": null,
+      "title": "Arena AI Agent",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.571Z"
+    },
+    "3090-easyswitch": {
+      "url": "https://www.producthunt.com/products/easyswitch",
+      "uid": null,
+      "title": "EasySwitch",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.574Z"
+    },
+    "3091-termy": {
+      "url": "https://www.producthunt.com/products/termy-language-learning",
+      "uid": null,
+      "title": "Termy",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.577Z"
+    },
+    "3092-baudbuddy": {
+      "url": "https://www.producthunt.com/products/baudbuddy-serial-terminal",
+      "uid": null,
+      "title": "BaudBuddy",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.580Z"
+    },
+    "3093-playcall": {
+      "url": "https://www.producthunt.com/products/playcall",
+      "uid": null,
+      "title": "Playcall",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-08-26T09:13:06.583Z"
+    },
+    "3094-oneenv-govern-shared-config-with-pr-style-reviews-and-p": {
+      "url": "https://betalist.com/startups/oneenv?utm_campaign=startup-184259&utm_medium=atom&utm_source=newsfeed",
+      "uid": "oneenv",
+      "title": "OneEnv – Govern shared config with PR-style reviews and per-service approval",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-26T09:13:06.585Z"
+    },
+    "3095-antalogy-write-markdown-with-a-word-style-editor-and-lo": {
+      "url": "https://betalist.com/startups/antalogy?utm_campaign=startup-184321&utm_medium=atom&utm_source=newsfeed",
+      "uid": "antalogy",
+      "title": "Antalogy – Write Markdown with a Word-style editor and local LLM",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-26T09:13:06.588Z"
+    },
+    "3096-drizz-automate-mobile-app-testing-with-plain-english-an": {
+      "url": "https://betalist.com/startups/drizz?utm_campaign=startup-184122&utm_medium=atom&utm_source=newsfeed",
+      "uid": "drizz",
+      "title": "Drizz – Automate mobile app testing with plain English and Vision AI",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-26T09:13:06.591Z"
     }
   },
-  "nextNumber": 3041
+  "nextNumber": 3097
 }
