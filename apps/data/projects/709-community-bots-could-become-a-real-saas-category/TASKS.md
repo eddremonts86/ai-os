@@ -23,7 +23,13 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Pick one workflow to ship first (memberships / payments / access / analytics / automations / transactions)
+- [ ] Pick the community platform to anchor on (Discord, Slack, or Circle)
+- [ ] Bot scaffold with OAuth install flow for the chosen platform
+- [ ] Subscription billing wired (Stripe or Paddle, per-community recurring)
+- [ ] Ship the one chosen workflow end-to-end inside the community
+- [ ] Minimal in-community admin surface (slash command or ephemeral modal, not a SaaS dashboard)
+- [ ] Post validation outcome (paid conversions, workflow completion rate) to the original r/SaaS thread
 
 ## Phase 2: Deploy
 

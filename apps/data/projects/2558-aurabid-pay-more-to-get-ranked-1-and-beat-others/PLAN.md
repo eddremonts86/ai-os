@@ -1,7 +1,7 @@
 ---
 id: "2558"
 slug: aurabid-pay-more-to-get-ranked-1-and-beat-others
-title: "Aurabid, pay more to get ranked #1 and beat others"
+title: "\"Aurabid, pay more to get ranked"
 status: draft
 source:
   name: HackerNews

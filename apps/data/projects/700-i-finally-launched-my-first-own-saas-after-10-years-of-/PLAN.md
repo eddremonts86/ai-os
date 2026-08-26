@@ -19,7 +19,7 @@ Not stated in the source. The author has shipped the product at sqanna.com but h
 
 High-level shape, inferred from the product's behaviour and the author's framing:
 
-1. **A redirect / resolution service.** The QR code's printed payload points to a stable Sqanna URL (e.g., `sqanna.com/r/<short-id>`). When scanned, the service looks up the current destination for that short-id, applies the schedule rule if any, and 302s the scanner to the live URL.
+1. **A redirect / resolution service.** The QR code's printed payload points to a stable Sqanna URL (e.g., `sqanna.com/r/`). When scanned, the service looks up the current destination for that short-id, applies the schedule rule if any, and 302s the scanner to the live URL.
 2. **A console for QR management.** A logged-in area where the owner lists their QR codes, edits destinations, sets schedule rules, and reads scan analytics.
 3. **A scan event collector.** Every redirect records a scan (timestamp, optional coarse geo from IP, optional user-agent). The collector writes to whatever store the analytics console reads from.
 4. **A download endpoint.** The owner downloads the QR as PNG or SVG; the QR encodes the stable Sqanna URL, not the live destination, so the art never goes stale.

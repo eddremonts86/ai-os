@@ -1,0 +1,52 @@
+---
+id: "2878"
+slug: captureagent-find-price-draft-grade-run-and-fund-federa
+title: "CaptureAgent – find, price, draft, grade, run and fund federal work"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49442327"
+category: show-hn
+date: "2026-08-25"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# CaptureAgent – find, price, draft, grade, run and fund federal work
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ I’m a 2x defense founder and aerospace engineer.I initially built CaptureAgent for my own company, but now I want to share it with other founders. While running my defense startup, I lost days deciding which federal opportunities to pursue and weeks assembling teams, researching competitors, pricing work, checking compliance, negotiating with subcontractors, and writing proposals. I see startups and the small-business industrial base as one of America’s secret weapons, but small business win rate for federal funding is between 17-22% annually and competing for funding can push founders away from the companies they set out to build. To keep my company afloat, I sometimes pursued tangential tech areas instead of staying focused on our original vision. Pursuing poor-fit opportunities, or being disqualified over technicalities, consumed runway and pulled me away from engineering.The software, consultants, and proposal shops I engaged or worked with were expensive and still left much of the work to me. Independent capture and proposal consultants can charge roughly $150–$300 an hour. SBIR advisory firms typically charge $3,000–$7,500 monthly plus 3-7% of an award ($7,500–$17,500 on a $250,000 win).CaptureAgent was conceived to help hack into this inefficient system and cut through the red tape. It streamlines and automates the federal contracting lifecycle for small government contractors. Users provide their own SAM.gov, Anthropic, and OpenAI API keys; they are envelope-encrypted per organization. Admins get to set fine-grained read/write permissions for users, and External agents can also get MCP access through the same permissions to automate up to 90% of the workflow. One company profile supports searches across several public procurement sites, fit and eligibility scoring; competitive analysis; and proposal drafting and evaluation.After an award, CaptureAgent uses the proposal info to seed a project-management workspace and create an integrated master schedule with earned-value metrics and CDRL tracking. The same profile and contract-performance data can be reused for fundraising. Users can search 1,391 U.S. investors and 30 accelerators and prepare SAFEs, pitch decks, financial models, and applications.The platform also provides AI-guided readiness tracking for compliance certifications, including DD2345, FCL, ATO, CMMC, and FedRAMP, and CMMC (with a computed SPRS score). Compliance alone costs small businesses hundreds of thousands $$$,$$$.Capture, delivery, compliance, and fundraising reuse the same company and opportunity data instead of rebuilding it across fragmented tools and teams.I’d value feedback from anyone who has managed federal bids or delivered government contracts. YC defense founders, feel free to contact me for free test access.
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49442327) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
