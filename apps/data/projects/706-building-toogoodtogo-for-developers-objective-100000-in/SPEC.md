@@ -2,7 +2,7 @@
 id: "706"
 slug: building-toogoodtogo-for-developers-objective-100000-in
 title: "Building TooGoodToGo for Developers. Objective $100,000 in 30 days. Day 1"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpzu9n/building_toogoodtogo_for_developers_objective/"
@@ -18,15 +18,19 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture the founder's proposal for a TooGoodToGo-for-developers marketplace: a platform where agencies and freelancers with unbilled hours can offer small scopes at a discount, and where buyers can book top talent at below-rate prices for short tasks. The post is itself a market-research probe ("Would you ever accept work below your rate card, even invisibly?") plus a call for applications from vetted sellers (10 projects minimum, 3 years operating, 2 clients the founder can call). The founder's revenue target is $100,000 in 30 days.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- UK-based (or remote) agency owners and senior freelancers with unbilled hours between projects.
+- Buyers (startups, agencies, indie hackers) who want short, well-scoped work from senior talent at a discount.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- A vetted-supplier intake form with the criteria the founder names: minimum 10 projects worked on, minimum 3 years operating, minimum 2 clients callable as references.
+- A buyer-side marketplace surface that lists discounted short-scope work (the founder's framing parallels TooGoodToGo's surplus-food model).
+- The seller-side "rate below card" question is open — the founder is asking the community whether sellers would ever accept invisible below-rate work, and under what conditions. The MVP scope depends on the answer.
+- Public learnings thread: the founder commits to publishing what they learn along the way.
 
 ## Design Direction
 
@@ -34,4 +38,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Sellers must be vetted; the founder's published criteria are the bar.
+- Discounted scopes must be small (the founder says "only for relatively small scopes") — long engagements stay at full rate.
+- The marketplace is for senior talent ("top devs and designers"), not for cheap generalist labour.
+- $100,000 in 30 days is the explicit target; the founder's $100k-by-day-30 framing is the constraint the design must either hit or explicitly redefine.

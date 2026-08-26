@@ -1,0 +1,52 @@
+---
+id: "2890"
+slug: ecdeos-p2p-webnative-distributed-os-on-entity-core-prot
+title: Ecdeos – P2P Web/Native Distributed OS on Entity Core Protocol
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49440805"
+category: show-hn
+date: "2026-08-25"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Ecdeos – P2P Web/Native Distributed OS on Entity Core Protocol
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Hello, I wanted to share an update of the current progress of the Entity System.https://ecdeos.org is one domain in a constellation of peers/sites that is the main project of the Entity System, a Tauri Rust/WASM browser engine and Rust backend built on the Entity Core Protocol. It's primarily a research prototype of a P2P distributed cross-platform userspace operating system. The long-term goal is functional P2P management of devices and applications, scaling from individual use (managing personal devices, apps and servers) to multi-user organizations with internal services/application stacks all the way to internet-scale public or federated P2P networks.Its closest parallels are Plan9, Erlang/BEAM, IPFS, ATProto, Nostr, as well as many other antecedent technologies including Git, HTTP, and other internet protocols. The particular combination of features and focus on "everything is an entity", content-addressed data, full decentralization, and its capability security model gives it a unique position in the landscape, most of it coming from the Entity Core Protocol itself.Each web deployment also ships with 30+ Entity-Apps including games, music (forgive me if the audio misbehaves, it's fully synthesized running on the main thread), art and basic tools. Entity-Apps have a basic contract with the host and run in isolated iframe sandboxes; they're currently written in Javascript using a custom engine. Also included are a few Entity-Native compute apps running as Rust WASM Entity Core peers in an iframe that show the transferable Entity System compute language running live on a cross platform generic system host interface the engine manages. The compute code is compiled/tested on a separate workbench Go project which operates a parallel implementation of the application conventions, generic system host interface and the Entity Core Protocol. The Tauri native backend peer includes support for SQLite storage, TCP and WebSockets, while the browser environment supports WebSockets and WebRTC P2P chat, file and entity transfer - with plans to add more storage, networking and application conventions.Sites and a registry example are hosted at https://entitychurchregistry.org. All the Ecdeos-based domains are running with peers in "coral reef" mode (no live peer required) and can pull the CDN hosted registry names and fetch the signed hosted sites from any other domain/peer in the network; they are cached locally in each peer's local storage afterwards. Peers can sign/host their data publicly on standard commodity hosting services and both the registry and sites are available to any application that understands the Entity Core Protocol and system extension standards.For the other example domains with peers hosted on static sites as well as more background information, see https://entitychurchfoundation.org, https://entitycoreprotocol.org, or https://billslab.com. Bills Lab is the research arm that is currently exploring the background technology from different perspectives. Almost all of the code and content is AI generated, but we do our best to make it some of the best slop available on the internet.The overall project is still early and needs to get stress tested but the design is holding up well so far.Let me know if you have any feedback.-Bill
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49440805) · **Category:** show-hn · **Tags:** Show HN,Product,Problem

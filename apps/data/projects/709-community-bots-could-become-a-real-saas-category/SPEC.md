@@ -2,7 +2,7 @@
 id: "709"
 slug: community-bots-could-become-a-real-saas-category
 title: Community bots could become a real SaaS category
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpyorz/community_bots_could_become_a_real_saas_category/"
@@ -18,15 +18,18 @@ date: "2026-08-16"
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture the founder's market thesis: community bots could become a real SaaS category by handling one valuable workflow really well (memberships, payments, access, analytics, automations, transactions) and charging a monthly subscription, instead of being free moderation bots. The post argues for "micro-SaaS that lives inside the community instead of sending everyone to another dashboard" and asks whether anyone has built or would pay for such a thing.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Operators of paid online communities (Discord, Slack, Circle, Mighty Networks) who currently stitch together moderation + memberships + payments + analytics across separate tools.
+- Community builders who would pay a monthly subscription for a bot that owns one workflow end-to-end rather than a dashboard they have to context-switch into.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- One community workflow owned end-to-end (the founder does not pick which; the post is the market thesis, not a single product).
+- A subscription model inside the community (not a SaaS dashboard).
+- The narrow wedge is "one workflow really well" — pick one of memberships / payments / access / analytics / automations / transactions and ship it as a micro-SaaS.
 
 ## Design Direction
 
@@ -34,4 +37,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Micro-SaaS in the community, not a separate dashboard — the post explicitly rejects the "send everyone to another dashboard" pattern.
+- Subscription priced monthly (the post's model), not usage-based.
+- One workflow owned end-to-end; do not start as a multi-workflow suite.

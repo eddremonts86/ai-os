@@ -1,7 +1,7 @@
 ---
 id: "696"
 slug: i-cant-imagine-me-succeeding
-title: I can't imagine me succeeding
+title: "I can't imagine me succeeding"
 status: enriched
 source:
   name: Reddit
