@@ -2,7 +2,7 @@
 id: "3096"
 slug: drizz-automate-mobile-app-testing-with-plain-english-an
 title: Drizz – Automate mobile app testing with plain English and Vision AI
-status: draft
+status: enriched
 source:
   name: BetaList
   url: "https://betalist.com/startups/drizz?utm_campaign=startup-184122&utm_medium=atom&utm_source=newsfeed"

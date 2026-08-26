@@ -2,7 +2,7 @@
 id: "3095"
 slug: antalogy-write-markdown-with-a-word-style-editor-and-lo
 title: Antalogy – Write Markdown with a Word-style editor and local LLM
-status: draft
+status: enriched
 source:
   name: BetaList
   url: "https://betalist.com/startups/antalogy?utm_campaign=startup-184321&utm_medium=atom&utm_source=newsfeed"
