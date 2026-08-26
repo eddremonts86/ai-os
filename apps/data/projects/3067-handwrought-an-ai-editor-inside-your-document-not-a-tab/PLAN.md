@@ -1,0 +1,30 @@
+---
+id: "3067"
+slug: handwrought-an-ai-editor-inside-your-document-not-a-tab
+title: "HandWrought – an AI editor inside your document, not a tab away"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49444067"
+category: show-hn
+date: "2026-08-26"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# HandWrought – an AI editor inside your document, not a tab away
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._
