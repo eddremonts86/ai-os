@@ -2,7 +2,7 @@
 id: "709"
 slug: community-bots-could-become-a-real-saas-category
 title: Community bots could become a real SaaS category
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpyorz/community_bots_could_become_a_real_saas_category/"
