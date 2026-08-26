@@ -1,7 +1,7 @@
 ---
 id: "2354"
 slug: meridianph-1-automatic-ai-workjournal-for-devs
-title: "Meridian(PH #1) – Automatic AI Workjournal for Devs"
+title: "\"Meridian(PH"
 status: draft
 source:
   name: HackerNews
