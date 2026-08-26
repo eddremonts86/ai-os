@@ -2,7 +2,7 @@
 id: "706"
 slug: building-toogoodtogo-for-developers-objective-100000-in
 title: "Building TooGoodToGo for Developers. Objective $100,000 in 30 days. Day 1"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpzu9n/building_toogoodtogo_for_developers_objective/"

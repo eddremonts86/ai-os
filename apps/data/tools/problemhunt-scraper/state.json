@@ -1,7 +1,7 @@
 {
   "lastSeenId": "730",
-  "lastRun": "2026-08-26T00:39:46.292Z",
-  "topProjectsEvaluatedAt": "2026-08-26T00:45:47.116Z",
+  "lastRun": "2026-08-26T05:00:39.012Z",
+  "topProjectsEvaluatedAt": "2026-08-26T05:03:13.000Z",
   "analyzed": {
     "731-a-psychologist-needs-an-advertising-bot-that-analyzes-h": {
       "url": "https://problemhunt.pro/en/marketing/f9domkol61-a-psychologist-needs-an-advertising-bot",
@@ -17399,7 +17399,169 @@
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
       "analyzedAt": "2026-08-26T00:39:46.292Z"
+    },
+    "3023-hacker-news-down": {
+      "url": "https://news.ycombinator.com/item?id=49444163",
+      "uid": "49444163",
+      "title": "Hacker News Down",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T05:00:38.969Z"
+    },
+    "3024-how-do-you-explain-system-design-to-engineers-who-weren": {
+      "url": "https://news.ycombinator.com/item?id=49444092",
+      "uid": "49444092",
+      "title": "How do you explain system design to engineers who weren't in the room?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T05:00:38.971Z"
+    },
+    "3025-what-is-one-simple-thing-llms-are-insanely-bad-at": {
+      "url": "https://news.ycombinator.com/item?id=49443820",
+      "uid": "49443820",
+      "title": "What is one simple thing LLMs are insanely bad at?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T05:00:38.974Z"
+    },
+    "3026-what-platform-has-the-best-ai-cmo": {
+      "url": "https://news.ycombinator.com/item?id=49443800",
+      "uid": "49443800",
+      "title": "What platform has the best AI CMO?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T05:00:38.976Z"
+    },
+    "3027-interesting-tech-adjacent-jobs": {
+      "url": "https://news.ycombinator.com/item?id=49443189",
+      "uid": "49443189",
+      "title": "Interesting Tech Adjacent Jobs?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-08-26T05:00:38.979Z"
+    },
+    "3028-hands-on-docker-security-labs-from-cis-checks-to-ai-con": {
+      "url": "https://news.ycombinator.com/item?id=49444057",
+      "uid": "49444057",
+      "title": "Hands-on Docker security labs, from CIS checks to AI context poisoning",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.982Z"
+    },
+    "3029-magecdn-image-cdn-with-unlimited-bandwidth": {
+      "url": "https://news.ycombinator.com/item?id=49444023",
+      "uid": "49444023",
+      "title": "MageCDN – Image CDN with unlimited bandwidth",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.984Z"
+    },
+    "3030-a-proxy-that-makes-forgejo-speak-the-github-api": {
+      "url": "https://news.ycombinator.com/item?id=49443920",
+      "uid": "49443920",
+      "title": "A proxy that makes Forgejo speak the GitHub API",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.987Z"
+    },
+    "3031-implementation-of-kimi-k3-in-pytorch": {
+      "url": "https://news.ycombinator.com/item?id=49443767",
+      "uid": "49443767",
+      "title": "Implementation of Kimi K3 in PyTorch",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.989Z"
+    },
+    "3032-browser-automation-with-no-chromedriver-and-no-node-dri": {
+      "url": "https://news.ycombinator.com/item?id=49443602",
+      "uid": "49443602",
+      "title": "Browser automation with no chromedriver and no Node driver",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.992Z"
+    },
+    "3033-weavit-ui-a-weaviate-gui-for-macos-windows-and-linux": {
+      "url": "https://news.ycombinator.com/item?id=49443380",
+      "uid": "49443380",
+      "title": "Weavit UI – A Weaviate GUI for macOS, Windows and Linux",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.994Z"
+    },
+    "3034-building-a-marketplace-where-you-post-a-need-and-pick-w": {
+      "url": "https://news.ycombinator.com/item?id=49443314",
+      "uid": "49443314",
+      "title": "Building a marketplace where you post a need and pick who helps",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.996Z"
+    },
+    "3035-declaude": {
+      "url": "https://news.ycombinator.com/item?id=49443296",
+      "uid": "49443296",
+      "title": "Declaude",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:38.999Z"
+    },
+    "3036-using-golang-to-speed-up-monte-carlo-simulations": {
+      "url": "https://news.ycombinator.com/item?id=49443279",
+      "uid": "49443279",
+      "title": "Using Golang to Speed Up Monte Carlo Simulations",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:39.002Z"
+    },
+    "3037-hacker-news-keeps-flagging-my-startup-a-multi-platform-": {
+      "url": "https://news.ycombinator.com/item?id=49442513",
+      "uid": "49442513",
+      "title": "Hacker News keeps flagging my startup – A multi-Platform search engine",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-08-26T05:00:39.004Z"
+    },
+    "3038-patanyx-browse-privately-with-a-lightweight-rust-deskto": {
+      "url": "https://betalist.com/startups/patanyx?utm_campaign=startup-183400&utm_medium=atom&utm_source=newsfeed",
+      "uid": "patanyx",
+      "title": "PATANYX – Browse privately with a lightweight Rust desktop browser",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-26T05:00:39.006Z"
+    },
+    "3039-agentbuild-build-and-manage-your-website-using-chatgpt": {
+      "url": "https://betalist.com/startups/agentbuild?utm_campaign=startup-184255&utm_medium=atom&utm_source=newsfeed",
+      "uid": "agentbuild",
+      "title": "AgentBuild – Build and manage your website using ChatGPT",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-26T05:00:39.009Z"
+    },
+    "3040-synced-see-mutual-availability-across-calendars-and-boo": {
+      "url": "https://betalist.com/startups/synced?utm_campaign=startup-184233&utm_medium=atom&utm_source=newsfeed",
+      "uid": "synced",
+      "title": "Synced – See mutual availability across calendars and book the best time fast",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-08-26T05:00:39.012Z"
     }
   },
-  "nextNumber": 3023
+  "nextNumber": 3041
 }
