@@ -23,7 +23,14 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Seller application form (10 projects, 3 yrs, 2 references)
+- [ ] Reference-calling workflow for the founder (call, log outcome, approve / reject)
+- [ ] Seller profile + portfolio surface anchored on the vetted criteria
+- [ ] Listing surface for surplus-hour scopes (scope, hours, discount vs full rate)
+- [ ] Buyer-facing search and booking
+- [ ] Stripe Connect escrow + payouts
+- [ ] Daily GMV + repeat-seller-rate reporting dashboard (for the public "share learnings" commitment)
+- [ ] Public Reddit / LinkedIn follow-up on the seller-side "would you accept below-rate work" question
 
 ## Phase 2: Deploy
 
