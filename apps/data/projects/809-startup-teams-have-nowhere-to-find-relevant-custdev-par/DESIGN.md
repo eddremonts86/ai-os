@@ -1,5 +1,5 @@
 ---
-name: "809-startup-teams-have-nowhere-to-find-relevant-custdev-par"
+name: "802-startup-founders-get-lost-in-legal-accounting-and-admin"
 description: "Landing pages, creative web, prototyping. Bold + modern."
 source: "Framer"
 

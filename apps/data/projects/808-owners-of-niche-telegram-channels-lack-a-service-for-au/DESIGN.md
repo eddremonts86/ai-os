@@ -1,5 +1,5 @@
 ---
-name: "808-owners-of-niche-telegram-channels-lack-a-service-for-au"
+name: "802-startup-founders-get-lost-in-legal-accounting-and-admin"
 description: "Landing pages, creative web, prototyping. Bold + modern."
 source: "Framer"
 
