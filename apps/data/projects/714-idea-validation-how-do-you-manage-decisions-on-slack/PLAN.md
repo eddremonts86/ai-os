@@ -2,7 +2,7 @@
 id: "714"
 slug: idea-validation-how-do-you-manage-decisions-on-slack
 title: "[Idea validation] How do you manage decisions on slack ?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpxql5/idea_validation_how_do_you_manage_decisions_on/"
