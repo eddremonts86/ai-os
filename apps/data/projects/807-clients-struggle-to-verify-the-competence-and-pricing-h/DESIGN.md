@@ -1,5 +1,5 @@
 ---
-name: "807-clients-struggle-to-verify-the-competence-and-pricing-h"
+name: "802-startup-founders-get-lost-in-legal-accounting-and-admin"
 description: "Landing pages, creative web, prototyping. Bold + modern."
 source: "Framer"
 

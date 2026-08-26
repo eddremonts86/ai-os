@@ -2,7 +2,7 @@
 id: "705"
 slug: we-pay-users-with-free-product-days-for-posting-about-u
 title: We pay users with free product days for posting about us - the experiment
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vq000g/we_pay_users_with_free_product_days_for_posting/"
