@@ -23,7 +23,14 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Slack app scaffold (Bolt or equivalent) with OAuth scopes
+- [ ] Durable decision store (Postgres or SQLite) with permalink + captured_at columns
+- [ ] Slash command `/decision-log add` for explicit capture
+- [ ] Reaction-based trigger (e.g. `:white_check_mark:`) for implicit capture
+- [ ] `/decision-log search` slash command with channel / date / keyword filters
+- [ ] Install flow + Slack App Directory listing prep
+- [ ] Pricing page (per-workspace subscription is the natural shape; TBD)
+- [ ] Post the validation outcome to the original r/SaaS thread
 
 ## Phase 2: Deploy
 
