@@ -23,7 +23,12 @@ date: "2026-08-16"
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Stand up a shared inbox for post-link submissions
+- [ ] Build a verification workflow (founder opens the link, confirms it is a real public post about the product)
+- [ ] Wire Stripe (or equivalent) to grant one paid-tier day per verified post
+- [ ] Write the personal thank-you email template (founder claims the personal touch, not the reward, drives repeat posting)
+- [ ] Track each granted day against the source post URL for later attribution
+- [ ] Add a public rules-of-engagement page in the extension's settings explaining the loop and the no-store-reviews rule
 
 ## Phase 2: Deploy
 
