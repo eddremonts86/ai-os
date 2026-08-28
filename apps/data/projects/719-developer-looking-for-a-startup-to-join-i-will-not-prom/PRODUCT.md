@@ -11,40 +11,38 @@ date: "2026-08-16"
 ---
 # Developer looking for a startup to join, I will not promote
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ I've been trying to join early-stage startups, but I've had very little luck so far. I've looked on Wellfound, LinkedIn, YC jobs, and a few other job boards. I've also tried reaching out to founders by email and Discord, but most either aren't hiring yet or never reply. I have 4+ years of experience working with React, Next.js, Node.js, and React Native. If you've successfully joined an early-stage startup, how did you find the opportunity? Are there any communities, websites, Discord servers, Slack groups, or other places where founders are more active and open to talking with developers? I'd really appreciate any suggestions. Thanks! submitted by /u/kiyotaka_007 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced map of where early-stage founders are reachable (job boards, communities, Discord/Slack groups) for a developer with React / Next.js / Node.js / React Native experience who has tried the obvious channels without traction.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a developer with React / Next.js / Node.js / React Native experience looking to join an early-stage startup.
+- Secondary: other developers trying to break into early-stage startups through non-default channels.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — find early-stage founders who are actually hiring and willing to talk.
+2. Functional — get past the "we're not hiring yet" / no-reply wall on cold outreach.
+3. Emotional — avoid the discouragement of sending DMs that never get answered.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that name a specific community, Discord, Slack, or channel where the poster can find a real founder conversation.
+- Concrete "I got hired through X" stories, if any.
+- Concrete hiring metrics are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a community-question, not a product brief.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster names Wellfound, LinkedIn, and YC jobs as already-tried channels; no other named service or community is compared.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vpxnxp/developer_looking_for_a_startup_to_join_i_will/) · **Posted:** 2026-08-16T13:54:14+00:00
+- [ ] Treat any named community / Discord / Slack with caution; do not promote one into "the channel" without a poster-confirmed signal
+- [ ] Note that "we're not hiring yet" replies are a real signal that early-stage founders are pre-hire, not anti-hire
+- [ ] The poster's stack is React / Next.js / Node.js / React Native — community recommendations should be filtered for relevance rather than pasted wholesale
+- [ ] Compensation / equity expectations are unstated; any enrichment that proposes a target salary is invented

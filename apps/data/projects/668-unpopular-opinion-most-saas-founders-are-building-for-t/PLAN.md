@@ -2,7 +2,7 @@
 id: "668"
 slug: unpopular-opinion-most-saas-founders-are-building-for-t
 title: "Unpopular opinion: most SaaS founders are building for themselves and calling it a product."
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpv7jn/unpopular_opinion_most_saas_founders_are_building/"

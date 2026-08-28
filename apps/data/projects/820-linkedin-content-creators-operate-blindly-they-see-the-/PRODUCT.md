@@ -2,7 +2,7 @@
 id: "820"
 slug: linkedin-content-creators-operate-blindly-they-see-the-
 title: "LinkedIn content creators operate blindly: they see the results but don't understand the reasons behind their posts' success or failure"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/media/ja0oyjzdd1-linkedin-content-creators-operate-blindl"
@@ -14,39 +14,35 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 ---
 # LinkedIn content creators operate blindly: they see the results but don't understand the reasons behind their posts' success or failure
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ India
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A dashboard that turns an Indian LinkedIn creator's own posts into a clear picture of which features of those posts actually moved engagement.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Solo LinkedIn creators and ghostwriters in India who publish weekly and want to learn from their own history rather than guess what works.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When I look at the last 30 posts on my profile, I want a short list of the patterns behind the ones that worked, so my next post is informed by my own data and not by generic advice.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether LinkedIn creators post better after seeing the why-not-just-what analytics; no signal in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing cannot be derived from the captured source; the title and country do not name a model.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+LinkedIn analytics dashboards (Shield, Taplio) exist, but the source does not name any direct competitor that explains why a given post outperformed another.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Source is thin: the original ProblemHunt body must be read to confirm what "the reasons behind" means to the poster.
+- Insights drawn from a small personal sample can mislead; the product must show its confidence.
+- LinkedIn ToS restrict scraping; v1 should rely on manual export and the official API.
 
 ---
 

@@ -2,7 +2,7 @@
 id: "819"
 slug: owners-of-modern-macs-cant-launch-old-games-due-to-comp
 title: "Owners of modern Macs can't launch old games due to complex instructions involving emulators and file conversion"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/other/ff5gcnrro1-owners-of-modern-macs-cant-launch-old-ga"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the launcher UI for the first supported platform (DOS)
+- [ ] Implement the per-platform emulator pack and the conversion pipeline
+- [ ] Add the second platform support (e.g. Amiga or Windows 9x)
+- [ ] Build the web catalogue of known-good games with compatibility notes
+- [ ] Write tests for the conversion pipeline end-to-end
 
 ## Phase 2: Deploy
 

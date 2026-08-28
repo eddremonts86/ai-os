@@ -12,21 +12,23 @@ date: "2026-08-15"
 # I will not promote: whats the small message thats been sitting in your drafts all afternoon?
 
 ## Problem
- not the hard conversations, im talking about the four sentence reply thats been sitting in drafts since this morning, mine is always the reply to someone who already said they were interested, investor or first customer, doesnt matter which, the fact they said yes to talking is somehow the thing that freezes me, team slack i type without thinking, replies go out in seconds, but the second its a person who can say no to me i rewrite it until the words stop meaning anything, then i read it back and it doesnt sound like me at all so i start again, english is my second language and for years i told myself thats the whole explanation, im less sure about that now, i think id do the same in my own language, so: - which message is it for u, who is it usually to? - when was the last one and how long did it sit there? - did anything actually happen because it sat, or was it fine in the end? - what do u do while its sitting, do u work on other stuff or does the whole afternoon go? and honestly if u re the opposite, if u just send it in ninety seconds and it works out fine, i want to hear that one most, tell me what u re doing differently submitted by /u/Recent-Ad7093 [link] [comments]
 
----
+A Reddit emotional-process post from someone whose drafts folder freezes up on a specific message type: the four-sentence reply to a person who already said they were interested — an investor or a first customer, "doesn't matter which". The poster notes the freeze is specific to people who can say no; team Slack replies go out in seconds. They have long attributed it to English being their second language, but they are less sure now and think they would do the same in their own language. They ask the community: which message is it for you, who is it usually to, when was the last one and how long did it sit there, did anything happen because it sat, what do you do while it sits, and what do people who just send it in ninety seconds do differently.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture the freeze-on-the-small-but-important-message experience and the community's parallel experiences — without inventing coping mechanisms, therapy claims, or productivity fixes the source does not name.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a non-native English speaker (possibly) who freezes on short, high-stakes messages to investors / first customers.
+- Secondary: other founders who recognise the same freeze pattern.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The freeze-on-the-important-message pattern (4-sentence reply, person who can say no).
+- The contrast: team Slack replies go out in seconds; high-stakes ones freeze.
+- The community's parallel experiences and any "what works differently" they name.
 
 ## Design Direction
 
@@ -34,4 +36,8 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The post is a personal / emotional-process question, not a buildable brief.
+- The poster does not name a specific investor, customer, or product.
+- The poster's "English is my second language" is their own hypothesis, not a verified cause.
+- The post is "I will not promote" — do not promote any tool, app, or advice product.
+- No mental-health or therapy advice is in the source.

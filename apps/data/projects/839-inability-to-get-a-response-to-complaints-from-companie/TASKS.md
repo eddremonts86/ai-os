@@ -2,15 +2,15 @@
 id: "839"
 slug: inability-to-get-a-response-to-complaints-from-companie
 title: Inability to get a response to complaints from companies
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/legal/7aa0fv3651-inability-to-get-a-response-to-complaint"
+  url: "https://problemhunt.pro/"
 category: legal
 date: "2025-11-14"
-tags: [Legal, AI, Other]
+tags: [Legal, Other]
 country: Argentina
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [React (Vite), TypeScript, IndexedDB via Dexie, Static hosting (Cloudflare Pages)]
 ---
 # Inability to get a response to complaints from companies
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/839-inability-to-get-a-response-to-complaints-from-companie/`
+- [ ] Copy `edd-app-template` → `apps/839-inability-to-get-a-response-to-complaints-from-companie/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Author Spanish complaint templates for 8 common industries (telco, retail, banking, etc.)
+- [ ] Build composer with date, sender, recipient, claim, requested remedy fields
+- [ ] Build proof-of-delivery capture form
+- [ ] Build PDF export of the full thread
 
 ## Phase 2: Deploy
 

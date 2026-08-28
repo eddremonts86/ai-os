@@ -2,7 +2,7 @@
 id: "832"
 slug: difficulty-of-remote-housing-rental-in-the-usa-for-fore
 title: Difficulty of remote housing rental in the USA for foreigners without credit history and American guarantors
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/ngmhk91121-difficulty-of-remote-housing-rental-in-t"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the applicant profile capturing passport, visa, employer letter and foreign bank statements.
+- [ ] Model the landlord directory with listings explicitly marked as accepting foreign applicants.
+- [ ] Pick one or two US cities from interviews, not from the source, for the first directory scope.
+- [ ] Generate the pre-application pack from the profile, addressed to the credit and guarantor question.
+- [ ] Add the trust signal per landlord (length of operation, verified listings).
+- [ ] Add the explicit fair-housing language in the UI so the directory does not steer by protected class.
 
 ## Phase 2: Deploy
 
