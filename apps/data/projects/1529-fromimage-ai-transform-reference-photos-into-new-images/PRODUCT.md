@@ -1,0 +1,52 @@
+---
+id: "1529"
+slug: fromimage-ai-transform-reference-photos-into-new-images
+title: FromImage AI – Transform reference photos into new images with controllable edits
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/fromimage-ai?utm_campaign=startup-182635&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-08-18"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# FromImage AI – Transform reference photos into new images with controllable edits
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ FromImage AI lets you upload a reference image and generate new visuals that keep key elements while applying precise changes. Choose an image-to-image model, describe what to keep and what to modify, and iterate in controlled steps to refine results. You can also switch to text-to-image to create images from scratch. Pricing uses credits with subscriptions or one-time packs, and generations are watermark-free with automatic refunds on failures. View startup
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [BetaList](https://betalist.com/startups/fromimage-ai?utm_campaign=startup-182635&utm_medium=atom&utm_source=newsfeed) · **Category:** beta · **Tags:** BetaList,Beta,Product

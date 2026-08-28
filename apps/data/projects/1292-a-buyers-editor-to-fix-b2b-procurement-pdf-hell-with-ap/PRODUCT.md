@@ -1,0 +1,52 @@
+---
+id: "1292"
+slug: a-buyers-editor-to-fix-b2b-procurement-pdf-hell-with-ap
+title: "A Buyer's Editor to Fix B2B Procurement PDF Hell with API and MCP"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49335602"
+category: show-hn
+date: "2026-08-17"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A Buyer's Editor to Fix B2B Procurement PDF Hell with API and MCP
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ 22+ years as a Software engineer/programmer.For a reason that only life can explain, in the last 8 years i went from Adobe Flash Specialist to owning a small solar installation business and a small electric and plumbing materials. o.OWe had a problem every time that we had to resupply or shop for new goods. In Brazil, things are manual in B2B and restricted to PDF Quotations/Proforma negotiations. Nobody has ecommerce, only the middlemen that resell what they buy from the factory with their margins on top.For better margins, direct from the factory is the way to go.Long story short. We wasted 2 weeks on a single supplier for just one order.On the supplier side, everything is a 100+- PDF pages catalog. One PDF page could have 100+ products that you have to manually extract into Excel with the product code (sku)(even with chatgpt and a gazillion of .final.final_right.final_corrected.xlsx(10).xlsx ), to simply ask for the price and minimum items for order >> receive another PDF >> Excel again to see prices, quantities, adjustments and even mistakes of items we didn't quote.It was purchasing hell!So I built OrbitQuote to solve this. We used and validated it in our own shop.Today, OrbitQuote extracts catalogs, quotations/budgets/proforma invoices, excel files, pdf, etc, into a live editor that you can quickly see your order changes and send back in seconds only what you want to buy. From days to minutes.We also have built OrbitQuote Compare, which lets you compare the same products across multiples suppliers and choose the bast purchasing strategy. It's seams simples. It's not. Every suppliers writes the product in a different way. OrbitQuote understand this and aggregates the same product and choose the best fit automatically.I closed the Shop and Solar installation business and i'm focused 100% on OrbitQuote.All our users need to do, it's drop their files and done, 95% of the boring work is done.No paywall to check out. Just register;
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49335602) · **Category:** show-hn · **Tags:** Show HN,Product,Problem

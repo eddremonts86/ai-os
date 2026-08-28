@@ -1,0 +1,40 @@
+---
+id: "938"
+slug: do-you-feel-comfortable-admitting-that-you-use-ai
+title: Do you feel comfortable admitting that you use AI?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49346906"
+category: ask-hn
+date: "2026-08-18"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Do you feel comfortable admitting that you use AI?
+
+## Problem
+
+AI took the industry by storm, and naturally this generates a lot of resistance. The way I see this resistance expressing itself is in the form of certain feeling of superiority by those who refuse to use it, and a feeling of shame when admitting to using AI assistance for writing code.However, I would argue (even though I have no data back this claim up) that most developers either choose to use it or are required by their employers. I can't predict the future, so I don't know if this is an ASM vs. C kind of moment, or if those giving in to the convenience will regret it years down the line when their skills atrophy.Me personally, I use it and I feel more productive than ever. That said I can't help but feeling a bit of shame when admitting that. Hearing so many people say that AI-generated code is unusable and fixing it takes longer than writing it by hand, makes me wonder if they are working on a very specific field or I just have skill issues. Or maybe both.How much AI are you using? If you do, do you feel comfortable admitting it?
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._

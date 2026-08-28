@@ -49,7 +49,7 @@ case "${1:-}" in
     ;;
   plans)
     shift
-    exec bash "$AI_OS_ROOT/tools/plan-format/ai-os-plans.sh" "$@"
+    exec bash "$AI_OS_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" "$@"
     ;;
   bootstrap)
     shift
