@@ -1,6 +1,6 @@
 ---
 name: shadcn-patterns
-description: shadcn/ui patterns — Radix + Tailwind components, cva, theming, customization. Applies to any project using shadcn/ui (including wave-template).
+description: shadcn/ui patterns — component families (Base UI / React Aria / Radix) + Tailwind, cva, theming, customization, the CLI and MCP server. Applies to any project using shadcn/ui (including wave-template).
 license: MIT
 ---
 
@@ -9,6 +9,22 @@ license: MIT
 ## When to use
 
 Any project with shadcn/ui installed — based on Radix UI primitives + Tailwind + class-variance-authority. The user copy-pastes components into `components/ui/`, not npm install.
+
+## Before you write a control
+
+Look in `components/ui/` first. If a primitive covers what you are about to
+build, compose it — a hand-rolled equivalent looks the same in a screenshot and
+behaves worse.
+
+`https://ui.shadcn.com/llms.txt` lists every component doc URL in one fetch;
+read it before concluding nothing fits. Docs, the CLI verbs beyond `add`, the
+official skill, the MCP server and the traps that only appear once you compose
+primitives are in [reference/docs-and-tooling.md](reference/docs-and-tooling.md).
+
+Note that a component page offers the same API over three primitive families —
+**Base UI** (`/docs/components/base/<name>`), **React Aria** and **Radix**.
+Which one applies is whatever was copied into `components/ui/`; read the local
+file rather than assuming Radix.
 
 ## Philosophy
 
@@ -417,6 +433,10 @@ import { ChevronRight, Mail, User } from 'lucide-react';
 8. ❌ Using `cn()` wrong (without `twMerge`) → ✅ `cn()` with `clsx + twMerge`.
 9. ❌ Missing theme provider → ✅ `<ThemeProvider>` (next-themes) at root.
 10. ❌ Not using `data-[state]` for animations → ✅ Radix states accessible for CSS.
+11. ❌ Building a field-with-a-unit out of a `div` + `input` + `span` → ✅ `InputGroup` + `InputGroupAddon` (addon inside the border, click-to-focus, one focus ring).
+12. ❌ Passing `''` as a `SelectItem` value for "any / none" → ✅ a sentinel constant mapped back to `null` at the boundary; an empty value throws at runtime.
+13. ❌ Assembling class names at runtime (`` `bg-${x}-500` ``, `s.replace('bg-','border-')`) → ✅ literal class strings; the JIT never generates what it cannot see in source.
+14. ❌ Assuming `Input`, `SelectTrigger` and an icon `Button` are the same height → ✅ set one height explicitly on all of them in a dense row.
 
 ## Customization — Strategy
 
