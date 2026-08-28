@@ -70,18 +70,18 @@ bold and the `_hook_` italics on the next line are both required.
 Finally set `topProjectsEvaluatedAt` to now, in ISO form, using python or node — never with
 shell text manipulation.
 
-If there were no new captures, skip to Phase 3 anyway: there may still be backlog to author.
+If there were no new captures, go on to Phase 4 anyway: there may still be backlog to author.
 
 ---
 
 ## Phase 4 — Author a slice
 
 ```bash
-bash apps/data/tools/plans-pipeline/daily.sh prepare --cap 25
+bash apps/data/tools/plans-pipeline/daily.sh prepare --cap 100
 ```
 
 This normalises every document to the schema and picks what to work on. **Exit code 3 means
-nothing needs authoring** — skip straight to Phase 4.
+nothing needs authoring** — skip straight to Phase 5.
 
 Otherwise read `apps/data/outputs/plans-pipeline/slice.json` and, for **every** id in `ids`, use the
 **`plan-authoring`** skill to write the plan.
@@ -94,7 +94,7 @@ Rules that matter more than finishing:
 - **Never write `status: web-ready` by hand.** Only `ai-os plans check` may certify that.
 - Check your work per plan: `ai-os plans check --id <id> --verbose`.
 - If a plan cannot be authored honestly from its source, leave it as `draft`, say which and
-  why in your report, and move on. A stuck plan must not block the other 24.
+  why in your report, and move on. A stuck plan must not block the rest of the slice.
 - That applies doubly to a submission (`source.name: web`): its source is a stranger, not a
   forum post with a URL to check, so there is nothing to verify a guess against. Leave it
   `draft` and name it, and a human can decline the issue.
@@ -108,7 +108,7 @@ bash apps/data/tools/plans-pipeline/daily.sh verify
 ```
 
 Index, gate, formatter tests, explorer build, parser invariants. **If this fails, STOP.** Do
-not run Phase 5, do not try to force it through. Report exactly which step failed and its
+not run Phase 6, do not try to force it through. Report exactly which step failed and its
 output — a red gate means something you wrote does not meet the contract, and shipping it
 would put it on the live site.
 

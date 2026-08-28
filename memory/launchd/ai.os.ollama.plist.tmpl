@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Ollama on the AI-OS port, as a real service.
+
+  On Mac the memory stack does NOT run Ollama in Docker: a container cannot reach the
+  Metal GPU, so `memory/docker-compose.yml` keeps its `ollama` service behind the opt-in
+  `ollama-docker` profile (Windows) and the Mac path is a host-side `ollama serve`.
+
+  The port is the whole point. Everything in the stack addresses Ollama at 11500 —
+  memory/graphiti/config.yaml's embedder (`host.docker.internal:11500/v1`),
+  ai-os-memory.sh's OLLAMA_URL, setup/verify.sh section 5b — and Ollama's own default is
+  11434. Homebrew's service definition sets OLLAMA_FLASH_ATTENTION and
+  OLLAMA_KV_CACHE_TYPE but NOT OLLAMA_HOST, so `brew services start ollama` binds 11434
+  and every consumer above sees nothing at all.
+
+  That is how this came to be down: `setup/install-mac.sh` started it with a detached
+  `nohup ollama serve`, which does not survive a reboot, and nothing restarted it. The
+  visible symptom was two containers instead of three.
+
+  Rendered by install-ollama.sh, which substitutes __OLLAMA_BIN__ and __HOME__.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.ollama</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__OLLAMA_BIN__</string>
+        <string>serve</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- The reason this file exists. Do not drop it. -->
+        <key>OLLAMA_HOST</key>
+        <string>127.0.0.1:11500</string>
+        <!-- Loopback only: this serves a local embedding model, not the network. -->
+        <key>OLLAMA_MODELS</key>
+        <string>__HOME__/.ollama/models</string>
+        <!-- Carried over from Homebrew's own service definition. -->
+        <key>OLLAMA_FLASH_ATTENTION</key>
+        <string>1</string>
+        <key>OLLAMA_KV_CACHE_TYPE</key>
+        <string>q8_0</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/.ollama/ai-os-ollama.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/.ollama/ai-os-ollama.log</string>
+</dict>
+</plist>

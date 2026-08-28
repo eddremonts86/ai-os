@@ -92,6 +92,22 @@ Inventory of installed tools. Update when something changes.
 - **Verify:** `bash ~/Projects/ai-os/setup/verify.sh`
 - **CI:** GitHub Actions (`.github/workflows/test-{mac,linux,windows}.yml`).
 
+## Scheduled jobs are not verified by reading their files
+
+`launchctl print "gui/$(id -u)/<label>"` is the only proof a launchd job exists — a plist
+sitting in `~/Library/LaunchAgents/` with a healthy-looking last log proves nothing. And a
+Hermes cron job keeps its **own copy** of its prompt, so editing the version-controlled file
+changes nothing until `hermes cron edit <id> --prompt "$(cat <file>)"` re-applies it.
+
+Hermes also refuses to run any **unpinned** job after the global inference config changes
+(`[drift_skip]`, "Skipped to prevent unintended spend", alert sent once). Pin with
+`hermes cron edit <id> --provider <p> --model <m>`; the pin is visible in
+`~/.hermes/cron/jobs.json` (`{"jobs": [...]}`) but not in `hermes cron list`.
+
+All three of these were live at once on 2026-08-25 and the visible symptom was only that the
+plans corpus stopped gaining published plans. See
+`apps/data/tools/plans-pipeline/README.md`.
+
 ## The preview pane reads `launch.json` from the session root, not the project
 
 `preview_start` looks for `.claude/launch.json` relative to the **session's working directory**. When
@@ -110,11 +126,16 @@ Fix: put the config at the session root and have each entry cd into its own proj
 }
 ```
 
-Two standing constraints on this machine:
+Three standing constraints on this machine:
 
 - **Port 3000 is taken** by the Hermes WhatsApp bridge (`hermes-agent/scripts/whatsapp-bridge/bridge.js`).
   Port 5173 is also usually in use. Pick 3007+ for a new dev server, and record *why* in the config's
   `//` key so nobody moves it back and kills the bridge.
+- **AI-OS pins its two front-ends:** the plans explorer is **3020**, the landing (`apps/site/`) is
+  **3021**. Both are declared in `.claude/launch.json`, and the explorer's `vite.config.ts` sets
+  `strictPort: true` so a stale server fails the boot instead of drifting onto 3021 and serving the
+  explorer where the landing should be. Ports in use when they were chosen: 3000 (bridge), 3010,
+  3011, 3013, 3015, 5173.
 - **Invoke `./node_modules/.bin/vite` directly**, not `pnpm dev`: going through pnpm makes the dev
   server depend on which pnpm is on PATH, and a pnpm of a different major refuses to run any script
   until it has purged `node_modules` — which it cannot confirm without a TTY.
