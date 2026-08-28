@@ -2,7 +2,7 @@
 id: "822"
 slug: no-access-to-mentors-from-real-experts-to-start-in-the-
 title: No access to mentors from real experts to start in the real estate field
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/education/x9ojkb1fc1-no-access-to-mentors-from-real-experts-t"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the mentor directory with manual onboarding and niche tags
+- [ ] Build the single-session booking flow with payment in INR
+- [ ] Implement the structured intake form that captures the learner's question
+- [ ] Add the learner view that records the session's takeaways
+- [ ] Write tests for the booking lifecycle and the intake-to-mentor matching
 
 ## Phase 2: Deploy
 

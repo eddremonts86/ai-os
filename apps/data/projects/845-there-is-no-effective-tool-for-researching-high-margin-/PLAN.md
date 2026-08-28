@@ -2,30 +2,35 @@
 id: "845"
 slug: there-is-no-effective-tool-for-researching-high-margin-
 title: There is no effective tool for researching high-margin and small e-commerce products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/retail/yjz80tm2z1-there-is-no-effective-tool-for-researchi"
+  url: "https://problemhunt.pro/"
 category: retail
-date: "2025-11-13"
-tags: [Retail, Business, AI, Other]
+date: "2025-11-14"
+tags: [Retail, Other]
 country: Australia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python (FastAPI), HTMX + Jinja templates, Postgres, Fly.io]
 ---
 # There is no effective tool for researching high-margin and small e-commerce products
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Python (FastAPI), HTMX + Jinja templates, Postgres, Fly.io.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+FastAPI backend orchestrates public signal sources and persists a watchlist. HTMX frontend keeps the UX simple and the deploy cheap.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: pick one public signal source (e.g. eBay sold listings) end to end
+- M2: add a second signal and a simple saturation heuristic
+- M3: watchlist with revision history
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Server-rendered dashboards over public APIs. Citations attached to every signal so the user can verify.
+
+- Public trend and review APIs change; the heuristics will rot.
+- Margin is a local calculation (wholesale price minus landed cost); do not invent it.

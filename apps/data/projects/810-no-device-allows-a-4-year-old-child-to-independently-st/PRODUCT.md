@@ -2,7 +2,7 @@
 id: "810"
 slug: no-device-allows-a-4-year-old-child-to-independently-st
 title: "No device allows a 4-year-old child to independently stream music to a speaker over Wi-Fi without using a phone, tablet, or increasing screen time"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/hardware/eopralbt51-no-device-allows-a-4-year-old-child-to-i"
@@ -10,44 +10,30 @@ category: hardware
 date: "2025-12-15"
 tags: [Hardware, Other]
 country: Norway
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [ESP32, C++, Spotify Connect SDK, AirPlay 2, "3D-printed enclosure"]
 ---
 # No device allows a 4-year-old child to independently stream music to a speaker over Wi-Fi without using a phone, tablet, or increasing screen time
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Norway
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A small Wi-Fi device with large buttons that lets a 4-year-old play music on the family speaker without touching a phone, a tablet, or a screen.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+4-year-old children (per the title), used with parental setup. Secondary user: the parent who configures the device once and then leaves it alone.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When the child wants music, they press a button on the device; the speaker plays.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Pricing & Monetization
-
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Whether the child uses it without help, and whether the parent stops having to hand over a phone for music playback.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+_Source does not name any competing product._
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/hardware/eopralbt51-no-device-allows-a-4-year-old-child-to-i) · **Category:** hardware · **Tags:** Hardware,Other
+The post gives no signal on the music source (Spotify, Apple Music, local files) or on which speaker protocol to target; both choices shape the bill of materials and the parental setup flow.

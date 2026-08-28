@@ -2,15 +2,15 @@
 id: "843"
 slug: low-trust-level-in-nigerian-e-commerce-due-to-lack-of-r
 title: Low trust level in Nigerian e-commerce due to lack of reliable logistics service
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/logistics/8msk10fu31-low-trust-level-in-nigerian-e-commerce-d"
+  url: "https://problemhunt.pro/"
 category: logistics
-date: "2025-11-13"
-tags: [Logistics, Business, Retail, Other]
+date: "2025-11-14"
+tags: [Logistics, Other]
 country: Nigeria
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Node.js API (Fastify), TypeScript, Postgres, Coolify, Docker]
 ---
 # Low trust level in Nigerian e-commerce due to lack of reliable logistics service
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/843-low-trust-level-in-nigerian-e-commerce-due-to-lack-of-r/`
+- [ ] Copy `edd-app-template` → `apps/843-low-trust-level-in-nigerian-e-commerce-due-to-lack-of-r/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Integrate one courier end to end with status polling
+- [ ] Normalize status events across two more couriers
+- [ ] Build public tracking page
+- [ ] Build seller dashboard with WhatsApp-shareable link
 
 ## Phase 2: Deploy
 

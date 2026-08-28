@@ -13,24 +13,19 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/719-developer-looking-for-a-startup-to-join-i-will-not-prom/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact situation: 4+ years React / Next.js / Node.js / React Native, tried Wellfound / LinkedIn / YC jobs / cold email / Discord without traction
+- [ ] Carry the "already tried" channel list into `PLAN.md` Tech Stack and `PRODUCT.md` Competitive Landscape so a future plan does not re-suggest the same channels
+- [ ] Add frontmatter `tags` for `developer`, `job-search`, `early-stage-startups`, `cold-outreach`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture each named community / Discord / Slack / channel
+- [ ] Filter any recommendation through the poster's stated stack (React / Next.js / Node.js / React Native) instead of pasting it wholesale
+- [ ] Reject any enrichment that invents a target salary or equity expectation — the source is silent
+- [ ] If a downstream plan builds a community-curation product, gate it on a poster-confirmed recommendation per channel
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

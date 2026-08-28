@@ -2,7 +2,7 @@
 id: "670"
 slug: how-do-you-get-real-gtm-experience-before-you-have-a-gt
 title: How do you get real GTM experience before you have a GTM job?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpusoj/how_do_you_get_real_gtm_experience_before_you/"

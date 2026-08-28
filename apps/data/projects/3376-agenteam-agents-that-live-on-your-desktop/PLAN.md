@@ -1,0 +1,30 @@
+---
+id: "3376"
+slug: agenteam-agents-that-live-on-your-desktop
+title: Agenteam – Agents that live on your desktop
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49458448"
+category: show-hn
+date: "2026-08-27"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Agenteam – Agents that live on your desktop
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._

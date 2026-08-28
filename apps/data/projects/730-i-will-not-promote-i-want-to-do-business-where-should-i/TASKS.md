@@ -13,24 +13,20 @@ date: "2026-08-15"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/730-i-will-not-promote-i-want-to-do-business-where-should-i/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact framing: business background, at the very beginning, has not started anything, seven explicit questions, "I will not promote"
+- [ ] Carry the seven questions into `SPEC.md` Objective as the corpus's anchor; do not collapse them
+- [ ] Carry "I will not promote" into `SPEC.md` Constraints and `PLAN.md` Risks
+- [ ] Add frontmatter `tags` for `first-time-founder`, `pre-idea`, `business-background`, `how-to-start`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture each reply that answers one of the seven questions
+- [ ] Reject any reply that promotes a book, course, or paid service
+- [ ] Keep the poster's business-background framing — they are at the very beginning, not "knows nothing"
+- [ ] If a downstream plan curates a reading list, gate it on community-confirmed resources
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

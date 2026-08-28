@@ -2,7 +2,7 @@
 id: "815"
 slug: indian-small-scale-waste-processors-lack-simple-b2b-too
 title: Indian small-scale waste processors lack simple B2B tools for finding suppliers and controlling copper quality
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/business/2ge6lbk8e1-indian-small-scale-waste-processors-lack"
@@ -14,43 +14,34 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 ---
 # Indian small-scale waste processors lack simple B2B tools for finding suppliers and controlling copper quality
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ India
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A simple B2B surface for Indian waste processors to find copper suppliers and assign a consistent quality grade to each lot they buy.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Founders | _[What pain they feel, and how this solves it]_ |
-| Small teams | _[What pain they feel, and how this solves it]_ |
-| Solo operators | _[What pain they feel, and how this solves it]_ |
+Small-scale processors in India who buy scrap copper, run a yard, and decide what to pay based on quick visual and physical inspection.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When I need to restock copper, I want a directory of nearby suppliers with their reliability and price history, so I do not waste days calling around. And when a load arrives, I want a fast way to record its grade so my team and my buyers agree on what is in it.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether small Indian waste processors can find suppliers and run a copper-quality check via the tool; no usage signal in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing cannot be derived from the captured source; the title and country do not name a model.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+B2B scrap marketplaces (IndiaMART, Scrapbuk) exist, but the source does not name any direct competitor that combines supplier discovery and copper-quality control for small waste processors.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Source is thin: the original ProblemHunt body must be read to confirm the exact workflow.
+- A "quality grade" claim must be defensible; false grades create legal exposure.
 
 ---
 

@@ -2,7 +2,7 @@
 id: "821"
 slug: impossible-to-find-quality-web3-projects-and-communitie
 title: Impossible to find quality Web3 projects and communities due to information noise and fraud
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/1yr4ejpc51-impossible-to-find-quality-web3-projects"
@@ -14,39 +14,35 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 ---
 # Impossible to find quality Web3 projects and communities due to information noise and fraud
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Netherlands
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A curated Web3 directory where every entry has a visible quality rubric and a community-signal layer that backs the score, so Dutch users can tell projects apart without reading every whitepaper.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Dutch crypto-curious users and developers who want to find serious Web3 projects and communities and avoid the constant noise and outright fraud.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When I am looking for a Web3 project to follow, contribute to, or buy from, I want a directory that scores the project on the same dimensions each time and shows the evidence, so I do not have to trust a single influencer.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether visitors find higher-quality Web3 projects via the quality scoring; the source does not quantify this.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing cannot be derived from the captured source; the title and country do not name a model.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Web3 directories (DappRadar, DeFiLlama) exist, but the source does not name any direct competitor that scores projects on code-quality or community-quality signals.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Source is thin: the original ProblemHunt body must be read to confirm what counts as "quality" for the poster.
+- A scoring rubric carries reputational risk; bad scores can draw legal threats from listed projects.
+- MiCA regulation in the EU is relevant to anything that touches financial promotion.
 
 ---
 

@@ -2,7 +2,7 @@
 id: "812"
 slug: people-with-a-criminal-past-cannot-reintegrate-into-soc
 title: People with a criminal past cannot reintegrate into society because their real skills are «invisible»
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/career/krxg2n1ge1-people-with-a-criminal-past-cannot-reint"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the guided intake form that turns free-text experience into a structured work history
+- [ ] Implement the CV export as plain HTML and a printable PDF
+- [ ] Localise the form and the CV to Norwegian (Bokmål)
+- [ ] Add a simple auth step so each user's draft is private by default
+- [ ] Write tests for the intake-to-history mapping
 
 ## Phase 2: Deploy
 

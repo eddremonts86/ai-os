@@ -13,24 +13,20 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/720-i-will-not-promote-are-founders-choosing-finance-provid/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact framing: comparing Meow / Mercury / Relay on workflow-fit, caring less about dashboard polish, naming six surfaces (banking, cards, payments, approvals, accounting, AI workflows)
+- [ ] Carry the "I will not promote" framing into `SPEC.md` Constraints and `PLAN.md` Risks so a downstream plan does not turn this into a vendor promotion
+- [ ] Do not add any finance provider beyond the three the poster cited
+- [ ] Add frontmatter `tags` for `finance-providers`, `workflow-fit`, `meow`, `mercury`, `relay`, `market-trend`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture any reply that confirms the workflow-fit framing
+- [ ] Reject any reply that names a vendor beyond Meow / Mercury / Relay
+- [ ] Reject any enrichment that invents a specific AI workflow — the source names the category, not the workflow
+- [ ] If a downstream plan proposes a finance-provider-compare tool, gate it on a poster-confirmed feature set
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

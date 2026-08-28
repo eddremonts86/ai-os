@@ -2,7 +2,7 @@
 id: "830"
 slug: the-problem-of-manual-processing-of-logistics-documenta
 title: The problem of manual processing of logistics documentation and lack of unified databases in a Mexican company
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/phshnmzd51-the-problem-of-manual-processing-of-logi"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the document intake (scan, photo, upload) keyed to a shipment event.
+- [ ] Model the database on shipment, customer, and document type from interviews, not from the source.
+- [ ] Build the shipment view that lists every document tied to that shipment.
+- [ ] Add the export per document for the customer or carrier.
+- [ ] Add the audit trail of who captured what and when.
+- [ ] Pilot the intake workflow with one Mexican company before declaring scope done.
 
 ## Phase 2: Deploy
 

@@ -13,26 +13,21 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/679-what-actually-mattered-after-using-live-demo-software-f/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm in `SPEC.md` Problem that the source is a buyer's six-month retrospective question, not a buildable brief
+- [ ] Confirm in `SPEC.md` Constraints that no specific vendor, feature list, or willingness-to-pay is named
+- [ ] Mirror the same caveat in `PRODUCT.md` Competitive Landscape ("vendor-blind scope")
+- [ ] Carry the long-term-vs-launch signal into `PRODUCT.md` Success Metrics
+- [ ] Add frontmatter `tags` such as `saas`, `buyer-question`, `evaluation-criteria` so the corpus index stays searchable
 
 ## Phase 1: Core
 
-- [ ] Re-read the source and confirm the post is a buyer question, not a product brief
-- [ ] Note that no specific vendor is named — category-only scope
-- [ ] If a future plan proposes a tool, gate it on real six-month user evidence
+- [ ] Re-read the Reddit thread and record any replies that name a feature that survived six months and any that decayed after launch
+- [ ] Note the poster's phrase ("six months or longer") as the explicit observation window in `SPEC.md` Objective
+- [ ] Reject any future enrichment that tries to extract a concrete product from this post — the source is a category-level question
+- [ ] If a downstream plan points at a real six-month buyer, gate it on a citation to that buyer's evidence
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

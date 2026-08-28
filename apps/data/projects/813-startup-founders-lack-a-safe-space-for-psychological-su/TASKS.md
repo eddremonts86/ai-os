@@ -2,7 +2,7 @@
 id: "813"
 slug: startup-founders-lack-a-safe-space-for-psychological-su
 title: Startup founders lack a safe space for psychological support during moments of burnout and loneliness
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/psychology/r15v6zgeg1-startup-founders-lack-a-safe-space-for-p"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the founder signup and intake form
+- [ ] Build the peer directory and availability calendar
+- [ ] Implement the booking flow with confirmation and reminders
+- [ ] Add the in-app confidential messaging surface
+- [ ] Write tests for the booking lifecycle (request, confirm, cancel, no-show)
 
 ## Phase 2: Deploy
 

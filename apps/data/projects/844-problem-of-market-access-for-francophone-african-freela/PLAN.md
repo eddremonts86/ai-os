@@ -2,30 +2,35 @@
 id: "844"
 slug: problem-of-market-access-for-francophone-african-freela
 title: Problem of market access for francophone African freelancers
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/freelance/kh7v4kr3i1-problem-of-market-access-for-francophone"
+  url: "https://problemhunt.pro/"
 category: freelance
-date: "2025-11-13"
-tags: [Freelance, Career, Other]
+date: "2025-11-14"
+tags: [Freelance, Other]
 country: Cameroon
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Problem of market access for francophone African freelancers
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Astro (static), TypeScript, Cloudflare Pages.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Static site. New profiles are submitted via a form that opens a GitHub PR or queues for manual moderation. No login, no database in v1.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: bilingual profile template and submission form
+- M2: searchable directory with category and language filters
+- M3: 'how to brief me' prompts and example scopes
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Static-first; profile submissions via a simple form that creates a PR or a moderation queue, not a live database.
+
+- Profiles go stale; without an active re-confirmation flow the directory becomes a graveyard.
+- The directory is not a vetting service; do not imply otherwise.

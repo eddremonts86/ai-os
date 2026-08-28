@@ -13,24 +13,19 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/722-how-to-build-something-from-the-ground-up-i-will-not-pr/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact framing: stable engineering job, more excited by side projects / startup ideas / shipping, open to being an early contributor not necessarily the founder, no polished pitch, no "founding engineer" offer expected
+- [ ] Carry the no-pitched-pitch and no-founding-engineer-offer lines into `SPEC.md` Constraints and `PLAN.md` Risks so a downstream plan does not misread the post
+- [ ] Add frontmatter `tags` for `meet-builders`, `early-contributor`, `stable-job`, `exploration`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture any reply that introduces a real build-in-progress or a real founder
+- [ ] Reject any reply that pitches the poster a "founding engineer" role — the poster explicitly asked the community not to
+- [ ] Reject any enrichment that turns this into a matchmaker product — the source is a community-meet post
+- [ ] If a downstream plan points the poster at a specific community, gate it on poster-confirmed relevance
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

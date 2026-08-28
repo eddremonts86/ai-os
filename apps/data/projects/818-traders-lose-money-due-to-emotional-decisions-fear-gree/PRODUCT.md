@@ -2,7 +2,7 @@
 id: "818"
 slug: traders-lose-money-due-to-emotional-decisions-fear-gree
 title: "Traders lose money due to emotional decisions (fear, greed) and lack a tool for real-time control of their psychological state during trading"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/psychology/vhe68ui8b1-traders-lose-money-due-to-emotional-deci"
@@ -14,39 +14,35 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 ---
 # Traders lose money due to emotional decisions (fear, greed) and lack a tool for real-time control of their psychological state during trading
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ India
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A lightweight in-session check that prompts Indian traders to pause when their behaviour looks driven by fear or greed, so they stop before the trade they will regret.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Retail traders in India who self-direct their trades, recognise that emotions are costing them money, and want something quieter than a full coaching app.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When I am in a trading session and my behaviour starts to match a fear or greed pattern, I want a short, well-timed nudge to slow down, so I do not act on the impulse.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether traders reduce emotional orders after seeing the in-session check; no measurable claim in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing cannot be derived from the captured source; the title and country do not name a model.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Trading journals (TradesViz, Edgewonk) and meditation apps exist, but the source does not name any direct competitor that surfaces an emotional state check at the moment of order placement.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Source is thin: the original ProblemHunt body must be read to confirm what "real-time control" means to the poster.
+- Nudges that arrive at the wrong moment will be ignored or muted; timing is the entire product.
+- Anything that looks like investment advice carries SEBI disclosure obligations in India.
 
 ---
 

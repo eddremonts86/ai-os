@@ -2,7 +2,7 @@
 id: "827"
 slug: the-problem-of-multi-platform-kyckyb-processes-in-finte
 title: The problem of multi-platform KYC/KYB processes in fintech leading to specialist burnout
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/u4jsvhe931-the-problem-of-multi-platform-kyckyb-pro"
@@ -18,35 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Based on source brief:_ France
+A fintech compliance specialist in France opens one case view per customer or business and sees the KYC and KYB vendors reporting on that case side by side, with a routing rule that sends the next check to the right vendor instead of a manual tab-switch. The framing the post supports is "fewer context switches per case", not "cheaper compliance".
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** One case view across every KYC and KYB vendor you already pay for.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Fintech compliance specialists | Need to clear a queue without re-keying the same case into four vendor dashboards |
+| Team leads / ops managers | Need to see where cases are blocked before burnout shows up as attrition |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When a new case lands, route the right vendor for the next check without a manual decision per step.
+- When a vendor returns a result, see it next to the other vendors' results on the same case.
+- When a case is blocked, know which vendor is the blocker and for how long.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Source does not state a metric. Outcomes to validate before MVP: number of vendor tab-switches saved per case, time-to-decision per case, and specialist self-reported cognitive load over a shift.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing is not stated by the source. Whether the product charges per case, per seat, or per connected vendor must be validated with both personas.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+KYC/KYB vendors (Onfido, Sumsub, Persona) exist, but the source does not name any direct competitor that unifies the same customer's checks across platforms.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- The post calls the pain "burnout"; that is a workforce outcome, not a feature list. Any feature that claims to reduce burnout needs a measurement story the source does not provide.
+- Compliance tooling carries regulator exposure; even a thin wrapper needs a clear data-residency story for France and the EU.
+- The post names no vendor; integration depth cannot be promised without selecting and signing at least one.
+- "Multi-platform" might be code for "no consolidation wanted" — assuming the team wants one is invented.
 
 ---
 

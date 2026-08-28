@@ -2,7 +2,7 @@
 id: "713"
 slug: a-free-open-source-end-to-end-encrypted-journal-web-app
 title: A Free Open Source End to End Encrypted Journal Web App
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpxuk6/a_free_open_source_end_to_end_encrypted_journal/"
@@ -11,40 +11,38 @@ date: "2026-08-16"
 ---
 # A Free Open Source End to End Encrypted Journal Web App
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Github: https://github.com/MrSheerluck/smbl-journal I built a free, open-source, end-to-end encrypted text journal. The goal is to make journaling as simple as possible. The entire text-based journal is free with no limits. Entries are encrypted on the client before being stored, so the server never receives plaintext journal content. The project is open source and available on GitHub. Built with SvelteKit, Rust, and SQLite. submitted by /u/lazyhawk20 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A free, open-source, unlimited text journal where entries are encrypted on the client before they leave the browser, so the server (and the operator) cannot read what you wrote.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: people who want to journal privately without trusting a server-side operator with their entries.
+- Secondary: privacy-conscious users who want a free, no-tier, no-upsell text journal.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — keep a journal without anyone but the user being able to read it.
+2. Functional — not be upsold or tier-limited by the operator.
+3. Emotional — feel safe writing honestly in a tool the operator cannot read.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- GitHub stars / forks / community contributions (the only public traction signal the source points at).
+- Concrete user-count or retention metrics are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free, with no stated limits and no stated monetisation model. The poster explicitly says the entire text-based journal is free with no limits.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name any competing encrypted-journal product (no Day One, Standard Notes, Obsidian, etc. comparison).
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vpxuk6/a_free_open_source_end_to_end_encrypted_journal/) · **Posted:** 2026-08-16T14:02:01+00:00
+- [ ] Define a key-recovery story so a user who loses their device is not locked out forever — the source is silent on this
+- [ ] Confirm the client-side encryption primitive (algorithm, key derivation, browser storage) is documented and reviewable in the open-source repo
+- [ ] Decide how to handle export without breaking the "server cannot read plaintext" guarantee
+- [ ] Confirm that the project has no analytics path that could leak plaintext metadata (timestamps, entry sizes)
+- [ ] No stated media support; if added, encryption must cover the new format too

@@ -2,15 +2,15 @@
 id: "848"
 slug: gps-based-taxi-and-delivery-solution-for-zimbabwe
 title: GPS-based taxi and delivery solution for Zimbabwe
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/logistics/m71idr7761-gps-based-taxi-and-delivery-solution-for"
+  url: "https://problemhunt.pro/"
 category: logistics
-date: "2025-11-12"
-tags: [Logistics, Transportation, Other]
+date: "2025-11-14"
+tags: [Logistics, Other]
 country: Zimbabwe
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Flutter (Android-first), Dart, Postgres, Node.js API (Fastify), Coolify, Docker]
 ---
 # GPS-based taxi and delivery solution for Zimbabwe
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/848-gps-based-taxi-and-delivery-solution-for-zimbabwe/`
+- [ ] Copy `edd-app-template` → `apps/848-gps-based-taxi-and-delivery-solution-for-zimbabwe/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Rider request flow end to end
+- [ ] Driver accept and navigate flow with offline action queue
+- [ ] Operator dashboard with live job list
+- [ ] Cash payment recording
 
 ## Phase 2: Deploy
 
