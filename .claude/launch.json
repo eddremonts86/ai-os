@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "//": "Pinned to 3020 on purpose, and strictly: apps/plans-explorer/app/vite.config.ts sets strictPort so a stale server makes this fail loudly instead of drifting onto the next free port — which is 3021, the landing. Do not move it: 3000 is the Hermes WhatsApp bridge, 3010/3011/3013/3015 are other local servers, and 5173 is usually claimed.",
+      "name": "plans-explorer",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-lc",
+        "cd \"${AI_OS_ROOT:-.}/apps/plans-explorer/app\" && exec ./node_modules/.bin/vite"
+      ],
+      "port": 3020
+    },
+    {
+      "//": "Pinned to 3021. apps/site/ is plain static HTML with no build step, so it is served as bytes rather than through vite: what you see here is what nginx serves in production (see /Dockerfile). Bound to 127.0.0.1 so the landing is not published on the LAN.",
+      "name": "site",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-lc",
+        "cd \"${AI_OS_ROOT:-.}/apps/site\" && exec python3 -m http.server 3021 --bind 127.0.0.1"
+      ],
+      "port": 3021
+    }
+  ]
+}
