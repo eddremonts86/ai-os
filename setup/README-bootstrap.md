@@ -20,7 +20,27 @@ are also named `ia-os-*` to keep them grouped.
 
 > Native Mac uses a host-side `ollama serve` on port 11500 (Apple Silicon Metal GPU
 > acceleration, which containers cannot reach). The `ia-os-ollama` container is the
-> Windows default; on Mac the host process is what answers.
+> Windows default; on Mac the host process is what answers. **So on Mac the healthy shape
+> is two containers plus a host process — not three containers.** Counting containers is
+> how this was missed for weeks.
+
+The host-side Ollama is a launchd service (`ai.os.ollama`), so it survives a reboot:
+
+```bash
+bash ~/Projects/ai-os/memory/launchd/install-ollama.sh            # install / repair
+bash ~/Projects/ai-os/memory/launchd/install-ollama.sh --status    # loaded? answering? model?
+```
+
+Two traps it exists to avoid, both of which had already bitten:
+
+- **`brew services start ollama` binds the wrong port.** Homebrew's plist sets
+  `OLLAMA_FLASH_ATTENTION` and `OLLAMA_KV_CACHE_TYPE` but not `OLLAMA_HOST`, so Ollama
+  comes up on its default 11434 while `memory/graphiti/config.yaml` and
+  `memory/ai-os-memory.sh` both address 11500. Nothing falls back and nothing complains.
+- **`nohup ollama serve &` does not survive a reboot.** That is what `install-mac.sh` used
+  to do, which is why embeddings were dead while both containers stayed green.
+
+`ai-os memory status` reports Ollama honestly — use it, not `docker ps`.
 
 ## First-time / on-demand setup: `ai-os-bootstrap.sh`
 
@@ -40,8 +60,8 @@ It is **idempotent** — re-running it is safe and does the right thing each tim
 3. Starts `ia-os-falkordb` via `memory/docker-compose.yml` (unified) and waits
    for its healthcheck (max 30 s).
 4. Starts `ia-os-graphiti-mcp` if `MINIMAX_API_KEY` is set; waits for `:8021/health`.
-5. Ensures Ollama is running on `:11500` (starts the brew service if not) and that
-   `nomic-embed-text` is pulled.
+5. Ensures Ollama answers on `:11500` (installing the `ai.os.ollama` launchd service if
+   not) and that `nomic-embed-text` is pulled.
 6. Auto-indexes every project under `~/Projects/` via `codebase-memory-mcp
    index_repository`:
    - projects at depth 1 (`~/Projects/<name>/`) **and** depth 2

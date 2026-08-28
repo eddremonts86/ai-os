@@ -16,7 +16,7 @@ This is a **framework component of AI-OS**, not a personal/work project. It does
 ```bash
 cd app
 npm install
-npm run dev          # http://localhost:5173
+npm run dev          # http://localhost:3020  (pinned, see .claude/launch.json)
 ```
 
 ## Build & refresh data

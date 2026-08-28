@@ -8,7 +8,7 @@
  *
  * Re-run after a UI change so the landing does not advertise a version that no longer exists:
  *
- *   node scripts/capture-shots.mjs [--explorer http://localhost:5173]
+ *   node scripts/capture-shots.mjs [--explorer http://localhost:3020]
  *
  * Needs the explorer running locally for its own three shots; the two external ones are public.
  */
@@ -24,16 +24,16 @@ const OUT = join(APP, 'public', 'img');
 // Playwright is a dependency of the scraper, not of this app: it is a heavy install and only
 // this dev-only script needs it here. Resolved relative to the repo so the path is not one
 // machine's home directory baked into a committed file.
-const PW = resolve(APP, '..', '..', 'tools', 'problemhunt-scraper', 'node_modules', 'playwright', 'index.mjs');
+const PW = resolve(APP, '..', '..', 'data', 'tools', 'problemhunt-scraper', 'node_modules', 'playwright', 'index.mjs');
 if (!existsSync(PW)) {
-  console.error(`[shots] playwright not found at ${PW}\n        run: npm --prefix tools/problemhunt-scraper install`);
+  console.error(`[shots] playwright not found at ${PW}\n        run: npm --prefix apps/data/tools/problemhunt-scraper install`);
   process.exit(2);
 }
 const { chromium } = await import(pathToFileURL(PW).href);
 
 const argv = process.argv.slice(2);
 const val = (f, d) => { const i = argv.indexOf(f); return i === -1 ? d : argv[i + 1]; };
-const EXPLORER = (val('--explorer', 'http://localhost:5173') || '').replace(/\/$/, '');
+const EXPLORER = (val('--explorer', 'http://localhost:3020') || '').replace(/\/$/, '');
 
 const SHOTS = [
   // '/#/plans', not '/#/': the landing owns '/' now, and pointing this at the root made the
