@@ -30,9 +30,64 @@ arriving even when no agent is available to author them. It is safe to run along
 Hermes job: both go through `daily.sh`, which holds a single PID lock, so whichever arrives
 second logs a skip and exits 0 rather than racing.
 
+### Installing and checking the launchd side
+
+```bash
+bash apps/data/tools/plans-pipeline/launchd/install-scheduler.sh            # install / repair + load
+bash apps/data/tools/plans-pipeline/launchd/install-scheduler.sh --status   # is it actually loaded?
+launchctl kickstart -p "gui/$(id -u)/ai.os.plans-pipeline"                  # run one scrape now
+```
+
+The plist is a template in `launchd/`, rendered with this checkout's path — it holds no
+committed user path. Run `--status` when the corpus looks stale, because **an unloaded
+launchd job is indistinguishable from a loaded one** by inspection: the plist is still on
+disk, the last log still shows a clean run, and nothing reports that captures stopped
+arriving. That is how this job sat unloaded for four days while the corpus looked healthy.
+
+It is deliberately not part of `setup/install-mac.sh`: that script runs in CI, and
+bootstrapping a scraper cron on a GitHub runner would scrape ProblemHunt on every push.
+
 `scrape-cron.sh` resolves the repo root by walking up to `CLAUDE.md`. It must never go back
 to counting `..` hops — from `apps/data/tools/plans-pipeline/` two hops up is `apps/data`,
 which is a wrong root that scrapes into nothing and still exits green.
+
+### Two ways the Hermes side stops silently
+
+Both of these have happened, and neither shows up as a failed pipeline — the corpus simply
+stops gaining published plans while capture keeps arriving.
+
+1. **The live prompt is not the file.** `cron-prompt.md` is version-controlled; the job
+   carries its own copy. Editing the file changes nothing until it is re-applied, so after
+   any edit — and after any path change in this repo — run:
+
+   ```bash
+   hermes cron edit 59b1562e8007 --prompt "$(cat apps/data/tools/plans-pipeline/cron-prompt.md)"
+   ```
+
+   The paths in the job's prompt outlived the move to `apps/data/` by a week that way.
+
+2. **Drift-skip.** Hermes refuses to run an *unpinned* job when the global inference config
+   has changed since the job was created, so it cannot spend on a provider the job never
+   agreed to. The job stays skipped, and the alert fires once. Pin it explicitly:
+
+   ```bash
+   hermes cron edit 59b1562e8007 --provider <provider> --model <model>
+   ```
+
+`hermes cron list` shows the schedule, the next run and the last error — which is where a
+drift-skip announces itself — but **not** whether the job is pinned, and not whether its
+prompt still matches the file. Those two need the job store:
+
+```bash
+python3 - <<'EOF'
+import json, os
+store = json.load(open(os.path.expanduser('~/.hermes/cron/jobs.json')))
+j = [x for x in store['jobs'] if x['id'] == '59b1562e8007'][0]
+print('pinned to:', j.get('provider'), '/', j.get('model'))
+print('prompt matches the file:',
+      j['prompt'].strip() == open('apps/data/tools/plans-pipeline/cron-prompt.md').read().strip())
+EOF
+```
 
 ## Why it is split this way
 
@@ -67,8 +122,9 @@ backlog forever and oldest-first alone means today's capture waits weeks. Plans 
 arrived but did not fit stop counting as new and join the oldest-first queue, so nothing
 is skipped twice.
 
-At 4 h × 25 that is up to 150 plans a day, so raise or lower `--cap` in the cron prompt to
-trade run cost against how fast the backlog drains.
+At 4 h × 100 that is up to 600 plans a day, so raise or lower `--cap` in the cron prompt to
+trade run cost against how fast the backlog drains. It is set to outpace capture: at 25 the
+scraper brought more per run than the agent authored, so the backlog grew instead of draining.
 
 State lives in `state.json` — `lastSeenId` plus the live claims. It is per-machine and
 gitignored. Deleting it makes everything look new once and releases every claim; the cap

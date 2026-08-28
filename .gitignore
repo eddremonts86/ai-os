@@ -67,8 +67,14 @@ dev-env/env-config.zip
 # Project-local Hermes runtime (may contain real secrets, e.g. desktop-attachments/env.ts)
 .hermes/
 
-# Local CLI runtime state (settings.local.json, caches, etc.) — never commit
-.claude/
+# Local CLI runtime state (settings.local.json, caches, etc.) — never commit.
+# `.claude/*` rather than `.claude/`, because git cannot re-include a file from an
+# excluded directory: with the directory form, the negation below is silently dead.
+.claude/*
+# launch.json is the exception: it is the dev-server contract (which app, which port),
+# it holds no secrets, and pinning ports only on the machine that wrote them is not
+# pinning them at all. See context/04_tools.md.
+!.claude/launch.json
 
 # AI-OS: completed Specs in archive/ are versioned. Only generated outputs are ignored.
 # Add any repo-specific exclusions here.

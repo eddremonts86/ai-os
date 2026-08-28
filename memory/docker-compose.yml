@@ -12,6 +12,12 @@
 #                          defaults to a host-side `ollama serve` for Metal GPU
 #                          acceleration, which containers can't reach)
 #
+# On Mac the healthy shape is TWO containers plus a host process, not three containers.
+# The host-side Ollama is a launchd service — install or check it with:
+#   bash memory/launchd/install-ollama.sh --status
+# It must listen on 11500, not Ollama's default 11434, because graphiti/config.yaml and
+# ai-os-memory.sh both address that port and nothing falls back.
+#
 # First-time / on-demand bring-up:
 #   bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
 # Or just this stack:
@@ -100,7 +106,10 @@ services:
       SEMAPHORE_LIMIT: "5" # conservative default; raise per the tuning table in graphiti's mcp_server/README.md
 
   ollama:
-    image: ollama/ollama:0.6.8 # pinned, kept in sync with the native version installers pull
+    # Windows-only in practice, and NOT in step with the Mac side: Homebrew ships 0.32.x
+    # while this stays pinned here. They never run together, so the drift is harmless —
+    # but do not read this tag as "the version AI-OS uses".
+    image: ollama/ollama:0.6.8
     container_name: ia-os-ollama
     profiles:
       - ollama-docker # opt-in only; `docker compose up -d` alone skips this

@@ -10,7 +10,7 @@
 - [ ] Crear `src/styles/tokens.css` con los valores de `DESIGN.md`.
 - [ ] Crear `src/router.ts` con 4 rutas lazy-loaded (`/`, `/plans/:id`, `/rankings`, `/about`).
 - [ ] Crear 3 vistas vacías con placeholder "WIP".
-- [ ] **Verify:** `npm run dev` levanta en :5173, navegas entre 4 rutas sin error en consola.
+- [ ] **Verify:** `npm run dev` levanta en :3020, navegas entre 4 rutas sin error en consola.
 
 ## Bloque 2 — Indexer build-time (M1)
 
