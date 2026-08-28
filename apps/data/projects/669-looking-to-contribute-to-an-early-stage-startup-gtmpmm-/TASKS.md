@@ -2,7 +2,7 @@
 id: "669"
 slug: looking-to-contribute-to-an-early-stage-startup-gtmpmm-
 title: "Looking to contribute to an early-stage startup: GTM/PMM, research, or customer acquisition (open to unpaid work)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpuy0d/looking_to_contribute_to_an_earlystage_startup/"

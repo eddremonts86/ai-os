@@ -2,30 +2,35 @@
 id: "837"
 slug: finding-buyers-in-the-uk-for-nigerian-food-products-for
 title: Finding buyers in the UK for Nigerian food products for export
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/business/nj2h0b8kp1-finding-buyers-in-the-uk-for-nigerian-fo"
+  url: "https://problemhunt.pro/"
 category: business
 date: "2025-11-14"
-tags: [Business, Marketing, Other]
+tags: [Business, Other]
 country: Nigeria
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Finding buyers in the UK for Nigerian food products for export
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Astro (static), TypeScript, Cloudflare Pages.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Static site generated from a JSON catalogue of buyer records. Filter UI is client-side. No login. Records are version-controlled in the repo so updates are reviewable.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: seed 30 buyer records from public UK importers of African food
+- M2: category + buyer-type filters and detail pages
+- M3: outbound-email templates for first contact
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Static-first site is acceptable; buyer records can be curated markdown or JSON in the repo. No backend needed at MVP if data is curated.
+
+- Buyer data goes stale fast; without an owner this becomes a dead directory.
+- Import compliance (UK food labelling, FSA registration) is real but out of scope; do not give advice here.

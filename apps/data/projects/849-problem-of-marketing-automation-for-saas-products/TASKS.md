@@ -2,15 +2,15 @@
 id: "849"
 slug: problem-of-marketing-automation-for-saas-products
 title: Problem of marketing automation for SaaS products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/marketing/mrcgth24s1-problem-of-marketing-automation-for-saas"
+  url: "https://problemhunt.pro/"
 category: marketing
-date: "2025-11-09"
-tags: [Marketing, Media, Other]
+date: "2025-11-14"
+tags: [Marketing, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Node.js API (Fastify), TypeScript, Postgres, BullMQ, Coolify, Docker]
 ---
 # Problem of marketing automation for SaaS products
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/849-problem-of-marketing-automation-for-saas-products/`
+- [ ] Copy `edd-app-template` → `apps/849-problem-of-marketing-automation-for-saas-products/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Define YAML journey schema with trigger, delay, channel, content
+- [ ] Build email channel via SMTP/SES
+- [ ] Build in-app channel via websocket
+- [ ] Build admin UI to inspect per-user journey state
 
 ## Phase 2: Deploy
 

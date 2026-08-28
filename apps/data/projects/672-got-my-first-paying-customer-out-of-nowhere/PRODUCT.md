@@ -2,7 +2,7 @@
 id: "672"
 slug: got-my-first-paying-customer-out-of-nowhere
 title: Got my first paying customer out of nowhere 😭
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpun48/got_my_first_paying_customer_out_of_nowhere/"
@@ -46,9 +46,8 @@ Not stated in the source. Receipt-splitting is a known category (Splitwise et al
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Fabrication risk: the post is celebratory, so it is easy to invent a feature list and pricing model the founder never stated. The plan stays as a milestone capture.
+- Sample size of one: a single customer plus 3–4 referred users is not a retention curve. Do not extrapolate to activation, churn, or revenue projections from this post.
 
 ---
 

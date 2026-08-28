@@ -13,24 +13,19 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/708-tools-for-building-saas-with-quotvibecodingquot/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact situation: has SaaS ideas, unsure which technology or tool to start with for a vibecoding workflow
+- [ ] Carry the "no specific tool named" caveat into `SPEC.md` Constraints and `PRODUCT.md` Competitive Landscape
+- [ ] Add frontmatter `tags` for `vibecoding`, `tooling`, `saas-beginner`, `ai-assisted-build`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture each tool recommendation with the reason given
+- [ ] Treat "vibecoding" as a term-of-art from the source; do not redefine it for the corpus
+- [ ] Reject any enrichment that names a single tool as the answer — the source explicitly asks the community
+- [ ] If a downstream plan builds a chooser, gate it on at least three community-recommended tools as input
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

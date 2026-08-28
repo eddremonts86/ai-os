@@ -2,30 +2,35 @@
 id: "849"
 slug: problem-of-marketing-automation-for-saas-products
 title: Problem of marketing automation for SaaS products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/marketing/mrcgth24s1-problem-of-marketing-automation-for-saas"
+  url: "https://problemhunt.pro/"
 category: marketing
-date: "2025-11-09"
-tags: [Marketing, Media, Other]
+date: "2025-11-14"
+tags: [Marketing, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Node.js API (Fastify), TypeScript, Postgres, BullMQ, Coolify, Docker]
 ---
 # Problem of marketing automation for SaaS products
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Node.js API (Fastify), TypeScript, Postgres, BullMQ, Coolify, Docker.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+YAML-defined journeys are loaded at startup and stored in Postgres. A worker consumes per-user scheduled events and dispatches via the configured channels (SMTP/SES, in-app websocket, webhook). Admin UI is a small Vue SPA.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: YAML journey schema and a runner for email
+- M2: in-app message channel and per-user state
+- M3: webhook channel and a small admin UI for inspecting state
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Single-tenant, single-host deploy. Postgres for journey state. Webhook fan-out for social.
+
+- Deliverability of self-sent email is a real risk; document SPF/DKIM setup.
+- The line between 'automation' and 'spam' is a product judgment; do not ship a tool that helps the latter.

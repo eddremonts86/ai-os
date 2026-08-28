@@ -2,7 +2,7 @@
 id: "669"
 slug: looking-to-contribute-to-an-early-stage-startup-gtmpmm-
 title: "Looking to contribute to an early-stage startup: GTM/PMM, research, or customer acquisition (open to unpaid work)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpuy0d/looking_to_contribute_to_an_earlystage_startup/"
@@ -45,9 +45,8 @@ Not stated in the source. The student references PMM work and case studies on re
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Fabrication risk: the unpaid angle makes it tempting to invent a 'student-in-residence marketplace' that the post does not request. The plan stays as a discussion capture.
+- Demand asymmetry: student supply is on offer in the post; founder demand is not evidenced anywhere, so any future product needs founder-side interviews before scoping.
 
 ---
 

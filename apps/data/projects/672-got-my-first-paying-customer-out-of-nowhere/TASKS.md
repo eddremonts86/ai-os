@@ -2,7 +2,7 @@
 id: "672"
 slug: got-my-first-paying-customer-out-of-nowhere
 title: Got my first paying customer out of nowhere 😭
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpun48/got_my_first_paying_customer_out_of_nowhere/"

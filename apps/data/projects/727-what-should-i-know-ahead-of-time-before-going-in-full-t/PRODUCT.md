@@ -11,40 +11,40 @@ date: "2026-08-15"
 ---
 # What should I know ahead of time before going in full time on a startup idea? [I will not promote]
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ I'm a software engineer at a big tech company and I've been wanting to quit for a long time due to the return to office policy. I've got an app idea that I'm currently in the middle of validating and getting a prototype developed for and I'm really liking how it's turning out so far. I'm planning on tentatively quitting my job by end of year and going all in on this app for at least 6 months or so. I'm thinking that even if it fails I can still gain valuable experience and jump over to another company. Before I take the leap I'm giving myself lots of time to think this through. So far I'm planning out how my monthly expenses and health insurance will look like while I tap into my savings during those months. What else should I be considering carefully before I leave my job to go in on this idea? submitted by /u/ihatecoreclasses [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced pre-quit checklist for a big-tech engineer with an app in validation, planning to quit by end of year on ~6 months of savings, who already has monthly expenses and health insurance budgeted but wants to know what else to consider.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a software engineer at a big tech company planning a quit-by-end-of-year leap into an early-stage startup.
+- Secondary: other big-tech engineers considering a similar leap with a runway-and-fallback plan.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — get a comprehensive pre-quit checklist beyond expenses and health insurance.
+2. Emotional — reduce the chance of being surprised by something obvious after they have already quit.
+3. Social — hear from people who have made the leap what they wish they had known.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that name a specific consideration the poster did not list (equity, vesting, healthcare gap, taxes, customer discovery depth, mental health, etc.).
+- Replies that confirm the poster's fallback plan is realistic.
+- Concrete app traction metrics are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a pre-quit advice question, not an offer.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name any specific app category, customer, or competitor.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vpfdd1/what_should_i_know_ahead_of_time_before_going_in/) · **Posted:** 2026-08-15T21:59:04+00:00
+- [ ] Equity / vesting / RSU considerations are typically relevant to a "big tech" engineer but the poster did not name them — flag as an open question, do not invent
+- [ ] Healthcare gap risk: post-quit COBRA vs. marketplace vs. spouse coverage is unstated
+- [ ] Tax risk: no specifics on income, savings, or tax bracket
+- [ ] Customer-discovery risk: poster is "validating and getting a prototype developed" but no customer count is named
+- [ ] Mental-health / co-founder / relationship risks are unstated; community replies may surface them
+- [ ] Do not promote the app — "I will not promote" applies

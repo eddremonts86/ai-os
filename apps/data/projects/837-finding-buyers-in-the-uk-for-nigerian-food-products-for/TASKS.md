@@ -2,15 +2,15 @@
 id: "837"
 slug: finding-buyers-in-the-uk-for-nigerian-food-products-for
 title: Finding buyers in the UK for Nigerian food products for export
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/business/nj2h0b8kp1-finding-buyers-in-the-uk-for-nigerian-fo"
+  url: "https://problemhunt.pro/"
 category: business
 date: "2025-11-14"
-tags: [Business, Marketing, Other]
+tags: [Business, Other]
 country: Nigeria
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Finding buyers in the UK for Nigerian food products for export
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/837-finding-buyers-in-the-uk-for-nigerian-food-products-for/`
+- [ ] Copy `edd-app-template` → `apps/837-finding-buyers-in-the-uk-for-nigerian-food-products-for/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Define the record schema (name, type, categories, contact, notes)
+- [ ] Author 30 seed records from publicly available UK importers of African food
+- [ ] Build category and buyer-type filters
+- [ ] Build buyer detail page with 'how to approach' guidance
 
 ## Phase 2: Deploy
 

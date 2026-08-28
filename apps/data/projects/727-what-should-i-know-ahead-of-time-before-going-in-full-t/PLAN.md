@@ -13,16 +13,23 @@ date: "2026-08-15"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster names "an app idea" but not the stack.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a pre-quit advice post, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Capture the poster's stated plan: validate + prototype, quit by end of year, ~6 months runway, expenses + health insurance budgeted from savings.
+2. M1 — Capture the fallback plan (experience gained even on failure; re-enter job market).
+3. M2 — Capture community-named additional considerations (equity, vesting, healthcare, taxes, customer discovery depth, etc.).
+4. M3 — Reject any enrichment that promotes the app or names a specific employer.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Equity-blindness risk: a big-tech engineer typically has unvested equity / RSU considerations that the poster did not name — flag, do not invent.
+- Healthcare-gap risk: post-quit coverage is unstated.
+- Runway-underestimate risk: poster says "at least 6 months"; founders consistently underestimate runway.
+- Customer-discovery depth risk: "validating and getting a prototype developed" is named but no customer count or validated willingness-to-pay is in the source.
+- Promo-bypass risk: "I will not promote" — do not promote the app.

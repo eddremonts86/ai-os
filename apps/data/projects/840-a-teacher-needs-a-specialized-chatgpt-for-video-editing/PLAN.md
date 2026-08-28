@@ -2,30 +2,35 @@
 id: "840"
 slug: a-teacher-needs-a-specialized-chatgpt-for-video-editing
 title: A teacher needs a specialized «ChatGPT for video editing»
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/education/15ig65exr1-a-teacher-needs-a-specialized-chatgpt-fo"
+  url: "https://problemhunt.pro/"
 category: education
 date: "2025-11-14"
-tags: [Education, Media, AI, Other]
+tags: [Education, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [React (Vite), TypeScript, ffmpeg.wasm, "\"Whisper (local", "whisper.cpp)\"", Static hosting]
 ---
 # A teacher needs a specialized «ChatGPT for video editing»
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+React (Vite), TypeScript, ffmpeg.wasm, Whisper (local, whisper.cpp), Static hosting.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Browser-only pipeline. Video upload stays in the page. Whisper runs in a Web Worker. ffmpeg.wasm applies edits. Output is downloaded. No server.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: video upload, transcript via Whisper, basic trim and cut
+- M2: caption overlay burned into MP4
+- M3: conversational edit-decision-list and re-edit
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Browser-side ffmpeg.wasm for privacy and zero-install. Local-first; the video never leaves the user's machine in v1.
+
+- Browser-side ffmpeg.wasm struggles with hour-long 4K files; a teacher-class clip is usually fine but it is a real ceiling.
+- Whisper transcripts of student voices raise privacy questions; make local-only the default.

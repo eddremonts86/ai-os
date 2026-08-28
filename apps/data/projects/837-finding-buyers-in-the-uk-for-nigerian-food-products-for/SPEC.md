@@ -2,35 +2,35 @@
 id: "837"
 slug: finding-buyers-in-the-uk-for-nigerian-food-products-for
 title: Finding buyers in the UK for Nigerian food products for export
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/business/nj2h0b8kp1-finding-buyers-in-the-uk-for-nigerian-fo"
+  url: "https://problemhunt.pro/"
 category: business
 date: "2025-11-14"
-tags: [Business, Marketing, Other]
+tags: [Business, Other]
 country: Nigeria
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Finding buyers in the UK for Nigerian food products for export
 
 ## Problem
 
-Nigeria
+A Nigerian food producer wants to find UK-based buyers for export. The poster does not name specific products or any specific buyer they have approached; the problem is described only as the difficulty of locating buyers across a regulatory and logistical distance.
 
 ---
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Reduce the time a Nigerian exporter spends finding and qualifying UK buyers of Nigerian food products.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Nigerian food producers (small and mid-sized) considering UK export, and the UK importers, wholesalers, and ethnic-food retailers who would stock their products.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+A directory of UK buyers of African and specifically Nigerian food, filterable by product category (grains, sauces, snacks, drinks) and buyer type (retail, wholesale, foodservice). Each listing shows how to make first approach and what import documentation they typically require.
 
 ## Design Direction
 
@@ -38,4 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No shipping, fulfilment, or payment handling. All buyer contact data must be verifiable or clearly marked as unverified. No price data is asserted.

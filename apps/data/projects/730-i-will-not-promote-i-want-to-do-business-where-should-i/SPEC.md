@@ -12,21 +12,23 @@ date: "2026-08-15"
 # I will not promote: I want to do business. Where should I start?
 
 ## Problem
- Hi everyone, I want to do business. Although I have a business background, I still don’t feel confident enough, and I feel like I don’t have much practical knowledge about actually starting and running a business. I’m genuinely at the very beginning and haven’t started anything yet. Before I begin this journey, I want to learn from people who have actually started businesses and understand how experienced founders think about starting one. Some questions I have: • How do I know whether a business idea is actually worth pursuing? How do I research and validate an idea before putting significant time or money into it? • How important is the idea itself? Is the idea the most important part, or are the customer, the problem being solved, product or service, execution, sales, distribution, or something else more important? • As someone with a business background, can I start a business in a completely different field where I don’t have an academic or professional background? If so, how should I approach learning that industry? • When starting your first business, is it better to take an existing business idea or model that already works and create your own version, or should you try to come up with something genuinely unique? I have both kinds of ideas in mind, so I’m curious which approach makes more sense for a first time founder. • If you are building something that already exists, how different does it actually need to be? How can you take an existing idea and improve or differentiate it rather than simply copying it? • What are the biggest mistakes new founders commonly make, and what do you wish you had known before starting your first business? • What books, courses, resources, or other things would you recommend learning before starting? I know its too many points but im just putting my thoughts into a post I’m genuinely at the very beginning and haven’t started anything yet. I want to understand how experienced founders think about starting a business and what they prioritize before taking that first step. submitted by /u/Maximum-Page3433 [link] [comments]
 
----
+A Reddit first-time-founder advice post from someone with a business background who is genuinely at the very beginning, has not started anything yet, and feels they lack practical knowledge about actually starting and running a business. They ask several explicit questions: how to know whether an idea is worth pursuing and how to research / validate it; how important the idea is vs. customer / problem / product / service / execution / sales / distribution; whether they can start in a completely different field and how to learn it; whether to clone an existing idea or build something unique; how different a "clone" needs to be; biggest mistakes new founders make; recommended books / courses / resources.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture the poster's open question set as a research-curriculum outline (idea evaluation, validation, idea vs. execution, cross-field entry, clone-vs-original, differentiation, common mistakes, learning resources) — without inventing a recommended reading list, course, or single "right answer".
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a first-time would-be founder with a business background who has not started anything yet.
+- Secondary: other pre-idea would-be founders in a similar position.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The poster's seven explicit questions, captured verbatim in spirit.
+- Community replies that answer any of them.
+- A note that the poster is at the very beginning, not running a business yet.
 
 ## Design Direction
 
@@ -34,4 +36,8 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The poster has not started anything — there is no product / service / customer to capture.
+- The poster has a business background; do not frame this as "knows nothing".
+- No specific idea, vertical, or geography is named.
+- No specific reading list, course, or resource is named in the source.
+- The post is "I will not promote" — do not promote any book, course, or service.

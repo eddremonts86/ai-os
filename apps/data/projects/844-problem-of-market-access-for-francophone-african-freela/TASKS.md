@@ -2,15 +2,15 @@
 id: "844"
 slug: problem-of-market-access-for-francophone-african-freela
 title: Problem of market access for francophone African freelancers
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/freelance/kh7v4kr3i1-problem-of-market-access-for-francophone"
+  url: "https://problemhunt.pro/"
 category: freelance
-date: "2025-11-13"
-tags: [Freelance, Career, Other]
+date: "2025-11-14"
+tags: [Freelance, Other]
 country: Cameroon
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Problem of market access for francophone African freelancers
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/844-problem-of-market-access-for-francophone-african-freela/`
+- [ ] Copy `edd-app-template` → `apps/844-problem-of-market-access-for-francophone-african-freela/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Author bilingual profile template (FR + EN)
+- [ ] Build profile submission form with moderation queue
+- [ ] Build directory listing with category and language filters
+- [ ] Build 'how to brief me' prompt library
 
 ## Phase 2: Deploy
 
