@@ -33,6 +33,11 @@ has_model() { curl -sf -m 5 "$URL/api/tags" 2>/dev/null | grep -q "$MODEL"; }
 
 case "${1:-install}" in
   --status)
+    if docker ps --filter 'name=ia-os-ollama' --filter 'status=running' --format '{{.Names}}' 2>/dev/null | grep -q ia-os-ollama; then
+      log "served by: the ia-os-ollama CONTAINER (host service not needed)"
+    else
+      log "served by: the host launchd service"
+    fi
     log "loaded:    $(loaded && echo yes || echo NO)"
     log "answering: $(answers && echo "yes ($URL)" || echo "NO — nothing on 11500")"
     log "$MODEL:    $(has_model && echo present || echo MISSING)"
@@ -55,6 +60,16 @@ case "${1:-install}" in
   install) ;;
   *) echo "unknown flag: $1 (try --status or --uninstall)" >&2; exit 2 ;;
 esac
+
+# The container path (memory/docker-compose.yml's opt-in `ollama-docker` profile) publishes
+# the same 127.0.0.1:11500. If it is up, a host service cannot bind that port, and under
+# KeepAlive launchd would restart it forever. Defer instead — the container is a complete
+# answer, and measured the same 0.03s per embedding as the host build.
+if docker ps --filter 'name=ia-os-ollama' --filter 'status=running' --format '{{.Names}}' 2>/dev/null | grep -q ia-os-ollama; then
+  log "ia-os-ollama container already serves 11500 — nothing to install"
+  log "to switch back to the host service: docker compose -f memory/docker-compose.yml --profile ollama-docker stop ollama, then rerun this"
+  exit 0
+fi
 
 OLLAMA_BIN="$(command -v ollama || true)"
 [ -n "$OLLAMA_BIN" ] || { echo "ollama is not installed (brew install ollama)" >&2; exit 1; }
