@@ -2,7 +2,7 @@
 id: "827"
 slug: the-problem-of-multi-platform-kyckyb-processes-in-finte
 title: The problem of multi-platform KYC/KYB processes in fintech leading to specialist burnout
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/u4jsvhe931-the-problem-of-multi-platform-kyckyb-pro"
@@ -26,7 +26,13 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Choose the first two KYC / KYB vendors from interviews, not from the source.
+- [ ] Build the case model that identifies one customer or business across vendors.
+- [ ] Implement the case view fanning out to each connected vendor for status.
+- [ ] Add the routing rule that selects the next vendor based on what has already been collected.
+- [ ] Build the audit trail per case with vendor and timestamp per result.
+- [ ] Add the specialist dashboard showing the queue, the blockers, and the vendor wait times.
+- [ ] Document the data-residency story for France and the EU explicitly in the UI.
 
 ## Phase 2: Deploy
 

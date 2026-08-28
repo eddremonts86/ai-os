@@ -2,7 +2,7 @@
 id: "814"
 slug: first-physical-product-problem-on-problemhunt-in-norway
 title: "First physical product problem on ProblemHunt: In Norway, you can't enter a building wearing shoes with spikes or roll in a bicycle with winter tires — no convenient protective pads exist"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/hardware/0xut3v4y21-first-physical-product-problem-on-proble"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the landing page with a sizing guide for spiked shoes and studded bicycle tires
+- [ ] Implement the product catalogue and checkout
+- [ ] Add the replacement-reminder emails for repeat customers
+- [ ] Set up basic order management in the admin view
+- [ ] Source a manufacturer for the first prototype batch
 
 ## Phase 2: Deploy
 

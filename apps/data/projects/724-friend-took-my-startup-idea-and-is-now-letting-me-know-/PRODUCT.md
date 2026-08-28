@@ -11,40 +11,40 @@ date: "2026-08-16"
 ---
 # Friend took my startup idea and is now letting me know he buili it and is going to sell it. I will not promote
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ 2 years ago I started building a tech startup and confided in my friend about the progress. Though it was a promising idea, it involved some AI tech which was a bit too expensive at the time in order for it to be profitable. I wrapped up the tech project, 95% done and went on with my life. Well, now with AI progress speeding up I realized that it could be profitable now and I should wrap it up though I didn't get to it yet because of other personal issues. I was surprised when my friend told me what side project they started vibe coding and I got demoed a full working version, though still less advanced than the one I built. He then told me of his plans to sell it in the industry we both activate in, as it's a niche project. He also started confiding in me with regards to issues he's facing and thought provoking me . A part of me wants to ask him to collaborate and go ahead together, but now sure if I could trust him any longer and either way both versions of the startup are 85% done at least, though he wants it to make it a full saas, so arguably there's still room to grow. I'm not sure why did he warn me he finished it in the first place, perhaps so I can advise him with issues he's facing or to salvage the friendship. How would you deal with this situation? I can wrap up my project as well in 2 weeks time, though the aftermath will be ugly as everyone in the industry sees us as friends and both coming up with almost identical startups will look strange. submitted by /u/Gullible_Insect190 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced take on a startup-ethics dilemma — a friend took the poster's paused startup idea, vibe-coded a working version, and is now selling it in the same niche, leaving the poster weighing collaboration, competition, or stepping back.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a solo founder whose friend has shipped a near-clone of their paused startup.
+- Secondary: other founders who confided early-stage ideas in friends and now face the same situation.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — decide whether to wrap up the poster's own version, collaborate with the friend, or step back.
+2. Functional — manage the industry optics of two friends with near-identical products.
+3. Emotional — decide whether the friendship can survive the trust damage, or whether it already hasn't.
+4. Social — get a peer-perspective on how other founders have navigated this kind of situation.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that describe a similar past situation and how it resolved.
+- Replies that flag legal / IP / NDA considerations the poster did not name.
+- Concrete traction / revenue numbers for either product are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a relationship / ethics question, not a product brief.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster names only the friend as a near-clone; no other competitor is named.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vpu13l/friend_took_my_startup_idea_and_is_now_letting_me/) · **Posted:** 2026-08-16T10:56:23+00:00
+- [ ] Do not promote either the poster's version or the friend's version — "I will not promote" applies to both
+- [ ] Do not invent an IP / NDA / patent path the poster did not name
+- [ ] Note the trust dimension explicitly: the friend confided issues back to the poster after shipping — this is not a neutral action
+- [ ] The poster says they can wrap up in 2 weeks; this is the poster's own estimate and may not survive contact with reality
+- [ ] Treat the niche / industry / AI tech as anonymous — the poster does not name them

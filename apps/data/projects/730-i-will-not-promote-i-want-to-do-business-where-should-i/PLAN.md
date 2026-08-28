@@ -13,16 +13,21 @@ date: "2026-08-15"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster has not started a business; there is no stack to capture.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a pre-idea advice question, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Capture the seven explicit questions: idea evaluation, validation, idea-vs-execution, cross-field entry, clone-vs-original, differentiation, common mistakes, learning resources.
+2. M1 — Capture community replies that answer any of the seven.
+3. M2 — Reject any enrichment that promotes a book, course, or service.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Promo-bypass risk: "I will not promote" — do not promote any reading list, course, or service.
+- Generic-advice risk: collapsing the seven questions into a generic "how to start" article would betray the source's specificity.
+- Background-flattening risk: the poster has a business background — do not frame them as "knows nothing".
+- Pre-idea risk: the poster has not chosen an industry, geography, or idea; any plan that pretends they have is wrong.

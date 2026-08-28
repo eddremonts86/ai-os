@@ -2,7 +2,7 @@
 id: "675"
 slug: asking-for-advice-or-prior-experience
 title: Asking for advice or prior experience
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpu5ra/asking_for_advice_or_prior_experience/"

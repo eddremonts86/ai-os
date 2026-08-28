@@ -2,7 +2,7 @@
 id: "828"
 slug: lack-of-a-simple-and-convenient-reminder-system-in-what
 title: Lack of a simple and convenient reminder system in WhatsApp
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/3tct7tk731-lack-of-a-simple-and-convenient-reminder"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Apply for and obtain WhatsApp Business API access with Meta before any user-facing work.
+- [ ] Build the set / list / edit reminder flow that runs through the WhatsApp conversation.
+- [ ] Add the worker that fires the reminder at the scheduled time through the WhatsApp Business API.
+- [ ] Implement the recurrence option for weekly and monthly cases.
+- [ ] Add the audit log of every reminder fired and acknowledged.
+- [ ] Localise language and weekend (Friday-Saturday) assumptions for the UAE.
 
 ## Phase 2: Deploy
 

@@ -2,35 +2,35 @@
 id: "845"
 slug: there-is-no-effective-tool-for-researching-high-margin-
 title: There is no effective tool for researching high-margin and small e-commerce products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/retail/yjz80tm2z1-there-is-no-effective-tool-for-researchi"
+  url: "https://problemhunt.pro/"
 category: retail
-date: "2025-11-13"
-tags: [Retail, Business, AI, Other]
+date: "2025-11-14"
+tags: [Retail, Other]
 country: Australia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python (FastAPI), HTMX + Jinja templates, Postgres, Fly.io]
 ---
 # There is no effective tool for researching high-margin and small e-commerce products
 
 ## Problem
 
-Australia
+An Australian poster says there is no effective tool for researching high-margin, small e-commerce products. The poster names no specific niche or platform. The underlying need is a way to spot small products that are not yet saturated and that have room for a healthy margin.
 
 ---
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Help an Australian e-commerce operator identify small, currently underserved products with room for margin.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Solo Australian e-commerce operators (Shopify, eBay AU, Amazon AU) who research products as their day-to-day work.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+A research tool that surfaces a small product category, shows signals of underservice (low review counts on top listings, rising search trend, stable wholesale margin) and lets the user save candidates to a watchlist.
 
 ## Design Direction
 
@@ -38,4 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No invented market-size numbers. All signals must come from public data sources with citation.

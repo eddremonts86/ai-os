@@ -13,24 +13,20 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/725-first-time-founders-who-are-launching-a-startup-right-n/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact framing: experienced SaaS founder, curious about first-time founders' AI usage, names five shifts (prototyping without engineering experience, RAG over Claude, marketing collateral, call transcripts, automation), "I will not promote"
+- [ ] Carry the five shifts verbatim into `SPEC.md` Objective so a downstream plan does not paraphrase them into a manifesto
+- [ ] Carry Claude as the only specific tool name; do not add others
+- [ ] Add frontmatter `tags` for `first-time-founders`, `ai-workflow`, `claude`, `prototyping`, `rag`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture each concrete tool / workflow a first-time founder names
+- [ ] Keep the five shifts framed as observations, not endorsements
+- [ ] Reject any reply that turns into a tool promo — "I will not promote" applies
+- [ ] If a downstream plan produces an "AI tools for first-time founders" list, gate it on community-confirmed replies
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

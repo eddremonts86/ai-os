@@ -2,7 +2,7 @@
 id: "800"
 slug: problem-analysis-owners-of-small-b2b-businesses-cannot-
 title: "Problem Analysis: Owners of small B2B businesses cannot build a growth system. Do they need a fractional CMO, or can a SaaS be built?"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/business/3pb7gtrku1-problem-analysis-owners-of-small-b2b-bus"
@@ -10,48 +10,30 @@ category: business
 date: "2026-01-06"
 tags: [Business, Marketing, AI, Other]
 country: France
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Next.js, TypeScript, PostgreSQL, Stripe, OpenAI API, Vercel]
 ---
 # Problem Analysis: Owners of small B2B businesses cannot build a growth system. Do they need a fractional CMO, or can a SaaS be built?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ France
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A one-page problem analysis that helps a small B2B owner decide between a fractional CMO engagement and a SaaS tool by naming the conditions that favour each answer.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Founders | _[What pain they feel, and how this solves it]_ |
-| Small teams | _[What pain they feel, and how this solves it]_ |
-| Solo operators | _[What pain they feel, and how this solves it]_ |
+Owners of small B2B businesses (per the title) who are weighing a fractional CMO engagement against buying or building a marketing SaaS.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When the owner asks "fractional CMO or SaaS?", give them a written decision frame that maps the question onto the conditions their business actually has.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Pricing & Monetization
-
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Whether the write-up is referenced or quoted in later ProblemHunt or community comments on this same thread.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Adjacent spaces (fractional CMOs, growth-stack tooling for SMB B2B) exist but the source does not name any direct competitor to a hypothetical fractional-CMO SaaS for owners of small B2B businesses.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/business/3pb7gtrku1-problem-analysis-owners-of-small-b2b-bus) · **Category:** business · **Tags:** Business,Marketing,AI,Other
+The source is a title only; the analysis cannot reach a conclusion the post never asserted, and the user's real cost of either option is unknown without a follow-up interview.

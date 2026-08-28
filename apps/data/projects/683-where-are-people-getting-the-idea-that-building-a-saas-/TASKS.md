@@ -13,26 +13,20 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/683-where-are-people-getting-the-idea-that-building-a-saas-/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm in `SPEC.md` Problem that the post is a line-item cost reality-check, not a product brief
+- [ ] Record the poster's rough figures (~$20 hosting, ~$15 server, ~$25 database, $50+ APIs, ~$12 mailing list, ~$7 email, ~$40+ LLC/admin, totaling ~$200/month) in `SPEC.md` Objective as poster-supplied figures
+- [ ] Note explicitly that all numbers are rough ('~$X/month') in `SPEC.md` Constraints
+- [ ] Add frontmatter `tags` such as `burn-rate`, `lean-saas`, `cost-realism`
 
 ## Phase 1: Core
 
-- [ ] Re-read the source and confirm the post is a cost reality-check, not a product brief
-- [ ] Record the line-item breakdown (~$20 hosting, ~$15 server, ~$25 database, $50+ APIs, ~$12 mailing list, ~$7 email, ~$40+ LLC/admin) as poster-supplied rough figures
-- [ ] If a future plan proposes a tool, gate it on cross-founder validation of the $200/month baseline
+- [ ] Re-read the Reddit thread and capture any replies that confirm or revise the ~$200/month baseline
+- [ ] Treat the cost stack as the source's claim only — do not promote it to a verified industry benchmark
+- [ ] Reject any enrichment that proposes a "make SaaS cheaper" tool without evidence the poster actually asked for one
+- [ ] If a downstream plan ships a cost-tracker, gate it on the poster's own itemised list as a baseline
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

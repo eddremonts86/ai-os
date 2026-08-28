@@ -11,40 +11,38 @@ date: "2026-08-16"
 ---
 # I will not promote: Are founders choosing finance providers based on workflow now?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ I’ve been comparing options like Meow, Mercury and Relay and I’m starting to care less about which one has the nicest dashboard. The bigger question is whether the setup fits how the business actually runs. Banking, cards, payments, approvals, accounting and now AI workflows all need to connect better. submitted by /u/Ill-Distance8704 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced check on whether founders are now choosing between Meow / Mercury / Relay (and similar providers) on workflow-fit — banking, cards, payments, approvals, accounting, AI workflows — rather than on dashboard polish.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a founder comparing Meow / Mercury / Relay on workflow fit rather than dashboard polish.
+- Secondary: other founders in the same comparison cycle.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — decide which of Meow / Mercury / Relay (or peers) actually fits the business's workflow.
+2. Emotional — stop optimising on dashboard polish when the real friction is workflow integration.
+3. Social — get confirmation from peers that workflow-fit is the right evaluation frame, not the poster's personal quirk.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that confirm the workflow-fit framing.
+- Replies that name a specific integration that drove a switch.
+- Concrete retention or revenue metrics for the poster's own business are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a market-trend observation, not an offer.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Three finance providers are named: Meow, Mercury, Relay. The poster contrasts "the nicest dashboard" against "whether the setup fits how the business actually runs". No other competitor is named.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vpxmbs/i_will_not_promote_are_founders_choosing_finance/) · **Posted:** 2026-08-16T13:52:17+00:00
+- [ ] Do not name any finance provider beyond the three the poster cited
+- [ ] "AI workflows" is named as one of six surfaces but no specific AI workflow is described — do not invent one
+- [ ] Reject any enrichment that promotes one of Meow / Mercury / Relay into "the workflow winner" without a poster-confirmed signal
+- [ ] Note that the workflow-fit framing is the poster's own — community confirmation is the only signal we can record here

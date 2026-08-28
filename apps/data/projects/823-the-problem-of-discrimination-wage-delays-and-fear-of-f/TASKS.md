@@ -2,7 +2,7 @@
 id: "823"
 slug: the-problem-of-discrimination-wage-delays-and-fear-of-f
 title: "The problem of discrimination, wage delays, and fear of firing/deportation among immigrant construction workers in the USA"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/ydplsur631-the-problem-of-discrimination-wage-delay"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the mobile-first logbook with offline-first storage on the device
+- [ ] Build the hours-worked and wages-owed entry screens
+- [ ] Build the vetted legal-aid directory filtered by language and case type
+- [ ] Add the one-tap PDF export for a lawyer or agency
+- [ ] Document the privacy posture and the export-and-delete path in the README
 
 ## Phase 2: Deploy
 

@@ -2,15 +2,15 @@
 id: "841"
 slug: difficulties-with-content-localization-and-dubbing-for-
 title: Difficulties with content localization and dubbing for TV channel
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/media/c1u4lh83p1-difficulties-with-content-localization-a"
+  url: "https://problemhunt.pro/"
 category: media
 date: "2025-11-14"
-tags: [Media, AI, Other]
+tags: [Media, Other]
 country: Jordan
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python (FastAPI), TypeScript (React for the editor UI), Whisper, Coqui XTTS / Piper, Postgres]
 ---
 # Difficulties with content localization and dubbing for TV channel
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/841-difficulties-with-content-localization-and-dubbing-for-/`
+- [ ] Copy `edd-app-template` → `apps/841-difficulties-with-content-localization-and-dubbing-for-/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Ingest video, run Whisper to get original-language transcript with timestamps
+- [ ] Translate to Arabic via an LLM with structured time-coded output
+- [ ] Build time-coded script editor UI
+- [ ] Generate synthetic Arabic voiceover aligned to original timings
 
 ## Phase 2: Deploy
 

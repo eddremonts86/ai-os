@@ -2,7 +2,7 @@
 id: "817"
 slug: trust-crisis-in-indias-upi-payments-fear-of-stranger-tr
 title: "Trust crisis in India's UPI payments: fear of stranger transfers hurts business"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/jrrxhgsoh1-trust-crisis-in-indias-upi-payments-fear"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the merchant payment-inbox with manual entry of UPI payments
+- [ ] Add the accept/hold action with reason capture for the dispute log
+- [ ] Implement the risk-score layer with explainable signals
+- [ ] Build the dispute-response helper that drafts replies to UPI support requests
+- [ ] Write tests for the risk-score explanation logic
 
 ## Phase 2: Deploy
 

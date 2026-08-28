@@ -11,40 +11,38 @@ date: "2026-08-16"
 ---
 # How to build something from the ground up? i will not promote
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ I don't know if this is the right place to post this, but I've had this feeling for a while now that I really want to build something from the ground up. I have a stable engineering job and I'm grateful for it, but I keep finding myself way more excited about random side projects, startup ideas, figuring out how products could work, shipping things and seeing if people actually care about them. I don't even necessarily need to be the founder. I'd genuinely be happy finding 1-2 people building something they deeply believe in and becoming one of the early people who helps turn it into something real. I know startups are romanticized a lot and the reality is probably stressful, uncertain and messy. Weirdly, that's still the environment I want to experience at least once while I'm young enough to take the risk. Not posting this with a polished pitch or expecting someone to offer me a "founding engineer" position in the comments lol. I just want to meet people who are actually building. If you're working on something from scratch, have an idea you're obsessed with, or you're in a similar position and just want to build something/ I'd genuinely love to hear about it. submitted by /u/Yashingole [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-meet-builders signal from a software engineer with a stable job who would be happy being one of the first people who helps turn someone else's idea into something real — not necessarily the founder.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a software engineer with a stable job who wants to join an early-stage startup as an early contributor.
+- Secondary: founders looking for an early engineer, who might find the post useful.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — meet people who are actually building, not just talking.
+2. Emotional — have the "build something real" experience while still young enough to take the risk.
+3. Social — find a small group of people obsessed with shipping an idea into the world.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that introduce a real build-in-progress or a real founder/team.
+- Replies that point the poster at a community of builders, not job boards.
+- Concrete traction / compensation expectations are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a meet-builders post, not a paid offer.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name any community, accelerator, or job board.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vpw2lh/how_to_build_something_from_the_ground_up_i_will/) · **Posted:** 2026-08-16T12:42:21+00:00
+- [ ] Treat the poster's framing exactly: they are not asking for a "founding engineer" offer — do not read it as one
+- [ ] Do not invent a specific startup idea, stack, or location for the poster to join — the source is silent
+- [ ] Reject any enrichment that turns this into a "founder matchmaker product" — the source is a community-meet post, not a market
+- [ ] Note the stable-job context: the poster is exploring, not job-hunting under pressure

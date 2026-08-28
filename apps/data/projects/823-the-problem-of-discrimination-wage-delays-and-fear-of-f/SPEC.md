@@ -2,7 +2,7 @@
 id: "823"
 slug: the-problem-of-discrimination-wage-delays-and-fear-of-f
 title: "The problem of discrimination, wage delays, and fear of firing/deportation among immigrant construction workers in the USA"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/ydplsur631-the-problem-of-discrimination-wage-delay"
@@ -16,19 +16,19 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Problem
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The captured source for this plan is a placeholder: the Problem section was not populated and only the title was scraped into SPEC.md.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Give immigrant construction workers in the USA a way to track wage promises, log incidents of discrimination or wage theft, and access legal help without putting their status at risk.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Immigrant construction workers in the USA who face discrimination, delayed wages, or fear of retaliation and deportation if they complain.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+A private logbook for hours worked, wages owed and incidents, plus a vetted legal-aid directory filtered by language and immigration-sensitive cases.
 
 ## Design Direction
 
@@ -36,4 +36,6 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Source is thin: only the title is available, so scope is derived from the title signal alone.
+- Privacy and physical-safety stakes are the highest in this corpus; any MVP that stores data must make export-and-delete trivial.
+- Vetted legal aid is a thin supply in many US states and the directory must not overstate it.

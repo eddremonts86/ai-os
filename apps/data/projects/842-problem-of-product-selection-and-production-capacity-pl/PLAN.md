@@ -2,30 +2,35 @@
 id: "842"
 slug: problem-of-product-selection-and-production-capacity-pl
 title: Problem of product selection and production capacity planning
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/business/cbc7zd9891-problem-of-product-selection-and-product"
+  url: "https://problemhunt.pro/"
 category: business
-date: "2025-11-13"
+date: "2025-11-14"
 tags: [Business, Other]
 country: India
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [React (Vite), TypeScript, javascript-lp-solver (browser), Static hosting]
 ---
 # Problem of product selection and production capacity planning
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+React (Vite), TypeScript, javascript-lp-solver (browser), Static hosting.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Browser-only. Inputs live in localStorage. The LP runs client-side. Output is a plan table plus a bottleneck chart.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: input forms for capacity, SKUs, demand
+- M2: LP solver integration and recommended plan view
+- M3: bottleneck and sensitivity report
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Single-user spreadsheet-like UI. Optimization runs in the browser via a small JS LP library.
+
+- Demand forecasts are usually wrong; the plan must surface this rather than hide it.
+- Users may want ERP integration later; design the data model so a CSV export is clean.

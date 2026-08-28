@@ -2,15 +2,15 @@
 id: "842"
 slug: problem-of-product-selection-and-production-capacity-pl
 title: Problem of product selection and production capacity planning
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/business/cbc7zd9891-problem-of-product-selection-and-product"
+  url: "https://problemhunt.pro/"
 category: business
-date: "2025-11-13"
+date: "2025-11-14"
 tags: [Business, Other]
 country: India
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [React (Vite), TypeScript, javascript-lp-solver (browser), Static hosting]
 ---
 # Problem of product selection and production capacity planning
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/842-problem-of-product-selection-and-production-capacity-pl/`
+- [ ] Copy `edd-app-template` → `apps/842-problem-of-product-selection-and-production-capacity-pl/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build capacity, SKU, and demand input forms
+- [ ] Integrate LP solver and render the plan
+- [ ] Compute bottleneck resource utilization
+- [ ] Export the plan to CSV
 
 ## Phase 2: Deploy
 

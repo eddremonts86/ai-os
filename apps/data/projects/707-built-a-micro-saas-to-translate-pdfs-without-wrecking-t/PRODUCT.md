@@ -2,7 +2,7 @@
 id: "707"
 slug: built-a-micro-saas-to-translate-pdfs-without-wrecking-t
 title: Built a micro-SaaS to translate PDFs without wrecking the layout. How do you handle long processing times?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpzn6g/built_a_microsaas_to_translate_pdfs_without/"
@@ -11,40 +11,37 @@ date: "2026-08-16"
 ---
 # Built a micro-SaaS to translate PDFs without wrecking the layout. How do you handle long processing times?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Hey everyone, I got tired of standard translators completely destroying tables and layouts in PDFs, so I built a tool to fix it. It translates heavy documents while keeping the original design 100% intact. I’m running it on Next.js, PostgreSQL, and Railway. But the biggest headache was dealing with API timeouts when processing massive PDFs. For those of you handling heavy file uploads and AI wrappers: how are you managing long processing times? Webhooks, background jobs, or something else? (If you want to see how the layout preservation works, it’s here:https://neuropdftranslate.com) submitted by /u/Various-Internet-886 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A layout-preserving PDF translator on Next.js + PostgreSQL + Railway, paired with an async-processing pattern (webhook / background job) so heavy uploads do not hit API timeouts.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a single-operator running a layout-preserving PDF translation micro-SaaS.
+- Secondary: developers building AI-wrappers or file-processing SaaS who need a reference for handling long-processing-time uploads.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — translate heavy PDFs without destroying tables and layout.
+2. Functional — accept large uploads without tripping synchronous API timeouts.
+3. Social — learn from the community which async pattern (webhooks, background jobs, or other) is the default for this workload.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies on the Reddit thread naming the async pattern other developers use (webhook / background job / other).
+- Concrete conversion or throughput metrics are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The poster describes the SaaS as a micro-SaaS but names no price or tier.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster only contrasts their tool against "standard translators" that destroy tables and layouts; no specific competitor is named.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vpzn6g/built_a_microsaas_to_translate_pdfs_without/) · **Posted:** 2026-08-16T15:15:13+00:00
+- [ ] Pick the async pattern (webhook / background job / hybrid) with explicit justification, not as an arbitrary default
+- [ ] Confirm that the layout-preservation quality does not regress under the async pipeline
+- [ ] Note that no SLA or throughput target is named; do not invent one
+- [ ] Decide how the user re-engages with the result once processing completes (email link, polling, push)

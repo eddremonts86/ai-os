@@ -2,15 +2,15 @@
 id: "846"
 slug: need-a-ai-bot-for-analyzing-car-and-real-estate-prices
 title: Need a AI-bot for analyzing car and real estate prices
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/ai/lbdzym5un1-need-a-ai-bot-for-analyzing-car-and-real"
+  url: "https://problemhunt.pro/"
 category: ai
-date: "2025-11-13"
+date: "2025-11-14"
 tags: [AI, Other]
 country: Russia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python (FastAPI), Postgres, Redis cache, Docker]
 ---
 # Need a AI-bot for analyzing car and real estate prices
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/846-need-a-ai-bot-for-analyzing-car-and-real-estate-prices/`
+- [ ] Copy `edd-app-template` → `apps/846-need-a-ai-bot-for-analyzing-car-and-real-estate-prices/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Ingest one Russian cars data source with citation
+- [ ] Compute median and percentile by region and category
+- [ ] Build chat endpoint that returns a cited answer for natural-language questions
+- [ ] Cache layer and freshness tag
 
 ## Phase 2: Deploy
 

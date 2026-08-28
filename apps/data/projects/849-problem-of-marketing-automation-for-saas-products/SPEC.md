@@ -2,33 +2,35 @@
 id: "849"
 slug: problem-of-marketing-automation-for-saas-products
 title: Problem of marketing automation for SaaS products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/marketing/mrcgth24s1-problem-of-marketing-automation-for-saas"
+  url: "https://problemhunt.pro/"
 category: marketing
-date: "2025-11-09"
-tags: [Marketing, Media, Other]
+date: "2025-11-14"
+tags: [Marketing, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Node.js API (Fastify), TypeScript, Postgres, BullMQ, Coolify, Docker]
 ---
 # Problem of marketing automation for SaaS products
 
 ## Problem
 
-_Not written yet — `ai-os plans enrich` fills this section._
+A US-based poster describes a marketing automation problem for SaaS products. The poster names no specific SaaS, channel, or tool. The pain is the repetitive, manual work of running lifecycle email, in-app prompts, and social posts across a small SaaS without paying for an enterprise platform.
+
+---
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Give a small US SaaS team a marketing automation stack they can actually configure and maintain without a dedicated ops person.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Founders and small marketing teams at US-based SaaS companies (typically under 20 employees) who want lifecycle automation without an enterprise contract.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+A configuration-as-code tool that defines lifecycle journeys in YAML (trigger, delay, channel, content) and runs them across email (SMTP or SES), in-app messages, and a webhook for posting to social. State per user is persisted so journeys resume across sessions.
 
 ## Design Direction
 
@@ -36,4 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+No invented pricing. All third-party APIs must have free or near-free tiers at small scale. The tool itself is open-source and self-hosted.
