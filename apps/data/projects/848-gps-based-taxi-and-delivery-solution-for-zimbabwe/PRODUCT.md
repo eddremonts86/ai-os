@@ -2,15 +2,15 @@
 id: "848"
 slug: gps-based-taxi-and-delivery-solution-for-zimbabwe
 title: GPS-based taxi and delivery solution for Zimbabwe
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/logistics/m71idr7761-gps-based-taxi-and-delivery-solution-for"
+  url: "https://problemhunt.pro/"
 category: logistics
-date: "2025-11-12"
-tags: [Logistics, Transportation, Other]
+date: "2025-11-14"
+tags: [Logistics, Other]
 country: Zimbabwe
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Flutter (Android-first), Dart, Postgres, Node.js API (Fastify), Coolify, Docker]
 ---
 # GPS-based taxi and delivery solution for Zimbabwe
 
@@ -18,36 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Based on source brief:_ Zimbabwe
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A dispatch and tracking tool that actually runs in Harare on the phones and the network people have, not the phones and network the docs assume.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Primary user in Zimbabwe | Small taxi associations and delivery operators in Zimbabwe, plus their drivers and the riders or senders who book them. |
+| Adjacent user | Anyone the primary user would need to coordinate with to use the product. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When a rider requests a taxi, get one assigned in under a minute.
+- When a driver is offline, queue the job acceptance until signal returns.
+- When an operator monitors, see all active jobs on one map.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether a 10-driver fleet in Harare can run a full shift without the app blocking them on a dead zone.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The source does not name a price or willingness-to-pay. Pricing is left as an open question to be answered after user interviews, not invented here.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+GPS taxi apps (Bolt, Yego) and delivery platforms exist, but the source does not name any direct competitor that is built for Zimbabwe's taxi and delivery market.
 
 ## Risks & Open Questions
 
+- Map tile coverage in parts of Zimbabwe is poor; the app must degrade gracefully.
+- Cash payments dominate; do not assume card rails in v1.
 - [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- [ ] Confirm willingness to pay with real users
+- [ ] Re-check Zimbabwe-specific compliance expectations
 
 ---
 
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/logistics/m71idr7761-gps-based-taxi-and-delivery-solution-for) · **Category:** logistics · **Tags:** Logistics,Transportation,Other
+_Source:_ [ProblemHunt](https://problemhunt.pro/) · **Category:** logistics · **Country:** Zimbabwe

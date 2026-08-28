@@ -2,7 +2,7 @@
 id: "703"
 slug: a-concurrency-bug-that-taught-me-to-be-paranoid-about-s
 title: A concurrency bug that taught me to be paranoid about shared state in real-time systems
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vq0gkr/a_concurrency_bug_that_taught_me_to_be_paranoid/"
@@ -11,40 +11,36 @@ date: "2026-08-16"
 ---
 # A concurrency bug that taught me to be paranoid about shared state in real-time systems
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Sharing this because it's a good example of a bug class that's easy to introduce and hard to catch until you have a real concurrent load. I run Flowagenz, a small dev studio, and I'm building a real-time voice AI pipeline for one of our products (STT → LLM → TTS, streaming). One of the TTS providers I use as a fallback has a quirk: if speech synthesis runs slow, I had logic that would automatically shorten the reply length for the rest of that interaction, reasonable UX call on its own, keep the conversation snappy if the backend is struggling. The bug: the flag controlling this was a plain module-level variable in Python. Not scoped to a session, not scoped to a request, just a single shared boolean for the entire running process. In a single-user test environment, this is completely invisible. You never have two things happening at once, so you never notice the flag is global instead of per-call. The moment you have two or more real concurrent users, though, it becomes a landmine: one user's bad network moment flips the flag, and every other concurrent conversation on the platform silently degrades, shorter replies, worse experience, for users who did nothing wrong and have no idea why. And it doesn't reset until the process restarts. Found it during a deliberate concurrency-focused code review, not from a bug report, which is honestly a little unsettling, since it means it could easily have shipped and just looked like "occasionally the AI gives weirdly short answers" with no obvious cause, the worst kind of bug to debug from user reports alone. Fix was straightforward once identified: use Python's contextvars.ContextVar instead of a module-level variable, so the flag is scoped per async task instead of shared globally. A few lines of change, but it required actually going looking for this class of bug rather than waiting to trip over it. The broader lesson I took from this: anything you build and test as a single user, alone, on your own machine, will hide global-state bugs by default, because there's never a second concurrent "you" to expose the collision. If you're building anything with real concurrency in its future, it's worth an explicit pass specifically looking for module-level and global variables that should be scoped narrower, before real traffic finds them for you. Curious if others have run into this class of bug, shared state that only misbehaves under concurrent load and stays invisible until then. What's your go-to way of catching these before they ship? submitted by /u/flowagenz [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A postmortem on a Python concurrency bug (module-level flag shared across users) and the `contextvars.ContextVar` fix that scopes the flag per async task, so other builders of real-time async pipelines do not ship the same regression.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: developers building real-time async pipelines (voice AI, chat agents, stream processors) where multiple users share one Python process.
+- Secondary: small-studio engineers reviewing single-user-tested async code for shared-state bugs.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — recognise that single-user-tested async code can hide global-state bugs that only surface under real concurrent load.
+2. Functional — know that module-level variables are the canonical place this bug hides, and that the fix is `contextvars.ContextVar` scoped per async task.
+3. Emotional — replace the "occasionally the AI gives weirdly short answers" mystery-report pattern with a named, greppable bug class.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Other developers report they caught the same anti-pattern in their own code after reading the postmortem.
+- Concrete numeric retention / conversion targets are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a postmortem, not an offer.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster names a "TTS provider I use as a fallback" but does not name which one or name competitors.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vq0gkr/a_concurrency_bug_that_taught_me_to_be_paranoid/) · **Posted:** 2026-08-16T15:47:35+00:00
+- [ ] Verify the poster's claim that the bug was found by a deliberate concurrency-focused review (and not by a user report) before generalising that into a recommended practice
+- [ ] Note that the fix is Python-specific; readers in other runtimes will need their own per-task scoping primitive
+- [ ] Decide whether the postmortem should publish a minimal reproducible harness alongside the narrative

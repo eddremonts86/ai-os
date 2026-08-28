@@ -2,15 +2,15 @@
 id: "844"
 slug: problem-of-market-access-for-francophone-african-freela
 title: Problem of market access for francophone African freelancers
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/freelance/kh7v4kr3i1-problem-of-market-access-for-francophone"
+  url: "https://problemhunt.pro/"
 category: freelance
-date: "2025-11-13"
-tags: [Freelance, Career, Other]
+date: "2025-11-14"
+tags: [Freelance, Other]
 country: Cameroon
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Problem of market access for francophone African freelancers
 
@@ -18,36 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Based on source brief:_ Cameroon
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+Make francophone African freelancers findable in one place, in both languages, without forcing them to compete in English-language platforms on uneven terms.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Primary user in Cameroon | Freelance translators, designers, developers, and writers in Cameroon and the wider francophone African region, and the international clients who need them. |
+| Adjacent user | Anyone the primary user would need to coordinate with to use the product. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When a client searches for a francophone African freelancer, show me a real profile.
+- When I write my profile, give me a bilingual template I can fill in.
+- When I get a message, tell me if the client sounds serious.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether a freelancer receives one credible inbound message per quarter through the directory.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The source does not name a price or willingness-to-pay. Pricing is left as an open question to be answered after user interviews, not invented here.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Francophone market-entry tools exist, but the source does not name any direct competitor that solves market access for francophone African businesses.
 
 ## Risks & Open Questions
 
+- Profiles go stale; without an active re-confirmation flow the directory becomes a graveyard.
+- The directory is not a vetting service; do not imply otherwise.
 - [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- [ ] Confirm willingness to pay with real users
+- [ ] Re-check Cameroon-specific compliance expectations
 
 ---
 
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/freelance/kh7v4kr3i1-problem-of-market-access-for-francophone) · **Category:** freelance · **Tags:** Freelance,Career,Other
+_Source:_ [ProblemHunt](https://problemhunt.pro/) · **Category:** freelance · **Country:** Cameroon

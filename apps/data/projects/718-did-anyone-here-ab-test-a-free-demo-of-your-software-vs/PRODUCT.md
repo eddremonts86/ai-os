@@ -11,40 +11,37 @@ date: "2026-08-16"
 ---
 # Did anyone here A/B test a free demo of your software vs a free trial?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ I'm doing some research about the pricing of my SaaS and if I should offer free trials or not. Stats show that free trials often convert better. But a free demo of the software for anyone to try also takes away that feeling of "I want to know what I'm signing up for". With a free demo I mean a gated version of the software. So take a SalesForce for example with a pre-defined project where someone can play around with the different screens and just get a feeling of the software. Maybe add and remove some numbers, etc. Now I don't mind offering both options but I'm wondering if that's even needed. Did someone here maybe actually test this by having both or try offering a free trial first and then a free demo and then compared the stats? submitted by /u/GearTakes [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced answer to whether a gated, pre-defined free demo converts better than a time-boxed free trial — useful for a SaaS founder choosing the next pricing-experiment design.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a SaaS founder in the pricing-research phase.
+- Secondary: other SaaS founders weighing free-demo vs. free-trial as a top-of-funnel choice.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — decide whether to invest engineering time in a free demo, a free trial, or both.
+2. Emotional — avoid the regret of choosing the wrong top-of-funnel and finding out a quarter later.
+3. Social — get pointed at people who have actually run the experiment, not generic conversion-rate folklore.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that report an actual A/B test of free demo vs. free trial (lift, drop, sample size, what the demo looked like).
+- Concrete retention or conversion numbers for the poster's own SaaS are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The post is itself about a pricing decision. Free demo vs. free trial is the question, not the answer. No price point is in the source.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The poster uses SalesForce as an example of a pre-defined free demo. No other SaaS demo-vs-trial examples are named.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vpxc43/did_anyone_here_ab_test_a_free_demo_of_your/) · **Posted:** 2026-08-16T13:40:02+00:00
+- [ ] Reject any reply that quotes a generic conversion-rate benchmark — the poster is asking about a specific A/B test, not industry averages
+- [ ] Distinguish "SalesForce-style pre-defined project demo" from "guided tour demo" — the poster only meant the former
+- [ ] Note that the poster has not run the test yet; the corpus should not record a winner that does not exist
+- [ ] "Offering both" is the poster's fallback; treat that as a cost question, not a free option

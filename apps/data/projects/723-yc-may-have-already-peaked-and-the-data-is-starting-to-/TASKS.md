@@ -13,24 +13,21 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/723-yc-may-have-already-peaked-and-the-data-is-starting-to-/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm in `SPEC.md` Problem that the post is opinion/analysis, not a buildable brief
+- [ ] Record the paper citation ("BEYOND DEMO DAY: SORTING AND VALUE ADDED IN STARTUP ACCELERATORS", NBER, ~750,000 startups across 329 accelerators) as the source's claim only — do not promote to verified fact
+- [ ] Note the 60–80% headline and the three-cause hypothesis in `SPEC.md` Objective and `PLAN.md` Risks
+- [ ] Mark this plan as a duplicate of plan 689 in `SPEC.md` Constraints and `PLAN.md` Milestones
+- [ ] Add frontmatter `tags` such as `yc`, `accelerators`, `thesis`, `nber-paper`, `duplicate-of-689`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture any replies that link the paper directly or contest the claim
+- [ ] Keep all numerical claims attributed to the paper, not to this corpus
+- [ ] Reject any enrichment that proposes an "alternative accelerator" product — the source is analysis, not a buildable brief
+- [ ] If a downstream plan extracts a tool, gate it on the linked paper and an independent check of the 60–80% figure
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

@@ -2,7 +2,7 @@
 id: "815"
 slug: indian-small-scale-waste-processors-lack-simple-b2b-too
 title: Indian small-scale waste processors lack simple B2B tools for finding suppliers and controlling copper quality
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/business/2ge6lbk8e1-indian-small-scale-waste-processors-lack"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the supplier directory with manual entry and city-based search
+- [ ] Build the lot-intake form with photo capture and a copper-grade rubric
+- [ ] Implement the per-supplier history view across deliveries
+- [ ] Optimise the UI for mobile-first use on low-end Android devices
+- [ ] Write tests for the lot-intake to grade mapping
 
 ## Phase 2: Deploy
 

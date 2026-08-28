@@ -2,7 +2,7 @@
 id: "702"
 slug: i-built-a-free-mac-app-for-screenshot-clutter-i-am-not-
 title: "I built a free Mac app for screenshot clutter. I am not sure if it is useful, or just my own problem?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vq0gqe/i_built_a_free_mac_app_for_screenshot_clutter_i_am/"
@@ -18,40 +18,41 @@ tech: [Swift, SwiftUI, macOS, FileProvider, local-storage]
 ---
 # I built a free Mac app for screenshot clutter. I am not sure if it is useful, or just my own problem?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Hello all, I’m getting close to launching a small macOS app called Screenshoss, but before I do, I’d like to understand whether it solves a real problem for anyone besides me. I take a lot of screenshots throughout the day. Not only for design work, but also to save ideas, references, messages, and things I want to remember later. By the end of the day, my Desktop is usually covered with them. Then I go through everything manually, delete the useless ones, occasionally delete an important one by mistake, and move the rest into folders that eventually become another mess. I tried a few different organization systems, but none of them really became part of my routine. So I built something small for myself. It lives in the Mac’s notch, catches your screenshots, and keeps them in one place where you can quickly see, organize, and reuse them. It’s free, open source, and local-first. It works for my workflow, but that doesn’t necessarily mean it will work for other people. That’s why I’m sharing it here before the launch. Does this solve a problem you also have? Does accessing screenshots from the notch feel useful, or does it seem unnecessary? And what would make you stop using an app like this after five minutes? Landing page: screenshoss. app Honest feedback, even “I wouldn’t use this” would be genuinely helpful. submitted by /u/Full-Poet2988 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A free, open-source, local-first macOS app that lives in the notch, catches every screenshot, and gives you a quick see / organise / reuse flow before Desktop clutter builds up.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: macOS users who take many screenshots per day across design, reference, messaging, and personal-reminder use cases and whose Desktop fills up by end of day.
+- Secondary: macOS power users (designers, researchers, journalists, support staff) who already lean on macOS screenshot tooling.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — stop the daily Desktop-clutter cycle without forcing the user to remember a new folder structure.
+2. Functional — avoid the "delete an important one by mistake" failure mode of manual triage.
+3. Emotional — keep a low-friction capture habit without paying for a SaaS or trusting a cloud with personal screenshots.
+4. Social — let the poster validate, pre-launch, whether anyone else has the same daily-screenshot-clutter problem.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies on the launch thread from users who say they have the same problem.
+- Replies on whether notch access feels useful vs. unnecessary.
+- Replies on what would make a user stop using the app within five minutes.
+- Concrete retention numbers are not in the source — this is a validation post, not a growth post.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free, open source. The source explicitly frames it as "free, open source, and local-first". No monetisation model is proposed.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster only mentions having tried "a few different organization systems" that did not stick; no specific macOS screenshot app or note-taking tool is named.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vq0gqe/i_built_a_free_mac_app_for_screenshot_clutter_i/) · **Posted:** 2026-08-16T15:47:47+00:00
+- [ ] Validate that the problem is shared — currently the only confirmed user is the poster
+- [ ] Decide whether notch access is the right surface, or whether a menubar / hot-key alternative is needed
+- [ ] Define what counts as "useful" before launch: daily use, weekly use, or one-time clean-up?
+- [ ] Plan a graceful path for users who do not have a notch (older Macs)
+- [ ] Open question from source: what would make a user stop using this after five minutes?

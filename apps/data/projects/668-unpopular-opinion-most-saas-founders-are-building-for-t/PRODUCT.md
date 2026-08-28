@@ -2,7 +2,7 @@
 id: "668"
 slug: unpopular-opinion-most-saas-founders-are-building-for-t
 title: "Unpopular opinion: most SaaS founders are building for themselves and calling it a product."
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpv7jn/unpopular_opinion_most_saas_founders_are_building/"
@@ -45,9 +45,8 @@ Not stated in the source. No product, no competitor, no market mapping.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Fabrication risk: the post is opinion-flavoured, so it is easy to invent a 'feedback routing tool' that the author never asked for. The plan must stay as a discussion capture.
+- Corpus drift: if the entry is enriched as a product plan, future readers may treat the discussion as evidence the tool exists, which the source does not support.
 
 ---
 

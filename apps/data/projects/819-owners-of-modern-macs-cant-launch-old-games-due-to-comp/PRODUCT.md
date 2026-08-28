@@ -2,7 +2,7 @@
 id: "819"
 slug: owners-of-modern-macs-cant-launch-old-games-due-to-comp
 title: "Owners of modern Macs can't launch old games due to complex instructions involving emulators and file conversion"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/other/ff5gcnrro1-owners-of-modern-macs-cant-launch-old-ga"
@@ -14,39 +14,35 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 ---
 # Owners of modern Macs can't launch old games due to complex instructions involving emulators and file conversion
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ UK
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A Mac app that hides emulators and file conversion behind one click, so a UK Mac owner can launch the classic game they remember.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+UK owners of modern Macs (Intel or Apple Silicon) who want to replay an old PC or console title and are put off by the technical setup.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When I want to play an old game, I want an app that picks the right emulator, does the file conversion, and launches the game, so I do not have to follow a forum thread.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether Mac owners launch a vintage game in one click without per-game setup; the source gives no usage signal.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing cannot be derived from the captured source; the title and country do not name a model.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Game launchers (OpenEmu, RetroArch) and classic-game storefronts exist, but the source does not name any direct competitor that lets a modern Mac launch old titles without per-game configuration.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Source is thin: the original ProblemHunt body must be read to confirm which platforms are in scope (DOS, Amiga, console).
+- ROM legality varies by jurisdiction; UK copyright law must be respected and the copy must say so plainly.
+- Apple Silicon compatibility is the single biggest technical risk for any Mac game launcher.
 
 ---
 

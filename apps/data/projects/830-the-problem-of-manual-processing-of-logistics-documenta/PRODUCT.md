@@ -2,7 +2,7 @@
 id: "830"
 slug: the-problem-of-manual-processing-of-logistics-documenta
 title: The problem of manual processing of logistics documentation and lack of unified databases in a Mexican company
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/logistics/phshnmzd51-the-problem-of-manual-processing-of-logi"
@@ -18,35 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Based on source brief:_ Mexico
+A Mexican logistics operator captures a shipment, customs, or delivery document once and finds it again from one shipment view, instead of searching email, file shares, and paper folders. The framing the post supports is "one database for the paperwork that already exists", not "faster logistics" as a generic claim.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** One database for the shipment, customs, and delivery paperwork you already keep.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Logistics operators in a Mexican company | Need to find a document tied to a shipment without searching email, files, and paper |
+| Company owners and ops managers | Need a single source of truth before manual rework becomes an audit or customer problem |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When a shipment moves through a step (origin, customs, delivery), capture the document for that step.
+- When someone asks about a shipment, show every document tied to it from one screen.
+- When a customer or carrier needs a copy, export the right document without a folder hunt.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Source does not state a metric. Outcomes to validate before MVP: time to find a document for a given shipment, share of documents captured at the point of event (versus re-keyed later), and document re-issuance requests per week.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Pricing is not stated by the source. Whether the product is licensed per company, per operator, or per shipment must be validated with the buyer persona.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Logistics SaaS for Mexican carriers (Solomon, ClickOn) exist, but the source does not name any direct competitor that unifies paperwork across the company's logistics vendors.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- The post names no document type; the MVP document set must come from interviews, not from invented categories.
+- Mexican customs and carrier paperwork is local; any cross-border assumption needs confirmation.
+- Manual processing suggests resistance to new tools; rolling out a "unified DB" without a clear capture flow will be ignored.
+- "Manual processing" is the post's word; the time saved cannot be quantified without interviews.
 
 ---
 

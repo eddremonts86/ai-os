@@ -2,7 +2,7 @@
 id: "825"
 slug: no-quick-cheap-fix-for-leaky-faucets-no-clear-diy-guide
 title: "No quick, cheap fix for leaky faucets: no clear DIY guide or affordable plumber"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/other/e59sb30221-no-quick-cheap-fix-for-leaky-faucets-no"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the triage flow: photo upload plus short Q&A producing a leak-type result.
+- [ ] Author the per-leak-type DIY guides (washer, cartridge, O-ring, supply line).
+- [ ] Seed the plumber directory with the poster's India city as the first market.
+- [ ] Add a price band per fix to each plumber listing.
+- [ ] Build the booking / request-visit surface that routes to the listed plumber.
+- [ ] Wire a feedback loop so users can flag a bad listing or an unhelpful guide.
 
 ## Phase 2: Deploy
 

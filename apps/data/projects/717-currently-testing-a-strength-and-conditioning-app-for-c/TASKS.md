@@ -13,24 +13,20 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/717-currently-testing-a-strength-and-conditioning-app-for-c/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem carries the poster's framing exactly: day-state-adaptive workout for combat-sports athletes, competition / weight-cut aware, tracks strength gains / losses, currently testing
+- [ ] Treat the poster's domain background (jiu-jitsu / Muay Thai / wrestling training and coaching) as a real input — but not as a sports-science credential
+- [ ] Add frontmatter `tags` for `combat-sports`, `strength-conditioning`, `adaptive-workout`, `cold-launch`, `first-time-founder`
+- [ ] Carry the "first-time founder / first app" framing into `PLAN.md` Risks as a real risk, not a marketing hook
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture any cold-launch advice
+- [ ] Reject any enrichment that fabricates a sports-science pedigree the poster did not claim
+- [ ] Do not promote "a few testers" to a traction metric
+- [ ] If a future iteration adds a coach-facing surface, gate it on at least one coach user testing the flow
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

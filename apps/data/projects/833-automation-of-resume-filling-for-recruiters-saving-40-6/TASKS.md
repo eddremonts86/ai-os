@@ -2,7 +2,7 @@
 id: "833"
 slug: automation-of-resume-filling-for-recruiters-saving-40-6
 title: Automation of resume filling for recruiters — saving 40-60 minutes on each candidate
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/career/0s98al0y01-automation-of-resume-filling-for-recruit"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the resume upload flow (PDF, DOCX) with a clear storage and retention story surfaced in the UI.
+- [ ] Implement the field extractor for the fields the post implies (name, contact, experience, education, skills).
+- [ ] Build the field-to-form proposal that maps extracted fields onto the candidate profile fields.
+- [ ] Add the review screen where the recruiter confirms or edits each field before write.
+- [ ] Add the per-candidate extraction log so the edit history can be reused on the next candidate.
+- [ ] Measure time per candidate against the recruiter's actual baseline before quoting the 40 to 60 minute saving in any copy.
 
 ## Phase 2: Deploy
 
