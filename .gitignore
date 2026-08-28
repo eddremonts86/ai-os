@@ -5,11 +5,15 @@
 # - Dotfile backups
 # - User-specific outputs
 
-# Outputs
+# Outputs. Two locations on purpose, and the split is the framework/product split:
+#   outputs/            — the framework's own artifacts (research reports, audits, diagrams)
+#   apps/data/outputs/  — the plans product's run artifacts (enrichment reports, slice
+#                         manifests, pipeline logs), written by apps/data/tools/plans-pipeline
+# Both are generated and machine-local, so both are ignored with their .gitkeep preserved.
 outputs/*
-
-# Keep output directory
 !outputs/.gitkeep
+apps/data/outputs/*
+!apps/data/outputs/.gitkeep
 
 # OS
 .DS_Store
@@ -91,12 +95,21 @@ memory/falkordb/data/
 memory/falkordb/ollama-data/
 
 # plans-pipeline runtime state (per-machine cursor, not shared config).
-tools/plans-pipeline/state.json
+apps/data/tools/plans-pipeline/state.json
 
-# Per-agent enrichment scratch: numbered/suffixed PROGRESS logs and agent working dirs.
-# These only ever run on one machine, so they are noise in the shared history.
+# Per-agent enrichment scratch: the numbered/suffixed PROGRESS logs each loop agent writes,
+# and agent working dirs. These only ever run on one machine, so they are noise in the shared
+# history.
 #
-# The pattern deliberately does NOT match bare `PROGRESS.md`, which is the tracked
-# ai-os-loop convention file (the loop's memory across runs) and must stay in git.
+# They live in apps/data/progress/ rather than at the repo root, beside the corpus the loop
+# writes. The loop's whole 4-file set moved with them (TASK.md, LOOP_INSTRUCTIONS.md,
+# PROGRESS.md, and the outputs dir), because that loop enriches the plans corpus and is not
+# framework machinery. Its paths point at the new locations: leaving any of them pointing at
+# the root would recreate the files upstairs on the next run and undo the move.
+#
+# Neither pattern matches bare `PROGRESS.md`, which is the tracked ai-os-loop convention file
+# (the loop's memory across runs) and must stay in git — verified at its new path with
+# `git check-ignore apps/data/progress/PROGRESS.md`.
+apps/data/progress/PROGRESS.*.md
 PROGRESS.*.md
 _agent*/

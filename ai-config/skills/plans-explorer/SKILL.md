@@ -1,6 +1,6 @@
 ---
 name: plans-explorer
-description: Operate the plans-explorer SPA inside AI-OS (~/Projects/ai-os/plans-explorer/). Use when the user mentions "plans explorer", "browse plans", "plans-ranking", "TOP_PROJECTS.md", or asks to work on the plans-explorer app.
+description: Operate the plans-explorer SPA inside AI-OS (~/Projects/ai-os/apps/plans-explorer/). Use when the user mentions "plans explorer", "browse plans", "plans-ranking", "TOP_PROJECTS.md", or asks to work on the plans-explorer app.
 license: MIT
 metadata:
   hermes:
@@ -19,8 +19,8 @@ Static SPA inside the AI-OS framework that indexes 525 product plans (in `../pro
 
 ## When NOT to use
 
-- The user is working on a plan inside `~/Projects/ai-os/projects/NNN-.../`. That is its own plan with its own SPEC/PLAN/TASKS — not the explorer.
-- The user wants to modify `site/index.html` (that's the landing page, separate).
+- The user is working on a plan inside `~/Projects/ai-os/apps/data/projects/NNN-.../`. That is its own plan with its own SPEC/PLAN/TASKS — not the explorer.
+- The user wants to modify `apps/site/index.html` (that's the landing page, separate).
 - The user is editing `TOP_PROJECTS.md` directly (that's done by the `problemhunt-scraper` cron).
 
 ## How to start
@@ -95,14 +95,14 @@ Today: money / learn / fun. To add (e.g.) "speed":
 
 Currently undecided. Options:
 
-- Subpath under `ai-os.eduardoinerarte.dk/plans/` (shares Coolify setup with `site/`).
+- Subpath under `ai-os.eduardoinerarte.dk/plans/` (shares Coolify setup with `apps/site/`).
 - Separate subdomain `plans.ai-os.eduardoinerarte.dk`.
 
 `app/dist/` is deployable to any static host. CI re-runs `./refresh-data.sh` on changes to `../projects/TOP_PROJECTS.md` or new plan folders.
 
 ## Related
 
-- Corpus: `~/Projects/ai-os/projects/`
-- Rankings source: `~/Projects/ai-os/projects/TOP_PROJECTS.md`
+- Corpus: `~/Projects/ai-os/apps/data/projects/`
+- Rankings source: `~/Projects/ai-os/apps/data/projects/TOP_PROJECTS.md`
 - Visual reference: `~/Projects/ai-os/site/index.html`
 - AI-OS master: `~/Projects/ai-os/CLAUDE.md`

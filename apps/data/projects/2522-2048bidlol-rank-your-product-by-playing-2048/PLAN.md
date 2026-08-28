@@ -1,0 +1,30 @@
+---
+id: "2522"
+slug: "2048bidlol-rank-your-product-by-playing-2048"
+title: "2048bid.lol – Rank your product by playing 2048"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49406605"
+category: show-hn
+date: "2026-08-23"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# 2048bid.lol – Rank your product by playing 2048
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._
