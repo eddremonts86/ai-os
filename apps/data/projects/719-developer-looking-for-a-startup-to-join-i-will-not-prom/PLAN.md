@@ -13,16 +13,26 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- React
+- Next.js
+- Node.js
+- React Native
+- 4+ years of experience (poster-stated)
+
+Stack is a hard constraint: any community recommendation should be filtered for relevance, not pasted wholesale.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a job-search question, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Capture the channels already tried: Wellfound, LinkedIn, YC jobs, cold email, Discord.
+2. M1 — Capture community replies naming additional communities / Discords / Slacks / channels.
+3. M2 — Reject any enrichment that turns this into a "job-board recommendation product" — the source is a developer asking the community.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Cold-reach risk: the poster already reports "never reply" on founder cold outreach; a channel is not a fix by itself.
+- Channel-quality risk: open Discords / Slacks vary wildly in founder density; do not promote one without poster-confirmed signal.
+- Geography-blind risk: the poster does not name a location; remote-friendly vs. in-person communities should not be invented.

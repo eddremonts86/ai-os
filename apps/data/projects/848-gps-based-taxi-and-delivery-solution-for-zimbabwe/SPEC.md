@@ -2,35 +2,35 @@
 id: "848"
 slug: gps-based-taxi-and-delivery-solution-for-zimbabwe
 title: GPS-based taxi and delivery solution for Zimbabwe
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/logistics/m71idr7761-gps-based-taxi-and-delivery-solution-for"
+  url: "https://problemhunt.pro/"
 category: logistics
-date: "2025-11-12"
-tags: [Logistics, Transportation, Other]
+date: "2025-11-14"
+tags: [Logistics, Other]
 country: Zimbabwe
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Flutter (Android-first), Dart, Postgres, Node.js API (Fastify), Coolify, Docker]
 ---
 # GPS-based taxi and delivery solution for Zimbabwe
 
 ## Problem
 
-Zimbabwe
+A poster in Zimbabwe wants a GPS-based taxi and delivery solution. The poster names no specific city or fleet size. The need is a dispatch and tracking app that works on low-end Android phones and intermittent connectivity.
 
 ---
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Give Zimbabwean taxi and delivery operators a dispatch and tracking tool that works on the network and devices actually available there.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Small taxi associations and delivery operators in Zimbabwe, plus their drivers and the riders or senders who book them.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Three apps: a driver app (accept job, navigate, mark done), a rider/sender app (request, watch on map, pay cash), and a small operator dashboard (dispatch, monitor). Offline-first: queue actions locally, sync when online.
 
 ## Design Direction
 
@@ -38,4 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Must work on Android 8 and on 2G/3G with intermittent signal. No live Google-Maps-equivalent in some areas; allow map tiles to be cached locally. Payment is cash on delivery in v1.

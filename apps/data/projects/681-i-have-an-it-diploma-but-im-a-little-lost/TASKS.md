@@ -13,26 +13,20 @@ date: "2026-08-16"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/681-i-have-an-it-diploma-but-im-a-little-lost/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm in `SPEC.md` Problem that the poster already has the basics (HTML, CSS, JS, databases, rough backend)
+- [ ] Confirm the post is a learning-path question, not a buildable brief, and record that in `SPEC.md` MVP Scope
+- [ ] Mirror the "no specific stack named" caveat in `PRODUCT.md` Competitive Landscape and `PLAN.md` Tech Stack
+- [ ] Add frontmatter `tags` such as `learning-path`, `saas-beginner`, `roadmap-overwhelm`
 
 ## Phase 1: Core
 
-- [ ] Re-read the source and confirm the post is a learning-path question
-- [ ] Note that the poster already has IT-diploma basics (HTML, CSS, JS, databases, rough backend)
-- [ ] If a future plan proposes a tool, gate it on minimum-stack evidence from shipped beginners
+- [ ] Re-read the Reddit thread and capture any reply that names a concrete minimum stack the poster can act on
+- [ ] Treat the poster's existing skills as the floor, not the gap — they already know HTML/CSS/JS
+- [ ] Reject any enrichment that proposes a starter-kit or tutorial platform — the poster asked for a minimum stack, not a product
+- [ ] If a downstream plan ships a beginner-friendly minimum stack, gate it on evidence from beginners who actually shipped with it
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

@@ -13,24 +13,20 @@ date: "2026-08-15"
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/729-i-will-not-promote-whats-the-small-message-thats-been-s/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [ ] Confirm `SPEC.md` Problem records the poster's exact framing: 4-sentence reply to a person who can say no; Slack replies go out in seconds; "English is my second language" is their own hypothesis; they think the same would happen in their own language
+- [ ] Carry "I will not promote" into `SPEC.md` Constraints and `PLAN.md` Risks
+- [ ] Do not introduce therapy / coaching / productivity framing — the source does not
+- [ ] Add frontmatter `tags` for `founder-emotions`, `draft-freeze`, `high-stakes-message`, `non-native-english`
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Re-read the Reddit thread and capture each parallel pattern and each "what works differently" reply
+- [ ] Keep "English is my second language" attributed to the poster
+- [ ] Reject any reply that promotes a writing tool, app, or coaching service
+- [ ] If a downstream plan proposes a writing aid, gate it on community-named coping patterns, not invented ones
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-16_

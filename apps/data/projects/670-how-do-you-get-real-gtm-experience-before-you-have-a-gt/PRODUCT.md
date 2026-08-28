@@ -2,7 +2,7 @@
 id: "670"
 slug: how-do-you-get-real-gtm-experience-before-you-have-a-gt
 title: How do you get real GTM experience before you have a GTM job?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpusoj/how_do_you_get_real_gtm_experience_before_you/"
@@ -45,9 +45,8 @@ Not stated in the source. The post references personal projects on real SaaS pro
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Fabrication risk: career-question posts are easy to over-extract into tools (gig boards, mentor matching, course catalogs) that nobody asked for. The plan stays as a discussion capture.
+- Asymmetric supply: the author is supply (willing to work); founder demand for that supply is not in the post, so any future product needs founder-side evidence before scoping.
 
 ---
 

@@ -2,7 +2,7 @@
 id: "835"
 slug: search-for-an-effective-cleaning-business-management-so
 title: Search for an effective cleaning business management solution
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/business/57nszufsz1-search-for-an-effective-cleaning-busines"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Validate the MVP scope (scheduling, routing, invoicing) with one cleaning business owner before building.
+- [ ] Build the job board that schedules a clean against a client and a team.
+- [ ] Add the route view that orders the day's jobs by location for the team that runs them.
+- [ ] Build the invoice flow that takes a completed job and produces an invoice the client can pay.
+- [ ] Add the client list with contact, address, and recurring schedule.
+- [ ] Measure the owner's time spent moving data between tools before quoting any "effective" claim in copy.
 
 ## Phase 2: Deploy
 

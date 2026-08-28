@@ -2,7 +2,7 @@
 id: "834"
 slug: protection-against-fraudulent-schemes-in-trading-and-cr
 title: Protection against fraudulent schemes in trading and cryptocurrency investments
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/lux1195af1-protection-against-fraudulent-schemes-in"
@@ -26,7 +26,12 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Source the known-schemes database from public regulator and consumer-protection lists, versioned by date.
+- [ ] Build the check surface that takes a description or platform name and returns a verdict.
+- [ ] Build the per-match explainer with the regulator name and the warning date.
+- [ ] Add the honest "not in the database" path with an explanation of what the database does not cover.
+- [ ] Add the "report a scheme" intake for cases not yet in the database.
+- [ ] Add the explicit "detection aid, not legal advice" disclaimer before the verdict renders.
 
 ## Phase 2: Deploy
 

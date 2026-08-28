@@ -2,7 +2,7 @@
 id: "820"
 slug: linkedin-content-creators-operate-blindly-they-see-the-
 title: "LinkedIn content creators operate blindly: they see the results but don't understand the reasons behind their posts' success or failure"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/media/ja0oyjzdd1-linkedin-content-creators-operate-blindl"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the manual import flow for the last 30 LinkedIn posts and engagement numbers
+- [ ] Implement the interpretable analysis view with confidence flags
+- [ ] Add the weekly digest email with the strongest pattern from the last 30 days
+- [ ] Document the LinkedIn ToS-compliant import path in the README
+- [ ] Write tests for the correlation logic with sample size guards
 
 ## Phase 2: Deploy
 

@@ -13,16 +13,20 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster explicitly says they are "a bit lost on which technology or tool I should start with" — the stack is the open question, not a constraint.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a tooling-recommendation question, not a product spec. Naming an architecture here would be a fabrication.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Record this as a tooling-recommendation capture, not a buildable plan.
+2. M1 — Capture community-recommended vibecoding tools from the thread (each with what it is good for, what it is not).
+3. M2 — If a downstream plan proposes a "vibecoding tool chooser", gate it on the captured community short-list as its source of truth.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Single-tool risk: do not promote any one tool into "the right answer" — the source explicitly asks the community.
+- Term-of-art risk: "vibecoding" is used without definition; any downstream plan that depends on a specific definition risks misinterpretation.
+- Empty-source risk: the poster's own SaaS ideas are not specified, so the corpus cannot anchor a recommendation to a specific use case.

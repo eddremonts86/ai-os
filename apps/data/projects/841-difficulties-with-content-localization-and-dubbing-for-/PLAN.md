@@ -2,30 +2,35 @@
 id: "841"
 slug: difficulties-with-content-localization-and-dubbing-for-
 title: Difficulties with content localization and dubbing for TV channel
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/media/c1u4lh83p1-difficulties-with-content-localization-a"
+  url: "https://problemhunt.pro/"
 category: media
 date: "2025-11-14"
-tags: [Media, AI, Other]
+tags: [Media, Other]
 country: Jordan
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python (FastAPI), TypeScript (React for the editor UI), Whisper, Coqui XTTS / Piper, Postgres]
 ---
 # Difficulties with content localization and dubbing for TV channel
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Python (FastAPI), TypeScript (React for the editor UI), Whisper, Coqui XTTS / Piper, Postgres.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+FastAPI backend runs transcription, translation, and TTS as queued jobs. A React editor hosts the time-coded script view and the final mix-down preview. Postgres stores shows, scripts, and audio assets.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- M1: ingest + translate + time-coded script editor
+- M2: synthetic Arabic voiceover generation
+- M3: mix-back with ducking and final render
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+GPU required for TTS and alignment; design for a single workstation first, not a cluster.
+
+- Synthetic Arabic voice quality will not match a professional actor; position as a drafting tool, not a replacement.
+- Translation accuracy for culturally specific content (humor, idioms) needs human review; do not market the output as broadcast-ready.

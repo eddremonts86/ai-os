@@ -2,7 +2,7 @@
 id: "811"
 slug: indie-developers-have-nowhere-to-cheaply-and-effectivel
 title: Indie developers have nowhere to cheaply and effectively find the first 50-100 active users to test new niche products.
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/tok505klc1-indie-developers-have-nowhere-to-cheaply"
@@ -10,42 +10,30 @@ category: marketing
 date: "2025-12-11"
 tags: [Marketing, Startups, Other]
 country: Russia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Next.js, TypeScript, PostgreSQL, Stripe, Resend, Vercel]
 ---
 # Indie developers have nowhere to cheaply and effectively find the first 50-100 active users to test new niche products.
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Not written yet — `ai-os plans enrich` fills this section._
+A free or near-free way for an indie developer to gather their first 50–100 testers for a niche product.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Indie developers (per the title) launching niche products who need a small, real user base for the first round of testing.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+When a niche product is ready for real users, the indie developer needs to find people who will actually try it without paying for ads.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
-
-## Pricing & Monetization
-
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Whether each posted product collects 50–100 tester sign-ups, and whether testers later report having used the product.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Launch communities (ProductHunt, BetaList) and SEO/ads channels exist, but the source does not name any direct competitor that surfaces the first 50–100 niche users affordably.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/marketing/tok505klc1-indie-developers-have-nowhere-to-cheaply) · **Category:** marketing · **Tags:** Marketing,Startups,Other
+The source does not say where these testers should come from (existing communities, paid panels, the indie-developer ecosystem); the matching model is the real unknown.

@@ -2,15 +2,15 @@
 id: "845"
 slug: there-is-no-effective-tool-for-researching-high-margin-
 title: There is no effective tool for researching high-margin and small e-commerce products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/retail/yjz80tm2z1-there-is-no-effective-tool-for-researchi"
+  url: "https://problemhunt.pro/"
 category: retail
-date: "2025-11-13"
-tags: [Retail, Business, AI, Other]
+date: "2025-11-14"
+tags: [Retail, Other]
 country: Australia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python (FastAPI), HTMX + Jinja templates, Postgres, Fly.io]
 ---
 # There is no effective tool for researching high-margin and small e-commerce products
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/845-there-is-no-effective-tool-for-researching-high-margin-/`
+- [ ] Copy `edd-app-template` → `apps/845-there-is-no-effective-tool-for-researching-high-margin-/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Connect one public signal source (eBay sold listings)
+- [ ] Compute a simple saturation score (reviews, listings, sell-through)
+- [ ] Build watchlist persistence with signal snapshot per entry
+- [ ] Citation column on every signal
 
 ## Phase 2: Deploy
 

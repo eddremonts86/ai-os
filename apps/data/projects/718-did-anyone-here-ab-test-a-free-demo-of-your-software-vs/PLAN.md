@@ -13,16 +13,21 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name a SaaS, only the A/B-test question.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a pricing-research question, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Capture the A/B-test framing (free demo vs. free trial) as the poster's open question.
+2. M1 — Document the framing difference: free trial = time-boxed full access; free demo = gated pre-defined scenario the prospect plays with (SalesForce pattern).
+3. M2 — Capture community replies that report a tested lift / drop in either arm.
+4. M3 — Reject any enrichment that names a winner without evidence.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Benchmark-folklore risk: replies may cite generic "free trials convert better" stats; the poster explicitly wants tested data, not folklore.
+- Demo-scope risk: a "free demo" can mean many things (guided tour, sandboxed account, time-boxed read-only); the poster means the gated-predefined-project kind.
+- No-test-yet risk: the poster is in research, not execution. The corpus should not record a "winner" that does not exist.

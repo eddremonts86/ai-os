@@ -11,40 +11,40 @@ date: "2026-08-16"
 ---
 # Currently testing a strength and conditioning app for combat sports
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Whole idea is the workout adapts based around your day and how you’re feeling so you answer an onboarding questionnaire and it creates a gym workout based on that for you. It also works inline with and around your competitions and weight cuts and keeps track of strength gains and losses and adapts around that. I’m currently in the testing phase and have a few people testing it (I myself have trained in jiu jitsu for a few years and have coached in it as well as Muay Thai and trained in wrestling). This is my first ever app, and my first time being a founder or anything like that, never really saw tech in my life and started this with the hopes of just learning but my friends have been encouraging me and think it has legs. I’m looking at a cold launch as the Instagram for the app isn’t really picking up. So any advice would be much appreciated, and if not thanks for taking the time to read. submitted by /u/Hopeful-Candidate886 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A strength and conditioning app for combat-sports athletes that adapts the workout to how the user feels on a given day, runs alongside competitions and weight cuts, and tracks strength gains / losses to keep adapting.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: combat-sports athletes (jiu-jitsu, Muay Thai, wrestling, MMA) who compete, do weight cuts, and want their gym work to flex with the day.
+- Secondary: coaches assigning adaptive workouts to athletes in a competition camp.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — get a workout that matches today's state, not yesterday's PR.
+2. Functional — coordinate gym work around a competition and weight cut without losing strength.
+3. Emotional — stop second-guessing whether today should be a hard day or an easy day.
+4. Social — let a coach see the same adaptive plan the athlete is following.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Tester feedback during the testing phase (the poster is currently collecting it).
+- Strength gain / loss tracking accuracy is the only stated product signal.
+- Concrete retention or paid-conversion metrics are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a testing-phase update, not a launch with pricing.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name any existing combat-sports strength & conditioning app or general adaptive-workout app.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1vpxehu/currently_testing_a_strength_and_conditioning_app/) · **Posted:** 2026-08-16T13:43:00+00:00
+- [ ] Validate that day-state-adaptive programming is welcomed by athletes and not seen as "the app is making excuses for me"
+- [ ] Validate competition / weight-cut awareness against actual sports-science practice (no such credentials are claimed by the poster)
+- [ ] Decide on a cold-launch channel given Instagram is not picking up — the source asks for advice but does not propose one
+- [ ] Treat the testing-phase signal as thin evidence; do not promote "a few testers" to a growth metric
+- [ ] First-time-founder risk: scope creep and under-investment in distribution are both plausible

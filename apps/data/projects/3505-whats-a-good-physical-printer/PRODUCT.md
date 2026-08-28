@@ -1,0 +1,52 @@
+---
+id: "3505"
+slug: whats-a-good-physical-printer
+title: "What's a Good Physical Printer?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49476981"
+category: ask-hn
+date: "2026-08-28"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What's a Good Physical Printer?
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ I want to buy a printer.I have a theory that all printers are made by predatory companies that want to sell you planned obsolescence devices with cryptographically motivated expensive cartridges.Am I not fully correct? Is there a good option outside of this realm? Should I buy an old used laser printer?
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Jobs To Be Done
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Success Metrics
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49476981) · **Category:** ask-hn · **Tags:** Ask HN,Problem

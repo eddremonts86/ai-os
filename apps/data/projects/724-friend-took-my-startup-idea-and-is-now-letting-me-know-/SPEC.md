@@ -12,21 +12,23 @@ date: "2026-08-16"
 # Friend took my startup idea and is now letting me know he buili it and is going to sell it. I will not promote
 
 ## Problem
- 2 years ago I started building a tech startup and confided in my friend about the progress. Though it was a promising idea, it involved some AI tech which was a bit too expensive at the time in order for it to be profitable. I wrapped up the tech project, 95% done and went on with my life. Well, now with AI progress speeding up I realized that it could be profitable now and I should wrap it up though I didn't get to it yet because of other personal issues. I was surprised when my friend told me what side project they started vibe coding and I got demoed a full working version, though still less advanced than the one I built. He then told me of his plans to sell it in the industry we both activate in, as it's a niche project. He also started confiding in me with regards to issues he's facing and thought provoking me . A part of me wants to ask him to collaborate and go ahead together, but now sure if I could trust him any longer and either way both versions of the startup are 85% done at least, though he wants it to make it a full saas, so arguably there's still room to grow. I'm not sure why did he warn me he finished it in the first place, perhaps so I can advise him with issues he's facing or to salvage the friendship. How would you deal with this situation? I can wrap up my project as well in 2 weeks time, though the aftermath will be ugly as everyone in the industry sees us as friends and both coming up with almost identical startups will look strange. submitted by /u/Gullible_Insect190 [link] [comments]
 
----
+A Reddit relationship / startup-ethics post. Two years ago the poster started building a tech startup and confided in a friend. The idea was promising but the AI tech needed was too expensive at the time to be profitable, so the poster paused the project at "95% done" and moved on. With AI costs dropping, they recently realised it could be profitable now. They have not yet wrapped it back up due to personal issues. They were surprised when the friend demoed a full working version (still less advanced than the poster's, but built via vibe coding), told the poster of plans to sell it in the industry they both operate in (a niche), and started confiding about issues and asking the poster to think through them. The poster is torn between asking to collaborate and the trust damage from the friend shipping first. Both versions are at least 85% done; the friend wants to take it to a full SaaS. The poster could wrap up in 2 weeks. The aftermath looks ugly because everyone in the industry sees them as friends, and two near-identical startups will look strange. The poster is asking how to deal with this.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Document the relationship / business-ethics dilemma: a friend took the poster's idea, built it, and is now selling it in the same niche; both versions are at least 85% done and the industry will see them as friends with near-identical products.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a solo founder whose friend has shipped a near-clone of their paused startup.
+- Secondary: other founders who confided early-stage ideas in friends and now face the same situation.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The dilemma frame: pause-and-friend-ships-first vs. wrap-up-and-compete.
+- The trust dimension (the friend confided issues back to the poster after shipping).
+- The optics dimension (industry sees them as friends with near-identical products).
 
 ## Design Direction
 
@@ -34,4 +36,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The poster is not naming the friend, the niche, the AI tech, or the buyer of the friend's version.
+- The post is "I will not promote" — do not promote either product.
+- The poster says they can wrap up in 2 weeks; this is the poster's own estimate, not a guarantee.
+- No specific legal advice is in the source — IP / NDA / patent considerations are unstated.

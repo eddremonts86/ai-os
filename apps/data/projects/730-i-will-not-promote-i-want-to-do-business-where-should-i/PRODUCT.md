@@ -11,40 +11,40 @@ date: "2026-08-15"
 ---
 # I will not promote: I want to do business. Where should I start?
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Hi everyone, I want to do business. Although I have a business background, I still don’t feel confident enough, and I feel like I don’t have much practical knowledge about actually starting and running a business. I’m genuinely at the very beginning and haven’t started anything yet. Before I begin this journey, I want to learn from people who have actually started businesses and understand how experienced founders think about starting one. Some questions I have: • How do I know whether a business idea is actually worth pursuing? How do I research and validate an idea before putting significant time or money into it? • How important is the idea itself? Is the idea the most important part, or are the customer, the problem being solved, product or service, execution, sales, distribution, or something else more important? • As someone with a business background, can I start a business in a completely different field where I don’t have an academic or professional background? If so, how should I approach learning that industry? • When starting your first business, is it better to take an existing business idea or model that already works and create your own version, or should you try to come up with something genuinely unique? I have both kinds of ideas in mind, so I’m curious which approach makes more sense for a first time founder. • If you are building something that already exists, how different does it actually need to be? How can you take an existing idea and improve or differentiate it rather than simply copying it? • What are the biggest mistakes new founders commonly make, and what do you wish you had known before starting your first business? • What books, courses, resources, or other things would you recommend learning before starting? I know its too many points but im just putting my thoughts into a post I’m genuinely at the very beginning and haven’t started anything yet. I want to understand how experienced founders think about starting a business and what they prioritize before taking that first step. submitted by /u/Maximum-Page3433 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced answer set to seven first-time-founder questions (idea evaluation, validation, idea-vs-execution, cross-field entry, clone-vs-original, differentiation, common mistakes, learning resources) — for a would-be founder with a business background who is at the very beginning.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a first-time would-be founder with a business background who has not started anything yet.
+- Secondary: other pre-idea would-be founders in a similar position.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — get a credible answer to each of the seven explicit questions.
+2. Functional — figure out the very first step without having to take a position on the rest yet.
+3. Emotional — reduce the overwhelm of "I want to do business" without a starting point.
+4. Social — hear from experienced founders how they think about starting.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that answer at least one of the seven questions concretely.
+- Replies that name a specific reading list / course / resource for a first-time founder.
+- Concrete traction metrics are not in the source (the poster has not started yet).
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is a pre-idea advice question, not an offer.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name any specific business category, industry, or competitor.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vp3cx3/i_will_not_promote_i_want_to_do_business_where/) · **Posted:** 2026-08-15T13:48:24+00:00
+- [ ] Reject any reply that promotes a specific book, course, or paid service — "I will not promote" applies
+- [ ] Do not invent a reading list the poster did not name
+- [ ] Keep the poster's "business background" framing — they are not "knows nothing", they are at the very beginning
+- [ ] If a downstream plan turns this into a curated curriculum, gate it on community-confirmed resources
+- [ ] Treat the seven questions as the corpus's anchor; do not collapse them into a generic "how to start" article

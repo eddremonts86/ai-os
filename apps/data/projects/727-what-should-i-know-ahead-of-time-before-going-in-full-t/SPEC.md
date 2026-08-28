@@ -12,21 +12,23 @@ date: "2026-08-15"
 # What should I know ahead of time before going in full time on a startup idea? [I will not promote]
 
 ## Problem
- I'm a software engineer at a big tech company and I've been wanting to quit for a long time due to the return to office policy. I've got an app idea that I'm currently in the middle of validating and getting a prototype developed for and I'm really liking how it's turning out so far. I'm planning on tentatively quitting my job by end of year and going all in on this app for at least 6 months or so. I'm thinking that even if it fails I can still gain valuable experience and jump over to another company. Before I take the leap I'm giving myself lots of time to think this through. So far I'm planning out how my monthly expenses and health insurance will look like while I tap into my savings during those months. What else should I be considering carefully before I leave my job to go in on this idea? submitted by /u/ihatecoreclasses [link] [comments]
 
----
+A Reddit pre-quit advice post from a software engineer at a big tech company who has been wanting to quit for a long time due to the return-to-office policy. They have an app idea they are currently validating and prototyping and they like how it is turning out. They plan to tentatively quit by end of year and go all in on the app for at least 6 months, with a fallback that even if it fails they can still gain valuable experience and jump to another company. They are budgeting monthly expenses and health insurance from savings during those months and asking what else they should be considering carefully before leaving their job.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Capture the pre-quit planning checklist the poster already has (monthly expenses, health insurance, 6-month runway, fallback plan to re-enter the job market) and surface the additional considerations the community names, without inventing financial figures, equity grants, or specific employer policies.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a software engineer at a big tech company planning a quit-by-end-of-year leap into an early-stage startup.
+- Secondary: other big-tech engineers considering a similar leap with a runway-and-fallback plan.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The poster's stated plan: validate + prototype, then quit by end of year, ~6 months runway, expenses and health insurance budgeted from savings.
+- The fallback plan: even on failure, valuable experience and re-enter job market.
+- Community-named additional considerations (legal, financial, equity, personal).
 
 ## Design Direction
 
@@ -34,4 +36,9 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The poster says "tentatively" quitting — the date is not firm.
+- "Big tech" is named as employer category, not a specific company.
+- No specific app idea, customer, or revenue projection is in the source.
+- No specific savings amount, monthly expense figure, or runway number is in the source.
+- No equity / vesting / RSU details are stated (these would be highly relevant but the poster did not include them).
+- The post is "I will not promote" — do not promote the app.

@@ -17,9 +17,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Pending manual refinement._
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 

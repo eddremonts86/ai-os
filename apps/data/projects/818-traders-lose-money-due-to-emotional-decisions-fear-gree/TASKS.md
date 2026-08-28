@@ -2,7 +2,7 @@
 id: "818"
 slug: traders-lose-money-due-to-emotional-decisions-fear-gree
 title: "Traders lose money due to emotional decisions (fear, greed) and lack a tool for real-time control of their psychological state during trading"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/psychology/vhe68ui8b1-traders-lose-money-due-to-emotional-deci"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the session start and end screens with intent and risk-budget capture
+- [ ] Implement the in-session nudge engine with simple behavioural signals
+- [ ] Build the end-of-session review that shows nudges and the trades that followed
+- [ ] Add SEBI-aware disclosure copy in the app footer
+- [ ] Write tests for the nudge-trigger logic
 
 ## Phase 2: Deploy
 

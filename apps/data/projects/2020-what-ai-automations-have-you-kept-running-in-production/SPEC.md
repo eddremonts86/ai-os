@@ -15,9 +15,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Problem
 
-_Pending manual analysis._
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Objective
 
