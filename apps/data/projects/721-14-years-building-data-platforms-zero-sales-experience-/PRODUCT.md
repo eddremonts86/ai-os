@@ -11,40 +11,39 @@ date: "2026-08-16"
 ---
 # 14 years building data platforms. Zero sales experience. How do I get my first SME clients? (I will not promote)
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ Hello Everyone, I have around 14 years of experience in data engineering. I recently started a small company focused on helping SMEs build modern data platforms so they can actually use their data properly (instead of having it sitting in spreadsheets, outdated systems, or half-broken pipelines). I’m strong on the technical side designing and building solid, scalable data platforms is what I enjoy and what I am good at. The problem is everything else: sales, GTM, finding clients, talking about money. I have basically zero experience there. Right now I am struggling to get the first few clients. I’ve even started thinking about doing the first project(s) at a very low rate or free (in exchange for a word of mouth and testimonial) just to prove what we can do. Part of me feels this is necessary to get momentum. Another part of me feels it’s a bad idea. Has anyone here been in a similar situation (technical founder / small agency starting out)? What actually worked for you to get the first clients when you had strong delivery skills but weak sales skills? Open to any honest advice and feedback. submitted by /u/Stanford_BC5533 [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced answer for a 14-year data engineer who has just started an SME-focused data-platform company and is weighing whether discounted or free first projects (in exchange for testimonials / word of mouth) are a good way to land the first clients.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a 14-year data engineer who has just started an SME-focused data-platform company.
+- Secondary: other technical founders / small-agency owners in the same "delivery-strong, sales-weak" position.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — land the first SME client without a sales playbook.
+2. Functional — decide whether discounted or free first projects are the right way in.
+3. Emotional — reduce the anxiety of being "good at delivery, weak at sales" with peer experience.
+4. Social — hear from other technical founders / agency owners who have been there.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that confirm or contest the discounted-first-project approach.
+- Replies that name a specific way the first client was landed (referral, content, cold outbound, etc.).
+- Concrete retention / revenue metrics for the poster's agency are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated as a price. The only pricing signal is "very low rate or free" for the first project(s), in exchange for a testimonial and word of mouth. No amount is named.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name any other data-platform-for-SME agency or freelancer.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vpwd19/14_years_building_data_platforms_zero_sales/) · **Posted:** 2026-08-16T12:55:58+00:00
+- [ ] Reject any reply that promotes a specific rate card — the poster did not name one
+- [ ] Note that "free or very low rate in exchange for a testimonial" is the poster's hypothesis, not a tested practice
+- [ ] Reject any enrichment that turns this into a sales-tooling product — the source is a founder-advice post
+- [ ] The "I will not promote" framing must not be bypassed — do not promote the poster's agency

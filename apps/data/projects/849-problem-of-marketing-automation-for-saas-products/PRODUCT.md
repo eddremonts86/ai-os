@@ -2,15 +2,15 @@
 id: "849"
 slug: problem-of-marketing-automation-for-saas-products
 title: Problem of marketing automation for SaaS products
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/marketing/mrcgth24s1-problem-of-marketing-automation-for-saas"
+  url: "https://problemhunt.pro/"
 category: marketing
-date: "2025-11-09"
-tags: [Marketing, Media, Other]
+date: "2025-11-14"
+tags: [Marketing, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Node.js API (Fastify), TypeScript, Postgres, BullMQ, Coolify, Docker]
 ---
 # Problem of marketing automation for SaaS products
 
@@ -18,34 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Define your SaaS lifecycle in a few hundred lines of YAML and run it yourself instead of paying for an enterprise platform.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+| Stakeholder | Why they care |
+|---|---|
+| Primary user in USA | Founders and small marketing teams at US-based SaaS companies (typically under 20 employees) who want lifecycle automation without an enterprise contract. |
+| Adjacent user | Anyone the primary user would need to coordinate with to use the product. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When a user signs up, send a defined welcome sequence.
+- When a user goes quiet, send a re-engagement message.
+- When I change the journey, see the diff in a PR.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether a small team can ship and revise a three-step welcome journey in an afternoon.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The source does not name a price or willingness-to-pay. Pricing is left as an open question to be answered after user interviews, not invented here.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Marketing-automation platforms (Customer.io, ActiveCampaign) exist, but the source does not name any direct competitor that is purpose-built for SaaS marketing automation.
 
 ## Risks & Open Questions
 
+- Deliverability of self-sent email is a real risk; document SPF/DKIM setup.
+- The line between 'automation' and 'spam' is a product judgment; do not ship a tool that helps the latter.
 - [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- [ ] Confirm willingness to pay with real users
+- [ ] Re-check USA-specific compliance expectations
 
 ---
 
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/marketing/mrcgth24s1-problem-of-marketing-automation-for-saas) · **Category:** marketing · **Tags:** Marketing,Media,Other
+_Source:_ [ProblemHunt](https://problemhunt.pro/) · **Category:** marketing · **Country:** USA

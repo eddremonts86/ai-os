@@ -13,16 +13,20 @@ date: "2026-08-16"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The poster does not name a specific stack, idea, or industry.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a meet-builders post, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Capture the poster's framing exactly: stable engineering job, more excited by side projects / startup ideas / shipping, open to being an early contributor, not necessarily the founder.
+2. M1 — Capture any replies that introduce a real build-in-progress or community of builders.
+3. M2 — Reject any enrichment that turns this into a matchmaker product or names a specific startup.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Framing-violation risk: the poster explicitly says "not posting this with a polished pitch or expecting someone to offer me a 'founding engineer' position in the comments" — any plan that reads the post as a job application is wrong.
+- Stable-job framing: the poster is exploring while employed, not job-hunting under pressure; recommendations should match that energy.
+- No-specific-idea risk: do not invent a startup idea or stack for the poster to join.

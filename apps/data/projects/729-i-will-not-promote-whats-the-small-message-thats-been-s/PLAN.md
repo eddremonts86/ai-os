@@ -13,16 +13,22 @@ date: "2026-08-15"
 
 ## Tech Stack
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not stated in the source. The post is a personal / emotional-process question; no engineering stack is implied.
 
 ## Architecture
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Not applicable. The source is a personal / emotional-process question, not a product spec.
 
 ## Milestones
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. M0 — Capture the poster's exact framing: freeze on 4-sentence reply to a person who can say no; Slack replies go out in seconds; "English is my second language" is the poster's own hypothesis.
+2. M1 — Capture community replies that describe the same pattern.
+3. M2 — Capture any "what works differently" the community names.
+4. M3 — Reject any enrichment that promotes a tool or turns this into a productivity brief.
 
 ## Risks
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Tool-promo risk: "I will not promote" — do not promote any writing, focus, or productivity tool.
+- Cause-invention risk: "English is my second language" is the poster's hypothesis, not a verified cause.
+- Mental-health framing risk: the source does not invoke therapy / anxiety / coaching; do not import that frame.
+- Self-help template risk: turning this into a "5 steps to break the freeze" article would betray the source's reflective tone.

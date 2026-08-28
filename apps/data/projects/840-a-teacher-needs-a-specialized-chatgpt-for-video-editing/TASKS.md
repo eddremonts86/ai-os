@@ -2,15 +2,15 @@
 id: "840"
 slug: a-teacher-needs-a-specialized-chatgpt-for-video-editing
 title: A teacher needs a specialized «ChatGPT for video editing»
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/education/15ig65exr1-a-teacher-needs-a-specialized-chatgpt-fo"
+  url: "https://problemhunt.pro/"
 category: education
 date: "2025-11-14"
-tags: [Education, Media, AI, Other]
+tags: [Education, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [React (Vite), TypeScript, ffmpeg.wasm, "\"Whisper (local", "whisper.cpp)\"", Static hosting]
 ---
 # A teacher needs a specialized «ChatGPT for video editing»
 
@@ -18,7 +18,7 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/840-a-teacher-needs-a-specialized-chatgpt-for-video-editing/`
+- [ ] Copy `edd-app-template` → `apps/840-a-teacher-needs-a-specialized-chatgpt-for-video-editing/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -26,7 +26,10 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Upload video, run local Whisper transcription
+- [ ] Build chat interpreter that maps plain-English requests to ffmpeg ops
+- [ ] Render edited MP4 with burned captions
+- [ ] Generate edit-decision-list file for transparency
 
 ## Phase 2: Deploy
 

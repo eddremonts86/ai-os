@@ -2,7 +2,7 @@
 id: "821"
 slug: impossible-to-find-quality-web3-projects-and-communitie
 title: Impossible to find quality Web3 projects and communities due to information noise and fraud
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/finance/1yr4ejpc51-impossible-to-find-quality-web3-projects"
@@ -26,7 +26,11 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Design and document the quality rubric (developer activity, audit status, on-chain footprint, community health)
+- [ ] Build the editor for adding entries with evidence fields
+- [ ] Build the public directory page with the rubric visible per entry
+- [ ] Add the contributor flow with evidence requirements
+- [ ] Build the moderation queue for review before publishing
 
 ## Phase 2: Deploy
 

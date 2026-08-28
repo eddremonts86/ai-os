@@ -2,15 +2,15 @@
 id: "847"
 slug: ai-assistants-cant-handle-feynman-learning-technique
 title: "AI assistants can't handle Feynman learning technique"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/education/tnjlstt8s1-ai-assistants-cant-handle-feynman-learni"
+  url: "https://problemhunt.pro/"
 category: education
-date: "2025-11-12"
-tags: [Education, AI, Other]
+date: "2025-11-14"
+tags: [Education, Other]
 country: China
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [React (Vite), TypeScript, LLM API (model-agnostic), Static hosting]
 ---
 # AI assistants can't handle Feynman learning technique
 
@@ -18,40 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Based on source brief:_ China
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+An AI partner that does not just agree with your explanation but pinpoints where it fails.
 
 ## Target Users
 
 | Stakeholder | Why they care |
 |---|---|
-| Students | _[What pain they feel, and how this solves it]_ |
-| Educators | _[What pain they feel, and how this solves it]_ |
-| Self-learners | _[What pain they feel, and how this solves it]_ |
+| Primary user in China | Self-learners and students in China (and elsewhere) using Feynman-style study for technical subjects. |
+| Adjacent user | Anyone the primary user would need to coordinate with to use the product. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When I explain a concept, tell me the exact gap in my explanation.
+- When I am stuck, give me a simpler rephrasing to try.
+- When I want to compare attempts, let me see my earlier explanations side by side.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Whether the user can name the specific gap in their own explanation after one round.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The source does not name a price or willingness-to-pay. Pricing is left as an open question to be answered after user interviews, not invented here.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+AI tutors (Khanmigo, Studyfetch) exist, but the source does not name any direct competitor that handles Feynman-style explanation specifically.
 
 ## Risks & Open Questions
 
+- Gap detection is a quality problem with the underlying model; users will judge the tool on the worst answer, not the best.
+- No curriculum or subject coverage claims; this is a study partner, not a tutor.
 - [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- [ ] Confirm willingness to pay with real users
+- [ ] Re-check China-specific compliance expectations
 
 ---
 
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/education/tnjlstt8s1-ai-assistants-cant-handle-feynman-learni) · **Category:** education · **Tags:** Education,AI,Other
+_Source:_ [ProblemHunt](https://problemhunt.pro/) · **Category:** education · **Country:** China

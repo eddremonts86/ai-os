@@ -12,21 +12,23 @@ date: "2026-08-16"
 # I will not promote: Are founders choosing finance providers based on workflow now?
 
 ## Problem
- I’ve been comparing options like Meow, Mercury and Relay and I’m starting to care less about which one has the nicest dashboard. The bigger question is whether the setup fits how the business actually runs. Banking, cards, payments, approvals, accounting and now AI workflows all need to connect better. submitted by /u/Ill-Distance8704 [link] [comments]
 
----
+A Reddit market-trend post comparing business finance providers (Meow, Mercury, Relay explicitly named). The poster has been comparing options and reports starting to care less about which one has the nicest dashboard. Their larger question is whether the setup fits how the business actually runs — banking, cards, payments, approvals, accounting, and now AI workflows all need to connect better.
 
 ## Objective
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Document the workflow-fit framing the poster is using to evaluate business finance providers, and the scope (banking, cards, payments, approvals, accounting, AI workflows) where workflow-fit is being applied.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, a founder comparing Meow / Mercury / Relay on workflow fit rather than dashboard polish.
+- Secondary: other founders in the same comparison cycle.
 
 ## MVP Scope
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- The workflow-fit evaluation frame.
+- The six named surfaces where workflow-fit matters: banking, cards, payments, approvals, accounting, AI workflows.
+- Community replies that confirm or contest the workflow-fit framing.
 
 ## Design Direction
 
@@ -34,4 +36,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Only three finance providers are named (Meow, Mercury, Relay). Do not name any others.
+- The post is a market-trend observation, not a buildable brief.
+- No specific workflow integration (e.g. "Xero sync", "Brex API") is named — the surfaces are at the category level.
+- No willingness-to-pay signal.

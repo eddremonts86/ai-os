@@ -11,40 +11,39 @@ date: "2026-08-16"
 ---
 # First time founders who are launching a startup right now: How are you leveraging AI? I will not promote
 
-> Auto-generated product brief. Review and refine before MVP scoping.
-
 ## Value Proposition
 
-_Based on source brief:_ I’ve launched several SaaS products over the past couple decades. I’m a bit older now, and admittedly old-school in many ways. I’m curious how the new younger generation of first time founders actually build their startups now. The generation that has no bias on how things “should” be done; that are taking AI at face value and running with it. I ask because: • Non technical founders can now build prototype SaaS products w/o any engineering experience. • You can build faster than before. • Applying RAG to say Claude adds the potential of incredible automation, of so many things that people used to have to do. • Much of the marketing collateral that used to take time to build is now pretty easy to do. • it’s now easy to have call transcripts, which give you lossless meeting notes. Valuable internally, and with customer calls to not miss a thing. They can also be fed into automated systems submitted by /u/zumpoof [link] [comments]
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A community-sourced snapshot of how first-time founders are using AI across prototyping, RAG-driven automation (Claude specifically), marketing collateral, and call-transcript-driven meeting notes — as observed by an experienced SaaS founder who is curious about the new generation.
 
 ## Target Users
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Primary: the poster, an experienced SaaS founder curious about how the new generation is using AI.
+- Secondary: first-time founders who might find a community answer useful as a self-benchmark.
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+1. Functional — give the poster (and other experienced operators) a picture of how first-time founders are actually using AI.
+2. Functional — surface concrete AI tools and workflows first-time founders name, not generic "AI is changing everything" answers.
+3. Social — let first-time founders compare notes with each other through the thread.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- Replies that name a concrete AI tool / workflow a first-time founder is using.
+- Replies that contest the poster's framing (e.g. "I am a first-time founder and AI is not actually moving the needle for X").
+- Concrete traction / revenue metrics are not in the source.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not stated in the source. The post is an observation / community question, not an offer.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+The poster names Claude specifically as the example for RAG. No other LLM, tool, or vendor is named.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [Reddit r/startups](https://www.reddit.com/r/startups/comments/1vppewf/first_time_founders_who_are_launching_a_startup/) · **Posted:** 2026-08-16T06:21:12+00:00
+- [ ] Keep the five shifts framed as the poster's observations, not a manifesto
+- [ ] Do not promote any AI tool — "I will not promote" applies
+- [ ] Note that no first-time founder's startup is named; this is a community question, not a profile
+- [ ] Do not assume the five shifts are net-positive — the poster is curious, not endorsing
+- [ ] If a downstream plan turns this into an "AI tools for first-time founders" listicle, gate it on the captured community replies

@@ -2,15 +2,15 @@
 id: "837"
 slug: finding-buyers-in-the-uk-for-nigerian-food-products-for
 title: Finding buyers in the UK for Nigerian food products for export
-status: draft
+status: enriched
 source:
   name: ProblemHunt
-  url: "https://problemhunt.pro/en/business/nj2h0b8kp1-finding-buyers-in-the-uk-for-nigerian-fo"
+  url: "https://problemhunt.pro/"
 category: business
 date: "2025-11-14"
-tags: [Business, Marketing, Other]
+tags: [Business, Other]
 country: Nigeria
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Astro (static), TypeScript, Cloudflare Pages]
 ---
 # Finding buyers in the UK for Nigerian food products for export
 
@@ -18,40 +18,41 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Value Proposition
 
-_Based on source brief:_ Nigeria
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+Centralize what is currently scattered across trade directories and LinkedIn so a Nigerian exporter can build a shortlist of plausible UK buyers in one sitting.
 
 ## Target Users
 
 | Stakeholder | Why they care |
 |---|---|
-| Founders | _[What pain they feel, and how this solves it]_ |
-| Small teams | _[What pain they feel, and how this solves it]_ |
-| Solo operators | _[What pain they feel, and how this solves it]_ |
+| Primary user in Nigeria | Nigerian food producers (small and mid-sized) considering UK export, and the UK importers, wholesalers, and ethnic-food retailers who would stock their products. |
+| Adjacent user | Anyone the primary user would need to coordinate with to use the product. |
 
 ## Jobs To Be Done
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- When I decide to export to the UK, give me a categorized shortlist of UK buyers to approach.
+- When I write to a buyer, tell me what they typically want on a first email.
+- When I plan a sales trip to the UK, tell me which buyers are in which city.
 
 ## Success Metrics
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Without invented numbers, the only honest measure is whether a user can produce a credible target list of five or more UK buyers within an hour.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The source does not name a price or willingness-to-pay. Pricing is left as an open question to be answered after user interviews, not invented here.
 
 ## Competitive Landscape
 
-_Not written yet — `ai-os plans enrich` fills this section._
+Cross-border sourcing for African food in the UK exists (Afro-Carib supermarkets), but the source does not name any direct competitor that surfaces UK buyers to a Nigerian food producer.
 
 ## Risks & Open Questions
 
+- Buyer data goes stale fast; without an owner this becomes a dead directory.
+- Import compliance (UK food labelling, FSA registration) is real but out of scope; do not give advice here.
 - [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- [ ] Confirm willingness to pay with real users
+- [ ] Re-check Nigeria-specific compliance expectations
 
 ---
 
-_Source:_ [ProblemHunt](https://problemhunt.pro/en/business/nj2h0b8kp1-finding-buyers-in-the-uk-for-nigerian-fo) · **Category:** business · **Tags:** Business,Marketing,Other
+_Source:_ [ProblemHunt](https://problemhunt.pro/) · **Category:** business · **Country:** Nigeria

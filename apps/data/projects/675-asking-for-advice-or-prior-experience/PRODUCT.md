@@ -2,7 +2,7 @@
 id: "675"
 slug: asking-for-advice-or-prior-experience
 title: Asking for advice or prior experience
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpu5ra/asking_for_advice_or_prior_experience/"
@@ -45,9 +45,8 @@ Three toolkits named by the source: ClausePass27001, Hightable and Certikit. The
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
+- Fabrication risk: it is easy to invent a 'better ISO 27001 toolkit' from this post, but the founder did not ask for one. The plan stays as an advice-capture entry.
+- Scope drift: any extracted plan must stay SaaS-only per the source. Pulling in SOC 2, HIPAA, or full-stack compliance scope would exceed what the post asked about.
 
 ---
 
