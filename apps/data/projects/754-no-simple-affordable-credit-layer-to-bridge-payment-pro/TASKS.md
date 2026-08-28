@@ -1,0 +1,39 @@
+---
+id: "754"
+slug: no-simple-affordable-credit-layer-to-bridge-payment-pro
+title: "No simple, affordable «credit layer» to bridge payment processors with user balances — developers rebuild credit tracking, consumption logic, and refunds for every app."
+status: draft
+source:
+  name: ProblemHunt
+  url: "https://problemhunt.pro/en/dev/of852me891-no-simple-affordable-credit-layer-to-bri"
+category: dev
+date: "2026-03-20"
+tags: [Dev, Business, Finance, Other]
+country: Morocco
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# No simple, affordable «credit layer» to bridge payment processors with user balances — developers rebuild credit tracking, consumption logic, and refunds for every app.
+
+## Phase 0: Scaffold
+
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
+- [ ] Copiar `edd-app-template` → `apps/754-no-simple-affordable-credit-layer-to-bridge-payment-pro/`
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
+
+## Phase 1: Core
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Phase 2: Deploy
+
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
+
+---
+
+_Generated automatically by Lúa on 2026-08-18_

@@ -1,0 +1,40 @@
+---
+id: "2477"
+slug: tblue-614-passive-security-scanners-for-any-website-run
+title: "Tblue – 614 passive security scanners for any website, runs locally"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49420650"
+category: show-hn
+date: "2026-08-24"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Tblue – 614 passive security scanners for any website, runs locally
+
+## Problem
+
+https://github.com/taylannuhogluofficial-png/Tblue
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._
