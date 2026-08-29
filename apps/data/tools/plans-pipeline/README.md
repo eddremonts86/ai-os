@@ -146,8 +146,13 @@ The pipeline merges to production unattended, so it is built to refuse rather th
 - **An isolated worktree.** `ship` never touches the caller's checkout or current branch.
   This repo is shared with interactive agents; their uncommitted work must not be swept
   into a 3am commit.
-- **A bounded path list.** Only `apps/data/projects/` and the scraper's `state.json` are staged, and
-  the run aborts if anything else ends up staged.
+- **A bounded path list.** Only `apps/data/projects/`, `apps/data/progress/` and the
+  scraper's `state.json` are staged, and the run aborts if anything else ends up staged.
+  Three places have to agree — `COMMIT_PATHS`, the copy in `sync_corpus`, and the stray-path
+  guard — because a path in the list that `sync_corpus` never mirrors stages nothing, and one
+  that is mirrored but missing from the guard aborts the run it was added for.
+  `apps/data/progress/` is copied but never mirrored for deletion: those are append-only run
+  logs, and dropping one because this machine did not write it is worse than keeping it stale.
 - **A mass-deletion brake.** The corpus is the source of truth for the branch, so `ship`
   deletes plans that vanished locally. Above `MAX_DELETE_PCT` (10%) it refuses instead —
   right for one withdrawn capture, catastrophic for a half-synced checkout.
