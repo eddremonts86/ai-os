@@ -53,8 +53,8 @@ This runs `app/scripts/build-index.mjs` then `vite build`. Output: `app/dist/` (
 ### Run dev server
 
 ```bash
-cd ~/Projects/ai-os/plans-explorer/app
-npm run dev    # http://localhost:5173
+cd ~/Projects/ai-os/apps/plans-explorer/app
+npm run dev    # http://localhost:3020  (pinned; the landing is 3021)
 ```
 
 ### Test the parser

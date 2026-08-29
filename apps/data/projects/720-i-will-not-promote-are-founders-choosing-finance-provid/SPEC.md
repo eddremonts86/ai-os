@@ -2,7 +2,7 @@
 id: "720"
 slug: i-will-not-promote-are-founders-choosing-finance-provid
 title: "I will not promote: Are founders choosing finance providers based on workflow now?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpxmbs/i_will_not_promote_are_founders_choosing_finance/"

@@ -28,7 +28,7 @@ Static SPA (Vite + Vue 3) that indexes and renders the 525 product plans in `../
 ```bash
 cd app
 npm install
-npm run dev          # http://localhost:5173
+npm run dev          # http://localhost:3020  (pinned, see .claude/launch.json)
 npm run build        # runs prebuild → build-index.mjs → vite build
 npm run index        # only the indexer, no vite build
 ```

@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Tauri, Rust, TypeScript, Solid.js, SQLite, CRDT (Automerge), Local-first sync]
 ---
 
 ## Linear — Design System

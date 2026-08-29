@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Next.js (App Router), TypeScript, Postgres, SerpAPI, Resend, Stripe Checkout, Vercel]
 ---
 
 ## Airbnb — Design System

@@ -2,7 +2,7 @@
 id: "725"
 slug: first-time-founders-who-are-launching-a-startup-right-n
 title: "First time founders who are launching a startup right now: How are you leveraging AI? I will not promote"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vppewf/first_time_founders_who_are_launching_a_startup/"

@@ -2,7 +2,7 @@
 id: "718"
 slug: did-anyone-here-ab-test-a-free-demo-of-your-software-vs
 title: Did anyone here A/B test a free demo of your software vs a free trial?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpxc43/did_anyone_here_ab_test_a_free_demo_of_your/"

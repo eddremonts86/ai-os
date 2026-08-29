@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Elixir, Phoenix LiveView, PostgreSQL, TimescaleDB extension, Oban (background jobs), S3-compatible object storage, CPF / CNPJ validation library, Pix / Brazilian payment integration, WhatsApp Business API, Coolify]
 ---
 
 ## Stripe — Design System

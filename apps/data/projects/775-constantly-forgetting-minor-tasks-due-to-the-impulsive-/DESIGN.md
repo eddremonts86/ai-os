@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Swift, SwiftUI, Core Data, ActivityKit, HealthKit, CloudKit]
 ---
 
 ## Linear — Design System

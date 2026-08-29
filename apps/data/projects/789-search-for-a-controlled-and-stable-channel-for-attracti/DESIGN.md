@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Astro, Cloudflare Pages, Cloudflare D1 (SQLite), Cloudflare Workers, Cal.com embed, Telegram Bot API, Meta Lead Ads webhook, Plausible analytics]
 ---
 
 ## Framer — Design System

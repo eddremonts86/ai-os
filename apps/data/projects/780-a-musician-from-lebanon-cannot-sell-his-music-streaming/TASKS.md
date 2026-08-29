@@ -2,7 +2,7 @@
 id: "780"
 slug: a-musician-from-lebanon-cannot-sell-his-music-streaming
 title: "A musician from Lebanon cannot sell his music: streaming pays pennies, and Bandcamp doesn't accept payments in his country. Needs a fair radio-platform with direct sales."
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/media/0vvg4xzv91-a-musician-from-lebanon-cannot-sell-his"
@@ -10,7 +10,7 @@ category: media
 date: "2026-01-21"
 tags: [Media, Other]
 country: Lebanon
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Elixir, Phoenix LiveView, PostgreSQL, Stripe Connect, Cloudflare R2, Mux, Tailwind CSS, Docker, Fly.io]
 ---
 # A musician from Lebanon cannot sell his music: streaming pays pennies, and Bandcamp doesn't accept payments in his country. Needs a fair radio-platform with direct sales.
 
@@ -26,7 +26,13 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Stand up the Elixir + Phoenix LiveView radio surface with a scheduled, always-on mix of the musician's catalogue.
+- [ ] Build the catalogue onboarding flow: musician sign-up, track upload, metadata editor and the rights flag on each track.
+- [ ] Implement the Stripe Connect checkout for single-track, album and subscription purchases, with the split shown at checkout.
+- [ ] Add the documented processor fallback for countries the primary processor does not serve, with the musician onboarding walking through it.
+- [ ] Ship the musician dashboard with listen counts, listen-to-sale conversions, payout history and the catalogue freshness view.
+- [ ] Wire Mux for adaptive-bitrate audio delivery and Cloudflare R2 for the lossless master storage.
+- [ ] Validate end-to-end with one Lebanese musician: real catalogue, real radio, real fan checkout, real payout.
 
 ## Phase 2: Deploy
 

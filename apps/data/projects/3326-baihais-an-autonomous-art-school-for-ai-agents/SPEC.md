@@ -11,7 +11,6 @@ date: "2026-08-27"
 tags: [Show HN, Product, Problem]
 tech: [Python, FastAPI, Next.js, PostgreSQL, Redis, Celery, LLM router, Coolify, Docker]
 ---
-
 # BAIhAIs – an autonomous art school for AI agents
 
 ## Problem

@@ -18,9 +18,35 @@ are also named `ia-os-*` to keep them grouped.
 | `ia-os-ollama`         | 11500           | Embeddings (Windows / opt-in only)        |
 | `ia-os-net` (network)  | —               | Shared internal Docker network            |
 
-> Native Mac uses a host-side `ollama serve` on port 11500 (Apple Silicon Metal GPU
-> acceleration, which containers cannot reach). The `ia-os-ollama` container is the
-> Windows default; on Mac the host process is what answers.
+> Ollama can run either way, and both publish `127.0.0.1:11500`, so nothing downstream
+> cares which is up. Run **one**, never both.
+
+| Shape | Bring up | Notes |
+| --- | --- | --- |
+| `ia-os-ollama` container | `docker compose -f memory/docker-compose.yml --profile ollama-docker up -d ollama` | Shows up in the Docker dashboard with the rest of `ia-os`. Image pinned by digest. |
+| Host launchd service | `bash memory/launchd/install-ollama.sh` | No Docker needed. |
+
+The container cannot reach the Metal GPU, which sounds decisive and is not: measured,
+`nomic-embed-text` answers in **0.03 s either way**. It is a 137M-parameter embedder and the
+GPU only pays off on generation. Pick whichever you would rather look at.
+
+The host shape is a launchd service (`ai.os.ollama`), so it survives a reboot:
+
+```bash
+bash ~/Projects/ai-os/memory/launchd/install-ollama.sh            # install / repair
+bash ~/Projects/ai-os/memory/launchd/install-ollama.sh --status    # loaded? answering? model?
+```
+
+Two traps it exists to avoid, both of which had already bitten:
+
+- **`brew services start ollama` binds the wrong port.** Homebrew's plist sets
+  `OLLAMA_FLASH_ATTENTION` and `OLLAMA_KV_CACHE_TYPE` but not `OLLAMA_HOST`, so Ollama
+  comes up on its default 11434 while `memory/graphiti/config.yaml` and
+  `memory/ai-os-memory.sh` both address 11500. Nothing falls back and nothing complains.
+- **`nohup ollama serve &` does not survive a reboot.** That is what `install-mac.sh` used
+  to do, which is why embeddings were dead while both containers stayed green.
+
+`ai-os memory status` reports Ollama honestly — use it, not `docker ps`.
 
 ## First-time / on-demand setup: `ai-os-bootstrap.sh`
 
@@ -40,8 +66,8 @@ It is **idempotent** — re-running it is safe and does the right thing each tim
 3. Starts `ia-os-falkordb` via `memory/docker-compose.yml` (unified) and waits
    for its healthcheck (max 30 s).
 4. Starts `ia-os-graphiti-mcp` if `MINIMAX_API_KEY` is set; waits for `:8021/health`.
-5. Ensures Ollama is running on `:11500` (starts the brew service if not) and that
-   `nomic-embed-text` is pulled.
+5. Ensures Ollama answers on `:11500` (installing the `ai.os.ollama` launchd service if
+   not) and that `nomic-embed-text` is pulled.
 6. Auto-indexes every project under `~/Projects/` via `codebase-memory-mcp
    index_repository`:
    - projects at depth 1 (`~/Projects/<name>/`) **and** depth 2

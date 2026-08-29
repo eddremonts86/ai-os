@@ -2,7 +2,7 @@
 id: "719"
 slug: developer-looking-for-a-startup-to-join-i-will-not-prom
 title: "Developer looking for a startup to join, I will not promote"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpxnxp/developer_looking_for_a_startup_to_join_i_will/"

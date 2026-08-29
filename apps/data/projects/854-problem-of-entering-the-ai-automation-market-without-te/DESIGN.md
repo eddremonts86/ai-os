@@ -67,6 +67,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [SvelteKit, TypeScript, Express (Node.js, TypeScript), PostgreSQL, Redis, OpenAI text-embedding-3-small, Cloudflare R2, Razorpay, Coolify, Docker]
 ---
 
 ## Northone — Design System

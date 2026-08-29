@@ -11,7 +11,6 @@ date: "2026-08-28"
 tags: [Show HN, Product, Problem]
 tech: [Offline-first desktop app, local speech-to-text transcription (whisper.cpp or equivalent), Anki export (.apkg), local media playback]
 ---
-
 # SubSmith – Turn your own videos into language-learning material
 
 SubSmith is an offline-first desktop app that takes a learner's own audio or video file, transcribes it locally, lines the transcript up with the media for lookups and replay, and exports saved sentences — with their original context and audio — straight to Anki. The author built it after years of bouncing between a video player, subtitles, a dictionary, screenshots, audio clips and Anki to study Japanese from the anime and podcasts they actually wanted to learn from.
