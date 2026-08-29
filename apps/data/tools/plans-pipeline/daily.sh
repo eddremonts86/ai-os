@@ -70,7 +70,7 @@ LOCK="$LOG_DIR/.lock"
 # Paths this pipeline is allowed to commit. Anything else in the tree belongs to a human or
 # another agent and is none of our business — an unattended `git add -A` here would be a way
 # to silently ship somebody's half-finished refactor.
-COMMIT_PATHS=(apps/data/projects apps/data/tools/problemhunt-scraper/state.json)
+COMMIT_PATHS=(apps/data/projects apps/data/progress apps/data/tools/problemhunt-scraper/state.json)
 
 # Refuse to mirror away more than this share of the corpus. The corpus is the source of
 # truth for the branch, so ship deletes plans that vanished locally — which is right for one
@@ -199,6 +199,15 @@ sync_corpus() {
   mkdir -p "$wt/apps/data/tools/problemhunt-scraper"
   cp "$SCRAPER_DIR/state.json" "$wt/apps/data/tools/problemhunt-scraper/state.json"
 
+  # The authoring agent's own run logs. Copied but never mirrored for deletion: they are
+  # append-only records of what each run did, and a log that vanishes because a machine was
+  # not the one that wrote it is worse than a stale one. Before this they sat untracked
+  # forever, since ship only ever staged apps/data/projects.
+  if [ -d "$AI_OS_ROOT/apps/data/progress" ]; then
+    mkdir -p "$wt/apps/data/progress"
+    cp -R "$AI_OS_ROOT/apps/data/progress/." "$wt/apps/data/progress/"
+  fi
+
   # Removals: tracked under apps/data/projects/ on the branch, but gone from the local corpus.
   local gone
   gone=$(git -C "$wt" ls-files -z -- apps/data/projects \
@@ -280,7 +289,7 @@ phase_ship() {
   # Guard against the pipeline having staged anything outside its remit.
   local stray
   stray=$(git -C "$wt" diff --cached --name-only \
-          | grep -vE '^(apps/data/projects/|apps/data/tools/problemhunt-scraper/state\.json$)' || true)
+          | grep -vE '^(apps/data/projects/|apps/data/progress/|apps/data/tools/problemhunt-scraper/state\.json$)' || true)
   [ -z "$stray" ] || die "refusing to commit paths outside the pipeline's remit:"$'\n'"$stray"
 
   git -C "$wt" -c user.name="ai-os-pipeline" -c user.email="ei@schilling.dk" \
