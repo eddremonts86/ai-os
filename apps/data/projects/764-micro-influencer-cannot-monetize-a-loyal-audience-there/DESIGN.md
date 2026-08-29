@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Next.js (App Router), TypeScript, PostgreSQL, Prisma, Razorpay Route, Cloudflare R2, Render]
 ---
 
 ## Stripe — Design System

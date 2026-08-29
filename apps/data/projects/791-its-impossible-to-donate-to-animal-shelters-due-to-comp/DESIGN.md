@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Go, Chi router, PostgreSQL, TimescaleDB extension, Open Banking API integration, Rust receipt-verifier service, S3-compatible cold storage, Docker, Coolify]
 ---
 
 ## Airbnb — Design System

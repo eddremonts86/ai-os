@@ -2,7 +2,7 @@
 id: "721"
 slug: "14-years-building-data-platforms-zero-sales-experience-"
 title: "14 years building data platforms. Zero sales experience. How do I get my first SME clients? (I will not promote)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpwd19/14_years_building_data_platforms_zero_sales/"

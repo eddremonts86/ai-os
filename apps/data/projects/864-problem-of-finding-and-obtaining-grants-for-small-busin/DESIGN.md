@@ -67,6 +67,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Python, FastAPI, Elasticsearch, Redis, Playwright, PostgreSQL]
 ---
 
 ## Northone — Design System

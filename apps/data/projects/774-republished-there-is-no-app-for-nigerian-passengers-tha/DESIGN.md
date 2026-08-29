@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Flutter, Dart, Firebase Firestore, Cloud Functions, AviationStack, NCAA rule table, Sentry]
 ---
 
 ## Stripe — Design System

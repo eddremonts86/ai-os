@@ -118,6 +118,78 @@ Watch the arithmetic when comparing: a first attempt read 189 s vs 188 s and loo
 
 ---
 
+## Reusable workflow for OS-agnostic test jobs
+
+When two or more GitHub Actions workflows share >80 % of their steps (typical: a Linux job and a macOS job that both run the same DRY_RUN installer + the same lint/test/--check sequence), extract a single `reusable-*.yml` driven by `workflow_call` inputs instead of duplicating the body. The wrappers stay as `name:` + trigger set + a thin `uses:` block; the shared body lives in one place and every future fix propagates.
+
+**Pattern that works** (verified in `ai-os/.github/workflows/`):
+
+```yaml
+# reusable-test.yml
+on:
+  workflow_call:
+    inputs:
+      os:           { required: true, type: string }   # 'linux' | 'macos'
+      install_node: { required: false, type: string, default: "false" }
+jobs:
+  test:
+    runs-on: ${{ inputs.os == 'macos' && 'macos-latest' || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - if: ${{ inputs.install_node == 'true' }}
+        uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - if: ${{ inputs.os == 'linux' }}
+        run: sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && sudo chmod +x /usr/local/bin/yq
+      - if: ${{ inputs.os == 'macos' }}
+        run: brew install yq
+      # ... rest is identical across OSes
+```
+
+```yaml
+# test-linux.yml  (90 -> 24 lines)
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-test.yml
+    with: { os: linux, install_node: "false" }
+```
+
+**When NOT to extract.** A reusable workflow with PowerShell-style steps does not help a bash/Linux caller and vice versa — if every step diverges between callers (typical: Linux vs Windows where yq install path, `[ -d ]` vs `Test-Path`, and `pip` vs `pip3` all differ in *every* step), the maintenance burden shifts rather than shrinks. Keep per-OS workflows and add a one-line comment naming the OS condition.
+
+**Quote any step name containing `:`** — GitHub Actions tolerates them in the `name:` field, but the YAML parser rejects unquoted colons in flow-mapping values. Default to `"Step name (with: detail)"` from the start; do not retrofit.
+
+**Verify before commit.** Always run three checks locally before the PR: `python3 -c "import yaml; yaml.safe_load(open(p))"` on every workflow you touched, `shellcheck -S warning` on any shell scripts the workflow calls, and the existing unit-test step the workflow gates (`python3 -m unittest discover -s <test-dir>`). A green CI run is not evidence that the workflow parses — actions runners fail the job with a confusing syntax error instead of a parse error.
+
+---
+
+## Shellcheck warning triage
+
+`shellcheck -S warning` is the right lint level for CI scripts. Not every warning is a bug; defaulting to "fix them all" wastes time on UI strings, and defaulting to "ignore them all" loses the real catches. The split, applied in `ai-os/setup/*.sh`:
+
+| Code | Class | Action | Example |
+| --- | --- | --- | --- |
+| SC2227 | Real bug (redirect scope wrong) | Fix | `find ... 2>/dev/null -exec basename {} \; \| sort` — the `2>/dev/null` only silences `find`'s stderr, not `basename`'s. Move to end of pipeline. |
+| SC2086 | Real bug (unquoted expansions) | Fix | `$var` in `[ ... ]` — split on IFS, breaks on spaces. Always quote. |
+| SC2155 | Style / minor | Fix (cheap) | `local foo=$(cmd)` masks `cmd`'s exit; split the declaration from the assignment. |
+| SC2034 | Cosmetic (unused var) | Leave | `read -r a b c` columns often flow into another function; shellcheck is per-function. |
+| SC2088 | UI noise | Leave | `"~/.hermes/config.yaml ..."` inside an `echo` to a user — tilde is literal in quotes, but the message is for a human. The "fix" (`"$HOME/hermes..."`) is uglier and conveys less. |
+
+Rule of thumb: a warning is a bug if the script's *output* or *exit code* changes. A warning is UI noise if only the *appearance* of the lint log changes.
+
+---
+
+## Drift remediation: regenerate from the source-of-truth script
+
+When `verify.sh` (or any post-install check) reports that a previously-passing state has drifted — a config file lost a required block, a dotfile symlink vanished, a permissions check failed — the right move is almost always to re-invoke the script that `install*.sh` itself called to produce that state, not to hand-edit the config. Hand-fixing one symptom while the install pipeline is still the canonical source guarantees the drift returns next time the installer runs.
+
+Concrete case from `ai-os/`: `~/.hermes/config.yaml` reported `external_dirs: []` after a manual editor session. The block is produced by step 9 of `setup/install-mac.sh`, which delegates to `setup/generate-mcp-config.py ai-config/mcp <dest> <agents_dir>`. Re-running just that generator restored `verify.sh` from 18/19 → 19/19 required pass, with no need to re-run the whole installer. Always identify the producing script first; it has the right flags, the right backups (`*.pre-aios.bak`), and the right idempotency.
+
+**Pitfall:** don't substitute a full `DRY_RUN=1 bash setup/install-mac.sh` as a smoke test inside an automated maintenance loop. The script reaches `generate-mcp-config.py` which can trigger interactive auth checks or hang on first-run probes — timed out after ~90 s in one AI-OS cron run. Verify the unit-test slice (`python3 -m unittest discover -s setup/tests`) instead; that exercises the same code path without touching the network.
+
+---
+
 ## Checklist for a new pipeline
 
 1. CI triggers on the deploy branch only; a `pre-push` hook runs the full gate on every branch.

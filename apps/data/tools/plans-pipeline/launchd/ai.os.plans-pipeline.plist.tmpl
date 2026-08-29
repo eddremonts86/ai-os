@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  The LLM-free half of the plans pipeline: scrape + intake, twice a day.
+
+  Rendered by install-scheduler.sh, which substitutes __AI_OS_ROOT__ — the path is not
+  committed, so this file is machine-independent.
+
+  This exists in the repo because it did not, once: the scheduler lived only in
+  ~/Library/LaunchAgents, so when it fell out of launchd nothing in the repo recorded that
+  captures had stopped arriving, and a fresh Mac got no scheduler at all.
+
+  It does NOT run prepare/verify/ship. Those need an agent to author prose, which is the
+  Hermes cron job `plans-pipeline` (see ../README.md).
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.plans-pipeline</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__AI_OS_ROOT__/apps/data/tools/plans-pipeline/scrape-cron.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__AI_OS_ROOT__</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- launchd hands a job a bare PATH, so node and gh must be named explicitly. -->
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:__HOME__/.local/bin:/usr/bin:/bin:__HOME__/.hermes/node/bin</string>
+        <!-- An explicit root beats the CLAUDE.md marker walk. Both work; this is one less
+             thing to be wrong if the job is ever pointed at a partial checkout. -->
+        <key>AI_OS_ROOT</key>
+        <string>__AI_OS_ROOT__</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict>
+            <key>Hour</key>
+            <integer>8</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>20</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+    </array>
+
+    <!-- The plans product's outputs, not the framework's. docs/repo-layout.md: outputs/
+         exists twice on purpose, and pointing these at the root one filed the pipeline's
+         logs under the framework's research directory. -->
+    <key>StandardOutPath</key>
+    <string>__AI_OS_ROOT__/apps/data/outputs/plans-pipeline/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__AI_OS_ROOT__/apps/data/outputs/plans-pipeline/launchd.err.log</string>
+
+    <!-- Never at load: loading happens at login and on every install, and a scrape firing
+         because somebody re-ran the installer is a surprise, not a feature. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>

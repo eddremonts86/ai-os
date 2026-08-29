@@ -2,7 +2,7 @@
 id: "777"
 slug: online-clothes-shopping-is-a-lottery-theres-no-accessib
 title: "Online clothes shopping is a lottery. There's no accessible technology to see how an item will fit your body, especially in small stores. It's a pain for the buyer and a loss for the seller."
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/retail/k5z415d0z1-online-clothes-shopping-is-a-lottery-the"
@@ -10,7 +10,7 @@ category: retail
 date: "2026-01-22"
 tags: [Retail, AI, Other]
 country: India
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python, FastAPI, MediaPipe Pose, OpenCV, PostgreSQL, Three.js, Next.js, Tailwind CSS, Coolify, Docker]
 ---
 # Online clothes shopping is a lottery. There's no accessible technology to see how an item will fit your body, especially in small stores. It's a pain for the buyer and a loss for the seller.
 
@@ -26,7 +26,14 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Stand up FastAPI service with per-merchant API key validation and a PostgreSQL schema for merchants, garments, products and per-visit fit logs.
+- [ ] Integrate MediaPipe Pose WASM into a standalone widget that extracts a proportion vector from a phone-camera clip and discards the raw frames.
+- [ ] Build the OpenCV garment-registration endpoint that turns a flat-lay image plus measurements into a stored parametric garment record.
+- [ ] Implement the Three.js warp that maps a proportion vector and a garment record into a rotatable client-side preview, with the low-power WebGL fallback.
+- [ ] Ship the two-script-tag embed and the consent prompt, with a tested graceful path for declined camera permission.
+- [ ] Add the Next.js + Tailwind merchant dashboard behind the same Coolify reverse proxy, scoped to aggregate counters only.
+- [ ] Document the privacy story (frames on device, no facial landmarks, no per-shopper biometrics stored) end to end.
+- [ ] Run a usability pass on the warp output with at least three small-store merchants before treating the preview as the shipped artefact.
 
 ## Phase 2: Deploy
 

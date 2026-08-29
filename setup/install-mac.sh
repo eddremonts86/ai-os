@@ -723,21 +723,17 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   log "9b. Setting up AI-OS memory stack (FalkorDB, Ollama, code indexers)..."
 
   # 9b.1 — Ollama local server (for embeddings, free + private)
+  #
+  # A launchd service, not `nohup ollama serve &`. The detached-nohup version did not
+  # survive a reboot, nothing restarted it, and the whole memory stack addresses Ollama at
+  # :11500 — so embeddings and semantic search went quietly dead while the two Docker
+  # containers stayed green. Also not `brew services start ollama`: Homebrew's plist has no
+  # OLLAMA_HOST, so it binds the default 11434 that nothing here reads.
   if command -v ollama >/dev/null 2>&1; then
-    # Start ollama serve in background if not already running
-    if ! pgrep -f "ollama serve" >/dev/null 2>&1; then
-      OLLAMA_HOST=127.0.0.1:11500 nohup ollama serve > "$HOME_DIR/.ollama.log" 2>&1 &
-      sleep 3
-      ok "  Ollama launched on 127.0.0.1:11500 (background, logs: ~/.ollama.log)"
+    if bash "$SCRIPT_DIR/../memory/launchd/install-ollama.sh" 2>&1 | sed 's/^/    /'; then
+      ok "  Ollama service on 127.0.0.1:11500 with nomic-embed-text (logs: ~/.ollama/ai-os-ollama.log)"
     else
-      ok "  Ollama already running"
-    fi
-
-    # Pull nomic-embed-text (274MB, one-time)
-    if OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text 2>&1 | tail -3; then
-      ok "  nomic-embed-text ready"
-    else
-      warn "  ollama pull failed (will retry on first use)"
+      warn "  Ollama service did not come up — embeddings and semantic search disabled"
     fi
   else
     warn "  ollama not installed (run: brew install ollama) — embedding features disabled"

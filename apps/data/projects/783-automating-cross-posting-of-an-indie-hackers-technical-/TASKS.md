@@ -2,7 +2,7 @@
 id: "783"
 slug: automating-cross-posting-of-an-indie-hackers-technical-
 title: "Automating cross-posting of an indie hacker's technical content across multiple platforms (Twitter, LinkedIn, Product Hunt) while adhering to each platform's best practices."
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/media/3i2dy4ryd1-automating-cross-posting-of-an-indie-hac"
@@ -10,7 +10,7 @@ category: media
 date: "2026-01-20"
 tags: [Media, Marketing, AI, Startups, Other]
 country: Morocco
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Node.js, Hono, TypeScript, PostgreSQL, BullMQ, Redis, OpenAI API, Anthropic API, Next.js, Tailwind CSS, Vercel, Docker]
 ---
 # Automating cross-posting of an indie hacker's technical content across multiple platforms (Twitter, LinkedIn, Product Hunt) while adhering to each platform's best practices.
 
@@ -26,7 +26,13 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Stand up the Hono + TypeScript API with the source intake, the three per-platform generation calls and the draft rows in PostgreSQL.
+- [ ] Build the Next.js preview surface with the per-platform editors and the version history that records every edit.
+- [ ] Wire the BullMQ scheduler with the per-platform connectors and the encrypted token store, plus a single worker that owns the post timing.
+- [ ] Add the retry-with-backoff path for failed posts and the dashboard view for posts that exceed the retry bound.
+- [ ] Add the 24-hour per-platform impression readback, sourced from each platform's own API, with the dashboard honest about what the platform exposes.
+- [ ] Ship the single Vercel project for the web app and the API, plus the Docker worker on a small container host.
+- [ ] Validate end-to-end on one real release: one source draft, three platform-shaped posts, three scheduled posts, three impression readbacks, zero token leaks.
 
 ## Phase 2: Deploy
 

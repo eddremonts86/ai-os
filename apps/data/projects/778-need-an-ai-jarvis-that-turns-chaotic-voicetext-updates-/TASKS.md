@@ -2,7 +2,7 @@
 id: "778"
 slug: need-an-ai-jarvis-that-turns-chaotic-voicetext-updates-
 title: "Need an AI «Jarvis» that turns chaotic voice/text updates into automatically structured tasks, projects, and dashboards for managing all of life and work."
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/ai/kmtor7kz31-need-an-ai-jarvis-that-turns-chaotic-voi"
@@ -10,7 +10,7 @@ category: ai
 date: "2026-01-21"
 tags: [AI, Productivity, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python, FastAPI, Whisper, LangGraph, PostgreSQL, pgvector, Redis, BullMQ, Next.js, Tailwind CSS, Docker]
 ---
 # Need an AI «Jarvis» that turns chaotic voice/text updates into automatically structured tasks, projects, and dashboards for managing all of life and work.
 
@@ -26,7 +26,13 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Stand up FastAPI service with the raw_fragments table, per-user settings and the BullMQ queue wired to Redis.
+- [ ] Build the web capture inbox plus iOS / Android voice capture with on-device Whisper and a server fallback path.
+- [ ] Implement the LangGraph classification graph that routes a fragment to a project, a type, and the extracted fields, with the move-and-correct feedback loop.
+- [ ] Add the projects view, the today view and the per-project fragment history to the Next.js dashboard.
+- [ ] Wire pgvector for "what did I say about X" and a basic date and source filter on the inbox.
+- [ ] Add per-user encryption at rest and a Markdown export that preserves the project structure.
+- [ ] Ship a single Docker compose file that boots the whole stack, documented as the self-host reference.
 
 ## Phase 2: Deploy
 

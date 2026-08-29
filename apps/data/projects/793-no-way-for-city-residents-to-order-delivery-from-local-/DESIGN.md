@@ -61,6 +61,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, FastAPI, PostgreSQL with PostGIS, Redis, Celery, Telegram Mini App, WhatsApp Business API, Yandex Maps geocoder, Sberbank or Tinkoff payment integration, Coolify]
 ---
 
 ## DoorDash — Design System

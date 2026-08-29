@@ -2,7 +2,7 @@
 id: "717"
 slug: currently-testing-a-strength-and-conditioning-app-for-c
 title: Currently testing a strength and conditioning app for combat sports
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpxehu/currently_testing_a_strength_and_conditioning_app/"

@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Next.js (App Router), TypeScript, Python (FastAPI), PostgreSQL, Tantivy, OpenAI embeddings API, Coolify, Docker]
 ---
 
 ## Stripe — Design System
