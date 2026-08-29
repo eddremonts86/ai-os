@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [TypeScript, Node.js, Playwright (browser-use MCP), Anthropic Claude API (browser tools), Browserbase, Postgres]
 ---
 
 ## Framer — Design System

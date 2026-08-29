@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Vue 3, TypeScript, Vite, Rust rules-engine compiled to WASM, Cloudflare Workers for hosted checks, Cloudflare KV for subreddit-rule snapshots, Reddit JSON API (.json endpoints), Coolify]
 ---
 
 ## Framer — Design System

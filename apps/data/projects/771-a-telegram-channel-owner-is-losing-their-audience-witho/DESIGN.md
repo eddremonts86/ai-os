@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [TypeScript, Node.js, Fastify, grammY (Telegram bot framework), PostgreSQL, Plausible]
 ---
 
 ## Cal.com — Design System

@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Elixir, Phoenix LiveView, PostgreSQL, Neon, Tigris (S3-compatible), Vector embeddings, Fly.io]
 ---
 
 ## Airbnb — Design System

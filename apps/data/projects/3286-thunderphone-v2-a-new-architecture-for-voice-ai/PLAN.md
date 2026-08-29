@@ -11,7 +11,6 @@ date: "2026-08-27"
 tags: [Show HN, Product, Problem]
 tech: [Python, FastAPI, WebRTC, Web Audio API, multi-STT, LLM router, TTS, Coolify, Docker]
 ---
-
 # ThunderPhone v2 – a new architecture for voice AI
 
 ## Tech Stack

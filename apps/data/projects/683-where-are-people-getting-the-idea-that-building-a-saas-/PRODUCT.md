@@ -2,7 +2,7 @@
 id: "683"
 slug: where-are-people-getting-the-idea-that-building-a-saas-
 title: Where are people getting the idea that building a SaaS business is cheap?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vprm84/where_are_people_getting_the_idea_that_building_a/"

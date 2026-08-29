@@ -2,7 +2,7 @@
 id: "767"
 slug: daily-routine-after-every-client-meeting-i-need-to-writ
 title: "Daily routine: after every client meeting, I need to write a structured report for colleagues. Existing corporate tools (Microsoft 365) are inefficient and slow for this."
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/productivity/goxzmndvc1-daily-routine-after-every-client-meeting"
@@ -10,7 +10,7 @@ category: productivity
 date: "2026-02-10"
 tags: [Productivity, Business, Other]
 country: UK
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [SvelteKit, TypeScript, Postgres, Drizzle ORM, OpenAI Whisper + GPT-4o-mini, Tiptap, Coolify]
 ---
 # Daily routine: after every client meeting, I need to write a structured report for colleagues. Existing corporate tools (Microsoft 365) are inefficient and slow for this.
 
@@ -26,7 +26,18 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Stand up SvelteKit with TypeScript, Postgres, Drizzle, and Coolify
+- [ ] Build the Microsoft Graph OAuth flow scoped to meeting recordings with tenant-consent handling
+- [ ] Implement the per-tenant template configuration (section names, order, per-section instructions)
+- [ ] Add the three ingest paths: Teams recording URL, audio upload, and pasted transcript
+- [ ] Wire Whisper transcription with speaker labels where the input supports them
+- [ ] Build the extraction pipeline that takes the transcript plus the template and produces a structured draft
+- [ ] Add a Tiptap editor that renders the draft with the template's headings
+- [ ] Implement the export path to .docx for Word and to a Markdown body for Outlook and Teams chat
+- [ ] Build the report-history index by date, attendee set, and section content for cross-meeting recall
+- [ ] Implement the privacy surface: where the transcript lives, retention, and tenant-visible access controls
+- [ ] Add the recording-announcement respected live-meeting bot that produces the report at meeting end
+- [ ] Write an integration test that runs a recorded meeting end to end, generates a draft, exports to .docx, and links a new report to the right previous one
 
 ## Phase 2: Deploy
 

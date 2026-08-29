@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [SvelteKit, TypeScript, Go (chi), PostgreSQL, NATS (JetStream), OAuth 2.0 (provider integrations), Bun (worker runtime), Coolify, Docker]
 ---
 
 ## Linear — Design System

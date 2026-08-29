@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Elixir, Phoenix LiveView, PostgreSQL, Stripe Connect, Cloudflare R2, Mux, Tailwind CSS, Docker, Fly.io]
 ---
 
 ## Stripe — Design System

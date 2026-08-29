@@ -61,6 +61,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, Django, PostgreSQL, Redis, Celery, Stripe, Mapbox]
 ---
 
 ## DoorDash — Design System

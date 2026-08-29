@@ -2,7 +2,7 @@
 id: "782"
 slug: the-lack-of-a-service-that-creates-hyper-personalized-g
 title: "The lack of a service that creates hyper-personalized, gamified English courses (in the Duolingo format) for narrow professional niches (e.g., for a barista in a vegan coffee shop or a startup founder"
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/education/jdez9r0101-the-lack-of-a-service-that-creates-hyper"
@@ -10,7 +10,7 @@ category: education
 date: "2026-01-20"
 tags: [Education, AI, Career, Other]
 country: USA
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Next.js, TypeScript, Convex, PostgreSQL, OpenAI API, Anthropic API, Vercel, Tailwind CSS, Stripe]
 ---
 # The lack of a service that creates hyper-personalized, gamified English courses (in the Duolingo format) for narrow professional niches (e.g., for a barista in a vegan coffee shop or a startup founder
 
@@ -26,7 +26,13 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Build the niche intake and the course generator call with a tight system prompt and a small phrase-blocklist validator before the lesson reaches the learner.
+- [ ] Stand up the Convex schema for the learner's progress, the streak, the hearts and the next-session schedule.
+- [ ] Ship the Next.js card-stack lesson UI with the tap-and-translate exercises and a niche-relevance rating prompt at the end of each lesson.
+- [ ] Add the gamification layer (XP, daily streak, hearts) and the small set of daily challenges tied to the niche.
+- [ ] Wire the spaced-repetition schedule with the per-session load capped at the 10-minute daily window.
+- [ ] Seed the niche catalogue with the two examples from the post plus a few adjacent niches, and add the per-niche quality gate.
+- [ ] Add the JSON progress export the learner can pull at any time, and deploy to Vercel + Convex.
 
 ## Phase 2: Deploy
 
