@@ -68,11 +68,26 @@ stops gaining published plans while capture keeps arriving.
 
 2. **Drift-skip.** Hermes refuses to run an *unpinned* job when the global inference config
    has changed since the job was created, so it cannot spend on a provider the job never
-   agreed to. The job stays skipped, and the alert fires once. Pin it explicitly:
+   agreed to. The job stays skipped, and the alert fires once.
 
    ```bash
    hermes cron edit 59b1562e8007 --provider <provider> --model <model>
    ```
+
+   **Unpinning is not the fix, and does not mean "follow the global".** An unpinned job is
+   frozen at the config it was created with — the job keeps `provider_snapshot` /
+   `model_snapshot` fields, and any global that differs from them is the drift condition.
+   Re-editing the job does not refresh the snapshot, so clearing the pin on a job whose
+   snapshot is stale leaves it skipping exactly as before. Hermes has no "always use the
+   current default" mode; that is the guard working as designed.
+
+   So pin it, but pin it to **whatever the current default is** rather than to a vendor:
+   read `model.provider` / `model.default` from `~/.hermes/config.yaml` and pass those. The
+   pin then has to be re-applied whenever the default changes, which is the re-consent the
+   guard is asking for. Verify the target actually answers before trusting it —
+   `hermes chat --provider <p> -m <m> -t "" -q "Reply with exactly: OK"` — because a default
+   can be both configured and dead: this repo has seen `opencode-free/x-preview-f-free`
+   return `401 Model ... is not supported` while `hermes auth status` said "logged in".
 
 `hermes cron list` shows the schedule, the next run and the last error — which is where a
 drift-skip announces itself — but **not** whether the job is pinned, and not whether its
