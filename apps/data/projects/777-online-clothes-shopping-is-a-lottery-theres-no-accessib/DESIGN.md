@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Python, FastAPI, MediaPipe Pose, OpenCV, PostgreSQL, Three.js, Next.js, Tailwind CSS, Coolify, Docker]
 ---
 
 ## Stripe — Design System

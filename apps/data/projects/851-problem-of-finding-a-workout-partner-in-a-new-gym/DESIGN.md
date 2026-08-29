@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Flutter, Dart, Supabase (PostgreSQL with row-level security), Supabase Auth, PostgreSQL with PostGIS for gym-radius queries, FCM for push notifications, WhatsApp Business API for India-region notifications, Coolify]
 ---
 
 ## Stripe — Design System

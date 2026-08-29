@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [SvelteKit, TypeScript, Postgres, Playwright sidecar (Node), NSW Planning Portal + Victorian Planning Schemes + data.gov.au APIs, PDF text extraction (pdf-parse), Self-hosted on a single VPS, no Coolify]
 ---
 
 ## Linear — Design System

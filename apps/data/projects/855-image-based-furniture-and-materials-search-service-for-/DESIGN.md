@@ -61,6 +61,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Next.js (App Router), TypeScript, Python (FastAPI), PostgreSQL with pgvector, CLIP ViT-L/14 (self-hosted), FAISS, AWS S3, Stripe, Vercel]
 ---
 
 ## Figma — Design System

@@ -2,7 +2,7 @@
 id: "723"
 slug: yc-may-have-already-peaked-and-the-data-is-starting-to-
 title: "YC may have already peaked, and the data is starting to show their stumble (I will not promote)"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpuexs/yc_may_have_already_peaked_and_the_data_is/"

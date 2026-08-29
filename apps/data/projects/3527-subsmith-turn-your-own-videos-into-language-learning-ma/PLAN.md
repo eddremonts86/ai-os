@@ -11,7 +11,6 @@ date: "2026-08-28"
 tags: [Show HN, Product, Problem]
 tech: [Offline-first desktop app, local speech-to-text transcription (whisper.cpp or equivalent), Anki export (.apkg), local media playback]
 ---
-
 # SubSmith – Turn your own videos into language-learning material
 
 ## Tech Stack

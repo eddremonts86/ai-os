@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Python, FastAPI, PostgreSQL, Elasticsearch, Redis, React (TypeScript), TMDB API, Common Sense Media API (or equivalent), Crowdsourced annotation pipeline, Vercel-style CDN, Coolify]
 ---
 
 ## Stripe — Design System

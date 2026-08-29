@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Go, Prometheus, ClickHouse, Grafana, Next.js, TypeScript, WireGuard, OpenVPN, wgctrl-go, Hetzner VPS, Docker]
 ---
 
 ## Linear — Design System

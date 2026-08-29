@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Astro, TypeScript, Go (chi), PostgreSQL, Pinecone (vector index), Anthropic Claude API, Plaid EU (sandbox), Coolify, Docker]
 ---
 
 ## Stripe — Design System

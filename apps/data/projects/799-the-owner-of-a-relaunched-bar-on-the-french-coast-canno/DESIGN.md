@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Astro, TypeScript, Cloudflare Pages, Cloudflare D1 (SQLite at the edge), Resend or Postmark for transactional email, Instagram Graph API, Google Business Profile API, Stripe for ticketed events, Coolify]
 ---
 
 ## Airbnb — Design System

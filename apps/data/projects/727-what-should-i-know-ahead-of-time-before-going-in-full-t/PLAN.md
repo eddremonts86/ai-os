@@ -2,7 +2,7 @@
 id: "727"
 slug: what-should-i-know-ahead-of-time-before-going-in-full-t
 title: "What should I know ahead of time before going in full time on a startup idea? [I will not promote]"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpfdd1/what_should_i_know_ahead_of_time_before_going_in/"

@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Bun, Hono, Postgres, Tinkoff/YooMoney Open Banking sandbox, pdfplumber (Python sidecar), Resend, Fly.io (Frankfurt region)]
 ---
 
 ## Stripe — Design System

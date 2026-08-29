@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Next.js, TypeScript, PostgreSQL, Prisma, Meilisearch, S3-compatible object storage, Stripe Connect, Coolify]
 ---
 
 ## Stripe — Design System

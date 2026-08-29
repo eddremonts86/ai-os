@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Ruby, Ruby on Rails, PostgreSQL, Sidekiq, Redis, Turbo, Stripe]
 ---
 
 ## Stripe — Design System

@@ -2,7 +2,7 @@
 id: "867"
 slug: no-effective-service-for-finding-target-customers
 title: No effective service for finding target customers
-status: draft
+status: enriched
 source:
   name: ProblemHunt
   url: "https://problemhunt.pro/en/marketing/voyb4a4nb1-no-effective-service-for-finding-target"
@@ -10,7 +10,7 @@ category: marketing
 date: "2025-10-29"
 tags: [Marketing, Other]
 country: Russia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [Python, FastAPI, Playwright, DuckDB, HTMX, Caddy]
 ---
 # No effective service for finding target customers
 
@@ -26,7 +26,17 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 1: Core
 
-_Not written yet — `ai-os plans enrich` fills this section._
+- [ ] Model the buyer profile as plain text plus a small structured section, with the structured fields stored as typed DuckDB columns
+- [ ] Model sources as explicit declarations with URL patterns, candidate shape and per-source rate limits
+- [ ] Add a test that a candidate row cannot be exported without its source row attached
+- [ ] Build the Playwright collector skeleton with per-source rate-limit enforcement and asyncio concurrency
+- [ ] Implement one working source end to end with the collector, the candidate ingestion and the audit row
+- [ ] Write the match step as a DuckDB SQL expression the operator can read and adjust
+- [ ] Add the threshold configuration and the deduplication-by-fingerprint pass
+- [ ] Render the operator dashboard with server-rendered HTML and HTMX for buyer profiles, sources and run history
+- [ ] Implement the CSV export with provenance columns and refuse exports without them
+- [ ] Build the audit view that resolves every contact in the most recent export back to its source row
+- [ ] Add a second source against a structurally different page shape to confirm the framework does not assume the first
 
 ## Phase 2: Deploy
 

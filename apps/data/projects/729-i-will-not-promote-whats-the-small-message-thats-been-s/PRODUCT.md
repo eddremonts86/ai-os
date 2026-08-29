@@ -2,7 +2,7 @@
 id: "729"
 slug: i-will-not-promote-whats-the-small-message-thats-been-s
 title: "I will not promote: whats the small message thats been sitting in your drafts all afternoon?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vp8tnt/i_will_not_promote_whats_the_small_message_thats/"

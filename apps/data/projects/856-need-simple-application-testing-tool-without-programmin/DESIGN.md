@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Tauri (Rust + WebView), TypeScript, Node.js (Fastify), SQLite, Playwright (CDP), WireMock, Sentry, Cloudflare R2, M-Pesa (Daraja API sandbox), Coolify, Docker]
 ---
 
 ## Stripe — Design System

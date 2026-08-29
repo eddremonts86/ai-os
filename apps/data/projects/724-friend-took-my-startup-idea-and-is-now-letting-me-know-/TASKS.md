@@ -2,7 +2,7 @@
 id: "724"
 slug: friend-took-my-startup-idea-and-is-now-letting-me-know-
 title: Friend took my startup idea and is now letting me know he buili it and is going to sell it. I will not promote
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpu13l/friend_took_my_startup_idea_and_is_now_letting_me/"

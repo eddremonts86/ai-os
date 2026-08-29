@@ -2,7 +2,7 @@
 id: "679"
 slug: what-actually-mattered-after-using-live-demo-software-f
 title: What actually mattered after using live demo software for a while?
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vptm7a/what_actually_mattered_after_using_live_demo/"
