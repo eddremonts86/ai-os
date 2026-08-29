@@ -11,7 +11,6 @@ date: "2026-08-26"
 tags: [Show HN, Product, Problem]
 tech: [JavaScript, Chrome MV3 extension APIs, OPFS, Web Workers with embedded SQLite (wa-sqlite), Chrome extension sandbox API, optional companion PWA]
 ---
-
 # Rook – A multi-Agent harness that lives 100% in a browser extension
 
 Rook is a multi-agent harness whose runtime lives entirely inside a Chrome MV3 extension, with no backend and no data collection. By inheriting Chrome's identity, file-system, sandbox, scheduler, alarm and WebSocket-channel primitives, it sidesteps the infrastructure each of those layers would otherwise demand and keeps the agent local to the user's profile — opt in to a remote PWA only when phone-driven captcha-clicking is needed. The two tool sets — execute and bash — both run in the extension sandbox, and the durable-object memory is rebuilt from scratch on top of Web Workers plus an embedded SQLite per agent.

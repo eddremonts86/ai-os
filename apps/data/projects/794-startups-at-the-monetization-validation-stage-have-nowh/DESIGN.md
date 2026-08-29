@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Next.js, TypeScript, PostgreSQL, Prisma, Stripe (Connect or third-party-hosted checkout), Resend, Tally or Typeform for the post-payment validation survey, Coolify]
 ---
 
 ## Stripe — Design System

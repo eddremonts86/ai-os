@@ -71,6 +71,8 @@ components:
   rounded: "{rounded.sm}"
   padding: "4px 8px"
   fontSize: "12px"
+status: enriched
+tech: [Node.js, Hono, Cloudflare Workers, D1 (SQLite at edge), Hyperwallet Africa, Flutterwave, Cloudflare R2]
 ---
 
 ## Stripe — Design System

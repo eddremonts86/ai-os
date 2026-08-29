@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [TypeScript, Bun, Postgres, Drizzle ORM, Playwright (browser automation), Reddit OAuth, Resend]
 ---
 
 ## Framer — Design System

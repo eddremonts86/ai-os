@@ -11,7 +11,6 @@ date: "2026-08-27"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, Model Context Protocol (stateless HTTP and SSE transports), Node.js MCP server, SQLite, web dashboard (React)]
 ---
-
 # I built an agent-first productivity bridge for all your agents
 
 The product is a task store built on the Model Context Protocol that lets AI coding agents read, create and update todos inside the same conversation where the user is shipping code, so a single task state follows the user across Cursor, Codex, Claude Code, Kilo Code and OpenCode in a single day. A web-app UI exposes the same store for manual edits and on-the-go phone use, and every mutation is attributed to either the user or a named agent.

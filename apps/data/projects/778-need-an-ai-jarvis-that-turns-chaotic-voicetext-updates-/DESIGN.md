@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, FastAPI, Whisper, LangGraph, PostgreSQL, pgvector, Redis, BullMQ, Next.js, Tailwind CSS, Docker]
 ---
 
 ## Linear — Design System

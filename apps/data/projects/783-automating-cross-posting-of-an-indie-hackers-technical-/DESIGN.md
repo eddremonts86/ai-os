@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Node.js, Hono, TypeScript, PostgreSQL, BullMQ, Redis, OpenAI API, Anthropic API, Next.js, Tailwind CSS, Vercel, Docker]
 ---
 
 ## Framer — Design System

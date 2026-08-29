@@ -11,30 +11,41 @@ category: startups
 date: "2026-01-03"
 tags: [Startups, Research, Other]
 country: Russia
-tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+tech: [SvelteKit, TypeScript, PostgreSQL with row-level security, Drizzle ORM, Rust screening-verifier service, Calendly integration for booking, Resend for transactional email, Plausible for privacy-respecting analytics, Coolify]
 ---
 # Startup teams have nowhere to find relevant custdev participants (people for interviews) to test early ideas and prototypes without overpaying for biased feedback
 
 ## Problem
 
-A Russia-based (or any early-stage) startup team running customer-development interviews has no reliable way to find participants who actually match their target persona, aren't being paid professional-survey-incentive hunters, and don't already know the team. Freelance respondent platforms pay everyone uniformly so professional respondents dominate; recruiting in personal networks gives biased responses from people who won't say no. The post names the cost: weeks of failed recruiting, interviews that turn out to be unusable, and overpayment to professional respondents who game the incentive.
+Startup teams — at any geography, with the post listing Russia as the example — running customer-development interviews cannot find participants who actually match their target persona, and the available channels all degrade in different ways. Freelance respondent platforms pay uniformly, so professional respondents dominate the supply and any team willing to pay the going rate is interviewing people whose full-time job is to be interviewed. Personal-network recruiting gives the opposite failure: warm intros produce participants who will not say no to the team, which makes the feedback useless. Both channels cost the team weeks of failed recruiting and an interview slot that turns out to be unusable.
+
+The capture is a one-line problem statement from ProblemHunt, with country listed as Russia and no further detail. The post does not name a specific startup, a specific persona, a specific incentive level, a specific respondent platform, or a specific failure rate. What the source names is the actor (a startup team running custdev interviews), the pain (no place to find relevant participants who are not professional-respondent hunters and not already in the team's network), and the missing thing (a way to test early ideas and prototypes without overpaying for biased feedback). The plan treats those bare facts as the ground truth.
+
+What follows from those bare facts is the shape of the problem: any solution has to reach participants outside the team's personal network, has to filter professional respondents in a way the participants themselves cannot easily game, has to keep the participant pool readable to a startup team that does not have a researcher on staff, and has to do this without the per-interview cost of the incumbent platforms. The plan scopes the narrowest honest MVP that addresses exactly those four pieces, without inventing a specific persona, an incentive level or a failure rate.
 
 ## Objective
 
-Ship a customer-development participant network where startup teams post a screener for a target persona, vetted non-professional respondents apply, and the team pays only for completed interviews that pass a basic consistency check — so the team gets real signal instead of professional-incentive-hunter noise.
+Build a custdev-participant matching surface where a startup team posts a screener for a target persona, the surface reaches participants outside the team's personal network, and each matched participant carries a documented screening record so the team can read the match without trusting the platform on faith — keeping the per-interview cost below the level at which professional respondents become the dominant supply.
 
 ## Target Users
 
-- Primary: early-stage startup teams (pre-seed through Series A) running 5–30 custdev interviews per validation cycle.
-- Secondary: UX research teams at later-stage companies running concept tests on tight timelines.
+- Early-stage startup teams (pre-seed to Series A) running 5–30 custdev interviews per validation cycle who need real-persona signal rather than professional-respondent noise.
+- UX research teams at later-stage companies running concept tests on tight timelines who need vetted respondents fast.
+- Independent product teams at established companies who want to test a new feature with a target persona they cannot reach internally.
+- A startup team's target participant — a person outside the team's personal network who would buy the product — who signs up to be interviewed and gets paid only when the interview completes.
+- Independent researchers who study customer development as a practice and need a participant pool that is not professional-respondent dominated.
+- A returning team that ran one cycle of interviews and wants to run another with a refreshed pool.
 
 ## MVP Scope
 
-- Screener builder: persona fields (role, industry, seniority, geography, current-tool usage), open-text question, and a 3-question consistency screen (e.g. "describe the last time you used X" — answers are checked for plausibility).
-- Vetted respondent pool: respondents verify their identity (phone or email + reference) and pass an initial screening interview before joining the pool.
-- Interview booking: respondent picks a slot, the team gets a calendar invite with the screener summary.
-- Payment on completion, not on signup: $25–$150 per interview based on persona seniority, released only after a basic consistency check on the open-text answer.
-- In-platform interview notes (optional) and a post-interview satisfaction rating from both sides.
+- A screener-builder surface where the team defines the target persona (role, industry, seniority, geography, current tool usage) and three to five screener questions that produce a written answer the team can read.
+- A participant-pool surface where people outside the team's personal network sign up with a verified email or phone, declare their persona fields, and answer the team's screener questions.
+- A match surface where the team sees matched participants with the screening record (persona fields plus the screener answers) and can pick who to interview.
+- A booking flow with a calendar invite that goes to the participant, so the team and the participant share a confirmed slot.
+- An interview-completion record the team fills in after each interview (interview happened, interview cancelled, no-show), so the platform learns which matches produced usable signal.
+- A payment path that holds the interview fee in escrow and releases it to the participant on the team's interview-completion record, not before.
+- A per-team ratings view: low-rating participants drop out of the recommended pool over time, so the platform's recommendation is calibrated on real interview outcomes.
+- Russian and English copy on team and participant surfaces, since the post's example geography is Russia and the source does not pick a primary language.
 
 ## Design Direction
 
@@ -52,7 +63,10 @@ For Russia, the defaults lean toward Cyrillic + Latin bilingual UI, RUB currency
 
 ## Constraints
 
-- Payment is held in escrow and released only after a basic consistency check on the open-text answer; a flagged answer means the team gets a rebook, not a refund cliff.
-- Respondent verification is mandatory for the first 500 respondents; no anonymous-pool shortcuts.
-- Screener fields must be explicit — no hidden disqualifiers that drive respondent gaming.
-- Must run on a $5/month VPS via Coolify + Docker; no managed services that would push infra cost above that ceiling.
+- The platform is a matching and screening surface, not a survey tool. The screener is the screening instrument; the team conducts the interview outside the platform.
+- Participants are reached from outside the team's personal network. The platform does not index a team's existing contacts or invite the team's colleagues to the pool.
+- Payment is held in escrow and released on the interview-completion record. A participant who no-shows is not paid; the team is not charged for a no-show.
+- The screening record is what the team reads to pick a participant, not a star rating. The record carries the persona fields and the screener answers, with no implicit scoring the team cannot inspect.
+- Russian and English copy are both in scope. The MVP surfaces both; the post does not pick a primary language.
+- The MVP does not promise a specific professional-respondent filtering rate. The interview-completion record and the per-team ratings view are the signals the platform uses to calibrate its recommendation; specific rates are measured, not asserted.
+- The MVP does not run the interview itself. The team conducts the interview on whatever channel they prefer; the platform owns the screener, the match, the booking, the escrow, and the outcome record.

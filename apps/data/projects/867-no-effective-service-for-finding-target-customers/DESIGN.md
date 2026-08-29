@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, FastAPI, Playwright, DuckDB, HTMX, Caddy]
 ---
 
 ## Framer — Design System
