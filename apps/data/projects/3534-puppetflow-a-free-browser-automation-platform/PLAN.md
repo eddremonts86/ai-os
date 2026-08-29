@@ -11,7 +11,6 @@ date: "2026-08-28"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, Node.js, Puppeteer, React, InertiaJS, Laravel, SQLite, Docker]
 ---
-
 # Puppetflow a free browser automation platform
 
 ## Tech Stack

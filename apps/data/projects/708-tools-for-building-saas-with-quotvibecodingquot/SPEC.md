@@ -2,7 +2,7 @@
 id: "708"
 slug: tools-for-building-saas-with-quotvibecodingquot
 title: "Tools for building SaaS with \"vibecoding\""
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpywzo/tools_for_building_saas_with_vibecoding/"

@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Remix, TypeScript, SQLite (better-sqlite3), Anthropic Claude API, Trigger.dev background jobs, PostHog analytics, Fly.io]
 ---
 
 ## Framer — Design System

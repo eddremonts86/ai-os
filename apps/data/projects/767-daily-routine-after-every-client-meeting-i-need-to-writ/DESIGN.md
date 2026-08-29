@@ -65,6 +65,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [SvelteKit, TypeScript, Postgres, Drizzle ORM, OpenAI Whisper + GPT-4o-mini, Tiptap, Coolify]
 ---
 
 ## Linear — Design System

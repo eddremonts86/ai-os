@@ -1,0 +1,41 @@
+---
+id: "3766"
+slug: stumpzlib-search-book-catalogs-and-drop-files-into-stum
+title: Stumpzlib – search book catalogs and drop files into Stump
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49489355"
+category: show-hn
+date: "2026-08-29"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Stumpzlib – search book catalogs and drop files into Stump
+
+## Phase 0: Scaffold
+
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
+- [ ] Copiar `edd-app-template` → `apps/3766-stumpzlib-search-book-catalogs-and-drop-files-into-stum/`
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
+
+## Phase 1: Core
+
+- [ ] Implement the project scaffold
+- [ ] Implement the core features
+- [ ] Apply the design tokens to the components
+- [ ] Write tests
+
+## Phase 2: Deploy
+
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
+
+---
+
+_Generated automatically by Lúa on 2026-08-29_

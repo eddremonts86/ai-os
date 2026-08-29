@@ -11,7 +11,6 @@ date: "2026-08-26"
 tags: [Show HN, Product, Problem]
 tech: [JavaScript, Chrome MV3 extension APIs, OPFS, Web Workers with embedded SQLite (wa-sqlite), Chrome extension sandbox API, optional companion PWA]
 ---
-
 # Rook – A multi-Agent harness that lives 100% in a browser extension
 
 ## Tech Stack

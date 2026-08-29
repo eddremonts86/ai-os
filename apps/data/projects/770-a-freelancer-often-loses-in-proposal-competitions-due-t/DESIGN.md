@@ -61,6 +61,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Next.js (App Router), TypeScript, Tailwind CSS, Playwright (headless screenshots), Stripe, S3, OpenAI GPT-4o-mini]
 ---
 
 ## Figma — Design System

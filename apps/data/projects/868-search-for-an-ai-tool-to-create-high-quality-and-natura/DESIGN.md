@@ -61,6 +61,8 @@ components:
   border: "1px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, FastAPI, PyTorch, ComfyUI, Celery, Redis, Next.js, S3-compatible object storage]
 ---
 
 ## Figma — Design System

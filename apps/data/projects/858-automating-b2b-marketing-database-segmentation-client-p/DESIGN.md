@@ -64,6 +64,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Django, Python, Celery, PostgreSQL, Redis, dbt (DuckDB warehouse), Apache Superset (read-only), OpenAI API (parsing), DuckDuckGo SERP scraping (operator-controlled), YooKassa (sandbox), Coolify, Docker]
 ---
 
 ## Supabase — Design System

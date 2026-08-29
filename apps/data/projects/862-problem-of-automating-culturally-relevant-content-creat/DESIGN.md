@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Node.js, Hono, Bun, SQLite (better-sqlite3), FFmpeg, Whisper, Llama 3.1]
 ---
 
 ## Framer — Design System

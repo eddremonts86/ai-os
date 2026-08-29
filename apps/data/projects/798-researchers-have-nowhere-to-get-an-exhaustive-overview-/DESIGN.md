@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, FastAPI, PostgreSQL with pgvector, Celery, Redis, arXiv API, Semantic Scholar Graph API, OpenAlex API, Crossref API, Anthropic / OpenAI API for field-summarisation, React with TypeScript, Coolify]
 ---
 
 ## Notion — Design System
