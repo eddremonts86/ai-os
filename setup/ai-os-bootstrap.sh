@@ -145,33 +145,42 @@ start_graphiti() {
 }
 
 # ─── Stack: Ollama (host-native on Mac) ──────────────────────────────────────
+#
+# Not a Docker service on Mac: a container cannot reach the Metal GPU, so
+# memory/docker-compose.yml keeps its `ollama` service behind the opt-in `ollama-docker`
+# profile (Windows) and Mac runs it on the host. Two containers plus a host process is the
+# correct shape here, not three containers.
+#
+# Delegates to memory/launchd/install-ollama.sh rather than `brew services start ollama`:
+# Homebrew's plist sets OLLAMA_FLASH_ATTENTION and OLLAMA_KV_CACHE_TYPE but NOT
+# OLLAMA_HOST, so the brew service binds Ollama's default 11434 while every consumer in
+# this stack addresses 11500. It looked started and was invisible to all of them.
 ensure_ollama() {
   hdr "Ollama"
-  if curl -s -m 3 "${OLLAMA_URL:-http://localhost:11500}/api/tags" 2>/dev/null | grep -q "nomic-embed-text"; then
-    ok "Ollama up and nomic-embed-text already pulled"
+  local url="${OLLAMA_URL:-http://localhost:11500}"
+
+  # Readiness is "the API answers", checked with curl's own exit status. This block used to
+  # poll /api/tags for the string `PONG` — a Redis reply that endpoint cannot return — so
+  # the wait always timed out silently and the function reported ready regardless.
+  if curl -sf -m 3 "$url/api/tags" >/dev/null 2>&1 \
+     && curl -sf -m 5 "$url/api/tags" 2>/dev/null | grep -q "nomic-embed-text"; then
+    ok "Ollama up on :11500 and nomic-embed-text pulled"
     return 0
   fi
-  # Native Mac: brew services. Docker: skipped (only meaningful on Windows with the docker profile).
-  if command -v brew >/dev/null 2>&1 && [ "$(uname -s)" = "Darwin" ] && [ -x /opt/homebrew/bin/ollama ]; then
-    note "Ollama not running on :11500; starting brew service"
-    brew services start ollama 2>&1 | sed 's/^/    /'
-    for i in $(seq 1 20); do
-      if curl -s -m 3 "${OLLAMA_URL:-http://localhost:11500}/api/tags" 2>/dev/null | grep -q PONG; then
-        ok "Ollama up"
-        break
-      fi
-      sleep 1
-    done
-  else
-    warn "Ollama not running and no native install detected (skipping; semantic search will be unavailable)"
+
+  local installer="$AI_OS_ROOT/memory/launchd/install-ollama.sh"
+  if [ "$(uname -s)" = "Darwin" ] && command -v ollama >/dev/null 2>&1 && [ -f "$installer" ]; then
+    note "Ollama not answering on :11500; installing the launchd service"
+    if bash "$installer" 2>&1 | sed 's/^/    /'; then
+      ok "Ollama ready"
+      return 0
+    fi
+    warn "could not bring Ollama up — semantic search and graphiti embeddings are unavailable"
     return 0
   fi
-  # Pull nomic-embed-text if missing
-  if ! curl -s -m 3 "${OLLAMA_URL:-http://localhost:11500}/api/tags" 2>/dev/null | grep -q "nomic-embed-text"; then
-    note "pulling nomic-embed-text (one-time, ~250MB)"
-    OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text 2>&1 | sed 's/^/    /' || warn "pull failed (will retry on first use)"
-  fi
-  ok "Ollama ready"
+
+  warn "Ollama not running and no native install detected (skipping; semantic search will be unavailable)"
+  return 0
 }
 
 # ─── Indexing: discover + index ───────────────────────────────────────────────

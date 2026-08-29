@@ -2,7 +2,7 @@
 id: "722"
 slug: how-to-build-something-from-the-ground-up-i-will-not-pr
 title: How to build something from the ground up? i will not promote
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vpw2lh/how_to_build_something_from_the_ground_up_i_will/"

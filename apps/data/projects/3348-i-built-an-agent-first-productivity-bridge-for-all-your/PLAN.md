@@ -11,7 +11,6 @@ date: "2026-08-27"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, Model Context Protocol (stateless HTTP and SSE transports), Node.js MCP server, SQLite, web dashboard (React)]
 ---
-
 # I built an agent-first productivity bridge for all your agents
 
 ## Tech Stack

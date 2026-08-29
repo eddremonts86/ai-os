@@ -2,7 +2,7 @@
 id: "681"
 slug: i-have-an-it-diploma-but-im-a-little-lost
 title: "I have an IT diploma but I'm a little lost"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/SaaS/comments/1vpsqe2/i_have_an_it_diploma_but_im_a_little_lost/"

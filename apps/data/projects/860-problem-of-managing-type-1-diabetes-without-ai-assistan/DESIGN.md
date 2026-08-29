@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [React Native (Expo), TypeScript, FastAPI (Python), PostgreSQL, TimescaleDB (optional time-series extension), DuckDB (on-device analytics), Apple HealthKit, Google Health Connect, Coolify, Docker]
 ---
 
 ## Headspace — Design System

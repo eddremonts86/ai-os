@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Flutter (mobile), Dart, Firebase Firestore, Firebase Cloud Functions (Node.js), Cloudflare Workers, Square Reader SDK (sandbox), Xendit (sandbox), Google Cloud Storage, Coolify, Docker]
 ---
 
 ## Airbnb — Design System

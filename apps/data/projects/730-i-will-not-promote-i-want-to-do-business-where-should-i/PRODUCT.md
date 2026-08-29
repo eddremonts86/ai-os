@@ -2,7 +2,7 @@
 id: "730"
 slug: i-will-not-promote-i-want-to-do-business-where-should-i
 title: "I will not promote: I want to do business. Where should I start?"
-status: draft
+status: enriched
 source:
   name: Reddit
   url: "https://www.reddit.com/r/startups/comments/1vp3cx3/i_will_not_promote_i_want_to_do_business_where/"

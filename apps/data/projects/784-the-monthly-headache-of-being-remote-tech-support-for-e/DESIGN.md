@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Python, FastAPI, SQLite, Twilio Voice + WhatsApp Business API, OpenAI Whisper + GPT-4o, Tailscale, systemd on a VPS]
 ---
 
 ## Headspace — Design System

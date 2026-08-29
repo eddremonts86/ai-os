@@ -1,0 +1,118 @@
+# -----------------------------------------------------------------------------
+# Reusable workflow: OS-agnostic AI-OS install/verify suite.
+#
+# test-linux.yml, test-mac.yml (and any future POSIX test) call this with an
+# `os` input. The shared steps live here so the three test workflows stay in
+# sync: a fix to one propagates automatically. The caller still owns its
+# `runs-on`, trigger set, and `name` — this workflow only owns the body.
+#
+# Windows keeps its own workflow because every step differs in PowerShell:
+# yq install path, pwsh parser check, `Test-Path` instead of `[ -d ]`, etc.
+# A reusable workflow with bash-friendly steps would need a port anyway, so
+# the maintenance burden stays on one side per platform.
+# -----------------------------------------------------------------------------
+name: Reusable AI-OS test
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: "POSIX family of the caller (linux|macos). Drives yq install + setup-node."
+        required: true
+        type: string
+      install_node:
+        description: "Whether to add the setup-node step (true for macos, false for linux)."
+        required: false
+        default: "false"
+        type: string
+      node_version:
+        description: "Node version to install when install_node is true."
+        required: false
+        default: "22"
+        type: string
+
+jobs:
+  test:
+    runs-on: ${{ inputs.os == 'macos' && 'macos-latest' || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Setup Node
+        if: ${{ inputs.install_node == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+
+      - name: "Install yq (Linux via wget — mikefarah/yq v4, not snap)"
+        if: ${{ inputs.os == 'linux' }}
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+      - name: "Install yq (macOS via brew)"
+        if: ${{ inputs.os == 'macos' }}
+        run: brew install yq
+
+      - name: "Install PyYAML (Linux uses pip, macOS uses pip3)"
+        run: ${{ inputs.os == 'macos' && 'pip3 install pyyaml' || 'pip install pyyaml' }}
+
+      - name: "Run install-mac.sh (DRY_RUN on POSIX)"
+        env:
+          DRY_RUN: "1"
+          # On Linux, $HOME is /home/runner
+        run: bash setup/install-mac.sh
+
+      - name: "Verify ECC integration (--check, non-fatal if vendor/ecc/ missing)"
+        run: |
+          if [ -d vendor/ecc ]; then
+            echo "vendor/ecc/ present, running install-ecc.sh --check..."
+            bash setup/install-ecc.sh --check
+          else
+            echo "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
+          fi
+
+      - name: "Verify claude.tools / gstack integration (--check, non-fatal)"
+        # The 12 individual skills live in ai-config/skills/ (checked in), so
+        # the frontmatter checks always run; the plugin-level check is conditional
+        # on vendor/codex-plugin-cc/ being cloned.
+        run: |
+          if [ -d vendor/codex-plugin-cc ]; then
+            echo "vendor/codex-plugin-cc/ present, running install-claude-tools.sh --check..."
+            bash setup/install-claude-tools.sh --check || echo "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)"
+          else
+            echo "::warning::vendor/codex-plugin-cc/ not present; running --check anyway (12 individual skills are in ai-config/skills/)"
+            bash setup/install-claude-tools.sh --check || echo "::warning::install-claude-tools.sh --check exited non-zero (non-fatal)"
+          fi
+
+      - name: "Run setup unit tests (required, fail-closed)"
+        # setup/verify.sh validates a fully-installed real machine (live CLI
+        # binaries, dotfiles, MCP config, brew/npm/pip state). A bare CI runner
+        # never has that, so running it here would either always fail on
+        # required checks or need `|| true`, which previously hid real bugs
+        # (P0-4: CI suppressed verifier failures). install-mac.sh (DRY_RUN)
+        # above already exercises the manifest/skill/adapter/MCP logic against
+        # an isolated fake HOME and fails closed with no suppression. This step
+        # adds the other required, fail-closed gate: the generate-mcp-config.py
+        # unit tests (PyYAML-required parsing, config preservation, idempotency).
+        run: python3 -m unittest discover -s setup/tests -v
+
+      - name: Summary
+        if: always()
+        env:
+          TEST_OS: ${{ inputs.os }}
+        run: |
+          echo "## $TEST_OS Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Install dry-run: ✅ (required)" >> $GITHUB_STEP_SUMMARY
+          echo "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)" >> $GITHUB_STEP_SUMMARY
+          echo "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)" >> $GITHUB_STEP_SUMMARY
+          echo "- setup unit tests: ✅ (required)" >> $GITHUB_STEP_SUMMARY
+          echo "- Note: setup/verify.sh validates a live installed machine and is not run against the bare CI runner; run it locally after setup/install-mac.sh." >> $GITHUB_STEP_SUMMARY

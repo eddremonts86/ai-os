@@ -60,6 +60,8 @@ components:
   border: "1.5px solid {colors.border}"
   rounded: "{rounded.sm}"
   padding: "10px 14px"
+status: enriched
+tech: [Rust, Axum, Apache Kafka, TimescaleDB, PostgreSQL with PostGIS, ONNX Runtime, FFmpeg, edge inference nodes (NVIDIA Jetson Orin), gRPC, MQTT, OpenSky Network feed, Coolify]
 ---
 
 ## Airbnb — Design System

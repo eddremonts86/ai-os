@@ -148,7 +148,11 @@ for entry in "${CLIENTS[@]}"; do
     fi
     continue
   fi
-  deployed_names=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" 2>/dev/null -exec basename {} \; | sort -u)
+  # -exec basename prints each entry on its own line; group redirection at the end
+  # so stderr from the whole find pipeline (e.g. transient broken symlinks) is silenced.
+  deployed_names=$(find -L "$cli_dir" -maxdepth 1 -mindepth 1 \
+      ! -name "READMEDD.md" ! -name "taste-skill-llms.txt" ! -name ".system" \
+      -exec basename {} \; 2>/dev/null | sort -u)
   missing_names=$(comm -23 <(echo "$EXPECTED_SKILL_NAMES") <(echo "$deployed_names"))
   missing_count=$(echo "$missing_names" | grep -c . || true)
   deployed_count=$(echo "$deployed_names" | grep -c . || true)
