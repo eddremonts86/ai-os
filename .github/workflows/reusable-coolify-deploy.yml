@@ -32,6 +32,17 @@ on:
         description: 'Human name of the app, for log lines.'
         required: true
         type: string
+      require_secrets:
+        description: >
+          Fail when the deploy is not configured, instead of the green no-op.
+          Two honest conventions, and which one is right depends on the repo:
+          a deploy that is wired but deliberately not activated should not fail
+          every push, while a repo whose deploy is supposed to work needs to
+          hear about a missing secret rather than collect green ticks that
+          deployed nothing.
+        required: false
+        default: false
+        type: boolean
     secrets:
       coolify_api_url:
         required: false
@@ -53,21 +64,28 @@ jobs:
       deployed: ${{ steps.run.outputs.deployed }}
 
     steps:
-      # Safe by default, as before: until the secrets exist this is a green
-      # no-op that says so. That is about ACTIVATION — a repo whose deploy is
-      # not wired yet should not fail every push. It is not permission to
-      # report success once the deploy is real, which is what the wait below
-      # is for.
+      # Two conventions, both honest, chosen by the caller. Safe-by-default is
+      # about ACTIVATION: a deploy that is wired but not switched on should not
+      # fail every push. `require_secrets: true` is for a repo whose deploy is
+      # meant to work, where a missing secret must be heard rather than
+      # collected as another green tick that deployed nothing.
+      #
+      # Neither is permission to report success once the deploy is real. That
+      # is what the wait below is for.
       - name: Guard — is deploy configured?
         id: guard
         env:
           APP_UUID: ${{ secrets.app_uuid }}
+          REQUIRE: ${{ inputs.require_secrets }}
         run: |
-          if [ -z "$APP_UUID" ]; then
+          if [ -n "$APP_UUID" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          elif [ "$REQUIRE" = "true" ]; then
+            echo "::error title=Deploy not configured::No app uuid secret for ${{ inputs.app }}. This repo asked to be told rather than skipped."
+            exit 1
+          else
             echo "::notice title=Deploy skipped::No app uuid secret for ${{ inputs.app }} — pipeline wired but not activated. See setup/deploy/README.md."
             echo "configured=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Deploy, and wait for the result
