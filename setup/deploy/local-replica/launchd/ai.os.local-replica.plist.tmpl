@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Keeps the local Coolify replicas level with `dev`.
+
+  Rendered by install-poller.sh, which substitutes __AI_OS_ROOT__ — the path is not
+  committed, so this file is machine-independent.
+
+  It lives in the repo because the plans-pipeline scheduler once did not: it existed only
+  in ~/Library/LaunchAgents, so when it fell out of launchd nothing in the repo recorded
+  that anything had stopped, and a fresh Mac got no scheduler at all.
+
+  A poller rather than a webhook because no runner in GitHub's cloud can reach this Mac,
+  and a webhook would mean exposing the local Coolify to the internet to receive one.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.local-replica</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__AI_OS_ROOT__/setup/deploy/local-replica/poll.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__AI_OS_ROOT__</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- launchd hands a job a bare PATH, so git, node and curl must be named. -->
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/Users/edd/.local/bin:/usr/bin:/bin</string>
+        <key>AI_OS_ROOT</key>
+        <string>__AI_OS_ROOT__</string>
+    </dict>
+
+    <!-- Two minutes. One `git ls-remote` per repo per tick is nothing, but the point of
+         the replica is to be ready when you go looking at it, not to race the push. -->
+    <key>StartInterval</key>
+    <integer>120</integer>
+
+    <key>StandardOutPath</key>
+    <string>__AI_OS_ROOT__/outputs/local-replica/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__AI_OS_ROOT__/outputs/local-replica/launchd.err.log</string>
+
+    <!-- At load it would fire during install, which is when the state file is empty and
+         every app is about to be adopted anyway. The first tick two minutes later does
+         the same thing without racing the installer. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>Nice</key>
+    <integer>10</integer>
+</dict>
+</plist>
