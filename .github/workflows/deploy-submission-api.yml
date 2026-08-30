@@ -50,42 +50,27 @@ concurrency:
 
 jobs:
   deploy:
-    name: Trigger Coolify deployment (submission-api)
+    # All the Coolify talking lives in the reusable workflow so the three
+    # deploys here cannot drift apart again. It waits for the deployment to
+    # reach `finished`; these three used to stop at "queued" and report a green
+    # tick over a failed build.
+    uses: ./.github/workflows/reusable-coolify-deploy.yml
+    with:
+      app: submission-api
+    secrets:
+      coolify_api_url: ${{ secrets.COOLIFY_API_URL }}
+      coolify_api_token: ${{ secrets.COOLIFY_API_TOKEN }}
+      app_uuid: ${{ secrets.COOLIFY_APP_UUID_SUBMISSION_API }}
+
+  verify:
+    name: Verify submission-api
+    needs: deploy
+    # Only when something was actually deployed. An unconfigured deploy is a
+    # green no-op and has nothing to probe.
+    if: needs.deploy.outputs.deployed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Guard — is deploy configured?
-        id: guard
-        env:
-          COOLIFY_APP_UUID_SUBMISSION_API: ${{ secrets.COOLIFY_APP_UUID_SUBMISSION_API }}
-        run: |
-          if [ -z "$COOLIFY_APP_UUID_SUBMISSION_API" ]; then
-            echo "::notice title=Deploy skipped::COOLIFY_APP_UUID_SUBMISSION_API is not set — wired but not activated. See setup/deploy/README.md."
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Trigger Coolify deploy
-        if: steps.guard.outputs.configured == 'true'
-        env:
-          COOLIFY_API_URL: ${{ secrets.COOLIFY_API_URL }}
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_APP_UUID_SUBMISSION_API: ${{ secrets.COOLIFY_APP_UUID_SUBMISSION_API }}
-        run: |
-          set -euo pipefail
-          echo "Requesting deployment of ${COOLIFY_APP_UUID_SUBMISSION_API} …"
-          code=$(curl -sS -o /tmp/deploy.json -w '%{http_code}' --max-time 30 \
-            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-            "${COOLIFY_API_URL%/}/api/v1/deploy?uuid=${COOLIFY_APP_UUID_SUBMISSION_API}&force=false")
-          echo "Coolify responded HTTP ${code}:"
-          cat /tmp/deploy.json; echo
-          case "$code" in
-            2*) echo "✓ Deployment queued." ;;
-            *)  echo "::error title=Deploy trigger failed::Coolify returned HTTP ${code}"; exit 1 ;;
-          esac
-
       - name: Verify by content, not by status code
-        if: steps.guard.outputs.configured == 'true'
         env:
           SITE_URL_SUBMISSION_API: ${{ secrets.SITE_URL_SUBMISSION_API }}
         run: |
@@ -94,11 +79,11 @@ jobs:
             echo "::notice::SITE_URL_SUBMISSION_API not set — skipping the health probe."
             exit 0
           fi
-          echo "Waiting ~40s for the build, then probing ${SITE_URL_SUBMISSION_API}/health …"
-          sleep 40
+          # No sleep any more: `deploy` waited for Coolify to report `finished`.
+          echo "Probing ${SITE_URL_SUBMISSION_API}/health …"
           for i in 1 2 3 4 5; do
             body=$(curl -fsS --max-time 15 "${SITE_URL_SUBMISSION_API%/}/health" || true)
-            echo "attempt ${i}: ${body:-（no response)}"
+            echo "attempt ${i}: ${body:-(no response)}"
             # `configured` is the whole point: a 200 with configured:false means the container is
             # up and will refuse every submission, which is a failed deploy wearing a green tick.
             case "$body" in
@@ -107,6 +92,7 @@ jobs:
                 echo "::error title=Deployed but not configured::/health reports configured:false. Check GITHUB_TOKEN, GITHUB_REPO and ALLOWED_ORIGIN in the Coolify environment — all three are required."
                 exit 1 ;;
             esac
-            sleep 15
+            sleep 10
           done
-          echo "::warning::No /health response yet — the Coolify build may still be running."
+          echo "::error title=No health response::The submission API deployed but /health never answered."
+          exit 1
