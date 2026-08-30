@@ -1,0 +1,2 @@
+# Machine state: which SHA each local replica last deployed.
+state.json
