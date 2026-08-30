@@ -41,56 +41,44 @@ concurrency:
 
 jobs:
   deploy:
-    name: Trigger Coolify deployment (plans-explorer)
+    # All the Coolify talking lives in the reusable workflow so the three
+    # deploys here cannot drift apart again. It waits for the deployment to
+    # reach `finished`; these three used to stop at "queued" and report a green
+    # tick over a failed build.
+    uses: ./.github/workflows/reusable-coolify-deploy.yml
+    with:
+      app: plans-explorer
+    secrets:
+      coolify_api_url: ${{ secrets.COOLIFY_API_URL }}
+      coolify_api_token: ${{ secrets.COOLIFY_API_TOKEN }}
+      app_uuid: ${{ secrets.COOLIFY_APP_UUID_PLANS_EXPLORER }}
+
+  verify:
+    name: Verify plans-explorer
+    needs: deploy
+    # Only when something was actually deployed. An unconfigured deploy is a
+    # green no-op and has nothing to probe.
+    if: needs.deploy.outputs.deployed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Guard — is deploy configured?
-        id: guard
-        env:
-          COOLIFY_APP_UUID_PLANS_EXPLORER: ${{ secrets.COOLIFY_APP_UUID_PLANS_EXPLORER }}
-        run: |
-          if [ -z "$COOLIFY_APP_UUID_PLANS_EXPLORER" ]; then
-            echo "::notice title=Deploy skipped::COOLIFY_APP_UUID_PLANS_EXPLORER secret is not set — pipeline wired but not activated. See setup/deploy/README.md."
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Trigger Coolify deploy
-        if: steps.guard.outputs.configured == 'true'
-        env:
-          COOLIFY_API_URL: ${{ secrets.COOLIFY_API_URL }}
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_APP_UUID_PLANS_EXPLORER: ${{ secrets.COOLIFY_APP_UUID_PLANS_EXPLORER }}
-        run: |
-          set -euo pipefail
-          echo "Requesting deployment of ${COOLIFY_APP_UUID_PLANS_EXPLORER} …"
-          code=$(curl -sS -o /tmp/deploy.json -w '%{http_code}' --max-time 30 \
-            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-            "${COOLIFY_API_URL%/}/api/v1/deploy?uuid=${COOLIFY_APP_UUID_PLANS_EXPLORER}&force=false")
-          echo "Coolify responded HTTP ${code}:"
-          cat /tmp/deploy.json; echo
-          case "$code" in
-            2*) echo "✓ Deployment queued." ;;
-            *)  echo "::error title=Deploy trigger failed::Coolify returned HTTP ${code}"; exit 1 ;;
-          esac
-
-      - name: Verify (curl, best-effort)
-        if: steps.guard.outputs.configured == 'true'
+      - name: Verify the explorer
         env:
           SITE_URL_PLANS_EXPLORER: ${{ secrets.SITE_URL_PLANS_EXPLORER }}
         run: |
           set -euo pipefail
           if [ -z "${SITE_URL_PLANS_EXPLORER:-}" ]; then
-            echo "::notice::SITE_URL_PLANS_EXPLORER not set — skipping HTTP check (Coolify builds asynchronously)."
+            echo "::notice::SITE_URL_PLANS_EXPLORER not set — skipping the HTTP check."
             exit 0
           fi
-          echo "Waiting ~40s for the Coolify build to roll out, then probing ${SITE_URL_PLANS_EXPLORER} …"
-          sleep 40
+          # No sleep any more: `deploy` waited for Coolify to report `finished`,
+          # so the container is up before this job starts. The retries stay for
+          # the seconds Traefik needs to pick up the new one.
+          echo "Probing ${SITE_URL_PLANS_EXPLORER} …"
           for i in 1 2 3 4 5; do
             code=$(curl -fsS -o /dev/null -w '%{http_code}' --max-time 15 "$SITE_URL_PLANS_EXPLORER" || true)
             echo "attempt ${i}: HTTP ${code}"
             [ "$code" = "200" ] && { echo "✓ Live."; exit 0; }
-            sleep 15
+            sleep 10
           done
-          echo "::warning::Site not 200 yet — the Coolify build may still be running. Check the Coolify dashboard."
+          echo "::error title=Not serving::plans-explorer deployed but is not answering 200. Check the Coolify dashboard."
+          exit 1

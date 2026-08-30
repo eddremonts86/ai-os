@@ -1,0 +1,125 @@
+# -----------------------------------------------------------------------------
+# Trigger a Coolify deployment and WAIT to hear whether it worked.
+#
+# The three deploy workflows here were the same forty lines three times over,
+# and all three stopped at "queued". Coolify answers as soon as the build enters
+# its queue, not when it is live, so a failed build reported a green tick and
+# the only place the truth existed was a log on the server. That is the same
+# failure this pipeline exists to prevent, wearing the pipeline's own colours.
+#
+# Callers keep their own verification, because it differs: the site probes for
+# a 200, the submission API probes for `configured:true` — a 200 from a
+# container that will refuse every submission is a failed deploy in disguise.
+# What they no longer do is sleep 40 seconds and hope; by the time a caller's
+# verify job starts, this workflow has seen the deployment reach `finished`.
+#
+# API shape, all of it checked against the running Coolify rather than recalled:
+#   trigger  GET /api/v1/deploy?uuid=…&force=false      (route:list --path=api/v1)
+#   returns  {"deployments":[{message, resource_uuid, deployment_uuid?}]}
+#            — deployment_uuid is OPTIONAL; DeployController omits it when
+#              nothing was queued
+#   poll     GET /api/v1/deployments/<deployment_uuid>
+#   states   queued | in_progress | finished | failed | cancelled-by-user
+#            — note the hyphen, and note that `success` and `error` are not
+#              among them
+# -----------------------------------------------------------------------------
+name: Coolify deploy (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      app:
+        description: 'Human name of the app, for log lines.'
+        required: true
+        type: string
+    secrets:
+      coolify_api_url:
+        required: false
+      coolify_api_token:
+        required: false
+      app_uuid:
+        required: false
+    outputs:
+      deployed:
+        description: 'true when a deployment finished; false when the deploy is not configured yet.'
+        value: ${{ jobs.deploy.outputs.deployed }}
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.app }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      deployed: ${{ steps.run.outputs.deployed }}
+
+    steps:
+      # Safe by default, as before: until the secrets exist this is a green
+      # no-op that says so. That is about ACTIVATION — a repo whose deploy is
+      # not wired yet should not fail every push. It is not permission to
+      # report success once the deploy is real, which is what the wait below
+      # is for.
+      - name: Guard — is deploy configured?
+        id: guard
+        env:
+          APP_UUID: ${{ secrets.app_uuid }}
+        run: |
+          if [ -z "$APP_UUID" ]; then
+            echo "::notice title=Deploy skipped::No app uuid secret for ${{ inputs.app }} — pipeline wired but not activated. See setup/deploy/README.md."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy, and wait for the result
+        id: run
+        if: steps.guard.outputs.configured == 'true'
+        env:
+          COOLIFY_API_URL: ${{ secrets.coolify_api_url }}
+          COOLIFY_API_TOKEN: ${{ secrets.coolify_api_token }}
+          APP_UUID: ${{ secrets.app_uuid }}
+          APP: ${{ inputs.app }}
+        run: |
+          set -euo pipefail
+          base="${COOLIFY_API_URL%/}"
+          auth="Authorization: Bearer $COOLIFY_API_TOKEN"
+
+          echo "Requesting deployment of $APP …"
+          code=$(curl -sS -o /tmp/deploy.json -w '%{http_code}' --max-time 60 \
+            -H "$auth" -H 'Accept: application/json' \
+            "$base/api/v1/deploy?uuid=$APP_UUID&force=false")
+          echo "Coolify responded HTTP $code:"
+          cat /tmp/deploy.json; echo
+
+          if [ "$code" = "429" ]; then
+            echo "::error title=Rate limited::Coolify is throttling deploys — re-run this workflow in a minute."
+            exit 1
+          fi
+          case "$code" in
+            2*) ;;
+            *) echo "::error title=Deploy trigger failed::Coolify returned HTTP $code"; exit 1 ;;
+          esac
+
+          id=$(jq -r '.deployments[0].deployment_uuid // empty' /tmp/deploy.json)
+          if [ -z "$id" ]; then
+            echo "::error title=Nothing queued::Coolify accepted the request but queued no deployment — its message above says why."
+            exit 1
+          fi
+
+          echo "Waiting on deployment $id …"
+          for i in $(seq 1 60); do
+            sleep 10
+            status=$(curl -fsS -H "$auth" --max-time 30 \
+              "$base/api/v1/deployments/$id" | jq -r '.status // "?"')
+            echo "  poll $i: $status"
+            case "$status" in
+              finished)
+                echo "✓ $APP is live."
+                echo "deployed=true" >> "$GITHUB_OUTPUT"
+                exit 0 ;;
+              failed|cancelled-by-user)
+                echo "::error title=Deployment $status::See the Coolify deployment log for $APP."
+                exit 1 ;;
+            esac
+          done
+          echo "::error title=Timed out::$APP did not finish deploying within 10 minutes."
+          exit 1
