@@ -1,10 +1,10 @@
 # TOP_PROJECTS.md — ProblemHunt ranked
 
-> Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-29.
-> Source: 3155 projects in `~/Projects/ai-os/apps/data/projects/` (ProblemHunt + Reddit r/SaaS + Hacker News + BetaList + ProductHunt).
+> Auto-ranked by the `problemhunt-scraper` cronjob on 2026-08-31.
+> Source: 3517 projects in `~/Projects/ai-os/apps/data/projects/` (ProblemHunt + Reddit r/SaaS + Hacker News + BetaList + ProductHunt).
 > Scoring blends WTP (from SPEC/PRODUCT YAML or extracted from title), B2B/recurring signals, sticky-compliance verticals, tech-stack breadth (learn), and visual/agent/creative novelty (fun).
 
-## Top 95 — Real Revenue Potential
+## Top 115 — Real Revenue Potential
 
 1. **2286-taqflow-move-b2b-funds-across-central-asia-with-live-fx** — score 8.5/10
    _B2B cross-border treasury rail for Central Asia + Caucasus, 12 currencies, 8 markets_
@@ -387,7 +387,87 @@
     _DeepSeekGUI — Windows desktop client for DeepSeek Harness (PolyForm Perimeter)_
     Show HN: "V1 wraps the official Harness Web UI in an Electron shell with some desktop additions — installer, system tray, built-in browser panel... V2 is in development — replacing the upstream Web UI with a custom workbench built for desktop." PolyForm Perimeter-licensed, no pricing stated, B2B dev-tools adoption shape on Windows. Ties 3118/3770's 5.0 Money ceiling without displacing; revenue is bounded by support/hosted-inference without a paid SaaS tier.
 
-## Top 113 — Learning Potential
+92. **4129-concourse-automate-finance-workflows-with-audit-ready-a** — score 7.0/10
+   _Enterprise finance AI agents with audit-ready traceability (variance, close, AR, forecasting)_
+   BetaList: "the AI execution layer for enterprise finance... handles variance analysis, close, forecasting, accounts receivable, and weekly reviews. Outputs are audit-ready with full traceability and governance, delivered via e[mail]." Enterprise B2B recurring in the compliance-vertical shape — ties 573/701/3056/1575/1517/2875/3707/3435/3743's 7.0 Money ceiling without displacing; no price named, but audit-ready governance is the wedge finance teams already pay for.
+
+93. **4107-referent** — score 6.5/10
+   _AI-native OS for modern law firms (enterprise legal vertical)_
+   ProductHunt: "The AI-native OS for modern law firms." Legal is the stickiest vertical SaaS in the corpus and firm-wide per-seat recurring is the obvious shape. Ties the 6.5 Money ceiling without displacing; tagline-only capture leaves pricing and feature depth unstated.
+
+94. **4122-trustity-secure-endpoints-with-visual-dlp-browser-dlp-p** — score 6.5/10
+   _Endpoint security stack: visual DLP, browser DLP, PAM, host IPS in one agent_
+   BetaList: "unifies endpoint and cloud security in one portal and agent... VisionX visual DLP to detect cameras aimed at screens, GenGuard to block sensitive pastes into GenAI... Vault & PAM for zero-knowledge secrets." Enterprise B2B with four product lines under one agent; ties the 6.5 Money ceiling without displacing; no price named.
+
+95. **4025-murmell-collaborative-cloud-canvas-for-coding-agents** — score 6.5/10
+   _Collaborative cloud canvas where coding agents run together (Google Docs for agents)_
+   Show HN with full prose: "an infinite canvas where coding agents run together in the cloud instead of on your laptop... the other editors are you, your teammates, and a set of agents all working." B2B dev-tool recurring with a novel multi-agent surface; ties the 6.5 Money ceiling without displacing; no price named.
+
+96. **4003-cogram-studio-cad-and-bim-workspace-for-humans-and-agen** — score 6.5/10
+   _CAD and BIM workspace for AI agents (architects/engineers vertical)_
+   Show HN: co-founders "have been making project-management software for architects and engineers since 2023, and are now experimenting with a second product... a CAD and BIM workspace for AI agents to create three-dimensional models." Vertical B2B with an existing customer base to upsell; ties the 6.5 Money ceiling without displacing; no price named.
+
+97. **4130-orval-ai-receptionist-that-answers-calls-books-appointm** — score 6.0/10
+   _AI receptionist that answers calls, books appointments, captures leads 24/7_
+   BetaList: "holds natural, human-like conversations, checks live calendar availability, sends SMS confirmations, and routes complex inquiries to your team... works with Outlook, Freshdesk, Zendesk." B2B SMB recurring in the crowded voice-agent category; ties the 6.0 Money ceiling without displacing; no price named.
+
+98. **4115-bylio-turn-expert-interviews-into-polished-b2b-articles** — score 6.0/10
+   _Expert interviews turned into publish-ready B2B articles in brand voice_
+   BetaList: "guides your subject-matter expert through a short, adaptive interview, spoken or typed, then drafts articles, blog posts, or case studies in your brand voice based solely on what they said." B2B content-marketing SaaS with per-team recurring; ties the 6.0 Money ceiling without displacing; no price named.
+
+99. **4127-planiflow-see-your-teams-real-workload-before-taking-on** — score 6.0/10
+   _Team workload view before taking on new projects (Asana + Calendar merged)_
+   BetaList: "Tasks live in Asana and meetings live in Google Calendar... Planiflow puts tasks, synced calendar meetings, and each person's daily capacity on one weekly view." B2B team-productivity wedge with explicit integration depth; ties the 6.0 Money ceiling without displacing; no price named.
+
+100. **4126-rinselead-cold-email-platform-that-helps-sales-teams-an** — score 6.0/10
+   _Cold email platform: list verification + domain warmup + campaigns in one_
+   BetaList: "verify email lists for deliverability, automatically warm up your sending domains, and launch cold email campaigns—all built to land in the inbox instead of spam." B2B outbound-sales recurring with the deliverability wedge; ties the 6.0 Money ceiling without displacing; no price named.
+
+101. **4110-phaserr-build-training-programs-and-share-them-with-ath** — score 6.0/10
+   _Training-program builder for strength & conditioning coaches (replaces spreadsheets)_
+   BetaList: "If you write your programs in Google Sheets, this replaces the spreadsheet... 1RM loads, warm-up ramps, rep schemes, and progressions." Vertical B2B for a named-trade buyer; per-coach monthly is the obvious recurring shape; ties the 6.0 Money ceiling without displacing.
+
+102. **4111-certfleet-ssl-and-http-uptime-monitoring-with-live-tls-** — score 6.0/10
+   _SSL + HTTP uptime monitoring with real TLS probes and expiry alerts_
+   BetaList: "opens a real TLS handshake on port 443, tracks Certificate Transparency for new issuances, and sends alerts at 30, 14, 7, and 1 day before expiry." B2B infra monitoring with per-domain recurring; ties the 6.0 Money ceiling without displacing; no price named.
+
+103. **4116-veault-digital-legacy-management-with-secure-inheritanc** — score 6.0/10
+   _Digital legacy with zero-knowledge encryption and fail-safe inheritance_
+   BetaList: "client-side zero-knowledge encryption and a fail-safe inheritance system... trusted contacts use secret keys to request access, triggering alert emails." Security-first hybrid B2C/B2B with subscription shape; ties the 6.0 Money ceiling without displacing; no price named.
+
+104. **4037-1endpoint-cheaper-access-to-ai-models** — score 6.0/10
+   _Unified AI inference gateway (OpenAI + Anthropic compatible), cost-focused_
+   Show HN: "We support OpenAI Chat Completions, Responses API and Anthropic Messages, so existing tools and agents can usually point to 1endpoint without changing much... The other thing we've been focusing heavily on is cost." B2B dev-tools consumption wedge in the crowded LLM-gateway category; ties the 6.0 Money ceiling without displacing.
+
+105. **4002-anvendor-see-your-competitors-customers** — score 6.0/10
+   _Reveal which SaaS any company uses, and estimate what they pay_
+   Show HN with prose: "I found a way to reveal which SaaS any company uses. And estimate how much they pay for it" — a solo ML-engineer founder with a concrete detection method. B2B sales-intel recurring; ties the 6.0 Money ceiling without displacing; no price named.
+
+106. **4106-olostep** — score 6.0/10
+   _Turn the web into clean data for AI (scraping infra)_
+   ProductHunt: "Turn the Web into Clean Data for AI." B2B dev-tools consumption wedge in the AI-data-prep category; ties the 6.0 Money ceiling without displacing; tagline-only capture.
+
+107. **3791-kiantu-see-where-you-and-your-ai-agents-spent-the-week-** — score 6.0/10
+   _Work-intelligence: reconstruct where your week went from GitHub, calendar and Jira_
+   BetaList: "You type one line of intent when you start working. Kiantu reconstructs what actually happened from GitHub, your calendar, and Jira... and writes a plain-language weekly narrative of where the time went." B2B team productivity with an agent-native data model; ties the 6.0 Money ceiling without displacing; no price named.
+
+108. **3790-ottermind-an-autonomous-ai-agent-workspace-for-real-wor** — score 6.0/10
+   _Execution-first AI agent workspace for thinkers, builders, and teams_
+   BetaList: "Describe a goal, and OtterMind helps plan the steps, work with files and tools, automate recurring workflows, and deliver complete work products." B2B agent-workspace recurring in a crowded category; ties the 6.0 Money ceiling without displacing; no price named.
+
+109. **4072-vibeguard-security-linter-for-ai-generated-code** — score 6.0/10
+   _Security linter for AI-generated code — SQLi, secrets, JWT bypass, 15+ rules_
+   Show HN: "catches what Copilot, Cursor and ChatGPT get wrong. SQL injection, hardcoded secrets, JWT bypass and 15+ more rules. Grade A–F. Zero config." B2B dev-tools recurring riding the AI-code-generation wave; ties the 6.0 Money ceiling without displacing; no price named.
+
+110. **4051-issue-tracker-that-replays-workflows-deeply-integrated-** — score 6.0/10
+   _Epiq — Git-native issue tracker that replays workflow state as a movie_
+   Show HN: "distributed, Git-native, and most interestingly, can replay state as a movie on demand. This solves one of the most difficult problems with agentic workflows - auditing and tracing in a multi agent environment." B2B dev-tools recurring on the agent-audit wedge; ties the 6.0 Money ceiling without displacing; no price named.
+
+111. **4120-authored-ai-get-paid-when-your-knowledge-is-used-by-ai** — score 6.0/10
+   _Marketplace where experts package knowledge as agents and earn per chat_
+   BetaList: "Package your knowledge as an agent and earn every time someone chats with it." Marketplace take-rate plus recurring usage revenue; ties the 6.0 Money ceiling without displacing; two-sided marketplace cold-start risk the post does not address.
+
+## Top 131 — Learning Potential
 
 1. **252-startups-at-the-monetization-validation-stage-have-nowh** — score 7.0/10
    _Payment-onboarding sandbox for unincorporated startups (Morocco)_
@@ -842,7 +922,79 @@
     _Visual workspace to design and operate daily multi-agent workflows_
     Show HN at github.com/ringlochid/oh-my-subagents — visual surface for designing and operating daily multi-agent pipelines. Stack spans a node-graph editor for agent workflows, a per-node execution trace, daily-cadence scheduling, and a runtime that maps the visual graph to a real agent call sequence. Ties the 6.0 Learn ceiling without displacing; the visual-graph → agent-runtime bridge is a rare UX primitive in the corpus.
 
-## Top 156 — Fun to Build
+107. **4086-moe-direct-moe-models-far-larger-than-your-ram-on-a-con** — score 7.5/10
+   _MoE models far larger than RAM, on a consumer desktop (expert offloading)_
+   Show HN with prose: "I wanted to try using the larger models on my computer (32GB RAM, RTX 5080, Gen5 NVMe), but the best I could do was around 30B... taking advantage of the fact that MoE models use only some of the experts rather than all of them." Stack spans expert-weight offloading, NVMe streaming, and selective expert loading — a systems/GPU surface rare in the corpus. Ties the 7.5 Learn ceiling without displacing.
+
+108. **4033-c-game-engine-with-its-own-scripting-language-and-ide** — score 7.0/10
+   _C# game engine with its own scripting language and IDE_
+   Show HN at github.com/ArcadeMakerSources/ArcadeMaker — engine + custom scripting language + bundled IDE in one repo: compiler/VM, editor, and engine depth in a single build. Ties the 7.0 Learn ceiling without displacing.
+
+109. **4043-train-300m32-layer-model-in-15gb-ram-on-base-m1-mac** — score 7.0/10
+   _Train a 300M/32-layer model in 1.5GB RAM on a base M1 Mac_
+   Show HN with prose: "KAN and Hyena were quite resource-heavy, and I couldn't get anything viable out of them. Then I tried RWKV, specifically the latest RWKV-8 Heron." Memory-bound training of a 300M model in 1.5GB is a rare ML-systems surface; ties the 7.0 Learn ceiling without displacing.
+
+110. **4044-rose-reusable-foundation-embeddings-for-industrial-1h-n** — score 7.0/10
+   _Foundation embeddings for industrial 1H NMR (chemistry-domain ML)_
+   Show HN at github.com/romboai/rose-1h-nmr — pretrained embeddings for proton NMR spectra: domain-science plus representation learning, the cross-domain surface the corpus rarely has. Ties the 7.0 Learn ceiling without displacing.
+
+111. **4005-hillock-local-neuro-symbolic-memory-engine-in-12gb-vram** — score 7.0/10
+   _Local neuro-symbolic memory engine in <1.2GB VRAM_
+   Show HN at github.com/roandejager/Hillock — neuro-symbolic memory on a tight VRAM budget, spanning embeddings, symbolic retrieval, and quantization. Ties the 7.0 Learn ceiling without displacing.
+
+112. **4009-tinysandbox-js-runtime-js-in-wasm-in-v8** — score 7.0/10
+   _JS-in-WASM runtime for v8 isolates: 4MiB → 1MiB baseline, per-isolate tuning_
+   Show HN: "run isolated JS anywhere WASM runs, including the browser, Cloudflare Workers, and Convex v8 actions... brought the baseline WASM from 4MiB to 1MiB." WASM/runtime engineering depth; ties the 7.0 Learn ceiling without displacing.
+
+113. **4079-writing-a-3d-printing-slicer-from-scratch** — score 7.0/10
+   _A 3D printing slicer written from scratch (geometry → toolpaths)_
+   Show HN: "trying to turn that understanding into something that can actually process geometry into a series of toolpath commands." Computational geometry, mesh processing, and G-code generation in one build; ties the 7.0 Learn ceiling without displacing.
+
+114. **3778-flint-a-minimal-cc-package-manager-and-build-tool-writt** — score 6.5/10
+   _Minimal C/C++ package manager and build tool written in C_
+   Show HN at github.com/mainak55512/flint — bootstrapping a build system in the language it builds: parser, dependency resolution, and toolchain invocation in pure C. Ties the 6.5 Learn ceiling without displacing.
+
+115. **3975-prove-your-code-produced-your-claims-without-making-rev** — score 6.5/10
+   _Prove your code produced your claims without reviewers rerunning it (kveritas)_
+   Show HN at github.com/27-GROUP/kveritas-go — artifact attestation for code claims: evidence linking and reproducibility plumbing in Go. Ties the 6.5 Learn ceiling without displacing; the claim-proof surface is rare in the corpus.
+
+116. **3997-automated-sanborn-map-georeferencing-with-a-chicago-map** — score 6.5/10
+   _Automated Sanborn map georeferencing with a Chicago map viewer_
+   Show HN at autogeoref.com — historical-map georeferencing: control-point detection, warping, and tile serving for scanned fire-insurance maps. Ties the 6.5 Learn ceiling without displacing.
+
+117. **4076-ai-agents-for-osintsigint** — score 6.5/10
+   _Read-only OSINT browser harness with layout memoization to cut context cost_
+   Show HN with prose: "Instead of dumping HTML into the context window, we have built a continual learning browser harness (read only for now)." Browser automation plus context-compression engineering; ties the 6.5 Learn ceiling without displacing.
+
+118. **4066-typegpu-realtime-physics-sandbox** — score 6.5/10
+   _Realtime physics sandbox: PBF fluids, Eulerian smoke, depth-aware lighting_
+   Show HN: "realtime PBF fluid simulation, Eulerian smoke, and multi-source light simulation on photos, videos, and live webcam... gravity is inferred from the depth maps surface normals." WebGPU compute depth; ties the 6.5 Learn ceiling without displacing.
+
+119. **4015-an-implementation-of-scheme-in-rust** — score 6.5/10
+   _An implementation of Scheme in Rust_
+   Show HN at github.com/vinay/rscheme — a language implementation (reader, evaluator, environment model) written in a second language; ties the 6.5 Learn ceiling without displacing.
+
+120. **4080-a-slm-optimized-for-tool-calling** — score 6.5/10
+   _A small language model optimized specifically for tool calling_
+   Show HN at blog.neurometric.ai/p/introducing-a-task-specific-tool — task-specific SLM training for tool-call accuracy: data curation and fine-tuning for function-calling benchmarks. Ties the 6.5 Learn ceiling without displacing.
+
+121. **4026-sapporta-build-database-applications-for-power-users** — score 6.0/10
+   _dBase/FoxPro/MS Access for the LLM era (Hono + React framework)_
+   Show HN with prose: "a reenactment of dBase, FoxPro, and MS Access, but for the LLM era... application wizards that would create tables, queries, forms, and reports." Code-gen plus CRUD-app framework surface; ties the 6.0 Learn ceiling without displacing.
+
+122. **3987-open-source-hands-free-mouse-control-with-tracky-mouse** — score 6.0/10
+   _Hands-free mouse control from a webcam: dwell, gestures, closed-eyes modifiers_
+   Show HN with prose: "control your whole computer with just a webcam... dwell clicking and facial gestures... closed eyes as modifiers." CV plus accessibility engineering; ties the 6.0 Learn ceiling without displacing.
+
+123. **3989-what-apples-os-updates-silently-change-in-the-on-device** — score 6.0/10
+   _Documenting what Apple's OS updates silently change in the on-device AI model_
+   Show HN at umer9538.github.io/underfoot — systematic documentation of on-device model behavior across OS updates; ties the 6.0 Learn ceiling without displacing.
+
+124. **4028-cushion-pouchdb-on-deno-kv** — score 6.0/10
+   _Cushion — PouchDB on Deno KV (FoundationDB-backed couch ergonomics)_
+   Show HN with prose: "Deno KV is backed by FoundationDB... So Cushion was mostly made for my comfort." Storage-engine interop (Couch replication semantics over KV); ties the 6.0 Learn ceiling without displacing.
+
+## Top 178 — Fun to Build
 
 1. **240-the-lack-of-a-service-that-creates-hyper-personalized-g** — score 7.5/10
    _Hyper-personalized gamified English courses_
@@ -1468,6 +1620,93 @@
     _Qwiksi — CLI to add your signature to PDFs_
     Show HN at github.com/krisraven/qwiksi — single-command PDF signing. The one-command-no-pdf-editor-required affordance is the satisfying minimal CLI payoff. Ties the 5.0 Fun ceiling without displacing.
 
+150. **4031-i-built-a-physical-dream-machine-for-my-wife** — score 7.0/10
+   _A physical dream machine built for the maker's wife_
+   Show HN at twitter.com/oblomovius/status/2094053464552698325 — hardware, firmware, and art-object in one build; the physical device is the satisfying payoff. Ties 3716/3762's 7.0 Fun ceiling without displacing.
+
+151. **4066-typegpu-realtime-physics-sandbox** — score 7.0/10
+   _Depth-aware fluids, smoke, and light you can poke at in a browser tab_
+   Realtime PBF fluid, Eulerian smoke, and light simulation on live webcam input is the satisfying GPU payoff; also at Learn #118. Ties the 7.0 Fun ceiling without displacing.
+
+152. **4022-nohtmlfelixseu** — score 6.5/10
+   _Chrome dino runner with no HTML and no JS_
+   Show HN at nohtml.felixs.eu — "the result of a neat collection of tricks... play the chrome dino runner game without any HTML* or JS." The constraint-art payoff; ties the 6.5 Fun ceiling without displacing.
+
+153. **4021-snaketron-competitive-multiplayer-snake-back-after-14-y** — score 6.5/10
+   _Competitive multiplayer Snake, rewritten in Rust after 14 years_
+   Show HN with the 2012-vs-now story: "Back in 2012 I had (poorly) implemented the first version... I was keeping game state on the client." Server-authoritative multiplayer in Rust; ties the 6.5 Fun ceiling without displacing.
+
+154. **4077-we-built-semantic-search-over-the-gta-6-extended-look** — score 6.5/10
+   _Semantic search over the GTA 6 Extended Look (SAM3 + Gemini embeddings)_
+   Show HN at tracker.gg/gta6/trailers/netflix-extended-look — "We used SAM3 and Gemini Embedding 2 to capture a limited ontology over the latest GTA 6 preview." Ask-it-anything-about-the-trailer payoff; ties the 6.5 Fun ceiling without displacing.
+
+155. **3983-magic-layers-turn-any-image-into-layers** — score 6.0/10
+   _Turn any flat image into named, editable transparent layers_
+   Show HN: "separates a flat PNG or JPEG into layers. Get the text, subject, decorations, and background back as named transparent PNG layers you can download and edit." The instant-decomposition payoff; ties the 6.0 Fun ceiling without displacing.
+
+156. **4063-claypot-a-block-based-studio-for-kids-to-inspect-ai-sys** — score 6.0/10
+   _Block-based studio where kids inspect how AI systems work_
+   Show HN at claypot.app — "a block-based studio for kids to inspect AI systems." Education plus visual programming payoff; ties the 6.0 Fun ceiling without displacing.
+
+157. **4047-explore-the-solar-system-with-hand-gestures-in-a-browse** — score 6.0/10
+   _Explore the solar system with hand gestures in a browser_
+   Show HN at github.com/HUANGCHIHHUNGLeo/solar-atlas-gesture — gesture-driven solar system; ties the 6.0 Fun ceiling without displacing.
+
+158. **3995-shadertoyx** — score 6.0/10
+   _ShaderToyX — shader playground in the browser_
+   Show HN at github.com/vinay/ShaderToyX — a shader playground surface with the edit-and-see loop; ties the 6.0 Fun ceiling without displacing.
+
+159. **4035-shevtoneaudio-orchestrator-turning-midi-into-full-orche** — score 6.0/10
+   _Composer's MIDI developed into a full orchestration (two years in the making)_
+   Show HN with prose: "instead of generating a finished piece of music and replacing the composer, Orchestrator takes the composer's own MIDI and develops it into a full orchestration." The musician-first AI payoff; ties the 6.0 Fun ceiling without displacing.
+
+160. **4091-3d-embodiment-of-your-git-repo** — score 6.0/10
+   _3D embodiment of your git repo_
+   Show HN at github.com/michaelaz774/RepoWorld — walk your repo as a 3D world; ties the 6.0 Fun ceiling without displacing.
+
+161. **3985-clownbidlol-pay-to-be-the-biggest-clown-on-the-internet** — score 5.5/10
+   _Pay to be the biggest clown on the internet_
+   Show HN at clownbid.lol — pay-to-top joke leaderboard; the anti-seriousness is the payoff. Ties the 5.5 Fun ceiling without displacing.
+
+162. **3986-break-5-the-addictive-free-5-minute-daily-word-game** — score 5.5/10
+   _Break 5 — free daily word game, one letter at a time, no tracking_
+   Show HN: "turn one five-letter word into another five-letter word, changing one letter at a time. No 3rd party analytics, no tracking." The daily-puzzle loop payoff; ties the 5.5 Fun ceiling without displacing.
+
+163. **3999-roam-a-gps-speedometer-that-tries-not-to-burn-in-your-o** — score 5.5/10
+   _Roam — GPS speedometer that tries not to burn in your OLED_
+   Show HN at github.com/Nicsilver/roam — the OLED-burn-in-aware speedometer detail is the satisfying care signal; ties the 5.5 Fun ceiling without displacing.
+
+164. **4083-deckle-a-macos-app-that-overlays-paper-texture-onto-you** — score 5.5/10
+   _Deckle — paper texture overlay for your macOS screen_
+   Show HN at github.com/YellowFoxH4XOR/deckle — a screen-wide paper texture; the tactile affordance is the payoff. Ties the 5.5 Fun ceiling without displacing.
+
+165. **4085-stop-that-shit-a-guard-against-unrequested-hashes-from-** — score 5.5/10
+   _Stop That Shit — guard against unrequested hashes from coding agents_
+   Show HN at github.com/lennney/stop-that-shit — the name plus the guard loop (blocking unrequested hash commands) is the satisfying agent-era defensive toy. Ties the 5.5 Fun ceiling without displacing.
+
+166. **4074-live-ai-video-streams-that-write-themselves-one-shot-at** — score 5.5/10
+   _Live AI video streams that write themselves one shot at a time_
+   Show HN at tv.mormon.garden — self-writing generative TV; the weirdness is the payoff. Ties the 5.5 Fun ceiling without displacing.
+
+167. **4134-albums-vault-my-take-on-how-to-manage-spotify-album-lib** — score 5.5/10
+   _Albums Vault — manage your Spotify album library: genres, listened state, discovery_
+   Show HN with prose: "tons of albums saved but never with a proper way to manage it: display genres, see what I've already listened." The album-collection-manager payoff for Spotify hoarders; ties the 5.5 Fun ceiling without displacing.
+
+168. **4040-nuzzle-adorable-live-wallpapers-of-your-pets** — score 5.5/10
+   _Nuzzle — adorable live wallpapers of your pets (iOS)_
+   Show HN: "Made this as there just wasn't any good live wallpaper iOS apps." The pet-wallpaper payoff; ties the 5.5 Fun ceiling without displacing.
+
+169. **4117-almost-kiss-play-romance-stories-in-chat-where-your-cho** — score 5.5/10
+   _Almost Kiss — romance stories in chat where your choices shape the plot_
+   BetaList: "You step into the protagonist's role and message the love interest in natural language... It remembers what you share across episodes." Interactive-fiction-in-chat payoff; ties the 5.5 Fun ceiling without displacing.
+
+170. **3972-scriptspool-create-code-animations-in-the-browser** — score 5.5/10
+   _ScriptSpool — code animations in the browser for dev tutorials_
+   Show HN with prose: "wanted to make short code animations for my own development tutorials... using a full video editor was just too much work for what I wanted to achieve." The code-to-animation loop; ties the 5.5 Fun ceiling without displacing.
+
+171. **4101-rip-my-build** — score 5.5/10
+   _RIP MY BUILD — give your abandoned side project one last launch_
+   ProductHunt: "Give your abandoned side project one last launch." The farewell-launch ritual is the payoff; ties the 5.5 Fun ceiling without displacing.
 ---
 
 ## Changelog
@@ -1490,3 +1729,5 @@
 
 - **2026-08-26 (cron run #16)** — re-ranked 2018 projects after a fresh scrape added 11 new captures (Hacker News Show HN ×8: 3100 Code_Stitcher, 3101 backpressure.systems, 3102 I-have-feelings, 3103 NextGenSeller, 3104 Long-Story-Short, 3105 Firmament-is-the-Limit, 3106 StoreMock, 3107 Orchesty; Hacker News Ask HN ×3: 3097 biggest-regret, 3098 opus-5-unusable, 3099 XCancel-Nitter). The 3 ask-hn entries are meta/discussion posts and were skipped. Of the 8 buildable products, only 3100 (Show HN with prose body) and 3107 (BetaList with full prose) have substantive SPEC.md content — the rest are placeholder-only SPEC.md gated on the live-product URL. None displace TaqFlow at Money #1, Kandelo at Learn #1, or 240 at Fun #1. Four new Money entrants, two new Learn entrants, and five new Fun entrants land on the rankings. **3107 Orchesty** (BetaList; source-available stream-native integration engine — async queues + SDKs + MCP-for-agents + multi-tenant + on-prem deploy) at **Money #26 (6.5)** — ties 1537/677/2813/2835/3040/3065's 6.5 ceiling without displacing; same project at **Learn #32 (7.5)** — ties 1014/2899/3038/3059's 7.5 ceiling; the source-available-stream-engine + MCP-for-agents wedge is rare in the corpus. **3100 Code Stitcher** (Show HN; LLM-output → local-codebase patcher with Python AST + GDscript parser; live at github.com/ue-patcher/Code_Stitcher) at **Money #27 (6.5)** — ties 3107's 6.5 ceiling without displacing; same project at **Learn #33 (7.5)** — ties 3107's 7.5 ceiling; AST-validated LLM-paste-back is a toolchain surface most engineers never touch; same project at **Fun #47 (6.0)** — ties 707/583/1217/3039/3060's 6.0 ceiling; the diff-then-validate-then-write visual is the satisfying affordance. **3103 NextGenSeller** (Show HN at nextgenseller.com; exit-planning guidance for private company owners, B2B advisory) at **Money #28 (6.5)** — ties the 6.5 ceiling without displacing; placeholder-only SPEC. **3101 backpressure.systems** (Show HN at backpressure... [truncated]
 - **2026-08-29 (cron run #25)** — re-ranked after a fresh scrape added 29 new captures (ids 3746-3774; ProblemHunt x2, Hacker News Show HN x19, Hacker News Ask HN x5, BetaList x3). Of the 29, 5 are Ask HN meta/discussion posts and were skipped as unbuildable: **3749** "I compile one document layout into both PDF pages and editable PowerPoint slides" (URL-only Ask HN with placeholder SPEC, no product detail), **3750** "AniTroves Is Back Live" (a self-promo announcement, not a self-buildable product), **3751** "Why still no unified standard file to describe all skills/mcps for repo?" (a discussion thread, no product), **3754** "Should one learn Rust as thier first programming language?" (an Ask HN meta career question), and **3755** "Why is there a Default to 4G?" (an iOS behaviour rant, no self-buildable product — this is an Apple/carrier-policy question, not a project). The remaining 24 are buildable captures and rank as follows. Ten new Money entrants, nine new Learn entrants, and thirteen new Fun entrants land on the rankings. **3746 fake-review extortion defense** (ProblemHunt USA; SMB Google Business listings under extortion attack from people-who-were-never-customers) at **Money #82 (7.0)** — ties 573/701/3056/1575/1517/2875/3707/3435/3743's 7.0 Money ceiling without displacing; the extortion escalation loop is the strongest recurring-shape signal of the new batch. **3774 TrackItWeekly** (BetaList; B2B restaurant weekly inventory with barcode + offline + PAR + vendor-order emails) at **Money #83 (6.5)** — ties the 6.5 Money ceiling without displacing; explicit offline + role + multi-location compliance shape is the wedge against Toast/Square inventory add-ons. **3773 Luten** (BetaList; B2C sound app with explicit $59.99/yr or $119.99 lifetime + Apple NaturalLanguage on-device) at **Money #84 (6.5)** — ties the 6.5 Money ceiling without displacing; strongest B2C explicit pricing signal of the new batch but B2C ceiling caps it. **3756 DataZen** (Show HN with full prose; cross-database workflow runner that replaces Navicat in compliance-restricted environments) at **Money #85 (6.0)** — ties 3039/3094/3101/3162/3163/3193/3208's 6.0 Money ceiling without displacing; same project at **Learn #98 (7.0)** — ties 252's 7.0 Learn ceiling without displacing; cross-DB parameterised-SQL workflow orchestration is a rare dev-tools surface the corpus has not covered. **3772 BetterStay** (BetaList; Airbnb search-monitor that alerts on cancellations + new listings) at **Money #86 (6.0)** — ties the 6.0 Money ceiling without displacing. **3747 SaaS infra template** (ProblemHunt Vietnam; $100-150 one-time WTP for a "solid foundation") at **Money #87 (5.5)** — ties the 5.5 Money ceiling without displacing; one-time shape caps it. **3752 Leanroute cut-Claude-Code-bill** (Hacker News with full prose; multi-provider LLM routing MCP with 60% cost-cut claim) at **Money #88 (5.5)** — ties the 5.5 Money ceiling without displacing; same project at **Learn #100 (6.5)** — ties 238/540/678/2966/3039/3032/3144/3143/3150/3160/3190/3174/3195/3726/3723's 6.5 Learn ceiling without displacing; multi-provider + cost-trace combo is rare. **3753 OPA sidecar A2A auth** (Hacker News with full prose; OPA-as-sidecar pattern for chain-aware authorization) at **Money #89 (5.5)** — ties the 5.5 Money ceiling without displacing; same project at **Learn #101 (6.5)** — ties the 6.5 Learn ceiling without displacing; A2A-chain-aware auth is a rare authorization surface. **3770 Niche outdoor sports forecast** (Show HN; B2C climbing/surfing spot conditions, Romania beta) at **Money #90 (5.0)** — ties 3118 Pelica's 5.0 Money ceiling without displacing; same project at **Fun #147 (5.0)** — ties the 5.0 Fun ceiling without displacing. **3771 DeepSeekGUI** (Show HN; Windows desktop Electron client for DeepSeek Harness with embedded browser panel) at **Money #91 (5.0)** — ties the 5.0 Money ceiling without displacing; same project at **Learn #104 (6.0)** — ties the 6.0 Learn ceiling without displacing; the visible-browser-panel agent-loop affordance is a rare UX primitive. **3764 Pico-Faces** (Show HN at github.com/cpldcpu/pico-faces; diffusion transformer on an RP Pico 2 MCU) at **Learn #99 (7.0)** — ties the 7.0 Learn ceiling without displacing; embedded-ML on the smallest credible hardware is unique in the corpus; same project at **Fun #139 (6.5)** — ties the 6.5 Fun ceiling without displacing; the Wuthering-Heights-meets-MCU aesthetic is the satisfying narrative. **3762 Cosmic Collisions** (Show HN at gaploid.github.io/cosmic-collisions; 262k-particle Moon-forming impact in a browser tab) at **Learn #102 (6.5)** — ties the 6.5 Learn ceiling without displacing; same project at **Fun #137 (7.0)** — ties 3716's 7.0 Fun ceiling without displacing; the largest-N browser-tab particle sim the corpus has covered. **3761 mineral 3D museum** (Show HN with full prose; photo → 3D model → on-device HF-CLIP WASM classification → virtual shelf) at **Learn #103 (6.5)** — ties the 6.5 Learn ceiling without displacing; same project at **Fun #138 (6.5)** — ties 3656/3635/3664's 6.5 Fun ceiling without displacing. **3768 Toolchestrator** (Show HN; local AI-built tools exposed to teammates) at **Learn #105 (6.0)** — ties the 6.0 Learn ceiling without displacing; local-AI-tool → team-tool bridge is a rare agent-harness surface. **3760 oh-my-subagents visual workspace** (Show HN at github.com/ringlochid/oh-my-subagents; node-graph editor for daily multi-agent pipelines) at **Learn #106 (6.0)** — ties the 6.0 Learn ceiling without displacing; same project at **Fun #143 (5.5)** — ties the 5.5 Fun ceiling without displacing; the visual-graph → agent-runtime bridge is a rare UX primitive. **3765 Laser Graffiti** (Show HN at laser.consti.de) at **Fun #140 (6.5)** — ties the 6.5 Fun ceiling without displacing; laser-line drawing is the satisfying novelty. **3758 HexRaid** (Show HN at hexraid.lol; real-time competitive multiplayer territory canvas) at **Fun #141 (6.0)** — ties 707/583/1217/3039/3060/3132/3147/3100/3686/3685/3699/3659/3634/3657/3636's 6.0 Fun ceiling without displacing. **3757 Teamnaire** (Show HN at teamnaire.com; team-role discovery quiz) at **Fun #142 (5.5)** — ties 3653/3631/3651's 5.5 Fun ceiling without displacing. **3759 social downloader** (Show HN at socialdownloader.space; paste URL, get file) at **Fun #144 (5.0)** — ties the 5.0 Fun ceiling without displacing. **3767 Pictiur** (Show HN; vibe-coded image converter + optimizer + resizer in one) at **Fun #145 (5.0)** — ties the 5.0 Fun ceiling without displacing. **3763 VT Code** (Show HN at vinhnx.github.io/VTCode; terminal coding agent + WebMCP editor) at **Fun #146 (5.0)** — ties the 5.0 Fun ceiling without displacing. **3766 Stumpzlib** (Show HN at github.com/tuckerwales/stumpzlib; book-catalog search → drop into Stump) at **Fun #148 (5.0)** — ties the 5.0 Fun ceiling without displacing. **3769 Qwiksi** (Show HN at github.com/krisraven/qwiksi; CLI to sign PDFs) at **Fun #149 (5.0)** — ties the 5.0 Fun ceiling without displacing. No Money #1 change: TaqFlow holds at 8.5. No Learn #1 change: Kandelo holds at 9.5. No Fun #1 change: 3194 and 3621 hold the tie at 8.0.
+
+- **2026-08-31 (cron run #26)** — re-ranked after three scrapes added 221 new captures: 17 from the 2026-08-29T18:00Z run (ids 3775–3791; Hacker News), 200 from the 2026-08-31T06:00Z run (ids 3933–4132; Hacker News Show HN + Ask HN, ProductHunt ×17, BetaList ×24), and 4 from the 2026-08-31T07:01Z run (ids 4133–4136). Of the 221, 38 are Ask HN meta/discussion/promo/outage posts and were skipped as unbuildable: 3775 (Claude Code addiction — a personal/therapy post, no product), 3776 (job-seeking post), 3779 (lifetime-Pro giveaway promo), 3933–3939 (maps/AI-docs/best-AI/interviews/motivation/promo/harness essays and discussions), 3941 (invite request), 3942–3945 (discussions and a survey), 3946 (outage report), 3947–3948 (essays), 3950–3951 (looking-for-tool and career questions), 3952–3955 (discussion, hack tip, outage report, hobbies question), 3956 (third-party language mention), 3957–3958 (product questions), 3961–3970 (discussions, rants, outage reports, tool questions), 4133 (SeaTicket vendor blog). Two duplicates skipped: 4008 Flint (repost of 3778, same repo) and 4098 Maritime (ProductHunt listing of 1556 Maritime). The remaining 181 are buildable captures; 58 land on the rankings and the rest are URL-only or title-only Show HN/ProductHunt/BetaList captures that were not promoted. Twenty new Money entrants, eighteen new Learn entrants, and twenty-two new Fun entrants land on the rankings. **4129 Concourse** (BetaList; AI execution layer for enterprise finance with audit-ready traceability across variance analysis, close, forecasting, and AR) at **Money #92 (7.0)** — ties 573/701/3056/1575/1517/2875/3707/3435/3743's 7.0 Money ceiling without displacing; enterprise-finance governance is the strongest recurring wedge of the batch. **4107 Referent** (ProductHunt; AI-native OS for modern law firms) at **Money #93 (6.5)** and **4122 Trustity** (BetaList; visual DLP + browser DLP + PAM + host IPS in one agent) at **Money #94 (6.5)** — both tie the 6.5 Money ceiling without displacing; legal and endpoint-security verticals carry the firm-wide per-seat recurring shape. **4025 Murmell** (Show HN with full prose; collaborative cloud canvas where coding agents run together) at **Money #95 (6.5)** and **4003 Cogram Studio** (Show HN; CAD/BIM workspace for AI agents from a firm already selling to architects since 2023) at **Money #96 (6.5)** — both tie the 6.5 Money ceiling without displacing. **4086 Moe-Direct** (Show HN with full prose; MoE models larger than RAM on a consumer desktop via expert offloading) at **Learn #107 (7.5)** — ties 1014/2899/3038/3031's 7.5 Learn ceiling without displacing; NVMe-streamed selective expert loading is the rare systems surface. **4033 ArcadeMaker** (C# game engine + own scripting language + IDE) at **Learn #108 (7.0)** and **4043 Ullis** (trains a 300M/32-layer RWKV-8 model in 1.5GB RAM on a base M1 Mac) at **Learn #109 (7.0)** — both tie the 7.0 Learn ceiling without displacing. **4031 physical dream machine** (Show HN; hardware built for the maker's wife) at **Fun #150 (7.0)** and **4066 TypeGPU sandbox** (Show HN; realtime PBF fluids + Eulerian smoke + depth-aware lighting in the browser, also at Learn #118) at **Fun #151 (7.0)** — both tie 3716/3762's 7.0 Fun ceiling without displacing. **4022 nohtml** (Chrome dino with no HTML/JS) at **Fun #152 (6.5)**, **4021 Snaketron** (multiplayer Snake rewritten in Rust after 14 years) at **Fun #153 (6.5)**, and **4077 GTA 6 semantic search** (SAM3 + Gemini embeddings over the Extended Look trailer) at **Fun #154 (6.5)** — all tie the 6.5 Fun ceiling without displacing. The full Money #97–111, Learn #110–124, and Fun #155–171 entrants are recorded on their own lines above.

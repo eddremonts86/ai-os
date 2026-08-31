@@ -15,26 +15,25 @@ tech: [Rust, MCP (Model Context Protocol), OpenCode, Gemini, Claude]
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/3719-agentbridge-let-one-ai-think-while-another-ai-writes-th/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [x] Read the Show HN post and the GitHub README to confirm the Brain/Executor split, the read-only MCP surface, and the MIT plus crates.io status
+- [x] Write SPEC.md (this document)
+- [x] Preserve the upstream ASCII diagram (Brain to MCP to AgentBridge to C2C PLAN to Executor to Workspace) in the docs
+- [x] Scaffold the Rust crate, the MCP server entry point, and the CLI start/stop surface
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Implement the read-only Brain surface: list files, search, read, git diffs, and architecture summaries
+- [ ] Implement the plan-translation layer from Brain plan to C2C plan
+- [ ] Wire OpenCode as the default Executor: apply edits, run commands and tests, and report status
+- [ ] Implement the diff-review loop: approve, request changes, or roll back
+- [ ] Persist plans to disk across Brain-side restarts
+- [ ] Ship the CLI to pick workspace, Brain, and Executor; keep logs minimal with a verbose mode for the C2C plan and diffs
 
 ## Phase 2: Deploy
 
-- [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
-- [ ] Verify in production
+- [ ] Publish the crate to crates.io and tag a GitHub release with the README plus README_zh
+- [ ] Recruit external testers to run a Brain plus Executor pair on their own repositories
+- [ ] Decide the privileged-action approval policy before any additional Executor (Cursor, Cody) integrations
 
 ---
 

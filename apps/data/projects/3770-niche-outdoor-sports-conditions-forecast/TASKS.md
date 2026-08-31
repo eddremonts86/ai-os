@@ -1,7 +1,7 @@
 ---
 id: "3770"
 slug: niche-outdoor-sports-conditions-forecast
-title: "Niche – outdoor sports conditions forecast"
+title: Niche – outdoor sports conditions forecast
 status: enriched
 source:
   name: HackerNews
@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, React + Vite, Node.js API for the ingestion pipeline, SQLite + Drizzle ORM, Coolify + Docker]
 ---
-
 # Niche – outdoor sports conditions forecast
 
 ## Phase 0: Scaffold

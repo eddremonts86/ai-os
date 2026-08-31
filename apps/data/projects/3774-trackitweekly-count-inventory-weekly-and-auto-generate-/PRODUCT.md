@@ -1,7 +1,7 @@
 ---
 id: "3774"
 slug: trackitweekly-count-inventory-weekly-and-auto-generate-
-title: "TrackItWeekly – Count inventory weekly and auto-generate vendor-ready orders"
+title: TrackItWeekly – Count inventory weekly and auto-generate vendor-ready orders
 status: enriched
 source:
   name: BetaList
@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [BetaList, Beta, Product]
 tech: [TypeScript, React Native (or PWA), Node.js API, SQLite (on-device) + Postgres (server), Drizzle ORM, Postmark / Resend for email, Coolify + Docker]
 ---
-
 # TrackItWeekly – Count inventory weekly and auto-generate vendor-ready orders
 
 > Brief derived from the source post. No facts added beyond what the post asserts.

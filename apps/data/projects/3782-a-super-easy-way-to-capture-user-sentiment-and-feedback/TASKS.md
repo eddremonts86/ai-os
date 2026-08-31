@@ -1,4 +1,17 @@
-# TASKS.md — A super easy way to capture user sentiment and feedback
+---
+id: "3782"
+slug: a-super-easy-way-to-capture-user-sentiment-and-feedback
+title: A super easy way to capture user sentiment and feedback
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49491422"
+category: show-hn
+date: "2026-08-29"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A super easy way to capture user sentiment and feedback
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

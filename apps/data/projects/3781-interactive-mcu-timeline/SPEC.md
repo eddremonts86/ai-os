@@ -1,31 +1,35 @@
-# SPEC.md — Interactive MCU Timeline
+---
+id: "3781"
+slug: interactive-mcu-timeline
+title: Interactive MCU Timeline
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49491513"
+category: show-hn
+date: "2026-08-29"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Interactive MCU Timeline
 
 ## Problem
 
-Wanted an easier way to prepare for Avengers: Doomsday so I built an interactive timeline to track what I&#x27;ve seen and what I still need to see and&#x2F;or rewatch. <a href="https:&#x2F;&#x2F;www.queuebrick.com&#x2F;mcu" rel="nofollow">https:&#x2F;&#x2F;www.queuebrick.com&#x2F;mcu</a><p>Also included the X-Men universe and the various Spidermans for consolidation.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49491513)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-29T17:09:32Z
+Wanted an easier way to prepare for Avengers: Doomsday so I built an interactive timeline to track what I've seen and what I still need to see and/or rewatch. https://www.queuebrick.com/mcuAlso included the X-Men universe and the various Spidermans for consolidation.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,7 +1,7 @@
 ---
 id: "3756"
 slug: datazen-a-local-first-client-for-cross-database-workflo
-title: "DataZen – a local-first client for cross-database workflows"
+title: DataZen – a local-first client for cross-database workflows
 status: enriched
 source:
   name: HackerNews
@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, Node.js API, SQLite (local metadata) + connection drivers for Postgres / MySQL / SQLite, Coolify + Docker (self-hosted distribution)]
 ---
-
 # DataZen – a local-first client for cross-database workflows
 
 ## Phase 0: Scaffold
