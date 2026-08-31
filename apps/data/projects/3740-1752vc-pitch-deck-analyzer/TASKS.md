@@ -25,10 +25,7 @@ tech: [TypeScript (Next.js), TanStack Start analysis API, Vercel AI SDK, GitHub 
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

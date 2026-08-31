@@ -1,7 +1,7 @@
 ---
 id: "3772"
 slug: betterstay-get-alerts-when-better-airbnb-listings-appea
-title: "BetterStay – Get alerts when better Airbnb listings appear for your dates"
+title: BetterStay – Get alerts when better Airbnb listings appear for your dates
 status: enriched
 source:
   name: BetaList
@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [BetaList, Beta, Product]
 tech: [TypeScript, React + Vite, Node.js API, SQLite + Drizzle ORM, Postmark / Resend for email, Coolify + Docker]
 ---
-
 # BetterStay – Get alerts when better Airbnb listings appear for your dates
 
 ## Phase 0: Scaffold

@@ -1,0 +1,47 @@
+---
+id: "3949"
+slug: looking-for-few-users-feedback-for-my-community-project
+title: Looking for few users feedback for my community project
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49501329"
+category: ask-hn
+date: "2026-08-30"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Looking for few users feedback for my community project
+
+## Problem
+
+Hello everyone!I've been working on a community project called AXIOMA and I do think that i reached a point where I need a feedback from people who haven't been staring at it for months.It's a community platform around trading and bartering with Diablo II as the main game supported at the moment.The site is already live and functional, but Im not really looking to "promote" it here. I'm mainly looking for few people that want to spend maybe 10-15 minutes testing it and telling me whats is confusing, annoying, unnecessary, broken, or just bad...!The things I'm especially interest in are :
+\- Is it clear what is the site about when you arrive?
+\- Is the navigation intuitive?
+\- Is there anything that immediately makes you frustrated?
+\- Generally, what changes would you make?
+You do not have to be Diablo 2 expert, I just want feedback from people who just look at it as a simple website.I've built most of this on my own, so I'm probably blind to a lot of problems by now.The site is : https://axioma-community.frFeel free to be critical. I would rather hear that something sucks now than keep building on top of a bad idea.
+There is a feedback button and an email contact address!
+Thanks to anyone who takes a look.
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._
