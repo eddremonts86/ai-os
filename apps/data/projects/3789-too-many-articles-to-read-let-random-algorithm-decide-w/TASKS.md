@@ -1,4 +1,17 @@
-# TASKS.md — Too many articles to read, let random algorithm decide what I read next
+---
+id: "3789"
+slug: too-many-articles-to-read-let-random-algorithm-decide-w
+title: "Too many articles to read, let random algorithm decide what I read next"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49490605"
+category: show-hn
+date: "2026-08-29"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Too many articles to read, let random algorithm decide what I read next
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

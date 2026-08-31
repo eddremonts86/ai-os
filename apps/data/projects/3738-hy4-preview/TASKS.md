@@ -25,10 +25,7 @@ tech: [Vue 3 (chat frontend), TanStack Start API, PostgreSQL with pgvector, Clou
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

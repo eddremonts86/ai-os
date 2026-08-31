@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, Electron, Node.js sidecar for the sandboxed terminal, Microsoft Edge WebView2 for the embedded browser, electron-builder for the Windows installer, PolyForm Perimeter licence]
 ---
-
 # DeepSeekGUI – A Windows desktop client for DeepSeek's coding agent
 
 ## Phase 0: Scaffold
