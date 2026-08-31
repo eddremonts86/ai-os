@@ -15,27 +15,33 @@ tech: [Rust, MCP (Model Context Protocol), OpenCode, Gemini, Claude]
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+Chosen for a single-machine bridge with two protocol surfaces and strict read-only enforcement on one of them.
+
+- **Rust:** the bridge binary and MCP server implementation, published as an MIT-licensed crate.
+- **MCP (Model Context Protocol):** the read-only surface for the Brain and the grounded surface for the Executor.
+- **OpenCode:** the default local Executor the bridge drives.
+- **Gemini / Claude:** the supported web-tier Brain models, reached through their own endpoints.
+- **C2C plan format:** the translation target that carries a Brain plan to the Executor.
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+- **Brain interface (read-only):** list, search, and read files; inspect git diffs; summarise architecture. No write or shell methods are exposed.
+- **Translation layer:** converts the Brain's high-level plan into a C2C plan the Executor can apply.
+- **Executor interface:** apply edits, run commands, run tests, and report status — always a separate locally-run process.
+- **Diff-review loop:** the Brain re-reads the Executor's diffs and approves, requests changes, or rolls back.
+- **Plan persistence:** plans are saved to disk so a Brain-side restart loses nothing.
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+1. **M0 — Read-only MCP surface.** The Brain can inspect a workspace and nothing else.
+2. **M1 — Executor integration.** OpenCode applies a C2C plan end to end on a sample repository.
+3. **M2 — Review loop.** Approve, request changes, and roll back all work on real diffs.
+4. **M3 — Publish.** The crates.io release, README plus README_zh, the MIT licence, and external testers on other repos.
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+- **MCP instability:** protocol method names can change between client versions; pinned versions reduce drift.
+- **Read-only enforcement:** any write or shell method accidentally exposed to the Brain breaks the core promise.
+- **C2C expressiveness:** non-trivial refactors may not fit the plan format without a natural-language fallback.
+- **Privileged-action policy:** whether the Brain can ever request dependency installs needs an explicit user-approval path.
+- **Zero-star credibility:** a brand-new repo with no external validation has to earn trust through documentation and tests.

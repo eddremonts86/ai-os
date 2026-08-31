@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, React (or Svelte) + Vite, browser-image-compression + canvas + WebCodecs, Workbox for the PWA service worker, Coolify for self-host distribution]
 ---
-
 # Pictiur: Image converter, optimizer and resizer, all in one
 
 ## Tech Stack
