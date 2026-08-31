@@ -1,0 +1,38 @@
+---
+id: "3932"
+slug: bebelala-track-feeds-sleep-diapers-and-chat-with-a-warm
+title: "bebelala – Track feeds, sleep, diapers, and chat with a warm AI helper"
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/bebelala?utm_campaign=startup-181834&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-08-30"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# bebelala – Track feeds, sleep, diapers, and chat with a warm AI helper
+
+## Phase 0: Scaffold
+
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
+- [ ] Copiar `edd-app-template` → `apps/3932-bebelala-track-feeds-sleep-diapers-and-chat-with-a-warm/`
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
+
+## Phase 1: Core
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Phase 2: Deploy
+
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
+
+---
+
+_Generated automatically by Lúa on 2026-08-30_

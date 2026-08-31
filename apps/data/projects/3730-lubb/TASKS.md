@@ -15,26 +15,25 @@ tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM,
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/3730-lubb/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [x] Read the ProductHunt listing to confirm the Taptic-Engine lub-dub, the 10-minute nightly trial, and the no-account / no-analytics posture
+- [x] Write SPEC.md (this document)
+- [x] Confirm the runtime stack decision: Swift / SwiftUI over Core Haptics, with Remotion kept to launch video only
+- [x] Scaffold the iOS project with the Core Haptics dependency and a single heartbeat screen
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Implement the lub-dub haptic pattern with pace and feel tuning
+- [ ] Build the 10-minute nightly trial with auto-stop and an explicit start tap
+- [ ] Implement the pillow-mode UI: face-down, minimal screen, and timer
+- [ ] Add hardware detection for weak or missing Taptic Engines with honest messaging
+- [ ] Wire the StoreKit path for post-trial paid sessions
+- [ ] Audit the binary for analytics SDKs, network calls, and login walls — none allowed
 
 ## Phase 2: Deploy
 
-- [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
-- [ ] Verify in production
+- [ ] Submit to the App Store as a free app with the trial
+- [ ] Set the internal targets for trial completion and seven-night return from the PRODUCT.md metrics
+- [ ] Decide and publish the post-trial mechanic before any marketing push
 
 ---
 
