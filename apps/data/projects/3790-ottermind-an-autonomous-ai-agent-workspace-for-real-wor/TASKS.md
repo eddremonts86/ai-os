@@ -1,4 +1,17 @@
-# TASKS.md — OtterMind – An autonomous AI agent workspace for real work
+---
+id: "3790"
+slug: ottermind-an-autonomous-ai-agent-workspace-for-real-wor
+title: OtterMind – An autonomous AI agent workspace for real work
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/ottermind?utm_campaign=startup-181616&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-08-29"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# OtterMind – An autonomous AI agent workspace for real work
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

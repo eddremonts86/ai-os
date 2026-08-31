@@ -1,7 +1,7 @@
 ---
 id: "3773"
 slug: luten-sound-that-learns-what-calms-and-focuses-you
-title: "Luten – Sound that learns what calms and focuses you"
+title: Luten – Sound that learns what calms and focuses you
 status: enriched
 source:
   name: BetaList
@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [BetaList, Beta, Product]
 tech: [Swift, SwiftUI, AVFoundation, Apple NaturalLanguage framework, Apple HealthKit, StoreKit 2]
 ---
-
 # Luten – Sound that learns what calms and focuses you
 
 > Brief derived from the source post. No facts added beyond what the post asserts.

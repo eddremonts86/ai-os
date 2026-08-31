@@ -1,4 +1,17 @@
-# TASKS.md — Iatethis, A meal tracker where you just type what you ate
+---
+id: "3780"
+slug: iatethis-a-meal-tracker-where-you-just-type-what-you-at
+title: "Iatethis, A meal tracker where you just type what you ate"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49491687"
+category: show-hn
+date: "2026-08-29"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Iatethis, A meal tracker where you just type what you ate
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 
