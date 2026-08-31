@@ -15,26 +15,25 @@ tech: [Flutter, Dart, iOS, Android, Open-Meteo, marine weather providers]
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/3721-bora-praia-weather-and-tide-forecasts-turned-into-a-tim/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [x] Read the Show HN post and landing page to confirm the three-step flow, the Perfect Timing positioning, and the honest coverage states
+- [x] Write SPEC.md (this document)
+- [x] Curate the initial beach directory for the launch region with map and list views
+- [x] Scaffold the Flutter project with iOS, Android, and web targets plus the EN and PT-BR string tables
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Build the pick-a-place, conditions-thresholds, and travel-and-stay steps
+- [ ] Implement the Perfect Timing engine with travel time, visit duration, daylight, and the beach's local timezone
+- [ ] Wire Open-Meteo weather, wind, and daylight plus the marine tide and wave providers
+- [ ] Implement confidence and unavailable states wherever tide or marine data is missing
+- [ ] Add the forecast view (current, hourly, seven-day) with rain risk, wind, tide, wave, and sea temperature
+- [ ] Verify the 24-hour offline cache per selected beach
 
 ## Phase 2: Deploy
 
-- [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
-- [ ] Verify in production
+- [ ] Ship iOS (App Store id 6758357483) and Android (Google Play), in EN and PT-BR
+- [ ] Deploy the Flutter Web / PWA build with visible feature-gap markers for auth, sharing, maps, and notifications
+- [ ] Track confidence honesty (zero fabricated values) and the app-store rating target of 4.5+
 
 ---
 

@@ -10,10 +10,9 @@ category: business
 date: "2026-08-29"
 tags: [Business, Security, Marketing, Other]
 country: USA
-wtp: "unspecified (extortion pain implies SMB WTP)"
+wtp: unspecified (extortion pain implies SMB WTP)
 tech: [TypeScript, Node.js API, SQLite + Drizzle ORM, Coolify + Docker]
 ---
-
 # Fake negative reviews from people who were never customers are appearing on Google Business. Extortionists offer to remove them for money. Google won't help. Need a real solution
 
 ## Problem

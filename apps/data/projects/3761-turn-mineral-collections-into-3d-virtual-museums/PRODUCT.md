@@ -1,7 +1,7 @@
 ---
 id: "3761"
 slug: turn-mineral-collections-into-3d-virtual-museums
-title: "Turn mineral collections into 3D virtual museums"
+title: Turn mineral collections into 3D virtual museums
 status: enriched
 source:
   name: HackerNews
@@ -11,7 +11,6 @@ date: "2026-08-29"
 tags: [Show HN, Product, Problem]
 tech: [TypeScript, React (or Solid) for the UI, Three.js for WebGL rendering, ONNX Runtime Web / Transformers.js for the WASM classifier, Supabase for shelf + auth, Coolify for self-host]
 ---
-
 # Turn mineral collections into 3D virtual museums
 
 > Brief derived from the source post. No facts added beyond what the post asserts.

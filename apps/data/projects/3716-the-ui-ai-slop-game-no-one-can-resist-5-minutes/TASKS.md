@@ -15,26 +15,26 @@ tech: [Vanilla JavaScript, HTML, CSS, WebAudio, Canvas]
 
 ## Phase 0: Scaffold
 
-- [ ] Create the project folder under `apps/`
-- [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/3716-the-ui-ai-slop-game-no-one-can-resist-5-minutes/`
-- [ ] Write SPEC.md (this document)
-- [ ] Write DESIGN.md (tokens + visual direction)
-- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
-- [ ] Set up the development environment
+- [x] Read the Show HN post and the source site's level sheet to confirm the 48 named specimens, mercy mode, and seeded leaderboard handles
+- [x] Write SPEC.md (this document)
+- [x] Write DESIGN.md tokens for the deliberate-slop level styling versus the understated game chrome
+- [x] Scaffold the static app shell with no build step, an empty level registry, and the CSS and WebAudio file layout
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Implement the 48 named levels so each is solvable without external network calls
+- [ ] Build the five-minute clock with per-level skip and verify it survives background-tab throttling on Safari and Chrome
+- [ ] Implement mercy mode: excluded device-permission levels, removed modifiers, and a separate leaderboard
+- [ ] Ship the leaderboard with the seeded runs (federico_sciuca, em, Itos) and handle submission
+- [ ] Add public profile pages that replay a seeded run for any visitor to try to beat
+- [ ] Build the lab intake: submit, review, and ship a level with its author's handle attached
+- [ ] Write the lab moderation policy before opening submissions
 
 ## Phase 2: Deploy
 
-- [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
-- [ ] Verify in production
+- [ ] Deploy the static build and verify a full play-through on one desktop browser
+- [ ] Announce with the seeded runs already on the board
+- [ ] Watch replay rate and mercy-mode share against the PRODUCT.md targets
 
 ---
 

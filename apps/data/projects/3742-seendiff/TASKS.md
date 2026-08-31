@@ -25,10 +25,7 @@ tech: [Vue 3 + Vite, TanStack Start ingestion API, Postgres + Drizzle ORM, Cloud
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 
