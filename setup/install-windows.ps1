@@ -820,6 +820,90 @@ else {
 }
 Write-Host ""
 
+# ─── 7d. Ponytail — lazy senior dev ruleset (portable: mac/linux/win) ───
+# Mirrors setup/install-mac.sh section 9c. DietrichGebert/ponytail v4.9.0 (MIT).
+# Default `full` (env-override via $env:PONYTAIL_DEFAULT_MODE). Idempotent, never
+# aborts the whole install — worst case is AGENTS.md fallback (which most hosts
+# already read). keep in sync with install-mac.sh PONYTAIL_VERSION.
+if (-not $env:SKIP_PONYTAIL) {
+    $ponytailVersion = if ($env:PONYTAIL_VERSION) { $env:PONYTAIL_VERSION } else { "4.9.0" }
+    $ponytailDefault = if ($env:PONYTAIL_DEFAULT_MODE) { $env:PONYTAIL_DEFAULT_MODE } else { "full" }
+    Log "7d. Ponytail $ponytailVersion (default: $ponytailDefault) — DietrichGebert/ponytail..."
+
+    # 7d.1 — per-machine config (%APPDATA%\ponytail\config.json on win, ~/.config/... on git-bash)
+    $ponytailCfgDir = Join-Path $HomeDir ".config\ponytail"
+    if ($env:APPDATA) { $ponytailCfgDir = Join-Path $env:APPDATA "ponytail" }
+    $ponytailCfg = Join-Path $ponytailCfgDir "config.json"
+    if (-not (Test-Path $ponytailCfgDir)) { New-Item -ItemType Directory -Path $ponytailCfgDir -Force | Out-Null }
+    if (-not (Test-Path $ponytailCfg)) {
+        @{ defaultMode = $ponytailDefault } | ConvertTo-Json | Set-Content -Path $ponytailCfg -Encoding utf8
+        Ok "  ponytail config: $ponytailCfg (defaultMode=$ponytailDefault)"
+    } else {
+        try {
+            $cfg = Get-Content $ponytailCfg -Raw | ConvertFrom-Json
+            if (-not $cfg.PSObject.Properties['defaultMode']) {
+                $cfg | Add-Member -NotePropertyName defaultMode -NotePropertyValue $ponytailDefault -Force
+                $cfg | ConvertTo-Json | Set-Content -Path $ponytailCfg -Encoding utf8
+                Ok "  ponytail config: merged defaultMode=$ponytailDefault into $ponytailCfg"
+            } else { Ok "  ponytail config already present: $ponytailCfg" }
+        } catch { Warn "  ponytail config exists at $ponytailCfg but is not valid JSON — fix manually" }
+    }
+    $env:PONYTAIL_DEFAULT_MODE = $ponytailDefault
+
+    # 7d.2 — ponytail source cache (git clone --depth 1 --branch vX.Y.Z)
+    $ponytailVendor = Join-Path $AIOSRoot "vendor\ponytail"
+    $ponytailCache = Join-Path $HomeDir ".cache\ai-os\ponytail"
+    $ponytailSrc = $null
+    if ((Test-Path (Join-Path $ponytailVendor ".git")) -and (Test-Path (Join-Path $ponytailVendor "AGENTS.md"))) {
+        $ponytailSrc = $ponytailVendor; Ok "  ponytail source: vendored $ponytailSrc"
+    } else {
+        if (Test-Path (Join-Path $ponytailCache ".git")) {
+            try { Push-Location $ponytailCache; & git fetch --tags --quiet 2>$null; & git checkout -q "v$ponytailVersion" 2>$null; Pop-Location } catch {} finally { if ((Get-Location).Path -eq $ponytailCache) { Pop-Location } }
+        } elseif (Get-Command git -ErrorAction SilentlyContinue) {
+            New-Item -ItemType Directory -Path (Split-Path -Parent $ponytailCache) -Force | Out-Null
+            try { & git clone --depth 1 --branch "v$ponytailVersion" https://github.com/DietrichGebert/ponytail.git $ponytailCache 2>$null; Ok "  ponytail cache cloned: $ponytailCache @ v$ponytailVersion" } catch { Warn "  ponytail clone failed (offline?) — fallback to AGENTS.md-less mode" }
+        }
+        if (Test-Path (Join-Path $ponytailCache "AGENTS.md")) { $ponytailSrc = $ponytailCache; Ok "  ponytail source: cache $ponytailSrc" }
+    }
+
+    # 7d.3 — host plugins (best-effort)
+    if (Get-Command claude -ErrorAction SilentlyContinue) {
+        try { if (& claude plugin list 2>$null | Select-String "ponytail") { Ok "  Claude Code: ponytail plugin already installed" } else { & claude plugin marketplace add DietrichGebert/ponytail 2>$null | Out-Null; & claude plugin add "ponytail@ponytail" 2>$null; Ok "  Claude Code: ponytail plugin installed (run /hooks and trust)" } } catch { Warn "  Claude Code: ponytail plugin add failed — AGENTS.md fallback will still apply" }
+    } else { Log "  Claude Code not detected — skipping claude plugin" }
+    if (Get-Command codex -ErrorAction SilentlyContinue) {
+        try { if (& codex plugin list 2>$null | Select-String "ponytail") { Ok "  Codex: ponytail plugin already installed" } else { & codex plugin marketplace add DietrichGebert/ponytail 2>$null | Out-Null; & codex plugin add "ponytail@ponytail" 2>$null; Ok "  Codex: ponytail plugin installed" } } catch { Warn "  Codex: ponytail plugin add failed — AGENTS.md fallback still applies" }
+    }
+    if (Get-Command hermes -ErrorAction SilentlyContinue) {
+        try { if (& hermes plugins list 2>$null | Select-String -Pattern "ponytail" -CaseSensitive:$false) { Ok "  Hermes: ponytail plugin already installed" } else { & hermes plugins install DietrichGebert/ponytail --enable 2>$null | Out-Null; Ok "  Hermes: ponytail plugin installed (restart Hermes)" } } catch { Warn "  Hermes: ponytail plugin install failed — AGENTS fallback still applies" }
+    }
+    if (Get-Command gemini -ErrorAction SilentlyContinue) {
+        try { if (-not (& gemini extensions list 2>$null | Select-String "ponytail")) { & gemini extensions install https://github.com/DietrichGebert/ponytail 2>$null | Out-Null; Ok "  Gemini: ponytail extension installed" } else { Ok "  Gemini: ponytail extension already installed" } } catch { Warn "  Gemini: ponytail install failed" }
+    }
+
+    # 7d.4 — AGENTS.md fallback (append guarded block to each host's AGENTS.md)
+    if ($ponytailSrc -and (Test-Path (Join-Path $ponytailSrc "AGENTS.md"))) {
+        $marker = "PONYTAIL (DietrichGebert/ponytail v$ponytailVersion)"
+        $agentsContent = Get-Content (Join-Path $ponytailSrc "AGENTS.md") -Raw
+        foreach ($rel in @(".agents\AGENTS.md", ".codex\AGENTS.md")) {
+            $agPath = Join-Path $HomeDir $rel
+            if (Test-Path $agPath) {
+                $existing = Get-Content $agPath -Raw -ErrorAction SilentlyContinue
+                if ($existing -match "PONYTAIL") { Ok "  AGENTS fallback already in $agPath"; continue }
+                Add-Content -Path $agPath -Value "`n`n<!-- $marker -->`n$agentsContent`n<!-- /PONYTAIL -->`n" -NoNewline
+                Ok "  AGENTS fallback appended to $agPath"
+            } else {
+                New-Item -ItemType Directory -Path (Split-Path -Parent $agPath) -Force | Out-Null
+                Set-Content -Path $agPath -Value $agentsContent -Encoding utf8
+                Ok "  AGENTS fallback created: $agPath"
+            }
+        }
+        # CLAUDE.md is really the bridge symlink on win — don't diverge; rely on .agents/AGENTS.md
+        Log "  Cursor/Windsurf/Cline/Qoder: copy $ponytailSrc\AGENTS.md to <project>\.cursor\rules\ponytail.md as needed"
+    } else { Warn "  ponytail source not available — AGENTS.md fallback skipped (plugins above remain)" }
+    Ok "Ponytail $ponytailVersion wiring complete (defaultMode=$ponytailDefault, src=$ponytailSrc)"
+} else { Log "7d. SKIP_PONYTAIL=1, skipping ponytail" }
+Write-Host ""
+
 # ─── 8. Terminal ───
 Log "8. Terminal (Windows Terminal or WezTerm)..."
 $wtInstalled = (Get-Command wt -ErrorAction SilentlyContinue) -ne $null
