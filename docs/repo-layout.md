@@ -41,10 +41,11 @@ ai-os/
 ├── dev-env/                    # dotfiles, Brewfile, env-config
 ├── setup/                      # install + verify scripts
 ├── docs/                       # this file and its siblings
+├── intent/                     # AI-native SDLC intake — intent.md home (template + accepted intents)
 ├── memory/                     # loop registry + graph state
 ├── archive/                    # completed Specs
 ├── outputs/                    # the FRAMEWORK's artifacts: research, audits, diagrams
-├── vendor/                     # third-party vendored skills (193 MB, read-only)
+├── vendor/                     # third-party vendored skills (193 MB, read-only) — plus ponytail cache at ~/.cache/ai-os/ponytail
 │
 │   # ── the products ─────────────────────────────────────────────────
 └── apps/
@@ -222,4 +223,5 @@ is why `--dry-run` is now actually dry.
   `apps/<product>/skills/`; workspace-specific to another repo → that repo's `.agents/skills/`.
 - A generated artifact → the matching `outputs/`, and confirm it is ignored with
   `git check-ignore -v <path>` **before** committing. `apps/data/outputs/` alone is 3.7 MB.
+- A new `intent/` → `intent/YYYY-MM-DD-<slug>.md` from `intent/intent-template.md`; promote via `ai-config/skills/intent-to-spec/` into `specs/current_spec.md`.
 - Anything that needs the repo root → resolve it by walking up to `CLAUDE.md`.

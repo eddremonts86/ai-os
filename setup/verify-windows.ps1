@@ -263,6 +263,35 @@ else {
     OptMiss "  Gemini not detected, skipping"
 }
 
+# ─── 3d. Ponytail — lazy senior dev ruleset (optional, never blocks install) ───
+Section "3d. Ponytail (optional — DietrichGebert/ponytail v4.9.0)"
+$ponytailCfg = Join-Path $HomeDir ".config\ponytail\config.json"
+if ($env:APPDATA) { $ponytailCfg = Join-Path $env:APPDATA "ponytail\config.json" }
+if (Test-Path $ponytailCfg) {
+    try {
+        $pcfg = Get-Content $ponytailCfg -Raw | ConvertFrom-Json
+        if ($pcfg.PSObject.Properties['defaultMode']) { OptOk "ponytail config present: $ponytailCfg (defaultMode=$($pcfg.defaultMode))" }
+        else { OptMiss "ponytail config at $ponytailCfg has no defaultMode — edit manually" }
+    } catch { OptMiss "ponytail config at $ponytailCfg is not valid JSON" }
+} else { OptMiss "ponytail config not found at $ponytailCfg (run setup/install-windows.ps1 or set SKIP_PONYTAIL=1)" }
+foreach ($pony in @(
+    @{ Id="claude"; Bin="claude"; Check={ param($b) & $b plugin list 2>$null | Select-String "ponytail" } },
+    @{ Id="codex"; Bin="codex"; Check={ param($b) & $b plugin list 2>$null | Select-String "ponytail" } },
+    @{ Id="hermes"; Bin="hermes"; Check={ param($b) & $b plugins list 2>$null | Select-String -Pattern "ponytail" -CaseSensitive:$false } }
+)) {
+    if (-not (Get-Command $pony.Bin -ErrorAction SilentlyContinue)) { OptMiss "  [$($pony.Id)] $($pony.Bin) not in PATH — skipping ponytail plugin check"; continue }
+    try { $hit = & $pony.Check $pony.Bin; if ($hit) { OptOk "  [$($pony.Id)] ponytail plugin/extension installed" } else {
+        if ((Test-Path (Join-Path $HomeDir ".agents\AGENTS.md")) -and (Select-String -Path (Join-Path $HomeDir ".agents\AGENTS.md") -Pattern "PONYTAIL" -Quiet)) { OptOk "  [$($pony.Id)] ponytail via AGENTS.md fallback (plugin not needed)" }
+        else { OptMiss "  [$($pony.Id)] ponytail plugin not detected and no AGENTS.md fallback (run install-windows.ps1)" }
+    }} catch { OptMiss "  [$($pony.Id)] ponytail plugin check failed" }
+}
+if ((Test-Path (Join-Path $HomeDir ".agents\AGENTS.md")) -and (Select-String -Path (Join-Path $HomeDir ".agents\AGENTS.md") -Pattern "PONYTAIL" -Quiet)) { OptOk "  ~/.agents/AGENTS.md carries ponytail rules" } else { OptMiss "  ~/.agents/AGENTS.md missing ponytail block (run install-windows.ps1)" }
+Section "3e. intent/ home (optional — AI-native SDLC)"
+if ((Test-Path (Join-Path $AIOSRoot "intent")) -and (Test-Path (Join-Path $AIOSRoot "intent\intent-template.md"))) {
+    $ic = @(Get-ChildItem (Join-Path $AIOSRoot "intent") -Filter "2*.md" -ErrorAction SilentlyContinue).Count; OptOk "intent/ home present: intent/intent-template.md + $ic intent(s)"
+} else { OptMiss "intent/ home missing — run install-windows.ps1 or create intent/intent-template.md" }
+if ((Test-Path (Join-Path $AIOSRoot "ai-config\skills\intent-to-spec")) -and (Test-Path (Join-Path $AIOSRoot "ai-config\skills\intent-to-spec\SKILL.md"))) { OptOk "  skill intent-to-spec present" } else { OptMiss "  skill intent-to-spec missing" }
+
 # ─── 4. Superpowers (required = 14) ───
 Section "4. Superpowers skills (REQUIRED = 14)"
 $expected = 14

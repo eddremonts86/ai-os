@@ -15,6 +15,18 @@ components:
       - hermes_soul
       - minimax_overlay
       - vscode_copilot_chat
+  ponytail:
+    required: false
+    version: 4.9.0
+    description: "lazy senior dev ruleset — portable plugin/rules (DietrichGebert/ponytail, MIT)"
+    default_mode: full
+    config_path: .config/ponytail/config.json
+    source: "https://github.com/DietrichGebert/ponytail"
+  intent_home:
+    required: false
+    path: intent
+    template: intent/intent-template.md
+    skill: ai-config/skills/intent-to-spec
 
 platforms:
   macos:
