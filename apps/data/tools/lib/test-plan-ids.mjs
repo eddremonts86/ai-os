@@ -14,6 +14,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const ids = require('./plan-ids.cjs');
+// Imported to assert intake did not keep a private copy of the slug function.
+const { slugify } = await import('../plans-pipeline/intake.mjs');
 
 let pass = 0;
 const fails = [];
@@ -152,6 +154,27 @@ console.log('\n[test] plan id allocator\n');
   ok('skips a directory without SPEC.md', !ids.listPlanDirNames(c.projects).includes('500-no-spec'));
 
   rmSync(c.dir, { recursive: true, force: true });
+}
+
+console.log('\nplanSlug — one slug for every writer of the corpus\n');
+
+// This exists because there were three: the scraper truncated to 55 without folding accents,
+// intake to 54 with NFD, and an older writer to 61. Same post, different directory name, and
+// the corpus grows a second plan for it — 806, 809 and 810 each ended up with two directories,
+// which collided on ${id}.zip and made /plans/:id ambiguous.
+{
+  const { planSlug, SLUG_MAX } = ids;
+  const title = 'Startup founders have nowhere to order quality in-depth research reports';
+  ok('bounded', planSlug(title).length <= SLUG_MAX, planSlug(title).length);
+  ok('never ends in a hyphen', !planSlug('x'.repeat(SLUG_MAX - 1) + ' tail').endsWith('-'));
+  ok('folds accents', planSlug('Diseño rápido') === 'diseno-rapido', planSlug('Diseño rápido'));
+  ok('returns a string, never null', planSlug('!!! ???') === '', JSON.stringify(planSlug('!!! ???')));
+  ok('handles no title', planSlug(null) === '' && planSlug(undefined) === '');
+  ok('idempotent', planSlug(planSlug(title)) === planSlug(title), planSlug(planSlug(title)));
+
+  // The defect itself: intake's exported slug must BE the shared one, not a copy that agrees
+  // today. Identity is the only assertion that a later edit cannot quietly break.
+  ok('intake uses the shared slug (identity, not equality)', slugify === planSlug);
 }
 
 console.log(`\n[test] ${pass} pass, ${fails.length} fail`);
