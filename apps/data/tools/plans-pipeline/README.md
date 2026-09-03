@@ -22,19 +22,14 @@ hermes cron edit 59b1562e8007 --prompt "$(cat apps/data/tools/plans-pipeline/cro
 
 ```bash
 hermes cron resume 59b1562e8007
-hermes cron list        # then CHECK the next run before walking away
+hermes cron list        # confirm the next run is the day you expect
 ```
 
-`next_run_at` is not recomputed when the schedule changes on a paused job: after moving this
-one from weekly to monthly it still held the old Monday date. Read the next run after
-resuming, and if it does not say the 1st, re-apply the schedule *while resumed*:
-
-```bash
-hermes cron edit 59b1562e8007 --schedule '0 9 1 * *'
-```
-
-A wrong date here costs a ~22M-token run at a moment nobody chose, which is the whole reason
-this job is paused rather than merely rare.
+A paused job's stored `next_run_at` goes stale when its schedule changes -- after moving this
+one from weekly to monthly, `jobs.json` still held the old Monday date -- but **`resume`
+recomputes it from the schedule**, so the stale value never reaches a scheduler tick. Read the
+next run anyway: it is the cheapest possible confirmation that a ~22M-token job will fire on
+the day you think it will.
 
 ## Two schedulers, and why
 
