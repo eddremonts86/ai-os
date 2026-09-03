@@ -74,6 +74,10 @@ log "wrote $TARGET"
 launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
 launchctl bootstrap "$DOMAIN" "$TARGET"
 loaded || { echo "bootstrap reported success but the job is not in the domain" >&2; exit 1; }
-log "loaded — fires at 08:00 and 20:00 local"
+# Read the hours back out of the plist rather than restating them: a hardcoded string here
+# went on claiming 08:00 and 20:00 after the schedule moved to every 4 hours.
+hours=$(/usr/libexec/PlistBuddy -c 'Print :StartCalendarInterval' "$TARGET" 2>/dev/null \
+        | awk '/Hour =/ {printf "%02d:00 ", $3}')
+log "loaded — fires at ${hours:-the times in $TARGET}local time"
 log "verify with: bash ${BASH_SOURCE[0]} --status"
 log "run once now: launchctl kickstart -p $DOMAIN/$LABEL"
