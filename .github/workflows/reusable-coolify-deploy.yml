@@ -43,6 +43,19 @@ on:
         required: false
         default: false
         type: boolean
+      wait_minutes:
+        description: >
+          How long to wait for the deployment to reach `finished`. This was 10,
+          hardcoded, and edd-remonts-dashboard overran it on three consecutive
+          deploys that all went on to succeed — so the pipeline reported red
+          over a live site, which is the same lie as green over a dead one.
+          Raise it for an app whose image takes longer to build than the box
+          takes to serve it. Waiting longer costs nothing on a fast deploy: the
+          loop exits the moment Coolify says `finished`. The ceiling is 40; the
+          job timeout below is derived from this value, not repeated.
+        required: false
+        default: 20
+        type: number
     secrets:
       coolify_api_url:
         required: false
@@ -59,7 +72,12 @@ jobs:
   deploy:
     name: Deploy ${{ inputs.app }}
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # Derived, never typed twice. A job timeout below the wait is a second,
+    # invisible ceiling: GitHub kills the runner and every honest message this
+    # workflow was about to print — the timeout notice, the Coolify link — dies
+    # with it, leaving a bare "cancelled" to debug. The five minutes are for
+    # the trigger request and the last poll in flight.
+    timeout-minutes: ${{ inputs.wait_minutes + 5 }}
     outputs:
       deployed: ${{ steps.run.outputs.deployed }}
 
@@ -96,10 +114,20 @@ jobs:
           COOLIFY_API_TOKEN: ${{ secrets.coolify_api_token }}
           APP_UUID: ${{ secrets.app_uuid }}
           APP: ${{ inputs.app }}
+          WAIT_MINUTES: ${{ inputs.wait_minutes }}
         run: |
           set -euo pipefail
           base="${COOLIFY_API_URL%/}"
           auth="Authorization: Bearer $COOLIFY_API_TOKEN"
+
+          # Checked before anything is triggered. Past the ceiling GitHub's own
+          # `timeout-minutes` wins and cuts the runner mid-poll, so the
+          # messages below never print — and refusing after the trigger would
+          # start a deployment this job then declines to watch.
+          if [ "$WAIT_MINUTES" -lt 1 ] || [ "$WAIT_MINUTES" -gt 40 ]; then
+            echo "::error title=Bad wait_minutes::wait_minutes must be between 1 and 40, got $WAIT_MINUTES. Nothing was deployed."
+            exit 1
+          fi
 
           echo "Requesting deployment of $APP …"
           code=$(curl -sS -o /tmp/deploy.json -w '%{http_code}' --max-time 60 \
@@ -123,12 +151,35 @@ jobs:
             exit 1
           fi
 
-          echo "Waiting on deployment $id …"
-          for i in $(seq 1 60); do
-            sleep 10
-            status=$(curl -fsS -H "$auth" --max-time 30 \
-              "$base/api/v1/deployments/$id" | jq -r '.status // "?"')
-            echo "  poll $i: $status"
+          # A deadline off the clock, not a count of iterations. Sixty polls of
+          # `sleep 10` was described everywhere as ten minutes and was never
+          # ten minutes: each turn also spends up to thirty seconds inside
+          # curl, so the real window drifted with how slow Coolify felt that
+          # afternoon. A deadline makes "within N minutes" literally true.
+          deadline=$(( $(date +%s) + WAIT_MINUTES * 60 ))
+          poll=0
+          unreachable=0
+
+          echo "Waiting on deployment $id — up to $WAIT_MINUTES minutes …"
+          while :; do
+            poll=$(( poll + 1 ))
+
+            # Asked before sleeping: a deployment that finished while this job
+            # was starting up should not cost ten seconds to notice.
+            if status=$(curl -fsS -H "$auth" --max-time 30 \
+              "$base/api/v1/deployments/$id" | jq -r '.status // "?"'); then
+              unreachable=0
+            else
+              # A blip in Coolify's API is not a failed deployment — the build
+              # is still running on the box either way. The previous version
+              # exited here, turning somebody else's five-second outage into a
+              # red tick over a live site.
+              unreachable=$(( unreachable + 1 ))
+              status="unreachable"
+            fi
+
+            echo "  poll $poll: $status"
+
             case "$status" in
               finished)
                 echo "✓ $APP is live."
@@ -138,6 +189,21 @@ jobs:
                 echo "::error title=Deployment $status::See the Coolify deployment log for $APP."
                 exit 1 ;;
             esac
+
+            # Tolerated, not ignored: a minute of consecutive failures means
+            # the API is gone, and continuing to poll it is theatre.
+            if [ "$unreachable" -ge 6 ]; then
+              echo "::error title=Coolify unreachable::Six consecutive polls failed. The deployment of $APP may still be running — check its log in Coolify."
+              exit 1
+            fi
+
+            [ "$(date +%s)" -lt "$deadline" ] || break
+            sleep 10
           done
-          echo "::error title=Timed out::$APP did not finish deploying within 10 minutes."
+
+          # Deliberately not phrased as a failed deploy, because it is not one.
+          # This is the workflow saying it stopped waiting: a slow build keeps
+          # going after the runner leaves, and three of these were later found
+          # live in production.
+          echo "::error title=Stopped waiting::$APP did not reach \`finished\` in the $WAIT_MINUTES min this job waited. The build may still be running — check Coolify, and raise wait_minutes if this app is simply slower than its wait."
           exit 1

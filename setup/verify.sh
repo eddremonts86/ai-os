@@ -307,6 +307,77 @@ else
   opt_miss "  Gemini not detected, skipping"
 fi
 
+# ─── 3d. Ponytail — lazy senior dev ruleset (optional, never blocks install) ───
+section "3d. Ponytail (optional — DietrichGebert/ponytail v4.9.0)"
+PONYTAIL_CFG="$HOME_DIR/.config/ponytail/config.json"
+if [ -f "$PONYTAIL_CFG" ]; then
+  if grep -q '"defaultMode"' "$PONYTAIL_CFG" 2>/dev/null; then
+    ponytail_mode=$(grep -o '"defaultMode"[[:space:]]*:[[:space:]]*"[^"]*"' "$PONYTAIL_CFG" | sed -E 's/.*:[[:space:]]*"([^"]*)".*/\1/' | head -1)
+    opt_ok "ponytail config present: $PONYTAIL_CFG (defaultMode=${ponytail_mode:-unknown})"
+  else
+    opt_miss "ponytail config at $PONYTAIL_CFG has no defaultMode — edit manually"
+  fi
+else
+  opt_miss "ponytail config not found at $PONYTAIL_CFG (run setup/install-mac.sh or set SKIP_PONYTAIL=1)"
+fi
+if [ -f "$HOME_DIR/.ai-os/env.sh" ] && grep -q 'PONYTAIL_DEFAULT_MODE' "$HOME_DIR/.ai-os/env.sh" 2>/dev/null; then
+  opt_ok "  ~/.ai-os/env.sh exports PONYTAIL_DEFAULT_MODE"
+else
+  opt_miss "  ~/.ai-os/env.sh missing PONYTAIL_DEFAULT_MODE (run install-mac.sh ponytail step)"
+fi
+# plugin presence is best-effort — AGENTS.md fallback counts as installed
+# NOTE: `codex plugin list` is 200+ lines; `grep -q` closes the pipe early and
+# codex exits with SIGPIPE (141). With `set -o pipefail` the pipeline would then
+# return 141 even though grep found a match, so `if cmd | grep -q` would take
+# the else branch. Temporarily disable pipefail so the pipeline returns grep's
+# status.
+for pony_check in "claude:claude plugin list:claude" "codex:codex plugin list:codex" "hermes:hermes plugins list:hermes" "gemini:gemini extensions list:gemini"; do
+  IFS=':' read -r p_id p_cmd p_bin <<< "$pony_check"
+  if ! command -v "$p_bin" >/dev/null 2>&1; then
+    opt_miss "  [$p_id] $p_bin not in PATH — skipping ponytail plugin check"
+    continue
+  fi
+  set +e
+  set +o pipefail
+  $p_cmd 2>&1 | grep -qi "ponytail"
+  grep_status=$?
+  set -e
+  set -o pipefail
+  if [ "$grep_status" -eq 0 ]; then
+    opt_ok "  [$p_id] ponytail plugin/extension installed"
+  else
+    # AGENTS.md fallback still counts
+    if grep -q "PONYTAIL" "$HOME_DIR/.agents/AGENTS.md" 2>/dev/null || grep -q "PONYTAIL" "$HOME_DIR/.codex/AGENTS.md" 2>/dev/null; then
+      opt_ok "  [$p_id] ponytail via AGENTS.md fallback (plugin not needed)"
+    else
+      opt_miss "  [$p_id] ponytail plugin not detected and no AGENTS.md fallback (run install-mac.sh)"
+    fi
+  fi
+done
+if grep -q "PONYTAIL" "$HOME_DIR/.agents/AGENTS.md" 2>/dev/null; then
+  opt_ok "  ~/.agents/AGENTS.md carries ponytail rules"
+else
+  opt_miss "  ~/.agents/AGENTS.md missing ponytail block (run install-mac.sh)"
+fi
+# intent/ home (optional, from video playbook)
+section "3e. intent/ home (optional — AI-native SDLC)"
+if [ -d "$AI_OS_ROOT/intent" ] && [ -f "$AI_OS_ROOT/intent/intent-template.md" ]; then
+  intent_count=$(find "$AI_OS_ROOT/intent" -maxdepth 1 -name "2*.md" 2>/dev/null | wc -l | tr -d ' ')
+  opt_ok "intent/ home present: intent/intent-template.md + $intent_count intent(s)"
+else
+  opt_miss "intent/ home missing — run install-mac.sh or create intent/intent-template.md"
+fi
+if [ -d "$AI_OS_ROOT/ai-config/skills/intent-to-spec" ] && [ -f "$AI_OS_ROOT/ai-config/skills/intent-to-spec/SKILL.md" ]; then
+  opt_ok "  skill intent-to-spec present"
+else
+  opt_miss "  skill intent-to-spec missing"
+fi
+if [ -f "$AI_OS_ROOT/intent/2026-09-02-example-ponytail-adoption.md" ]; then
+  opt_ok "  example intent present: intent/2026-09-02-example-ponytail-adoption.md"
+else
+  opt_miss "  example intent missing"
+fi
+
 # ─── 4. Superpowers (14 required) ───
 section "4. Superpowers skills (REQUIRED = 14)"
 EXPECTED=14
