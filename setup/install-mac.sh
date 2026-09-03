@@ -855,6 +855,236 @@ else
 fi
 echo ""
 
+# ─── 9c. Ponytail — lazy senior dev ruleset (portable: mac/linux/win) ───
+# DietrichGebert/ponytail v4.9.0 (MIT). Per-turn injection via host plugin where
+# available; fallback is always-on rules via AGENTS.md symlink append so a bare
+# `AGENTS.md` host still obeys the ladder. Default level is `full` (safe).
+# PONYTAIL_VERSION + PONYTAIL_DEFAULT_MODE are the pin + default; override
+# per-machine via $PONYTAIL_DEFAULT_MODE or ~/.config/ponytail/config.json.
+# Mirrors setup/install-windows.ps1 section 5f; bump both together.
+if [ "${SKIP_PONYTAIL:-0}" != "1" ]; then
+  PONYTAIL_VERSION="${PONYTAIL_VERSION:-4.9.0}"
+  PONYTAIL_DEFAULT_MODE="${PONYTAIL_DEFAULT_MODE:-full}"
+  log "9c. Ponytail ${PONYTAIL_VERSION} (default: ${PONYTAIL_DEFAULT_MODE}) — DietrichGebert/ponytail..."
+
+  # 9c.1 — per-machine config (~/.config/ponytail/config.json) — untracked, like ~/.ai-os/env.sh:5b
+  PONYTAIL_CFG_DIR="$HOME_DIR/.config/ponytail"
+  PONYTAIL_CFG="$PONYTAIL_CFG_DIR/config.json"
+  mkdir -p "$PONYTAIL_CFG_DIR"
+  if [ ! -f "$PONYTAIL_CFG" ]; then
+    printf '{\n  "defaultMode": "%s"\n}\n' "$PONYTAIL_DEFAULT_MODE" > "$PONYTAIL_CFG"
+    ok "  ponytail config: $PONYTAIL_CFG (defaultMode=${PONYTAIL_DEFAULT_MODE})"
+  else
+    # keep existing file but ensure defaultMode is present (merge, don't clobber)
+    if ! grep -q '"defaultMode"' "$PONYTAIL_CFG" 2>/dev/null; then
+      # minimal merge: inject before closing }
+      tmp_cfg="$(mktemp -t ponytail-cfg-XXXXXX.json)"
+      if command -v python3 >/dev/null 2>&1; then
+        python3 -c "import json,sys; p=sys.argv[1]; j=json.load(open(p)); j.setdefault('defaultMode','${PONYTAIL_DEFAULT_MODE}'); open(p,'w').write(json.dumps(j,indent=2)+'\n')" "$PONYTAIL_CFG" 2>/dev/null && ok "  ponytail config: merged defaultMode=${PONYTAIL_DEFAULT_MODE} into existing $PONYTAIL_CFG" || warn "  ponytail config exists but has no defaultMode — edit $PONYTAIL_CFG manually"
+      else
+        warn "  ponytail config exists but has no defaultMode — edit $PONYTAIL_CFG manually"
+      fi
+      rm -f "$tmp_cfg" 2>/dev/null
+    else
+      ok "  ponytail config already present: $PONYTAIL_CFG"
+    fi
+  fi
+
+  # also expose PONYTAIL_DEFAULT_MODE via ~/.ai-os/env.sh so every new shell has it
+  AIOS_ENV_PONYTAIL="$HOME_DIR/.ai-os/env.sh"
+  if [ -f "$AIOS_ENV_PONYTAIL" ] && ! grep -q 'PONYTAIL_DEFAULT_MODE' "$AIOS_ENV_PONYTAIL" 2>/dev/null; then
+    printf '\nexport PONYTAIL_DEFAULT_MODE="${PONYTAIL_DEFAULT_MODE:-%s}"\n' "$PONYTAIL_DEFAULT_MODE" >> "$AIOS_ENV_PONYTAIL"
+    ok "  PONYTAIL_DEFAULT_MODE exported via ~/.ai-os/env.sh"
+  fi
+  # export for this run so hooks/calls below see it
+  export PONYTAIL_DEFAULT_MODE
+
+  # 9c.2 — ponytail checkout for rule files (shallow, idempotent). Reused by AGENTS.md fallback
+  # and by verify.sh. Vendored checkout lives next to vendor/gstack/ when present; otherwise
+  # a thin cache in ~/.cache/ai-os/ is used so install-win can share the same SHA.
+  PONYTAIL_VENDOR_DIR="$AI_OS_ROOT/vendor/ponytail"
+  PONYTAIL_CACHE_DIR="$HOME_DIR/.cache/ai-os/ponytail"
+  PONYTAIL_SRC=""
+  if [ -d "$PONYTAIL_VENDOR_DIR/.git" ] && [ -f "$PONYTAIL_VENDOR_DIR/AGENTS.md" ]; then
+    PONYTAIL_SRC="$PONYTAIL_VENDOR_DIR"
+    ok "  ponytail source: vendored $PONYTAIL_SRC"
+  else
+    mkdir -p "$(dirname "$PONYTAIL_CACHE_DIR")"
+    if [ -d "$PONYTAIL_CACHE_DIR/.git" ]; then
+      # best-effort refresh to pinned tag (no network failure may abort install)
+      (cd "$PONYTAIL_CACHE_DIR" && git fetch --tags --quiet 2>/dev/null && git checkout -q "v${PONYTAIL_VERSION}" 2>/dev/null) || true
+    elif command -v git >/dev/null 2>&1; then
+      if git clone --depth 1 --branch "v${PONYTAIL_VERSION}" https://github.com/DietrichGebert/ponytail.git "$PONYTAIL_CACHE_DIR" 2>&1 | tail -2; then
+        ok "  ponytail cache cloned: $PONYTAIL_CACHE_DIR @ v${PONYTAIL_VERSION}"
+      else
+        warn "  ponytail clone failed (offline?) — fallback to AGENTS.md-less mode"
+        rm -rf "$PONYTAIL_CACHE_DIR" 2>/dev/null
+      fi
+    else
+      warn "  git not available — cannot fetch ponytail cache"
+    fi
+    if [ -d "$PONYTAIL_CACHE_DIR" ] && [ -f "$PONYTAIL_CACHE_DIR/AGENTS.md" ]; then
+      PONYTAIL_SRC="$PONYTAIL_CACHE_DIR"
+      ok "  ponytail source: cache $PONYTAIL_SRC"
+    fi
+  fi
+
+  # 9c.3 — host plugins (best-effort, never abort install — fallback is AGENTS.md)
+  # Claude Code
+  if command -v claude >/dev/null 2>&1; then
+    if claude plugin list 2>/dev/null | grep -q "ponytail"; then
+      ok "  Claude Code: ponytail plugin already installed"
+    else
+      if claude plugin marketplace add DietrichGebert/ponytail 2>&1 | tail -1; then
+        ok "  Claude Code: marketplace DietrichGebert/ponytail added"
+      else
+        warn "  Claude Code: marketplace add failed (may already exist)"
+      fi
+      if claude plugin add "ponytail@ponytail" 2>&1 | tail -1; then
+        ok "  Claude Code: ponytail plugin installed (run /hooks and trust lifecycle hooks, then start new thread)"
+      else
+        warn "  Claude Code: ponytail plugin add failed — AGENTS.md fallback will still apply"
+      fi
+    fi
+  else
+    log "  Claude Code not detected — skipping claude plugin"
+  fi
+
+  # Codex (same marketplace)
+  if command -v codex >/dev/null 2>&1; then
+    if codex plugin list 2>/dev/null | grep -q "ponytail"; then
+      ok "  Codex: ponytail plugin already installed"
+    else
+      (codex plugin marketplace add DietrichGebert/ponytail 2>&1 | tail -1) || true
+      if codex plugin add "ponytail@ponytail" 2>&1 | tail -1; then
+        ok "  Codex: ponytail plugin installed (open /hooks, trust, start new thread)"
+      else
+        warn "  Codex: ponytail plugin add failed — AGENTS.md fallback will still apply"
+      fi
+    fi
+  else
+    log "  Codex not detected — skipping codex plugin"
+  fi
+
+  # Hermes
+  if command -v hermes >/dev/null 2>&1; then
+    if hermes plugins list 2>/dev/null | grep -qi "ponytail"; then
+      ok "  Hermes: ponytail plugin already installed"
+    else
+      if hermes plugins install DietrichGebert/ponytail --enable 2>&1 | tail -2; then
+        ok "  Hermes: ponytail plugin installed (restart Hermes after install)"
+      else
+        warn "  Hermes: ponytail plugin install failed — AGENTS.md + hermes external_dirs still apply"
+      fi
+    fi
+  else
+    log "  Hermes not detected — skipping hermes plugin"
+  fi
+
+  # Gemini / Antigravity
+  if command -v gemini >/dev/null 2>&1; then
+    if gemini extensions list 2>/dev/null | grep -qi "ponytail"; then
+      ok "  Gemini: ponytail extension already installed"
+    else
+      if gemini extensions install https://github.com/DietrichGebert/ponytail 2>&1 | tail -2; then
+        ok "  Gemini: ponytail extension installed"
+      else
+        warn "  Gemini: ponytail extension install failed — AGENTS.md fallback still applies"
+      fi
+    fi
+  fi
+  if command -v agy >/dev/null 2>&1; then
+    if agy plugin list 2>/dev/null | grep -qi "ponytail"; then
+      ok "  Antigravity (agy): ponytail plugin already installed"
+    else
+      (agy plugin install https://github.com/DietrichGebert/ponytail 2>&1 | tail -2) && ok "  Antigravity (agy): ponytail plugin installed" || warn "  Antigravity (agy): ponytail plugin install failed — .agents/rules fallback still applies"
+    fi
+  fi
+
+  # OpenCode — opencode.json plugin entry (idempotent)
+  for oc_cfg in "$HOME_DIR/.config/opencode/opencode.json" "$HOME_DIR/.opencode.json" "$AI_OS_ROOT/opencode.json"; do
+    if [ -f "$oc_cfg" ] && command -v python3 >/dev/null 2>&1; then
+      if python3 -c "import json,sys; p=sys.argv[1]; j=json.load(open(p)); plugins=j.get('plugin',[]); sys.exit(0 if any('ponytail' in str(x) for x in plugins) else 1)" "$oc_cfg" 2>/dev/null; then
+        ok "  OpenCode: ponytail plugin already in $oc_cfg"
+      else
+        tmp_oc="$(mktemp -t opencode-XXXXXX.json)"
+        if python3 -c "
+import json,sys
+p=sys.argv[1]; t=sys.argv[2]
+j=json.load(open(p))
+plugins=j.get('plugin',[])
+if not any('ponytail' in str(x) for x in plugins):
+    plugins.append('@dietrichgebert/ponytail')
+    j['plugin']=plugins
+    open(t,'w').write(json.dumps(j,indent=2)+'\n')
+else:
+    import shutil; shutil.copy(p,t)
+" "$oc_cfg" "$tmp_oc" 2>/dev/null && mv "$tmp_oc" "$oc_cfg"; then
+          ok "  OpenCode: added @dietrichgebert/ponytail to $oc_cfg"
+        else
+          warn "  OpenCode: could not patch $oc_cfg — add {\"plugin\":[\"@dietrichgebert/ponytail\"]} manually"
+          rm -f "$tmp_oc" 2>/dev/null
+        fi
+      fi
+      break
+    fi
+  done
+
+  # 9c.4 — AGENTS.md fallback (always applied so any AGENTS.md host obeys ponytail even
+  # without a plugin). Appends a guarded block to each host's AGENTS.md; idempotent.
+  if [ -n "$PONYTAIL_SRC" ] && [ -f "$PONYTAIL_SRC/AGENTS.md" ]; then
+    PONYTAIL_AGENTS_MARKER="PONYTAIL (DietrichGebert/ponytail v${PONYTAIL_VERSION})"
+    # global fallbacks that every host in ai-os reads
+    for ag_path in "$HOME_DIR/.agents/AGENTS.md" "$HOME_DIR/.codex/AGENTS.md" "$HOME_DIR/.claude/CLAUDE.md"; do
+      if grep -q "PONYTAIL" "$ag_path" 2>/dev/null; then
+        ok "  AGENTS fallback already in $ag_path"
+        continue
+      fi
+      mkdir -p "$(dirname "$ag_path")"
+      # for CLAUDE.md we append a short bridge note, not the full AGENTS.md (different format)
+      case "$ag_path" in
+        *CLAUDE.md)
+          if [ -f "$ag_path" ] && grep -q "AI-OS Bridge" "$ag_path" 2>/dev/null; then
+            # bridge present — append ponytail note after it
+            cat >> "$ag_path" <<PONYTAIL_CLAUDE
+
+<!-- ${PONYTAIL_AGENTS_MARKER} — managed by setup/install-mac.sh; remove block to unlink -->
+- Ponytail (lazy senior dev) is active at \`${PONYTAIL_DEFAULT_MODE}\` via DietrichGebert/ponytail v${PONYTAIL_VERSION}. Ladder: Does it need to exist? → reuse → stdlib → native platform → installed dep → one line → minimum that works. Never cut validation/security/a11y. Toggle: /ponytail lite|full|ultra|off.
+<!-- /PONYTAIL -->
+PONYTAIL_CLAUDE
+            ok "  AGENTS fallback appended to $ag_path (bridge note)"
+          else
+            # CLAUDE.md is really the bridge symlink — don't corrupt it; rely on .agents/AGENTS.md instead
+            log "  $ag_path is a bridge/adapter — skipping AGENTS append (covered by ~/.agents/AGENTS.md)"
+          fi
+          ;;
+        *)
+          # if file doesn't exist, create with header; otherwise append guarded block
+          if [ ! -f "$ag_path" ]; then
+            cat "$PONYTAIL_SRC/AGENTS.md" > "$ag_path"
+            ok "  AGENTS fallback created: $ag_path"
+          else
+            printf '\n\n<!-- %s -->\n' "$PONYTAIL_AGENTS_MARKER" >> "$ag_path"
+            cat "$PONYTAIL_SRC/AGENTS.md" >> "$ag_path"
+            printf '\n<!-- /PONYTAIL -->\n' >> "$ag_path"
+            ok "  AGENTS fallback appended to $ag_path"
+          fi
+          ;;
+      esac
+    done
+    # also ensure project-local AGENTS.md template exists for pointer-based hosts (Cursor/Windsurf/Cline)
+    # we don't overwrite a project's own AGENTS.md — just note its location
+    log "  Cursor/Windsurf/Cline/Qoder: copy $PONYTAIL_SRC/AGENTS.md to <project>/.cursor/rules/ponytail.md or .windsurf/rules/ as needed (AGENTS.md already covers most hosts)"
+  else
+    warn "  ponytail source not available — AGENTS.md fallback skipped (plugin installs above remain)"
+  fi
+
+  ok "Ponytail ${PONYTAIL_VERSION} wiring complete (defaultMode=${PONYTAIL_DEFAULT_MODE}, src=${PONYTAIL_SRC:-none})"
+else
+  log "9c. SKIP_PONYTAIL=1, skipping ponytail"
+fi
+echo ""
+
 # ─── 10. Warp defaults (Mac only) ───
 if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
   log "10. Configuring Warp defaults..."
