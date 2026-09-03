@@ -51,8 +51,10 @@ on:
           over a live site, which is the same lie as green over a dead one.
           Raise it for an app whose image takes longer to build than the box
           takes to serve it. Waiting longer costs nothing on a fast deploy: the
-          loop exits the moment Coolify says `finished`. The ceiling is 40; the
-          job timeout below is derived from this value, not repeated.
+          loop exits the moment Coolify says `finished`. The ceiling is 40,
+          refused before anything is triggered, and it exists because the job
+          timeout below it is a static 45 — see the comment there for why it
+          cannot simply be derived from this number.
         required: false
         default: 20
         type: number
@@ -72,12 +74,19 @@ jobs:
   deploy:
     name: Deploy ${{ inputs.app }}
     runs-on: ubuntu-latest
-    # Derived, never typed twice. A job timeout below the wait is a second,
-    # invisible ceiling: GitHub kills the runner and every honest message this
-    # workflow was about to print — the timeout notice, the Coolify link — dies
-    # with it, leaving a bare "cancelled" to debug. The five minutes are for
-    # the trigger request and the last poll in flight.
-    timeout-minutes: ${{ inputs.wait_minutes + 5 }}
+    # Static, and above the 40-minute ceiling the script enforces on
+    # wait_minutes. Deriving it — an expression adding 5 to the input — is the
+    # obvious way to say the number once, and GitHub rejects the whole file for
+    # it: timeout-minutes does not take the inputs context, unlike runs-on,
+    # which does. That is not a workflow that fails, it is a workflow that will
+    # not parse, so every deploy in the fleet went red at once with no job, no
+    # log, and "This run likely failed because of a workflow file issue".
+    #
+    # A job timeout below the wait is still the thing being avoided here: the
+    # runner would be killed along with every message the script was about to
+    # print, leaving a bare "cancelled" to debug. Hence 45 rather than a value
+    # that has to be kept in step with each caller.
+    timeout-minutes: 45
     outputs:
       deployed: ${{ steps.run.outputs.deployed }}
 
