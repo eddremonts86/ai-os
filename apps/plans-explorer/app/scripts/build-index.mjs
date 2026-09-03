@@ -9,7 +9,7 @@
  */
 
 import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync, rmSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { join, dirname, resolve, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -823,10 +823,25 @@ async function main() {
   const PUBLISHABLE = new Set(['enriched', 'humanized', 'web-ready']);
   let unpublished = 0;
 
+  // Two directories can claim the same id: the slug got truncated to different lengths on
+  // two separate captures of the same post (806, 809, 810 — `…in-depth-resea` vs `…in-depth`).
+  // Everything downstream is keyed by id — plans.json, the per-plan documents, `${id}.zip`,
+  // and the SPA's /plans/:id route — so a collision silently overwrote a zip (876 plans, 873
+  // zips, which is what the parser invariant caught) and made the route ambiguous. First one
+  // wins by sorted order and the loser is logged, never deleted: both copies hold real
+  // authored prose, and choosing which to keep is a person's call, not the indexer's.
+  const seenId = new Map();
+  const collisions = [];
+
   for (const dir of dirs) {
     const p = parsePlan(dir);
     if (!p) continue;
     if (!PUBLISHABLE.has(p.status)) { unpublished++; continue; }
+    if (seenId.has(p.id)) {
+      collisions.push(`  id ${p.id}: indexed ${seenId.get(p.id)}, ignored ${basename(dir)}`);
+      continue;
+    }
+    seenId.set(p.id, basename(dir));
     p.scores = {
       money: scoreIndex.money.get(p.id) ?? null,
       learn: scoreIndex.learn.get(p.id) ?? null,
@@ -835,6 +850,10 @@ async function main() {
     plans.push(p);
   }
   console.log(`[indexer] publishable ${plans.length}, held back ${unpublished} (not yet authored)`);
+  if (collisions.length) {
+    console.warn(`[indexer] ${collisions.length} duplicate plan id(s) — merge or delete one copy of each:`);
+    for (const line of collisions) console.warn(line);
+  }
 
   mkdirSync(OUT_DATA, { recursive: true });
 
