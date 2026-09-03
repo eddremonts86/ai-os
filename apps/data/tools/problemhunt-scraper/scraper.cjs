@@ -33,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { generateDesignMD } = require('./design-dna.js');
-const { allocatePlanIds } = require('../lib/plan-ids.cjs');
+const { allocatePlanIds, planSlug } = require('../lib/plan-ids.cjs');
 
 // ── Source registry ────────────────────────────────────────────────────────────
 // Each module exports { name, fetchAll() -> { projects: [], total: N } } and
@@ -130,11 +130,12 @@ function log(...args) {
   console.log(`[${ts}]`, ...args);
 }
 
+// Delegates to the shared slug so the two writers of this corpus cannot disagree. They did:
+// this truncated to 55 without folding accents while intake used 54 with NFD, which is how one
+// post ends up under two directory names and the corpus grows a second plan for it.
 function titleToSlug(title) {
   if (!title) return null;
-  return title.toLowerCase().replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-').replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '').substring(0, 55);
+  return planSlug(title) || null;
 }
 
 function cleanTitle(title) {
