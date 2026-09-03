@@ -28,7 +28,7 @@ import { createRequire } from 'node:module';
 import { loadSchema, stringifyFrontmatter, AI_OS_ROOT as LIB_AI_OS_ROOT } from '../plan-format/lib/plan.mjs';
 
 const require = createRequire(import.meta.url);
-const { allocatePlanIds, saveHighWater } = require('../lib/plan-ids.cjs');
+const { allocatePlanIds, saveHighWater, planSlug } = require('../lib/plan-ids.cjs');
 const { generateDesignMD } = require('../problemhunt-scraper/design-dna.js');
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -88,14 +88,9 @@ export const FIELDS = {
   'Before you send': 'consent',
 };
 
-export function slugify(s) {
-  return String(s).toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 54)
-    .replace(/-+$/g, '');
-}
+// The shared slug, so a submission and a scrape of the same title agree on the directory
+// name. Re-exported rather than wrapped: test-intake.mjs pins its contract.
+export const slugify = planSlug;
 
 /**
  * Everything that must be true before a submission becomes a directory.
