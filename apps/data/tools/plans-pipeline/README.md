@@ -7,7 +7,10 @@ fed without anyone touching it.
 scrape → intake → rank → format → [agent authors a slice] → index + gate + tests → commit → dev → main → deploy
 ```
 
-Driven by the Hermes cron job `plans-pipeline` (`~/.hermes/cron/jobs.json`, every **4 h**).
+Driven by the Hermes cron job `plans-pipeline` (`~/.hermes/cron/jobs.json`, **monthly**, and
+currently **paused**). The cadence is set by cost, not by taste: one run authors up to 100
+plans and burned **21.9M tokens** measured on `deepseek-v4-pro`, so it is deliberately rare
+and deliberately off until someone turns it on.
 The job is the *driver*; the mechanics live in [`daily.sh`](daily.sh). Its prompt is
 version-controlled in [`cron-prompt.md`](cron-prompt.md) — edit that, then apply it with:
 
@@ -15,15 +18,39 @@ version-controlled in [`cron-prompt.md`](cron-prompt.md) — edit that, then app
 hermes cron edit 59b1562e8007 --prompt "$(cat apps/data/tools/plans-pipeline/cron-prompt.md)"
 ```
 
+### Turning authoring back on
+
+```bash
+hermes cron resume 59b1562e8007
+hermes cron list        # then CHECK the next run before walking away
+```
+
+`next_run_at` is not recomputed when the schedule changes on a paused job: after moving this
+one from weekly to monthly it still held the old Monday date. Read the next run after
+resuming, and if it does not say the 1st, re-apply the schedule *while resumed*:
+
+```bash
+hermes cron edit 59b1562e8007 --schedule '0 9 1 * *'
+```
+
+A wrong date here costs a ~22M-token run at a moment nobody chose, which is the whole reason
+this job is paused rather than merely rare.
+
 ## Two schedulers, and why
 
 The Hermes cron above drives the **whole** loop, because ranking and authoring need an LLM.
 A second, LLM-free scheduler runs only the two deterministic input phases:
 
-| Scheduler | Runs | Phases | Needs an LLM |
-|---|---|---|---|
-| Hermes cron `59b1562e8007` | every 4 h | all of them | yes |
-| launchd `ai.os.plans-pipeline` | on its own schedule | `scrape`, `intake` | no |
+| Scheduler | Runs | Phases | Needs an LLM | Cost per run |
+|---|---|---|---|---|
+| Hermes cron `59b1562e8007` | monthly, 1st at 09:00 — **paused** | all of them | yes | ~22M tokens |
+| launchd `ai.os.plans-pipeline` | 00, 04, 08, 12, 16, 20 local | `scrape`, `intake` | no | nothing |
+
+The gap between those two rows is the thing to understand about this pipeline: capture arrives
+six times a day and authoring happens once a month, so the backlog is *designed* to grow and
+the published set moves in monthly steps. A corpus with thousands of `draft` plans and
+thousands of uncommitted files is the normal resting state, not a stalled run — only
+`daily.sh ship`, which the authoring job calls, ever commits.
 
 The launchd side fires [`scrape-cron.sh`](scrape-cron.sh), which exists so captures keep
 arriving even when no agent is available to author them. It is safe to run alongside the
@@ -137,7 +164,7 @@ backlog forever and oldest-first alone means today's capture waits weeks. Plans 
 arrived but did not fit stop counting as new and join the oldest-first queue, so nothing
 is skipped twice.
 
-At 4 h × 100 that is up to 600 plans a day, so raise or lower `--cap` in the cron prompt to
+At 100 a month that is 100 plans a month, so raise or lower `--cap` in the cron prompt to
 trade run cost against how fast the backlog drains. It is set to outpace capture: at 25 the
 scraper brought more per run than the agent authored, so the backlog grew instead of draining.
 
