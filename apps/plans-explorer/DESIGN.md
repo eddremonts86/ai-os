@@ -234,7 +234,7 @@ Counts come from `meta.json`, never hardcoded.
 | `FacetPanel` | Two modes. Standalone: collapsible group with its own header. `headless` (inside a `FilterMenu`): no header, always open, and a type-to-narrow field once the list passes eight options, because Category has 58 values and Country 45. `single`: radios instead of checkboxes, one value always set, used by the sort menu. Rows carry no negative inline margin: the old `-8px` bleed made every row wider than its list and put a horizontal scrollbar under each group. Collapsible group. The `<label>` wraps its checkbox and carries the 44px target; the checkbox stays 16px visually. Focus on the checkbox surfaces on the whole row. |
 | `IncomeRangeSlider` | `headless` inside the Income menu: title kept only as the group's accessible name, no divider, header row only while there is something to reset. Two overlaid `input[type=range]`. `role="group"` + `aria-labelledby`, `aria-valuetext` so values announce as money. 24px thumbs on a 44px track; the ring goes on the thumb because the input spans the full track. |
 | `ScoreBadge` | Pill, money 💰 / learn 🧠 / fun 🎮. Renders `—` when a plan is not ranked on that axis — most plans are unranked on two of three. |
-| `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. |
+| `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. Wraps rather than clips: it is the price the person named, sometimes at length, and a truncated price means nothing. |
 | `DocTabs` | `role="tablist"`, 44px tabs. |
 | `MarkdownReader` | `markdown-it` + highlight.js `atom-one-dark`, lazy-loaded in its own chunk. Prose rhythm comes from shadcn/typeset — see below. |
 
