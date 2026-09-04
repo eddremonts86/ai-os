@@ -35,7 +35,9 @@ const label = computed(() => {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
+  /* Same inset as .chip (4px 10px at small size). Once the text can wrap, 3px of vertical
+     padding puts two lines of type against the curve of the pill. */
+  padding: 5px 11px;
   border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 500;
@@ -53,7 +55,7 @@ const label = computed(() => {
 }
 
 .wtp-badge.is-sm {
-  padding: 3px 8px;
+  padding: 4px 10px;
   font-size: 11px;
 }
 
