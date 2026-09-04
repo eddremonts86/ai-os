@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps<{
   title: string;
   count: number;
   options: [string, number][];
   selected: string[];
+  /**
+   * Inside a FilterMenu the pill already names the group and owns the open state, so the
+   * collapsible header would be a second header for the same thing. Headless drops it and
+   * adds a type-to-narrow field once the list is long enough to need one.
+   */
+  headless?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -13,6 +19,14 @@ const emit = defineEmits<{
 }>();
 
 const isOpen = ref(true);
+
+// Type-to-narrow for long lists. Category has 58 values and Country 45; scrolling a
+// checklist for one of them is the part of the old sidebar people gave up on.
+const filter = ref('');
+const shown = computed(() => {
+  const q = filter.value.trim().toLowerCase();
+  return q ? props.options.filter(([opt]) => opt.toLowerCase().includes(q)) : props.options;
+});
 
 function toggle(opt: string) {
   const next = props.selected.includes(opt)
@@ -23,8 +37,8 @@ function toggle(opt: string) {
 </script>
 
 <template>
-  <section class="facet-group">
-    <button class="facet-header" @click="isOpen = !isOpen" :aria-expanded="isOpen">
+  <section class="facet-group" :class="{ 'is-headless': headless }" :aria-label="headless ? title : undefined">
+    <button v-if="!headless" class="facet-header" @click="isOpen = !isOpen" :aria-expanded="isOpen">
       <span class="facet-title">{{ title }}</span>
       <span class="facet-meta">
         <span v-if="selected.length" class="facet-active-count">{{ selected.length }} / {{ count }}</span>
@@ -33,8 +47,17 @@ function toggle(opt: string) {
       </span>
     </button>
 
-    <div v-if="isOpen" class="facet-options">
-      <label v-for="[opt, c] in options" :key="opt" class="facet-option">
+    <input
+      v-if="headless && options.length > 8"
+      v-model="filter"
+      type="search"
+      class="facet-filter"
+      :placeholder="`Filter ${title.toLowerCase()}…`"
+      :aria-label="`Filter ${title} options`"
+    />
+
+    <div v-if="isOpen || headless" class="facet-options">
+      <label v-for="[opt, c] in shown" :key="opt" class="facet-option">
         <input
           type="checkbox"
           :checked="selected.includes(opt)"
@@ -44,6 +67,7 @@ function toggle(opt: string) {
         <span class="opt-count">{{ c }}</span>
       </label>
       <p v-if="options.length === 0" class="facet-empty">no values</p>
+      <p v-else-if="shown.length === 0" class="facet-empty">nothing matches "{{ filter }}"</p>
     </div>
   </section>
 </template>
@@ -54,8 +78,34 @@ function toggle(opt: string) {
   padding: 12px 0;
 }
 
-.facet-group:last-child {
+.facet-group:last-child,
+.facet-group.is-headless {
   border-bottom: none;
+}
+
+.facet-group.is-headless {
+  padding: 0;
+}
+
+.facet-filter {
+  width: 100%;
+  min-height: 36px;
+  margin: 4px 0 6px;
+  padding: 6px 10px;
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.facet-filter::placeholder {
+  color: var(--text-dim);
+}
+
+.facet-filter:focus {
+  border-color: var(--accent);
+  background: var(--surface);
 }
 
 .facet-header {

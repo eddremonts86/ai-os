@@ -79,7 +79,8 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
+  height: var(--header-h);
+  padding: 0 24px;
   /* Translucent so the backdrop-filter below actually has something to blur — it
      was sitting on an opaque --surface, making it a compositing layer that blurred
      nothing. color-mix keeps it tied to the token instead of a second literal. */
@@ -198,9 +199,17 @@ onMounted(async () => {
     padding: 12px 16px;
   }
 
-  /* Drop to the short mark: the nav needs the room more than the full name does. */
+  /* The mark alone: with the segmented nav the wordmark truncated to "Pla…", which is worse
+     than no wordmark. Visually hidden rather than display:none so the link keeps its name. */
   .brand-text {
-    font-size: 14px;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .app-nav a {
