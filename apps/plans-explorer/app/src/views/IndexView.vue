@@ -283,26 +283,35 @@ onMounted(load);
 
 .facets {
   position: sticky;
-  top: 60px;
+  top: 72px;
   align-self: start;
   /* dvh, not vh: vh counts the mobile browser chrome, so the panel claimed more
      height than was actually visible. */
-  max-height: calc(100dvh - 80px);
+  max-height: calc(100dvh - 96px);
   overflow-y: auto;
-  padding-right: 8px;
+  /* A white panel on the off-white page, like every other surface here, instead of facets
+     floating loose against the background. */
+  padding: 4px 16px 16px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
 }
-
-
 
 .search-input {
   width: 100%;
-  padding: 8px 12px;
+  min-height: 44px;
+  padding: 10px 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
   color: var(--text);
-  font-size: 13px;
-  transition: border-color 150ms;
+  font-size: 14px;
+  box-shadow: var(--shadow-1);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.search-input::placeholder {
+  color: var(--text-dim);
 }
 
 .search-input:focus {
@@ -329,12 +338,14 @@ onMounted(load);
 .clear-btn {
   width: 100%;
   margin-top: 12px;
-  padding: 8px;
+  padding: 10px;
+  min-height: 40px;
   background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   transition: color 150ms, border-color 150ms;
 }
@@ -375,12 +386,14 @@ onMounted(load);
 }
 
 .sort-label select {
-  padding: 6px 10px;
+  min-height: 40px;
+  padding: 8px 12px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
   color: var(--text);
   font-size: 13px;
+  box-shadow: var(--shadow-1);
   cursor: pointer;
 }
 
@@ -391,7 +404,7 @@ onMounted(load);
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 /* The corpus renders every match at once — 552 cards, 14,555 DOM nodes, a 52,000px
@@ -442,11 +455,12 @@ onMounted(load);
     min-height: 44px;
     padding: 10px 16px;
     background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
     color: var(--text);
     font-size: 15px;
     font-weight: 500;
+    box-shadow: var(--shadow-1);
   }
 
   .filters-badge {

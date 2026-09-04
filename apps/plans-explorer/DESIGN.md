@@ -14,102 +14,132 @@ so they are not re-litigated. Anything not in here is not a committed decision.
 
 ## Register
 
-Internal tool. A dense, faceted reader over a corpus of 552 product plans, used to
-answer "what should I build next" in seconds. Not a marketing surface: no hero, no
-persuasion, no decorative motion. Information density beats visual impact.
+Two surfaces in one app. `/` is a landing that says what the corpus is and why it is free,
+then hands over to the product. Everything else is a dense, faceted reader over the corpus,
+used to answer "what should I build next" in seconds. The landing persuades; the reader
+does not, and neither carries decorative motion.
+
+**Light, and locked light (2026-09).** The original palette was blue-black with a violet
+accent and read as a terminal; the brief for the redesign was that nobody wanted to open it.
+The current language is the one the reference interfaces share: an off-white ground, white
+surfaces delimited by a tinted shadow rather than a drawn border, generous radii, pill
+controls, a single soft accent, and exactly one gradient (under the hero). There is
+deliberately no `prefers-color-scheme: dark` block; shipping one would hand every dark-OS
+visitor the look being retired.
 
 ---
 
 ## Tokens
 
-Source of truth is `app/src/styles/tokens.css`. **No colour literal exists outside
-that file** — 23 hand-written `rgba()` values used to re-derive brand colours in 8
-components, so changing a brand colour left all 23 behind.
+Source of truth is `app/src/styles/tokens.css`. **No colour literal exists outside that
+file.** The dark era grew three (`#8467ff` in two views, `var(--paper, #08090e)` in a third),
+and each was a contrast failure or a black frame waiting for the palette to change. Every
+ratio below is measured (WCAG 2.x relative luminance), not eyeballed.
 
 ### Surfaces
 
 | Token | Value | Role |
 | --- | --- | --- |
-| `--bg` | `#0b0d12` | Page |
-| `--surface` | `#151922` | Cards, inputs, header |
-| `--surface-2` | `#1b2029` | Raised — chips, hovers, inset panels |
-| `--line` | `#232a36` | Divides content *inside* a surface |
-| `--line-strong` | `#2d3644` | Outlines a surface *against* the page |
+| `--bg` | `#f5f5f7` | Page. Cool off-white, never pure white |
+| `--surface` | `#ffffff` | Cards, inputs, header |
+| `--surface-2` | `#f1f1f5` | Raised or inset: chips, hovers, panels inside a card |
+| `--line` | `#e6e7ec` | Divides content *inside* a surface |
+| `--line-strong` | `#dcdde3` | Outlines an input against the page |
 
-`--surface` and `--surface-2` were lifted from `#11141b`/`#161a23` because a card
-sat 1.05:1 from the page with a 1.20:1 hairline — delimited by nothing
-perceptible.
-
-**The hairlines do not reach the 3:1 of WCAG 1.4.11 and do not need to.** Reaching
-it on this palette requires a `#59677f` mid-grey that turns the UI into a
-wireframe. Cards are grouped by a 12px gap and their own internal structure, so
-the hairline is emphasis, not the identifying boundary. Do not "fix" this by
-raising the border.
+**Cards are delimited by `--shadow-1` and the gap around them, not by a border.** The
+hairlines measure 1.26:1 and 1.36:1 on white and do not need to reach 3:1: on this palette a
+drawn border would put a wireframe over a design that has none, and the reference UIs do
+not draw one either. Hover adds a full-accent border as the second, non-motion signal.
 
 ### Text
 
-| Token | Value | On `--surface` |
-| --- | --- | --- |
-| `--text` | `#e8ebf2` | 15.44:1 |
-| `--text-dim` | `#9aa3b2` | 7.24:1 |
+| Token | Value | On `--surface` | On `--bg` | On `--surface-2` |
+| --- | --- | --- | --- | --- |
+| `--text` | `#15161c` | 18.05:1 | 16.58:1 | |
+| `--text-dim` | `#5c6170` | 6.18:1 | 5.67:1 | 5.48:1 |
 
-### Accent — two tokens, on purpose
+### Accent: one token now
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--accent` | `#7c5cff` | Fills, rails, borders, `accent-color`, focus ring |
-| `--accent-text` | `#9074ff` | Anything set with `color:` |
+| `--accent` | `#6b4de6` | Fills, rails, borders, focus ring, and accent-coloured text |
+| `--accent-text` | `var(--accent)` | Alias. 29 rules still read it |
+| `--on-accent` | `#ffffff` | Text on an accent fill |
 
-The brand purple measures **4.24:1** on `--surface` and **3.86:1** on the 10% tint
-the chips use. That clears the 3:1 non-text floor but fails the 4.5:1 text floor,
-and it was colouring 12px chip labels on every card. `--accent-text` is the same
-hue lifted 15% toward white: 5.38:1 on `--surface`, 5.08:1 on `--surface-2`,
-5.67:1 on `--bg`, 4.89:1 on the accent tint.
+The dark palette needed two accent tokens because its violet failed 4.5:1 as text. The light
+accent is the same hue one step deeper, chosen so one value passes every role: **5.48:1**
+with white text on a fill, **5.48:1** as text on `--surface`, **5.04:1** on `--bg`,
+**4.76:1** on the 10% tint the chips use. The dark palette's `#7c5cff` measured 4.35:1 under
+a white label and failed on every filled button, which is why it is gone.
 
-**When adding an accent-coloured rule: `color` takes `--accent-text`, everything
-else takes `--accent`.**
-
-`--accent-2` (`#3ddc97`, 10.43:1) and `--warn` (`#f5a524`, 9.03:1) pass as text
-already and need no second token.
+`--accent-2` (`#0b7a54`, fun / high) is 5.35:1 on white and 4.67:1 on its tint. `--warn`
+(`#9a5b06`, money / mid) is 5.42:1 and 4.74:1. `--danger` (`#c62828`) is 5.62:1 and 4.81:1.
 
 ### Alpha scale
 
-`--accent-a05` · `--accent-a10` · `--accent-a30` · `--accent-2-a10` ·
-`--accent-2-a30` · `--warn-a10` · `--warn-a30` · `--ink-a02`
+`--accent-a05` · `--accent-a10` · `--accent-a30` · `--accent-2-a10` · `--accent-2-a30` ·
+`--warn-a10` · `--warn-a30` · `--danger-a10` · `--ink-a02`
 
-Named by source colour and opacity. **`--accent-a30` is not a usable border on its
-own** — it measures 1.43:1 on `--surface`. Accent needs alpha ≥ 0.80 to reach 3:1,
-so anything load-bearing uses the full accent.
+Named by source colour and opacity. Chips, badges and count pills are **borderless tints**
+(`*-a10` background, full colour text): on white the tint is the shape, and a hairline around
+a 12px label is clutter. `--accent-a30` is 1.4:1 on white and is not a usable border on its
+own.
+
+### The wash
+
+`--wash` is three soft radial gradients (violet, peach, sky) fading into the page. It is the
+only gradient in the app and it appears in two places: under the landing hero and on the
+"you are here" cell of the landing's product grid. Kept as a token so it cannot be reinvented
+per view with slightly different colours.
 
 ### Focus
 
-`--focus: var(--accent)` — derived, never a second literal. One global
-`:focus-visible` ring in `app.css`: `2px solid var(--focus)` at `2px` offset.
-**A component must not set `outline: none` without replacing it with something at
-least as strong.** A border-colour change alone does not satisfy WCAG 2.4.11.
+`--focus: var(--accent)`: derived, never a second literal. One global `:focus-visible` ring
+in `app.css`, `2px solid var(--focus)` at `2px` offset. **A component must not set
+`outline: none` without replacing it with something at least as strong.** A border-colour
+change alone does not satisfy WCAG 2.4.11.
+
+### Shape
+
+`--radius-sm: 10px` · `--radius-md: 14px` · `--radius-lg: 18px` · `--radius-pill: 999px`
+
+One rule, applied everywhere: **buttons and chips are pills; cards and media frames are
+`--radius-lg`; inputs, selects and menus are `--radius-md`; small insets are `--radius-sm`.**
+The main navigation is a segmented control (grey pill holding the items, active item on a
+white pill with `--shadow-1`), the same idiom as the doc tabs in the reference interfaces.
+
+### Shadows
+
+`--shadow-1` rests, `--shadow-2` lifts on hover. Both are tinted toward the violet-grey of
+the page (`rgba(28, 25, 60, …)`), not black: a black shadow on an off-white ground reads as a
+smudge, a tinted one reads as depth.
 
 ### Other
 
-`--radius-sm: 6px` · `--radius-md: 8px` · `--radius-lg: 12px` ·
-`--shadow-1` · `--shadow-2` · `--code-bg: #1a1d24` · `--code-fg: #c0c5d0` (9.75:1)
+`--code-bg: #f6f7f9` · `--code-fg: #24292f` (13.9:1). Fenced code uses highlight.js's
+`github` theme, imported in `lib/md.ts`; the dark `atom-one-dark` would have been the one
+place the old palette survived unnoticed, inside a white document.
 
 Spacing runs on a 4px scale: 4 / 8 / 12 / 16 / 24 / 32 / 48.
 
 ### Typography
 
-`--font-ui: 'Inter'` · `--font-mono: 'JetBrains Mono'`, both from Google Fonts.
+`--font-ui` is a **system stack** (`ui-sans-serif, system-ui, -apple-system, 'Segoe UI', …`)
+and `--font-mono` is `ui-monospace, 'SF Mono', Menlo, …`.
 
-> **Divergence worth knowing:** `tokens.css` opens with "Tokens shared with
-> ../site/index.html — keep in sync". They are **not** in sync and never were. The
-> AI-OS site is acid-green `#b3ee55` on `#08090e` with Space Grotesk. This app is
-> purple on blue-black with Inter. Either reconcile them deliberately or drop the
-> comment; do not assume parity.
+> The previous version of this file said Inter and JetBrains Mono were loaded from Google
+> Fonts. **They never were**: `index.html` had no font `<link>`, so every visitor without
+> Inter installed was already reading `system-ui`. Naming that on purpose costs no request
+> and no layout shift, and it is the typeface the reference interfaces use.
+
+`tokens.css` no longer claims to be shared with `../site/index.html`. It was not, and never
+had been: the landing site is acid-green on near-black with Space Grotesk.
 
 ---
 
 ## Layout
 
-### IndexView (`/`)
+### IndexView (`/plans`)
 
 CSS grid with named areas so the sidebar and the search field are placed
 explicitly rather than by source order.
