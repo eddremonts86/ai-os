@@ -83,6 +83,10 @@
   --radius-lg: 18px;
   --radius-pill: 999px;
 
+  /* Header height, fixed, so anything sticky below it (the filter bar) can sit at exactly
+     this offset instead of guessing. Measured: 14px padding + 43px segmented nav + 14px. */
+  --header-h: 72px;
+
   /* Shadows tinted toward the violet-grey of the page, not black. A pure-black shadow on an
      off-white ground reads as a smudge; this reads as depth. --shadow-1 rests, --shadow-2
      lifts on hover. */

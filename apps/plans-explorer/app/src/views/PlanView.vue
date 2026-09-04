@@ -37,6 +37,9 @@ async function loadAll(planId: string) {
       return;
     }
     plan.value = found;
+    // The route-level title is a placeholder ("Plan"); the real one is the plan's own, so a
+    // tab strip or a bookmark reads which plan this is.
+    document.title = `${found.title} · Plansmith`;
     docs.value = await loadPlanDocument(planId);
     // Default tab = first available
     const d = docs.value ?? {};
