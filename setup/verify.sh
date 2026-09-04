@@ -378,6 +378,35 @@ else
   opt_miss "  example intent missing"
 fi
 
+# Strategic-compact hook (optional — third token layer, see intent/README.md)
+section "3f. Strategic-compact hook (optional — Claude Code PreToolUse)"
+if ! command -v node >/dev/null 2>&1; then
+  opt_miss "node not in PATH — cannot check the hook (it is a node script)"
+elif [ ! -f "$AI_OS_ROOT/setup/wire-compact-hook.mjs" ]; then
+  opt_miss "setup/wire-compact-hook.mjs missing"
+elif hook_status=$(node "$AI_OS_ROOT/setup/wire-compact-hook.mjs" --check 2>&1); then
+  opt_ok "${hook_status#\[compact-hook\] OK }"
+else
+  opt_miss "${hook_status#\[compact-hook\] }"
+fi
+# A dangling skill symlink is invisible to the loops that create them (the
+# source dir is gone, so the name is never revisited) — count them explicitly.
+broken_links=0
+for cli_path in ".claude/skills" ".codex/skills" ".gemini/skills" ".agents/skills" ".gemini/config/skills"; do
+  [ -d "$HOME_DIR/$cli_path" ] || continue
+  for link in "$HOME_DIR/$cli_path"/*; do
+    if [ -L "$link" ] && [ ! -e "$link" ]; then
+      warn "  BROKEN $cli_path/$(basename "$link") → $(readlink "$link")"
+      broken_links=$((broken_links+1))
+    fi
+  done
+done
+if [ "$broken_links" = "0" ]; then
+  opt_ok "  no dangling skill symlinks in the CLI skill dirs"
+else
+  opt_miss "  $broken_links dangling skill symlink(s) — re-run install-mac.sh to prune"
+fi
+
 # ─── 4. Superpowers (14 required) ───
 section "4. Superpowers skills (REQUIRED = 14)"
 EXPECTED=14
