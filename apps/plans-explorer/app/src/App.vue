@@ -26,8 +26,15 @@ onMounted(async () => {
 
     <header class="app-header">
       <RouterLink to="/" class="brand">
-        <span class="brand-mark" aria-hidden="true">◆</span>
-        <span class="brand-text">AI-OS Plans Explorer</span>
+        <!-- The mark: three sheets stacked, the plan documents. One geometric glyph in the
+             brand colour, drawn inline so it takes the token and needs no request. The same
+             drawing is public/favicon.svg. -->
+        <svg class="brand-mark" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true" focusable="false">
+          <rect x="3" y="11" width="18" height="18" rx="5" fill="currentColor" opacity="0.32" />
+          <rect x="7" y="7" width="18" height="18" rx="5" fill="currentColor" opacity="0.6" />
+          <rect x="11" y="3" width="18" height="18" rx="5" fill="currentColor" />
+        </svg>
+        <span class="brand-text">Plansmith</span>
       </RouterLink>
       <nav class="app-nav" aria-label="Main">
         <RouterLink to="/plans" active-class="is-active">Plans</RouterLink>
@@ -114,8 +121,14 @@ onMounted(async () => {
 }
 
 .brand-mark {
+  flex: none;
   color: var(--accent);
-  font-size: 18px;
+}
+
+.brand-text {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
 }
 
 /* Segmented control, not a row of links: one grey pill holds the items and the active one
