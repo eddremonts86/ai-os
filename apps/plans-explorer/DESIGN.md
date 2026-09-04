@@ -229,12 +229,12 @@ Counts come from `meta.json`, never hardcoded.
 
 | Component | Notes |
 | --- | --- |
-| `PlanCard` | `<article>`. The title link stretches over the whole card via `::after`, so the card is the hit target while exactly one link stays in the accessibility tree and text stays selectable. The source link is raised above that overlay. Focus rings the card, not the title. |
+| `PlanCard` | Footer is two fixed rows: meta (country, stack, income) above, scores below with the source link pinned right, and an empty meta row keeps its 24px so scores line up across a row of cards. It was one wrapping flex row, which put the scores beside a short meta and under a long one. The stack pill is clamped to one line (full list in `title`). `<article>`. The title link stretches over the whole card via `::after`, so the card is the hit target while exactly one link stays in the accessibility tree and text stays selectable. The source link is raised above that overlay. Focus rings the card, not the title. |
 | `FilterMenu` | Pill + panel disclosure for one filter dimension. Owns open state, Escape, and the document-level `pointerdown` listener that closes it on an outside click (cleaned up on unmount). |
 | `FacetPanel` | Two modes. Standalone: collapsible group with its own header. `headless` (inside a `FilterMenu`): no header, always open, and a type-to-narrow field once the list passes eight options, because Category has 58 values and Country 45. `single`: radios instead of checkboxes, one value always set, used by the sort menu. Rows carry no negative inline margin: the old `-8px` bleed made every row wider than its list and put a horizontal scrollbar under each group. Collapsible group. The `<label>` wraps its checkbox and carries the 44px target; the checkbox stays 16px visually. Focus on the checkbox surfaces on the whole row. |
 | `IncomeRangeSlider` | `headless` inside the Income menu: title kept only as the group's accessible name, no divider, header row only while there is something to reset. Two overlaid `input[type=range]`. `role="group"` + `aria-labelledby`, `aria-valuetext` so values announce as money. 24px thumbs on a 44px track; the ring goes on the thumb because the input spans the full track. |
 | `ScoreBadge` | Pill, money 💰 / learn 🧠 / fun 🎮. Renders `—` when a plan is not ranked on that axis — most plans are unranked on two of three. |
-| `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. |
+| `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. Wraps rather than clips: it is the price the person named, sometimes at length, and a truncated price means nothing. |
 | `DocTabs` | `role="tablist"`, 44px tabs. |
 | `MarkdownReader` | `markdown-it` + highlight.js `atom-one-dark`, lazy-loaded in its own chunk. Prose rhythm comes from shadcn/typeset — see below. |
 
