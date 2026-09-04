@@ -157,34 +157,53 @@ had been: the landing site is acid-green on near-black with Space Grotesk.
 
 ---
 
+## SEO, and its ceiling
+
+What is in place: `<title>` per route (set in `router.afterEach`, and by PlanView from the
+plan's own title once it loads), meta description, canonical, `robots` meta, Open Graph and
+Twitter cards with a 1200x630 `og.png`, an `apple-touch-icon`, JSON-LD (`WebApplication`,
+free, published by AI-OS), `robots.txt`, `sitemap.xml`, and a `<noscript>` paragraph so a
+crawler that does not run scripts still reads one honest sentence instead of an empty div.
+
+**The ceiling is the router.** Routes are hash fragments (`/#/plans/228`), and a fragment is
+not part of the URL a crawler sees, so the whole app is one indexable page and the sitemap
+lists one URL on purpose. The 900-plus plan pages, each with a real title and prose, are
+invisible to search. Lifting that means path routing (`createWebHistory`; nginx already has
+the `try_files` fallback) **plus** a prerender step that writes a static HTML shell per plan
+with its title, description and JSON-LD, and a hash-to-path redirect so every existing link
+keeps working. It changes every public URL, which is why it is a decision and not a commit.
+
+---
+
 ## Layout
 
 ### IndexView (`/plans`)
 
-CSS grid with named areas so the sidebar and the search field are placed
-explicitly rather than by source order.
+A **filter bar** above the grid, sticky at `top: var(--header-h)` under the sticky header,
+then the results. One strip holds everything that narrows or orders the set: the search
+field, one pill per dimension (Category, Tags, Tech, Country, Income), a `Clear all` pill that
+only exists while something is active, and, pushed to the right, the result count and the
+sort select.
 
-```
-desktop (>768px)          mobile (<=768px)
-'search  results'         'search'
-'facets  results'         'toggle'
-                          'facets'
-                          'results'
-```
+Each pill is a `FilterMenu`: a disclosure, not a modal. The pill carries `aria-expanded` and
+`aria-controls`, the panel opens under it, Tab walks into it, Escape or a click anywhere else
+closes it, and a pill with active values takes the accent tint and shows the count. Panels
+near the right edge open leftward (`:nth-last-child(-n + 2)`), because a 360px panel under a
+pill at x = 900 runs off a 1024px viewport.
 
-`grid-template-rows: min-content 1fr` on desktop is **load-bearing**. `.results`
-spans both rows and is ~50,000px tall; without it the browser splits that height
-across the rows, row 1 becomes ~24,000px, and the filter sidebar lands 24,565px
-down the page where nobody finds it.
+This replaced a 240px sticky sidebar that stacked four scrolling checklists, each with its
+own scrollbar, and cost the grid 240px at every width. The grid keeps its `minmax(300px, 1fr)`
+columns, so at the 1280px container that is still three columns, now ~400px wide instead of
+~320px: room for these long problem titles. The sidebar also needed a `grid-template-rows: min-content 1fr` hack so a
+50,000px results column would not stretch the search box; there is no such column any more
+and the hack is gone with it.
 
-- Sidebar 240px, sticky, `max-height: calc(100dvh - 80px)` with its own scroll.
-  `dvh` not `vh` — `vh` counts mobile browser chrome.
-- Card grid `repeat(auto-fill, minmax(300px, 1fr))`, 12px gap.
-- **Mobile**: the facets are a disclosure, collapsed by default, behind a
-  `Filters` toggle carrying `aria-expanded` / `aria-controls` and a badge with the
-  active-filter count. Open, the panel is `static` with no `max-height` and no
-  inner overflow — the page scrolls instead of nesting scrollers. Search stays
-  outside the disclosure: it is the primary filter.
+- Card grid `repeat(auto-fill, minmax(300px, 1fr))`, 16px gap, `content-visibility: auto`
+  on the children (see Performance).
+- **Mobile**: the search takes the full first row and the pills wrap underneath. They wrap
+  rather than scroll sideways because an `overflow-x` container would clip the panels. The
+  panel then spans the bar instead of hanging off its pill (`.filter-menu` drops
+  `position: relative` so the sticky bar becomes the containing block).
 
 ### PlanView (`/plans/:id`)
 
@@ -209,7 +228,8 @@ Counts come from `meta.json`, never hardcoded.
 | Component | Notes |
 | --- | --- |
 | `PlanCard` | `<article>`. The title link stretches over the whole card via `::after`, so the card is the hit target while exactly one link stays in the accessibility tree and text stays selectable. The source link is raised above that overlay. Focus rings the card, not the title. |
-| `FacetPanel` | Collapsible group. The `<label>` wraps its checkbox and carries the 44px target; the checkbox stays 16px visually. Focus on the checkbox surfaces on the whole row. |
+| `FilterMenu` | Pill + panel disclosure for one filter dimension. Owns open state, Escape, and the document-level `pointerdown` listener that closes it on an outside click (cleaned up on unmount). |
+| `FacetPanel` | Two modes. Standalone: collapsible group with its own header. `headless` (inside a `FilterMenu`): no header, always open, and a type-to-narrow field once the list passes eight options, because Category has 58 values and Country 45. Collapsible group. The `<label>` wraps its checkbox and carries the 44px target; the checkbox stays 16px visually. Focus on the checkbox surfaces on the whole row. |
 | `IncomeRangeSlider` | Two overlaid `input[type=range]`. `role="group"` + `aria-labelledby`, `aria-valuetext` so values announce as money. 24px thumbs on a 44px track; the ring goes on the thumb because the input spans the full track. |
 | `ScoreBadge` | Pill, money 💰 / learn 🧠 / fun 🎮. Renders `—` when a plan is not ranked on that axis — most plans are unranked on two of three. |
 | `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. |
