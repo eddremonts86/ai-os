@@ -15,6 +15,7 @@ import {
 import type { Plan, SortKey } from '@/types';
 import PlanCard from '@/components/PlanCard.vue';
 import FacetPanel from '@/components/FacetPanel.vue';
+import FilterMenu from '@/components/FilterMenu.vue';
 import IncomeRangeSlider from '@/components/IncomeRangeSlider.vue';
 
 const route = useRoute();
@@ -94,13 +95,7 @@ function clearAll() {
   sortKey.value = 'money-desc';
 }
 
-// Mobile filter disclosure. On a phone the sidebar rendered as a 732px nested
-// scroller stacked ABOVE the results, so the whole first screen was filters and
-// zero plans. Collapsed by default there; always open from the tablet breakpoint up.
-const filtersOpen = ref(false);
-
-// Shown on the toggle so a collapsed panel never hides the fact that filters are
-// active — the results count alone does not tell you why it is 12 instead of 525.
+// Drives the "Clear all" pill: it only appears when there is something to clear.
 const activeFilterCount = computed(() =>
   categories.value.length +
   tags.value.length +
@@ -137,9 +132,12 @@ onMounted(load);
 
 <template>
   <div class="layout">
-    <!-- Search sits outside the disclosure: it is the primary filter and must stay
-         reachable when the panel is collapsed on mobile. -->
-    <div class="search-wrap">
+    <!--
+      Filter bar, sticky under the header. Search first because it is the primary filter;
+      then one pill per dimension, each opening its own panel. The sidebar this replaced put
+      four scrolling checklists in a 240px column and took a grid column with it.
+    -->
+    <div class="filter-bar" role="search" aria-label="Filter plans">
       <input
         v-model="query"
         type="search"
@@ -148,82 +146,87 @@ onMounted(load);
         placeholder="Search title, problem, tags…"
         aria-label="Search plans"
       />
-    </div>
 
-    <!-- Mobile-only disclosure for the rest of the filters -->
-    <button
-      class="filters-toggle"
-      type="button"
-      :aria-expanded="filtersOpen"
-      aria-controls="facet-panel"
-      @click="filtersOpen = !filtersOpen"
-    >
-      <span>{{ filtersOpen ? 'Hide filters' : 'Filters' }}</span>
-      <span v-if="activeFilterCount" class="filters-badge">{{ activeFilterCount }}</span>
-    </button>
+      <div class="filter-menus">
+        <FilterMenu label="Category" :active="categories.length" menu-id="menu-category">
+          <FacetPanel
+            headless
+            title="Category"
+            :count="categoryOptions.length"
+            :options="categoryOptions"
+            :selected="categories"
+            @update:selected="categories = $event"
+          />
+        </FilterMenu>
+        <FilterMenu label="Tags" :active="tags.length" menu-id="menu-tags">
+          <FacetPanel
+            headless
+            title="Tags"
+            :count="tagOptions.length"
+            :options="tagOptions"
+            :selected="tags"
+            @update:selected="tags = $event"
+          />
+        </FilterMenu>
+        <FilterMenu label="Tech" :active="techs.length" menu-id="menu-tech">
+          <FacetPanel
+            headless
+            title="Tech"
+            :count="techOptions.length"
+            :options="techOptions"
+            :selected="techs"
+            @update:selected="techs = $event"
+          />
+        </FilterMenu>
+        <FilterMenu label="Country" :active="countries.length" menu-id="menu-country">
+          <FacetPanel
+            headless
+            title="Country"
+            :count="countryOptions.length"
+            :options="countryOptions"
+            :selected="countries"
+            @update:selected="countries = $event"
+          />
+        </FilterMenu>
+        <FilterMenu
+          label="Income"
+          :active="(hasWtpOnly ? 1 : 0) + (wtpRange[0] !== 0 || wtpRange[1] !== 5000 ? 1 : 0)"
+          menu-id="menu-income"
+        >
+          <div class="income-menu">
+            <IncomeRangeSlider v-model="wtpRange" :max="5000" />
+            <label class="wtp-only">
+              <input type="checkbox" v-model="hasWtpOnly" name="wtp-only" />
+              <span>Plans with stated income only</span>
+            </label>
+          </div>
+        </FilterMenu>
 
-    <!-- Sidebar with facets -->
-    <aside id="facet-panel" class="facets" :class="{ 'is-open': filtersOpen }">
-      <FacetPanel
-        title="Category"
-        :count="categoryOptions.length"
-        :options="categoryOptions"
-        :selected="categories"
-        @update:selected="categories = $event"
-      />
-      <FacetPanel
-        title="Tags"
-        :count="tagOptions.length"
-        :options="tagOptions"
-        :selected="tags"
-        @update:selected="tags = $event"
-      />
-      <FacetPanel
-        title="Tech"
-        :count="techOptions.length"
-        :options="techOptions"
-        :selected="techs"
-        @update:selected="techs = $event"
-      />
-      <FacetPanel
-        title="Country"
-        :count="countryOptions.length"
-        :options="countryOptions"
-        :selected="countries"
-        @update:selected="countries = $event"
-      />
-
-      <IncomeRangeSlider v-model="wtpRange" :max="5000" />
-
-      <div class="wtp-only">
-        <label>
-          <input type="checkbox" v-model="hasWtpOnly" name="wtp-only" />
-          <span>Plans with stated income only</span>
-        </label>
+        <button v-if="activeFilterCount" type="button" class="clear-btn" @click="clearAll">
+          Clear all
+        </button>
       </div>
 
-      <button class="clear-btn" @click="clearAll">clear all filters</button>
-    </aside>
-
-    <!-- Results -->
-    <section class="results">
-      <header class="results-header">
-        <h1 class="sr-only">Plans</h1>
+      <!-- Count and sort live in the same bar: one strip above the grid, not two. -->
+      <div class="bar-end">
         <div class="results-summary" role="status" aria-live="polite">
           <strong>{{ results.length }}</strong>
           <span> of </span>
           <strong>{{ plans.length }}</strong>
           <span> plans</span>
         </div>
-        <div class="sort-wrap">
-          <label class="sort-label">
-            <span>Sort by</span>
-            <select v-model="sortKey" name="sort">
-              <option v-for="opt in SORT_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
-            </select>
-          </label>
-        </div>
-      </header>
+        <label class="sort-label">
+          <span>Sort by</span>
+          <select v-model="sortKey" name="sort">
+            <option v-for="opt in SORT_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <section class="results">
+      <h1 class="sr-only">Plans</h1>
 
       <div v-if="loading" class="empty-state">
         <p>Loading plans…</p>
@@ -247,67 +250,47 @@ onMounted(load);
 
 <style scoped>
 .layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  grid-template-areas:
-    'search results'
-    'facets results';
-  /* min-content on row 1 is load-bearing: .results spans both rows and is ~50,000px
-     tall, and without this the browser splits that height across the two rows —
-     row 1 became 24,470px, stretching the search box and pushing the whole filter
-     sidebar 24,565px down the page where nobody would ever find it. */
-  grid-template-rows: min-content 1fr;
-  align-content: start;
-  gap: 12px 24px;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 16px 24px 48px;
+  padding: 0 24px 48px;
 }
 
-.search-wrap {
-  grid-area: search;
-}
+/* ---------- filter bar ---------- */
 
-.facets {
-  grid-area: facets;
-}
-
-.results {
-  grid-area: results;
-}
-
-
-.filters-toggle {
-  display: none;
-}
-
-.facets {
+.filter-bar {
   position: sticky;
-  top: 72px;
-  align-self: start;
-  /* dvh, not vh: vh counts the mobile browser chrome, so the panel claimed more
-     height than was actually visible. */
-  max-height: calc(100dvh - 96px);
-  overflow-y: auto;
-  /* A white panel on the off-white page, like every other surface here, instead of facets
-     floating loose against the background. */
-  padding: 4px 16px 16px;
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-1);
+  top: var(--header-h);
+  /* Above the cards it scrolls over, below the header (z 10). Its open panel inherits this
+     stacking context, which is what lets a panel paint over the grid. */
+  z-index: 9;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  padding: 12px 0;
+  /* Same translucent idiom as the header: cards scrolling under it stay faintly visible. */
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+@supports not (backdrop-filter: blur(8px)) {
+  .filter-bar {
+    background: var(--bg);
+  }
 }
 
 .search-input {
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 16px;
+  flex: 1 1 260px;
+  max-width: 420px;
+  min-height: 40px;
+  padding: 8px 16px;
   background: var(--surface);
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   color: var(--text);
   font-size: 14px;
   box-shadow: var(--shadow-1);
-  transition: border-color 150ms, box-shadow 150ms;
+  transition: border-color 150ms;
 }
 
 .search-input::placeholder {
@@ -318,54 +301,63 @@ onMounted(load);
   border-color: var(--accent);
 }
 
-.wtp-only {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
+.filter-menus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
-.wtp-only label {
+.income-menu {
+  min-width: 260px;
+}
+
+.wtp-only {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   font-size: 13px;
   cursor: pointer;
 }
 
 .wtp-only input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
   accent-color: var(--accent);
 }
 
 .clear-btn {
-  width: 100%;
-  margin-top: 12px;
-  padding: 10px;
   min-height: 40px;
-  background: var(--surface-2);
+  padding: 0 14px;
+  background: transparent;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
   cursor: pointer;
-  transition: color 150ms, border-color 150ms;
+  transition: color 150ms, background 150ms;
 }
 
 .clear-btn:hover {
-  color: var(--accent-text);
-  border-color: var(--accent);
+  color: var(--text);
+  background: var(--surface-2);
 }
+
+/* ---------- results ---------- */
 
 .results {
   min-width: 0;
+  padding-top: 12px;
 }
 
-.results-header {
+.bar-end {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 14px;
+  margin-left: auto;
 }
 
 .results-summary {
@@ -407,96 +399,47 @@ onMounted(load);
   gap: 16px;
 }
 
-/* The corpus renders every match at once — 552 cards, 14,555 DOM nodes, a 52,000px
-   page. `content-visibility: auto` lets the browser skip style, layout and paint
-   for cards outside the viewport while keeping every one of them in the DOM, so
-   the result count and the filtered set stay exact. A JS virtualiser would also
-   cut the node count, but it costs a dependency and AGENTS.md caps the bundle and
-   rules out UI kits.
-   Note this trades RENDER work, not DOM weight: the node count is unchanged at
-   ~14,500. Cutting that needs windowing, which is a bigger change than this pass.
-   Caveat: skipped subtrees are excluded from `innerText`, so any check that reads
-   document text will under-report. Browsers do force-render a skipped subtree when
-   find-in-page matches inside it, but that is browser behaviour this change did
-   not verify.
-   contain-intrinsic-size seeds the placeholder height. Use the measured mean ROW
-   height, not the median card height: grid rows size to their tallest card, and
-   seeding 334px (the median card) inflated the page from 52,123px to 69,696px —
-   34% too long, so the scrollbar visibly shrank as cards realised. The true mean
-   over 184 rows is 271px.
-   The `auto` keyword makes the browser remember each card's real size once it has
-   been rendered a first time, so the estimate only governs never-seen cards. */
+/* The corpus renders every match at once — hundreds of cards, tens of thousands of DOM nodes.
+   `content-visibility: auto` lets the browser skip style, layout and paint for cards outside
+   the viewport while keeping every one of them in the DOM, so the result count and the
+   filtered set stay exact. A JS virtualiser would also cut the node count, but it costs a
+   dependency and AGENTS.md caps the bundle and rules out UI kits.
+   Note this trades RENDER work, not DOM weight. Caveat: skipped subtrees are excluded from
+   `innerText`, so any check that reads document text will under-report.
+   contain-intrinsic-size seeds the placeholder height. Use the measured mean ROW height, not
+   the median card height: grid rows size to their tallest card, and seeding the median card
+   inflated the page by 34%, so the scrollbar visibly shrank as cards realised. The `auto`
+   keyword makes the browser remember each card's real size once rendered. */
 .card-grid > * {
   content-visibility: auto;
   contain-intrinsic-size: auto 271px;
 }
-/* ---------- Mobile ---------- *
- * Last in the file on purpose: these override the desktop rules above at
- * equal specificity, so source order is what makes them win.
- */
+
+/* ---------- narrow ---------- */
+
 @media (max-width: 768px) {
   .layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'search'
-      'toggle'
-      'facets'
-      'results';
-    padding-top: 12px;
+    padding: 0 16px 40px;
   }
 
-  .filters-toggle {
-    grid-area: toggle;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+  .filter-bar {
+    padding: 10px 0;
+  }
+
+  .search-input {
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  /* Pills wrap rather than scroll sideways: an overflow container would clip the panels. */
+  .filter-menus {
     width: 100%;
-    min-height: 44px;
-    padding: 10px 16px;
-    background: var(--surface);
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius-pill);
-    color: var(--text);
-    font-size: 15px;
-    font-weight: 500;
-    box-shadow: var(--shadow-1);
   }
 
-  .filters-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 6px;
-    border-radius: 999px;
-    /* Tint + accent-text, matching .chip.is-accent. The first version of this
-       badge was accent fill with white text, which measures 4.35:1 and fails AA;
-       this pair measures 4.89:1 and is already the app's idiom for a count. */
-    background: var(--accent-a10);
-    border: 1px solid var(--accent-a30);
-    color: var(--accent-text);
-    font-size: 12px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
+  .bar-end {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
   }
-
-  /* Collapsed by default, and no nested scroll region when open: the panel grows
-     inline and the page scrolls, which is what a phone expects. */
-  .facets {
-    display: none;
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-    padding-right: 0;
-    margin-top: 12px;
-  }
-
-  .facets.is-open {
-    display: block;
-  }
-
 }
-
 </style>
