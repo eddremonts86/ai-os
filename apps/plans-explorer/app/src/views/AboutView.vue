@@ -45,7 +45,7 @@ const stack = [
     <header class="hero">
       <div class="hero-meta">
         <span class="eyebrow">Framework component · AI-OS</span>
-        <h1 class="hero-title">Plans Explorer</h1>
+        <h1 class="hero-title">Plansmith</h1>
         <p class="hero-sub">
           A searchable, rankable static SPA for product plans scraped from
           <a href="https://problemhunt.pro" target="_blank" rel="noopener">ProblemHunt</a>
@@ -133,7 +133,7 @@ const stack = [
 
     <footer class="colophon">
       <p>
-        Plans Explorer is a framework component of
+        Plansmith is a framework component of
         <a href="https://github.com/eddremonts86/ai-os" target="_blank" rel="noopener">AI-OS</a>.
         Brand: <span class="dot dot-accent"></span> accent (purple), <span class="dot dot-accent-2"></span> accent-2 (mint), <span class="dot dot-warn"></span> warn (amber).
         Type: Inter (UI) + JetBrains Mono (mono).

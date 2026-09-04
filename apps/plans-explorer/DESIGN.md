@@ -1,4 +1,4 @@
-# DESIGN.md — AI-OS Plans Explorer
+# DESIGN.md — Plansmith (the plans explorer)
 
 Describes what the interface **is**, and why the load-bearing decisions were made,
 so they are not re-litigated. Anything not in here is not a committed decision.
@@ -26,6 +26,26 @@ surfaces delimited by a tinted shadow rather than a drawn border, generous radii
 controls, a single soft accent, and exactly one gradient (under the hero). There is
 deliberately no `prefers-color-scheme: dark` block; shipping one would hand every dark-OS
 visitor the look being retired.
+
+---
+
+## Name and mark
+
+**Plansmith.** The product takes raw material (a problem somebody posted) and forges it into
+something made to measure (five documents, ready to open in an editor). The name says that in
+one word, sits next to BuilderHunt and HunterReady without borrowing their "hunt", and stays
+clear of ProblemHunt, which is a source this app scrapes and must not look like a copy of.
+It replaced "AI-OS Plans Explorer", a description that had drifted into being the name.
+
+**The mark is three sheets stacked**, offset diagonally, in `--accent`: the plan documents.
+One geometric glyph, no hand-drawn illustration. It is drawn inline in `App.vue` so it takes
+the colour token, and the same drawing is `public/favicon.svg` with the hex written out
+(a favicon has no CSS). Until this change `index.html` linked a favicon that did not exist:
+every page load fetched a 404.
+
+Infrastructure identifiers are **not** renamed: the directory `apps/plans-explorer/`, the
+Dockerfile, the deploy workflow and the Coolify app keep their slugs, because those are
+referenced by absolute path from production configuration and by every doc in the repo.
 
 ---
 
