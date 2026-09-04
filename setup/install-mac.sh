@@ -1085,6 +1085,27 @@ else
 fi
 echo ""
 
+# ─── 9d. Strategic-compact hook (Claude Code PreToolUse) ───
+# Third token layer next to ponytail (code) and caveman (prose): suggests
+# /compact at phase boundaries instead of letting auto-compact fire mid-task.
+# The suggester itself is vendored (vendor/ecc/scripts/hooks/suggest-compact.js);
+# setup/wire-compact-hook.mjs symlinks it into ~/.claude/scripts/hooks/ and
+# merges the PreToolUse entry into ~/.claude/settings.json. Needs node — the
+# hook is a node script, so without it there is nothing to wire.
+if [ "${SKIP_COMPACT_HOOK:-0}" != "1" ]; then
+  log "9d. Strategic-compact hook (Claude Code PreToolUse)..."
+  if ! command -v node >/dev/null 2>&1; then
+    warn "  node not installed — skipping (the hook is a node script)"
+  elif node "$SCRIPT_DIR/wire-compact-hook.mjs"; then
+    ok "  strategic-compact hook wired (threshold: \$COMPACT_THRESHOLD, default 50)"
+  else
+    warn "  strategic-compact hook not wired — see the message above (never blocks the install)"
+  fi
+else
+  log "9d. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
+fi
+echo ""
+
 # ─── 10. Warp defaults (Mac only) ───
 if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
   log "10. Configuring Warp defaults..."

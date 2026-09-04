@@ -372,6 +372,25 @@ foreach ($cliDir in $cliDirs) {
     if (-not (Test-Path $cliDir)) {
         New-Item -ItemType Directory -Path $cliDir -Force | Out-Null
     }
+    # Prune stale ai-os links whose target no longer has a top-level SKILL.md —
+    # a retired skill (or a bundle wrongly linked by an older run) otherwise
+    # leaves a dangling reparse point here forever: the source dir is gone, so
+    # the loop below never revisits that name. Mirrors setup/install-mac.sh
+    # step 7. Only links pointing INTO ai-config\skills are ours to remove.
+    foreach ($link in @(Get-ChildItem $cliDir -Force -ErrorAction SilentlyContinue)) {
+        if (-not ($link.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+        $linkTarget = $link.Target
+        if (-not $linkTarget) { continue }
+        if ($linkTarget -notmatch '[\\/]ai-config[\\/]skills[\\/]') { continue }
+        if (Test-Path (Join-Path $linkTarget "SKILL.md")) { continue }
+        try {
+            # No -Recurse: on a reparse point that would reach through to the
+            # target's contents. Deleting the link is all we want.
+            Remove-Item -LiteralPath $link.FullName -Force -ErrorAction Stop
+            Ok "  pruned stale skill link: $($link.Name) (target gone: $linkTarget)"
+        }
+        catch { Warn "  could not prune stale link $($link.FullName): $($_.Exception.Message)" }
+    }
     $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
         Test-Path (Join-Path $_.FullName "SKILL.md")
     }
@@ -902,6 +921,25 @@ if (-not $env:SKIP_PONYTAIL) {
     } else { Warn "  ponytail source not available — AGENTS.md fallback skipped (plugins above remain)" }
     Ok "Ponytail $ponytailVersion wiring complete (defaultMode=$ponytailDefault, src=$ponytailSrc)"
 } else { Log "7d. SKIP_PONYTAIL=1, skipping ponytail" }
+Write-Host ""
+
+# ─── 7e. Strategic-compact hook (Claude Code PreToolUse) ───
+# Mirrors setup/install-mac.sh section 9d. The suggester is vendored at
+# vendor\ecc\scripts\hooks\suggest-compact.js; setup/wire-compact-hook.mjs does
+# the symlink + settings.json merge in one cross-platform implementation, so
+# the JSON handling is not written twice (bash/python here, PowerShell there).
+if (-not $env:SKIP_COMPACT_HOOK) {
+    Log "7e. Strategic-compact hook (Claude Code PreToolUse)..."
+    if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+        Warn "  node not installed — skipping (the hook is a node script)"
+    }
+    else {
+        & node (Join-Path $AIOSRoot "setup\wire-compact-hook.mjs")
+        if ($LASTEXITCODE -eq 0) { Ok "  strategic-compact hook wired (threshold: `$env:COMPACT_THRESHOLD, default 50)" }
+        else { Warn "  strategic-compact hook not wired — see the message above (never blocks the install)" }
+    }
+}
+else { Log "7e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook" }
 Write-Host ""
 
 # ─── 8. Terminal ───
