@@ -4,11 +4,20 @@ import { computed } from 'vue';
 const props = defineProps<{
   modelValue: [number, number];
   max: number;
+  /**
+   * Inside a FilterMenu the pill already says "Income", so the group's own title is a second
+   * header for the same thing and the sidebar-era divider has nothing to divide. Headless
+   * hides the title (it stays in the tree as the group's accessible name), drops the divider
+   * and padding, and shows the header row only while there is something to reset.
+   */
+  headless?: boolean;
 }>();
 
 const emit = defineEmits<{
   'update:modelValue': [[number, number]];
 }>();
+
+const dirty = computed(() => props.modelValue[0] !== 0 || props.modelValue[1] !== props.max);
 
 const formatUSD = (n: number) => (n >= 1000 ? `$${Math.round(n / 100) / 10}k` : `$${n}`);
 
@@ -31,11 +40,13 @@ function reset() {
 </script>
 
 <template>
-  <section class="range-group" role="group" aria-labelledby="income-range-title">
-    <header class="range-header">
-      <span id="income-range-title" class="range-title">Income range</span>
-      <button v-if="modelValue[0] !== 0 || modelValue[1] !== max" class="reset-btn" @click="reset">reset</button>
+  <section class="range-group" :class="{ 'is-headless': headless }" role="group" aria-labelledby="income-range-title">
+    <header v-if="!headless || dirty" class="range-header">
+      <span id="income-range-title" class="range-title" :class="{ 'sr-only': headless }">Income range</span>
+      <button v-if="dirty" class="reset-btn" @click="reset">reset</button>
     </header>
+    <!-- Headless and clean: the title still has to exist for aria-labelledby, just not be seen. -->
+    <span v-else id="income-range-title" class="sr-only">Income range</span>
 
     <div class="range-track">
       <div
@@ -82,6 +93,16 @@ function reset() {
 .range-group {
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
+}
+
+.range-group.is-headless {
+  padding: 4px 4px 0;
+  border-bottom: 0;
+}
+
+.is-headless .range-header {
+  justify-content: flex-end;
+  margin-bottom: 0;
 }
 
 .range-header {
