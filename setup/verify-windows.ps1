@@ -292,6 +292,37 @@ if ((Test-Path (Join-Path $AIOSRoot "intent")) -and (Test-Path (Join-Path $AIOSR
 } else { OptMiss "intent/ home missing — run install-windows.ps1 or create intent/intent-template.md" }
 if ((Test-Path (Join-Path $AIOSRoot "ai-config\skills\intent-to-spec")) -and (Test-Path (Join-Path $AIOSRoot "ai-config\skills\intent-to-spec\SKILL.md"))) { OptOk "  skill intent-to-spec present" } else { OptMiss "  skill intent-to-spec missing" }
 
+# ─── 3f. Strategic-compact hook (optional — mirrors verify.sh section 3f) ───
+Section "3f. Strategic-compact hook (optional — Claude Code PreToolUse)"
+$wireScript = Join-Path $AIOSRoot "setup\wire-compact-hook.mjs"
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) { OptMiss "node not in PATH — cannot check the hook (it is a node script)" }
+elseif (-not (Test-Path $wireScript)) { OptMiss "setup/wire-compact-hook.mjs missing" }
+else {
+    $hookStatus = (& node $wireScript --check 2>&1 | Out-String).Trim()
+    $hookStatus = $hookStatus -replace '^\[compact-hook\] (OK )?', ''
+    if ($LASTEXITCODE -eq 0) { OptOk $hookStatus } else { OptMiss $hookStatus }
+}
+# Dangling skill links are invisible to the loops that create them (the source
+# dir is gone, so the name is never revisited) — count them explicitly.
+$brokenLinks = 0
+foreach ($cliPath in @(".claude\skills", ".codex\skills", ".gemini\skills", ".agents\skills", ".gemini\config\skills")) {
+    $dir = Join-Path $HomeDir $cliPath
+    if (-not (Test-Path $dir)) { continue }
+    foreach ($link in @(Get-ChildItem $dir -Force -ErrorAction SilentlyContinue)) {
+        if (-not ($link.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+        # Test-Path on the LINK is True even when it dangles (verified on PS 7,
+        # 2026-09-04) — a directory symlink exists as an entry regardless of its
+        # target. The target is what has to be probed.
+        $linkTarget = $link.Target
+        if (-not $linkTarget) { continue }
+        if (Test-Path -LiteralPath $linkTarget) { continue }
+        Warn "  BROKEN $cliPath\$($link.Name) → $linkTarget"
+        $brokenLinks++
+    }
+}
+if ($brokenLinks -eq 0) { OptOk "  no dangling skill links in the CLI skill dirs" }
+else { OptMiss "  $brokenLinks dangling skill link(s) — re-run install-windows.ps1 to prune" }
+
 # ─── 4. Superpowers (required = 14) ───
 Section "4. Superpowers skills (REQUIRED = 14)"
 $expected = 14
