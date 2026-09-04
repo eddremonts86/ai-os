@@ -324,8 +324,8 @@ h3 {
   /* Nowrap plus generous inline padding: a wrapped CTA label reads as a broken button, and
      these labels are short enough that they never need two lines. */
   white-space: nowrap;
-  padding: 11px 20px;
-  border-radius: var(--radius-md);
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
   border: 1px solid transparent;
   font: inherit;
   font-weight: 600;
@@ -344,30 +344,27 @@ h3 {
   outline-offset: 2px;
 }
 
-/* --accent sits in a dead zone for a 14px label: measured on this page it gives 4.35:1 with
-   white text and 4.47:1 with --bg, so BOTH miss the 4.5:1 floor. Lifting the fill two steps
-   and keeping the dark label clears it (4.97:1, hover 5.96:1) while staying the same hue, so
-   the button still reads as the brand.
-   Deliberately local rather than a new shared token: --accent keeps its documented job as the
-   fill/rail/border colour, and this is only the derivation a filled label needs. */
+/* Token fill, white label: 5.48:1, measured. The dark palette needed a local #8467ff here
+   because its accent failed AA under a label; the light accent was chosen so it does not,
+   and this literal was the first thing the palette change would have broken. */
 .btn-primary {
-  background: #8467ff;
-  color: var(--bg);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .btn-primary:hover {
-  background: #9479ff;
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
 }
 
 .btn-ghost {
   border-color: var(--line-strong);
   color: var(--text);
-  background: transparent;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
 }
 
 .btn-ghost:hover {
   border-color: var(--accent);
-  background: var(--accent-a05);
 }
 
 .btn-lg {
@@ -381,6 +378,9 @@ h3 {
   /* Capped deliberately: more top padding and the copy floats down the viewport and reads
      as a layout fault rather than as space. */
   padding: 72px 0 24px;
+  /* The one gradient on the site. Three soft washes fading into the page, under the hero
+     only: the brand moment gets colour, everything below it stays on the plain ground. */
+  background: var(--wash);
 }
 
 .hero-grid {
@@ -458,14 +458,19 @@ h3 {
   padding: 56px 0;
 }
 
+/* A white panel, not two hairlines: the figures are the first thing under the hero and the
+   reference UIs carry their stats on a raised tile. Width and padding are set here because
+   the element also carries .container, whose gutter this replaces. */
 .figures-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 32px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding-top: 28px;
-  padding-bottom: 28px;
+  width: calc(100% - 48px);
+  max-width: 1232px;
+  padding: 28px 32px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
 }
 
 .figure {
@@ -516,11 +521,10 @@ h3 {
 .doc {
   font-family: var(--font-mono);
   font-size: 12.5px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
+  padding: 7px 13px;
+  border-radius: var(--radius-pill);
   color: var(--text-dim);
-  background: var(--surface);
+  background: var(--surface-2);
 }
 
 /* ---------- lenses ---------- */
@@ -589,10 +593,9 @@ h3 {
   font-family: var(--font-mono);
   font-size: 12.5px;
   color: var(--accent-text);
-  border: 1px solid var(--accent-a30);
   background: var(--accent-a10);
-  border-radius: 999px;
-  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
   flex: none;
 }
 
@@ -621,18 +624,17 @@ h3 {
 .path-cell {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
+  box-shadow: var(--shadow-1);
   overflow: hidden;
 }
 
+/* The wide cell is the one that is "here", so it reuses the hero's wash rather than a
+   second, slightly different gradient. */
 .path-cell-wide {
   grid-column: 1 / -1;
-  background:
-    radial-gradient(120% 140% at 8% 0%, var(--accent-a10), transparent 58%),
-    var(--surface);
-  border-color: var(--accent-a30);
+  background: var(--wash), var(--surface);
 }
 
 .path-body {

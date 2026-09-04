@@ -77,19 +77,21 @@ const countryFlag = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
+  padding: 20px;
   background: var(--surface);
-  /* line-strong, not line: this outlines the card against the page rather than
-     dividing content inside it. */
-  border: 1px solid var(--line-strong);
+  /* Delimited by shadow and gap, not by a drawn border: on an off-white page a white card
+     with a resting shadow is the boundary, the way the reference UIs do it. The border is
+     transparent at rest and only exists so hover has a second, non-motion signal. */
+  border: 1px solid transparent;
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
   transition: transform 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .plan-card:hover {
   transform: translateY(-2px);
-  /* Full accent, not a 30% tint: the tint measured 1.43:1 on --surface, and with
-     reduced motion removing the transform this border is the only hover feedback. */
+  /* Full accent, not a tint: the 30% tint is 1.4:1 on white, and with reduced motion
+     removing the transform this border is the only hover feedback left. */
   border-color: var(--accent);
   box-shadow: var(--shadow-2);
 }
@@ -102,9 +104,9 @@ const countryFlag = computed(() => {
 
 .card-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   line-height: 1.35;
   color: var(--text);
 }
@@ -187,10 +189,9 @@ const countryFlag = computed(() => {
 }
 
 .tech {
-  padding: 3px 8px;
+  padding: 3px 9px;
   background: var(--surface-2);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
 }
 
 .tech-more {
@@ -216,7 +217,7 @@ const countryFlag = computed(() => {
   color: var(--text-dim);
   text-decoration: none;
   font-size: 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   transition: color 150ms, background 150ms;
 }
 
