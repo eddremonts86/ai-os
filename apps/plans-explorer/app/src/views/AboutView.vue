@@ -154,10 +154,9 @@ const stack = [
 .eyebrow {
   display: inline-block;
   margin: 0 0 12px;
-  padding: 3px 8px;
-  border-radius: 999px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
   background: var(--accent-a10);
-  border: 1px solid var(--accent-a30);
   color: var(--accent-text);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -204,7 +203,6 @@ const stack = [
   font-family: var(--font-mono);
   font-size: 14px;
   background: var(--surface-2);
-  border: 1px solid var(--line);
   padding: 1px 6px;
   border-radius: var(--radius-sm);
   color: var(--text);
@@ -228,8 +226,8 @@ const stack = [
   gap: 4px;
   padding: 14px 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
 }
 
 .stat-label {
@@ -258,8 +256,8 @@ const stack = [
 .hero-card {
   padding: 20px;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
   align-self: stretch;
 }
 
@@ -295,9 +293,8 @@ const stack = [
   font-family: var(--font-mono);
   font-size: 12px;
   background: var(--surface-2);
-  border: 1px solid var(--line);
   padding: 1px 5px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--text);
 }
 
@@ -342,8 +339,8 @@ const stack = [
   gap: 8px;
   padding: 18px;
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
   position: relative;
 }
 
@@ -393,12 +390,12 @@ const stack = [
   gap: 10px;
   padding: 18px;
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  transition: border-color 150ms;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 150ms;
 }
 
-.feature:hover { border-color: var(--line-strong); }
+.feature:hover { box-shadow: var(--shadow-2); }
 
 .feature-tag {
   display: inline-block;
@@ -409,10 +406,9 @@ const stack = [
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent-text);
-  padding: 3px 8px;
-  border-radius: 999px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
   background: var(--accent-a10);
-  border: 1px solid var(--accent-a30);
 }
 
 .feature-body {
@@ -435,9 +431,8 @@ const stack = [
   font-family: var(--font-mono);
   font-size: 13px;
   background: var(--surface-2);
-  border: 1px solid var(--line);
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--text);
 }
 

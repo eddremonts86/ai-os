@@ -14,7 +14,9 @@ import yaml from 'highlight.js/lib/languages/yaml';
 import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import markdown from 'highlight.js/lib/languages/markdown';
-import 'highlight.js/styles/atom-one-dark.css';
+// github.css, not atom-one-dark: the app is light now, and a dark code block inside a white
+// document is the one place the old palette would have survived unnoticed.
+import 'highlight.js/styles/github.css';
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('js', javascript);

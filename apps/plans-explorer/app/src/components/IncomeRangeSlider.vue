@@ -154,14 +154,17 @@ function reset() {
   appearance: none;
 }
 
+/* White knob with a shadow, the way a light-UI slider reads; the dark palette used a
+   near-white knob on black. The accent border is what separates it from the rail. */
 .range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 24px;
   height: 24px;
-  background: var(--text);
+  background: var(--surface);
   border: 2px solid var(--accent);
   border-radius: 50%;
+  box-shadow: var(--shadow-1);
   cursor: pointer;
   pointer-events: auto;
   margin-top: 0;
@@ -170,9 +173,10 @@ function reset() {
 .range-input::-moz-range-thumb {
   width: 24px;
   height: 24px;
-  background: var(--text);
+  background: var(--surface);
   border: 2px solid var(--accent);
   border-radius: 50%;
+  box-shadow: var(--shadow-1);
   cursor: pointer;
   pointer-events: auto;
 }

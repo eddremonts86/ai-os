@@ -114,33 +114,39 @@ onMounted(async () => {
 }
 
 .brand-mark {
-  color: var(--accent-text);
+  color: var(--accent);
   font-size: 18px;
 }
 
+/* Segmented control, not a row of links: one grey pill holds the items and the active one
+   sits on a white pill with a resting shadow. Same idiom as the doc tabs' segmented look in
+   the reference UIs, and it reads as "you are here" without a colour the eye has to decode. */
 .app-nav {
   display: flex;
-  gap: 4px;
+  gap: 2px;
+  padding: 4px;
+  background: var(--surface-2);
+  border-radius: var(--radius-pill);
 }
 
 .app-nav a {
-  padding: 8px 14px;
-  border-radius: var(--radius-md);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
   color: var(--text-dim);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  transition: color 150ms, background 150ms;
+  transition: color 150ms, background 150ms, box-shadow 150ms;
 }
 
 .app-nav a:hover {
   color: var(--text);
-  background: var(--surface-2);
 }
 
 .app-nav a.is-active {
   color: var(--text);
-  background: var(--surface-2);
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
 }
 
 /* Route transition: opacity only, no movement, so reduced-motion needs no

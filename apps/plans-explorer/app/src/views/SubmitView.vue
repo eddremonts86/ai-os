@@ -356,6 +356,7 @@ textarea {
   color: var(--text);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
   font: inherit;
   font-size: 0.9375rem;
 }
@@ -399,9 +400,10 @@ button:focus-visible {
 .consent {
   margin: 0;
   padding: 1.25rem;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--radius-lg);
-  background: var(--ink-a02);
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
   display: grid;
   gap: 0.875rem;
 }
@@ -445,29 +447,29 @@ button:focus-visible {
 
 .btn {
   padding: 0.75rem 1.5rem;
-  /* White on --accent measures 4.35:1 — under the 4.5 floor for 15px text, on the one control
-     that matters most. Dark text on a lighter purple clears it at 4.97:1, and it is the same
-     treatment LandingView already uses for its primary button. */
-  background: #8467ff;
-  color: var(--bg);
+  /* Token fill, white label: 5.48:1 on the light accent, measured. The dark palette needed a
+     local #8467ff here because its accent failed AA under a label. */
+  background: var(--accent);
+  color: var(--on-accent);
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
 }
 
-.btn:hover:not(:disabled) { background: #9479ff; }
+.btn:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 88%, var(--text)); }
 .btn:disabled { opacity: 0.6; cursor: default; }
 
 .btn-ghost {
   margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: transparent;
+  padding: 0.5rem 1.1rem;
+  background: var(--surface);
   color: var(--text);
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-1);
   font: inherit;
   font-size: 0.875rem;
   cursor: pointer;
@@ -483,7 +485,8 @@ button:focus-visible {
 .panel {
   padding: 1.5rem;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--line-strong);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-1);
   background: var(--surface);
   display: grid;
   gap: 0.75rem;
@@ -492,7 +495,7 @@ button:focus-visible {
 .panel h2 { margin: 0; font-size: 1.25rem; }
 .panel p { margin: 0; line-height: 1.6; }
 .panel.ok { border-color: var(--accent-2-a30); background: var(--accent-2-a10); }
-.panel.bad { border-color: var(--danger); background: rgba(239, 68, 68, 0.08); }
+.panel.bad { border-color: var(--danger); background: var(--danger-a10); }
 
 .err-list {
   margin: 0;
@@ -506,6 +509,6 @@ button:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn:hover:not(:disabled) { background: #8467ff; }
+  .btn:hover:not(:disabled) { background: var(--accent); }
 }
 </style>

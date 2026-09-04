@@ -36,30 +36,27 @@ const label = computed(() => {
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 500;
   line-height: 1;
-  border: 1px solid var(--line);
   background: var(--surface-2);
   color: var(--text-dim);
   white-space: nowrap;
 }
 
 .wtp-badge.is-sm {
-  padding: 2px 6px;
+  padding: 3px 8px;
   font-size: 11px;
 }
 
 .wtp-badge.is-high {
   background: var(--accent-2-a10);
-  border-color: var(--accent-2-a30);
   color: var(--accent-2);
 }
 
 .wtp-badge.is-mid {
   background: var(--warn-a10);
-  border-color: var(--warn-a30);
   color: var(--warn);
 }
 

@@ -105,6 +105,10 @@ function toggle(opt: string) {
   margin-top: 8px;
   max-height: 320px;
   overflow-y: auto;
+  /* Thin, tinted scrollbars: four facet groups each showed a full-width grey bar on a white
+     panel, which read as four broken borders. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 .facet-option {
