@@ -151,7 +151,7 @@ onMounted(load);
   font-size: 0.9em;
   padding: 1px 6px;
   background: var(--surface-2);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--accent-text);
 }
 
@@ -169,8 +169,8 @@ onMounted(load);
 
 .rank-column {
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -223,7 +223,9 @@ onMounted(load);
   gap: 12px;
   padding: 12px;
   background: var(--surface-2);
-  border: 1px solid var(--line);
+  /* Transparent at rest: the tint is the shape. The border exists so hover has a
+     non-motion signal, which is all that remains under reduced motion. */
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
   transition: border-color 150ms, transform 150ms;
 }
@@ -274,9 +276,8 @@ onMounted(load);
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--warn-a10);
-  border: 1px solid var(--warn-a30);
   color: var(--warn);
   font-size: 10px;
   font-weight: 600;
@@ -306,8 +307,8 @@ onMounted(load);
   color: var(--text-dim);
   text-decoration: none;
   font-size: 12px;
-  padding: 2px 4px;
-  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
 }
 
 .link-out:hover {

@@ -242,15 +242,15 @@ function goBack() {
 
 .plan-sidebar {
   position: sticky;
-  top: 60px;
+  top: 72px;
   align-self: start;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  box-shadow: var(--shadow-1);
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -260,11 +260,13 @@ function goBack() {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 10px;
+  min-height: 36px;
+  padding: 6px 14px;
   margin-bottom: 16px;
-  background: none;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-1);
   color: var(--text-dim);
   font-size: 13px;
   cursor: pointer;
@@ -305,7 +307,9 @@ function goBack() {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  /* --text-dim, not --text-muted: that token never existed, so this fell through to
+     inherit and rendered full-strength. */
+  color: var(--text-dim);
   margin: 0 0 16px;
 }
 
@@ -314,7 +318,9 @@ function goBack() {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--paper, #08090e);
+  /* --surface-2, not `var(--paper, #08090e)`: --paper never existed either, so the
+     fallback ran and painted a near-black frame behind every asset. */
+  background: var(--surface-2);
 }
 
 .asset-frame {
@@ -331,8 +337,8 @@ function goBack() {
   /* Was a 3px accent-2 slab on the left edge. The block is already distinguished
      by its own surface, its eyebrow heading and its position; the slab only added
      the tell. */
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
 }
 
 .original-title {
@@ -419,19 +425,21 @@ function goBack() {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 12px;
-  background: var(--surface-2);
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-md);
-  color: var(--accent-text);
-  font-weight: 500;
+  min-height: 40px;
+  padding: 9px 16px;
+  /* The one primary action on the page, so it gets the filled pill every other primary
+     button uses, not an outlined variant of its own. White on the accent is 5.48:1. */
+  background: var(--accent);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--on-accent);
+  font-weight: 600;
   transition: background 150ms, color 150ms;
 }
 
 .download-btn:hover {
-  background: var(--accent);
-  color: var(--bg);
-  border-bottom-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
+  color: var(--on-accent);
 }
 
 .download-hint {
