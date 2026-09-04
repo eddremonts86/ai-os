@@ -45,7 +45,7 @@ const countryFlag = computed(() => {
           {{ plan.country }}
         </span>
         <span v-if="plan.tech.length" class="meta-item tech" :title="plan.tech.join(', ')">
-          {{ plan.tech.slice(0, 2).join(' + ') }}
+          <span class="tech-names">{{ plan.tech.slice(0, 2).join(' + ') }}</span>
           <span v-if="plan.tech.length > 2" class="tech-more">+{{ plan.tech.length - 2 }}</span>
         </span>
         <WtpBadge v-if="plan.wtp" :wtp="plan.wtp" size="sm" />
@@ -160,12 +160,14 @@ const countryFlag = computed(() => {
   min-height: 2.6em;
 }
 
+/* Two rows, always, in the same order: meta (country, stack, income) above, scores below
+   with the source link at the far right. The old footer was one wrapping flex row, so a card
+   with a short meta put its scores beside the country and a card with a long one pushed them
+   underneath: same data, two layouts, and the eye had to re-find the scores on every card.
+   An empty meta row keeps its height so the scores still line up across a row of cards. */
 .card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
   gap: 8px;
-  flex-wrap: wrap;
   margin-top: auto;
 }
 
@@ -174,6 +176,7 @@ const countryFlag = computed(() => {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+  min-height: 24px;
   font-size: 12px;
   color: var(--text-dim);
 }
@@ -192,9 +195,22 @@ const countryFlag = computed(() => {
   padding: 3px 9px;
   background: var(--surface-2);
   border-radius: var(--radius-pill);
+  max-width: 100%;
+}
+
+/* One line. Some stacks read "Block-based visual programming + kid-facing AI inspection
+   studio", which wrapped the pill to two lines and broke the footer's rhythm; the full list
+   is in the title attribute. */
+.tech-names {
+  min-width: 0;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tech-more {
+  flex: none;
   margin-left: 2px;
   opacity: 0.6;
 }
@@ -213,7 +229,8 @@ const countryFlag = computed(() => {
      is transparent until hover. */
   min-width: 44px;
   min-height: 44px;
-  margin: -10px -8px -10px 0;
+  /* auto on the left pins the link to the card's right edge whatever the badges measure. */
+  margin: -10px -8px -10px auto;
   color: var(--text-dim);
   text-decoration: none;
   font-size: 14px;
