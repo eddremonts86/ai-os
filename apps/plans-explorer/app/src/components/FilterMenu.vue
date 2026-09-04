@@ -18,6 +18,10 @@ defineProps<{
   menuId: string;
 }>();
 
+// The panel content gets `close` so a single-choice menu (the sort) can dismiss itself on
+// selection the way a native select does. Multi-select panels simply never call it.
+defineSlots<{ default(props: { close: () => void }): unknown }>();
+
 const open = ref(false);
 const root = ref<HTMLElement | null>(null);
 const pill = ref<HTMLButtonElement | null>(null);
@@ -77,7 +81,7 @@ onBeforeUnmount(() => {
     </button>
 
     <div v-if="open" :id="menuId" class="filter-panel">
-      <slot />
+      <slot :close="() => close(true)" />
     </div>
   </div>
 </template>
