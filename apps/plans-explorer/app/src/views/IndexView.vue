@@ -115,6 +115,16 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'title-asc', label: 'Title A–Z' },
 ];
 
+// The sort menu is the same FacetPanel as the filters, in single mode. It speaks labels, the
+// URL speaks keys; these two translate. The pill shows the current label so the choice is
+// readable without opening anything.
+const sortOptions = computed(() => SORT_OPTIONS.map((o) => [o.label, null] as [string, number | null]));
+const sortLabel = computed(() => SORT_OPTIONS.find((o) => o.value === sortKey.value)?.label ?? SORT_OPTIONS[0].label);
+function setSortByLabel(label: string | undefined) {
+  const hit = SORT_OPTIONS.find((o) => o.label === label);
+  if (hit) sortKey.value = hit.value;
+}
+
 async function load() {
   loading.value = true;
   error.value = null;
@@ -194,7 +204,7 @@ onMounted(load);
           menu-id="menu-income"
         >
           <div class="income-menu">
-            <IncomeRangeSlider v-model="wtpRange" :max="5000" />
+            <IncomeRangeSlider v-model="wtpRange" :max="5000" headless />
             <label class="wtp-only">
               <input type="checkbox" v-model="hasWtpOnly" name="wtp-only" />
               <span>Plans with stated income only</span>
@@ -215,12 +225,17 @@ onMounted(load);
           <strong>{{ plans.length }}</strong>
           <span> plans</span>
         </div>
-        <label class="sort-label">
-          <span>Sort by</span>
-          <select v-model="sortKey" name="sort">
-            <option v-for="opt in SORT_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
-          </select>
-        </label>
+        <FilterMenu v-slot="{ close }" :label="`Sort: ${sortLabel}`" menu-id="menu-sort">
+          <FacetPanel
+            headless
+            single
+            title="Sort"
+            :count="SORT_OPTIONS.length"
+            :options="sortOptions"
+            :selected="[sortLabel]"
+            @update:selected="setSortByLabel($event[0]); close()"
+          />
+        </FilterMenu>
       </div>
     </div>
 
@@ -309,16 +324,26 @@ onMounted(load);
 }
 
 .income-menu {
-  min-width: 260px;
+  min-width: 300px;
 }
 
+/* Same row as a facet option, so the panel reads as one list: control, label, 44px target,
+   hover wash. */
 .wtp-only {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   min-height: 44px;
+  margin-top: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
+  transition: background 100ms;
+}
+
+.wtp-only:hover {
+  background: var(--surface-2);
 }
 
 .wtp-only input[type='checkbox'] {
@@ -367,30 +392,6 @@ onMounted(load);
 
 .results-summary strong {
   color: var(--text);
-}
-
-.sort-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-dim);
-}
-
-.sort-label select {
-  min-height: 40px;
-  padding: 8px 12px;
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-md);
-  color: var(--text);
-  font-size: 13px;
-  box-shadow: var(--shadow-1);
-  cursor: pointer;
-}
-
-.sort-label select:focus {
-  border-color: var(--accent);
 }
 
 .card-grid {

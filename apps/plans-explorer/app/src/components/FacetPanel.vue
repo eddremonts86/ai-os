@@ -4,8 +4,14 @@ import { ref, computed } from 'vue';
 const props = defineProps<{
   title: string;
   count: number;
-  options: [string, number][];
+  /** [label, count]. A null count renders no count: the sort menu has nothing to count. */
+  options: [string, number | null][];
   selected: string[];
+  /**
+   * One value at a time, as radios: the sort menu. A sort always has a value, so there is no
+   * deselect, and the shared `name` is what gives the radios arrow-key navigation.
+   */
+  single?: boolean;
   /**
    * Inside a FilterMenu the pill already names the group and owns the open state, so the
    * collapsible header would be a second header for the same thing. Headless drops it and
@@ -29,6 +35,10 @@ const shown = computed(() => {
 });
 
 function toggle(opt: string) {
+  if (props.single) {
+    emit('update:selected', [opt]);
+    return;
+  }
   const next = props.selected.includes(opt)
     ? props.selected.filter((s) => s !== opt)
     : [...props.selected, opt];
@@ -59,12 +69,13 @@ function toggle(opt: string) {
     <div v-if="isOpen || headless" class="facet-options">
       <label v-for="[opt, c] in shown" :key="opt" class="facet-option">
         <input
-          type="checkbox"
+          :type="single ? 'radio' : 'checkbox'"
+          :name="single ? `facet-${title}` : undefined"
           :checked="selected.includes(opt)"
           @change="toggle(opt)"
         />
         <span class="opt-label">{{ opt }}</span>
-        <span class="opt-count">{{ c }}</span>
+        <span v-if="c !== null" class="opt-count">{{ c }}</span>
       </label>
       <p v-if="options.length === 0" class="facet-empty">no values</p>
       <p v-else-if="shown.length === 0" class="facet-empty">nothing matches "{{ filter }}"</p>
@@ -166,11 +177,12 @@ function toggle(opt: string) {
   align-items: center;
   gap: 10px;
   /* The label is the hit area for its checkbox, so it carries the 44px floor.
-     Negative inline margin keeps the text flush with the panel edge while the
-     padding still counts toward the target. */
+     No negative inline margin: the old -8px bleed made every row 16px wider than the list,
+     and since `overflow-y: auto` also makes overflow-x auto, that put a horizontal scrollbar
+     under every group. The hover pill now sits inside the list's own edge, which is where a
+     menu row belongs. */
   min-height: 44px;
   padding: 4px 8px;
-  margin-inline: -8px;
   border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
@@ -182,9 +194,9 @@ function toggle(opt: string) {
   background: var(--surface-2);
 }
 
-/* The checkbox itself stays visually small — the label supplies the target —
-   but not so small it is hard to see which rows are checked. */
-.facet-option input[type='checkbox'] {
+/* The control itself (checkbox or radio) stays visually small — the label supplies the
+   target — but not so small it is hard to see which rows are checked. */
+.facet-option input {
   flex: none;
   width: 16px;
   height: 16px;
@@ -203,7 +215,7 @@ function toggle(opt: string) {
   color: var(--accent-text);
 }
 
-.facet-option input[type='checkbox'] {
+.facet-option input {
   margin: 0;
   cursor: pointer;
   accent-color: var(--accent);

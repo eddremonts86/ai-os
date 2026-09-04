@@ -183,7 +183,9 @@ A **filter bar** above the grid, sticky at `top: var(--header-h)` under the stic
 then the results. One strip holds everything that narrows or orders the set: the search
 field, one pill per dimension (Category, Tags, Tech, Country, Income), a `Clear all` pill that
 only exists while something is active, and, pushed to the right, the result count and the
-sort select.
+sort. The sort is the same `FilterMenu` + `FacetPanel` as every filter, in `single` mode
+(radios, no counts), with the current choice printed on its pill: one control vocabulary in
+the bar, not five pills and a native `<select>`.
 
 Each pill is a `FilterMenu`: a disclosure, not a modal. The pill carries `aria-expanded` and
 `aria-controls`, the panel opens under it, Tab walks into it, Escape or a click anywhere else
@@ -229,8 +231,8 @@ Counts come from `meta.json`, never hardcoded.
 | --- | --- |
 | `PlanCard` | `<article>`. The title link stretches over the whole card via `::after`, so the card is the hit target while exactly one link stays in the accessibility tree and text stays selectable. The source link is raised above that overlay. Focus rings the card, not the title. |
 | `FilterMenu` | Pill + panel disclosure for one filter dimension. Owns open state, Escape, and the document-level `pointerdown` listener that closes it on an outside click (cleaned up on unmount). |
-| `FacetPanel` | Two modes. Standalone: collapsible group with its own header. `headless` (inside a `FilterMenu`): no header, always open, and a type-to-narrow field once the list passes eight options, because Category has 58 values and Country 45. Collapsible group. The `<label>` wraps its checkbox and carries the 44px target; the checkbox stays 16px visually. Focus on the checkbox surfaces on the whole row. |
-| `IncomeRangeSlider` | Two overlaid `input[type=range]`. `role="group"` + `aria-labelledby`, `aria-valuetext` so values announce as money. 24px thumbs on a 44px track; the ring goes on the thumb because the input spans the full track. |
+| `FacetPanel` | Two modes. Standalone: collapsible group with its own header. `headless` (inside a `FilterMenu`): no header, always open, and a type-to-narrow field once the list passes eight options, because Category has 58 values and Country 45. `single`: radios instead of checkboxes, one value always set, used by the sort menu. Rows carry no negative inline margin: the old `-8px` bleed made every row wider than its list and put a horizontal scrollbar under each group. Collapsible group. The `<label>` wraps its checkbox and carries the 44px target; the checkbox stays 16px visually. Focus on the checkbox surfaces on the whole row. |
+| `IncomeRangeSlider` | `headless` inside the Income menu: title kept only as the group's accessible name, no divider, header row only while there is something to reset. Two overlaid `input[type=range]`. `role="group"` + `aria-labelledby`, `aria-valuetext` so values announce as money. 24px thumbs on a 44px track; the ring goes on the thumb because the input spans the full track. |
 | `ScoreBadge` | Pill, money 💰 / learn 🧠 / fun 🎮. Renders `—` when a plan is not ranked on that axis — most plans are unranked on two of three. |
 | `WtpBadge` | Willingness-to-pay pill, bucketed by `mrrMid`. |
 | `DocTabs` | `role="tablist"`, 44px tabs. |
