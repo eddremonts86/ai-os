@@ -109,10 +109,11 @@ own.
 ### The wash
 
 `--wash` is three soft radial gradients (violet, peach, sky) fading into the page. It is the
-only gradient in the app and it appears in one place: under the landing hero. It used to
-also fill the "you are here" cell of the landing's product grid, where a cell that was
-three-quarters gradient read as a missing image; that block is now the path rail below.
-Kept as a token so it cannot be reinvented per view with slightly different colours.
+only gradient in the app and it appears at the two ends of the landing and nowhere else:
+under the hero, and on the closing tile, so the close reads as the hero's answer. It used to
+also fill the "you are here" cell of the product grid, where a cell that was three-quarters
+gradient read as a missing image; that block is now the path rail. Kept as a token so it
+cannot be reinvented per view with slightly different colours.
 
 ### Focus
 
@@ -203,6 +204,20 @@ captured. The frame bar is what lets BuilderHunt's dark hero read as "their site
 light page instead of a black rectangle. The action button says the verb ("Open BuilderHunt");
 the hostname sits beside it in mono, because a raw hostname as a button label read as a link
 nobody named. Under 768px the grid is `28px | 1fr` with the visual below the copy.
+
+**The close** is one tile with two doors, `7fr | 5fr`, divided by a hairline rather than by
+a second surface. The wide door repeats the hero's ask with the hero's label ("Browse
+plans", primary); the narrow one is the only place the site asks for something back, and
+its explanation ("a person reads every submission") sits with its button instead of
+orphaned under the heading, which is where the previous band left it. The tile carries the
+wash (see Tokens) and a `--shadow-2`; under 768px it stacks and the divider becomes a top
+border.
+
+**The footer** (`App.vue`, every route) is three columns over a meta line: brand mark and
+one-sentence tagline; the four routes; and "Elsewhere": the two sibling tools, the source
+and AI-OS. The meta line is mono and comes from the generated index (plan count, indexed
+date) the same way the old one-liner did; it renders nothing rather than a guess. The mark
+is `components/BrandMark.vue`, shared with the header, so the two cannot drift.
 
 ### IndexView (`/plans`)
 
