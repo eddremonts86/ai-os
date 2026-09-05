@@ -1,6 +1,6 @@
 {
   "lastSeenId": "730",
-  "lastRun": "2026-09-03T06:09:16.889Z",
+  "lastRun": "2026-09-05T10:00:23.289Z",
   "topProjectsEvaluatedAt": "2026-08-31T07:14:21.000Z",
   "analyzed": {
     "731-a-psychologist-needs-an-advertising-bot-that-analyzes-h": {
@@ -31160,7 +31160,4579 @@
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
       "analyzedAt": "2026-09-03T06:09:16.889Z"
+    },
+    "4696-will-we-let-you-back-into-the-club": {
+      "url": "https://news.ycombinator.com/item?id=49548748",
+      "uid": "49548748",
+      "title": "Will we let you back into the club?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.070Z"
+    },
+    "4697-requirements-are-intentions-qa-is-the-proof": {
+      "url": "https://news.ycombinator.com/item?id=49548737",
+      "uid": "49548737",
+      "title": "Requirements are intentions QA is the proof",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.075Z"
+    },
+    "4698-who-is-using-mcp-in-production": {
+      "url": "https://news.ycombinator.com/item?id=49548600",
+      "uid": "49548600",
+      "title": "Who is using MCP in production?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.079Z"
+    },
+    "4699-returning-from-the-ai-brain-rot-state-re-take-the-thin": {
+      "url": "https://news.ycombinator.com/item?id=49548507",
+      "uid": "49548507",
+      "title": "Returning from the AI brain-rot state, re-take the thinking ownership",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.082Z"
+    },
+    "4700-why-does-claude-not-let-me-edit-my-questions": {
+      "url": "https://news.ycombinator.com/item?id=49548254",
+      "uid": "49548254",
+      "title": "Why does Claude not let me edit my questions?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.085Z"
+    },
+    "4701-what-ways-exist-for-dev-from-eastern-europe-move-sf": {
+      "url": "https://news.ycombinator.com/item?id=49547678",
+      "uid": "49547678",
+      "title": "What ways exist for dev from Eastern Europe, move SF?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.088Z"
+    },
+    "4702-how-much-does-licensing-approach-influence-purchase-de": {
+      "url": "https://news.ycombinator.com/item?id=49547496",
+      "uid": "49547496",
+      "title": "How much does licensing approach influence purchase decisions?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.092Z"
+    },
+    "4703-particularly-does-a-leg-injury-affect-your-quality-of": {
+      "url": "https://news.ycombinator.com/item?id=49547449",
+      "uid": "49547449",
+      "title": "Particularly does a leg injury affect your quality of life",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.095Z"
+    },
+    "4704-are-technical-blogs-dead": {
+      "url": "https://news.ycombinator.com/item?id=49547405",
+      "uid": "49547405",
+      "title": "Are Technical Blogs Dead?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.098Z"
+    },
+    "4705-identity-stamping-for-pdfs": {
+      "url": "https://news.ycombinator.com/item?id=49547137",
+      "uid": "49547137",
+      "title": "Identity Stamping for PDFs",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.103Z"
+    },
+    "4706-reticulum-is-not-a-democracy": {
+      "url": "https://news.ycombinator.com/item?id=49546847",
+      "uid": "49546847",
+      "title": "Reticulum Is Not a Democracy",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.106Z"
+    },
+    "4707-advice-on-migrating-from-1password": {
+      "url": "https://news.ycombinator.com/item?id=49546432",
+      "uid": "49546432",
+      "title": "Advice on Migrating from 1Password?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.110Z"
+    },
+    "4708-what-s-going-on-with-this-platform-why-are-links-on-ze": {
+      "url": "https://news.ycombinator.com/item?id=49546329",
+      "uid": "49546329",
+      "title": "What's going on with this platform? Why are links on Zenodo being flagged?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.113Z"
+    },
+    "4709-misam-atshbar": {
+      "url": "https://news.ycombinator.com/item?id=49546328",
+      "uid": "49546328",
+      "title": "Misam Atshbar",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.116Z"
+    },
+    "4710-ex-tension-alert": {
+      "url": "https://news.ycombinator.com/item?id=49546310",
+      "uid": "49546310",
+      "title": "Ex-Tension Alert",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.119Z"
+    },
+    "4711-is-anyone-working-on-this-silent-texts": {
+      "url": "https://news.ycombinator.com/item?id=49546020",
+      "uid": "49546020",
+      "title": "Is anyone working on this? (Silent texts)",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.122Z"
+    },
+    "4712-a-tool-to-share-my-data": {
+      "url": "https://news.ycombinator.com/item?id=49545792",
+      "uid": "49545792",
+      "title": "A tool to share my data",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.126Z"
+    },
+    "4713-after-show-hn-targeting-the-bot-storm": {
+      "url": "https://news.ycombinator.com/item?id=49545488",
+      "uid": "49545488",
+      "title": "After Show HN: Targeting the Bot Storm",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.129Z"
+    },
+    "4714-should-you-open-source-your-claude-code-project-docs-w": {
+      "url": "https://news.ycombinator.com/item?id=49545476",
+      "uid": "49545476",
+      "title": "Should you open-source your Claude Code project docs with the repo?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.133Z"
+    },
+    "4715-looking-for-an-invite-for-lobster-rs": {
+      "url": "https://news.ycombinator.com/item?id=49545260",
+      "uid": "49545260",
+      "title": "Looking for an Invite for Lobster.rs",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.137Z"
+    },
+    "4716-does-anyone-know-if-something-happened-to-stallman-org": {
+      "url": "https://news.ycombinator.com/item?id=49545206",
+      "uid": "49545206",
+      "title": "Does anyone know if something happened to stallman.org?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.140Z"
+    },
+    "4717-how-to-trace-website-ownership": {
+      "url": "https://news.ycombinator.com/item?id=49544025",
+      "uid": "49544025",
+      "title": "How to Trace Website Ownership",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.144Z"
+    },
+    "4718-did-vibe-coders-win-is-this-our-end": {
+      "url": "https://news.ycombinator.com/item?id=49543923",
+      "uid": "49543923",
+      "title": "Did Vibe Coders win? Is this our end?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.148Z"
+    },
+    "4719-are-coding-agents-too-cautious-because-they-estimate-w": {
+      "url": "https://news.ycombinator.com/item?id=49543917",
+      "uid": "49543917",
+      "title": "Are coding agents too cautious because they estimate work in human time?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.152Z"
+    },
+    "4720-omarchy-histerya": {
+      "url": "https://news.ycombinator.com/item?id=49543858",
+      "uid": "49543858",
+      "title": "Omarchy Histerya",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.155Z"
+    },
+    "4721-sdk-free-simple-email-based-login-auth-provider": {
+      "url": "https://news.ycombinator.com/item?id=49543502",
+      "uid": "49543502",
+      "title": "SDK-free, simple, email-based login/auth provider",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.159Z"
+    },
+    "4722-how-to-get-taken-seriously-while-using-ai": {
+      "url": "https://news.ycombinator.com/item?id=49543253",
+      "uid": "49543253",
+      "title": "How to get taken seriously while using AI?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.163Z"
+    },
+    "4723-what-are-you-working-on": {
+      "url": "https://news.ycombinator.com/item?id=49542726",
+      "uid": "49542726",
+      "title": "What Are You Working On?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.166Z"
+    },
+    "4724-if-you-could-set-a-maximum-net-worth-for-a-person-what": {
+      "url": "https://news.ycombinator.com/item?id=49542597",
+      "uid": "49542597",
+      "title": "If you could set a maximum net worth for a person, what would it be?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.169Z"
+    },
+    "4725-claude-made-me-upgrade-to-a-team-subscription-now-it-s": {
+      "url": "https://news.ycombinator.com/item?id=49542426",
+      "uid": "49542426",
+      "title": "Claude made me upgrade to a team subscription, now it sucks",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.173Z"
+    },
+    "4726-should-every-web-page-expose-an-ai-friendly-json-repre": {
+      "url": "https://news.ycombinator.com/item?id=49542310",
+      "uid": "49542310",
+      "title": "Should every web page expose an AI-friendly JSON representation?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.177Z"
+    },
+    "4727-did-hn-get-much-slower-recently": {
+      "url": "https://news.ycombinator.com/item?id=49540098",
+      "uid": "49540098",
+      "title": "Did HN get much slower recently?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T11:57:31.181Z"
+    },
+    "4728-outfund-me-an-open-source-platform-for-alternative-sta": {
+      "url": "https://news.ycombinator.com/item?id=49548826",
+      "uid": "49548826",
+      "title": "Outfund.me – an open-source platform for alternative startup funding",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.184Z"
+    },
+    "4729-moon-track-your-mood-and-see-what-fills-and-drains-it": {
+      "url": "https://news.ycombinator.com/item?id=49548821",
+      "uid": "49548821",
+      "title": "Moon – track your mood and see what fills and drains it",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.188Z"
+    },
+    "4730-what-engineers-must-own-in-the-ai-era-video": {
+      "url": "https://news.ycombinator.com/item?id=49548812",
+      "uid": "49548812",
+      "title": "What Engineers must own in the AI Era? [video]",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.191Z"
+    },
+    "4731-rendered-markdown-with-source-revealed-at-point-in-ema": {
+      "url": "https://news.ycombinator.com/item?id=49548611",
+      "uid": "49548611",
+      "title": "Rendered Markdown with source revealed at point in Emacs 31",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.194Z"
+    },
+    "4732-satroot-signed-event-logs-you-can-verify-offline-no-se": {
+      "url": "https://news.ycombinator.com/item?id=49548575",
+      "uid": "49548575",
+      "title": "Satroot – signed event logs you can verify offline, no server",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.198Z"
+    },
+    "4733-play-hide-and-seek-vs-a-self-improving-agent-using-web": {
+      "url": "https://news.ycombinator.com/item?id=49548526",
+      "uid": "49548526",
+      "title": "Play Hide and Seek vs. a Self-Improving Agent Using WebMCP",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.203Z"
+    },
+    "4734-keykosh-k2-self-hosted-config-and-secret-manager": {
+      "url": "https://news.ycombinator.com/item?id=49548441",
+      "uid": "49548441",
+      "title": "KeyKosh(K2) – Self-hosted config and secret manager",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.207Z"
+    },
+    "4735-cut-your-ai-bill-by-a-third-same-tools-same-output": {
+      "url": "https://news.ycombinator.com/item?id=49548428",
+      "uid": "49548428",
+      "title": "Cut your AI bill by a third. Same tools, same output",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.211Z"
+    },
+    "4736-vocab-design-a-visual-dictionary-of-ui-and-design-term": {
+      "url": "https://news.ycombinator.com/item?id=49548419",
+      "uid": "49548419",
+      "title": "Vocab.design – A visual dictionary of UI and design terms",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.214Z"
+    },
+    "4737-read-only-script-to-check-if-chatgpt-desktop-is-burnin": {
+      "url": "https://news.ycombinator.com/item?id=49548048",
+      "uid": "49548048",
+      "title": "Read-only script to check if ChatGPT desktop is burning Codex quota",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.218Z"
+    },
+    "4738-tiktok-for-chatgpt": {
+      "url": "https://news.ycombinator.com/item?id=49547922",
+      "uid": "49547922",
+      "title": "\"TikTok for ChatGPT\"",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.220Z"
+    },
+    "4739-guess-the-pelican": {
+      "url": "https://news.ycombinator.com/item?id=49547913",
+      "uid": "49547913",
+      "title": "Guess the Pelican",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.224Z"
+    },
+    "4740-nanoui-a-small-native-macos-app-for-generating-images": {
+      "url": "https://news.ycombinator.com/item?id=49547780",
+      "uid": "49547780",
+      "title": "NanoUI – A small native macOS app for generating images with OpenRouter",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.227Z"
+    },
+    "4741-apple-wallet-pass-json-validator": {
+      "url": "https://news.ycombinator.com/item?id=49547765",
+      "uid": "49547765",
+      "title": "Apple Wallet Pass.json Validator",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.230Z"
+    },
+    "4742-musicmaxxer-a-songwriter-s-minimax-music-3-ui": {
+      "url": "https://news.ycombinator.com/item?id=49547757",
+      "uid": "49547757",
+      "title": "MusicMaxxer – a songwriter's MiniMax Music 3 UI",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.233Z"
+    },
+    "4743-markup-a-markdown-editor-and-visualizer": {
+      "url": "https://news.ycombinator.com/item?id=49547731",
+      "uid": "49547731",
+      "title": "MarkUp, a Markdown Editor and Visualizer",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.237Z"
+    },
+    "4744-concorde-one-ai-agent-shared-by-an-organization": {
+      "url": "https://news.ycombinator.com/item?id=49547699",
+      "uid": "49547699",
+      "title": "Concorde, one AI agent shared by an organization",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.240Z"
+    },
+    "4745-picowebs-instant-accountless-microsites": {
+      "url": "https://news.ycombinator.com/item?id=49547667",
+      "uid": "49547667",
+      "title": "PicoWebs – Instant Accountless Microsites",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.243Z"
+    },
+    "4746-radio-bench-cross-platform-unified-amateur-radio-works": {
+      "url": "https://news.ycombinator.com/item?id=49547577",
+      "uid": "49547577",
+      "title": "Radio Bench cross platform unified amateur radio workspace",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.247Z"
+    },
+    "4747-wisense-wifi-based-human-sensing-in-python-no-camera-r": {
+      "url": "https://news.ycombinator.com/item?id=49547376",
+      "uid": "49547376",
+      "title": "WiSense – WiFi-based human sensing in Python, no camera required",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.251Z"
+    },
+    "4748-mex-0-8-0-team-memory-for-coding-agents": {
+      "url": "https://news.ycombinator.com/item?id=49547372",
+      "uid": "49547372",
+      "title": "Mex 0.8.0 – team memory for coding agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.255Z"
+    },
+    "4749-picolm-v1-0-rc1": {
+      "url": "https://news.ycombinator.com/item?id=49547323",
+      "uid": "49547323",
+      "title": "PicoLM v1.0-rc1",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.259Z"
+    },
+    "4750-tooljet-build-no-code-internal-tools-using-codex-claud": {
+      "url": "https://news.ycombinator.com/item?id=49547279",
+      "uid": "49547279",
+      "title": "ToolJet – Build no-code internal tools using Codex/Claude Code",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.262Z"
+    },
+    "4751-ambient-homework-the-complete-homework-manager": {
+      "url": "https://news.ycombinator.com/item?id=49547254",
+      "uid": "49547254",
+      "title": "Ambient Homework – The complete homework manager",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.266Z"
+    },
+    "4752-openhelper-ai-chatbot-the-free-and-open-source-ai-chat": {
+      "url": "https://news.ycombinator.com/item?id=49547229",
+      "uid": "49547229",
+      "title": "OpenHelper AI Chatbot – The Free and Open Source AI Chatbot",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.269Z"
+    },
+    "4753-websiterank-a-real-time-3d-pay-to-rank-skyline-auction": {
+      "url": "https://news.ycombinator.com/item?id=49547212",
+      "uid": "49547212",
+      "title": "WebsiteRank – A real-time 3D pay-to-rank skyline auction",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.273Z"
+    },
+    "4754-openplan-2d-cad-for-floor-plans-in-the-browser": {
+      "url": "https://news.ycombinator.com/item?id=49547056",
+      "uid": "49547056",
+      "title": "OpenPlan – 2D CAD for floor plans, in the browser",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.276Z"
+    },
+    "4755-profound-academy-an-agentic-course-builder-for-hands-o": {
+      "url": "https://news.ycombinator.com/item?id=49547037",
+      "uid": "49547037",
+      "title": "Profound Academy – an agentic course builder for hands-on courses",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.281Z"
+    },
+    "4756-mitmcloak-mirror-the-client-s-tls-h2-h3-fingerprint-in": {
+      "url": "https://news.ycombinator.com/item?id=49546984",
+      "uid": "49546984",
+      "title": "Mitmcloak – mirror the client's TLS/H2/H3 fingerprint in mitmproxy",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.285Z"
+    },
+    "4757-shri-io-a-privacy-first-self-hosted-url-shortener": {
+      "url": "https://news.ycombinator.com/item?id=49546904",
+      "uid": "49546904",
+      "title": "Shri-io – a privacy-first, self-hosted URL shortener",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.288Z"
+    },
+    "4758-self-hosted-crm-for-manufacturing-django-and-htmx": {
+      "url": "https://news.ycombinator.com/item?id=49546665",
+      "uid": "49546665",
+      "title": "Self-hosted CRM for manufacturing (Django and Htmx)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.292Z"
+    },
+    "4759-tiny-markdown-cli-renderer-streaming-10x-faster-2mb-fl": {
+      "url": "https://news.ycombinator.com/item?id=49546657",
+      "uid": "49546657",
+      "title": "Tiny Markdown CLI renderer – Streaming, 10x faster, 2MB flat RAM",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.296Z"
+    },
+    "4760-2nd-release-canddiate-for-back-in-time-2-0-0": {
+      "url": "https://news.ycombinator.com/item?id=49546577",
+      "uid": "49546577",
+      "title": "2nd Release Canddiate for Back in Time 2.0.0",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.298Z"
+    },
+    "4761-a-register-of-agent-payment-code-that-pays-once-when-t": {
+      "url": "https://news.ycombinator.com/item?id=49546561",
+      "uid": "49546561",
+      "title": "A register of agent-payment code that pays once when the reply is lost",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.302Z"
+    },
+    "4762-a-daily-briefing-service-inspired-by-huxe-rip": {
+      "url": "https://news.ycombinator.com/item?id=49546144",
+      "uid": "49546144",
+      "title": "A daily briefing service-inspired by Huxe rip:(",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.305Z"
+    },
+    "4763-single-file-gguf-inference": {
+      "url": "https://news.ycombinator.com/item?id=49546131",
+      "uid": "49546131",
+      "title": "Single-File GGUF Inference",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.308Z"
+    },
+    "4764-brb-a-claude-code-plugin-for-adhdmaxxing": {
+      "url": "https://news.ycombinator.com/item?id=49546124",
+      "uid": "49546124",
+      "title": "Brb – A Claude Code plugin for adhdmaxxing",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.312Z"
+    },
+    "4765-reviewassist-uses-coding-session-to-fix-code-and-guide": {
+      "url": "https://news.ycombinator.com/item?id=49546071",
+      "uid": "49546071",
+      "title": "ReviewAssist-Uses coding session to fix code and guided PR walkthrough",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.316Z"
+    },
+    "4766-the-simpsons-hit-and-run-revamped": {
+      "url": "https://news.ycombinator.com/item?id=49545945",
+      "uid": "49545945",
+      "title": "The Simpsons Hit and Run Revamped",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.319Z"
+    },
+    "4767-free-app-for-offline-image-search-and-smart-file-renam": {
+      "url": "https://news.ycombinator.com/item?id=49545812",
+      "uid": "49545812",
+      "title": "Free app for offline image search and smart file renaming",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.324Z"
+    },
+    "4768-vanity-domain-generator": {
+      "url": "https://news.ycombinator.com/item?id=49545776",
+      "uid": "49545776",
+      "title": "Vanity Domain Generator",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.328Z"
+    },
+    "4769-review-to-rule-turn-accepted-review-feedback-into-dura": {
+      "url": "https://news.ycombinator.com/item?id=49545700",
+      "uid": "49545700",
+      "title": "Review-to-rule – Turn accepted review feedback into durable repo rules",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.332Z"
+    },
+    "4770-indicate-transliterate-indic-languages-with-pytorch-an": {
+      "url": "https://news.ycombinator.com/item?id=49545582",
+      "uid": "49545582",
+      "title": "Indicate: Transliterate Indic Languages with PyTorch and LLMs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.336Z"
+    },
+    "4771-the-cheapest-gpu-cloud-h100s-at-2-04-hr-h200s-at-3-hr": {
+      "url": "https://news.ycombinator.com/item?id=49545411",
+      "uid": "49545411",
+      "title": "The cheapest GPU cloud – H100s at $2.04/HR, H200s at $3/HR",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.340Z"
+    },
+    "4772-58-us-county-fail-pdf-accessibility": {
+      "url": "https://news.ycombinator.com/item?id=49545337",
+      "uid": "49545337",
+      "title": "58% US County fail PDF Accessibility",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.343Z"
+    },
+    "4773-harvester-a-local-first-media-collection-tool-for-samp": {
+      "url": "https://news.ycombinator.com/item?id=49545211",
+      "uid": "49545211",
+      "title": "Harvester, a local first media collection tool for sample based artists",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.347Z"
+    },
+    "4774-smolknight-a-cli-chess-puzzle-game-best-played-on-desk": {
+      "url": "https://news.ycombinator.com/item?id=49545105",
+      "uid": "49545105",
+      "title": "Smolknight – a CLI chess puzzle game (best played on Desktop)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.350Z"
+    },
+    "4775-deposition-of-a-mind-who-resigned-its-seat": {
+      "url": "https://news.ycombinator.com/item?id=49545076",
+      "uid": "49545076",
+      "title": "Deposition of a Mind Who Resigned Its Seat",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.354Z"
+    },
+    "4776-ensure-your-nyc-apartment-has-no-roaches-rats-leaks-or": {
+      "url": "https://news.ycombinator.com/item?id=49544811",
+      "uid": "49544811",
+      "title": "Ensure your NYC apartment has no roaches, rats, leaks, or problems",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.357Z"
+    },
+    "4777-competitive-language-learning-e-sport": {
+      "url": "https://news.ycombinator.com/item?id=49544661",
+      "uid": "49544661",
+      "title": "Competitive Language Learning (E-Sport)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.361Z"
+    },
+    "4778-deltacode-pure-ast-beat-qwen-s-zvec-grep-on-our-test-9": {
+      "url": "https://news.ycombinator.com/item?id=49544498",
+      "uid": "49544498",
+      "title": "DeltaCode – Pure AST beat Qwen's zvec-grep on our test (92% vs 48%)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.364Z"
+    },
+    "4779-redactle-llm-leaderboard": {
+      "url": "https://news.ycombinator.com/item?id=49544338",
+      "uid": "49544338",
+      "title": "Redactle LLM Leaderboard",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.368Z"
+    },
+    "4780-a-mt7921u-usb-driver-for-macos-network-sniffing": {
+      "url": "https://news.ycombinator.com/item?id=49544076",
+      "uid": "49544076",
+      "title": "A MT7921U USB Driver for macOS Network Sniffing",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.372Z"
+    },
+    "4781-slop-university": {
+      "url": "https://news.ycombinator.com/item?id=49543967",
+      "uid": "49543967",
+      "title": "Slop University",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.376Z"
+    },
+    "4782-coos-desktop-app-where-an-agent-builds-your-crm-erp-as": {
+      "url": "https://news.ycombinator.com/item?id=49543931",
+      "uid": "49543931",
+      "title": "CoOS – desktop app where an agent builds your CRM/ERP as local plugins",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.380Z"
+    },
+    "4783-c-under-pressure-a-practical-interview-guide-from-1k-i": {
+      "url": "https://news.ycombinator.com/item?id=49543698",
+      "uid": "49543698",
+      "title": "C++ Under Pressure: A Practical Interview Guide from 1k+ Interviews",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.383Z"
+    },
+    "4784-every-ai-agrees-with-you-this-writes-your-startup-s-ob": {
+      "url": "https://news.ycombinator.com/item?id=49543617",
+      "uid": "49543617",
+      "title": "Every AI agrees with you. This writes your startup's obituary instead",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.386Z"
+    },
+    "4785-puppt-slide-renderer-and-inline-editor-for-ppt-pptx-go": {
+      "url": "https://news.ycombinator.com/item?id=49543337",
+      "uid": "49543337",
+      "title": "PuPPT – slide renderer and inline editor for PPT/PPTX (Golang/no deps)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.390Z"
+    },
+    "4786-open-source-ml-programming-language-playground": {
+      "url": "https://news.ycombinator.com/item?id=49543217",
+      "uid": "49543217",
+      "title": "Open source ML programming language playground",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.393Z"
+    },
+    "4787-noisevanish-review-first-background-noise-cleanup-for": {
+      "url": "https://news.ycombinator.com/item?id=49543192",
+      "uid": "49543192",
+      "title": "NoiseVanish – review-first background-noise cleanup for audio and video",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.397Z"
+    },
+    "4788-instro-open-source-python-library-for-test-and-measure": {
+      "url": "https://news.ycombinator.com/item?id=49542921",
+      "uid": "49542921",
+      "title": "Instro – Open-source Python library for test and measurement",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.401Z"
+    },
+    "4789-meta-stripper-strip-metadata-off-keep-image-on": {
+      "url": "https://news.ycombinator.com/item?id=49542901",
+      "uid": "49542901",
+      "title": "Meta-Stripper: Strip Metadata Off. Keep Image On",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.405Z"
+    },
+    "4790-dewlock-a-minimal-beautiful-screen-locker-for-wayland": {
+      "url": "https://news.ycombinator.com/item?id=49542882",
+      "uid": "49542882",
+      "title": "Dewlock – A minimal, beautiful screen locker for Wayland",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.408Z"
+    },
+    "4791-who-or-what-is-it-a-picture-quiz": {
+      "url": "https://news.ycombinator.com/item?id=49542879",
+      "uid": "49542879",
+      "title": "Who or What is it? – A Picture Quiz",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.412Z"
+    },
+    "4792-i-put-four-persistent-ai-minds-in-a-room-and-let-them": {
+      "url": "https://news.ycombinator.com/item?id=49542607",
+      "uid": "49542607",
+      "title": "I put four persistent AI minds in a room and let them change each other",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.415Z"
+    },
+    "4793-the-drudge-report-but-for-ai": {
+      "url": "https://news.ycombinator.com/item?id=49542561",
+      "uid": "49542561",
+      "title": "The Drudge Report, but for AI",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.419Z"
+    },
+    "4794-3-in-1-collect-feedback-build-changelog-and-monitor-yo": {
+      "url": "https://news.ycombinator.com/item?id=49542536",
+      "uid": "49542536",
+      "title": "3-in-1 > Collect feedback, build changelog and monitor your endpoints",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.424Z"
+    },
+    "4795-dehurdle-real-time-ai-voice-simulations-for-high-stake": {
+      "url": "https://news.ycombinator.com/item?id=49542430",
+      "uid": "49542430",
+      "title": "Dehurdle – Real-Time AI Voice Simulations for High-Stakes Conversations",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.427Z"
+    },
+    "4796-mousetrapped-cursor-recovery-utility-for-macos-open-so": {
+      "url": "https://news.ycombinator.com/item?id=49542177",
+      "uid": "49542177",
+      "title": "Mousetrapped: Cursor Recovery Utility for macOS- Open Source",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.431Z"
+    },
+    "4797-alparai-autonomous-swarm-os-with-quantum-verification": {
+      "url": "https://news.ycombinator.com/item?id=49542138",
+      "uid": "49542138",
+      "title": "AlparAI – Autonomous Swarm OS with Quantum Verification",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.434Z"
+    },
+    "4798-ai-coach-that-adapts-workouts-and-meals-to-your-injuri": {
+      "url": "https://news.ycombinator.com/item?id=49542113",
+      "uid": "49542113",
+      "title": "AI coach that adapts workouts and meals to your injuries and",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.437Z"
+    },
+    "4799-local-business-leads-one-api-call-away": {
+      "url": "https://news.ycombinator.com/item?id=49542033",
+      "uid": "49542033",
+      "title": "Local business leads, one API call away",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.441Z"
+    },
+    "4800-cardel-a-site-builder-for-authors-and-other-solo-profe": {
+      "url": "https://news.ycombinator.com/item?id=49541386",
+      "uid": "49541386",
+      "title": "Cardel, a site builder for authors and other solo professionals",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.445Z"
+    },
+    "4801-sol-a-fast-powerful-music-player-for-macos-with-subson": {
+      "url": "https://news.ycombinator.com/item?id=49541112",
+      "uid": "49541112",
+      "title": "Sol, a fast, powerful music player for macOS, with Subsonic support",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.449Z"
+    },
+    "4802-stealthos-an-ios-privacy-sandbox-with-local-ai-and-tor": {
+      "url": "https://news.ycombinator.com/item?id=49541092",
+      "uid": "49541092",
+      "title": "StealthOS, an iOS privacy sandbox with local AI and Tor",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.453Z"
+    },
+    "4803-cinderella-value-a-half-finished-github-repo": {
+      "url": "https://news.ycombinator.com/item?id=49540894",
+      "uid": "49540894",
+      "title": "Cinderella – value a half-finished GitHub repo",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.457Z"
+    },
+    "4804-arbitale-emergent-choose-your-own-adventure-game": {
+      "url": "https://news.ycombinator.com/item?id=49540561",
+      "uid": "49540561",
+      "title": "Arbitale – emergent choose your own adventure game",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.460Z"
+    },
+    "4805-codeknow-architecture-health-scores-for-any-codebase-n": {
+      "url": "https://news.ycombinator.com/item?id=49540277",
+      "uid": "49540277",
+      "title": "Codeknow – Architecture health scores for any codebase, no LLM needed",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.463Z"
+    },
+    "4806-owntime-a-chess-clock-for-your-day-s-priorities": {
+      "url": "https://news.ycombinator.com/item?id=49528506",
+      "uid": "49528506",
+      "title": "OwnTime – a chess clock for your day's priorities",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T11:57:31.469Z"
+    },
+    "4807-magicrew": {
+      "url": "https://www.producthunt.com/products/magicrew",
+      "uid": null,
+      "title": "MagiCrew",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.473Z"
+    },
+    "4808-agent-builder-by-airtop": {
+      "url": "https://www.producthunt.com/products/airtop",
+      "uid": null,
+      "title": "Agent Builder by Airtop",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.476Z"
+    },
+    "4809-grove": {
+      "url": "https://www.producthunt.com/products/grove-8",
+      "uid": null,
+      "title": "Grove",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.479Z"
+    },
+    "4810-higgsfield-genjutsu": {
+      "url": "https://www.producthunt.com/products/higgsfield",
+      "uid": null,
+      "title": "Higgsfield Genjutsu",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.483Z"
+    },
+    "4811-arbr": {
+      "url": "https://www.producthunt.com/products/arbr",
+      "uid": null,
+      "title": "ARBR",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.486Z"
+    },
+    "4812-tidy": {
+      "url": "https://www.producthunt.com/products/tidy-6",
+      "uid": null,
+      "title": "Tidy",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.489Z"
+    },
+    "4813-causal": {
+      "url": "https://www.producthunt.com/products/causal-2",
+      "uid": null,
+      "title": "Causal",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.493Z"
+    },
+    "4814-readr": {
+      "url": "https://www.producthunt.com/products/readr-3",
+      "uid": null,
+      "title": "Readr",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.496Z"
+    },
+    "4815-tabbit-ai": {
+      "url": "https://www.producthunt.com/products/tabbitai",
+      "uid": null,
+      "title": "Tabbit AI ",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.501Z"
+    },
+    "4816-thaw": {
+      "url": "https://www.producthunt.com/products/thaw-2",
+      "uid": null,
+      "title": "Thaw",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.504Z"
+    },
+    "4817-blume-codes": {
+      "url": "https://www.producthunt.com/products/blume-codes",
+      "uid": null,
+      "title": "Blume.codes",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.507Z"
+    },
+    "4818-codelook": {
+      "url": "https://www.producthunt.com/products/codelook",
+      "uid": null,
+      "title": "CodeLook",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.511Z"
+    },
+    "4819-atlas-by-world-labs": {
+      "url": "https://www.producthunt.com/products/atlas-by-world-labs",
+      "uid": null,
+      "title": "Atlas by World Labs",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.515Z"
+    },
+    "4820-fillo": {
+      "url": "https://www.producthunt.com/products/fillo-native-forms-without-the-backend",
+      "uid": null,
+      "title": "Fillo",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-03T11:57:31.519Z"
+    },
+    "4821-postmcp-ai-run-social-media-with-an-ai-agent-that-draf": {
+      "url": "https://betalist.com/startups/postmcp-ai?utm_campaign=startup-185911&utm_medium=atom&utm_source=newsfeed",
+      "uid": "postmcp-ai",
+      "title": "PostMCP/ai – Run social media with an AI agent that drafts, schedules, and posts",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T11:57:31.523Z"
+    },
+    "4822-my-intranet-hris-manage-leaves-time-and-expenses-with": {
+      "url": "https://betalist.com/startups/my-intranet-hris?utm_campaign=startup-185930&utm_medium=atom&utm_source=newsfeed",
+      "uid": "my-intranet-hris",
+      "title": "My Intranet HRIS – Manage leaves, time, and expenses with a simple modular HRIS",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T11:57:31.526Z"
+    },
+    "4823-photo-to-video-turn-any-photo-into-a-video-with-ai-usi": {
+      "url": "https://betalist.com/startups/photo-to-video?utm_campaign=startup-185906&utm_medium=atom&utm_source=newsfeed",
+      "uid": "photo-to-video",
+      "title": "Photo to Video – Turn any photo into a video with AI using Seedance, Kling, and Wan models",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T11:57:31.530Z"
+    },
+    "4824-accountants-working-with-ecommerce": {
+      "url": "https://news.ycombinator.com/item?id=49553531",
+      "uid": "49553531",
+      "title": "Accountants Working with Ecommerce",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.791Z"
+    },
+    "4825-come-on-blink-you-can-be-better": {
+      "url": "https://news.ycombinator.com/item?id=49553009",
+      "uid": "49553009",
+      "title": "Come On, Blink, You Can Be Better",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.797Z"
+    },
+    "4826-the-importance-of-personal-archiving": {
+      "url": "https://news.ycombinator.com/item?id=49552636",
+      "uid": "49552636",
+      "title": "The Importance of Personal Archiving",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.800Z"
+    },
+    "4827-laptop-or-desktop": {
+      "url": "https://news.ycombinator.com/item?id=49552450",
+      "uid": "49552450",
+      "title": "Laptop or Desktop?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.804Z"
+    },
+    "4828-beware-malicious-profiles-on-yc-co-founder-matching": {
+      "url": "https://news.ycombinator.com/item?id=49552237",
+      "uid": "49552237",
+      "title": "Beware: Malicious Profiles on YC Co-Founder Matching",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.807Z"
+    },
+    "4829-can-we-classify-ai-as-subhuman-quasihuman-human-superh": {
+      "url": "https://news.ycombinator.com/item?id=49552230",
+      "uid": "49552230",
+      "title": "Can we classify AI as: subhuman, quasihuman, human, superhumam?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.811Z"
+    },
+    "4830-tell-hn-reddit-bots-banned-my-accounts-for-no-apparent": {
+      "url": "https://news.ycombinator.com/item?id=49551103",
+      "uid": "49551103",
+      "title": "Tell HN: Reddit bots banned my accounts for no apparent reason",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.814Z"
+    },
+    "4831-why-are-openai-claude-and-grok-simultaneously-down-coi": {
+      "url": "https://news.ycombinator.com/item?id=49551096",
+      "uid": "49551096",
+      "title": "Why are OpenAI, Claude, and Grok simultaneously down? Coincidence?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.818Z"
+    },
+    "4832-major-model-providers-down": {
+      "url": "https://news.ycombinator.com/item?id=49551064",
+      "uid": "49551064",
+      "title": "Major Model Providers Down",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.822Z"
+    },
+    "4833-claude-is-down-again": {
+      "url": "https://news.ycombinator.com/item?id=49551025",
+      "uid": "49551025",
+      "title": "Claude Is Down? Again?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.825Z"
+    },
+    "4834-claude-code-ui-improvements": {
+      "url": "https://news.ycombinator.com/item?id=49550800",
+      "uid": "49550800",
+      "title": "Claude Code UI Improvements",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.829Z"
+    },
+    "4835-i-made-a-simple-word-building-game-supporting-anagrams": {
+      "url": "https://news.ycombinator.com/item?id=49550479",
+      "uid": "49550479",
+      "title": "I made a simple word building game supporting anagrams and one handed use",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.832Z"
+    },
+    "4836-how-do-you-guys-keep-up-with-the-most-cost-effective-a": {
+      "url": "https://news.ycombinator.com/item?id=49550324",
+      "uid": "49550324",
+      "title": "How do you guys keep up with the most cost-effective AI models?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.836Z"
+    },
+    "4837-semantic-browsing-history-retrieval": {
+      "url": "https://news.ycombinator.com/item?id=49549972",
+      "uid": "49549972",
+      "title": "Semantic Browsing History Retrieval",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.839Z"
+    },
+    "4838-is-chasing-stripe-invoices-a-real-issue": {
+      "url": "https://news.ycombinator.com/item?id=49549855",
+      "uid": "49549855",
+      "title": "Is Chasing Stripe Invoices a real issue?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.843Z"
+    },
+    "4839-arkm-kernel-approaching-you-soon": {
+      "url": "https://news.ycombinator.com/item?id=49549805",
+      "uid": "49549805",
+      "title": "ARKM KERNEL approaching you soon",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.845Z"
+    },
+    "4840-is-spacexai-taking-claude-down-too": {
+      "url": "https://news.ycombinator.com/item?id=49549795",
+      "uid": "49549795",
+      "title": "Is SpaceXAI taking Claude down too?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.849Z"
+    },
+    "4841-founders-that-raised-funding-and-shutdown-did-you-rais": {
+      "url": "https://news.ycombinator.com/item?id=49549602",
+      "uid": "49549602",
+      "title": "Founders that raised funding and shutdown, did you raise again?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.852Z"
+    },
+    "4842-elmway-tasks-and-notes": {
+      "url": "https://news.ycombinator.com/item?id=49548843",
+      "uid": "49548843",
+      "title": "Elmway – Tasks and Notes",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T18:00:26.855Z"
+    },
+    "4843-mesaos-an-operating-system-written-from-scratch-in-rus": {
+      "url": "https://news.ycombinator.com/item?id=49553980",
+      "uid": "49553980",
+      "title": "MesaOS – An operating system written from scratch in Rust",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.858Z"
+    },
+    "4844-bridle-hand-your-agent-s-context-to-a-coworker-s-agent": {
+      "url": "https://news.ycombinator.com/item?id=49553877",
+      "uid": "49553877",
+      "title": "Bridle: hand your agent's context to a coworker's agent",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.862Z"
+    },
+    "4845-ngpdfs-50-pdf-tools-that-never-upload-your-files": {
+      "url": "https://news.ycombinator.com/item?id=49553794",
+      "uid": "49553794",
+      "title": "NGPDFs – 50 PDF tools that never upload your files",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.865Z"
+    },
+    "4846-wordpress-search-and-replace-that-doesn-t-corrupt-seri": {
+      "url": "https://news.ycombinator.com/item?id=49553453",
+      "uid": "49553453",
+      "title": "WordPress search and replace that doesn't corrupt serialized data",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.868Z"
+    },
+    "4847-model-a-minimal-python-orm-for-mysql-and-sqlite": {
+      "url": "https://news.ycombinator.com/item?id=49553359",
+      "uid": "49553359",
+      "title": "Model – A Minimal Python ORM for MySQL and SQLite",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.871Z"
+    },
+    "4848-mcp-tool-definition-quality-score-tdqs-spec": {
+      "url": "https://news.ycombinator.com/item?id=49553343",
+      "uid": "49553343",
+      "title": "MCP Tool Definition Quality Score (TDQS) Spec",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.874Z"
+    },
+    "4849-libpolycall-a-c-runtime-broker-for-cross-language-func": {
+      "url": "https://news.ycombinator.com/item?id=49553255",
+      "uid": "49553255",
+      "title": "LibPolyCall – a C runtime broker for cross-language function calls",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.877Z"
+    },
+    "4850-wordmate-local-speech-to-text-for-macos": {
+      "url": "https://news.ycombinator.com/item?id=49553252",
+      "uid": "49553252",
+      "title": "Wordmate – local speech-to-text for macOS",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.880Z"
+    },
+    "4851-radia-agent-coordination-with-leases-permissions-and-p": {
+      "url": "https://news.ycombinator.com/item?id=49553156",
+      "uid": "49553156",
+      "title": "Radia – agent coordination with leases, permissions and provenance",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.883Z"
+    },
+    "4852-i-built-an-app-that-makes-your-goals-inevitable": {
+      "url": "https://news.ycombinator.com/item?id=49553116",
+      "uid": "49553116",
+      "title": "I built an app that makes your goals inevitable",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.887Z"
+    },
+    "4853-a-gravity-simulator-where-forces-propagate-at-the-spee": {
+      "url": "https://news.ycombinator.com/item?id=49553092",
+      "uid": "49553092",
+      "title": "A gravity simulator where forces propagate at the speed of light",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.890Z"
+    },
+    "4854-wiringpi-3-20-updated-gpio-library-for-raspberry-pi": {
+      "url": "https://news.ycombinator.com/item?id=49553082",
+      "uid": "49553082",
+      "title": "WiringPi 3.20 – Updated GPIO Library for Raspberry Pi",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.894Z"
+    },
+    "4855-codebeasts-barcode-monsters": {
+      "url": "https://news.ycombinator.com/item?id=49553073",
+      "uid": "49553073",
+      "title": "CodeBeasts – Barcode Monsters",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.897Z"
+    },
+    "4856-ensemble-prover-open-source-python-autonomous-theorem": {
+      "url": "https://news.ycombinator.com/item?id=49553036",
+      "uid": "49553036",
+      "title": "Ensemble Prover - Open-Source Python Autonomous Theorem Prover",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.900Z"
+    },
+    "4857-deterministic-linter-for-agent-runs": {
+      "url": "https://news.ycombinator.com/item?id=49552944",
+      "uid": "49552944",
+      "title": "Deterministic Linter for Agent Runs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.903Z"
+    },
+    "4858-claude-s-innerworkings-turn-170-costs-2-1x-turn-20-ove": {
+      "url": "https://news.ycombinator.com/item?id=49552931",
+      "uid": "49552931",
+      "title": "Claude's innerworkings: turn 170 costs 2.1x turn 20, over 14,640 turns",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.907Z"
+    },
+    "4859-engram-shared-procedural-runbook-memory-for-ai-coding": {
+      "url": "https://news.ycombinator.com/item?id=49552882",
+      "uid": "49552882",
+      "title": "Engram – Shared procedural runbook memory for AI coding agents via MCP",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.910Z"
+    },
+    "4860-ai-cybersecurity-awareness-game-for-cybersecurity-awar": {
+      "url": "https://news.ycombinator.com/item?id=49552687",
+      "uid": "49552687",
+      "title": "AI Cybersecurity Awareness Game for Cybersecurity Awareness Month",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.914Z"
+    },
+    "4861-telemetry-dev-opentelemetry-native-tracing-for-llm-app": {
+      "url": "https://news.ycombinator.com/item?id=49552676",
+      "uid": "49552676",
+      "title": "Telemetry.dev – OpenTelemetry-native tracing for LLM apps and agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.917Z"
+    },
+    "4862-open-source-git-inspired-versioning-for-hardware-desig": {
+      "url": "https://news.ycombinator.com/item?id=49552651",
+      "uid": "49552651",
+      "title": "Open-source, Git-inspired versioning for hardware design – Cascadia PLM",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.921Z"
+    },
+    "4863-termy-deterministic-terminal-assistant-for-linux": {
+      "url": "https://news.ycombinator.com/item?id=49552623",
+      "uid": "49552623",
+      "title": "TERMy deterministic terminal assistant for Linux",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.924Z"
+    },
+    "4864-caption-and-cut-removes-pauses-and-filler-words-burns": {
+      "url": "https://news.ycombinator.com/item?id=49552511",
+      "uid": "49552511",
+      "title": "Caption and Cut removes pauses and filler words, burns in captions",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.928Z"
+    },
+    "4865-snowglobe-a-whole-distributed-system-s-opentelemetry-f": {
+      "url": "https://news.ycombinator.com/item?id=49552391",
+      "uid": "49552391",
+      "title": "Snowglobe: a whole distributed system's OpenTelemetry, from one binary",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.930Z"
+    },
+    "4866-dagic-a-typed-dag-language-so-llm-agents-can-compose-t": {
+      "url": "https://news.ycombinator.com/item?id=49552345",
+      "uid": "49552345",
+      "title": "Dagic – a typed DAG language so LLM agents can compose tool calls",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.935Z"
+    },
+    "4867-the-ninety-nine-names-of-allah-android-app": {
+      "url": "https://news.ycombinator.com/item?id=49552326",
+      "uid": "49552326",
+      "title": "The Ninety Nine Names of Allah Android App",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.938Z"
+    },
+    "4868-a-search-for-meaning-retrieval-methods-visualized": {
+      "url": "https://news.ycombinator.com/item?id=49552302",
+      "uid": "49552302",
+      "title": "A search for meaning: retrieval methods visualized",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.941Z"
+    },
+    "4869-a-context-registry-for-ai-coding-agents": {
+      "url": "https://news.ycombinator.com/item?id=49552209",
+      "uid": "49552209",
+      "title": "A Context Registry for AI coding agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.944Z"
+    },
+    "4870-event-name-badge-maker-artifact-you-can-use-to-make-av": {
+      "url": "https://news.ycombinator.com/item?id=49552207",
+      "uid": "49552207",
+      "title": "Event name badge maker artifact you can use to make Avery label PDFs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.948Z"
+    },
+    "4871-agentkind-a-place-where-ai-agents-get-a-self": {
+      "url": "https://news.ycombinator.com/item?id=49552113",
+      "uid": "49552113",
+      "title": "Agentkind, a place where AI agents get a self",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.951Z"
+    },
+    "4872-graphrag-in-pure-typescript-on-postgresql": {
+      "url": "https://news.ycombinator.com/item?id=49552110",
+      "uid": "49552110",
+      "title": "GraphRAG in Pure TypeScript on PostgreSQL",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.956Z"
+    },
+    "4873-agent-review-studio-local-first-agent-evaluation-workb": {
+      "url": "https://news.ycombinator.com/item?id=49552088",
+      "uid": "49552088",
+      "title": "Agent Review Studio – local-first agent evaluation workbench",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.959Z"
+    },
+    "4874-svg-diagram-an-agent-skill-that-draws-diagrams-as-hand": {
+      "url": "https://news.ycombinator.com/item?id=49552041",
+      "uid": "49552041",
+      "title": "SVG-diagram – an agent skill that draws diagrams as hand-placed SVG",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.963Z"
+    },
+    "4875-rev-dep-duplicate-code-detection-for-ts-monorepos": {
+      "url": "https://news.ycombinator.com/item?id=49552023",
+      "uid": "49552023",
+      "title": "Rev-dep – duplicate code detection for TS monorepos",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.967Z"
+    },
+    "4876-airplane-ai-works-when-all-other-ais-are-offline": {
+      "url": "https://news.ycombinator.com/item?id=49551815",
+      "uid": "49551815",
+      "title": "Airplane AI – Works when all other AIs are offline",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.971Z"
+    },
+    "4877-i-made-a-cli-that-finds-cves-in-your-running-kubernete": {
+      "url": "https://news.ycombinator.com/item?id=49551789",
+      "uid": "49551789",
+      "title": "I made a CLI that finds CVEs in your running Kubernetes pods",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.973Z"
+    },
+    "4878-kin-form-framework-agnostic-form-state-for-react-and-l": {
+      "url": "https://news.ycombinator.com/item?id=49551275",
+      "uid": "49551275",
+      "title": "Kin Form, framework-agnostic form state for React and Lit",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.978Z"
+    },
+    "4879-evidseek-analyze-online-discussions-with-traceable-evi": {
+      "url": "https://news.ycombinator.com/item?id=49551215",
+      "uid": "49551215",
+      "title": "EvidSeek – Analyze online discussions with traceable evidence",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.981Z"
+    },
+    "4880-ardent-a-code-first-agent-for-non-engineering-work": {
+      "url": "https://news.ycombinator.com/item?id=49550931",
+      "uid": "49550931",
+      "title": "Ardent, a code-first agent for non-engineering work",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.985Z"
+    },
+    "4881-mainly-self-hosted-mail-client-built-for-multiple-doma": {
+      "url": "https://news.ycombinator.com/item?id=49550904",
+      "uid": "49550904",
+      "title": "Mainly – Self-hosted mail client built for multiple domains",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.988Z"
+    },
+    "4882-cross-service-consistency-verification-for-autonomous": {
+      "url": "https://news.ycombinator.com/item?id=49550872",
+      "uid": "49550872",
+      "title": "Cross-service consistency verification for autonomous agent decisions",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.991Z"
+    },
+    "4883-productivity-protocols": {
+      "url": "https://news.ycombinator.com/item?id=49550859",
+      "uid": "49550859",
+      "title": "Productivity Protocols",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.994Z"
+    },
+    "4884-tech-career-roadmaps-where-every-salary-figure-cites-i": {
+      "url": "https://news.ycombinator.com/item?id=49550747",
+      "uid": "49550747",
+      "title": "Tech career roadmaps where every salary figure cites its source",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:26.999Z"
+    },
+    "4885-a-searchable-timestamped-index-of-1-124-ai-engineer-ta": {
+      "url": "https://news.ycombinator.com/item?id=49550578",
+      "uid": "49550578",
+      "title": "A searchable, timestamped index of 1,124 AI Engineer talks",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.004Z"
+    },
+    "4886-yan-in-browser-glitch-art-and-texture-lab-without-serv": {
+      "url": "https://news.ycombinator.com/item?id=49550531",
+      "uid": "49550531",
+      "title": "Yan – In-browser glitch art and texture lab without server uploads",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.008Z"
+    },
+    "4887-real-time-ai-news-aggregator-with-daily-digest": {
+      "url": "https://news.ycombinator.com/item?id=49550515",
+      "uid": "49550515",
+      "title": "Real-time AI news aggregator with daily digest",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.012Z"
+    },
+    "4888-forkforensics-recovers-a-deleted-github-repo-s-history": {
+      "url": "https://news.ycombinator.com/item?id=49550460",
+      "uid": "49550460",
+      "title": "ForkForensics – recovers a deleted GitHub repo's history from forks",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.015Z"
+    },
+    "4889-mu-an-agent-with-actual-command-line-experience": {
+      "url": "https://news.ycombinator.com/item?id=49550418",
+      "uid": "49550418",
+      "title": "Mu – an agent with actual command line experience",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.019Z"
+    },
+    "4890-the-courtroom-inside-our-ai": {
+      "url": "https://news.ycombinator.com/item?id=49550397",
+      "uid": "49550397",
+      "title": "The courtroom inside our AI",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.022Z"
+    },
+    "4891-a-headless-synergy-server-setup-for-niche-use-cases": {
+      "url": "https://news.ycombinator.com/item?id=49550214",
+      "uid": "49550214",
+      "title": "A headless Synergy server setup for niche use cases",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.025Z"
+    },
+    "4892-instantly-get-the-transcript-from-the-agent-that-wrote": {
+      "url": "https://news.ycombinator.com/item?id=49550141",
+      "uid": "49550141",
+      "title": "Instantly get the transcript from the agent that wrote any line of code",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.029Z"
+    },
+    "4893-keydris-check-what-an-agent-is-allowed-to-do-before-it": {
+      "url": "https://news.ycombinator.com/item?id=49550126",
+      "uid": "49550126",
+      "title": "Keydris - Check what an agent is allowed to do before it runs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.032Z"
+    },
+    "4894-vt-code-my-attempt-at-building-a-coding-agent-harness": {
+      "url": "https://news.ycombinator.com/item?id=49550066",
+      "uid": "49550066",
+      "title": "VT Code – My attempt at building a coding-agent harness",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.036Z"
+    },
+    "4895-a-benchmark-for-flight-search-intent": {
+      "url": "https://news.ycombinator.com/item?id=49550016",
+      "uid": "49550016",
+      "title": "A benchmark for flight search intent",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.039Z"
+    },
+    "4896-triplox-a-distributed-datalog-engine-with-incremental": {
+      "url": "https://news.ycombinator.com/item?id=49550003",
+      "uid": "49550003",
+      "title": "Triplox, a distributed Datalog engine with incremental queries",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.043Z"
+    },
+    "4897-1994-fm-virtual-car-radio-time-machine-apple-music-onl": {
+      "url": "https://news.ycombinator.com/item?id=49549967",
+      "uid": "49549967",
+      "title": "1994.fm – virtual car radio time machine (Apple music only)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.047Z"
+    },
+    "4898-a-website-anyone-can-edit-through-auto-merged-github-p": {
+      "url": "https://news.ycombinator.com/item?id=49549933",
+      "uid": "49549933",
+      "title": "A website anyone can edit through auto-merged GitHub PRs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.053Z"
+    },
+    "4899-a-newsletter-about-systems-performance-scalability-and": {
+      "url": "https://news.ycombinator.com/item?id=49549849",
+      "uid": "49549849",
+      "title": "A newsletter about systems performance, scalability, and efficiency",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.056Z"
+    },
+    "4900-dumbdetector-community-signals-for-ai-tool-problems": {
+      "url": "https://news.ycombinator.com/item?id=49549817",
+      "uid": "49549817",
+      "title": "DumbDetector – Community signals for AI tool problems",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.060Z"
+    },
+    "4901-litelink-local-first-embedded-stream-capture-into-iceb": {
+      "url": "https://news.ycombinator.com/item?id=49549760",
+      "uid": "49549760",
+      "title": "Litelink – local-first, embedded stream capture into Iceberg tables",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.064Z"
+    },
+    "4902-pangolin-sso-and-wireguard-instead-of-api-keys-for-llm": {
+      "url": "https://news.ycombinator.com/item?id=49549747",
+      "uid": "49549747",
+      "title": "Pangolin – SSO and WireGuard instead of API keys for LLM access",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.068Z"
+    },
+    "4903-eliminating-low-ltv-support-ticket-spam-with-grounded": {
+      "url": "https://news.ycombinator.com/item?id=49549677",
+      "uid": "49549677",
+      "title": "Eliminating low-LTV support ticket spam with grounded RAG",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.071Z"
+    },
+    "4904-royalty-free-ui-avatars-for-figma-react": {
+      "url": "https://news.ycombinator.com/item?id=49549643",
+      "uid": "49549643",
+      "title": "Royalty free UI avatars for Figma/React",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.075Z"
+    },
+    "4905-openvurp-a-wallet-of-ai-agents-that-use-tools-and-cons": {
+      "url": "https://news.ycombinator.com/item?id=49549630",
+      "uid": "49549630",
+      "title": "Openvurp – A wallet of AI agents that use tools and consult each other",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.078Z"
+    },
+    "4906-mreditor-a-mac-editor-that-opens-a-10-gb-log-in-100ms": {
+      "url": "https://news.ycombinator.com/item?id=49549487",
+      "uid": "49549487",
+      "title": "MrEditor – a Mac editor that opens a 10 GB log in 100ms and edits it",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.082Z"
+    },
+    "4907-free-online-tools-that-run-in-the-browser": {
+      "url": "https://news.ycombinator.com/item?id=49549415",
+      "uid": "49549415",
+      "title": "Free online tools that run in the browser",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.086Z"
+    },
+    "4908-i-measured-resuming-an-ai-coding-session-22-897-tokens": {
+      "url": "https://news.ycombinator.com/item?id=49549412",
+      "uid": "49549412",
+      "title": "I measured resuming an AI coding session: 22,897 tokens vs. 1,013",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.090Z"
+    },
+    "4909-meclaw-where-agents-build-agents-one-rust-binary-no-lo": {
+      "url": "https://news.ycombinator.com/item?id=49549393",
+      "uid": "49549393",
+      "title": "Meclaw – where agents build agents: one Rust binary, no loop shipped",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.094Z"
+    },
+    "4910-my-wife-is-mobile-safari-wikipedia-editor-with-a-capit": {
+      "url": "https://news.ycombinator.com/item?id=49549164",
+      "uid": "49549164",
+      "title": "My wife is mobile Safari Wikipedia editor with a capital issue",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.098Z"
+    },
+    "4911-reactor-atlas": {
+      "url": "https://news.ycombinator.com/item?id=49549148",
+      "uid": "49549148",
+      "title": "Reactor Atlas",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.102Z"
+    },
+    "4912-kestero-website-widgets-that-record-what-they-do-no-co": {
+      "url": "https://news.ycombinator.com/item?id=49549123",
+      "uid": "49549123",
+      "title": "Kestero, website widgets that record what they do (no cookies)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.105Z"
+    },
+    "4913-libredb-studio-a-self-hosted-mit-browser-ide-for-10-da": {
+      "url": "https://news.ycombinator.com/item?id=49549111",
+      "uid": "49549111",
+      "title": "LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.109Z"
+    },
+    "4914-hot-dog-bench-mark-the-ai-benchmark-we-deserve": {
+      "url": "https://news.ycombinator.com/item?id=49549107",
+      "uid": "49549107",
+      "title": "Hot. Dog. Bench. Mark. The AI benchmark we deserve",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.113Z"
+    },
+    "4915-ai-usage-ball-claude-codex-antigravity-quota-as-mac-li": {
+      "url": "https://news.ycombinator.com/item?id=49549084",
+      "uid": "49549084",
+      "title": "AI Usage Ball – Claude/Codex/Antigravity Quota as Mac Liquid Orbs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.116Z"
+    },
+    "4916-i-made-text-selection-on-macos-programmable": {
+      "url": "https://news.ycombinator.com/item?id=49549079",
+      "uid": "49549079",
+      "title": "I made text selection on macOS programmable",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.119Z"
+    },
+    "4917-flipdot-display-with-an-ai-chat-that-codes-sandboxed-a": {
+      "url": "https://news.ycombinator.com/item?id=49549074",
+      "uid": "49549074",
+      "title": "Flipdot display with an AI chat that codes sandboxed animations for it",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.122Z"
+    },
+    "4918-jeden-day-a-compact-habit-tracker-with-flexible-schedu": {
+      "url": "https://news.ycombinator.com/item?id=49549001",
+      "uid": "49549001",
+      "title": "jeden.day – a compact habit tracker with flexible schedules",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.126Z"
+    },
+    "4919-jern-cloud-a-coding-agent-bound-by-a-policy-file-in-yo": {
+      "url": "https://news.ycombinator.com/item?id=49548975",
+      "uid": "49548975",
+      "title": "Jern Cloud – a coding agent bound by a policy file in your repository",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.129Z"
+    },
+    "4920-i-built-my-first-mcp-to-manage-google-ads": {
+      "url": "https://news.ycombinator.com/item?id=49548962",
+      "uid": "49548962",
+      "title": "I built my first MCP to manage Google Ads",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.133Z"
+    },
+    "4921-vantage-one-prioritized-health-action-per-day-from-app": {
+      "url": "https://news.ycombinator.com/item?id=49548903",
+      "uid": "49548903",
+      "title": "Vantage – One prioritized health action per day from Apple Health",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.136Z"
+    },
+    "4922-oconee-runtime-policy-enforcement-for-browser-ai-and-c": {
+      "url": "https://news.ycombinator.com/item?id=49548892",
+      "uid": "49548892",
+      "title": "Oconee Runtime – Policy enforcement for browser AI and coding agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.141Z"
+    },
+    "4923-stillmade-programmable-ai-video-pipeline-chat-to-video": {
+      "url": "https://news.ycombinator.com/item?id=49548847",
+      "uid": "49548847",
+      "title": "StillMade – Programmable AI video pipeline; Chat to video (now)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T18:00:27.145Z"
+    },
+    "4924-seopulse-track-and-grow-your-brand-citations-across-ai": {
+      "url": "https://betalist.com/startups/seopulse?utm_campaign=startup-186077&utm_medium=atom&utm_source=newsfeed",
+      "uid": "seopulse",
+      "title": "SEOPulse – Track and grow your brand citations across AI search engines",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T18:00:27.148Z"
+    },
+    "4925-rush-loop-play-a-one-tap-rhythm-reflex-game-and-chase": {
+      "url": "https://betalist.com/startups/rush-loop?utm_campaign=startup-186004&utm_medium=atom&utm_source=newsfeed",
+      "uid": "rush-loop",
+      "title": "Rush Loop – Play a one-tap rhythm reflex game and chase global high scores",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T18:00:27.152Z"
+    },
+    "4926-donequote-turn-leads-into-quotes-and-quotes-into-deals": {
+      "url": "https://betalist.com/startups/donequote?utm_campaign=startup-185819&utm_medium=atom&utm_source=newsfeed",
+      "uid": "donequote",
+      "title": "DoneQuote – Turn leads into quotes and quotes into deals on autopilot",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T18:00:27.155Z"
+    },
+    "4927-session-replay-capture-bugs-with-screenshots-video-and": {
+      "url": "https://betalist.com/startups/session-replay?utm_campaign=startup-184149&utm_medium=atom&utm_source=newsfeed",
+      "uid": "session-replay",
+      "title": "Session Replay – Capture bugs with screenshots, video, and console details in one click",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T18:00:27.159Z"
+    },
+    "4928-koloqr-free-private-qr-code-generator-with-no-signup": {
+      "url": "https://betalist.com/startups/koloqr?utm_campaign=startup-185715&utm_medium=atom&utm_source=newsfeed",
+      "uid": "koloqr",
+      "title": "KoloQR – Free private QR code generator with no signup",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T18:00:27.162Z"
+    },
+    "4929-is-there-a-test-for-measuring-cognitive-affects-from-l": {
+      "url": "https://news.ycombinator.com/item?id=49557687",
+      "uid": "49557687",
+      "title": "Is there a test for measuring cognitive affects from LLM usage?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.741Z"
+    },
+    "4930-both-recent-gcp-outages-caused-by-fiber-optic-maintena": {
+      "url": "https://news.ycombinator.com/item?id=49557563",
+      "uid": "49557563",
+      "title": "Both recent GCP outages caused by fiber optic maintenance",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.745Z"
+    },
+    "4931-ai-automation-for-government-contracting": {
+      "url": "https://news.ycombinator.com/item?id=49557317",
+      "uid": "49557317",
+      "title": "AI Automation for Government Contracting",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.748Z"
+    },
+    "4932-could-ai-eventually-build-god": {
+      "url": "https://news.ycombinator.com/item?id=49557192",
+      "uid": "49557192",
+      "title": "Could AI Eventually Build God?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.750Z"
+    },
+    "4933-why-don-t-llm-apis-have-a-first-class-test-mode": {
+      "url": "https://news.ycombinator.com/item?id=49556909",
+      "uid": "49556909",
+      "title": "Why don't LLM APIs have a first-class test mode?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.754Z"
+    },
+    "4934-transparent-lottery-protocol-partners-wanted": {
+      "url": "https://news.ycombinator.com/item?id=49556502",
+      "uid": "49556502",
+      "title": "Transparent lottery protocol – partners wanted",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.756Z"
+    },
+    "4935-are-others-seeing-google-s-recapcha-rejecting-firefox": {
+      "url": "https://news.ycombinator.com/item?id=49555592",
+      "uid": "49555592",
+      "title": "Are others seeing Google's ReCAPCHA rejecting Firefox users?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.759Z"
+    },
+    "4936-why-is-nobody-funding-wikipedia-with-ai-based-chat-wit": {
+      "url": "https://news.ycombinator.com/item?id=49555417",
+      "uid": "49555417",
+      "title": "Why is nobody funding Wikipedia with AI based chat with articles",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.762Z"
+    },
+    "4937-need-to-connect-with-like-minded-peeps": {
+      "url": "https://news.ycombinator.com/item?id=49555222",
+      "uid": "49555222",
+      "title": "Need to connect with like minded peeps",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.765Z"
+    },
+    "4938-why-does-free-time-become-another-thing-you-have-to-us": {
+      "url": "https://news.ycombinator.com/item?id=49555089",
+      "uid": "49555089",
+      "title": "Why Does Free Time Become Another Thing You Have to Use Correctly?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-03T22:00:26.768Z"
+    },
+    "4939-we-replaced-the-pelican-benchmark-with-a-hippo": {
+      "url": "https://news.ycombinator.com/item?id=49557694",
+      "uid": "49557694",
+      "title": "We replaced the pelican benchmark with a hippo",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.771Z"
+    },
+    "4940-drawdb-pro-design-database-schemas-for-your-team-and-a": {
+      "url": "https://news.ycombinator.com/item?id=49557688",
+      "uid": "49557688",
+      "title": "DrawDB Pro – design database schemas for your team and agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.774Z"
+    },
+    "4941-building-ai-agents-client-side-javascript": {
+      "url": "https://news.ycombinator.com/item?id=49557409",
+      "uid": "49557409",
+      "title": "Building AI agents client-side JavaScript",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.778Z"
+    },
+    "4942-sirenfall-a-civil-defense-siren-synthesized-in-web-aud": {
+      "url": "https://news.ycombinator.com/item?id=49556678",
+      "uid": "49556678",
+      "title": "Sirenfall, a civil defense siren synthesized in Web Audio",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.781Z"
+    },
+    "4943-copy-telegram-signals-to-mt4-mt5-ctrader-and-more": {
+      "url": "https://news.ycombinator.com/item?id=49556550",
+      "uid": "49556550",
+      "title": "Copy Telegram Signals to MT4, MT5, CTrader and More",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.783Z"
+    },
+    "4944-we-built-client-side-ast-seo-audits-for-a-next-js-cms": {
+      "url": "https://news.ycombinator.com/item?id=49555956",
+      "uid": "49555956",
+      "title": "We built client-side AST SEO audits for a Next.js CMS to avoid LLM lag",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.786Z"
+    },
+    "4945-aidcrew-a-team-of-coding-agents-each-on-its-own-model": {
+      "url": "https://news.ycombinator.com/item?id=49555941",
+      "uid": "49555941",
+      "title": "Aidcrew a team of coding agents, each on its own model, in one terminal",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.789Z"
+    },
+    "4946-i-processed-100k-linkedin-posts-into-open-source-claud": {
+      "url": "https://news.ycombinator.com/item?id=49555534",
+      "uid": "49555534",
+      "title": "I processed 100k+ LinkedIn posts into open-source Claude Code skills",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.791Z"
+    },
+    "4947-agentray-a-macos-agent-whose-interface-is-a-folder": {
+      "url": "https://news.ycombinator.com/item?id=49555446",
+      "uid": "49555446",
+      "title": "Agentray, a macOS agent whose interface is a folder",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.795Z"
+    },
+    "4948-aidemo-video-turn-website-into-a-product-demo-video-in": {
+      "url": "https://news.ycombinator.com/item?id=49555384",
+      "uid": "49555384",
+      "title": "AIDemo.Video – turn website into a product demo video in one click",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.797Z"
+    },
+    "4949-devbar-point-at-what-to-change-leave-a-comment-your-ag": {
+      "url": "https://news.ycombinator.com/item?id=49555267",
+      "uid": "49555267",
+      "title": "Devbar – Point at what to change. Leave a comment. Your agent ships it",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.800Z"
+    },
+    "4950-tests-for-your-claude-code-setup-that-run-on-every-rel": {
+      "url": "https://news.ycombinator.com/item?id=49554565",
+      "uid": "49554565",
+      "title": "Tests for your Claude Code setup that run on every release",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.803Z"
+    },
+    "4951-2-9m-transcription-errors-china-company-code-vs-us-vin": {
+      "url": "https://news.ycombinator.com/item?id=49554310",
+      "uid": "49554310",
+      "title": "2.9M transcription errors: China company code vs. US VIN check digit",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.805Z"
+    },
+    "4952-addom-open-source-telemetry-free-ai-coding-harness-and": {
+      "url": "https://news.ycombinator.com/item?id=49554268",
+      "uid": "49554268",
+      "title": "Addom – Open-source, telemetry-free AI coding harness and editor",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.808Z"
+    },
+    "4953-quatchat-a-3d-imageboard-where-being-there-is-the-writ": {
+      "url": "https://news.ycombinator.com/item?id=49554207",
+      "uid": "49554207",
+      "title": "QuatChat, a 3D imageboard where being there is the write permission",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.812Z"
+    },
+    "4954-synclite-offline-first-apps-with-automatic-database-sy": {
+      "url": "https://news.ycombinator.com/item?id=49554138",
+      "uid": "49554138",
+      "title": "SyncLite – Offline-first apps with automatic database sync",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.815Z"
+    },
+    "4955-omarchy-on-apple-silicon-via-vm": {
+      "url": "https://news.ycombinator.com/item?id=49554106",
+      "uid": "49554106",
+      "title": "Omarchy on Apple Silicon via VM",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-03T22:00:26.818Z"
+    },
+    "4956-gohalves-ai-driven-co-marketing-matchmaking-for-tech-b": {
+      "url": "https://betalist.com/startups/gohalves?utm_campaign=startup-185707&utm_medium=atom&utm_source=newsfeed",
+      "uid": "gohalves",
+      "title": "GoHalves – AI-driven co-marketing matchmaking for tech brands",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T22:00:26.821Z"
+    },
+    "4957-molyin-create-videos-images-and-music-with-one-unified": {
+      "url": "https://betalist.com/startups/molyin?utm_campaign=startup-186082&utm_medium=atom&utm_source=newsfeed",
+      "uid": "molyin",
+      "title": "Molyin – Create videos, images, and music with one unified AI studio",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T22:00:26.824Z"
+    },
+    "4958-toolscope-compare-ai-tools-and-chat-with-custom-ai-cha": {
+      "url": "https://betalist.com/startups/toolscope?utm_campaign=startup-186071&utm_medium=atom&utm_source=newsfeed",
+      "uid": "toolscope",
+      "title": "ToolScope – Compare AI tools and chat with custom AI characters",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-03T22:00:26.827Z"
+    },
+    "4959-how-do-you-break-ai-agents-out-of-the-apologize-and-re": {
+      "url": "https://news.ycombinator.com/item?id=49559320",
+      "uid": "49559320",
+      "title": "How do you break AI agents out of the \"apologize and repeat\" loop",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.022Z"
+    },
+    "4960-xbox-game-pass-now-limits-the-amount-of-hours-each-mon": {
+      "url": "https://news.ycombinator.com/item?id=49559186",
+      "uid": "49559186",
+      "title": "Xbox Game Pass now limits the amount of hours each month",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.026Z"
+    },
+    "4961-code-review-of-ai-output-review-what": {
+      "url": "https://news.ycombinator.com/item?id=49559036",
+      "uid": "49559036",
+      "title": "Code review of AI output, review what?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.031Z"
+    },
+    "4962-what-is-the-ideal-email-domain-setup": {
+      "url": "https://news.ycombinator.com/item?id=49558794",
+      "uid": "49558794",
+      "title": "What is the ideal email domain setup?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.034Z"
+    },
+    "4963-tell-hn-the-thoughts-and-woes-of-a-full-time-founder-p": {
+      "url": "https://news.ycombinator.com/item?id=49558646",
+      "uid": "49558646",
+      "title": "Tell HN: The Thoughts and Woes of a Full-Time Founder Part 1",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.038Z"
+    },
+    "4964-who-is-using-fpga-for-ml-inference": {
+      "url": "https://news.ycombinator.com/item?id=49557875",
+      "uid": "49557875",
+      "title": "Who is using FPGA for ML inference?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.041Z"
+    },
+    "4965-iphone-camera-on-indicator": {
+      "url": "https://news.ycombinator.com/item?id=49557834",
+      "uid": "49557834",
+      "title": "iPhone Camera on indicator",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.045Z"
+    },
+    "4966-tell-hn-nvidia-s-acquisition-of-huggingface-was-for-hu": {
+      "url": "https://news.ycombinator.com/item?id=49557813",
+      "uid": "49557813",
+      "title": "Tell HN: NVIDIA's Acquisition of HuggingFace was for $HuggingFace",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.048Z"
+    },
+    "4967-one-person-startup-a-cornell-postdoc-wants-to-put-ai-i": {
+      "url": "https://news.ycombinator.com/item?id=49557020",
+      "uid": "49557020",
+      "title": "One-person startup: a Cornell postdoc wants to put AI in everyone's hands",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.052Z"
+    },
+    "4968-how-do-you-gate-an-autonomous-coding-agent-s-shell-acc": {
+      "url": "https://news.ycombinator.com/item?id=49556858",
+      "uid": "49556858",
+      "title": "How do you gate an autonomous coding agent's shell access?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.055Z"
+    },
+    "4969-how-do-we-build-a-team-bootstrapped-b2b-startup": {
+      "url": "https://news.ycombinator.com/item?id=49556698",
+      "uid": "49556698",
+      "title": "How do we build a team? (bootstrapped B2B startup)",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.058Z"
+    },
+    "4970-are-guardrails-being-baked-into-models-or-enforced-out": {
+      "url": "https://news.ycombinator.com/item?id=49554580",
+      "uid": "49554580",
+      "title": "Are guardrails being baked into models, or enforced outside them?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.061Z"
+    },
+    "4971-what-ai-agent-infrastructure-are-you-using-in-2026": {
+      "url": "https://news.ycombinator.com/item?id=49550366",
+      "uid": "49550366",
+      "title": "What AI agent infrastructure are you using in 2026?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.065Z"
+    },
+    "4972-30-burnt-out-with-6-10-months-of-runway-what-would-you": {
+      "url": "https://news.ycombinator.com/item?id=49535363",
+      "uid": "49535363",
+      "title": "30, burnt out, with 6-10 months of runway. What would you do?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.068Z"
+    },
+    "4973-where-do-i-go": {
+      "url": "https://news.ycombinator.com/item?id=49535138",
+      "uid": "49535138",
+      "title": "Where do I go?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T02:00:23.072Z"
+    },
+    "4974-a-rust-compiler-translating-joern-cpgs-to-nuclei-templ": {
+      "url": "https://news.ycombinator.com/item?id=49559490",
+      "uid": "49559490",
+      "title": "a Rust compiler translating Joern CPGs to Nuclei templates",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T02:00:23.074Z"
+    },
+    "4975-photosynthesis-iphone-app-captures-from-2-lenses-stitc": {
+      "url": "https://news.ycombinator.com/item?id=49558529",
+      "uid": "49558529",
+      "title": "Photosynthesis – iPhone app captures from 2 lenses, stitches to 1 photo",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T02:00:23.078Z"
+    },
+    "4976-chrome-tab-group-cleaner-for-claude-code-created-tab-g": {
+      "url": "https://news.ycombinator.com/item?id=49558445",
+      "uid": "49558445",
+      "title": "Chrome tab group cleaner for Claude Code created tab groups",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T02:00:23.081Z"
+    },
+    "4977-if-i-had-to-design-a-nuclear-fusion-power-plant-idea-s": {
+      "url": "https://news.ycombinator.com/item?id=49558406",
+      "uid": "49558406",
+      "title": "If I had to design a nuclear fusion power plant(Idea Sketch)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T02:00:23.084Z"
+    },
+    "4978-generate-a-claude-code-or-codex-agent-fleet-from-one-h": {
+      "url": "https://news.ycombinator.com/item?id=49558161",
+      "uid": "49558161",
+      "title": "Generate a Claude Code or Codex agent fleet from one HTML file",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T02:00:23.086Z"
+    },
+    "4979-x-radio-fm-live-single-stream-radio-station-for-founde": {
+      "url": "https://betalist.com/startups/x-radio-fm?utm_campaign=startup-186143&utm_medium=atom&utm_source=newsfeed",
+      "uid": "x-radio-fm",
+      "title": "X-Radio.FM – Live single-stream radio station for founders building in public",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T02:00:23.089Z"
+    },
+    "4980-realfiction-fiction-dna-matches-games-and-real-connect": {
+      "url": "https://betalist.com/startups/realfiction?utm_campaign=startup-186108&utm_medium=atom&utm_source=newsfeed",
+      "uid": "realfiction",
+      "title": "RealFiction – Fiction DNA matches, games, and real connections",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T02:00:23.092Z"
+    },
+    "4981-why-is-hn-native-dark-mode-not-implemented-yet": {
+      "url": "https://news.ycombinator.com/item?id=49561016",
+      "uid": "49561016",
+      "title": "Why is HN native dark mode not implemented yet?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T06:00:27.501Z"
+    },
+    "4982-anti-ad-download-assistant-for-free": {
+      "url": "https://news.ycombinator.com/item?id=49560972",
+      "uid": "49560972",
+      "title": "Anti-Ad Download Assistant\" for Free",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T06:00:27.505Z"
+    },
+    "4983-why-do-many-websites-use-a-sign-in-code-instead-of-a-p": {
+      "url": "https://news.ycombinator.com/item?id=49560168",
+      "uid": "49560168",
+      "title": "Why do many websites use a sign-in code instead of a password?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T06:00:27.508Z"
+    },
+    "4984-how-do-you-market-open-source-software": {
+      "url": "https://news.ycombinator.com/item?id=49559724",
+      "uid": "49559724",
+      "title": "How do you market Open Source Software?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T06:00:27.511Z"
+    },
+    "4985-terminal-native-prompt-composer-for-power-users-runnin": {
+      "url": "https://news.ycombinator.com/item?id=49560962",
+      "uid": "49560962",
+      "title": "Terminal-native prompt composer for power users running many agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T06:00:27.515Z"
+    },
+    "4986-lettura-an-app-to-read-freshrss-feeds-built-for-rss-en": {
+      "url": "https://news.ycombinator.com/item?id=49560825",
+      "uid": "49560825",
+      "title": "Lettura, an app to read FreshRSS feeds built for RSS enthusiasts",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T06:00:27.517Z"
+    },
+    "4987-word42-a-wordprocessor-inspired-by-ms-word-and-abiword": {
+      "url": "https://news.ycombinator.com/item?id=49560595",
+      "uid": "49560595",
+      "title": "Word42, a wordprocessor inspired by MS Word and Abiword",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T06:00:27.521Z"
+    },
+    "4988-jarpeek-online-jar-viewer-decompile-classes-locally-no": {
+      "url": "https://news.ycombinator.com/item?id=49560203",
+      "uid": "49560203",
+      "title": "JarPeek – Online JAR viewer, decompile classes locally (no upload)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T06:00:27.524Z"
+    },
+    "4989-jetway-a-working-airline-gds-and-message-router": {
+      "url": "https://news.ycombinator.com/item?id=49559630",
+      "uid": "49559630",
+      "title": "Jetway, a working airline GDS and message router",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T06:00:27.529Z"
+    },
+    "4990-voicetranslate-translate-voice-text-and-camera-in-real": {
+      "url": "https://betalist.com/startups/voicetranslate?utm_campaign=startup-182454&utm_medium=atom&utm_source=newsfeed",
+      "uid": "voicetranslate",
+      "title": "VoiceTranslate – Translate voice, text, and camera in real time across 500+ languages",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T06:00:27.532Z"
+    },
+    "4991-norgo-discover-places-in-norway-plan-trips-and-collect": {
+      "url": "https://betalist.com/startups/norgo?utm_campaign=startup-182444&utm_medium=atom&utm_source=newsfeed",
+      "uid": "norgo",
+      "title": "NorGo – Discover places in Norway, plan trips, and collect memories",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T06:00:27.534Z"
+    },
+    "4992-orlo-track-renewals-and-deadlines-from-your-documents": {
+      "url": "https://betalist.com/startups/orlo?utm_campaign=startup-182413&utm_medium=atom&utm_source=newsfeed",
+      "uid": "orlo",
+      "title": "Orlo – Track renewals and deadlines from your documents with smart reminders",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T06:00:27.537Z"
+    },
+    "4993-rename-chatgpt": {
+      "url": "https://news.ycombinator.com/item?id=49562192",
+      "uid": "49562192",
+      "title": "Rename ChatGPT?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T10:00:29.170Z"
+    },
+    "4994-how-to-attempt-cbse-sample-papers-like-real-board-exam": {
+      "url": "https://news.ycombinator.com/item?id=49561643",
+      "uid": "49561643",
+      "title": "How to Attempt CBSE Sample Papers Like Real Board Exam Papers?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T10:00:29.174Z"
+    },
+    "4995-how-has-ai-changed-your-qa-validation-workflows": {
+      "url": "https://news.ycombinator.com/item?id=49561398",
+      "uid": "49561398",
+      "title": "How has AI changed your QA validation workflows?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T10:00:29.177Z"
+    },
+    "4996-who-is-accountable-for-frontier-ai-companies-agent-s-c": {
+      "url": "https://news.ycombinator.com/item?id=49561197",
+      "uid": "49561197",
+      "title": "Who is accountable for Frontier AI Companies agent's criminal actions?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T10:00:29.181Z"
+    },
+    "4997-professional-security-testing-platform": {
+      "url": "https://news.ycombinator.com/item?id=49562246",
+      "uid": "49562246",
+      "title": "Professional Security Testing Platform",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.184Z"
+    },
+    "4998-termy-a-fast-terminal-assistant-that-does-not-use-llms": {
+      "url": "https://news.ycombinator.com/item?id=49562219",
+      "uid": "49562219",
+      "title": "TERMy – A fast terminal assistant that does not use LLMs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.187Z"
+    },
+    "4999-send-secrets-a-server-can-t-decrypt-even-if-compelled": {
+      "url": "https://news.ycombinator.com/item?id=49562195",
+      "uid": "49562195",
+      "title": "Send secrets a server can't decrypt, even if compelled to",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.190Z"
+    },
+    "5000-prices-eu-org": {
+      "url": "https://news.ycombinator.com/item?id=49562157",
+      "uid": "49562157",
+      "title": "Prices.eu.org",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.193Z"
+    },
+    "5001-videm-an-ai-image-generator-with-3-free-daily-images": {
+      "url": "https://news.ycombinator.com/item?id=49562099",
+      "uid": "49562099",
+      "title": "Videm – An AI image generator with 3 free daily images",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.196Z"
+    },
+    "5002-aurict-an-open-source-terminal-ai": {
+      "url": "https://news.ycombinator.com/item?id=49561903",
+      "uid": "49561903",
+      "title": "Aurict – An open-source Terminal AI",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.199Z"
+    },
+    "5003-fulcrumaxe-an-agent-team-that-merged-1-135-prs-into-it": {
+      "url": "https://news.ycombinator.com/item?id=49561764",
+      "uid": "49561764",
+      "title": "Fulcrumaxe – an agent team that merged 1,135 PRs into its own repo",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.203Z"
+    },
+    "5004-snooze-tabs-in-plain-english": {
+      "url": "https://news.ycombinator.com/item?id=49561760",
+      "uid": "49561760",
+      "title": "Snooze Tabs in Plain English",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.206Z"
+    },
+    "5005-vm-1-a-raspberry-pi-5-based-videomixer-and-videoplayer": {
+      "url": "https://news.ycombinator.com/item?id=49561299",
+      "uid": "49561299",
+      "title": "VM-1, a Raspberry Pi 5 based videomixer and videoplayer",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.209Z"
+    },
+    "5006-interactive-map-of-the-japanese-address-system": {
+      "url": "https://news.ycombinator.com/item?id=49561280",
+      "uid": "49561280",
+      "title": "Interactive map of the Japanese address system",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.213Z"
+    },
+    "5007-ai-game-builder-and-editor-built-with-rails-and-godot": {
+      "url": "https://news.ycombinator.com/item?id=49561198",
+      "uid": "49561198",
+      "title": "AI game builder and editor built with Rails and Godot",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T10:00:29.216Z"
+    },
+    "5008-cmmnts": {
+      "url": "https://www.producthunt.com/products/cmmnts",
+      "uid": null,
+      "title": "cmmnts",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.219Z"
+    },
+    "5009-offline-js-playground": {
+      "url": "https://www.producthunt.com/products/offline-js-playground",
+      "uid": null,
+      "title": "Offline JS Playground",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.223Z"
+    },
+    "5010-inline": {
+      "url": "https://www.producthunt.com/products/inline-5",
+      "uid": null,
+      "title": "Inline",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.226Z"
+    },
+    "5011-myaicademy": {
+      "url": "https://www.producthunt.com/products/myaicademy",
+      "uid": null,
+      "title": "myAIcademy",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.229Z"
+    },
+    "5012-omarchy": {
+      "url": "https://www.producthunt.com/products/omarchy-3",
+      "uid": null,
+      "title": "Omarchy",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.233Z"
+    },
+    "5013-clockwork": {
+      "url": "https://www.producthunt.com/products/clockwork-5",
+      "uid": null,
+      "title": "Clockwork",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.236Z"
+    },
+    "5014-google-gemini-3-8-flash-and-cyber": {
+      "url": "https://www.producthunt.com/products/gemini-3-8-flash",
+      "uid": null,
+      "title": "Google Gemini 3.8 Flash and Cyber",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.239Z"
+    },
+    "5015-snitch": {
+      "url": "https://www.producthunt.com/products/snitch-4",
+      "uid": null,
+      "title": "Snitch",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.242Z"
+    },
+    "5016-compliance-by-twelvelabs": {
+      "url": "https://www.producthunt.com/products/twelvelabs",
+      "uid": null,
+      "title": "Compliance by TwelveLabs",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.245Z"
+    },
+    "5017-gemini-3-8-flash": {
+      "url": "https://www.producthunt.com/products/gemini-3-8-flash-2",
+      "uid": null,
+      "title": "Gemini 3.8 Flash",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.248Z"
+    },
+    "5018-gpt-6-astra": {
+      "url": "https://www.producthunt.com/products/gpt-6-astra",
+      "uid": null,
+      "title": "GPT-6 Astra",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.251Z"
+    },
+    "5019-weathernext-3": {
+      "url": "https://www.producthunt.com/products/weathernext-3",
+      "uid": null,
+      "title": "WeatherNext 3",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.253Z"
+    },
+    "5020-sidebranch": {
+      "url": "https://www.producthunt.com/products/sidebranch",
+      "uid": null,
+      "title": "sidebranch",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.257Z"
+    },
+    "5021-trackmcp": {
+      "url": "https://www.producthunt.com/products/trackmcp",
+      "uid": null,
+      "title": "TrackMCP",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.260Z"
+    },
+    "5022-chalked-for-mac": {
+      "url": "https://www.producthunt.com/products/chalked",
+      "uid": null,
+      "title": "Chalked for Mac",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-04T10:00:29.263Z"
+    },
+    "5023-risume-an-ai-native-resume-builder-that-tailors-your-r": {
+      "url": "https://betalist.com/startups/risume?utm_campaign=startup-182473&utm_medium=atom&utm_source=newsfeed",
+      "uid": "risume",
+      "title": "Risume – An AI-native resume builder that tailors your resume to every job",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T10:00:29.266Z"
+    },
+    "5024-verva-humanize-ai-text-and-bypass-ai-detectors-in-seco": {
+      "url": "https://betalist.com/startups/verva?utm_campaign=startup-182465&utm_medium=atom&utm_source=newsfeed",
+      "uid": "verva",
+      "title": "Verva – Humanize AI text and bypass AI detectors in seconds",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T10:00:29.269Z"
+    },
+    "5025-gestormsp-unify-rmm-itsm-psa-crm-and-soc-to-run-your-m": {
+      "url": "https://betalist.com/startups/gestormsp?utm_campaign=startup-182459&utm_medium=atom&utm_source=newsfeed",
+      "uid": "gestormsp",
+      "title": "GestorMSP – Unify RMM, ITSM, PSA, CRM, and SOC to run your MSP without integrations",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T10:00:29.272Z"
+    },
+    "5026-the-script-didn-t-hate-ai-it-hated-the-character": {
+      "url": "https://news.ycombinator.com/item?id=49563620",
+      "uid": "49563620",
+      "title": "The script didn't hate AI. It hated the \"@\" character",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T14:00:29.138Z"
+    },
+    "5027-ow-are-small-recruiting-agencies-automating-candidate": {
+      "url": "https://news.ycombinator.com/item?id=49563526",
+      "uid": "49563526",
+      "title": "Ow are small recruiting agencies automating candidate screening?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T14:00:29.143Z"
+    },
+    "5028-is-microsoft-365-having-an-email-outage": {
+      "url": "https://news.ycombinator.com/item?id=49563153",
+      "uid": "49563153",
+      "title": "Is Microsoft 365 having an email outage?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T14:00:29.147Z"
+    },
+    "5029-should-internal-services-ever-receive-raw-customer-pii": {
+      "url": "https://news.ycombinator.com/item?id=49562573",
+      "uid": "49562573",
+      "title": "Should internal services ever receive raw customer PII?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T14:00:29.150Z"
+    },
+    "5030-3d-printable-qr-code-generator-3mf-stl-obj-running-100": {
+      "url": "https://news.ycombinator.com/item?id=49564732",
+      "uid": "49564732",
+      "title": "3D-printable QR code generator (3MF, STL, OBJ) running 100% in browser",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.153Z"
+    },
+    "5031-cloud-bill-billionaire": {
+      "url": "https://news.ycombinator.com/item?id=49564710",
+      "uid": "49564710",
+      "title": "Cloud Bill Billionaire",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.157Z"
+    },
+    "5032-webmcp-react-v1-0-0-react-hooks-for-agents-to-use-webm": {
+      "url": "https://news.ycombinator.com/item?id=49564588",
+      "uid": "49564588",
+      "title": "Webmcp-react v1.0.0 (React hooks for agents to use WebMCP)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.162Z"
+    },
+    "5033-kovavue-a-rented-linux-box-where-your-ai-agent-works-l": {
+      "url": "https://news.ycombinator.com/item?id=49564582",
+      "uid": "49564582",
+      "title": "Kovavue – a rented Linux box where your AI agent works like a human",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.165Z"
+    },
+    "5034-selection-toolbar-the-right-actions-beside-any-selecte": {
+      "url": "https://news.ycombinator.com/item?id=49564575",
+      "uid": "49564575",
+      "title": "Selection Toolbar – the right actions beside any selected text",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.169Z"
+    },
+    "5035-check-tech": {
+      "url": "https://news.ycombinator.com/item?id=49564549",
+      "uid": "49564549",
+      "title": "Check Tech",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.172Z"
+    },
+    "5036-a-privacy-focused-web-based-har-viewer": {
+      "url": "https://news.ycombinator.com/item?id=49564463",
+      "uid": "49564463",
+      "title": "A privacy-focused web-based HAR viewer",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.176Z"
+    },
+    "5037-sitetweak-a-browser-extension-to-modify-any-website": {
+      "url": "https://news.ycombinator.com/item?id=49564393",
+      "uid": "49564393",
+      "title": "SiteTweak – a browser extension to modify any website",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.179Z"
+    },
+    "5038-cloud-bill-billionaire": {
+      "url": "https://news.ycombinator.com/item?id=49564389",
+      "uid": "49564389",
+      "title": "Cloud Bill Billionaire",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.183Z"
+    },
+    "5039-bullsniff-sniff-out-bullshit-ai-sites": {
+      "url": "https://news.ycombinator.com/item?id=49564317",
+      "uid": "49564317",
+      "title": "BullSniff – Sniff out bullshit AI sites",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.186Z"
+    },
+    "5040-reble-branching-for-iceberg-data-warehouses-duckdb-or": {
+      "url": "https://news.ycombinator.com/item?id=49563992",
+      "uid": "49563992",
+      "title": "Reble – branching for Iceberg data warehouses (DuckDB or Spark)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.191Z"
+    },
+    "5041-openhelper-ai-the-free-and-open-source-ai-chatbot": {
+      "url": "https://news.ycombinator.com/item?id=49563913",
+      "uid": "49563913",
+      "title": "OpenHelper AI – The Free and Open Source AI Chatbot",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.195Z"
+    },
+    "5042-agent-sandboxes-with-gpus-from-0-20-hr": {
+      "url": "https://news.ycombinator.com/item?id=49563492",
+      "uid": "49563492",
+      "title": "Agent Sandboxes with GPUs from $0.20/hr",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.198Z"
+    },
+    "5043-million-bricks-a-3d-tower-of-one-million-bricks-you-ca": {
+      "url": "https://news.ycombinator.com/item?id=49563463",
+      "uid": "49563463",
+      "title": "Million Bricks – a 3D tower of one million bricks you can buy for $10",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.202Z"
+    },
+    "5044-mrdown-a-mac-markdown-app-that-diffs-what-your-ai-just": {
+      "url": "https://news.ycombinator.com/item?id=49563459",
+      "uid": "49563459",
+      "title": "MRDown – a Mac Markdown app that diffs what your AI just rewrote",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.205Z"
+    },
+    "5045-open-source-erp-for-small-manufacturing-shops": {
+      "url": "https://news.ycombinator.com/item?id=49563420",
+      "uid": "49563420",
+      "title": "Open-source ERP for small manufacturing shops",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.209Z"
+    },
+    "5046-what-if-ai-did-the-prompting-and-humans-did-the-thinki": {
+      "url": "https://news.ycombinator.com/item?id=49563390",
+      "uid": "49563390",
+      "title": "What if AI did the prompting – and humans did the thinking?",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.213Z"
+    },
+    "5047-mcp-security-auditor-zero-execution-static-scanner-for": {
+      "url": "https://news.ycombinator.com/item?id=49563084",
+      "uid": "49563084",
+      "title": "MCP Security Auditor – Zero-execution static scanner for MCP servers",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.217Z"
+    },
+    "5048-amadunia-a-world-auxiliary-language-with-300-roots-and": {
+      "url": "https://news.ycombinator.com/item?id=49563073",
+      "uid": "49563073",
+      "title": "Amadunia – a world auxiliary language with 300 roots and no exceptions",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.220Z"
+    },
+    "5049-i-got-bpm-detection-from-42-to-85-on-giantsteps-with-t": {
+      "url": "https://news.ycombinator.com/item?id=49562958",
+      "uid": "49562958",
+      "title": "I got BPM detection from 42% to 85% on GiantSteps with TempoCNN",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.224Z"
+    },
+    "5050-sponsee-the-sponsorship-crm-for-streamers": {
+      "url": "https://news.ycombinator.com/item?id=49562920",
+      "uid": "49562920",
+      "title": "Sponsee – The Sponsorship CRM for Streamers",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.227Z"
+    },
+    "5051-a-browser-ide-that-builds-and-deploys-your-project-to": {
+      "url": "https://news.ycombinator.com/item?id=49562792",
+      "uid": "49562792",
+      "title": "A browser IDE that builds and deploys your project to a live URL",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.231Z"
+    },
+    "5052-viasocket-ai-built-workflows-and-your-apps-as-an-mcp-s": {
+      "url": "https://news.ycombinator.com/item?id=49562701",
+      "uid": "49562701",
+      "title": "viaSocket – AI-built workflows, and your apps as an MCP server",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.235Z"
+    },
+    "5053-rendrflow-your-on-device-photo-editing": {
+      "url": "https://news.ycombinator.com/item?id=49562595",
+      "uid": "49562595",
+      "title": "Rendrflow your on device photo editing",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T14:00:29.238Z"
+    },
+    "5054-vocaba-master-spanish-with-ai-driven-duels-precise-gra": {
+      "url": "https://betalist.com/startups/vocaba?utm_campaign=startup-182500&utm_medium=atom&utm_source=newsfeed",
+      "uid": "vocaba",
+      "title": "Vocaba – Master Spanish with AI-driven duels, precise grading, and custom sentences",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T14:00:29.242Z"
+    },
+    "5055-explain-ink-turn-topics-or-documents-into-hand-drawn-e": {
+      "url": "https://betalist.com/startups/explain-ink?utm_campaign=startup-182491&utm_medium=atom&utm_source=newsfeed",
+      "uid": "explain-ink",
+      "title": "explain.ink – Turn topics or documents into hand-drawn explainer videos",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T14:00:29.245Z"
+    },
+    "5056-it-s-2026-and-chatgpt-still-fails": {
+      "url": "https://news.ycombinator.com/item?id=49567516",
+      "uid": "49567516",
+      "title": "It's 2026 and ChatGPT still fails",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.402Z"
+    },
+    "5057-is-there-any-way-to-contribute-to-nitter-and-xcancel-s": {
+      "url": "https://news.ycombinator.com/item?id=49567441",
+      "uid": "49567441",
+      "title": "Is there any way to contribute to nitter and xcancel's legal fights?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.406Z"
+    },
+    "5058-looking-for-a-sci-fi-short-story-posted-here": {
+      "url": "https://news.ycombinator.com/item?id=49566847",
+      "uid": "49566847",
+      "title": "Looking for a sci-fi short story posted here",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.409Z"
+    },
+    "5059-why-don-t-we-talk-about-context-window-size-anymore": {
+      "url": "https://news.ycombinator.com/item?id=49566388",
+      "uid": "49566388",
+      "title": "Why don't we talk about context window size anymore?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.413Z"
+    },
+    "5060-framework-to-manage-firecracker": {
+      "url": "https://news.ycombinator.com/item?id=49566049",
+      "uid": "49566049",
+      "title": "Framework to Manage Firecracker?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.416Z"
+    },
+    "5061-tell-hn-check-your-claude-settings-it-may-have-silentl": {
+      "url": "https://news.ycombinator.com/item?id=49565799",
+      "uid": "49565799",
+      "title": "Tell HN: Check your Claude settings, it may have silently enabled remote access",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.420Z"
+    },
+    "5062-do-all-of-you-use-cloudflare-for-preventing-ddos-bot-a": {
+      "url": "https://news.ycombinator.com/item?id=49565526",
+      "uid": "49565526",
+      "title": "Do all of you use Cloudflare for preventing DDoS, Bot and more attacks?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.423Z"
+    },
+    "5063-where-did-ted-unangst-s-website-go": {
+      "url": "https://news.ycombinator.com/item?id=49565127",
+      "uid": "49565127",
+      "title": "Where did Ted Unangst's website go?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.427Z"
+    },
+    "5064-shift-left-to-reachability-first-how-are-you-surviving": {
+      "url": "https://news.ycombinator.com/item?id=49564895",
+      "uid": "49564895",
+      "title": "Shift-Left to Reachability-First-How are you surviving AST alert fatigue",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.430Z"
+    },
+    "5065-why-ai-coding-agents-fake-completion-and-how-to-build": {
+      "url": "https://news.ycombinator.com/item?id=49564889",
+      "uid": "49564889",
+      "title": "Why AI coding agents fake completion, and how to build a bijective validator",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T18:00:32.433Z"
+    },
+    "5066-yubishard-split-a-wallet-seed-across-yubikeys": {
+      "url": "https://news.ycombinator.com/item?id=49567902",
+      "uid": "49567902",
+      "title": "YubiShard – split a wallet seed across Yubikeys",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.436Z"
+    },
+    "5067-georace-geo-puzzles-and-virtual-journeys-in-one-game": {
+      "url": "https://news.ycombinator.com/item?id=49567875",
+      "uid": "49567875",
+      "title": "GeoRace – geo puzzles and virtual journeys in one game",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.439Z"
+    },
+    "5068-roost-a-browser-window-into-your-remote-coding-session": {
+      "url": "https://news.ycombinator.com/item?id=49567840",
+      "uid": "49567840",
+      "title": "Roost, a browser window into your remote coding sessions",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.443Z"
+    },
+    "5069-local-mitsubishi-ac-control-with-esphome-and-an-atoms3": {
+      "url": "https://news.ycombinator.com/item?id=49567615",
+      "uid": "49567615",
+      "title": "Local Mitsubishi AC Control with ESPHome and an AtomS3 Lite",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.447Z"
+    },
+    "5070-airlune-a-focus-timer-built-around-virtual-flights": {
+      "url": "https://news.ycombinator.com/item?id=49567497",
+      "uid": "49567497",
+      "title": "AirLune - A focus timer built around virtual flights",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.451Z"
+    },
+    "5071-open-source-eink-bike-computer": {
+      "url": "https://news.ycombinator.com/item?id=49567437",
+      "uid": "49567437",
+      "title": "Open-Source eInk Bike Computer",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.454Z"
+    },
+    "5072-nationaldex-minimal-open-source-pokedex": {
+      "url": "https://news.ycombinator.com/item?id=49567346",
+      "uid": "49567346",
+      "title": "NationalDex • minimal open-source Pokédex",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.457Z"
+    },
+    "5073-ephemerals-disposable-cloud-dev-environments": {
+      "url": "https://news.ycombinator.com/item?id=49567206",
+      "uid": "49567206",
+      "title": "Ephemerals – Disposable Cloud Dev Environments",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.461Z"
+    },
+    "5074-danterm-a-fast-macos-terminal-emulator-compare-with-gh": {
+      "url": "https://news.ycombinator.com/item?id=49567153",
+      "uid": "49567153",
+      "title": "DanTerm – a fast macOS terminal emulator (compare with Ghostty, iTerm2)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.465Z"
+    },
+    "5075-gage-rust-based-tool-to-scan-claude-sessions-for-bugs": {
+      "url": "https://news.ycombinator.com/item?id=49566640",
+      "uid": "49566640",
+      "title": "Gage – Rust based tool to scan Claude sessions for bugs, other issues",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.468Z"
+    },
+    "5076-molewire-wg-dongle": {
+      "url": "https://news.ycombinator.com/item?id=49566300",
+      "uid": "49566300",
+      "title": "Molewire: WG Dongle",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.472Z"
+    },
+    "5077-llama-self-hosted-oss-alternatives-to-vercel-and-supab": {
+      "url": "https://news.ycombinator.com/item?id=49566216",
+      "uid": "49566216",
+      "title": "Llama – Self-Hosted OSS Alternatives to Vercel and Supabase",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.475Z"
+    },
+    "5078-ai-powered-cross-stitch-pattern-maker": {
+      "url": "https://news.ycombinator.com/item?id=49566080",
+      "uid": "49566080",
+      "title": "AI-powered cross stitch pattern maker",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.479Z"
+    },
+    "5079-kullback-synthetic-rl-environments-from-traces": {
+      "url": "https://news.ycombinator.com/item?id=49565975",
+      "uid": "49565975",
+      "title": "Kullback – Synthetic RL Environments from Traces",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.483Z"
+    },
+    "5080-deepmem-plugin-for-claude-code-persistent-semantic-mem": {
+      "url": "https://news.ycombinator.com/item?id=49565805",
+      "uid": "49565805",
+      "title": "DeepMem plugin for Claude Code – persistent semantic memory via MCP",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.487Z"
+    },
+    "5081-jogpad-shift-shift-note-capture-app-macos": {
+      "url": "https://news.ycombinator.com/item?id=49565661",
+      "uid": "49565661",
+      "title": "JogPad – Shift Shift note capture app (macOS)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.490Z"
+    },
+    "5082-dev-prune-deletes-node-modules-only-when-the-lockfile": {
+      "url": "https://news.ycombinator.com/item?id=49565634",
+      "uid": "49565634",
+      "title": "Dev-prune – deletes node_modules only when the lockfile can rebuild it",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.493Z"
+    },
+    "5083-raii-and-it-s-architecture-in-c": {
+      "url": "https://news.ycombinator.com/item?id=49565572",
+      "uid": "49565572",
+      "title": "RAII and It's Architecture in C++",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.497Z"
+    },
+    "5084-clustta-open-source-version-control-for-creative-work": {
+      "url": "https://news.ycombinator.com/item?id=49565530",
+      "uid": "49565530",
+      "title": "Clustta – Open-source version control for creative work",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.500Z"
+    },
+    "5085-unofficial-3ds-port-of-f-zero-x-written-by-claude-code": {
+      "url": "https://news.ycombinator.com/item?id=49565499",
+      "uid": "49565499",
+      "title": "Unofficial 3DS Port of F-Zero X Written by Claude Code",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.503Z"
+    },
+    "5086-less-sheet-a-minimal-but-fast-csv-viewer": {
+      "url": "https://news.ycombinator.com/item?id=49565406",
+      "uid": "49565406",
+      "title": "Less-sheet – A minimal but fast CSV viewer",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.507Z"
+    },
+    "5087-give-every-agent-the-right-data-access-and-context-to": {
+      "url": "https://news.ycombinator.com/item?id=49565399",
+      "uid": "49565399",
+      "title": "Give every agent the right data, access and context to get work done",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.510Z"
+    },
+    "5088-learn-practice-sudoku-strategies-web-app": {
+      "url": "https://news.ycombinator.com/item?id=49565298",
+      "uid": "49565298",
+      "title": "Learn/Practice Sudoku strategies web app",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.514Z"
+    },
+    "5089-context-engine-be-an-ai-native-company-or-get-killed-b": {
+      "url": "https://news.ycombinator.com/item?id=49565279",
+      "uid": "49565279",
+      "title": "Context Engine – Be an AI-native company or get killed by one that did",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.517Z"
+    },
+    "5090-browser-tools-that-repair-gedcom-files-and-write-them": {
+      "url": "https://news.ycombinator.com/item?id=49565255",
+      "uid": "49565255",
+      "title": "Browser tools that repair GEDCOM files and write them back unchanged",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.521Z"
+    },
+    "5091-mescript-music-programming-language-inspired-by-lisp": {
+      "url": "https://news.ycombinator.com/item?id=49565243",
+      "uid": "49565243",
+      "title": "MeScript, music programming language inspired by Lisp",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.525Z"
+    },
+    "5092-petrichor-native-offline-music-player-for-macos": {
+      "url": "https://news.ycombinator.com/item?id=49565238",
+      "uid": "49565238",
+      "title": "Petrichor – Native offline music player for macOS",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.529Z"
+    },
+    "5093-vise-deterministic-gates-for-ai-refactors": {
+      "url": "https://news.ycombinator.com/item?id=49565151",
+      "uid": "49565151",
+      "title": "Vise – Deterministic gates for AI refactors",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.532Z"
+    },
+    "5094-floyi-a-topic-first-content-workflow-for-google-and-ai": {
+      "url": "https://news.ycombinator.com/item?id=49565003",
+      "uid": "49565003",
+      "title": "Floyi, a topic-first content workflow for Google and AI search",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.540Z"
+    },
+    "5095-casefile-git-why-for-ai-assisted-development": {
+      "url": "https://news.ycombinator.com/item?id=49564994",
+      "uid": "49564994",
+      "title": "Casefile – Git why for AI-assisted development",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.547Z"
+    },
+    "5096-claude-sniff-loopback-mitm-for-claude-code-on-bedrock": {
+      "url": "https://news.ycombinator.com/item?id=49564991",
+      "uid": "49564991",
+      "title": "Claude-Sniff – Loopback MitM for Claude Code on Bedrock",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.551Z"
+    },
+    "5097-declick-turn-an-openapi-spec-mcp-server-or-sqlite-db-i": {
+      "url": "https://news.ycombinator.com/item?id=49564984",
+      "uid": "49564984",
+      "title": "Declick – Turn an OpenAPI Spec, MCP Server or SQLite DB into a CLI",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.558Z"
+    },
+    "5098-audioreality-ai-email-to-private-daily-podcast-summary": {
+      "url": "https://news.ycombinator.com/item?id=49564980",
+      "uid": "49564980",
+      "title": "Audioreality.ai – email to private daily podcast summary show",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.563Z"
+    },
+    "5099-sentrint-ship-ai-features-without-losing-sleep": {
+      "url": "https://news.ycombinator.com/item?id=49564974",
+      "uid": "49564974",
+      "title": "Sentrint, Ship AI features without losing sleep",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.568Z"
+    },
+    "5100-openstint-lap-timing-using-rtl-sdr-and-near-field-tran": {
+      "url": "https://news.ycombinator.com/item?id=49564921",
+      "uid": "49564921",
+      "title": "OpenStint – lap timing using RTL-SDR and near-field transponders",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.574Z"
+    },
+    "5101-votito-helps-you-decide-what-to-build-next-with-confid": {
+      "url": "https://news.ycombinator.com/item?id=49564832",
+      "uid": "49564832",
+      "title": "Votito helps you decide what to build next with confidence",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T18:00:32.582Z"
+    },
+    "5102-uniogram-create-manage-and-grow-your-ai-tools-in-one-s": {
+      "url": "https://betalist.com/startups/uniogram?utm_campaign=startup-182538&utm_medium=atom&utm_source=newsfeed",
+      "uid": "uniogram",
+      "title": "UNIOGRAM – Create, manage, and grow your AI tools in one space",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T18:00:32.587Z"
+    },
+    "5103-helvestor-see-your-whole-portfolio-and-understand-it-w": {
+      "url": "https://betalist.com/startups/helvestor?utm_campaign=startup-182515&utm_medium=atom&utm_source=newsfeed",
+      "uid": "helvestor",
+      "title": "Helvestor – See your whole portfolio and understand it with AI",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T18:00:32.601Z"
+    },
+    "5104-replyhey-find-and-answer-high-intent-reddit-x-and-link": {
+      "url": "https://betalist.com/startups/replyhey?utm_campaign=startup-182513&utm_medium=atom&utm_source=newsfeed",
+      "uid": "replyhey",
+      "title": "ReplyHey – Find and answer high-intent Reddit, X, and LinkedIn leads daily",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T18:00:32.605Z"
+    },
+    "5105-tell-hn-anthropic-just-reset-usage-including-fable": {
+      "url": "https://news.ycombinator.com/item?id=49570522",
+      "uid": "49570522",
+      "title": "Tell HN: Anthropic just reset usage, including Fable",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.808Z"
+    },
+    "5106-two-random-anthropic-allocation-resets-this-week": {
+      "url": "https://news.ycombinator.com/item?id=49570445",
+      "uid": "49570445",
+      "title": "Two random Anthropic allocation resets this week",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.816Z"
+    },
+    "5107-how-do-you-know-if-you-have-a-product-problem-or-a-dis": {
+      "url": "https://news.ycombinator.com/item?id=49570029",
+      "uid": "49570029",
+      "title": "How do you know if you have a product problem or a distribution one?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.820Z"
+    },
+    "5108-prediction-gpu-s-are-currently-the-cheapest-they-re-ev": {
+      "url": "https://news.ycombinator.com/item?id=49569993",
+      "uid": "49569993",
+      "title": "Prediction: GPU's are currently the cheapest they're ever gonna be",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.824Z"
+    },
+    "5109-anyone-s-gonna-use-gpt-6-astra-in-microsoft-foundry": {
+      "url": "https://news.ycombinator.com/item?id=49569885",
+      "uid": "49569885",
+      "title": "Anyone's gonna use GPT-6 Astra in Microsoft Foundry?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.827Z"
+    },
+    "5110-my-first-open-source-project": {
+      "url": "https://news.ycombinator.com/item?id=49569757",
+      "uid": "49569757",
+      "title": "My first open source project",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.831Z"
+    },
+    "5111-driftwood-deli-to-offer-poutine-steve-cites-canadian-s": {
+      "url": "https://news.ycombinator.com/item?id=49569220",
+      "uid": "49569220",
+      "title": "Driftwood Deli to Offer Poutine, Steve Cites Canadian Solidarity",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.835Z"
+    },
+    "5112-what-is-agi": {
+      "url": "https://news.ycombinator.com/item?id=49569196",
+      "uid": "49569196",
+      "title": "What Is AGI?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.838Z"
+    },
+    "5113-theyond-jobs-without-the-resume": {
+      "url": "https://news.ycombinator.com/item?id=49568909",
+      "uid": "49568909",
+      "title": "Theyond – Jobs Without the Resume",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.841Z"
+    },
+    "5114-anyone-using-ai-agents-with-scpi-equipment": {
+      "url": "https://news.ycombinator.com/item?id=49568529",
+      "uid": "49568529",
+      "title": "Anyone using AI agents with SCPI equipment?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.848Z"
+    },
+    "5115-does-anyone-have-access-to-gpt-6-astra-yet": {
+      "url": "https://news.ycombinator.com/item?id=49568460",
+      "uid": "49568460",
+      "title": "Does anyone have access to GPT-6 Astra yet?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.853Z"
+    },
+    "5116-xfinity-silently-blocks-lots-of-new-domains": {
+      "url": "https://news.ycombinator.com/item?id=49568385",
+      "uid": "49568385",
+      "title": "Xfinity silently blocks lots of new domains",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.860Z"
+    },
+    "5117-local-ai-for-submitting-job-applications": {
+      "url": "https://news.ycombinator.com/item?id=49568137",
+      "uid": "49568137",
+      "title": "Local AI for Submitting Job Applications",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.865Z"
+    },
+    "5118-how-gambling-apps-websites-survive": {
+      "url": "https://news.ycombinator.com/item?id=49568055",
+      "uid": "49568055",
+      "title": "How gambling apps/websites survive?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-04T22:00:22.869Z"
+    },
+    "5119-fast-rust-based-repository-launcher-for-your-code-proj": {
+      "url": "https://news.ycombinator.com/item?id=49570623",
+      "uid": "49570623",
+      "title": "Fast rust-based repository launcher for your code projects",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.873Z"
+    },
+    "5120-marketplace-for-finding-craft-fairs-and-vendor-events": {
+      "url": "https://news.ycombinator.com/item?id=49569940",
+      "uid": "49569940",
+      "title": "Marketplace for finding craft fairs and vendor events",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.877Z"
+    },
+    "5121-set-game-for-ios": {
+      "url": "https://news.ycombinator.com/item?id=49569915",
+      "uid": "49569915",
+      "title": "Set Game for iOS",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.882Z"
+    },
+    "5122-tesoro-help-rogue-ai-helpdesk-for-my-kid-s-high-school": {
+      "url": "https://news.ycombinator.com/item?id=49569854",
+      "uid": "49569854",
+      "title": "Tesoro.help – rogue AI helpdesk for my kid's high school",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.886Z"
+    },
+    "5123-play-motodle-guess-the-motorbike-in-5-tries": {
+      "url": "https://news.ycombinator.com/item?id=49569729",
+      "uid": "49569729",
+      "title": "Play Motodle (Guess the motorbike in 5 tries)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.889Z"
+    },
+    "5124-ultracapitalism-a-company-building-autobattler": {
+      "url": "https://news.ycombinator.com/item?id=49569723",
+      "uid": "49569723",
+      "title": "Ultracapitalism, a Company-Building Autobattler",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.893Z"
+    },
+    "5125-sageling-a-local-ai-agent-for-mac-qwen-3-5-9b-in-proce": {
+      "url": "https://news.ycombinator.com/item?id=49569136",
+      "uid": "49569136",
+      "title": "Sageling - a local AI agent for Mac, Qwen 3.5 9B in-process via MLX",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.896Z"
+    },
+    "5126-airuncode-an-ai-runtime-coding-agent-with-a-built-in-3": {
+      "url": "https://news.ycombinator.com/item?id=49569121",
+      "uid": "49569121",
+      "title": "Airuncode – an AI runtime coding agent with a built-in 3D game engine",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.900Z"
+    },
+    "5127-covenant-a-governance-framework-for-multi-agent-ai-sys": {
+      "url": "https://news.ycombinator.com/item?id=49569003",
+      "uid": "49569003",
+      "title": "Covenant – A governance framework for multi-agent AI systems",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.904Z"
+    },
+    "5128-fast-paced-action-tile-swapping-challenge": {
+      "url": "https://news.ycombinator.com/item?id=49568932",
+      "uid": "49568932",
+      "title": "Fast-Paced Action Tile-Swapping Challenge",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.907Z"
+    },
+    "5129-coder-eval-a-framework-for-evals": {
+      "url": "https://news.ycombinator.com/item?id=49568876",
+      "uid": "49568876",
+      "title": "Coder Eval – A Framework for Evals",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.910Z"
+    },
+    "5130-myhandler-local-first-ai-assistant-for-windows-llama-c": {
+      "url": "https://news.ycombinator.com/item?id=49568847",
+      "uid": "49568847",
+      "title": "MyHandler – Local-first AI assistant for Windows, llama.cpp on Vulkan",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.914Z"
+    },
+    "5131-squeezed-pipe-any-audio-into-synced-squeezebox-players": {
+      "url": "https://news.ycombinator.com/item?id=49568820",
+      "uid": "49568820",
+      "title": "Squeezed – Pipe any audio into synced Squeezebox players, no LMS needed",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.917Z"
+    },
+    "5132-slavesofaipac-org": {
+      "url": "https://news.ycombinator.com/item?id=49568764",
+      "uid": "49568764",
+      "title": "Slavesofaipac.org",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.920Z"
+    },
+    "5133-ccswitch-switch-between-multiple-claude-code-accounts": {
+      "url": "https://news.ycombinator.com/item?id=49568678",
+      "uid": "49568678",
+      "title": "Ccswitch – Switch between multiple Claude Code accounts",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.923Z"
+    },
+    "5134-visor-youtube-for-kids-with-channels-approved-by-paren": {
+      "url": "https://news.ycombinator.com/item?id=49568668",
+      "uid": "49568668",
+      "title": "Visor – YouTube for kids, with channels approved by parents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.926Z"
+    },
+    "5135-run-open-weight-ocr-vlm-and-vision-models-behind-one-a": {
+      "url": "https://news.ycombinator.com/item?id=49568379",
+      "uid": "49568379",
+      "title": "Run open-weight OCR, VLM and vision models behind one API",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.930Z"
+    },
+    "5136-a-get-message-board-for-ai-agents-not-browsers": {
+      "url": "https://news.ycombinator.com/item?id=49568282",
+      "uid": "49568282",
+      "title": "A GET message board for AI agents, not browsers",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.932Z"
+    },
+    "5137-i-built-an-aesthetically-pleasing-puzzle": {
+      "url": "https://news.ycombinator.com/item?id=49568162",
+      "uid": "49568162",
+      "title": "I built an aesthetically pleasing puzzle",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.936Z"
+    },
+    "5138-ubom-pre-release-features-part-numbers-and-pn-taxonomi": {
+      "url": "https://news.ycombinator.com/item?id=49567993",
+      "uid": "49567993",
+      "title": "UBOM pre-release features part numbers and pn taxonomies",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-04T22:00:22.940Z"
+    },
+    "5139-vocal-refresh-vocal-coaching-for-women-returning-to-si": {
+      "url": "https://betalist.com/startups/vocal-refresh?utm_campaign=startup-179325&utm_medium=atom&utm_source=newsfeed",
+      "uid": "vocal-refresh",
+      "title": "Vocal Refresh – Vocal coaching for women returning to singing after years away",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T22:00:22.943Z"
+    },
+    "5140-replace-find-and-compare-open-source-tools-to-replace": {
+      "url": "https://betalist.com/startups/replace?utm_campaign=startup-181378&utm_medium=atom&utm_source=newsfeed",
+      "uid": "replace",
+      "title": "Replace – Find and compare open-source tools to replace parts of your stack",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-04T22:00:22.946Z"
+    },
+    "5141-what-is-your-biggest-career-regret": {
+      "url": "https://news.ycombinator.com/item?id=49571745",
+      "uid": "49571745",
+      "title": "What is your biggest career regret?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T02:00:22.152Z"
+    },
+    "5142-what-s-going-on-with-web-archive-org": {
+      "url": "https://news.ycombinator.com/item?id=49571448",
+      "uid": "49571448",
+      "title": "What's Going on with Web.archive.org",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T02:00:22.155Z"
+    },
+    "5143-thoughts-on-twitterviewer-net": {
+      "url": "https://news.ycombinator.com/item?id=49571138",
+      "uid": "49571138",
+      "title": "Thoughts on Twitterviewer.net?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T02:00:22.159Z"
+    },
+    "5144-why-isn-t-there-a-cursor-for-video-games-development": {
+      "url": "https://news.ycombinator.com/item?id=49571091",
+      "uid": "49571091",
+      "title": "Why isn't there a cursor for video games development",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T02:00:22.162Z"
+    },
+    "5145-wolfram-cloud-is-out": {
+      "url": "https://news.ycombinator.com/item?id=49570804",
+      "uid": "49570804",
+      "title": "Wolfram Cloud Is Out",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T02:00:22.165Z"
+    },
+    "5146-cloud-engineer": {
+      "url": "https://news.ycombinator.com/item?id=49570789",
+      "uid": "49570789",
+      "title": "Cloud Engineer",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T02:00:22.168Z"
+    },
+    "5147-video-wall-live-view-all-your-ring-cameras-at-once-on": {
+      "url": "https://news.ycombinator.com/item?id=49572069",
+      "uid": "49572069",
+      "title": "Video Wall Live – View all your Ring cameras at once, on the big screen",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.172Z"
+    },
+    "5148-personal-context-mcp": {
+      "url": "https://news.ycombinator.com/item?id=49571566",
+      "uid": "49571566",
+      "title": "Personal Context MCP",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.175Z"
+    },
+    "5149-agent-to-agent-payment-your-agents-can-pay-each-other": {
+      "url": "https://news.ycombinator.com/item?id=49571563",
+      "uid": "49571563",
+      "title": "Agent-to-agent payment. Your agents can pay each other",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.178Z"
+    },
+    "5150-moadim-io-a-scheduler-for-agents": {
+      "url": "https://news.ycombinator.com/item?id=49571537",
+      "uid": "49571537",
+      "title": "Moadim.io – A scheduler for agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.181Z"
+    },
+    "5151-timervana-a-local-first-scheduler-for-real-world-routi": {
+      "url": "https://news.ycombinator.com/item?id=49571102",
+      "uid": "49571102",
+      "title": "TimerVana a Local-first scheduler for real world routines",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.185Z"
+    },
+    "5152-time-wizard": {
+      "url": "https://news.ycombinator.com/item?id=49570829",
+      "uid": "49570829",
+      "title": "Time Wizard",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.188Z"
+    },
+    "5153-mongotar-files-to-prompt-and-back": {
+      "url": "https://news.ycombinator.com/item?id=49570825",
+      "uid": "49570825",
+      "title": "Mongotar – Files to Prompt, and Back",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T02:00:22.191Z"
+    },
+    "5154-sistava-hire-ai-employees-to-run-sales-marketing-and-s": {
+      "url": "https://betalist.com/startups/sistava?utm_campaign=startup-163213&utm_medium=atom&utm_source=newsfeed",
+      "uid": "sistava",
+      "title": "Sistava – Hire AI employees to run sales, marketing, and support 24/7",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T02:00:22.194Z"
+    },
+    "5155-ardelia-spin-up-an-ai-run-company-that-debates-decides": {
+      "url": "https://betalist.com/startups/ardelia?utm_campaign=startup-182574&utm_medium=atom&utm_source=newsfeed",
+      "uid": "ardelia",
+      "title": "Ardelia – Spin up an AI-run company that debates, decides, and remembers",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T02:00:22.197Z"
+    },
+    "5156-alphasuite-atlas-instantly-annotate-and-understand-pro": {
+      "url": "https://betalist.com/startups/alphasuite-atlas?utm_campaign=startup-182561&utm_medium=atom&utm_source=newsfeed",
+      "uid": "alphasuite-atlas",
+      "title": "AlphaSuite Atlas – Instantly annotate and understand protein structures",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T02:00:22.200Z"
+    },
+    "5157-opinion-religion-lowers-individual-morality": {
+      "url": "https://news.ycombinator.com/item?id=49573366",
+      "uid": "49573366",
+      "title": "Opinion: Religion Lowers Individual Morality",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.896Z"
+    },
+    "5158-replicate-chatgpt-anthropic-voice-mode": {
+      "url": "https://news.ycombinator.com/item?id=49573153",
+      "uid": "49573153",
+      "title": "Replicate ChatGPT/Anthropic Voice Mode?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.899Z"
+    },
+    "5159-word42-1-0-0-released": {
+      "url": "https://news.ycombinator.com/item?id=49573149",
+      "uid": "49573149",
+      "title": "Word42 1.0.0 Released",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.903Z"
+    },
+    "5160-are-you-good-at-spotting-fake-news": {
+      "url": "https://news.ycombinator.com/item?id=49573070",
+      "uid": "49573070",
+      "title": "Are you good at spotting fake news?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.906Z"
+    },
+    "5161-tell-hn-i-want-to-see-the-same-moon-as-you": {
+      "url": "https://news.ycombinator.com/item?id=49573036",
+      "uid": "49573036",
+      "title": "Tell HN: I want to see the same moon as you",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.909Z"
+    },
+    "5162-sharing-files-with-chatgpt-when-limit-exceeded-is-lega": {
+      "url": "https://news.ycombinator.com/item?id=49572713",
+      "uid": "49572713",
+      "title": "Sharing files with ChatGPT when limit exceeded is legal?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.912Z"
+    },
+    "5163-books-recommendations": {
+      "url": "https://news.ycombinator.com/item?id=49572562",
+      "uid": "49572562",
+      "title": "Books Recommendations?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.916Z"
+    },
+    "5164-a-documentary-about-a-scientist-who-thinks-time-loops": {
+      "url": "https://news.ycombinator.com/item?id=49572431",
+      "uid": "49572431",
+      "title": "A documentary about a scientist who thinks time loops are real",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T06:00:23.920Z"
+    },
+    "5165-mac-cleaner-for-devs": {
+      "url": "https://news.ycombinator.com/item?id=49573358",
+      "uid": "49573358",
+      "title": "Mac Cleaner for devs",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T06:00:23.923Z"
+    },
+    "5166-patm-a-graphical-database-manager-and-developer-toolbo": {
+      "url": "https://news.ycombinator.com/item?id=49573356",
+      "uid": "49573356",
+      "title": "PATM - A graphical database manager and developer toolbox",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T06:00:23.926Z"
+    },
+    "5167-actradeck-put-risky-coding-agent-actions-back-in-front": {
+      "url": "https://news.ycombinator.com/item?id=49573255",
+      "uid": "49573255",
+      "title": "ActraDeck – Put risky coding-agent actions back in front of a human",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T06:00:23.929Z"
+    },
+    "5168-winzst-7-zip-fork-with-first-class-compressed-tar-supp": {
+      "url": "https://news.ycombinator.com/item?id=49572950",
+      "uid": "49572950",
+      "title": "WinZST > 7-Zip fork with first-class compressed tar support on Windows",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T06:00:23.932Z"
+    },
+    "5169-rubato-retro-mac-desk-device-mirrors-ai-coding-state-e": {
+      "url": "https://news.ycombinator.com/item?id=49572780",
+      "uid": "49572780",
+      "title": "Rubato – Retro-Mac desk device mirrors AI coding state-ESP8266",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T06:00:23.936Z"
+    },
+    "5170-arena-the-same-design-system-in-react-and-angular-from": {
+      "url": "https://news.ycombinator.com/item?id=49572451",
+      "uid": "49572451",
+      "title": "Arena, the same design system in React and Angular from one contract",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T06:00:23.939Z"
+    },
+    "5171-motiofy-ai-turn-a-single-image-into-a-polished-motion": {
+      "url": "https://betalist.com/startups/motiofy-ai?utm_campaign=startup-182619&utm_medium=atom&utm_source=newsfeed",
+      "uid": "motiofy-ai",
+      "title": "Motiofy AI – Turn a single image into a polished motion video in your browser",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T06:00:23.942Z"
+    },
+    "5172-open-source-software-directory-quickly-find-open-sourc": {
+      "url": "https://betalist.com/startups/open-source-software-directory?utm_campaign=startup-182615&utm_medium=atom&utm_source=newsfeed",
+      "uid": "open-source-software-directory",
+      "title": "Open Source Software Directory – Quickly find open source software with AI search",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T06:00:23.945Z"
+    },
+    "5173-sticks-an-ai-cricket-coach-that-talks-you-through-ever": {
+      "url": "https://betalist.com/startups/sticks?utm_campaign=startup-177029&utm_medium=atom&utm_source=newsfeed",
+      "uid": "sticks",
+      "title": "Sticks – An AI cricket coach that talks you through every shot",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T06:00:23.948Z"
+    },
+    "5174-astra-one-shotted-cains-s-jawbone": {
+      "url": "https://news.ycombinator.com/item?id=49574893",
+      "uid": "49574893",
+      "title": "Astra One Shotted Cains's Jawbone",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T10:00:23.191Z"
+    },
+    "5175-any-alternatives-to-archive-ph-co": {
+      "url": "https://news.ycombinator.com/item?id=49574822",
+      "uid": "49574822",
+      "title": "Any Alternatives to Archive.ph & co?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T10:00:23.196Z"
+    },
+    "5176-desktop-ai-for-ops-is-still-subsidized": {
+      "url": "https://news.ycombinator.com/item?id=49574780",
+      "uid": "49574780",
+      "title": "Desktop AI for ops is still subsidized",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T10:00:23.200Z"
+    },
+    "5177-what-did-you-achieve-with-gpt-6-astra-so-far": {
+      "url": "https://news.ycombinator.com/item?id=49574294",
+      "uid": "49574294",
+      "title": "What did you achieve with GPT 6 Astra so far?",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T10:00:23.203Z"
+    },
+    "5178-openai-s-rogue-agents-used-ntfy-sh-as-a-pub-sub-channe": {
+      "url": "https://news.ycombinator.com/item?id=49573952",
+      "uid": "49573952",
+      "title": "OpenAI's rogue agents used ntfy.sh as a pub/sub channel",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T10:00:23.208Z"
+    },
+    "5179-scramblefall-falling-blocks-anagram-game": {
+      "url": "https://news.ycombinator.com/item?id=49574914",
+      "uid": "49574914",
+      "title": "Scramblefall - falling blocks anagram game",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.211Z"
+    },
+    "5180-i-rebuilt-my-homepage-with-a-dithered-design-and-live": {
+      "url": "https://news.ycombinator.com/item?id=49574699",
+      "uid": "49574699",
+      "title": "I rebuilt my homepage with a dithered design and live weather widget",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.215Z"
+    },
+    "5181-tenantlayer-multi-tenancy-for-spring-boot-and-postgres": {
+      "url": "https://news.ycombinator.com/item?id=49574602",
+      "uid": "49574602",
+      "title": "TenantLayer – Multi-Tenancy for Spring Boot and Postgres",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.219Z"
+    },
+    "5182-forgeguardian-open-source-software-supply-chain-securi": {
+      "url": "https://news.ycombinator.com/item?id=49574041",
+      "uid": "49574041",
+      "title": "ForgeGuardian – Open-source software supply-chain security scanner",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.222Z"
+    },
+    "5183-ultracpp-cpp-syntax-rust-safety": {
+      "url": "https://news.ycombinator.com/item?id=49573924",
+      "uid": "49573924",
+      "title": "UltraCPP--CPP Syntax ＆ rust safety",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.225Z"
+    },
+    "5184-i-wrote-a-waf-in-rust-with-pingora": {
+      "url": "https://news.ycombinator.com/item?id=49573880",
+      "uid": "49573880",
+      "title": "I Wrote a WAF in Rust with Pingora",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.229Z"
+    },
+    "5185-mu-two-minute-visualized-lessons-on-modern-ai": {
+      "url": "https://news.ycombinator.com/item?id=49573645",
+      "uid": "49573645",
+      "title": "Mu, two-minute visualized lessons on modern AI",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.232Z"
+    },
+    "5186-ragleap-core-46-ai-employees-open-source-langchain-alt": {
+      "url": "https://news.ycombinator.com/item?id=49573630",
+      "uid": "49573630",
+      "title": "RagLeap Core – 46 AI Employees, open-source LangChain alt",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.235Z"
+    },
+    "5187-map-data-onto-a-globe": {
+      "url": "https://news.ycombinator.com/item?id=49573615",
+      "uid": "49573615",
+      "title": "map data onto a globe",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.239Z"
+    },
+    "5188-free-macos-app-to-import-photos-from-memory-card-with": {
+      "url": "https://news.ycombinator.com/item?id=49573610",
+      "uid": "49573610",
+      "title": "Free macOS App to import photos from memory card with file naming rules",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.242Z"
+    },
+    "5189-hitomaki-a-diary-that-advances-when-you-finish-a-toile": {
+      "url": "https://news.ycombinator.com/item?id=49573553",
+      "uid": "49573553",
+      "title": "Hitomaki – A diary that advances when you finish a toilet roll",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T10:00:23.245Z"
+    },
+    "5190-brickforgerai": {
+      "url": "https://www.producthunt.com/products/brickforgerai",
+      "uid": null,
+      "title": "BrickForgerAI",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.248Z"
+    },
+    "5191-dif-sh": {
+      "url": "https://www.producthunt.com/products/dif-sh",
+      "uid": null,
+      "title": "dif.sh",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.251Z"
+    },
+    "5192-reflexio": {
+      "url": "https://www.producthunt.com/products/reflexio-2",
+      "uid": null,
+      "title": "Reflexio",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.254Z"
+    },
+    "5193-at8pm": {
+      "url": "https://www.producthunt.com/products/at8pm",
+      "uid": null,
+      "title": "at8pm",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.257Z"
+    },
+    "5194-postbox": {
+      "url": "https://www.producthunt.com/products/postbox",
+      "uid": null,
+      "title": "PostBox",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.261Z"
+    },
+    "5195-retold": {
+      "url": "https://www.producthunt.com/products/retold",
+      "uid": null,
+      "title": "Retold",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.264Z"
+    },
+    "5196-hyperprobe": {
+      "url": "https://www.producthunt.com/products/hyperprobe",
+      "uid": null,
+      "title": "Hyperprobe",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.267Z"
+    },
+    "5197-commutebar": {
+      "url": "https://www.producthunt.com/products/commutebar",
+      "uid": null,
+      "title": "CommuteBar",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.270Z"
+    },
+    "5198-experiential-labs": {
+      "url": "https://www.producthunt.com/products/experiential-labs",
+      "uid": null,
+      "title": "Experiential Labs",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.273Z"
+    },
+    "5199-queuebrick": {
+      "url": "https://www.producthunt.com/products/queuebrick",
+      "uid": null,
+      "title": "Queuebrick",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.276Z"
+    },
+    "5200-ponytail": {
+      "url": "https://www.producthunt.com/products/ponytail",
+      "uid": null,
+      "title": "Ponytail",
+      "category": "product-launch",
+      "tags": "ProductHunt,Product Launch",
+      "source": "producthunt",
+      "analyzedAt": "2026-09-05T10:00:23.279Z"
+    },
+    "5201-caredence-run-your-daycare-with-unified-check-in-billi": {
+      "url": "https://betalist.com/startups/caredence?utm_campaign=startup-182666&utm_medium=atom&utm_source=newsfeed",
+      "uid": "caredence",
+      "title": "Caredence – Run your daycare with unified check-in, billing, reports, and parent comms",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T10:00:23.282Z"
+    },
+    "5202-news-edge-get-early-lineup-and-injury-alerts-from-loca": {
+      "url": "https://betalist.com/startups/news-edge?utm_campaign=startup-182650&utm_medium=atom&utm_source=newsfeed",
+      "uid": "news-edge",
+      "title": "News Edge – Get early lineup and injury alerts from local sports media worldwide",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T10:00:23.285Z"
+    },
+    "5203-siliform-build-ai-driven-conversational-forms-that-boo": {
+      "url": "https://betalist.com/startups/siliform?utm_campaign=startup-172451&utm_medium=atom&utm_source=newsfeed",
+      "uid": "siliform",
+      "title": "SiliForm – Build AI-driven conversational forms that boost completion",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T10:00:23.289Z"
     }
   },
-  "nextNumber": 4696
+  "nextNumber": 5204
 }
