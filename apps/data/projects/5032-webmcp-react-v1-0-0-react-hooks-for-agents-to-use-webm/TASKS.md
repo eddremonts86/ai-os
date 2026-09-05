@@ -1,4 +1,17 @@
-# TASKS.md — Webmcp-react v1.0.0 (React hooks for agents to use WebMCP)
+---
+id: "5032"
+slug: webmcp-react-v1-0-0-react-hooks-for-agents-to-use-webm
+title: Webmcp-react v1.0.0 (React hooks for agents to use WebMCP)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49564588"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Webmcp-react v1.0.0 (React hooks for agents to use WebMCP)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

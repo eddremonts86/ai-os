@@ -1,47 +1,55 @@
-# PRODUCT.md — Turn repeated coding-agent corrections into rules/skills
+---
+id: "4167"
+slug: turn-repeated-coding-agent-corrections-into-rulesskills
+title: Turn repeated coding-agent corrections into rules/skills
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511274"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Turn repeated coding-agent corrections into rules/skills
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi HN, Peder here. My cofounder and I built Blume after coding agents ate our previous startup.<p>While building our previous product we severely struggled with agent drift. Duplicated functions, incoherent architecture and sneaky production bugs. Worst being Fable, which writes such good looking code that you almost don’t notice deviant behaviour.<p>We tried to enforce behaviour with all the best practices: rules, skills, docs, self-verification&#x2F;testing etc. But they rotted faster than a human can maintain them, and using agents directly to maintain them just leads to bloat and more drift.<p>So that is what we set out to solve.<p>Blume is a desktop app that sits next to Claude Code, Codex and Cursor. It reads your agents&#x27; context setup (skills, rules, docs) and local session files. When you keep correcting the same things, blume proposes updates to your rules and skills as reviewable diffs. You approve or dismiss each one.<p>To avoid bloat we extract intent, corrections, frustrations from agent sessions and group them into clusters. And when pain&#x2F;recurrence thresholds are reached, only then an agent is sent to look for improvements.<p>Analysis runs locally on your machine, using your local Claude Code or Codex harness. Your sessions&#x2F;code are never sent to blume. It is free to use, with the only “cost” being limited token spend to extract signals and creating the improvements themselves. (We plan to monetise with optional cloud agents and team features going forward).<p>The biggest gap in the product right now is that we don&#x27;t yet measure whether an accepted change actually helped, in fewer corrections or fewer tokens spent re-explaining. We&#x27;re working on that and think it&#x27;s a core part of the product.<p>Would love feedback, especially from anyone who&#x27;s tried to keep agent rules&#x2F;skills maintained across a team. Happy to answer anything about how it works.
+Blume is the rules-maintenance layer your coding agents are missing: it watches your sessions, clusters the corrections you keep making, and proposes small diffs to your rules and skills — only when the pattern crosses a threshold — so your agents stop drifting without burying you in bloat.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A local watcher that proposes rule and skill updates only after coding-agent corrections repeat enough times.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Developers using Claude Code, Codex or Cursor daily. Early adopters are solo builders and small teams who already write rules/skills for their agents and want them to stay current.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I keep correcting my agent on the same thing, I want Blume to spot the pattern and propose a rule or skill update so I do not have to remember.
+- When an update is proposed, I want a small reviewable diff so I stay the editor-in-chief.
+- When my rules would otherwise rot, I want Blume to maintain them locally so I do not have to send my sessions to a third party.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Number of rule/skill updates proposed, accepted and dismissed.
+- After acceptance, reduction in corrections or tokens spent re-explaining the same thing (the gap the team explicitly calls out).
+- Local-only posture: zero outbound transfer of session content.
+- Time saved per week vs. hand-maintained rules.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free to use today; the only 'cost' is local token spend on signal extraction and on the improvements themselves. Source flags optional cloud agents and team features as a future monetisation path; no pricing is stated.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Adjacent to ad-hoc 'best practices' guides for Claude Code/Cursor and to session-recording tools (e.g. agents that summarise what happened). Blume's differentiator is the cluster-and-threshold loop that turns repeated corrections into reviewable rule diffs without bloat, and the explicit local-only posture.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511274) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- The biggest known gap is the lack of measurement of whether an accepted change actually helped; mitigation is to ship a before/after counter and tie it to recurrence rates.
+- Local-only posture is a strong claim; mitigation is to keep all signal-extraction code auditable on the user's machine.
+- Threshold tuning is subjective; mitigation is to expose the threshold and let users adjust it.
+- Monetisation is undefined for the free tier; mitigation is to keep the free path usable while validating the cloud/team upsell.

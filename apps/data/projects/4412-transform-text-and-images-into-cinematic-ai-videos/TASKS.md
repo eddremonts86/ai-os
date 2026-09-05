@@ -1,4 +1,17 @@
-# TASKS.md — Transform text and images into cinematic AI videos
+---
+id: "4412"
+slug: transform-text-and-images-into-cinematic-ai-videos
+title: Transform text and images into cinematic AI videos
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514512"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Transform text and images into cinematic AI videos
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

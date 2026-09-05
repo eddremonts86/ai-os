@@ -1,31 +1,35 @@
-# SPEC.md — Userlens
+---
+id: "4668"
+slug: userlens
+title: Userlens
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/userlens"
+category: product-launch
+date: "2026-04-25"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Userlens
 
 ## Problem
 
 AI agent to improve product adoption Discussion | Link
 
-**Source:** [ProductHunt](https://www.producthunt.com/products/userlens)
-**Primary category:** product-launch
-**Tags:** ProductHunt,Product Launch
-**Date:** 2026-04-25T08:16:39-07:00
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

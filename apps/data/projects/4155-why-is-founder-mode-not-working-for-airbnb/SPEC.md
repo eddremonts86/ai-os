@@ -1,31 +1,35 @@
-# SPEC.md — Why is Founder Mode not working for Airbnb?
+---
+id: "4155"
+slug: why-is-founder-mode-not-working-for-airbnb
+title: Why is Founder Mode not working for Airbnb?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49506794"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Why is Founder Mode not working for Airbnb?
 
 ## Problem
 
-I really liked Airbnb and was rooting for them ever since they launched.<p>The stock never attained the peak it reached post-ipo (only this month it&#x27;s gotten close), while Booking Holdings roughly doubled in the same period.<p>The sentiment online seems to be against them (or at least in my bubble). Poor customer service and overprotected hosts seem to be recurring issues.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49506794)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-08-31T07:44:30Z
+I really liked Airbnb and was rooting for them ever since they launched.The stock never attained the peak it reached post-ipo (only this month it's gotten close), while Booking Holdings roughly doubled in the same period.The sentiment online seems to be against them (or at least in my bubble). Poor customer service and overprotected hosts seem to be recurring issues.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

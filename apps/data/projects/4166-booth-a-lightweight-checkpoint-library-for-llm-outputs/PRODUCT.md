@@ -1,47 +1,54 @@
-# PRODUCT.md — Booth, A lightweight checkpoint library for LLM outputs
+---
+id: "4166"
+slug: booth-a-lightweight-checkpoint-library-for-llm-outputs
+title: "Booth, A lightweight checkpoint library for LLM outputs"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511295"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Booth, A lightweight checkpoint library for LLM outputs
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/Vedantgitbot/booth
+Booth gives the consuming application a single place to gate every LLM output: trust it, reconsider it, or block it. As a small library rather than a hosted service, it sits in the call path without adding a network hop or a billing relationship.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Application developers integrating LLMs into user-facing features who want a thin verification primitive they can drop into the call path. Assumes the reader is comfortable adding a library between the LLM SDK and the rest of their code.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I integrate an LLM into a user-facing feature, I want a checkpoint between the model and the user so a failing output does not reach the user.
+- When I want to enforce a citation rule, I want a hook in the checkpoint layer so I do not have to wire that rule into every call site.
+- When I want to log every "reconsidered" output, I want the checkpoint to be the single place where the decision is made.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of distinct LLM SDKs the library has documented integrations for.
+- Number of default verification rules the library ships with.
+- Latency overhead of the checkpoint (library must stay lightweight).
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes LLM observability tools and output-validation libraries (which provide hosted verification layers). The captured source post presents Booth as a lightweight embeddable layer, not a hosted service; the precise list of named incumbents the post references is not stated.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511295) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Verification policy is application-specific; if the default rules are too generic, real users will need to write their own.
+- "Lightweight" is a marketing claim that must hold in benchmarks; an in-process library with too many dependencies breaks that promise.

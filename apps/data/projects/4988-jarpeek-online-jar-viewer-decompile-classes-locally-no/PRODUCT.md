@@ -1,35 +1,40 @@
-# PRODUCT.md — JarPeek – Online JAR viewer, decompile classes locally (no upload)
+---
+id: "4988"
+slug: jarpeek-online-jar-viewer-decompile-classes-locally-no
+title: "JarPeek – Online JAR viewer, decompile classes locally (no upload)"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49560203"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# JarPeek – Online JAR viewer, decompile classes locally (no upload)
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ When I have no JDK environment, I want to do some things:<p>browse files inside a JAR
+_Based on source brief:_ When I have no JDK environment, I want to do some things:browse files inside a JAR
 decompile .class, but not upload to server
 edit config files (YAML, properties, JSON), and export the modified JAR
-inspect class structure, constant pool, bytecode<p>Also can use on phone. (I use it on subway.)<p>So I built JarPeek.<p>Decompiler (Vineflower) runs entirely in browser via TeaVM. No upload, no server, no install.
+inspect class structure, constant pool, bytecodeAlso can use on phone. (I use it on subway.)So I built JarPeek.Decompiler (Vineflower) runs entirely in browser via TeaVM. No upload, no server, no install.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -37,7 +42,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

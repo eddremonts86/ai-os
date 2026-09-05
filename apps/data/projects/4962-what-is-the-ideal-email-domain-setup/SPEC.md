@@ -1,32 +1,36 @@
-# SPEC.md — What is the ideal email domain setup?
+---
+id: "4962"
+slug: what-is-the-ideal-email-domain-setup
+title: What is the ideal email domain setup?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49558794"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What is the ideal email domain setup?
 
 ## Problem
 
-For a long term setup what do you use? I am debating a few setups in fastmail.<p>Generic custom domain with 1Password uniques for all online signups
-Also have a standard name@ here for in person provider sign ups<p>A family domain purely given to friends and family to share correspondence.<p>Is the second domain worth it? Inevitably someone will share it and end its “anonymity”?<p>Is it worth running a Gmail for any reason and forwarding that in?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49558794)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T00:04:00Z
+For a long term setup what do you use? I am debating a few setups in fastmail.Generic custom domain with 1Password uniques for all online signups
+Also have a standard name@ here for in person provider sign upsA family domain purely given to friends and family to share correspondence.Is the second domain worth it? Inevitably someone will share it and end its “anonymity”?Is it worth running a Gmail for any reason and forwarding that in?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -34,5 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

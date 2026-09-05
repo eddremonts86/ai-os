@@ -1,33 +1,38 @@
-# PRODUCT.md — Where does IG ads get my email from?
+---
+id: "4492"
+slug: where-does-ig-ads-get-my-email-from
+title: Where does IG ads get my email from?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49525814"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Where does IG ads get my email from?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I’m shown ads at times that have my email prefilled.<p>It’s not the email I have associated with my ig account, which is a bit more terrifying.<p>On iOS I have safari autofill disabled, if that matters.  
+_Based on source brief:_ I’m shown ads at times that have my email prefilled.It’s not the email I have associated with my ig account, which is a bit more terrifying.On iOS I have safari autofill disabled, if that matters.
 It’s possible I used this email at some point on IG, but I can’t understand why it would pick that one for ads.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -35,7 +40,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

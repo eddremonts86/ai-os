@@ -1,4 +1,17 @@
-# TASKS.md — Slopyard – a textboard inspired gallery for vibecoded tools
+---
+id: "4318"
+slug: slopyard-a-textboard-inspired-gallery-for-vibecoded-too
+title: Slopyard – a textboard inspired gallery for vibecoded tools
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49522834"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Slopyard – a textboard inspired gallery for vibecoded tools
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

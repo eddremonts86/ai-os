@@ -1,4 +1,17 @@
-# TASKS.md — If I had to design a nuclear fusion power plant(Idea Sketch)
+---
+id: "4977"
+slug: if-i-had-to-design-a-nuclear-fusion-power-plant-idea-s
+title: If I had to design a nuclear fusion power plant(Idea Sketch)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49558406"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# If I had to design a nuclear fusion power plant(Idea Sketch)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

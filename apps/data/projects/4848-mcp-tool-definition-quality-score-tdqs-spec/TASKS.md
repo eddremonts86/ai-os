@@ -1,4 +1,17 @@
-# TASKS.md — MCP Tool Definition Quality Score (TDQS) Spec
+---
+id: "4848"
+slug: mcp-tool-definition-quality-score-tdqs-spec
+title: MCP Tool Definition Quality Score (TDQS) Spec
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49553343"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# MCP Tool Definition Quality Score (TDQS) Spec
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

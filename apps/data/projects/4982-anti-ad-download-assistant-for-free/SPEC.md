@@ -1,31 +1,35 @@
-# SPEC.md — Anti-Ad Download Assistant" for Free
+---
+id: "4982"
+slug: anti-ad-download-assistant-for-free
+title: "Anti-Ad Download Assistant\" for Free"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49560972"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Anti-Ad Download Assistant" for Free
 
 ## Problem
 
 mail me on keyesnathan001@gmail.com for the extension
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49560972)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T05:48:05Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

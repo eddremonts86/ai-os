@@ -1,32 +1,37 @@
-# PRODUCT.md — Agentray, a macOS agent whose interface is a folder
+---
+id: "4947"
+slug: agentray-a-macos-agent-whose-interface-is-a-folder
+title: "Agentray, a macOS agent whose interface is a folder"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49555446"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Agentray, a macOS agent whose interface is a folder
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi,<p>I&#x27;m not a fan of chat as the main UI for interacting with AI, so I&#x27;m trying something where you interact with LLMs by handling regular files and folders.<p>Agentray is an invisible AI agent. You point it at a folder, it creates &quot;in&quot; &quot;out&quot;, and &quot;done&quot; dirs in it. Whatever you drop into &quot;in&quot; gets summarised, the answer appears in &quot;out&quot;, and the original moves to &quot;done&quot; so you can see what&#x27;s been handled. If you want something other than a summary, make a subfolder and name it: drop a file into &quot;in&#x2F;translate to french&quot; and that name is the instruction. No prompt to write, no config file, just mkdir.<p>By default it uses Apple&#x27;s on-device model or Gemma 4 through MLX. You can also set your OpenRouter key for additional models.<p>It&#x27;ll be a free app but until I work out bugs, you can get it from Test Flight: <a href="https:&#x2F;&#x2F;testflight.apple.com&#x2F;join&#x2F;MRwp3e1P" rel="nofollow">https:&#x2F;&#x2F;testflight.apple.com&#x2F;join&#x2F;MRwp3e1P</a><p>Happy to get any feedback!
+_Based on source brief:_ Hi,I'm not a fan of chat as the main UI for interacting with AI, so I'm trying something where you interact with LLMs by handling regular files and folders.Agentray is an invisible AI agent. You point it at a folder, it creates "in" "out", and "done" dirs in it. Whatever you drop into "in" gets summarised, the answer appears in "out", and the original moves to "done" so you can see what's been handled. If you want something other than a summary, make a subfolder and name it: drop a file into "in/translate to french" and that name is the instruction. No prompt to write, no config file, just mkdir.By default it uses Apple's on-device model or Gemma 4 through MLX. You can also set your OpenRouter key for additional models.It'll be a free app but until I work out bugs, you can get it from Test Flight: https://testflight.apple.com/join/MRwp3e1PHappy to get any feedback!
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

@@ -1,6 +1,6 @@
 ---
 id: "3889"
-slug: "the-thousand-1k-founders-1-question-one-book"
+slug: the-thousand-1k-founders-1-question-one-book
 title: "The Thousand – 1k founders, 1 question, one book"
 status: enriched
 source:

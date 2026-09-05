@@ -1,47 +1,54 @@
-# PRODUCT.md — Linux server management over SSH – written in Rust and Tauri
+---
+id: "4190"
+slug: linux-server-management-over-ssh-written-in-rust-and-ta
+title: "Linux server management over SSH – written in Rust and Tauri"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509679"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Linux server management over SSH – written in Rust and Tauri
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://serverbox.stupidlabs.lol/
+Serverbox gives a Linux administrator a single window for managing remote servers over SSH — dashboards, terminal, file manager, Docker, services, cron, users, and firewalls — without installing an agent on the server side. Secrets stay in an encrypted vault on the local machine.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Linux administrators and developers who manage remote servers and want a single GUI instead of a stack of SSH sessions. Assumes the reader is comfortable with SSH credentials and basic Linux administration.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I manage several servers, I want one window so I do not have to keep a stack of SSH tabs open.
+- When I need to fix something, I want a real terminal so I can use the same commands I would type over SSH.
+- When I move files, I want a file manager over SFTP so I do not have to keep scp in my head.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of servers managed per operator.
+- Latency from app action to remote effect.
+- Number of distros with verified support.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other SSH-based server admin GUIs (e.g. Termius, MobaXterm) and agent-based monitoring products (e.g. Datadog, Prometheus exporters). The captured source post positions Serverbox around the agentless contract and the encrypted local credential vault, but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509679) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Agentless is a hard requirement; if any feature silently depends on a server-side helper, the claim collapses.
+- Distro coverage is a constant maintenance burden; a single distro regression breaks a real user.

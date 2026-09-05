@@ -1,4 +1,17 @@
-# TASKS.md — Fulcrumaxe – an agent team that merged 1,135 PRs into its own repo
+---
+id: "5003"
+slug: fulcrumaxe-an-agent-team-that-merged-1-135-prs-into-it
+title: "Fulcrumaxe – an agent team that merged 1,135 PRs into its own repo"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49561764"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Fulcrumaxe – an agent team that merged 1,135 PRs into its own repo
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

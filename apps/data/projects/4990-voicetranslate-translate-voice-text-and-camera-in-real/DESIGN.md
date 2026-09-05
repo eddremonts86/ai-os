@@ -85,7 +85,6 @@ components:
 - **Headings:** Inter, system-ui, sans-serif · 2.5rem · 800 weight
 - **Body:** Inter, system-ui, sans-serif · 1rem · 400 weight
 
-
 ### Spacing (8px base)
 
 | Token | Value | Use |

@@ -1,33 +1,37 @@
-# SPEC.md — AI – Safe and Cheap?
+---
+id: "4269"
+slug: ai-safe-and-cheap
+title: AI – Safe and Cheap?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49518559"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# AI – Safe and Cheap?
 
 ## Problem
 
 Need some eyes on it.
 Money me, me a money a needing a lot now.
-https:&#x2F;&#x2F;debtaur.oooooooooo.se
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49518559)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T06:14:36Z
+https://debtaur.oooooooooo.se
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

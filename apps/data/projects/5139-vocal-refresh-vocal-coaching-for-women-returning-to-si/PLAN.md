@@ -1,28 +1,30 @@
-# PLAN.md — Vocal Refresh – Vocal coaching for women returning to singing after years away
+---
+id: "5139"
+slug: vocal-refresh-vocal-coaching-for-women-returning-to-si
+title: Vocal Refresh – Vocal coaching for women returning to singing after years away
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/vocal-refresh?utm_campaign=startup-179325&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-04"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Vocal Refresh – Vocal coaching for women returning to singing after years away
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

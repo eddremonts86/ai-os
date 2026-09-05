@@ -1,4 +1,17 @@
-# TASKS.md — Sider Code
+---
+id: "4459"
+slug: sider-code
+title: Sider Code
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/sider-code-customize-any-website"
+category: product-launch
+date: "2026-08-28"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Sider Code
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

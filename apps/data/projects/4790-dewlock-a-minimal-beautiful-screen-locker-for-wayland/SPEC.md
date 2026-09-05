@@ -1,31 +1,35 @@
-# SPEC.md — Dewlock – A minimal, beautiful screen locker for Wayland
+---
+id: "4790"
+slug: dewlock-a-minimal-beautiful-screen-locker-for-wayland
+title: "Dewlock – A minimal, beautiful screen locker for Wayland"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542882"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Dewlock – A minimal, beautiful screen locker for Wayland
 
 ## Problem
 
-Light software keeps a machine useful long after the vendor decided it should not be.<p>Unfortunately, minimal desktop environments usually come with many hours of configuration files to write to make them nice or sometimes even just useful.<p>I don&#x27;t think that&#x27;s necessary, and I have been building a set of tools to prove that.<p>The first one is dewlock; a swaylock fork, that looks similar to what you would get on GNOME, MacOS, or Windows, with a fraction of the resources. You can of course customize it, but you don&#x27;t have to.<p>I have a few more tools in the making, but I would like to start hearing what people think<p>Thanks for your attention
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49542882)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T21:33:24Z
+Light software keeps a machine useful long after the vendor decided it should not be.Unfortunately, minimal desktop environments usually come with many hours of configuration files to write to make them nice or sometimes even just useful.I don't think that's necessary, and I have been building a set of tools to prove that.The first one is dewlock; a swaylock fork, that looks similar to what you would get on GNOME, MacOS, or Windows, with a fraction of the resources. You can of course customize it, but you don't have to.I have a few more tools in the making, but I would like to start hearing what people thinkThanks for your attention
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

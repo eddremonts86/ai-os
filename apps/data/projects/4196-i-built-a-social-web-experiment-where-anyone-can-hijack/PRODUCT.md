@@ -1,47 +1,55 @@
-# PRODUCT.md — I built a social web experiment where anyone can hijack my domain
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4196"
+slug: i-built-a-social-web-experiment-where-anyone-can-hijack
+title: "I built a social web experiment where anyone can hijack my domain"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509486"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built a social web experiment where anyone can hijack my domain
 
 ## Value Proposition
 
-_Based on source brief:_ https://stealmytraffic.lol
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A $5 entry fee buys anyone the entire traffic of a single domain for as long as nobody else outbids them, and the leaderboard records every dollar spent on the domain forever.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Indie hackers wanting a joke and a vanity leaderboard spot
+- Small businesses willing to spend $5 to claim a meme domain for a few days
+- Curious HN readers participating for fun
+- Whop creators looking for a low-friction experiment example
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want to claim a meme domain for a day, I want a $5 button that takes me straight to checkout so I do not have to email anyone
+- When I take the domain, I want my redirect to land within minutes so the joke still lands in the original thread
+- When I get taken over, I want my cumulative spend on the leaderboard to stay so my contribution is not erased
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- 280+ redirects served in a 24h window (already observed at launch)
+- Median time from $5 payment to live redirect under 5 minutes
+- Leaderboard persistence across at least 3 hijack cycles without data loss
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+$5 per hijack, paid through Whop. Buyers can pay more; the redirect is the same, but the leaderboard remembers every dollar.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- GoDaddy / Namecheap auctions — domain sales, not traffic redirection
+- Link shorteners (bit.ly, short.io) — anyone can shorten; nobody can claim the apex
+- Branded redirect services — paid SaaS, no game mechanic
+- Memes and Reddit — no leaderboard, no money trail
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509486) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Abuse vector: destination URL could host malware, phishing, or illegal content
+- Whop's TOS may restrict this kind of redirect marketplace
+- Domain reputation could be permanently tarnished by one bad actor
+- Legal exposure if a buyer redirects to a scam and a third party loses money

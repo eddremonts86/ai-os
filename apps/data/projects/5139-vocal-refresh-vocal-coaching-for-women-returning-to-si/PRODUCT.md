@@ -1,4 +1,17 @@
-# PRODUCT.md — Vocal Refresh – Vocal coaching for women returning to singing after years away
+---
+id: "5139"
+slug: vocal-refresh-vocal-coaching-for-women-returning-to-si
+title: Vocal Refresh – Vocal coaching for women returning to singing after years away
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/vocal-refresh?utm_campaign=startup-179325&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-04"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Vocal Refresh – Vocal coaching for women returning to singing after years away
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
@@ -10,23 +23,15 @@ _Based on source brief:_ Most women who stop singing don't decide to stop. Kids 
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

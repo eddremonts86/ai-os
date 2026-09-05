@@ -1,32 +1,37 @@
-# PRODUCT.md — Does HN block mobile browsers?
+---
+id: "4483"
+slug: does-hn-block-mobile-browsers
+title: Does HN block mobile browsers?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49528768"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Does HN block mobile browsers?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Recently I have been unable to visit hn from my mobile phone over the cellular network. I have standard Android and I&#x27;ve tried multiple browsers including Firefox, Chrome, and Brave. I don&#x27;t need or want to login while I&#x27;m about so I was trying to reach the site without an account. If I&#x27;m connected to a wifi network then everything works.<p>Is this the result of a method to keep out bots that is over zealous?
+_Based on source brief:_ Recently I have been unable to visit hn from my mobile phone over the cellular network. I have standard Android and I've tried multiple browsers including Firefox, Chrome, and Brave. I don't need or want to login while I'm about so I was trying to reach the site without an account. If I'm connected to a wifi network then everything works.Is this the result of a method to keep out bots that is over zealous?
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

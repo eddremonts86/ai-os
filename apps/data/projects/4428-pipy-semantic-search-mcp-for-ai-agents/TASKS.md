@@ -1,4 +1,17 @@
-# TASKS.md — PiPy semantic search MCP for AI agents
+---
+id: "4428"
+slug: pipy-semantic-search-mcp-for-ai-agents
+title: PiPy semantic search MCP for AI agents
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49513386"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# PiPy semantic search MCP for AI agents
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

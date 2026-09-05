@@ -1,31 +1,35 @@
-# SPEC.md — What's Going on with Web.archive.org
+---
+id: "5142"
+slug: what-s-going-on-with-web-archive-org
+title: "What's Going on with Web.archive.org"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49571448"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What's Going on with Web.archive.org
 
 ## Problem
 
-https:&#x2F;&#x2F;web.archive.org&#x2F;cdx&#x2F;search&#x2F;cdx?url=example.com&amp;fl=timestamp,original&amp;limit=5&amp;showDupeCount=true<p>https:&#x2F;&#x2F;web.archive.org&#x2F;*&#x2F;example.com<p>HTTP 429 Too many requests
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49571448)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T23:36:03Z
+[web.archive.org/cdx/search/cdx…](https://web.archive.org/cdx/search/cdx?url=example.com&fl=timestamp,original&limit=5&showDupeCount=truehttps://web.archive.org/*/example.comHTTP) 429 Too many requests
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

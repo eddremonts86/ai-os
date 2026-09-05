@@ -1,4 +1,17 @@
-# TASKS.md — Noviz AI Agent for ERPNext – A Reasoning Layer for ERPNext
+---
+id: "4553"
+slug: noviz-ai-agent-for-erpnext-a-reasoning-layer-for-erpnex
+title: Noviz AI Agent for ERPNext – A Reasoning Layer for ERPNext
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49534898"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Noviz AI Agent for ERPNext – A Reasoning Layer for ERPNext
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,32 +1,36 @@
-# SPEC.md — Taking the Column Unreasonably Far
+---
+id: "4593"
+slug: taking-the-column-unreasonably-far
+title: Taking the Column Unreasonably Far
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49537145"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Taking the Column Unreasonably Far
 
 ## Problem
 
-GDSL is back 6 months later, now with a new generation (Acorn), and I wanted to showcase how I&#x27;ve completely changed the underlying storage model while leaving the compiler&#x27;s design which let it be so compact unharmed. Though it&#x27;s definitely gained some weight.
+GDSL is back 6 months later, now with a new generation (Acorn), and I wanted to showcase how I've completely changed the underlying storage model while leaving the compiler's design which let it be so compact unharmed. Though it's definitely gained some weight.
 The website itself is built and hosted in GDSL.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49537145)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T14:47:14Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -34,5 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,47 +1,54 @@
-# PRODUCT.md — Slotstream, run Qwen3.8-Flash-Next 4-bit on a low-memory Mac
+---
+id: "4177"
+slug: slotstream-run-qwen38-flash-next-4-bit-on-a-low-memory-
+title: "Slotstream, run Qwen3.8-Flash-Next 4-bit on a low-memory Mac"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510441"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Slotstream, run Qwen3.8-Flash-Next 4-bit on a low-memory Mac
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I built slotstream, a way to run Qwen3.8-Flash-Next 4-bit on a low-memory mac starting from 16GB, a 125B parameter model that would need 100GB+ memory&#x2F;RAM, thanks to expert-offloading&#x2F;ssd-streaming. Easy to install&#x2F;update, and mac-native using MLX and Swift.<p>It ships with auto-mode, which makes a good tradeoff between memory usage and speed.<p>I&#x27;ll be implementing and porting the MTP module for speculative decoding next<p>Local models really are the future of computing!
+Slotstream lets a 16GB Mac run Qwen3.8-Flash-Next 4-bit (a 125B model that would normally need 100GB+ RAM) by combining expert-offloading with SSD-streaming, with an auto-mode that picks the right speed/memory trade-off for your machine.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Run Qwen3.8-Flash-Next 4-bit locally on a 16GB Mac.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Apple Silicon Mac owners who want a large local model without paying for GPU time. Adjacent: developers experimenting with local inference and tinkerers who prefer everything on-device.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want a large model locally, I want it to fit on my Mac so I do not need to rent GPUs.
+- When the model is slow, I want auto-mode to pick the right trade-off so I do not have to tune.
+- When a new release ships, I want an easy update so I stay current.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Successful install and first-response time on a 16GB Mac.
+- Tokens-per-second throughput at the default auto-mode setting.
+- Memory headroom left for the rest of the system.
+- Number of model versions supported beyond the initial 4-bit Qwen3.8-Flash-Next.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source does not state pricing or monetisation. Treat as a free developer tool unless the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Other local-inference stacks (llama.cpp, Ollama, MLX-based runners) all run large models with offloading. Slotstream's differentiator is the focus on Qwen3.8-Flash-Next 4-bit specifically, the auto-mode default, and the macOS-native install.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49510441) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- SSD wear from constant streaming is a long-term risk; mitigation is to make SSD-vs-RAM trade-off visible to the user.
+- Throughput depends on the Mac's SSD; mitigation is to ship honest benchmarks per machine class.
+- Single-model focus risks obsolescence if Qwen3.8-Flash-Next falls out of favour; mitigation is to keep the runner generic enough to add more models.

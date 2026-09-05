@@ -1,4 +1,17 @@
-# TASKS.md — Pen Fight – the school desk pen game, with 45 real pens measured
+---
+id: "4320"
+slug: pen-fight-the-school-desk-pen-game-with-45-real-pens-me
+title: "Pen Fight – the school desk pen game, with 45 real pens measured"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49522701"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Pen Fight – the school desk pen game, with 45 real pens measured
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,28 +1,31 @@
-# PLAN.md — Serverless reverse geocoding for WebMCP, ESP32, and RP2040
+---
+id: "4622"
+slug: serverless-reverse-geocoding-for-webmcp-esp32-and-rp204
+title: "Serverless reverse geocoding for WebMCP, ESP32, and RP2040"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49535465"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+country: WebMCP
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Serverless reverse geocoding for WebMCP, ESP32, and RP2040
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,47 +1,54 @@
-# PRODUCT.md — Hybrids – a daily flower logic puzzle
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4198"
+slug: hybrids-a-daily-flower-logic-puzzle
+title: "Hybrids – a daily flower logic puzzle"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509199"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Hybrids – a daily flower logic puzzle
 
 ## Value Proposition
 
-_Based on source brief:_ https://hybrids.rudyp.dev
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A daily logic puzzle with a botanical theme — hybridise flowers to reveal a single answer — that takes 3 to 5 minutes and rewards coming back tomorrow.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Wordle graduates looking for a daily ritual that's not a word game
+- Botany-curious players drawn to the floral framing
+- Mobile-first visitors who open the link during a break
+- Casual puzzle fans who want a low-friction daily habit
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I open the site in the morning, I want one puzzle waiting so I can play during coffee
+- When I try a hybrid, I want the rule feedback to teach me so I get better each day
+- When I solve it, I want a shareable grid I can post to a group chat so the streak has social proof
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- 30% day-1 retention
+- 5,000 daily players within 90 days of launch
+- Median solve time under 5 minutes
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+_TODO:_ source did not state a price. Likely ads or a tip jar; the source page has no commerce.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- Wordle, Quordle, Connections — word-centric daily games
+- NYT Games, Puzzmo — broader daily puzzle bundles
+- Khan Academy logic puzzles — educational, less daily
+- Flower-themed mobile games (Flower, Bloom) — no daily logic mechanic
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509199) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- One puzzle per day caps growth unless archive mode is added
+- Floral theme is a niche; broader appeal unclear
+- Serverless puzzle generation could lock the design into a single author

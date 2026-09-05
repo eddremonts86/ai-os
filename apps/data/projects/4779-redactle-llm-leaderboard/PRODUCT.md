@@ -1,32 +1,37 @@
-# PRODUCT.md — Redactle LLM Leaderboard
+---
+id: "4779"
+slug: redactle-llm-leaderboard
+title: Redactle LLM Leaderboard
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49544338"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Redactle LLM Leaderboard
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I got nerd sniped and ran a bunch of evaluations to see how well models could play Redactle. It turns out Gemini flash is in a league of it&#x27;s own in both performance and cost. It&#x27;s able to one-shot every eval in a just a few seconds.
+_Based on source brief:_ I got nerd sniped and ran a bunch of evaluations to see how well models could play Redactle. It turns out Gemini flash is in a league of it's own in both performance and cost. It's able to one-shot every eval in a just a few seconds.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

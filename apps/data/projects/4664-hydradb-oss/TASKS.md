@@ -1,4 +1,17 @@
-# TASKS.md — HydraDB OSS
+---
+id: "4664"
+slug: hydradb-oss
+title: HydraDB OSS
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/hydradb-oss"
+category: product-launch
+date: "2026-07-10"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# HydraDB OSS
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

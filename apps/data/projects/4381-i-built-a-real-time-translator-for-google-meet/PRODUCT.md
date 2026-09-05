@@ -1,40 +1,45 @@
-# PRODUCT.md — I built a real-time translator for Google Meet
+---
+id: "4381"
+slug: i-built-a-real-time-translator-for-google-meet
+title: I built a real-time translator for Google Meet
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49518593"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built a real-time translator for Google Meet
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I originally didn’t want to build a small tool like this myself — a real-time translation Chrome extension. I assumed there should already be mature products on the market.<p>But after doing some research, I found that the existing real-time translation tools for Google Meet were surprisingly disappointing.<p>So, I decided to build one myself.<p>As AI has evolved, building a real-time meeting translation tool shouldn’t be that difficult, right? So I asked Claude Code to create a demo for me. The initial implementation was surprisingly fast.<p>The technical approach was also quite simple: capture Google Meet’s live captions and use an LLM in the backend for translation. At first, the results were pretty good. It was a tool that was at least usable. However, while AI helped me build the initial demo quickly, the countless improvements, adjustments, and debugging afterwards still took a considerable amount of time.<p>Yes, AI can give you a great starting point, but you still have to walk the rest of the journey yourself. Turning an idea into a truly usable product is far from something that can be done in just one week.<p>So I started thinking from a product perspective: what else do I need to build? What needs to be done before I can hand this product over to real users? 
-1. User authentication; 
-2. Meeting management: users may also want to manage their meeting records; 
-3. Multi-language support: my target users are global; 
+_Based on source brief:_ I originally didn’t want to build a small tool like this myself — a real-time translation Chrome extension. I assumed there should already be mature products on the market.But after doing some research, I found that the existing real-time translation tools for Google Meet were surprisingly disappointing.So, I decided to build one myself.As AI has evolved, building a real-time meeting translation tool shouldn’t be that difficult, right? So I asked Claude Code to create a demo for me. The initial implementation was surprisingly fast.The technical approach was also quite simple: capture Google Meet’s live captions and use an LLM in the backend for translation. At first, the results were pretty good. It was a tool that was at least usable. However, while AI helped me build the initial demo quickly, the countless improvements, adjustments, and debugging afterwards still took a considerable amount of time.Yes, AI can give you a great starting point, but you still have to walk the rest of the journey yourself. Turning an idea into a truly usable product is far from something that can be done in just one week.So I started thinking from a product perspective: what else do I need to build? What needs to be done before I can hand this product over to real users?
+1. User authentication;
+2. Meeting management: users may also want to manage their meeting records;
+3. Multi-language support: my target users are global;
 4. Subscription and payment system: after all, I’d like to make some extra income from it, even if it may not be much;
-5. Usage analytics: tracking users’ usage time; 
-6. Security: secure API access and rate limiting.<p>And that’s how this project started growing like a snowball. From a simple frontend-only prototype, to a separated backend API, and then to a database-driven system. After a month of continuous iteration and optimization, this small tool finally started to look like a real product.<p>But the journey didn’t end there.<p>After launching, I started thinking about a fundamental question: why would users choose my real-time translation tool instead of others? What makes it different?<p>So I researched all the similar products on the market, analyzed their strengths, identified what features I was missing, and thought about how I could improve.<p>During this process, I discovered a major issue with my original implementation: it relied on Google Meet’s built-in translated captions. The problem was that the captions were frequently revised after being generated, which resulted in a poor translation experience — the translated content would constantly change.
-So I started researching ASR (Automatic Speech Recognition) services and models to solve this problem.<p>Another major rewrite began. I completely abandoned the built-in captions approach. Instead, I directly captured the audio, converted it into text through ASR, and then translated it. This significantly improved both translation accuracy and the overall user experience. This improvement alone took me two weeks.<p>Yes, even with AI, major changes are not something that happen overnight.<p>I often stopped and reviewed the code generated by AI, checking whether it was drifting away from the original design principles, whether it was over-engineered, or whether it was unnecessarily reinventing existing solutions.<p>AI is like a wild horse. My job is to hold the reins firmly, occasionally give it a push in the right direction, and make sure it doesn’t run off track.
-Although this tool is still far from perfect, I decided to release it.<p>Right now, what it needs most is market validation — not being locked away while I endlessly polish it.A thousand iterations from AI cannot replace a single piece of real user feedback.<p>So, everyone, I’d love for you to try this little tool and share your honest thoughts. Every piece of feedback is a motivation that helps me move forward.
+5. Usage analytics: tracking users’ usage time;
+6. Security: secure API access and rate limiting.And that’s how this project started growing like a snowball. From a simple frontend-only prototype, to a separated backend API, and then to a database-driven system. After a month of continuous iteration and optimization, this small tool finally started to look like a real product.But the journey didn’t end there.After launching, I started thinking about a fundamental question: why would users choose my real-time translation tool instead of others? What makes it different?So I researched all the similar products on the market, analyzed their strengths, identified what features I was missing, and thought about how I could improve.During this process, I discovered a major issue with my original implementation: it relied on Google Meet’s built-in translated captions. The problem was that the captions were frequently revised after being generated, which resulted in a poor translation experience — the translated content would constantly change.
+So I started researching ASR (Automatic Speech Recognition) services and models to solve this problem.Another major rewrite began. I completely abandoned the built-in captions approach. Instead, I directly captured the audio, converted it into text through ASR, and then translated it. This significantly improved both translation accuracy and the overall user experience. This improvement alone took me two weeks.Yes, even with AI, major changes are not something that happen overnight.I often stopped and reviewed the code generated by AI, checking whether it was drifting away from the original design principles, whether it was over-engineered, or whether it was unnecessarily reinventing existing solutions.AI is like a wild horse. My job is to hold the reins firmly, occasionally give it a push in the right direction, and make sure it doesn’t run off track.
+Although this tool is still far from perfect, I decided to release it.Right now, what it needs most is market validation — not being locked away while I endlessly polish it.A thousand iterations from AI cannot replace a single piece of real user feedback.So, everyone, I’d love for you to try this little tool and share your honest thoughts. Every piece of feedback is a motivation that helps me move forward.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -42,7 +47,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

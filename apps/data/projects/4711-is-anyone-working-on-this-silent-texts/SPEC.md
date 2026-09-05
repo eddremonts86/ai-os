@@ -1,31 +1,35 @@
-# SPEC.md — Is anyone working on this? (Silent texts)
+---
+id: "4711"
+slug: is-anyone-working-on-this-silent-texts
+title: Is anyone working on this? (Silent texts)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49546020"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Is anyone working on this? (Silent texts)
 
 ## Problem
 
-I understand instagram has something somewhat similar, but I was wondering if any of you all were working on the idea that you could send a late night text message to someone with their phone on alert without alerting their phone. Basically, allowing you to send late night texts without waking them up if it&#x27;s not important, but still allowing you to send regular texts and wake them if it is. And do you think the idea has legs?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49546020)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T04:42:11Z
+I understand instagram has something somewhat similar, but I was wondering if any of you all were working on the idea that you could send a late night text message to someone with their phone on alert without alerting their phone. Basically, allowing you to send late night texts without waking them up if it's not important, but still allowing you to send regular texts and wake them if it is. And do you think the idea has legs?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

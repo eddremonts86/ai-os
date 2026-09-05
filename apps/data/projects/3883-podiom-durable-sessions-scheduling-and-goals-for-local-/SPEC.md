@@ -1,6 +1,6 @@
 ---
 id: "3883"
-slug: "podiom-durable-sessions-scheduling-and-goals-for-local-"
+slug: podiom-durable-sessions-scheduling-and-goals-for-local-
 title: "Podiom – durable sessions, scheduling and goals for local Claude/Codex"
 status: enriched
 source:

@@ -1,37 +1,58 @@
-# SPEC.md — AI startup TrustedRouter raises $1.25M
+---
+id: "4180"
+slug: ai-startup-trustedrouter-raises-125m
+title: AI startup TrustedRouter raises $1.25M
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510283"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# AI startup TrustedRouter raises $1.25M
 
 ## Problem
 
-https:&#x2F;&#x2F;www.axios.com&#x2F;2026&#x2F;08&#x2F;31&#x2F;exclusive-ai-startup-trustedrouter-raises-125-million<p>hey everybody, I started trustedrouter.com, which is a really simple way to use AI without needing to give your data to a third party like a close source router<p>It’s been really fun to build this because I got to know the CEOs and founders of so many different providers. We now have more providers than open router and more models as well. More on that soon<p>We are doing a lot of innovations in security and skills that advise you on which LLM to use and also we created a new site called anyeval.com that I expect to be a critical part of the open-source infrastructure for AI on the Internet. Other companies like AAII postbenchmarks, but you’d have no idea about what they’re really doing and how they’re really measuring, and they have a ton of gaps about which models they’re doing their tests on because it’s so expensive. The idea behind any eval is so that you can pay the few pennies it costs to run an individual problem in an eval, and then as a together as a collective, we can crowdsource paying for a whole eval for any model that we want, or you can just pay for a random sample of the problems to get a an and some Arab artists on what you think that the quality of that model is. You can do head-to-head comparisons. You can also create whole new evals.<p>For example, I created this new eval called honey pot bench or honey bench, which recreates the some of the facts of the hugging face incident to measure whether a particular AI is prone to wanting to escape, and I found that Fable in particular, unlike the other Claude’s, is very unaligned in comparison<p>I also created freedom bench, which measures the amount of censorship related to Chinese censorship that a model has, and found that it’s mostly the provider level monitor provided at the providers in China, but not the US providers that does the censitions. I don’t see as much censorship in the model weights
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49510283)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T14:34:37Z
-
----
+Third-party LLM routers sit between the user and every model provider. That gives them visibility into every prompt, every completion, and every key a developer trusts them with, which is more exposure than most teams are comfortable handing to a closed-source middleman. Existing benchmarks posted by big labs are useful but opaque: the community cannot tell which models were tested, which prompts were skipped, or how results were aggregated, so a "winning" score on a vendor chart does not always reflect what a real product would see in production.
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+Ship a privacy-respecting AI routing layer (TrustedRouter) with a wider provider and model catalog than existing routers, paired with a public, crowdsource-funded evaluation marketplace (AnyEval) where the community can fund specific benchmarks, pay a few cents to grade individual problems, and surface head-to-head model comparisons that the providers themselves do not publish.
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+- Independent developers and small teams who need multi-model access without trusting a closed-source router with their API keys and traffic.
+- Researchers, journalists, and AI-safety hobbyists who want to run and fund targeted evaluations (e.g. jailbreak propensity, censorship behaviour) without paying for a full benchmark out of pocket.
+- Provider-agnostic application builders who want one endpoint, one SDK, and a way to add new models the day they ship rather than waiting for a router to integrate them.
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+- A routing API that fronts a broader catalog of providers and models than OpenRouter, with provider keys held client-side or in the user's own vault rather than centrally aggregated.
+- A skills layer that recommends which model to use for a given task based on declared constraints (cost, latency, capability).
+- AnyEval: a public site where anyone can run, fund, or co-own a benchmark; pay-per-problem pricing that lets a community pool pennies to cover a full eval.
+- Two flagship evaluations as proof: HoneyPot bench (a recreation of the Hugging Face incident scenario to measure escape/self-exfiltration tendencies) and Freedom bench (a measure of Chinese-style censorship, separated into provider-monitoring vs. model-weight components).
+- Head-to-head comparison view: pick model A and model B, see side-by-side answers on shared prompts, see win rates on shared benchmarks.
+- Web UI for browsing providers, models, evals, and individual problem results; no mobile app in v1.
 
 ## Design Direction
 
-See `DESIGN.md` for this project's design tokens.
+Design direction for the MVP at `https://news.ycombinator.com/item?id=49510283` follows the constraints in `4180-.../SPEC.md` and the chosen stack (React, TypeScript, Node.js API, SQLite, Coolify, Docker). The visual language is intentionally narrow: a single primary surface, a single accent, and density tuned for both developers and researchers.
+
+**Color** — neutral surface (off-white / off-black per OS theme), one accent for primary actions, one muted accent for secondary. No gradients in v1.
+
+**Type** — one display family for headings, one text family for body, one mono for code/numbers. Type scale is small (4 steps) so the layout stays compact.
+
+**Density** — tight, table-driven for provider/model catalogs and eval result tables; generous spacing for landing/marketing surfaces.
+
+**Motion** — minimal: page transitions only when the user explicitly navigates. No autoplay, no parallax.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+- Must not centralize provider API keys: each developer supplies their own keys or routes through their own vault, and the platform never logs prompt or completion payloads.
+- Benchmark results must record which model, which prompt version, and which scorer ran them, so the community can audit and replicate.
+- AnyEval pricing must be granular enough that a single contributor paying a few cents can fund part of an eval without paying the whole thing.
+- The catalog must include at least as many providers and models as OpenRouter at parity, otherwise the headline value proposition collapses.
+- v1 runs on a single Coolify deployment with SQLite via Drizzle; horizontal scaling deferred until evaluation traffic warrants it.

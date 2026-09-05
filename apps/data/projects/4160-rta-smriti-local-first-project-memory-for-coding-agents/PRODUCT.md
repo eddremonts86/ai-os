@@ -1,47 +1,44 @@
-# PRODUCT.md — Rta-Smriti – local-first project memory for coding agents
+---
+id: "4160"
+slug: rta-smriti-local-first-project-memory-for-coding-agents
+title: Rta-Smriti – local-first project memory for coding agents
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511544"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Rta-Smriti – local-first project memory for coding agents
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/sulabhdubey/rta-smriti-brain
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A sovereign local project-memory and evidence layer that any MCP-capable coding agent can query before doing work, so each new agent session starts with the project's prior decisions, repo conventions, and captured evidence instead of asking the developer to re-explain everything — with an explicit evidence boundary that keeps captured text untrusted until promoted.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+AI-assisted developers and small engineering teams using Codex, Claude Code, Cursor, or any MCP-capable agent who repeatedly lose project decisions and context across sessions. Secondary reader: agent-harness authors who want a portable memory backend.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+When a developer opens a new coding-agent session on a project they have worked on before, the agent should be able to read the project's local memory (identity, decisions, conflicts, change impact) before doing work, instead of starting from a blank context and asking the developer to re-explain the project.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+Whether the package passes the v1.0.4-alpha verification ledger (Windows/macOS/Linux matrix across Python 3.11/3.12/3.13, plus acceptance tests on a disposable Git repo); coverage on independent reviews (featured on The Next New Thing GitHub roundup per the README); install footprint (the README claims no Node needed for the runtime user because built static files ship inside the Python package). No quantitative baseline is set.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+MIT-licensed per the repo; no paid tier is described in the source.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Adjacent local-memory layers exist (per-project CLAUDE.md / AGENTS.md files, .cursorrules, project-specific RAG corpora). The product differentiates on being a structured, evidence-aware, opt-in capture layer with an MCP surface rather than a flat text file or a hosted RAG service. No direct competitor comparison appears in the post.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511544) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+Local-first means every install is its own evidence store; consistency across machines is the developer's problem unless they wire their own sync, which the source does not claim to solve. A second risk is that "captured text is untrusted until promoted" is a discipline, not an enforcement, and any integration that skips the promotion step will silently leak untrusted claims into the agent's context.

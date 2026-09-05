@@ -1,4 +1,17 @@
-# TASKS.md — ForkForensics – recovers a deleted GitHub repo's history from forks
+---
+id: "4888"
+slug: forkforensics-recovers-a-deleted-github-repo-s-history
+title: "ForkForensics – recovers a deleted GitHub repo's history from forks"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49550460"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# ForkForensics – recovers a deleted GitHub repo's history from forks
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

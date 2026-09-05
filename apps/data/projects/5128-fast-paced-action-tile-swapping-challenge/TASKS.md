@@ -1,4 +1,17 @@
-# TASKS.md — Fast-Paced Action Tile-Swapping Challenge
+---
+id: "5128"
+slug: fast-paced-action-tile-swapping-challenge
+title: Fast-Paced Action Tile-Swapping Challenge
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49568932"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Fast-Paced Action Tile-Swapping Challenge
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

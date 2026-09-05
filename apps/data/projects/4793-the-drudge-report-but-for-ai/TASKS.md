@@ -1,4 +1,17 @@
-# TASKS.md — The Drudge Report, but for AI
+---
+id: "4793"
+slug: the-drudge-report-but-for-ai
+title: "The Drudge Report, but for AI"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542561"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# The Drudge Report, but for AI
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

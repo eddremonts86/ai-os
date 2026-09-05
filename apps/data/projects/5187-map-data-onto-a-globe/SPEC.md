@@ -1,31 +1,35 @@
-# SPEC.md — map data onto a globe
+---
+id: "5187"
+slug: map-data-onto-a-globe
+title: map data onto a globe
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49573615"
+category: show-hn
+date: "2026-09-05"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# map data onto a globe
 
 ## Problem
 
-i love globes and maps<p>often looking at a map gives you a better feeling for things<p>this is a globe that can display data<p>example data sets include active volcanos, UNESCO world heritage sites, IKEAs worldwide, …<p>but what makes this interesting is that it also implements WebMCP which lets an agent (e.g. ChatGPT desktop app) directly drive the globe<p>it exposes a handful of tools to add&#x2F;load a dataset, do SQL queries and visualize the results using the globe<p>querying are powered by DuckDB (via webassembly)<p>globe is globe.gl (<a href="https:&#x2F;&#x2F;globe.gl" rel="nofollow">https:&#x2F;&#x2F;globe.gl</a>)<p>more on WebMCP (OpenAI calls it &#x27;site tools&#x27;): <a href="https:&#x2F;&#x2F;learn.chatgpt.com&#x2F;docs&#x2F;webmcp" rel="nofollow">https:&#x2F;&#x2F;learn.chatgpt.com&#x2F;docs&#x2F;webmcp</a><p>source: <a href="https:&#x2F;&#x2F;github.com&#x2F;atlaslib&#x2F;globe" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;atlaslib&#x2F;globe</a><p>demo video: <a href="https:&#x2F;&#x2F;x.com&#x2F;__tosh&#x2F;status&#x2F;2096109149654339795" rel="nofollow">https:&#x2F;&#x2F;x.com&#x2F;__tosh&#x2F;status&#x2F;2096109149654339795</a><p>a hosted demo: <a href="https:&#x2F;&#x2F;atlas.paperclips.workers.dev" rel="nofollow">https:&#x2F;&#x2F;atlas.paperclips.workers.dev</a><p>you can tell ChatGPT desktop app to open the url using the in-app browser, ask it about the available datasets and which queries it would propose to do, also you can tell it to research something you are interested in and to use the tools to put that onto the globe
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49573615)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-05T06:22:05Z
+i love globes and mapsoften looking at a map gives you a better feeling for thingsthis is a globe that can display dataexample data sets include active volcanos, UNESCO world heritage sites, IKEAs worldwide, …but what makes this interesting is that it also implements WebMCP which lets an agent (e.g. ChatGPT desktop app) directly drive the globeit exposes a handful of tools to add/load a dataset, do SQL queries and visualize the results using the globequerying are powered by DuckDB (via webassembly)globe is globe.gl (https://globe.gl)more on WebMCP (OpenAI calls it 'site tools'): https://learn.chatgpt.com/docs/webmcpsource: https://github.com/atlaslib/globedemo video: https://x.com/__tosh/status/2096109149654339795a hosted demo: https://atlas.paperclips.workers.devyou can tell ChatGPT desktop app to open the url using the in-app browser, ask it about the available datasets and which queries it would propose to do, also you can tell it to research something you are interested in and to use the tools to put that onto the globe
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,31 +1,41 @@
-# SPEC.md — I built this social leaderboard game
+---
+id: "4205"
+slug: i-built-this-social-leaderboard-game
+title: I built this social leaderboard game
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508885"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built this social leaderboard game
 
 ## Problem
 
-King of the World is an online social leaderboard game, just for fun. The title is won in the game’s world and grants nothing in the real one.
+The author built 'King of the World', an online social leaderboard game, just for fun. The title is won in the game's world and grants nothing in the real one.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49508885)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T12:30:32Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
+Ship a small social leaderboard game where players compete for an in-game title that has no real-world value.
 
----
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+Players who enjoy light social competition online and want a low-stakes game they can play for fun. Assumes web access and a willingness to keep coming back to defend or chase a title.
+
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+- An online leaderboard.
+- A social game loop that produces a 'title' for the current leader.
+- Public profile or shareable link so players can show their standings.
+
 
 ## Design Direction
 
@@ -33,5 +43,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+- The source post is a one-paragraph pitch; many standard product decisions (monetisation, retention loop, audience size, platforms) are unstated.
+- 'Just for fun' is a stated framing, so commercial pressure is intentionally low.
+- No stated distribution channels beyond a Show HN.
+
