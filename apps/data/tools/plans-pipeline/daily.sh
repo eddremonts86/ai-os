@@ -325,6 +325,12 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>"
 merge_through() {
   local head="$1" base="$2" title="$3"
 
+  # Refresh both refs first. The previous merge_through just moved dev on the remote, but the
+  # local origin/dev still pointed where the run-start fetch left it, so the promotion compared
+  # two stale refs, found them equal, and skipped: the corpus landed on dev and never reached
+  # main (2026-09-05, first ship after dev had been synced to main).
+  git fetch -q origin "$head" "$base"
+
   # dev→main on an unchanged dev is a normal no-op, not a failure.
   if [ "$(git rev-parse "origin/$head")" = "$(git rev-parse "origin/$base")" ]; then
     log "$head is identical to $base — nothing to promote"
