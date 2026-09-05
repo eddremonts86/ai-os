@@ -1,31 +1,43 @@
-# SPEC.md — Review large code changes in your terminal, one chapter at a time
+---
+id: "4168"
+slug: review-large-code-changes-in-your-terminal-one-chapter-
+title: "Review large code changes in your terminal, one chapter at a time"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511126"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Review large code changes in your terminal, one chapter at a time
 
 ## Problem
 
-I&#x27;ve been hunting for ways to better review &amp; provide feedback on agent output without facing walls of files or leaving my multiplexer!<p>I&#x27;ve really enjoyed using both hunk and stage-cli and was inspired to combine and extend ideas from both<p>Revue is a terminal-based code review tool that breaks down large code changes into ordered, narrated chunks. You can think it as like a guided tour of a code change - as opposed to a big ol&#x27; list of files<p>Using a skill, you can have any agent generate a guided tour that you can then open using a TUI - stepping through organized chapters whilst leaving comments that can be sent back to the agent<p>You can also just run `revue diff` to get the same UI without the narration.<p>All feedback welcome!
+The author wanted a better way to review and give feedback on large agent-generated code changes without staring at walls of files or leaving the terminal multiplexer. Inspired by hunk and stage-cli, they combined and extended the ideas. Revue is a terminal-based code review tool that breaks a large change into ordered, narrated 'chapters', with an optional agent skill that can pre-generate a guided tour of the diff.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49511126)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T15:44:08Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
+Let a developer step through a large code change one chapter at a time inside the terminal, optionally narrated by an agent, and leave comments that flow back to the agent.
 
----
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+Developers using coding agents (and reviewing their output) who prefer to stay inside their terminal multiplexer rather than a web UI. Assumes comfort with TUIs and diff review.
+
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+- Terminal-based code review UI that breaks a diff into ordered chapters.
+- A skill for an agent to pre-generate a narrated guided tour.
+- Step-through navigation between chapters without leaving the multiplexer.
+- Per-chapter comments that can be sent back to the agent.
+- A `revue diff` command that gives the same UI without the narration.
+
 
 ## Design Direction
 
@@ -33,5 +45,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+- Distribution is the terminal; the tool must feel native to TUIs and multiplexers.
+- Optional agent skill means the core flow must work without an agent attached.
+- Source post does not state pricing, monetisation, or hosting model.
+

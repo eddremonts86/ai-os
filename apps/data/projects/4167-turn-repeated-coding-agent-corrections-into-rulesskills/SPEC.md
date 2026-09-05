@@ -1,31 +1,45 @@
-# SPEC.md — Turn repeated coding-agent corrections into rules/skills
+---
+id: "4167"
+slug: turn-repeated-coding-agent-corrections-into-rulesskills
+title: Turn repeated coding-agent corrections into rules/skills
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511274"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Turn repeated coding-agent corrections into rules/skills
 
 ## Problem
 
-Hi HN, Peder here. My cofounder and I built Blume after coding agents ate our previous startup.<p>While building our previous product we severely struggled with agent drift. Duplicated functions, incoherent architecture and sneaky production bugs. Worst being Fable, which writes such good looking code that you almost don’t notice deviant behaviour.<p>We tried to enforce behaviour with all the best practices: rules, skills, docs, self-verification&#x2F;testing etc. But they rotted faster than a human can maintain them, and using agents directly to maintain them just leads to bloat and more drift.<p>So that is what we set out to solve.<p>Blume is a desktop app that sits next to Claude Code, Codex and Cursor. It reads your agents&#x27; context setup (skills, rules, docs) and local session files. When you keep correcting the same things, blume proposes updates to your rules and skills as reviewable diffs. You approve or dismiss each one.<p>To avoid bloat we extract intent, corrections, frustrations from agent sessions and group them into clusters. And when pain&#x2F;recurrence thresholds are reached, only then an agent is sent to look for improvements.<p>Analysis runs locally on your machine, using your local Claude Code or Codex harness. Your sessions&#x2F;code are never sent to blume. It is free to use, with the only “cost” being limited token spend to extract signals and creating the improvements themselves. (We plan to monetise with optional cloud agents and team features going forward).<p>The biggest gap in the product right now is that we don&#x27;t yet measure whether an accepted change actually helped, in fewer corrections or fewer tokens spent re-explaining. We&#x27;re working on that and think it&#x27;s a core part of the product.<p>Would love feedback, especially from anyone who&#x27;s tried to keep agent rules&#x2F;skills maintained across a team. Happy to answer anything about how it works.
+The Blume team built a coding-agent startup that was 'eaten' by coding agents — i.e. the agents introduced drift: duplicated functions, incoherent architecture, sneaky production bugs. Worst was Fable, which writes code that looks good enough to hide deviant behaviour. The team tried every enforcement practice (rules, skills, docs, self-verification, testing) but they rotted faster than a human could maintain them, and using the agents themselves to maintain the rules produced bloat and more drift. Blume is the result: a desktop app that reads agent context (skills, rules, docs) and session files and proposes reviewable diffs when the same corrections keep coming up.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49511274)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T15:57:10Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
+Automatically maintain the rules, skills and docs that govern coding agents by clustering repeated corrections from local sessions and proposing small, reviewable updates only when recurrence crosses a threshold.
 
----
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+Solo developers and small teams using Claude Code, Codex or Cursor who already maintain rules/skills for their agents and are watching them rot. Assumes the user runs coding agents locally and is comfortable approving diffs.
+
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+- Desktop app that sits next to Claude Code, Codex and Cursor.
+- Reads each agent's context setup (skills, rules, docs) and local session files.
+- Extracts intent, corrections and frustrations from agent sessions and groups them into clusters.
+- Triggers an agent only when a cluster's pain/recurrence threshold is reached.
+- Surfaces proposed updates as reviewable diffs that the user approves or dismisses.
+- Analysis runs locally on the user's machine using their existing Claude Code or Codex harness.
+- Free to use; only cost is the token spend on signal extraction and the improvements themselves.
+
 
 ## Design Direction
 
@@ -33,5 +47,8 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+- Source states explicitly that the product's analysis runs locally on the user's machine; sessions and code are not sent to Blume.
+- Recurrence threshold logic must avoid the bloat problem the team hit when they let the agents maintain their own rules.
+- Source notes the biggest current gap: there is no measurement yet of whether an accepted change actually helped (fewer corrections, fewer tokens spent re-explaining).
+- Source states a future monetisation idea (optional cloud agents and team features), but the app is free today.
+

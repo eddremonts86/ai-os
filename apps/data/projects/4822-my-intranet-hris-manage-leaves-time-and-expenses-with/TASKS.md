@@ -1,4 +1,17 @@
-# TASKS.md — My Intranet HRIS – Manage leaves, time, and expenses with a simple modular HRIS
+---
+id: "4822"
+slug: my-intranet-hris-manage-leaves-time-and-expenses-with
+title: "My Intranet HRIS – Manage leaves, time, and expenses with a simple modular HRIS"
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/my-intranet-hris?utm_campaign=startup-185930&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-03"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# My Intranet HRIS – Manage leaves, time, and expenses with a simple modular HRIS
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

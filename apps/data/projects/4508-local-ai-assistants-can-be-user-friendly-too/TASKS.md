@@ -1,4 +1,17 @@
-# TASKS.md — Local AI Assistants can be user friendly too
+---
+id: "4508"
+slug: local-ai-assistants-can-be-user-friendly-too
+title: Local AI Assistants can be user friendly too
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49530822"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Local AI Assistants can be user friendly too
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

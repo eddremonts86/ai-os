@@ -1,32 +1,37 @@
-# PRODUCT.md — I built my first MCP to manage Google Ads
+---
+id: "4920"
+slug: i-built-my-first-mcp-to-manage-google-ads
+title: I built my first MCP to manage Google Ads
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49548962"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built my first MCP to manage Google Ads
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ My co-founder and I tried running Google Ads for our Shopify store, but we could not get a positive ROAS (we spent 150USD on a single conversion).<p>As we also could not afford an agency, we turned to AI (IMO Codex &gt;&gt;&gt; Claude Code).<p>We found that Google’s Ads MCP could only read data, but it could not make changes. So we built our own hosted MCP with read and write access.<p>It can inspect performance, find wasted spend, create or update campaigns, and work with Google Analytics and Tag Manager.
+_Based on source brief:_ My co-founder and I tried running Google Ads for our Shopify store, but we could not get a positive ROAS (we spent 150USD on a single conversion).As we also could not afford an agency, we turned to AI (IMO Codex >>> Claude Code).We found that Google’s Ads MCP could only read data, but it could not make changes. So we built our own hosted MCP with read and write access.It can inspect performance, find wasted spend, create or update campaigns, and work with Google Analytics and Tag Manager.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

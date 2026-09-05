@@ -1,31 +1,35 @@
-# SPEC.md — Where did Ted Unangst's website go?
+---
+id: "5063"
+slug: where-did-ted-unangst-s-website-go
+title: "Where did Ted Unangst's website go?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49565127"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Where did Ted Unangst's website go?
 
 ## Problem
 
-Ted Unangst used to have a nice blog called &quot;flak&quot;. It was available under flak.tedunangst.com<p>Now the page seems to be gone completely. Does anybody know what happened to him or that page? I really miss that blog.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49565127)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T14:24:27Z
+Ted Unangst used to have a nice blog called "flak". It was available under flak.tedunangst.comNow the page seems to be gone completely. Does anybody know what happened to him or that page? I really miss that blog.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

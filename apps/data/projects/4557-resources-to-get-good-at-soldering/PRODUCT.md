@@ -1,32 +1,37 @@
-# PRODUCT.md — Resources to Get Good at Soldering?
+---
+id: "4557"
+slug: resources-to-get-good-at-soldering
+title: Resources to Get Good at Soldering?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49533840"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Resources to Get Good at Soldering?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hello. I&#x27;ve recently started soldering, specifically wanting to repair the joysticks on several Playstation 4 controllers I have, but I also want to get good at electronic repair in general.<p>Right now I&#x27;ve busted a board, and managed to desolder and resolder a stick but the controller doesn&#x27;t turn on anymore. I&#x27;m doing this all by myself, and I think I&#x27;m following good advice (ventilation, good iron tip, using flux etc...).<p>But there are many variables, and a lot of experts have different opinions on stuff. Does anyone know good resources that I could use for getting good and making less mistakes ? Thanks.
+_Based on source brief:_ Hello. I've recently started soldering, specifically wanting to repair the joysticks on several Playstation 4 controllers I have, but I also want to get good at electronic repair in general.Right now I've busted a board, and managed to desolder and resolder a stick but the controller doesn't turn on anymore. I'm doing this all by myself, and I think I'm following good advice (ventilation, good iron tip, using flux etc...).But there are many variables, and a lot of experts have different opinions on stuff. Does anyone know good resources that I could use for getting good and making less mistakes ? Thanks.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

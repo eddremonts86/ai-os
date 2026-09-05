@@ -1,47 +1,54 @@
-# PRODUCT.md — Cool Concepts
+---
+id: "4188"
+slug: cool-concepts
+title: "Cool Concepts"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509756"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Cool Concepts
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://mkornreich.me/projects/coolconcepts/
+Cool Concepts lets a visitor mash two big-idea words into a new concept, drag the result around, and read a one-line description produced by a tiny in-browser word-brain. The toy is a five-minute distraction that reads as a real thought experiment, not a joke.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Visitors to a personal site who want a five-minute toy: drag words, mash two together, read what the mash-up is supposed to mean. Assumes the reader has a mouse or keyboard and a browser.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I have five minutes, I want a drag-toy so I can play with two big words.
+- When I mash two words, I want a description so the result reads like a concept, not a placeholder.
+- When I want to compare mash-ups, I want them on screen at the same time so I can drag and arrange.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of mash-ups a visitor produces in a session.
+- Time on the page per visitor.
+- Number of words in the starting vocabulary.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other browser toy demos and word-mash generators. The captured source post describes the drag-to-mash mechanic but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509756) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- The "word-brain" is a tiny client-side model; if the descriptions are off, the toy loses its charm.
+- The mash-ups need to read like real concepts; a bad starting vocabulary breaks the illusion.

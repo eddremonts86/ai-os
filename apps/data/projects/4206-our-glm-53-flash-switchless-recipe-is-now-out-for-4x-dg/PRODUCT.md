@@ -1,47 +1,55 @@
-# PRODUCT.md — Our GLM-5.3 Flash Switchless recipe is now out for 4x DGX Sparks
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4206"
+slug: our-glm-53-flash-switchless-recipe-is-now-out-for-4x-dg
+title: "Our GLM-5.3 Flash Switchless recipe is now out for 4x DGX Sparks"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508834"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Our GLM-5.3 Flash Switchless recipe is now out for 4x DGX Sparks
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/alexellis/glm-5.3-flash-4x-dgx-spark-switchless
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A reproducible, MIT-licensed recipe to serve GLM-5.3-Flash (NVFP4) at TP4 across four DGX Sparks on a switchless RoCE ring, with patched NCCL and the DFlash2 drafter — one OpenAI-compatible endpoint, no ToR switch, no supply-chain wait.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Small AI teams of two engineers running daily coding-agent traffic
+- Open-source maintainers replicating the recipe on their own DGX Sparks
+- ML infrastructure engineers evaluating switchless-ring TP4 patterns
+- Researchers studying NCCL behaviour without a switch
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want to own my inference hardware, I want a recipe that ships on hardware I can buy today without waiting on a switch
+- When the ring is up, I want one OpenAI-compatible endpoint on the head node so my existing OpenAI clients work
+- When I tune the deployment, I want measured numbers (TTFT, tok/s, KV pool) instead of marketing claims
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- 476 requests served and 17.5M tokens through the model in the reported run
+- TTFT ~1–2 s on warm prefix-cache, 122K-token single prefill served
+- Two concurrent users each retain ~73% of solo speed (the 27% cost is acceptable)
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+MIT licence, free. Inference is self-hosted on the user's own hardware; no per-token charge.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- Closed LLM APIs (OpenAI, Anthropic) — pay per token, no own hardware
+- RunPod, Lambda Labs — managed GPU rentals, no TP4 bring-your-own-fabric
+- DGX Spark community recipes — none with a switchless-ring + DFlash2 + patched NCCL combo
+- Sparkring / SIRCL — alternative ring fabric; the author explicitly states "this is not Sparkring under a different name"
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508834) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Patched NCCL is a fork of NCCL 2.30.7; must track upstream changes
+- DFlash2 drafter and weights come from upstream providers with their own licences
+- DGX Spark supply chain itself is constrained — recipe is moot without the nodes
+- Switchless ring does not scale past four nodes without re-cabling

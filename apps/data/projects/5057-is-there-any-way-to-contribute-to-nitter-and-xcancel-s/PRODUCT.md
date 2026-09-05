@@ -1,32 +1,37 @@
-# PRODUCT.md — Is there any way to contribute to nitter and xcancel's legal fights?
+---
+id: "5057"
+slug: is-there-any-way-to-contribute-to-nitter-and-xcancel-s
+title: "Is there any way to contribute to nitter and xcancel's legal fights?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49567441"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Is there any way to contribute to nitter and xcancel's legal fights?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Really, X&#x27;s legal claims against those websites are bullshit and Musk probably knows that. Linkedin lost a similar case. Musk himself even lost  similar data scraping lawsuits against Bright Data and the Center for Countering Digital Hate.<p>But the real reason why X has been able to shut down Nitter and XCancel is just because those websites aren&#x27;t going to be able to afford a legal fight, even though they almost certainly would win a lawsuit.<p>So, is there any way we can contribute to their legal fight against Musk?
+_Based on source brief:_ Really, X's legal claims against those websites are bullshit and Musk probably knows that. Linkedin lost a similar case. Musk himself even lost similar data scraping lawsuits against Bright Data and the Center for Countering Digital Hate.But the real reason why X has been able to shut down Nitter and XCancel is just because those websites aren't going to be able to afford a legal fight, even though they almost certainly would win a lawsuit.So, is there any way we can contribute to their legal fight against Musk?
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

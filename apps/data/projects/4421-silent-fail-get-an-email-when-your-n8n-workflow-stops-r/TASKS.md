@@ -1,4 +1,17 @@
-# TASKS.md — Silent Fail, get an email when your n8n workflow stops running
+---
+id: "4421"
+slug: silent-fail-get-an-email-when-your-n8n-workflow-stops-r
+title: "Silent Fail, get an email when your n8n workflow stops running"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514030"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Silent Fail, get an email when your n8n workflow stops running
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

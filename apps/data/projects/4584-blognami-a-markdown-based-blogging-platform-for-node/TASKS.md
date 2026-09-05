@@ -1,4 +1,17 @@
-# TASKS.md — Blognami – a Markdown based blogging platform for node
+---
+id: "4584"
+slug: blognami-a-markdown-based-blogging-platform-for-node
+title: Blognami – a Markdown based blogging platform for node
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49538198"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Blognami – a Markdown based blogging platform for node
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

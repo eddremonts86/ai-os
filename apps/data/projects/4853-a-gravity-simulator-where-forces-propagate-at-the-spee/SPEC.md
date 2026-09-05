@@ -1,31 +1,35 @@
-# SPEC.md — A gravity simulator where forces propagate at the speed of light
+---
+id: "4853"
+slug: a-gravity-simulator-where-forces-propagate-at-the-spee
+title: A gravity simulator where forces propagate at the speed of light
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49553092"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A gravity simulator where forces propagate at the speed of light
 
 ## Problem
 
 https://github.com/alessandro-pioli/AstroCausal_Engine
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49553092)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T16:54:08Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

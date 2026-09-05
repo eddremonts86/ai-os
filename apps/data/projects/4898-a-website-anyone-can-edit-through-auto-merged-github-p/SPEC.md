@@ -1,31 +1,35 @@
-# SPEC.md — A website anyone can edit through auto-merged GitHub PRs
+---
+id: "4898"
+slug: a-website-anyone-can-edit-through-auto-merged-github-p
+title: A website anyone can edit through auto-merged GitHub PRs
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49549933"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A website anyone can edit through auto-merged GitHub PRs
 
 ## Problem
 
-A community driven MySpace-style site anyone can edit and create their own static webpage with HTML. See a map of all the contributors and explore submissions. Fork the repo and PRs are automatically approved and merged to the live website.<p>This idea stemmed from r&#x2F;place on Reddit and old MySpace boards. Submissions are restricted to basic HTML to avoid malicious&#x2F;arbitrary code from running. GitHub actions scans the PR and auto-merges if all criteria is met. This ended up being almost a feature for the project. These restrictions force you to get a bit more creative with submissions.<p>Happy building!
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49549933)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T13:52:45Z
+A community driven MySpace-style site anyone can edit and create their own static webpage with HTML. See a map of all the contributors and explore submissions. Fork the repo and PRs are automatically approved and merged to the live website.This idea stemmed from r/place on Reddit and old MySpace boards. Submissions are restricted to basic HTML to avoid malicious/arbitrary code from running. GitHub actions scans the PR and auto-merges if all criteria is met. This ended up being almost a feature for the project. These restrictions force you to get a bit more creative with submissions.Happy building!
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

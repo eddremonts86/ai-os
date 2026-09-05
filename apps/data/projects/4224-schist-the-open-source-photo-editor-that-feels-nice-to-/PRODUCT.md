@@ -1,47 +1,54 @@
-# PRODUCT.md — Schist – the open source photo editor that feels nice to use
+---
+id: "4224"
+slug: schist-the-open-source-photo-editor-that-feels-nice-to-use
+title: "Schist – the open source photo editor that feels nice to use"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49507125"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Schist – the open source photo editor that feels nice to use
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://schist.app/
+Schist gives a Linux desktop user a free, open-source photo editor that integrates with their Photos library and ships in every common Linux desktop format for both x86_64 and aarch64. "Beautiful and feature-rich shouldn't mean closed source" is the headline, and the per-format packaging is the proof.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Linux desktop users who want a free, open-source photo editor that integrates with their Photos library and works on x86_64 and aarch64 machines (including Raspberry Pi and Ampere). Assumes the reader can install an AppImage or a distro package.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want to edit photos on Linux, I want an open-source editor so I do not have to subscribe to a closed-source product.
+- When I edit a photo in my Photos library, I want the editor to see it so I do not have to export first.
+- When I install on a Raspberry Pi or Ampere box, I want an aarch64 package so I am not stuck on x86_64.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of install formats with verified builds.
+- Latency of brushes on a Raspberry Pi reference device.
+- Coverage of the OS Photos library integration.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other open-source photo editors (GIMP, Krita, Darktable) and cross-platform image tools. The captured source post positions Schist around per-format Linux packaging for both x86_64 and aarch64, but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49507125) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Open source is a hard requirement; a future closed-source tier would break the headline claim.
+- aarch64 packaging is real work; every format has to be rebuilt and tested on Raspberry Pi and Ampere.

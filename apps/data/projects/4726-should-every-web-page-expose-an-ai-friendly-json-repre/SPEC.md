@@ -1,31 +1,35 @@
-# SPEC.md — Should every web page expose an AI-friendly JSON representation?
+---
+id: "4726"
+slug: should-every-web-page-expose-an-ai-friendly-json-repre
+title: Should every web page expose an AI-friendly JSON representation?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542310"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Should every web page expose an AI-friendly JSON representation?
 
 ## Problem
 
-My website already includes AI-related files such as llms.txt.<p>I&#x27;m considering creating a separate JSON file for every page and article so AI systems can understand the content more easily and accurately. I would reference this JSON file from the page&#x27;s &lt;head&gt; using a &lt;link&gt; tag.<p>The JSON file could contain information such as:<p>Page URL<p>Canonical URL<p>Title<p>Summary &#x2F; Description<p>Main Content (clean article content)<p>Author<p>Published Date<p>Last Updated<p>Entities (people, companies, places, products, etc.)<p>Keywords &#x2F; Topics<p>FAQ<p>...<p>My idea is that AI crawlers could read this structured JSON instead of having to extract the main content from noisy HTML that contains navigation menus, sidebars, ads, comments, JavaScript, tables, and other non-essential elements.<p>I have two questions:<p>Could this approach reduce the chances of AI crawlers misunderstanding a page or extracting incorrect information from HTML, advertisements, tables, comments, or other noisy content?<p>Do you think a page-level JSON file like this could help AI systems better understand a page and potentially improve AI recommendations, citations, or other AI-generated responses in the future? Why or why not?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49542310)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-02T20:46:57Z
+My website already includes AI-related files such as llms.txt.I'm considering creating a separate JSON file for every page and article so AI systems can understand the content more easily and accurately. I would reference this JSON file from the page's using a tag.The JSON file could contain information such as:Page URLCanonical URLTitleSummary / DescriptionMain Content (clean article content)AuthorPublished DateLast UpdatedEntities (people, companies, places, products, etc.)Keywords / TopicsFAQ...My idea is that AI crawlers could read this structured JSON instead of having to extract the main content from noisy HTML that contains navigation menus, sidebars, ads, comments, JavaScript, tables, and other non-essential elements.I have two questions:Could this approach reduce the chances of AI crawlers misunderstanding a page or extracting incorrect information from HTML, advertisements, tables, comments, or other noisy content?Do you think a page-level JSON file like this could help AI systems better understand a page and potentially improve AI recommendations, citations, or other AI-generated responses in the future? Why or why not?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,31 +1,35 @@
-# SPEC.md — Is Rust is a real niche programming language？
+---
+id: "4154"
+slug: is-rust-is-a-real-niche-programming-language
+title: Is Rust is a real niche programming language？
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49506838"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Is Rust is a real niche programming language？
 
 ## Problem
 
-is Rust is a real niche programming language？<p>Somebody in X says that it is a niche language. But I still see it is much hot these days
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49506838)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-08-31T07:52:50Z
+is Rust is a real niche programming language？Somebody in X says that it is a niche language. But I still see it is much hot these days
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

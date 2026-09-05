@@ -1,47 +1,58 @@
-# PRODUCT.md — I built Snapquo because I hated doing quotes and invoices at night
+---
+id: "4164"
+slug: i-built-snapquo-because-i-hated-doing-quotes-and-invoic
+title: I built Snapquo because I hated doing quotes and invoices at night
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511368"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# I built Snapquo because I hated doing quotes and invoices at night
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I spent years working on the tools in my family&#x27;s business, doing tiling, painting and decorating.<p>The work itself was fine. What I hated was getting home after a full day on site and then having to sit down and do quotes, invoices and chase customers.<p>We were also on Checkatrade. The old page is still there, so this is something I actually dealt with myself, not a problem I spotted from the outside.<p>You&#x27;d spend the day measuring up jobs and talking to customers, then get home tired and realise you&#x27;ve still got a load of quotes to write.<p>That was the reason I started building Snapquo.<p>It&#x27;s a mobile app and a web app, so you can use it however suits the job. You might put a quote together while you&#x27;re still on site, or take a few photos and finish it later in the office. If you&#x27;ve got a bigger quote to work on, you can sit at a computer and do it there.<p>The basic idea is pretty simple. Get the quote done, send it to the customer, let them accept and sign it, take a deposit if you want to, and then turn it into an invoice.<p>It now has things like:<p>• Quotes you can build quickly from your phone<p>• Photos and optional extras<p>• Customer acceptance and signatures<p>• Deposits<p>• Automatic quote follow-ups<p>• Quote-open tracking<p>• Saved prices<p>• Quote to invoice<p>• Online payments<p>• Pipeline and win&#x2F;loss tracking<p>• iPhone, Android and web apps<p>• Free tools for things like VAT, CIS, Day rate calculator, Invoice generator and a lot more.<p>I have deliberately tried not to turn it into another massive CRM with loads of features that a small trade business probably doesn&#x27;t need.<p>I wanted something I would have actually used when I was on the tools.<p>I&#x27;d genuinely like to hear your feedback. Thanks :)
+Snapquo is the quote-and-invoice tool the author wishes they'd had on the tools: build a quote on site, get a customer signature and deposit, let Snapquo follow up automatically, then turn the accepted quote into an invoice with online payments — all without dragging the trade business into a full CRM.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Quote, invoice and get paid without the paperwork mountain — built for small trades.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Owner-operators and small teams in tiling, painting, decorating, and similar trades. Adjacent: any service business that quotes per job, takes deposits, and wants light pipeline tracking without a CRM.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I finish measuring up a job, I want to put the quote together on my phone so I do not have to redo it at home.
+- When I send a quote, I want the customer to sign and pay a deposit in one step so I know the work is locked in.
+- When a quote goes cold, I want Snapquo to follow up automatically so I do not have to chase customers myself.
+- When a quote is accepted, I want one click to turn it into an invoice with online payment so I can move on to the next job.
+- When I run my week, I want a simple pipeline and win/loss view so I see where every job stands.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Number of active trade businesses using Snapquo weekly.
+- Quote-to-acceptance conversion rate.
+- Share of quotes that turn into invoices and get paid online.
+- Time saved per quote vs. the author's 'old way' (qualitative).
+- App-store ratings on iPhone and Android.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source does not state pricing, plans, or transaction fees. Treat as undefined until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Generic CRMs (Salesforce/HubSpot) and accounting tools (Xero/QuickBooks) overlap but are too broad. Trade-specific tools such as Checkatrade focus on lead generation rather than quoting. Snapquo's differentiator is the end-to-end quote→signature→deposit→invoice→payment flow on phone and web, deliberately without CRM bloat.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511368) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Multi-platform delivery (iOS, Android, web) raises maintenance cost.
+- Payments compliance (PCI, KYC) and provider choice are unstated risks; mitigation is to lean on a payment provider that owns compliance.
+- 'Not a CRM' is a discipline risk: feature requests will push toward CRM behaviour; mitigation is to keep the roadmap aligned to the trade-business workflow.
+- No stated willingness-to-pay signal in the source.

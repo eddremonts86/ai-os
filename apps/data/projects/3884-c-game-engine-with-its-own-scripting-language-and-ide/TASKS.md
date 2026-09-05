@@ -1,6 +1,6 @@
 ---
 id: "3884"
-slug: "c-game-engine-with-its-own-scripting-language-and-ide"
+slug: c-game-engine-with-its-own-scripting-language-and-ide
 title: "C# Game Engine with its own scripting language and IDE"
 status: enriched
 source:
@@ -9,7 +9,7 @@ source:
 category: show-hn
 date: "2026-08-30"
 tags: [Show HN, Product, Problem]
-tech: [C# engine core, MonoGame backend, Custom scripting language Exp, Integrated IDE, Cross-platform export, 2D engine]
+tech: ["C# engine core", MonoGame backend, Custom scripting language Exp, Integrated IDE, Cross-platform export, "2D engine"]
 ---
 # C# Game Engine with its own scripting language and IDE
 

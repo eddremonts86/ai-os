@@ -1,48 +1,54 @@
-# PRODUCT.md — Cutaway 1.5.7 – An handy, open-source, basic image editor
+---
+id: "4187"
+slug: cutaway-157-an-handy-open-source-basic-image-editor
+title: "Cutaway 1.5.7 – An handy, open-source, basic image editor"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509758"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Cutaway 1.5.7 – An handy, open-source, basic image editor
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ For windows; Apace2.0; BYOK
-Repos in my bio
+Cutaway is a basic open-source image editor for Windows, distributed under Apache 2.0, with a BYOK hook for the model-backed feature the user wants to use. The user owns the credentials; the editor does the editing.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Windows users who want a basic open-source image editor and are comfortable bringing their own credentials for the model-backed feature. Assumes the reader is on Windows, can install an Apache-licensed tool, and can obtain an API key for the model the editor wraps.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I edit images on Windows, I want an open-source editor so I am not tied to a closed-source product.
+- When the editor uses a model, I want to BYOK so my credentials do not leave my machine.
+- When I install, I want a documented Windows path so setup is one download and one README.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of downloads per release.
+- Time from install to first edit.
+- Coverage of the BYOK hook (which model providers are documented).
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other open-source image editors (GIMP, Krita) and Apache-licensed image tools. The captured source post positions Cutaway around the BYOK contract for the model-backed feature and the Windows-first packaging, but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509758) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Windows is the only named platform; users on macOS or Linux are out of scope.
+- BYOK shifts credential management to the user; a leaked key is the user's problem, but the editor must not store it in plaintext.

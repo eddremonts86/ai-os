@@ -1,4 +1,17 @@
-# TASKS.md — An agent that finds you jobs with just your resume
+---
+id: "4422"
+slug: an-agent-that-finds-you-jobs-with-just-your-resume
+title: An agent that finds you jobs with just your resume
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514014"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# An agent that finds you jobs with just your resume
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

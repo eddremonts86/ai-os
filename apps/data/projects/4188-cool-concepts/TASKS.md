@@ -1,10 +1,24 @@
-# TASKS.md — Cool Concepts
+---
+id: "4188"
+slug: cool-concepts
+title: "Cool Concepts"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509756"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Cool Concepts
 
 ## Phase 0: Scaffold
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/4188-cool-concepts/`
+- [ ] Copy `edd-app-template` → `apps/4188-cool-concepts/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -12,16 +26,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Build the word list and the drag-and-drop UI.
+- [ ] Add the mix-two-words-into-one mechanic.
+- [ ] Wire the keyboard fallback.
+- [ ] Ship the in-browser word-brain descriptions.
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
+
 
 ---
 

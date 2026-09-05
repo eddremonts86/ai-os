@@ -1,7 +1,7 @@
 ---
 id: "3878"
-slug: "finbridge-korean-stock-market-data-for-ai-agents-mcp"
-title: "FinBridge – Korean stock market data for AI agents (MCP)"
+slug: finbridge-korean-stock-market-data-for-ai-agents-mcp
+title: FinBridge – Korean stock market data for AI agents (MCP)
 status: enriched
 source:
   name: HackerNews

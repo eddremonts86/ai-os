@@ -1,7 +1,7 @@
 ---
 id: "3879"
-slug: "cushion-pouchdb-on-deno-kv"
-title: "Cushion – PouchDB on Deno KV"
+slug: cushion-pouchdb-on-deno-kv
+title: Cushion – PouchDB on Deno KV
 status: enriched
 source:
   name: HackerNews

@@ -1,34 +1,39 @@
-# PRODUCT.md — Sageling - a local AI agent for Mac, Qwen 3.5 9B in-process via MLX
+---
+id: "5125"
+slug: sageling-a-local-ai-agent-for-mac-qwen-3-5-9b-in-proce
+title: "Sageling - a local AI agent for Mac, Qwen 3.5 9B in-process via MLX"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49569136"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Sageling - a local AI agent for Mac, Qwen 3.5 9B in-process via MLX
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ A lot of my non-developer friends still think that AI is basically just Google or something you ask to write something and then copy paste it around... if they use it at all. When I ask them why they don&#x27;t use the good stuff like Claude Cowork or its competitors, they tell me a few things:
-1. Well, I don&#x27;t wanna pay a bunch of money for it, and the $20 plans run out real fast.
-2. I&#x27;m dealing with sensitive info (student grades, therapy notes, legal work, etc) and I don&#x27;t wanna give it to anyone.<p>So I built Sageling to give them a first taste of what a good coworking experience feels like. It&#x27;s admittedly not going to be as powerful given it&#x27;s running Qwen 3.5 9B, but with all of the harness&#x27; tricks, it a good first experience that can handle some impressive things for its size (see all the website videos).<p>If you&#x27;ve heard similar things from your friends, send the link onto them =)
+_Based on source brief:_ A lot of my non-developer friends still think that AI is basically just Google or something you ask to write something and then copy paste it around... if they use it at all. When I ask them why they don't use the good stuff like Claude Cowork or its competitors, they tell me a few things:
+1. Well, I don't wanna pay a bunch of money for it, and the $20 plans run out real fast.
+2. I'm dealing with sensitive info (student grades, therapy notes, legal work, etc) and I don't wanna give it to anyone.So I built Sageling to give them a first taste of what a good coworking experience feels like. It's admittedly not going to be as powerful given it's running Qwen 3.5 9B, but with all of the harness' tricks, it a good first experience that can handle some impressive things for its size (see all the website videos).If you've heard similar things from your friends, send the link onto them =)
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -36,7 +41,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

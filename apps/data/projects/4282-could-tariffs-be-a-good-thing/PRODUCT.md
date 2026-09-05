@@ -1,36 +1,41 @@
-# PRODUCT.md — Could tariffs be a good thing?
+---
+id: "4282"
+slug: could-tariffs-be-a-good-thing
+title: Could tariffs be a good thing?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49513980"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Could tariffs be a good thing?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
 _Based on source brief:_ If we want to have all of these environmental and labor laws to protect our people, we cannot just throw our workers right back under the bus by buying cheap goods from nations that use slave, labor and toxic lakes. We are worsening the problems of climate change and human trafficking and slavery by adding long distance shipping to it and hiding it out of sight.
-If we ACTUALLY want to help the environment with our Environmental Protection laws, we cannot just have people in foreign nations do even worse practices than our manufacturers here would do. We need to eliminate the problem here. 
+If we ACTUALLY want to help the environment with our Environmental Protection laws, we cannot just have people in foreign nations do even worse practices than our manufacturers here would do. We need to eliminate the problem here.
 Think about this: would it be worse for climate change to have a factory burning coal here or to have a factory burning coal in China THEN burning tar-like bunker fuel thousands of miles to come here drop it off then go back?
 Is it worse to have our goods cost more because they are made by highly paid and well cared for American workers or to have our goods made by Uyghurs in slavery in central China?
-America&#x27;s entire government budget was once paid by tariffs on imports, wouldn&#x27;t it be nice to return to no taxes?
+America's entire government budget was once paid by tariffs on imports, wouldn't it be nice to return to no taxes?
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -38,7 +43,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

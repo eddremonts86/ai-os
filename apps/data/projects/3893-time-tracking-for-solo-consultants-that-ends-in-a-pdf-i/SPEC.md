@@ -1,7 +1,7 @@
 ---
 id: "3893"
 slug: time-tracking-for-solo-consultants-that-ends-in-a-pdf-i
-title: "Time tracking for solo consultants that ends in a PDF invoice"
+title: Time tracking for solo consultants that ends in a PDF invoice
 status: enriched
 source:
   name: HackerNews

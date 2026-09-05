@@ -1,4 +1,17 @@
-# TASKS.md — Xfinity silently blocks lots of new domains
+---
+id: "5116"
+slug: xfinity-silently-blocks-lots-of-new-domains
+title: Xfinity silently blocks lots of new domains
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49568385"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Xfinity silently blocks lots of new domains
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

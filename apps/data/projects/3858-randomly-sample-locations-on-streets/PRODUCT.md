@@ -9,7 +9,7 @@ source:
 category: show-hn
 date: "2026-08-30"
 tags: [Show HN, Product, Problem]
-tech: [Python package, OpenStreetMap street data, GADM administrative boundaries in ESRI shapefile format, pyshp shapefile handling, 0.5 km segment sampling, CSV output with map plots]
+tech: [Python package, OpenStreetMap street data, GADM administrative boundaries in ESRI shapefile format, pyshp shapefile handling, "0.5 km segment sampling", CSV output with map plots]
 ---
 # Randomly Sample Locations on Streets
 

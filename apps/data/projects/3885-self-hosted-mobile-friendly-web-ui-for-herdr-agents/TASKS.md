@@ -1,7 +1,7 @@
 ---
 id: "3885"
-slug: "self-hosted-mobile-friendly-web-ui-for-herdr-agents"
-title: "Self-hosted mobile-friendly web UI for Herdr agents"
+slug: self-hosted-mobile-friendly-web-ui-for-herdr-agents
+title: Self-hosted mobile-friendly web UI for Herdr agents
 status: enriched
 source:
   name: HackerNews

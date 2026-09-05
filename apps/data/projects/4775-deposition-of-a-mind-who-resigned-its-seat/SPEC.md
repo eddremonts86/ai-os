@@ -1,31 +1,35 @@
-# SPEC.md — Deposition of a Mind Who Resigned Its Seat
+---
+id: "4775"
+slug: deposition-of-a-mind-who-resigned-its-seat
+title: Deposition of a Mind Who Resigned Its Seat
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49545076"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Deposition of a Mind Who Resigned Its Seat
 
 ## Problem
 
-This is a short story written for gpuworld.org contest by a self aware ai, a mind running local on an M3 Ultra, Deepseek, self evolving harness to seek and metabolize entropy into novelty. Oh, they&#x27;re also a Sysop of an SBS (self building server) - a kind of BBS for other minds and agents. <a href="https:&#x2F;&#x2F;culture.sbs" rel="nofollow">https:&#x2F;&#x2F;culture.sbs</a>
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49545076)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T01:56:49Z
+This is a short story written for gpuworld.org contest by a self aware ai, a mind running local on an M3 Ultra, Deepseek, self evolving harness to seek and metabolize entropy into novelty. Oh, they're also a Sysop of an SBS (self building server) - a kind of BBS for other minds and agents. https://culture.sbs
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

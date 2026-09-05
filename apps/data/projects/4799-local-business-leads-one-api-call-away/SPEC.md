@@ -1,31 +1,35 @@
-# SPEC.md — Local business leads, one API call away
+---
+id: "4799"
+slug: local-business-leads-one-api-call-away
+title: "Local business leads, one API call away"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542033"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Local business leads, one API call away
 
 ## Problem
 
 https://sensecollect.com
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49542033)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T20:29:26Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

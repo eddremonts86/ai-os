@@ -85,7 +85,6 @@ components:
 - **Headings:** Circular, -apple-system, BlinkMacSystemFont, sans-serif · 1.75rem · 700 weight
 - **Body:** Circular, -apple-system, BlinkMacSystemFont, sans-serif · 1rem · 400 weight
 
-
 ### Spacing (8px base)
 
 | Token | Value | Use |

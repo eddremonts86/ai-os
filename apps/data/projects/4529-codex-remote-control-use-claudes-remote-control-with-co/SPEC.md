@@ -1,31 +1,35 @@
-# SPEC.md — codex-remote-control – Use Claude's Remote Control with Codex Sessions
+---
+id: "4529"
+slug: codex-remote-control-use-claudes-remote-control-with-co
+title: "codex-remote-control – Use Claude's Remote Control with Codex Sessions"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49526313"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# codex-remote-control – Use Claude's Remote Control with Codex Sessions
 
 ## Problem
 
 https://github.com/sahrizvi/codex-remote-control
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49526313)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T18:51:38Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

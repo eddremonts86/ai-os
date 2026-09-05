@@ -1,32 +1,37 @@
-# PRODUCT.md — I created a privacy-focused email service
+---
+id: "4601"
+slug: i-created-a-privacy-focused-email-service
+title: I created a privacy-focused email service
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536794"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I created a privacy-focused email service
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I built JustReceiveEmail because I don&#x27;t want data collectors tracking my online activity through my email address.<p>The idea is simple: use a different email address whenever you sign up for something, while still being able to keep that address and receive emails from it later.<p>Privacy was the main goal. Incoming emails are encrypted before being stored, no tracking&#x2F;logging is used, and the service tries to collect as little data as possible. Only a username is required to create an account.<p>There are no ads or trackers. Instead, it costs a small fee to help keep the service running.<p>I&#x27;d love to get feedback, especially on the privacy model and anything you think I should improve.<p><a href="https:&#x2F;&#x2F;justreceive.email" rel="nofollow">https:&#x2F;&#x2F;justreceive.email</a>
+_Based on source brief:_ I built JustReceiveEmail because I don't want data collectors tracking my online activity through my email address.The idea is simple: use a different email address whenever you sign up for something, while still being able to keep that address and receive emails from it later.Privacy was the main goal. Incoming emails are encrypted before being stored, no tracking/logging is used, and the service tries to collect as little data as possible. Only a username is required to create an account.There are no ads or trackers. Instead, it costs a small fee to help keep the service running.I'd love to get feedback, especially on the privacy model and anything you think I should improve.https://justreceive.email
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

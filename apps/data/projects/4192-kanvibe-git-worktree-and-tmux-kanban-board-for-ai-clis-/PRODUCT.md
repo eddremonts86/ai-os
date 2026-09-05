@@ -1,47 +1,53 @@
-# PRODUCT.md — KanVibe – Git worktree and tmux Kanban board for AI CLIs, now Electron
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4192"
+slug: kanvibe-git-worktree-and-tmux-kanban-board-for-ai-clis-
+title: "KanVibe – Git worktree and tmux Kanban board for AI CLIs, now Electron"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509626"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# KanVibe – Git worktree and tmux Kanban board for AI CLIs, now Electron
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/rookedsysc/kanvibe
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+One keyboard-first Kanban surface that pairs every AI coding task with its own git worktree and its own embedded tmux session, and lets the agent itself drive the card transitions through CLI hooks.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Multi-agent developers running Claude Code, Gemini CLI, Codex CLI, or OpenCode in parallel on one repo
+- Solo founders who keep three or four branches open at once and lose context between them
+- Small teams that want a shared Kanban view of agent work without a paid Jira or Linear seat
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I start Claude Code on a new branch, I want a Kanban card and a tmux session to appear automatically so I can track what the agent is doing without leaving the terminal
+- When the agent finishes a tool call, I want the card to move columns on its own so I do not have to manually update the board
+- When I want to inspect a branch in progress, I want its worktree to be one click away so I can diff, run tests, or open it in my editor
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Median time from agent task start to card appearing on the board under 5 seconds
+- 80% of card transitions driven by hooks rather than manual drag-and-drop
+- Retention of returning weekly-active users above 40% after the second agent-onboarding session
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+_TODO:_ source did not state a price. README shows a Buy Me A Coffee link and AGPL-3.0 prohibits commercial SaaS; likely free + optional support contract.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- workmux — tmux-only workspace manager; no Kanban, no agent hooks
+- vibe-kanban — BloopAI's AI-powered Kanban; no embedded terminal or worktree pairing
+- Linear, Jira, Trello — general Kanban, no git worktree integration, no terminal embed
+- Plain tmux + git worktree scripts — works but no shared visual layer
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509626) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Hook schemas drift across CLI providers; one upstream change can break card transitions
+- AGPL-3.0 may deter enterprise adoption
+- Electron distribution adds a real binary footprint per platform

@@ -1,4 +1,17 @@
-# TASKS.md — Rails Baseline – a Rails SaaS starter with agent-readable architecture
+---
+id: "4515"
+slug: rails-baseline-a-rails-saas-starter-with-agent-readable
+title: Rails Baseline – a Rails SaaS starter with agent-readable architecture
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49528828"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Rails Baseline – a Rails SaaS starter with agent-readable architecture
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

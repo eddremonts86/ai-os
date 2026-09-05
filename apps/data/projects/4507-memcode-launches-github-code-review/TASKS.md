@@ -1,4 +1,17 @@
-# TASKS.md — Memcode Launches GitHub Code Review
+---
+id: "4507"
+slug: memcode-launches-github-code-review
+title: Memcode Launches GitHub Code Review
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49530862"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Memcode Launches GitHub Code Review
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

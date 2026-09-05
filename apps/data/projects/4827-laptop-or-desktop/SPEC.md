@@ -1,31 +1,35 @@
-# SPEC.md — Laptop or Desktop?
+---
+id: "4827"
+slug: laptop-or-desktop
+title: Laptop or Desktop?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49552450"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Laptop or Desktop?
 
 ## Problem
 
-What portion of you all use a laptop versus a desktop and why? Ever since I got a laptop I&#x27;ve had recurring neck pain and issues from not being strict with desk setups and using laptops here and there instead of at a table. There is no good way to use a laptop without a stand and external peripherals. It makes sense for students and traveling professionals but not really for most people I think. Thinking I will go back to a full desktop now. Bonus: Mac or PC or GNU&#x2F;Linux or BSD.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49552450)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T16:14:44Z
+What portion of you all use a laptop versus a desktop and why? Ever since I got a laptop I've had recurring neck pain and issues from not being strict with desk setups and using laptops here and there instead of at a table. There is no good way to use a laptop without a stand and external peripherals. It makes sense for students and traveling professionals but not really for most people I think. Thinking I will go back to a full desktop now. Bonus: Mac or PC or GNU/Linux or BSD.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

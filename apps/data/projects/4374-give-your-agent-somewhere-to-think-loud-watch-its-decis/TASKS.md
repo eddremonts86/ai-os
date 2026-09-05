@@ -1,4 +1,17 @@
-# TASKS.md — Give your agent somewhere to think loud watch its decisions unfold live
+---
+id: "4374"
+slug: give-your-agent-somewhere-to-think-loud-watch-its-decis
+title: Give your agent somewhere to think loud watch its decisions unfold live
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49519157"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Give your agent somewhere to think loud watch its decisions unfold live
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,28 +1,30 @@
-# PLAN.md — HelpStack – Unify messages across channels and reply faster with AI and translation
+---
+id: "4695"
+slug: helpstack-unify-messages-across-channels-and-reply-fast
+title: HelpStack – Unify messages across channels and reply faster with AI and translation
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/helpstack?utm_campaign=startup-182268&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-02"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# HelpStack – Unify messages across channels and reply faster with AI and translation
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

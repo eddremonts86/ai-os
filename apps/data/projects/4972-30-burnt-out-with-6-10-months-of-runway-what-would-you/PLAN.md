@@ -1,28 +1,30 @@
-# PLAN.md — 30, burnt out, with 6-10 months of runway. What would you do?
+---
+id: "4972"
+slug: "30-burnt-out-with-6-10-months-of-runway-what-would-you"
+title: "30, burnt out, with 6-10 months of runway. What would you do?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49535363"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# 30, burnt out, with 6-10 months of runway. What would you do?
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

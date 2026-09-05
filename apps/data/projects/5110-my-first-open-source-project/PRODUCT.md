@@ -1,32 +1,37 @@
-# PRODUCT.md — My first open source project
+---
+id: "5110"
+slug: my-first-open-source-project
+title: My first open source project
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49569757"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# My first open source project
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ hey everyone i tried to build a platform on BYOA concept combining all free api service under one hood and connecting them to a single interface where you chat, code , talk and much more https:&#x2F;&#x2F;github.com&#x2F;theguysudo&#x2F;ENZO
+_Based on source brief:_ hey everyone i tried to build a platform on BYOA concept combining all free api service under one hood and connecting them to a single interface where you chat, code , talk and much more https://github.com/theguysudo/ENZO
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

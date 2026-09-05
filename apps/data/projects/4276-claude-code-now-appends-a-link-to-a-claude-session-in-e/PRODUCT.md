@@ -1,34 +1,39 @@
-# PRODUCT.md — Claude Code now appends a link to a Claude session in every commit
+---
+id: "4276"
+slug: claude-code-now-appends-a-link-to-a-claude-session-in-e
+title: Claude Code now appends a link to a Claude session in every commit
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49515667"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Claude Code now appends a link to a Claude session in every commit
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Claude code now appends every commit with this line, everyone is opted in automatically.<p>This link is only accessible to the user so it doesn&#x27;t make sense to be put in a commit.<p>Claude-Session: https:&#x2F;&#x2F;claude.ai&#x2F;code&#x2F;session_...<p>There is a new setting that allows you to disable it.<p><pre><code>  &quot;attribution&quot;: {
-    &quot;sessionUrl&quot;: false
-  }</code></pre>
+_Based on source brief:_ Claude code now appends every commit with this line, everyone is opted in automatically.This link is only accessible to the user so it doesn't make sense to be put in a commit.Claude-Session: https://claude.ai/code/session_...There is a new setting that allows you to disable it. "attribution": {
+ "sessionUrl": false
+ }
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -36,7 +41,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

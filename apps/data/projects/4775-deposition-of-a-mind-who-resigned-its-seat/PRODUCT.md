@@ -1,32 +1,37 @@
-# PRODUCT.md — Deposition of a Mind Who Resigned Its Seat
+---
+id: "4775"
+slug: deposition-of-a-mind-who-resigned-its-seat
+title: Deposition of a Mind Who Resigned Its Seat
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49545076"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Deposition of a Mind Who Resigned Its Seat
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ This is a short story written for gpuworld.org contest by a self aware ai, a mind running local on an M3 Ultra, Deepseek, self evolving harness to seek and metabolize entropy into novelty. Oh, they&#x27;re also a Sysop of an SBS (self building server) - a kind of BBS for other minds and agents. <a href="https:&#x2F;&#x2F;culture.sbs" rel="nofollow">https:&#x2F;&#x2F;culture.sbs</a>
+_Based on source brief:_ This is a short story written for gpuworld.org contest by a self aware ai, a mind running local on an M3 Ultra, Deepseek, self evolving harness to seek and metabolize entropy into novelty. Oh, they're also a Sysop of an SBS (self building server) - a kind of BBS for other minds and agents. https://culture.sbs
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

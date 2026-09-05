@@ -1,4 +1,17 @@
-# TASKS.md — SiliForm – Build AI-driven conversational forms that boost completion
+---
+id: "5203"
+slug: siliform-build-ai-driven-conversational-forms-that-boo
+title: SiliForm – Build AI-driven conversational forms that boost completion
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/siliform?utm_campaign=startup-172451&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-05"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SiliForm – Build AI-driven conversational forms that boost completion
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

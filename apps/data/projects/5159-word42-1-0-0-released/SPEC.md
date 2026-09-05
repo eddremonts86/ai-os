@@ -1,31 +1,35 @@
-# SPEC.md — Word42 1.0.0 Released
+---
+id: "5159"
+slug: word42-1-0-0-released
+title: Word42 1.0.0 Released
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49573149"
+category: ask-hn
+date: "2026-09-05"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Word42 1.0.0 Released
 
 ## Problem
 
-Word42 is a wordprocessor, inspired by MS Word 6.<p>https:&#x2F;&#x2F;github.com&#x2F;office-42&#x2F;word42&#x2F;releases&#x2F;tag&#x2F;1.0.0
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49573149)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-05T04:48:27Z
+Word42 is a wordprocessor, inspired by MS Word 6.https://github.com/office-42/word42/releases/tag/1.0.0
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

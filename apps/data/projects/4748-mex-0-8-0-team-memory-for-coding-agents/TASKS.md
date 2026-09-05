@@ -1,4 +1,17 @@
-# TASKS.md — Mex 0.8.0 – team memory for coding agents
+---
+id: "4748"
+slug: mex-0-8-0-team-memory-for-coding-agents
+title: Mex 0.8.0 – team memory for coding agents
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49547372"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Mex 0.8.0 – team memory for coding agents
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

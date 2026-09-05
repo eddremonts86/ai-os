@@ -1,7 +1,7 @@
 ---
 id: "3877"
-slug: "sapporta-build-database-applications-for-power-users"
-title: "Sapporta – build database applications for power users"
+slug: sapporta-build-database-applications-for-power-users
+title: Sapporta – build database applications for power users
 status: enriched
 source:
   name: HackerNews

@@ -1,32 +1,37 @@
-# PRODUCT.md — Why is Founder Mode not working for Airbnb?
+---
+id: "4155"
+slug: why-is-founder-mode-not-working-for-airbnb
+title: Why is Founder Mode not working for Airbnb?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49506794"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Why is Founder Mode not working for Airbnb?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I really liked Airbnb and was rooting for them ever since they launched.<p>The stock never attained the peak it reached post-ipo (only this month it&#x27;s gotten close), while Booking Holdings roughly doubled in the same period.<p>The sentiment online seems to be against them (or at least in my bubble). Poor customer service and overprotected hosts seem to be recurring issues.
+_Based on source brief:_ I really liked Airbnb and was rooting for them ever since they launched.The stock never attained the peak it reached post-ipo (only this month it's gotten close), while Booking Holdings roughly doubled in the same period.The sentiment online seems to be against them (or at least in my bubble). Poor customer service and overprotected hosts seem to be recurring issues.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

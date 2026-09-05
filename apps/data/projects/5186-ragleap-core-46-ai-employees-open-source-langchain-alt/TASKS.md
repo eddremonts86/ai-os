@@ -1,4 +1,17 @@
-# TASKS.md — RagLeap Core – 46 AI Employees, open-source LangChain alt
+---
+id: "5186"
+slug: ragleap-core-46-ai-employees-open-source-langchain-alt
+title: "RagLeap Core – 46 AI Employees, open-source LangChain alt"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49573630"
+category: show-hn
+date: "2026-09-05"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# RagLeap Core – 46 AI Employees, open-source LangChain alt
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

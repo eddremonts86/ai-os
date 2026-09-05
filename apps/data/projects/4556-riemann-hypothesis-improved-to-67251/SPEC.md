@@ -1,31 +1,35 @@
-# SPEC.md — Riemann Hypothesis: Improved to 67.251
+---
+id: "4556"
+slug: riemann-hypothesis-improved-to-67251
+title: "Riemann Hypothesis: Improved to 67.251"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49534141"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Riemann Hypothesis: Improved to 67.251
 
 ## Problem
 
 Improved it to 67.251. Please take a look.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49534141)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-02T10:04:12Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

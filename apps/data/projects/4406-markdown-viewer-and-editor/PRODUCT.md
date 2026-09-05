@@ -1,32 +1,37 @@
-# PRODUCT.md — Markdown Viewer and Editor
+---
+id: "4406"
+slug: markdown-viewer-and-editor
+title: Markdown Viewer and Editor
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514729"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Markdown Viewer and Editor
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I built an online viewer and editor for .md files where the file stays on your machine. Free to use and code is available under MIT License here: <a href="https:&#x2F;&#x2F;github.com&#x2F;hattray&#x2F;markdown-editor" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;hattray&#x2F;markdown-editor</a><p>You can also install it as a Chrome&#x2F;Edge app so that it works for files on your desktop by double-clicking.<p>Supports standard .md files with formatting, syntax-highlighting for code, table of contents, Mermaid diagrams, LaTeX via KaTex. Also supports exporting to .html, .pdf and .png.<p>Please give it a try and share your feedback for improvements.
+_Based on source brief:_ I built an online viewer and editor for .md files where the file stays on your machine. Free to use and code is available under MIT License here: https://github.com/hattray/markdown-editorYou can also install it as a Chrome/Edge app so that it works for files on your desktop by double-clicking.Supports standard .md files with formatting, syntax-highlighting for code, table of contents, Mermaid diagrams, LaTeX via KaTex. Also supports exporting to .html, .pdf and .png.Please give it a try and share your feedback for improvements.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

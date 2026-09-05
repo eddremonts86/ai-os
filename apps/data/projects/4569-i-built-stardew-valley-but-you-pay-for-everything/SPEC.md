@@ -1,31 +1,35 @@
-# SPEC.md — I built Stardew Valley but you pay for everything
+---
+id: "4569"
+slug: i-built-stardew-valley-but-you-pay-for-everything
+title: I built Stardew Valley but you pay for everything
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49539519"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built Stardew Valley but you pay for everything
 
 ## Problem
 
-You can buy land, build stuff, market your projects. I plan on integrating your AI agents onto it.<p>Any ideas on where this project could go?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49539519)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T17:28:15Z
+You can buy land, build stuff, market your projects. I plan on integrating your AI agents onto it.Any ideas on where this project could go?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

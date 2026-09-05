@@ -1,47 +1,54 @@
-# PRODUCT.md — RepoFlows – Interactive architecture diagrams for GitHub repos
+---
+id: "4171"
+slug: repoflows-interactive-architecture-diagrams-for-github-
+title: "RepoFlows – Interactive architecture diagrams for GitHub repos"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511028"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# RepoFlows – Interactive architecture diagrams for GitHub repos
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://www.repoflows.com/
+RepoFlows turns a GitHub URL into a diagram you can read in the browser: the runtime architecture, not the file tree, surfaced as an interactive canvas a reader can pan, zoom, and step through. The public gallery means a repo the team already analysed is one click away from the next visitor.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Developers evaluating a new GitHub repo, technical writers producing architecture overviews, and onboarding engineers who want to understand a codebase before reading the source. Assumes the reader can paste a URL but does not want to clone and run the project themselves.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I evaluate an open-source repo, I want a runtime diagram so I can see the moving parts without cloning and reading.
+- When I onboard onto a new codebase, I want the same diagram so I have a map before I start reading source.
+- When I write architecture docs, I want a generator so I do not have to redraw the diagram by hand every time the repo changes.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of GitHub repos the service has rendered.
+- Latency from URL paste to diagram rendered.
+- Accuracy of the inferred components (qualitative — does the diagram match what the repo actually does?).
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes repository-visualization tools and code-base map generators. The captured source post positions RepoFlows around runtime architecture rather than file-tree visualization, but the precise list of named incumbents is not stated in the source text.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511028) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- A general-purpose analyzer is hard; many repos use unusual stacks and the diagram will be wrong or empty.
+- A diagram can mislead if it oversimplifies; the product has to disclose what the diagram does and does not show.

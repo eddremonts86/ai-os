@@ -1,4 +1,18 @@
-# TASKS.md — I rebuilt tank game with new style
+---
+id: "4398"
+slug: i-rebuilt-tank-game-with-new-style
+title: I rebuilt tank game with new style
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49516825"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+country: Still something must be done
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I rebuilt tank game with new style
 
 ## Phase 0: Scaffold
 
@@ -12,10 +26,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

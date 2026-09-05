@@ -1,28 +1,30 @@
-# PLAN.md — Claude's innerworkings: turn 170 costs 2.1x turn 20, over 14,640 turns
+---
+id: "4858"
+slug: claude-s-innerworkings-turn-170-costs-2-1x-turn-20-ove
+title: "Claude's innerworkings: turn 170 costs 2.1x turn 20, over 14,640 turns"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49552931"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Claude's innerworkings: turn 170 costs 2.1x turn 20, over 14,640 turns
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

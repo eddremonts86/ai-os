@@ -1,47 +1,54 @@
-# PRODUCT.md — E-Ink Optimized Manga for KOreader, Kindle, Kobo, ReMarkable with KCC
+---
+id: "4173"
+slug: e-ink-optimized-manga-for-koreader-kindle-kobo-remarkab
+title: "E-Ink Optimized Manga for KOreader, Kindle, Kobo, ReMarkable with KCC"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510831"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# E-Ink Optimized Manga for KOreader, Kindle, Kobo, ReMarkable with KCC
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/ciromattia/kcc
+KCC takes a comic or manga and emits a file tuned for the e-ink reader the user actually owns. The target profiles encode the resolution, gamma, panel order, and dithering each device wants, so the user does not have to learn those knobs themselves.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Comic / manga readers with e-ink devices who want their library in a form the device reads well. Assumes the reader is comfortable with a tool that needs a source folder and produces a single output file.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I read on a Kindle, I want a MOBI that respects the device's resolution and panel order.
+- When I read on a Kobo or KOreader, I want a file tuned for that reader.
+- When I scan my own manga, I want the converter to handle the dithering and gamma so the page reads cleanly on e-ink.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of target readers with maintained profiles.
+- Conversion time per volume on a reference machine.
+- Quality of the output (qualitative — does the e-ink render look right?).
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other e-ink conversion tools and reader-specific PDF generators. The captured source post describes the per-target profile approach but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49510831) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- E-ink firmware changes; profiles have to be updated or output looks wrong on new firmware.
+- Conversion can be slow; the tool has to be honest about expected time on a long series.

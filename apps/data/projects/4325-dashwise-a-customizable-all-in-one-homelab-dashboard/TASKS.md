@@ -1,4 +1,17 @@
-# TASKS.md — Dashwise – A customizable all-in-one homelab dashboard
+---
+id: "4325"
+slug: dashwise-a-customizable-all-in-one-homelab-dashboard
+title: Dashwise – A customizable all-in-one homelab dashboard
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49522428"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Dashwise – A customizable all-in-one homelab dashboard
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 
