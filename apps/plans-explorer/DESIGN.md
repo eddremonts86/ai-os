@@ -17,7 +17,8 @@ so they are not re-litigated. Anything not in here is not a committed decision.
 Two surfaces in one app. `/` is a landing that says what the corpus is and why it is free,
 then hands over to the product. Everything else is a dense, faceted reader over the corpus,
 used to answer "what should I build next" in seconds. The landing persuades; the reader
-does not, and neither carries decorative motion.
+does not. The reader carries no decorative motion; the landing carries exactly one moving
+thing, the newest-plans list on the path (see Layout), and it is data moving, not chrome.
 
 **Light, and locked light (2026-09).** The original palette was blue-black with a violet
 accent and read as a terminal; the brief for the redesign was that nobody wanted to open it.
@@ -108,9 +109,10 @@ own.
 ### The wash
 
 `--wash` is three soft radial gradients (violet, peach, sky) fading into the page. It is the
-only gradient in the app and it appears in two places: under the landing hero and on the
-"you are here" cell of the landing's product grid. Kept as a token so it cannot be reinvented
-per view with slightly different colours.
+only gradient in the app and it appears in one place: under the landing hero. It used to
+also fill the "you are here" cell of the landing's product grid, where a cell that was
+three-quarters gradient read as a missing image; that block is now the path rail below.
+Kept as a token so it cannot be reinvented per view with slightly different colours.
 
 ### Focus
 
@@ -176,6 +178,31 @@ keeps working. It changes every public URL, which is why it is a decision and no
 ---
 
 ## Layout
+
+### LandingView (`/`)
+
+**The path** ("Three tools, one path") is an ordered list on a rail, not a card grid. Each
+stop is `32px | 5fr | 7fr`: a numbered node on the rail, copy at a 46ch measure, the product
+on the right. The lede names three verbs; each stop's mono kicker is one of them, so the
+sentence and the list are visibly the same three things. Only the current stop's node is
+filled with the accent, and it carries a "You are here" chip beside its title: position is
+the message, the number is not. The rail is drawn per stop from node centre to node centre
+(segments overlap under the solid nodes, so no seam and nothing dangling past the last one).
+
+The current stop shows the corpus rather than a screenshot of the page the visitor is on:
+the twelve newest plans by capture date, four visible, one swapped every 3.5s through a
+`TransitionGroup` (leaving row lifted out of flow, so the list never changes height).
+Rotation does not start under `prefers-reduced-motion`, and it holds while the pointer or
+focus is on the list. Loading shows four shimmer rows at the real row height; a failed fetch
+shows one line with a link to the explorer instead of a skeleton that never resolves.
+
+The two external tools sit in a browser frame: a 34px bar with three dots and the real
+hostname, then the shot. Shots are captured at exactly the frame's ratio (1440x740, see
+`scripts/capture-shots.mjs`) and `object-fit` never crops, so the frame shows what was
+captured. The frame bar is what lets BuilderHunt's dark hero read as "their site" on this
+light page instead of a black rectangle. The action button says the verb ("Open BuilderHunt");
+the hostname sits beside it in mono, because a raw hostname as a button label read as a link
+nobody named. Under 768px the grid is `28px | 1fr` with the visual below the copy.
 
 ### IndexView (`/plans`)
 
@@ -314,7 +341,10 @@ a `Try again` wired to a re-runnable loader, and all are `role="alert"`.
 ## Motion
 
 Deliberately minimal. Route cross-fade 180ms, hover transitions 150ms, card lift
-`translateY(-2px)`, rank item `translateX(2px)`.
+`translateY(-2px)`, rank item `translateX(2px)`, landing frame lift `translateY(-3px)`.
+The one continuous motion is the landing's newest-plans list (one row swap every 3.5s,
+500ms spring-like ease on `transform`, 350ms on `opacity`); it is real data changing, it
+pauses under pointer or focus, and it does not start at all under reduced motion.
 
 **Reduced-motion contract** (`app.css`): durations collapse to `0.01ms` and the two
 hover *transforms* are removed outright rather than made instant, so nothing jumps.
