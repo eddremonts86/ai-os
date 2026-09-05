@@ -1,47 +1,54 @@
-# PRODUCT.md — VajraClaw – Deterministic <1µs execution guardrail for AI agents
+---
+id: "4220"
+slug: vajraclaw-deterministic-1s-execution-guardrail-for-ai-a
+title: "VajraClaw – Deterministic <1µs execution guardrail for AI agents"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49507422"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# VajraClaw – Deterministic <1µs execution guardrail for AI agents
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/Top-Celestial-Company-Ltd/DROS-VajraClaw-Hacker
+VajraClaw sits between an agent runtime and Docker as a standalone governance gateway with deterministic sub-microsecond enforcement, so the operator can attribute every container action to a W3C DID and block anything that was not pre-authorised.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Operators running autonomous AI agents in Docker who want a sub-microsecond enforcement gate before any container action. Assumes the reader is comfortable with Docker, W3C DID, and runtime security primitives.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I run autonomous agents in Docker, I want a gateway so an unauthorised action cannot reach the daemon.
+- When I review an incident, I want each action attributed to a DID so I know which agent did what.
+- When I tune the policy, I want a deterministic enforcement path so I do not have to chase race conditions.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Latency of the enforcement path under load.
+- Coverage of the Docker action surface the gateway governs.
+- Number of agent runtimes with documented integrations.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other Docker governance products (OPA, Falco, Docker Bench) and agent-firewall primitives. The captured source post positions VajraClaw around deterministic sub-microsecond enforcement and W3C DID identity, but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49507422) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Determinism under load is a hard requirement; any race condition invalidates the headline claim.
+- Docker-only is a real constraint; agents that do not run in Docker are not covered.

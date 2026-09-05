@@ -1,7 +1,7 @@
 ---
 id: "3886"
-slug: "shevtoneaudio-orchestrator-turning-midi-into-full-orche"
-title: "ShevtoneAudio Orchestrator – Turning MIDI into Full Orchestration"
+slug: shevtoneaudio-orchestrator-turning-midi-into-full-orche
+title: ShevtoneAudio Orchestrator – Turning MIDI into Full Orchestration
 status: enriched
 source:
   name: HackerNews

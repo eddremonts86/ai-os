@@ -1,32 +1,37 @@
-# PRODUCT.md — AI Cybersecurity Awareness Game for Cybersecurity Awareness Month
+---
+id: "4860"
+slug: ai-cybersecurity-awareness-game-for-cybersecurity-awar
+title: AI Cybersecurity Awareness Game for Cybersecurity Awareness Month
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49552687"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# AI Cybersecurity Awareness Game for Cybersecurity Awareness Month
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi HN,<p>We built an interactive game about AI x Cybersecurity. It is for enterprise companies to teach their employees about the latest human risk attacks tatics.<p>Try it out and let us know what you think!<p>If you works at a security team and wants to run this game for your company&#x27;s October Cybersecurity Awareness Month for free, sign up at <a href="https:&#x2F;&#x2F;fablesecurity.com&#x2F;resources&#x2F;blog&#x2F;ocam-2026&#x2F;" rel="nofollow">https:&#x2F;&#x2F;fablesecurity.com&#x2F;resources&#x2F;blog&#x2F;ocam-2026&#x2F;</a>
+_Based on source brief:_ Hi HN,We built an interactive game about AI x Cybersecurity. It is for enterprise companies to teach their employees about the latest human risk attacks tatics.Try it out and let us know what you think!If you works at a security team and wants to run this game for your company's October Cybersecurity Awareness Month for free, sign up at https://fablesecurity.com/resources/blog/ocam-2026/
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

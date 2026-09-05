@@ -1,4 +1,17 @@
-# TASKS.md — Sandboxed HTML in Markdown (With Doom, Sort Of)
+---
+id: "4598"
+slug: sandboxed-html-in-markdown-with-doom-sort-of
+title: "Sandboxed HTML in Markdown (With Doom, Sort Of)"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536900"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Sandboxed HTML in Markdown (With Doom, Sort Of)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

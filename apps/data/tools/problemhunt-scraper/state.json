@@ -1,6 +1,6 @@
 {
   "lastSeenId": "730",
-  "lastRun": "2026-09-05T10:00:23.289Z",
+  "lastRun": "2026-09-05T14:00:20.846Z",
   "topProjectsEvaluatedAt": "2026-08-31T07:14:21.000Z",
   "analyzed": {
     "731-a-psychologist-needs-an-advertising-bot-that-analyzes-h": {
@@ -35732,7 +35732,223 @@
       "tags": "BetaList,Beta,Product",
       "source": "betalist",
       "analyzedAt": "2026-09-05T10:00:23.289Z"
+    },
+    "5204-tell-hn-openai-is-a-worthless-company": {
+      "url": "https://news.ycombinator.com/item?id=49576131",
+      "uid": "49576131",
+      "title": "Tell HN: OpenAI Is a Worthless Company",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T13:37:55.183Z"
+    },
+    "5205-xxcancel-com-redirect-to-a-working-nitter-instance": {
+      "url": "https://news.ycombinator.com/item?id=49575814",
+      "uid": "49575814",
+      "title": "Xxcancel.com – redirect to a working nitter instance",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T13:37:55.191Z"
+    },
+    "5206-qtyuo": {
+      "url": "https://news.ycombinator.com/item?id=49575723",
+      "uid": "49575723",
+      "title": "Qtyuo",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T13:37:55.195Z"
+    },
+    "5207-let-s-demand-that-apple-allow-enabling-ai-as-on-device": {
+      "url": "https://news.ycombinator.com/item?id=49575384",
+      "uid": "49575384",
+      "title": "Let's demand that Apple allow enabling AI as on-device only, no cloud",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T13:37:55.199Z"
+    },
+    "5208-md2pdf-markdown-to-pdf-with-proper-cjk-typesetting-pan": {
+      "url": "https://news.ycombinator.com/item?id=49576203",
+      "uid": "49576203",
+      "title": "Md2pdf – Markdown to PDF with proper CJK typesetting (pandoc and Typst)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.202Z"
+    },
+    "5209-ephemerals-dev-disposable-cloud-dev-environments-for-a": {
+      "url": "https://news.ycombinator.com/item?id=49576181",
+      "uid": "49576181",
+      "title": "Ephemerals.dev – Disposable cloud dev environments for agents",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.205Z"
+    },
+    "5210-simduck-multiplayer-football-with-microducks": {
+      "url": "https://news.ycombinator.com/item?id=49576089",
+      "uid": "49576089",
+      "title": "SimDuck – Multiplayer Football with MicroDucks",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.208Z"
+    },
+    "5211-yulin-local-aws-simulator": {
+      "url": "https://news.ycombinator.com/item?id=49576025",
+      "uid": "49576025",
+      "title": "Yulin Local AWS Simulator",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.211Z"
+    },
+    "5212-minilith-a-zero-dependency-cms-stored-inside-a-png-fil": {
+      "url": "https://news.ycombinator.com/item?id=49575769",
+      "uid": "49575769",
+      "title": "Minilith – A zero-dependency CMS stored inside a PNG file",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.215Z"
+    },
+    "5213-know-it-all-a-trivia-game-show-structured-like-a-rogue": {
+      "url": "https://news.ycombinator.com/item?id=49575604",
+      "uid": "49575604",
+      "title": "Know-It-All – A trivia game show structured like a roguelike (iOS)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.218Z"
+    },
+    "5214-section-1557-website-accessibility-readiness-for-medic": {
+      "url": "https://news.ycombinator.com/item?id=49575540",
+      "uid": "49575540",
+      "title": "Section 1557 website accessibility readiness for medical practices",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.221Z"
+    },
+    "5215-i-made-a-map-of-the-moon-you-can-buy-lots-on": {
+      "url": "https://news.ycombinator.com/item?id=49575539",
+      "uid": "49575539",
+      "title": "I made a map of the Moon you can buy lots on",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.224Z"
+    },
+    "5216-p-doom-ai-safety-parody-of-doom-64": {
+      "url": "https://news.ycombinator.com/item?id=49575532",
+      "uid": "49575532",
+      "title": "P(doom) – AI safety parody of DOOM 64",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.227Z"
+    },
+    "5217-i-ate-diet-catering-for-a-year-and-gained-5kg-so-i-bui": {
+      "url": "https://news.ycombinator.com/item?id=49575375",
+      "uid": "49575375",
+      "title": "I ate diet catering for a year and gained 5kg, so I built this",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.230Z"
+    },
+    "5218-i-built-an-ai-that-audits-businesses-it-s-first-job-wa": {
+      "url": "https://news.ycombinator.com/item?id=49575248",
+      "uid": "49575248",
+      "title": "I built an AI that audits businesses. It's first job was to catch me",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.233Z"
+    },
+    "5219-intermcp-pure-rust-mcp-engine-457k-ops-s-3-8mb-ram": {
+      "url": "https://news.ycombinator.com/item?id=49575155",
+      "uid": "49575155",
+      "title": "InterMCP – Pure-Rust MCP engine (457k ops/s, <3.8MB RAM)",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.236Z"
+    },
+    "5220-mado-terminal-multiplexer": {
+      "url": "https://news.ycombinator.com/item?id=49575016",
+      "uid": "49575016",
+      "title": "Mado Terminal Multiplexer",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.239Z"
+    },
+    "5221-blinkmarkets": {
+      "url": "https://news.ycombinator.com/item?id=49574970",
+      "uid": "49574970",
+      "title": "BlinkMarkets",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T13:37:55.243Z"
+    },
+    "5222-agent-mentor-generate-tailored-coding-courses-your-age": {
+      "url": "https://betalist.com/startups/agent-mentor?utm_campaign=startup-182640&utm_medium=atom&utm_source=newsfeed",
+      "uid": "agent-mentor",
+      "title": "Agent Mentor – Generate tailored coding courses your agent writes and you own",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T13:37:55.246Z"
+    },
+    "5223-transmutify-clean-messy-onboarding-spreadsheets-with-a": {
+      "url": "https://betalist.com/startups/transmutify?utm_campaign=startup-182673&utm_medium=atom&utm_source=newsfeed",
+      "uid": "transmutify",
+      "title": "Transmutify – Clean messy onboarding spreadsheets with API-driven mapping and review",
+      "category": "beta",
+      "tags": "BetaList,Beta,Product",
+      "source": "betalist",
+      "analyzedAt": "2026-09-05T13:37:55.249Z"
+    },
+    "5224-unpopular-opinion-google-should-keep-its-original-form": {
+      "url": "https://news.ycombinator.com/item?id=49576516",
+      "uid": "49576516",
+      "title": "Unpopular Opinion: Google should keep its original form",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T14:00:20.834Z"
+    },
+    "5225-structure-around-intelligence-ai-native": {
+      "url": "https://news.ycombinator.com/item?id=49576482",
+      "uid": "49576482",
+      "title": "Structure Around Intelligence – AI Native",
+      "category": "ask-hn",
+      "tags": "Ask HN,Problem",
+      "source": "hnask",
+      "analyzedAt": "2026-09-05T14:00:20.839Z"
+    },
+    "5226-build-and-embed-a-game-on-any-website": {
+      "url": "https://news.ycombinator.com/item?id=49576496",
+      "uid": "49576496",
+      "title": "Build and embed a game on any website",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T14:00:20.843Z"
+    },
+    "5227-i-built-a-browser-based-image-toolbox-with-crop-zoom-l": {
+      "url": "https://news.ycombinator.com/item?id=49576440",
+      "uid": "49576440",
+      "title": "I built a browser-based image toolbox with crop zoom layers conversion",
+      "category": "show-hn",
+      "tags": "Show HN,Product,Problem",
+      "source": "hnshow",
+      "analyzedAt": "2026-09-05T14:00:20.846Z"
     }
   },
-  "nextNumber": 5204
+  "nextNumber": 5228
 }

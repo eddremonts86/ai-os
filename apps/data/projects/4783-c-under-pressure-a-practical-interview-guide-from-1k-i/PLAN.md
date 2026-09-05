@@ -1,28 +1,31 @@
-# PLAN.md — C++ Under Pressure: A Practical Interview Guide from 1k+ Interviews
+---
+id: "4783"
+slug: c-under-pressure-a-practical-interview-guide-from-1k-i
+title: "C++ Under Pressure: A Practical Interview Guide from 1k+ Interviews"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49543698"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+country: Written by the interviewer
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# C++ Under Pressure: A Practical Interview Guide from 1k+ Interviews
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,31 +1,35 @@
-# SPEC.md — Generate a Claude Code or Codex agent fleet from one HTML file
+---
+id: "4978"
+slug: generate-a-claude-code-or-codex-agent-fleet-from-one-h
+title: Generate a Claude Code or Codex agent fleet from one HTML file
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49558161"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Generate a Claude Code or Codex agent fleet from one HTML file
 
 ## Problem
 
 https://github.com/bob-codedaptive/fleet-generator
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49558161)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T22:45:49Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

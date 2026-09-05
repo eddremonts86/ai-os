@@ -1,7 +1,7 @@
 ---
 id: "3881"
-slug: "open-sar-cop-ai-generated-common-operating-picture-for-"
-title: "Open SAR-COP – AI-generated common operating picture for disasters"
+slug: open-sar-cop-ai-generated-common-operating-picture-for-
+title: Open SAR-COP – AI-generated common operating picture for disasters
 status: enriched
 source:
   name: HackerNews

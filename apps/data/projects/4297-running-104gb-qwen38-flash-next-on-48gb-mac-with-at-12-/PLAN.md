@@ -1,28 +1,30 @@
-# PLAN.md — Running 104GB Qwen3.8-Flash-Next on 48GB Mac with at ~12 tok/s
+---
+id: "4297"
+slug: running-104gb-qwen38-flash-next-on-48gb-mac-with-at-12-
+title: Running 104GB Qwen3.8-Flash-Next on 48GB Mac with at ~12 tok/s
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49524447"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Running 104GB Qwen3.8-Flash-Next on 48GB Mac with at ~12 tok/s
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

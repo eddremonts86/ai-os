@@ -1,28 +1,30 @@
-# PLAN.md — Clico – Research, create images and videos, and manage files in one chat
+---
+id: "4680"
+slug: clico-research-create-images-and-videos-and-manage-file
+title: "Clico – Research, create images and videos, and manage files in one chat"
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/tryclico?utm_campaign=startup-185846&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-02"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Clico – Research, create images and videos, and manage files in one chat
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

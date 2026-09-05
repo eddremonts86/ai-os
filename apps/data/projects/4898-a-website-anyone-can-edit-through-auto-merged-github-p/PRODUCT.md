@@ -1,32 +1,37 @@
-# PRODUCT.md — A website anyone can edit through auto-merged GitHub PRs
+---
+id: "4898"
+slug: a-website-anyone-can-edit-through-auto-merged-github-p
+title: A website anyone can edit through auto-merged GitHub PRs
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49549933"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A website anyone can edit through auto-merged GitHub PRs
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ A community driven MySpace-style site anyone can edit and create their own static webpage with HTML. See a map of all the contributors and explore submissions. Fork the repo and PRs are automatically approved and merged to the live website.<p>This idea stemmed from r&#x2F;place on Reddit and old MySpace boards. Submissions are restricted to basic HTML to avoid malicious&#x2F;arbitrary code from running. GitHub actions scans the PR and auto-merges if all criteria is met. This ended up being almost a feature for the project. These restrictions force you to get a bit more creative with submissions.<p>Happy building!
+_Based on source brief:_ A community driven MySpace-style site anyone can edit and create their own static webpage with HTML. See a map of all the contributors and explore submissions. Fork the repo and PRs are automatically approved and merged to the live website.This idea stemmed from r/place on Reddit and old MySpace boards. Submissions are restricted to basic HTML to avoid malicious/arbitrary code from running. GitHub actions scans the PR and auto-merges if all criteria is met. This ended up being almost a feature for the project. These restrictions force you to get a bit more creative with submissions.Happy building!
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

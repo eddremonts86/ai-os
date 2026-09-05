@@ -1,31 +1,35 @@
-# SPEC.md — Books Recommendations?
+---
+id: "5163"
+slug: books-recommendations
+title: Books Recommendations?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49572562"
+category: ask-hn
+date: "2026-09-05"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Books Recommendations?
 
 ## Problem
 
-I just wanted to know what you guys have enjoyed recently, or really any book you&#x27;d recommend to the HN crowd. I&#x27;ve currently got:<p>- <i>Metamagical Themas</i> (Hofstadter)<p>- <i>The Complete Books of Charles Fort</i> (Fort)<p>- <i>Heavenly Mathematics</i> (van Brummelen)<p>- <i>Plane and Spherical Trigonometry</i> (Kells, Kern and Bland)<p>- <i>Spherical Trigonometry with Naval and Military Applications</i> (Kells, Kern, Bland)<p>- <i>Moby Dick</i> (Melville)
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49572562)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-05T02:36:51Z
+I just wanted to know what you guys have enjoyed recently, or really any book you'd recommend to the HN crowd. I've currently got:- Metamagical Themas (Hofstadter)- The Complete Books of Charles Fort (Fort)- Heavenly Mathematics (van Brummelen)- Plane and Spherical Trigonometry (Kells, Kern and Bland)- Spherical Trigonometry with Naval and Military Applications (Kells, Kern, Bland)- Moby Dick (Melville)
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

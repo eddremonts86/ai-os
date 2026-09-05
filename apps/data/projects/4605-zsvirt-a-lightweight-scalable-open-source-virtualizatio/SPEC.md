@@ -1,31 +1,35 @@
-# SPEC.md — ZSvirt – A lightweight, scalable open source virtualization platform
+---
+id: "4605"
+slug: zsvirt-a-lightweight-scalable-open-source-virtualizatio
+title: "ZSvirt – A lightweight, scalable open source virtualization platform"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536562"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# ZSvirt – A lightweight, scalable open source virtualization platform
 
 ## Problem
 
 https://github.com/ZSvirt/zsvirt
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49536562)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T14:12:56Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

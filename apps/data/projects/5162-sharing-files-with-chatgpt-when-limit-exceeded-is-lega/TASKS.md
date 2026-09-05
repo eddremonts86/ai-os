@@ -1,4 +1,17 @@
-# TASKS.md — Sharing files with ChatGPT when limit exceeded is legal?
+---
+id: "5162"
+slug: sharing-files-with-chatgpt-when-limit-exceeded-is-lega
+title: Sharing files with ChatGPT when limit exceeded is legal?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49572713"
+category: ask-hn
+date: "2026-09-05"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Sharing files with ChatGPT when limit exceeded is legal?
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

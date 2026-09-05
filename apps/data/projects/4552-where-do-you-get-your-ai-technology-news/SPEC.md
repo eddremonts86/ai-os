@@ -1,31 +1,35 @@
-# SPEC.md — Where do you get your AI (technology) news?
+---
+id: "4552"
+slug: where-do-you-get-your-ai-technology-news
+title: Where do you get your AI (technology) news?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49535272"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Where do you get your AI (technology) news?
 
 ## Problem
 
-Business&#x2F;company&#x2F;product wise is readily available.<p>I&#x27;m curious where HN gets their news for (new) AI technology.<p>It feels like every day every concept is already old, so would be nice to have 1 or a few sites with emerging tech.<p>thanks
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49535272)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-02T12:29:45Z
+Business/company/product wise is readily available.I'm curious where HN gets their news for (new) AI technology.It feels like every day every concept is already old, so would be nice to have 1 or a few sites with emerging tech.thanks
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

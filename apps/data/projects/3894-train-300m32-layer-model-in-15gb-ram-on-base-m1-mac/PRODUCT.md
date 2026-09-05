@@ -1,7 +1,7 @@
 ---
 id: "3894"
 slug: train-300m32-layer-model-in-15gb-ram-on-base-m1-mac
-title: "Train 300M/32-Layer Model in 1.5GB RAM on Base M1 Mac"
+title: Train 300M/32-Layer Model in 1.5GB RAM on Base M1 Mac
 status: enriched
 source:
   name: HackerNews
@@ -9,7 +9,7 @@ source:
 category: show-hn
 date: "2026-08-30"
 tags: [Show HN, Product, Problem]
-tech: [Rust, RWKV-8 Heron, 1-bit ROSA activations, Metal compute shaders, BinaryConnect training, safetensors checkpoints]
+tech: [Rust, RWKV-8 Heron, "1-bit ROSA activations", Metal compute shaders, BinaryConnect training, safetensors checkpoints]
 ---
 # Train 300M/32-Layer Model in 1.5GB RAM on Base M1 Mac
 

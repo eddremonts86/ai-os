@@ -1,31 +1,35 @@
-# SPEC.md — Open-Source eInk Bike Computer
+---
+id: "5071"
+slug: open-source-eink-bike-computer
+title: Open-Source eInk Bike Computer
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49567437"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Open-Source eInk Bike Computer
 
 ## Problem
 
-Hey all, i just launched my Eink Bike computer project and think it is cool.<p>Another tidbit, in the crazy things that AI has done... It has helped create a ANT (common sensor wireless protocol used in workout&#x2F;biking) implementation for ESP32 by messing around with undocumented registers: <a href="https:&#x2F;&#x2F;github.com&#x2F;RaemondBW&#x2F;esp32-ant" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;RaemondBW&#x2F;esp32-ant</a>
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49567437)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T17:18:08Z
+Hey all, i just launched my Eink Bike computer project and think it is cool.Another tidbit, in the crazy things that AI has done... It has helped create a ANT (common sensor wireless protocol used in workout/biking) implementation for ESP32 by messing around with undocumented registers: https://github.com/RaemondBW/esp32-ant
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,4 +1,17 @@
-# TASKS.md — Binocular Discrepancy – experiments with dichtopic presentation (WebXR)
+---
+id: "4324"
+slug: binocular-discrepancy-experiments-with-dichtopic-presen
+title: Binocular Discrepancy – experiments with dichtopic presentation (WebXR)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49522473"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Binocular Discrepancy – experiments with dichtopic presentation (WebXR)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

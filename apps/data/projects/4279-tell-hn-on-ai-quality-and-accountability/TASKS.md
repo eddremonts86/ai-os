@@ -1,4 +1,17 @@
-# TASKS.md — Tell HN: On AI, Quality, and Accountability
+---
+id: "4279"
+slug: tell-hn-on-ai-quality-and-accountability
+title: "Tell HN: On AI, Quality, and Accountability"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49515051"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Tell HN: On AI, Quality, and Accountability
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

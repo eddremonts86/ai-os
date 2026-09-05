@@ -1,31 +1,35 @@
-# SPEC.md — My first open source project
+---
+id: "5110"
+slug: my-first-open-source-project
+title: My first open source project
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49569757"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# My first open source project
 
 ## Problem
 
-hey everyone i tried to build a platform on BYOA concept combining all free api service under one hood and connecting them to a single interface where you chat, code , talk and much more https:&#x2F;&#x2F;github.com&#x2F;theguysudo&#x2F;ENZO
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49569757)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T20:20:58Z
+hey everyone i tried to build a platform on BYOA concept combining all free api service under one hood and connecting them to a single interface where you chat, code , talk and much more https://github.com/theguysudo/ENZO
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

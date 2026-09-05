@@ -1,47 +1,56 @@
-# PRODUCT.md — Words to Worlds - world build in 100 words or less
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4202"
+slug: words-to-worlds-world-build-in-100-words-or-less
+title: "Words to Worlds - world build in 100 words or less"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508988"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Words to Worlds - world build in 100 words or less
 
 ## Value Proposition
 
-_Based on source brief:_ https://wordstoworlds.com
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A hundred-word brief is the only input the system needs, plus a few follow-up answers, and the result is a small living island you can turn in your hands, tap, and share — built in minutes, not hours.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Writers sketching a setting for a short story
+- TTRPG GMs looking for a one-shot location idea
+- Worldbuilders and conlangers collecting ideas as gallery fodder
+- Creatives who want a 30-second ritual and a shareable link
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I have an idea for a place, I want a 100-word cap that forces me to pick the essentials so I do not write a novel
+- When the brief has gaps, I want the system to ask me 2 or 3 questions so the world feels finished
+- When the world is built, I want to turn it in my hands so I can see it from every angle
+- When I want to share, I want a single link that opens the world for someone else
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Median time from first word to shareable link under 3 minutes
+- 70% of generated worlds are shared at least once
+- 5,000 unique worlds generated within 90 days of launch
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+_TODO:_ source did not state a price. Likely free with a Pro tier for higher-fidelity renders, longer briefs, or private worlds.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- Midjourney, Stable Diffusion — image-first, no brief discipline
+- World Anvil, Campfire — long-form worldbuilding apps
+- Twine, Ink — interactive fiction authoring
+- NaNoGenMo — code-art generated novels; not interactive
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508988) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Generation cost per world may be hard to keep under a cent
+- Quality variance with so little input — risk of "AI slop" perception
+- Brief length cap may frustrate power users
+- Sharing without login creates moderation challenges

@@ -1,4 +1,17 @@
-# TASKS.md — Gopdfrab – Open-source PDF/A processing for Go
+---
+id: "4533"
+slug: gopdfrab-open-source-pdfa-processing-for-go
+title: Gopdfrab – Open-source PDF/A processing for Go
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49526062"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Gopdfrab – Open-source PDF/A processing for Go
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

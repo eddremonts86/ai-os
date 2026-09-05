@@ -1,4 +1,17 @@
-# TASKS.md — Hybrids – a daily flower logic puzzle
+---
+id: "4198"
+slug: hybrids-a-daily-flower-logic-puzzle
+title: "Hybrids – a daily flower logic puzzle"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509199"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Hybrids – a daily flower logic puzzle
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Hand-authored puzzle data format and one example puzzle
+- [ ] React + TypeScript single-page app with daily fetch
+- [ ] Mobile-first flower grid with tap-to-hybrid interaction
+- [ ] Solve detection and shareable emoji grid
+- [ ] Cron job for daily puzzle release at midnight
+- [ ] Service worker for offline tile rendering
+- [ ] Optional archive view gated to logged-in users
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional: light analytics for daily active players, no PII

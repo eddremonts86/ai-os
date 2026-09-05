@@ -1,31 +1,35 @@
-# SPEC.md — Claude made me upgrade to a team subscription, now it sucks
+---
+id: "4725"
+slug: claude-made-me-upgrade-to-a-team-subscription-now-it-s
+title: "Claude made me upgrade to a team subscription, now it sucks"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542426"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Claude made me upgrade to a team subscription, now it sucks
 
 ## Problem
 
-Until recently I could buy my engineers gift subs for Max subscriptions.<p>Now I have to use a team plan, but the team plan limits are terrible! 6x pro vs 20x pro with the old Max plan.<p>I&#x27;m paying them less money and they&#x27;re driving me to a competitor. I don&#x27;t get why this decision happened tbh.<p>Anyone else experience this?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49542426)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-02T20:55:50Z
+Until recently I could buy my engineers gift subs for Max subscriptions.Now I have to use a team plan, but the team plan limits are terrible! 6x pro vs 20x pro with the old Max plan.I'm paying them less money and they're driving me to a competitor. I don't get why this decision happened tbh.Anyone else experience this?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

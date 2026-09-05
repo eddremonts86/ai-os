@@ -1,4 +1,18 @@
-# PRODUCT.md — I Wrote a WAF in Rust with Pingora
+---
+id: "5184"
+slug: i-wrote-a-waf-in-rust-with-pingora
+title: I Wrote a WAF in Rust with Pingora
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49573880"
+category: show-hn
+date: "2026-09-05"
+tags: [Show HN, Product, Problem]
+country: RBAC for endpoints on the Admin API
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I Wrote a WAF in Rust with Pingora
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
@@ -12,7 +26,7 @@ GraphQL: depth, complexity, batch, introspection
 OpenAPI: request validation against specs
 WASM plugin in sandbox (off by default)
 multi-tenant PostgreSQL with per-row isolation
-auth: local, OAuth2+PKCE, LDAP, SAML (XML-DSig), MFA&#x2F;TOTP
+auth: local, OAuth2+PKCE, LDAP, SAML (XML-DSig), MFA/TOTP
 RBAC for endpoints on the Admin API
 Svelte dashboard, audit log, privacy editing
 
@@ -20,23 +34,15 @@ Svelte dashboard, audit log, privacy editing
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -44,7 +50,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

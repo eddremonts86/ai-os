@@ -1,7 +1,7 @@
 ---
 id: "3887"
-slug: "my-startup-idea-scanner-scored-500-ideas-the-best-got-6"
-title: "My startup-idea scanner scored 500 ideas; the best got 6.3/10"
+slug: my-startup-idea-scanner-scored-500-ideas-the-best-got-6
+title: My startup-idea scanner scored 500 ideas; the best got 6.3/10
 status: enriched
 source:
   name: HackerNews

@@ -1,31 +1,35 @@
-# SPEC.md — I made a game inspired by the early iPod touch games I'd play as a kid
+---
+id: "4351"
+slug: i-made-a-game-inspired-by-the-early-ipod-touch-games-id
+title: "I made a game inspired by the early iPod touch games I'd play as a kid"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521084"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I made a game inspired by the early iPod touch games I'd play as a kid
 
 ## Problem
 
-The game is called Upper Hand: Poker meets Chess.<p>Designed by hand without GenAI.<p>The rules of the game are Pineapple OFC poker. A very popular side game played by poker pros! I hope that you check it out!
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49521084)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T12:31:49Z
+The game is called Upper Hand: Poker meets Chess.Designed by hand without GenAI.The rules of the game are Pineapple OFC poker. A very popular side game played by poker pros! I hope that you check it out!
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

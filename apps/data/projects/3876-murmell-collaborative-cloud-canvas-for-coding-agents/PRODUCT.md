@@ -1,7 +1,7 @@
 ---
 id: "3876"
-slug: "murmell-collaborative-cloud-canvas-for-coding-agents"
-title: "Murmell – Collaborative cloud canvas for coding agents"
+slug: murmell-collaborative-cloud-canvas-for-coding-agents
+title: Murmell – Collaborative cloud canvas for coding agents
 status: enriched
 source:
   name: HackerNews

@@ -1,31 +1,35 @@
-# SPEC.md — How do you guys keep up with the most cost-effective AI models?
+---
+id: "4836"
+slug: how-do-you-guys-keep-up-with-the-most-cost-effective-a
+title: How do you guys keep up with the most cost-effective AI models?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49550324"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# How do you guys keep up with the most cost-effective AI models?
 
 ## Problem
 
-I see lots of post on here discussing the most cost-effective models for coding and people swapping around a lot.<p>I use Claude Code for 20 bucks a month, but I&#x27;m interested in trying out other models.<p>Do you guys have a website that ranks the models or do you try them out yourselves? If you try them out yourselves, what&#x27;s the easiest way to quickly swap between different AI models when doing local work?<p>Thanks for the time!
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49550324)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T14:24:06Z
+I see lots of post on here discussing the most cost-effective models for coding and people swapping around a lot.I use Claude Code for 20 bucks a month, but I'm interested in trying out other models.Do you guys have a website that ranks the models or do you try them out yourselves? If you try them out yourselves, what's the easiest way to quickly swap between different AI models when doing local work?Thanks for the time!
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

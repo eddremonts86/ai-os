@@ -1,34 +1,39 @@
-# PRODUCT.md — A documentary about a scientist who thinks time loops are real
+---
+id: "5164"
+slug: a-documentary-about-a-scientist-who-thinks-time-loops
+title: A documentary about a scientist who thinks time loops are real
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49572431"
+category: ask-hn
+date: "2026-09-05"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A documentary about a scientist who thinks time loops are real
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ The current consensus driving the scale-up of AI data centers rests on two assumptions:<p>The human brain is a biological computer operating without quantum effects.<p>The human brain does not solve computationally &quot;hard&quot; problems (NP-hard &#x2F; PSPACE); it merely runs efficient heuristic approximations.<p>Under these assumptions scaling classical compute architectures will eventually match biological cognitive capacity.<p>With this in mind I made a documentary. Last summer I followed Henrik Kjeldsen, a Teaching Professor of Biomedical Engineering in Denmark, who argues the assumptions above are backwards. He believes the brain is solving hard problems, and it does so by utilizing quantum effects.<p>Henrik presented his ideas at leading fundamental physics and philosophy conferences, and I recorded it all. He interacted with well known physicists as they attempted to grapple with determining if his ideas have merit or if they are a delusion. It&#x27;s not a hand holder. Early commenters on the video say it reminds them of a real-world Primer.
-The core of Henrik&#x27;s argument rests on flipping the consensus around on two famous computer science papers:<p>The Aaronson&#x2F;Watrous Reversal<p>In 2009, Aaronson and Watrous showed that a classical computer connected to a Closed Timelike Curve (CTC) could achieve P-SPACE computing power. This is used as an impossibility proof against CTCs, since they would violate the Extended Church-Turing Thesis (ECTT). Henrik came to the opposite conclusion: If a Time Loop gives a classical machine more power than what we think a current form of a Quantum Computer can achieve, then Time Loops are not only real, they are fundamental. Meaning Quantum Mechanics is just Time Loops in disguise.<p>https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;0808.2669<p>The Loophole<p>A 2003 paper by Todd Brun showed how a classical computer can algorithmically interact with a CTC to solve hard problems, but it leaves an unphysical violation (sending information to the past). Henrik found that if you move the target label of &#x27;FINAL&#x27; one line down in Brun&#x27;s pseudo-code, you can theoretically test for Time Loops without paradox. (The physicists we interviewed validated this modification mathematically, but dismiss it practically because they believe CTCs aren&#x27;t real).<p>https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;gr-qc&#x2F;0209061<p>The Biological Hardware<p>Henrik earned a prestigious PhD, in it he modeled the brain using acoustical holography, arguing against the standard quasi-static approximation. He showed that within the Poynting vector, you can separate radiated energy from resonant energy, and that the imaginary value rises during slow-wave delta sleep (when synaptic rescaling occurs). His interpretation is that quantum tunneling is happening in the brain, acting as an expression of Time Loops in spacetime to solve a global, computationally hard problem (pruning) that classical LIFO models fail at.<p>https:&#x2F;&#x2F;theses.ncl.ac.uk&#x2F;jspui&#x2F;handle&#x2F;10443&#x2F;2454<p>The Implication<p>If true, it means we are building massive data centers that are destined to not deliver. 
-The full 2-hour doc is here: https:&#x2F;&#x2F;youtu.be&#x2F;yTQa3O7Qlm4.<p>Happy to answer any questions about the production. I am not qualified to know if what Henrik is proposing is delusional or revolutionary. So I put Henrik and his idea in front of the world&#x27;s top scientists, and hit record.
+_Based on source brief:_ The current consensus driving the scale-up of AI data centers rests on two assumptions:The human brain is a biological computer operating without quantum effects.The human brain does not solve computationally "hard" problems (NP-hard / PSPACE); it merely runs efficient heuristic approximations.Under these assumptions scaling classical compute architectures will eventually match biological cognitive capacity.With this in mind I made a documentary. Last summer I followed Henrik Kjeldsen, a Teaching Professor of Biomedical Engineering in Denmark, who argues the assumptions above are backwards. He believes the brain is solving hard problems, and it does so by utilizing quantum effects.Henrik presented his ideas at leading fundamental physics and philosophy conferences, and I recorded it all. He interacted with well known physicists as they attempted to grapple with determining if his ideas have merit or if they are a delusion. It's not a hand holder. Early commenters on the video say it reminds them of a real-world Primer.
+The core of Henrik's argument rests on flipping the consensus around on two famous computer science papers:The Aaronson/Watrous ReversalIn 2009, Aaronson and Watrous showed that a classical computer connected to a Closed Timelike Curve (CTC) could achieve P-SPACE computing power. This is used as an impossibility proof against CTCs, since they would violate the Extended Church-Turing Thesis (ECTT). Henrik came to the opposite conclusion: If a Time Loop gives a classical machine more power than what we think a current form of a Quantum Computer can achieve, then Time Loops are not only real, they are fundamental. Meaning Quantum Mechanics is just Time Loops in disguise.https://arxiv.org/abs/0808.2669The LoopholeA 2003 paper by Todd Brun showed how a classical computer can algorithmically interact with a CTC to solve hard problems, but it leaves an unphysical violation (sending information to the past). Henrik found that if you move the target label of 'FINAL' one line down in Brun's pseudo-code, you can theoretically test for Time Loops without paradox. (The physicists we interviewed validated this modification mathematically, but dismiss it practically because they believe CTCs aren't real).https://arxiv.org/abs/gr-qc/0209061The Biological HardwareHenrik earned a prestigious PhD, in it he modeled the brain using acoustical holography, arguing against the standard quasi-static approximation. He showed that within the Poynting vector, you can separate radiated energy from resonant energy, and that the imaginary value rises during slow-wave delta sleep (when synaptic rescaling occurs). His interpretation is that quantum tunneling is happening in the brain, acting as an expression of Time Loops in spacetime to solve a global, computationally hard problem (pruning) that classical LIFO models fail at.https://theses.ncl.ac.uk/jspui/handle/10443/2454The ImplicationIf true, it means we are building massive data centers that are destined to not deliver.
+The full 2-hour doc is here: https://youtu.be/yTQa3O7Qlm4.Happy to answer any questions about the production. I am not qualified to know if what Henrik is proposing is delusional or revolutionary. So I put Henrik and his idea in front of the world's top scientists, and hit record.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -36,7 +41,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

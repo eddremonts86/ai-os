@@ -1,31 +1,35 @@
-# SPEC.md — AI Architecture Systems Design
+---
+id: "4486"
+slug: ai-architecture-systems-design
+title: AI Architecture Systems Design
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49527397"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# AI Architecture Systems Design
 
 ## Problem
 
-Are there any quality system  design resources out there like https:&#x2F;&#x2F;github.com&#x2F;donnemartin&#x2F;system-design-primer that cover AI Architectures instead - RAG, intelligent document processing, agent pattern etc.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49527397)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T20:08:01Z
+Are there any quality system design resources out there like https://github.com/donnemartin/system-design-primer that cover AI Architectures instead - RAG, intelligent document processing, agent pattern etc.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

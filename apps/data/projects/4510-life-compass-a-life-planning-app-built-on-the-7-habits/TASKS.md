@@ -1,4 +1,17 @@
-# TASKS.md — Life Compass – A life planning app built on The 7 Habits
+---
+id: "4510"
+slug: life-compass-a-life-planning-app-built-on-the-7-habits
+title: Life Compass – A life planning app built on The 7 Habits
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49530600"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Life Compass – A life planning app built on The 7 Habits
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

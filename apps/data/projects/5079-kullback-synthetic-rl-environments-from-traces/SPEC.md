@@ -1,33 +1,37 @@
-# SPEC.md — Kullback – Synthetic RL Environments from Traces
+---
+id: "5079"
+slug: kullback-synthetic-rl-environments-from-traces
+title: Kullback – Synthetic RL Environments from Traces
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49565975"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Kullback – Synthetic RL Environments from Traces
 
 ## Problem
 
-Yo! Introducing Kullback! It is an harness which takes in your traces and spins up executable environments where you can :<p>1. Evaluate your agents 
+Yo! Introducing Kullback! It is an harness which takes in your traces and spins up executable environments where you can :1. Evaluate your agents
 2. Find opportunities to improve them
 3. Improve them using the environment - RL, OPD etc
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49565975)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T15:22:34Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

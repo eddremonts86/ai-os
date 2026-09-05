@@ -1,36 +1,40 @@
-# SPEC.md — Please hire me, I need to live in USA
+---
+id: "4260"
+slug: please-hire-me-i-need-to-live-in-usa
+title: "Please hire me, I need to live in USA"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521022"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Please hire me, I need to live in USA
 
 ## Problem
 
-&quot;Keep, ancient lands, your storied pomp!&quot; cries she
-With silent lips. &quot;Give me your tired, your poor,
+"Keep, ancient lands, your storied pomp!" cries she
+With silent lips. "Give me your tired, your poor,
 Your huddled masses yearning to breathe free,
 The wretched refuse of your teeming shore.
 Send these, the homeless, tempest-tost to me,
-I lift my lamp beside the golden door!&quot;<p>andreas.rosdal@gmail.com
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49521022)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T12:24:52Z
+I lift my lamp beside the golden door!"andreas.rosdal@gmail.com
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -38,5 +42,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

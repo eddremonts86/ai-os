@@ -1,4 +1,17 @@
-# TASKS.md — Connection-Agnostic Presence Tracking for Distributed Back End
+---
+id: "4639"
+slug: connection-agnostic-presence-tracking-for-distributed-b
+title: Connection-Agnostic Presence Tracking for Distributed Back End
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49534283"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Connection-Agnostic Presence Tracking for Distributed Back End
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,31 +1,35 @@
-# SPEC.md — Whats your SWE career plan B?
+---
+id: "4278"
+slug: whats-your-swe-career-plan-b
+title: Whats your SWE career plan B?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49515138"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Whats your SWE career plan B?
 
 ## Problem
 
-For those of you who don&#x27;t enjoy being an LLM manager and given the bad job market. What do you plan to do?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49515138)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-08-31T21:40:13Z
+For those of you who don't enjoy being an LLM manager and given the bad job market. What do you plan to do?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

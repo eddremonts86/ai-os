@@ -1,4 +1,17 @@
-# TASKS.md — ABC v0.1 – A teaching language grows up a little
+---
+id: "4332"
+slug: abc-v01-a-teaching-language-grows-up-a-little
+title: ABC v0.1 – A teaching language grows up a little
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521713"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# ABC v0.1 – A teaching language grows up a little
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

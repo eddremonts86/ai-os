@@ -1,31 +1,35 @@
-# SPEC.md — Does HN block mobile browsers?
+---
+id: "4483"
+slug: does-hn-block-mobile-browsers
+title: Does HN block mobile browsers?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49528768"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Does HN block mobile browsers?
 
 ## Problem
 
-Recently I have been unable to visit hn from my mobile phone over the cellular network. I have standard Android and I&#x27;ve tried multiple browsers including Firefox, Chrome, and Brave. I don&#x27;t need or want to login while I&#x27;m about so I was trying to reach the site without an account. If I&#x27;m connected to a wifi network then everything works.<p>Is this the result of a method to keep out bots that is over zealous?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49528768)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T21:53:19Z
+Recently I have been unable to visit hn from my mobile phone over the cellular network. I have standard Android and I've tried multiple browsers including Firefox, Chrome, and Brave. I don't need or want to login while I'm about so I was trying to reach the site without an account. If I'm connected to a wifi network then everything works.Is this the result of a method to keep out bots that is over zealous?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

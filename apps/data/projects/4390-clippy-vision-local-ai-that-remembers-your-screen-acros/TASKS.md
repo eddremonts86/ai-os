@@ -1,4 +1,17 @@
-# TASKS.md — Clippy Vision – local AI that remembers your screen across apps
+---
+id: "4390"
+slug: clippy-vision-local-ai-that-remembers-your-screen-acros
+title: Clippy Vision – local AI that remembers your screen across apps
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49518018"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Clippy Vision – local AI that remembers your screen across apps
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

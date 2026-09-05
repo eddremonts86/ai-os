@@ -1,33 +1,37 @@
-# SPEC.md — PureTube: No ads on YouTube
+---
+id: "4247"
+slug: puretube-no-ads-on-youtube
+title: "PureTube: No ads on YouTube"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49525184"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# PureTube: No ads on YouTube
 
 ## Problem
 
-No Ads on YouTube Mobile! 
+No Ads on YouTube Mobile!
 Tired of ads, here is the solution. I made this app and wanted to share it with all of you.
-Website: https:&#x2F;&#x2F;puretube.freedev.app&#x2F;
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49525184)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T17:37:55Z
+Website: https://puretube.freedev.app/
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

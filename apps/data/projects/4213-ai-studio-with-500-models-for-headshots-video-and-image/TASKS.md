@@ -1,4 +1,17 @@
-# TASKS.md — AI studio with 500 models for headshots, video and images
+---
+id: "4213"
+slug: ai-studio-with-500-models-for-headshots-video-and-image
+title: "AI studio with 500 models for headshots, video and images"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508159"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# AI studio with 500 models for headshots, video and images
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,16 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Web studio with the five tool categories
+- [ ] Per-model router covering the 500+ listed models
+- [ ] Account, billing, and history
+- [ ] Watermark-free HD export pipeline
+- [ ] iPhone and iPad apps via Capacitor / React Native
+- [ ] Model coverage updates as new releases land
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional: Pro tier with priority queue and additional export formats

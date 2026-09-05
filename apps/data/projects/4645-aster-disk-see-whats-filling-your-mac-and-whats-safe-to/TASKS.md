@@ -1,4 +1,17 @@
-# TASKS.md — Aster Disk – see what's filling your Mac and what's safe to delete
+---
+id: "4645"
+slug: aster-disk-see-whats-filling-your-mac-and-whats-safe-to
+title: "Aster Disk – see what's filling your Mac and what's safe to delete"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49533552"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Aster Disk – see what's filling your Mac and what's safe to delete
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

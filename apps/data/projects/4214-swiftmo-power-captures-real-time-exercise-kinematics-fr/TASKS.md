@@ -1,4 +1,17 @@
-# TASKS.md — SwiftMo Power captures real-time exercise kinematics from a webcam
+---
+id: "4214"
+slug: swiftmo-power-captures-real-time-exercise-kinematics-fr
+title: "SwiftMo Power captures real-time exercise kinematics from a webcam"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508062"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SwiftMo Power captures real-time exercise kinematics from a webcam
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Webcam capture and pose-estimation pipeline in the browser
+- [ ] Manual mode at the `stage/:manualMode/:demo` route
+- [ ] Training diary with per-session entries
+- [ ] Body fat estimation and Power loss test flows
+- [ ] Profile, Settings, Social toggle, Service Status
+- [ ] Terms of Service and Safety Disclaimer gate
+- [ ] iPhone and iPad apps via Capacitor / React Native
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional: Pro tier with advanced analytics and gym-side dashboards

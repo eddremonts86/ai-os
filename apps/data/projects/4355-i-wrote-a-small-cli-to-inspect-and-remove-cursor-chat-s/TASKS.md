@@ -1,4 +1,17 @@
-# TASKS.md — I wrote a small CLI to inspect and remove Cursor chat sessions
+---
+id: "4355"
+slug: i-wrote-a-small-cli-to-inspect-and-remove-cursor-chat-s
+title: I wrote a small CLI to inspect and remove Cursor chat sessions
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49520816"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I wrote a small CLI to inspect and remove Cursor chat sessions
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

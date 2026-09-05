@@ -1,7 +1,7 @@
 ---
 id: "3891"
 slug: nuzzle-adorable-live-wallpapers-of-your-pets
-title: "Nuzzle – adorable live wallpapers of your pets"
+title: Nuzzle – adorable live wallpapers of your pets
 status: enriched
 source:
   name: HackerNews

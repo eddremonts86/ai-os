@@ -1,31 +1,35 @@
-# SPEC.md — Kre8or – Create, remix, and publish AI visuals while earning credits and cash
+---
+id: "4538"
+slug: kre8or-create-remix-and-publish-ai-visuals-while-earnin
+title: "Kre8or – Create, remix, and publish AI visuals while earning credits and cash"
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/kre8or?utm_campaign=startup-184453&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-02"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Kre8or – Create, remix, and publish AI visuals while earning credits and cash
 
 ## Problem
 
 Kre8or is an AI-powered visual creation platform that lets you generate, remix, and publish images with pro-grade models and styles. Work in Studio to render up to 4K, explore guided Workshops to transform your photos, and share to a gallery where the community can discover and remix your creations. Kre8or builds a creator economy with credits for remixes, commissions on referrals, and upcoming cashable Design Challenges, so your work gets seen and rewarded. View startup
 
-**Source:** [BetaList](https://betalist.com/startups/kre8or?utm_campaign=startup-184453&utm_medium=atom&utm_source=newsfeed)
-**Primary category:** beta
-**Tags:** BetaList,Beta,Product
-**Date:** 2026-09-02T03:00:00Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

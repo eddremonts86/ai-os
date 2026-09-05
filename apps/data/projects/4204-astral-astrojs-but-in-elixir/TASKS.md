@@ -1,4 +1,17 @@
-# TASKS.md — Astral – Astro.js, but in Elixir
+---
+id: "4204"
+slug: astral-astrojs-but-in-elixir
+title: "Astral – Astro.js, but in Elixir"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508900"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Astral – Astro.js, but in Elixir
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,18 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Mix project with Astral installed via `mix igniter.install astral`
+- [ ] Markdown pages and content collections
+- [ ] Layouts and component templates
+- [ ] Volt-driven TypeScript and CSS pipeline with HMR
+- [ ] Cross-framework nested islands (React parent, Svelte child)
+- [ ] Atom / RSS feeds and sitemap generation
+- [ ] Static build to `dist/` with sourcemaps
+- [ ] Example site in `examples/basic`
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
-- [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Publish to Hex.pm
+- [ ] Publish guides to HexDocs
+- [ ] Optional: self-hosted docs site on Coolify for marketing pages

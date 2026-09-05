@@ -1,33 +1,37 @@
-# SPEC.md — OpenStint – lap timing using RTL-SDR and near-field transponders
+---
+id: "5100"
+slug: openstint-lap-timing-using-rtl-sdr-and-near-field-tran
+title: OpenStint – lap timing using RTL-SDR and near-field transponders
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49564921"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# OpenStint – lap timing using RTL-SDR and near-field transponders
 
 ## Problem
 
-I race 1&#x2F;10 scale on-road radio-controlled cars. About a year ago, I started working on an open-source lap timing decoder, that reads the proprietary decoders commonly used in this hobby.<p>Overview:
-<a href="https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;introduction.html" rel="nofollow">https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;introduction.html</a><p>Radio signal chain:
-<a href="https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;dev-rx-architecture.html" rel="nofollow">https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;dev-rx-architecture.html</a>
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49564921)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T14:10:49Z
+I race 1/10 scale on-road radio-controlled cars. About a year ago, I started working on an open-source lap timing decoder, that reads the proprietary decoders commonly used in this hobby.Overview:
+https://openstint.org/decoder/docs/introduction.htmlRadio signal chain:
+https://openstint.org/decoder/docs/dev-rx-architecture.html
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._
