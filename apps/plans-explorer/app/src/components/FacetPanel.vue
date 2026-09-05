@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps<{
   title: string;
   count: number;
-  options: [string, number][];
+  /** [label, count]. A null count renders no count: the sort menu has nothing to count. */
+  options: [string, number | null][];
   selected: string[];
+  /**
+   * One value at a time, as radios: the sort menu. A sort always has a value, so there is no
+   * deselect, and the shared `name` is what gives the radios arrow-key navigation.
+   */
+  single?: boolean;
+  /**
+   * Inside a FilterMenu the pill already names the group and owns the open state, so the
+   * collapsible header would be a second header for the same thing. Headless drops it and
+   * adds a type-to-narrow field once the list is long enough to need one.
+   */
+  headless?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -14,7 +26,19 @@ const emit = defineEmits<{
 
 const isOpen = ref(true);
 
+// Type-to-narrow for long lists. Category has 58 values and Country 45; scrolling a
+// checklist for one of them is the part of the old sidebar people gave up on.
+const filter = ref('');
+const shown = computed(() => {
+  const q = filter.value.trim().toLowerCase();
+  return q ? props.options.filter(([opt]) => opt.toLowerCase().includes(q)) : props.options;
+});
+
 function toggle(opt: string) {
+  if (props.single) {
+    emit('update:selected', [opt]);
+    return;
+  }
   const next = props.selected.includes(opt)
     ? props.selected.filter((s) => s !== opt)
     : [...props.selected, opt];
@@ -23,8 +47,8 @@ function toggle(opt: string) {
 </script>
 
 <template>
-  <section class="facet-group">
-    <button class="facet-header" @click="isOpen = !isOpen" :aria-expanded="isOpen">
+  <section class="facet-group" :class="{ 'is-headless': headless }" :aria-label="headless ? title : undefined">
+    <button v-if="!headless" class="facet-header" @click="isOpen = !isOpen" :aria-expanded="isOpen">
       <span class="facet-title">{{ title }}</span>
       <span class="facet-meta">
         <span v-if="selected.length" class="facet-active-count">{{ selected.length }} / {{ count }}</span>
@@ -33,17 +57,28 @@ function toggle(opt: string) {
       </span>
     </button>
 
-    <div v-if="isOpen" class="facet-options">
-      <label v-for="[opt, c] in options" :key="opt" class="facet-option">
+    <input
+      v-if="headless && options.length > 8"
+      v-model="filter"
+      type="search"
+      class="facet-filter"
+      :placeholder="`Filter ${title.toLowerCase()}…`"
+      :aria-label="`Filter ${title} options`"
+    />
+
+    <div v-if="isOpen || headless" class="facet-options">
+      <label v-for="[opt, c] in shown" :key="opt" class="facet-option">
         <input
-          type="checkbox"
+          :type="single ? 'radio' : 'checkbox'"
+          :name="single ? `facet-${title}` : undefined"
           :checked="selected.includes(opt)"
           @change="toggle(opt)"
         />
         <span class="opt-label">{{ opt }}</span>
-        <span class="opt-count">{{ c }}</span>
+        <span v-if="c !== null" class="opt-count">{{ c }}</span>
       </label>
       <p v-if="options.length === 0" class="facet-empty">no values</p>
+      <p v-else-if="shown.length === 0" class="facet-empty">nothing matches "{{ filter }}"</p>
     </div>
   </section>
 </template>
@@ -54,8 +89,34 @@ function toggle(opt: string) {
   padding: 12px 0;
 }
 
-.facet-group:last-child {
+.facet-group:last-child,
+.facet-group.is-headless {
   border-bottom: none;
+}
+
+.facet-group.is-headless {
+  padding: 0;
+}
+
+.facet-filter {
+  width: 100%;
+  min-height: 36px;
+  margin: 4px 0 6px;
+  padding: 6px 10px;
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.facet-filter::placeholder {
+  color: var(--text-dim);
+}
+
+.facet-filter:focus {
+  border-color: var(--accent);
+  background: var(--surface);
 }
 
 .facet-header {
@@ -105,6 +166,10 @@ function toggle(opt: string) {
   margin-top: 8px;
   max-height: 320px;
   overflow-y: auto;
+  /* Thin, tinted scrollbars: four facet groups each showed a full-width grey bar on a white
+     panel, which read as four broken borders. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 .facet-option {
@@ -112,11 +177,12 @@ function toggle(opt: string) {
   align-items: center;
   gap: 10px;
   /* The label is the hit area for its checkbox, so it carries the 44px floor.
-     Negative inline margin keeps the text flush with the panel edge while the
-     padding still counts toward the target. */
+     No negative inline margin: the old -8px bleed made every row 16px wider than the list,
+     and since `overflow-y: auto` also makes overflow-x auto, that put a horizontal scrollbar
+     under every group. The hover pill now sits inside the list's own edge, which is where a
+     menu row belongs. */
   min-height: 44px;
   padding: 4px 8px;
-  margin-inline: -8px;
   border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
@@ -128,9 +194,9 @@ function toggle(opt: string) {
   background: var(--surface-2);
 }
 
-/* The checkbox itself stays visually small — the label supplies the target —
-   but not so small it is hard to see which rows are checked. */
-.facet-option input[type='checkbox'] {
+/* The control itself (checkbox or radio) stays visually small — the label supplies the
+   target — but not so small it is hard to see which rows are checked. */
+.facet-option input {
   flex: none;
   width: 16px;
   height: 16px;
@@ -149,7 +215,7 @@ function toggle(opt: string) {
   color: var(--accent-text);
 }
 
-.facet-option input[type='checkbox'] {
+.facet-option input {
   margin: 0;
   cursor: pointer;
   accent-color: var(--accent);

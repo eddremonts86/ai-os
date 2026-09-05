@@ -19,14 +19,16 @@
   font-size: 15px;
 }
 
+/* Chips are borderless tints. The dark palette drew a hairline around each one because a
+   tint alone vanished into a dark surface; on white the tint IS the shape, and a border
+   around a 12px label reads as clutter. Every text/tint pair below is measured >= 4.5:1. */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
-  border-radius: 999px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
   background: var(--surface-2);
-  border: 1px solid var(--line);
   font-size: 12px;
   font-weight: 500;
   color: var(--text-dim);
@@ -35,25 +37,21 @@
 
 .chip.is-accent {
   background: var(--accent-a10);
-  border-color: var(--accent-a30);
   color: var(--accent-text);
 }
 
 .chip.is-money {
   background: var(--warn-a10);
-  border-color: var(--warn-a30);
   color: var(--warn);
 }
 
 .chip.is-learn {
   background: var(--accent-a10);
-  border-color: var(--accent-a30);
   color: var(--accent-text);
 }
 
 .chip.is-fun {
   background: var(--accent-2-a10);
-  border-color: var(--accent-2-a30);
   color: var(--accent-2);
 }
 
@@ -76,13 +74,15 @@
 
 .retry-btn {
   margin-top: 20px;
-  padding: 10px 20px;
+  padding: 10px 22px;
   min-height: 44px;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
   color: var(--text);
   font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow-1);
   transition: border-color 150ms, color 150ms;
 }
 
