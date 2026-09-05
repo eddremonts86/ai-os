@@ -1,31 +1,35 @@
-# SPEC.md — AI game builder and editor built with Rails and Godot
+---
+id: "5007"
+slug: ai-game-builder-and-editor-built-with-rails-and-godot
+title: AI game builder and editor built with Rails and Godot
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49561198"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# AI game builder and editor built with Rails and Godot
 
 ## Problem
 
 https://app.fusionery.com/
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49561198)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T06:29:25Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

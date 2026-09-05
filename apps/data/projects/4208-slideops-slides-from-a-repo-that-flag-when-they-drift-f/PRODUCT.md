@@ -1,47 +1,55 @@
-# PRODUCT.md — SlideOps – slides from a repo that flag when they drift from the code
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4208"
+slug: slideops-slides-from-a-repo-that-flag-when-they-drift-f
+title: "SlideOps – slides from a repo that flag when they drift from the code"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508735"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SlideOps – slides from a repo that flag when they drift from the code
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/glukicov/slideops
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+Generate a deck from a repo in minutes, then run a stdlib-only Python check that flags every slide that has drifted from the code, so the deck ages with the codebase instead of against it.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Developer advocates who give talks about their own libraries
+- Library authors writing docs as a slide deck
+- Engineering teams giving internal tech talks
+- Anyone who has a slide deck they keep forgetting to update
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want a deck, I want an Agent Skill that scans the repo and proposes a topic so I do not start from a blank slide
+- When I approve the outline, I want one self-contained HTML file I can email or open offline
+- When the code changes, I want a stdlib-only script that tells me which slides need a rewrite so I do not run a stale deck
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Median deck generation under 5 minutes from "make slides about this repo" to first usable HTML
+- `check.py` runs in milliseconds across a 100-slide deck
+- 1,000+ GitHub stars in the first quarter
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+MIT; free. Optional commercial support or a hosted PDF export tier is plausible but not on the source page.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- Marp, reveal.js, Slidev — open-source deck frameworks; no repo-grounded generation
+- Pitch, Beautiful.ai, Gamma — closed SaaS; no drift checking
+- Hand-edited Markdown decks — go stale, no check
+- Docs-as-code tools (Docusaurus, VitePress) — different surface, no slide model
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508735) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Topic detection from a repo is heuristic; edge cases will produce bad topics
+- Drift checking needs a code-citation model that survives renames and moves
+- Agent Skills spec is still evolving; loaders may diverge
+- Mermaid → SVG at build time adds a build step despite the "no build step" pitch

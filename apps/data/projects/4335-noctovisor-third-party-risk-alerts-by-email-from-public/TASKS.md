@@ -1,4 +1,17 @@
-# TASKS.md — Noctovisor – Third-party risk alerts by email, from public records
+---
+id: "4335"
+slug: noctovisor-third-party-risk-alerts-by-email-from-public
+title: "Noctovisor – Third-party risk alerts by email, from public records"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521561"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Noctovisor – Third-party risk alerts by email, from public records
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

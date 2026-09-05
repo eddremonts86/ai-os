@@ -1,31 +1,35 @@
-# SPEC.md — I gathered 992 posts about my startup idea. 7 were about my idea
+---
+id: "4333"
+slug: i-gathered-992-posts-about-my-startup-idea-7-were-about
+title: I gathered 992 posts about my startup idea. 7 were about my idea
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521697"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I gathered 992 posts about my startup idea. 7 were about my idea
 
 ## Problem
 
 https://github.com/gokulsai1004-create/painpoint-finder
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49521697)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T13:24:46Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,34 +1,39 @@
-# PRODUCT.md — Roost, a browser window into your remote coding sessions
+---
+id: "5068"
+slug: roost-a-browser-window-into-your-remote-coding-session
+title: "Roost, a browser window into your remote coding sessions"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49567840"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Roost, a browser window into your remote coding sessions
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
 _Based on source brief:_ Roost is scratching my long-term itch: loosing track (and connections) of all my remote coding sessions.
-I built it to be lightweight and to survive any interruptions: laptop sleep, browser tab close or even restart of roost itself. 
-It has all bells and whistles I needed: file tree, preview&#x2F;editor, diff and integrates natively with Claude: paste images&#x2F;links, get notifications and more.<p>I welcome all feature requests.
+I built it to be lightweight and to survive any interruptions: laptop sleep, browser tab close or even restart of roost itself.
+It has all bells and whistles I needed: file tree, preview/editor, diff and integrates natively with Claude: paste images/links, get notifications and more.I welcome all feature requests.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -36,7 +41,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

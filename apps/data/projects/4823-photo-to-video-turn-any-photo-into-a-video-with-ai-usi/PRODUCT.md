@@ -1,4 +1,17 @@
-# PRODUCT.md — Photo to Video – Turn any photo into a video with AI using Seedance, Kling, and Wan models
+---
+id: "4823"
+slug: photo-to-video-turn-any-photo-into-a-video-with-ai-usi
+title: "Photo to Video – Turn any photo into a video with AI using Seedance, Kling, and Wan models"
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/photo-to-video?utm_campaign=startup-185906&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-03"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Photo to Video – Turn any photo into a video with AI using Seedance, Kling, and Wan models
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
@@ -10,23 +23,15 @@ _Based on source brief:_ Photo to Video is an AI image-to-video generator. Uploa
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

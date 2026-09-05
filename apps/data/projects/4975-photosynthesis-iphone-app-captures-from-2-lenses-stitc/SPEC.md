@@ -1,31 +1,35 @@
-# SPEC.md — Photosynthesis – iPhone app captures from 2 lenses, stitches to 1 photo
+---
+id: "4975"
+slug: photosynthesis-iphone-app-captures-from-2-lenses-stitc
+title: "Photosynthesis – iPhone app captures from 2 lenses, stitches to 1 photo"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49558529"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Photosynthesis – iPhone app captures from 2 lenses, stitches to 1 photo
 
 ## Problem
 
 https://apps.apple.com/us/app/photosynthesis-2-lens-camera/id6780102370
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49558529)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T23:26:46Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,4 +1,17 @@
-# TASKS.md — Libraries.ink – a home for the books you own
+---
+id: "4402"
+slug: librariesink-a-home-for-the-books-you-own
+title: Libraries.ink – a home for the books you own
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49515049"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Libraries.ink – a home for the books you own
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

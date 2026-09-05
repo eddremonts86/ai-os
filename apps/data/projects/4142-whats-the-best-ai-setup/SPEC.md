@@ -1,31 +1,35 @@
-# SPEC.md — What's the Best AI Setup?
+---
+id: "4142"
+slug: whats-the-best-ai-setup
+title: "What's the Best AI Setup?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510169"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What's the Best AI Setup?
 
 ## Problem
 
-People who run AI agents in some kind of advanced way can you share your settings? With things moving so fast I&#x27;ve been a bit out of touch
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49510169)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-08-31T14:23:53Z
+People who run AI agents in some kind of advanced way can you share your settings? With things moving so fast I've been a bit out of touch
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

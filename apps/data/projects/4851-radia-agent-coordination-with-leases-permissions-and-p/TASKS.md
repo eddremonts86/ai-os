@@ -1,4 +1,17 @@
-# TASKS.md — Radia – agent coordination with leases, permissions and provenance
+---
+id: "4851"
+slug: radia-agent-coordination-with-leases-permissions-and-p
+title: "Radia – agent coordination with leases, permissions and provenance"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49553156"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Radia – agent coordination with leases, permissions and provenance
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

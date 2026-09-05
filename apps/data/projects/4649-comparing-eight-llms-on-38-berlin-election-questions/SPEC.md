@@ -1,31 +1,35 @@
-# SPEC.md — Comparing eight LLMs on 38 Berlin election questions
+---
+id: "4649"
+slug: comparing-eight-llms-on-38-berlin-election-questions
+title: Comparing eight LLMs on 38 Berlin election questions
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49533381"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Comparing eight LLMs on 38 Berlin election questions
 
 ## Problem
 
 https://bensk1.github.io/berlin-wahllm/en/
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49533381)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T08:21:47Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

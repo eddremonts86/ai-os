@@ -1,4 +1,17 @@
-# TASKS.md — Big-b-router – Edit OSM maps to avoid ALPRs in Osmand or Comaps
+---
+id: "4583"
+slug: big-b-router-edit-osm-maps-to-avoid-alprs-in-osmand-or-
+title: Big-b-router – Edit OSM maps to avoid ALPRs in Osmand or Comaps
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49538364"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Big-b-router – Edit OSM maps to avoid ALPRs in Osmand or Comaps
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

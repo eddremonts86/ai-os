@@ -1,47 +1,74 @@
-# PRODUCT.md — Interactive Sessions
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4231"
+slug: interactive-sessions
+title: Interactive Sessions
+status: enriched
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/revolte"
+category: product-launch
+date: "2026-08-17"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Interactive Sessions
 
 ## Value Proposition
 
-_Based on source brief:_ Drive the full SDLC with AI agents, step by step Discussion | Link
+An interactive session surface where the user drives the full software development lifecycle with AI agents, step by step, so the user sees a continuous view of the SDLC instead of running agents one phase at a time. The session walks through design, build, test, ship, and monitor with a per-phase AI agent that hands off to the next; the user starts, pauses, and resumes sessions; the per-session log shows every agent's work and is the export for handoff or audit.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+The session surface is the single view. The user does not switch between tools to follow the SDLC; the agents hand off within the session. A pause between phases is the resume point; an export is the same log the user sees in the surface.
+
+**One-liner:** A session surface where AI agents step through the full SDLC together, with a per-phase view, a pause-and-resume boundary, and a session log you can export.
 
 ## Target Users
 
 | Stakeholder | Why they care |
 |---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+| Software teams | Want AI agents across the full SDLC and a single surface to drive them. |
+| Solo developers | Want a guided lifecycle workflow instead of switching between tools. |
+| Engineering managers | Want visibility into which phase the team is on and what the agents are doing. |
+| Open-source maintainers | Want a session surface for a volunteer-friendly SDLC workflow. |
+| Technical founders | Want a lightweight, agent-driven SDLC without standing up a full org. |
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+1. **Functional job** — Start a session and walk the agents through the SDLC phase by phase without switching tools.
+2. **Functional job** — See what each per-phase agent is doing and what it produced before it hands off.
+3. **Functional job** — Pause the session between phases and resume later from the same point.
+4. **Functional job** — Scroll back through the session log to revisit an earlier phase's work.
+5. **Functional job** — Export the session log for handoff or audit.
+6. **Emotional job** — Stop the feeling of running AI agents one phase at a time and losing the lifecycle view between them.
+7. **Social job** — Be the team whose SDLC is driven through a session surface the whole team can read.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- **Phase coverage** — share of SDLC phases the session surface exposes as a per-phase agent. A phase the session skips is a coverage gap.
+- **Phase handoff coverage** — share of phases that hand off to the next with the work the previous phase produced. A handoff that drops work is a handoff failure.
+- **Per-phase transparency** — share of phases that show what the agent did and what it produced. A phase that hides its work is a transparency failure.
+- **Pause-and-resume coverage** — share of pause events that resume from the same phase boundary. A pause inside a phase is a workflow failure.
+- **Session log coverage** — share of agent work that lands in the session log the user reads. A log gap is a transparency failure.
+- **Export fidelity** — share of session-log exports that match what the user saw in the surface. An export that loses the per-phase view is an export failure.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+The source names no fee, no tier, and no commercial plan. The launch post is a tagline and a discussion link. Any future monetization has to be measured against the phase coverage and the phase handoff coverage, because those are the metrics the source ties to the session's value proposition.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- **Single-phase coding agents (the names the source does not provide)** — drive one phase of the SDLC, but the user runs each phase in a different tool.
+- **AI-powered project boards (the names the source does not provide)** — track the SDLC, but do not run the phases with agents.
+- **End-to-end AI dev platforms (the names the source does not provide)** — drive the SDLC with AI, but the user does not see a continuous session view of the agents' work.
+- **Manual SDLC tooling (the names the source does not provide)** — track each phase, but the user does the work; the agents are absent.
+
+The post names no specific incumbent, so no further comparison is claimed here.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [ProductHunt](https://www.producthunt.com/products/revolte) · **Category:** product-launch · **Tags:** ProductHunt,Product Launch
+- [ ] Confirm the phase list. The source names design, build, test, ship, monitor; the open question is whether the session should also cover intake, requirements, and retrospective, or whether those are out of scope.
+- [ ] Define the handoff protocol between agents. The source is silent; the open question is whether the agents share a structured artefact (a design doc, a test plan) or a free-form handoff message.
+- [ ] Validate the pause-and-resume semantics under a long session. A session that pauses for days; the open question is whether the per-phase state survives the pause or has to be re-derived.
+- [ ] Decide how the session handles an agent that fails a phase. The open question is whether the session surfaces the failure and lets the user retry the phase, or aborts and rolls back.
+- [ ] Establish the host-agnostic agent framework. The source names no specific framework; the open question is whether the session is a thin orchestrator over the user's choice of agents, or a bundled set.
+- [ ] Confirm the export format is lossless. The source is silent; the open question is whether the export is a structured artefact (a JSON log with per-phase entries) or a human-readable document.
+- [ ] Define the policy on a long-running session. The session can stretch across days; the open question is the storage budget and the per-session retention policy.

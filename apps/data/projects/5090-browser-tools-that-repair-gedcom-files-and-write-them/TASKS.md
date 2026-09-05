@@ -1,4 +1,17 @@
-# TASKS.md — Browser tools that repair GEDCOM files and write them back unchanged
+---
+id: "5090"
+slug: browser-tools-that-repair-gedcom-files-and-write-them
+title: Browser tools that repair GEDCOM files and write them back unchanged
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49565255"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Browser tools that repair GEDCOM files and write them back unchanged
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

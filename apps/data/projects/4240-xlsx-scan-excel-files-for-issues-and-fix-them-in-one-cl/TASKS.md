@@ -1,4 +1,17 @@
-# TASKS.md — XLSX – Scan Excel files for issues and fix them in one click in your browser
+---
+id: "4240"
+slug: xlsx-scan-excel-files-for-issues-and-fix-them-in-one-cl
+title: XLSX – Scan Excel files for issues and fix them in one click in your browser
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/xlsx?utm_campaign=startup-182241&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-08-31"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# XLSX – Scan Excel files for issues and fix them in one click in your browser
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

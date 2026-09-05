@@ -1,4 +1,17 @@
-# TASKS.md — Roost, a browser window into your remote coding sessions
+---
+id: "5068"
+slug: roost-a-browser-window-into-your-remote-coding-session
+title: "Roost, a browser window into your remote coding sessions"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49567840"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Roost, a browser window into your remote coding sessions
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

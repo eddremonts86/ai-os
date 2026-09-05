@@ -1,32 +1,37 @@
-# PRODUCT.md — What is the next Burning Man in NA?
+---
+id: "4151"
+slug: what-is-the-next-burning-man-in-na
+title: What is the next Burning Man in NA?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49507599"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What is the next Burning Man in NA?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ This comment[0] got me thinking:<p>&gt; I have attended festivals for more than half of my life and they&#x27;re all suspectable to the same gentrification problem as cool neighborhoods: fun&#x2F;artsy people create fun environments, fun environments attract others who genuinely appreciate fun&#x2F;artsy but are professionals themselves, professionals attract other professionals but shallower with more money. Or, in short, they get hugged to death. Rinse, repeat.<p>&gt;Same thing is happening with Garbicz festival in Poland, arguably Europe&#x27;s Burning Man equivalent for many.<p>[0] https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49494885
+_Based on source brief:_ This comment[0] got me thinking:> I have attended festivals for more than half of my life and they're all suspectable to the same gentrification problem as cool neighborhoods: fun/artsy people create fun environments, fun environments attract others who genuinely appreciate fun/artsy but are professionals themselves, professionals attract other professionals but shallower with more money. Or, in short, they get hugged to death. Rinse, repeat.>Same thing is happening with Garbicz festival in Poland, arguably Europe's Burning Man equivalent for many.[0] https://news.ycombinator.com/item?id=49494885
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

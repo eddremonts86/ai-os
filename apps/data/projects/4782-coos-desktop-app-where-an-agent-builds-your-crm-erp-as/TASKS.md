@@ -1,4 +1,17 @@
-# TASKS.md — CoOS – desktop app where an agent builds your CRM/ERP as local plugins
+---
+id: "4782"
+slug: coos-desktop-app-where-an-agent-builds-your-crm-erp-as
+title: CoOS – desktop app where an agent builds your CRM/ERP as local plugins
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49543931"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# CoOS – desktop app where an agent builds your CRM/ERP as local plugins
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,4 +1,17 @@
-# TASKS.md — Kin Form, framework-agnostic form state for React and Lit
+---
+id: "4878"
+slug: kin-form-framework-agnostic-form-state-for-react-and-l
+title: "Kin Form, framework-agnostic form state for React and Lit"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49551275"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Kin Form, framework-agnostic form state for React and Lit
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

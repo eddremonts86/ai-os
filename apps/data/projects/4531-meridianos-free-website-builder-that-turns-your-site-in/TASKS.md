@@ -1,4 +1,17 @@
-# TASKS.md — MeridianOS – free website builder that turns your site into a retro OS
+---
+id: "4531"
+slug: meridianos-free-website-builder-that-turns-your-site-in
+title: MeridianOS – free website builder that turns your site into a retro OS
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49526079"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# MeridianOS – free website builder that turns your site into a retro OS
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

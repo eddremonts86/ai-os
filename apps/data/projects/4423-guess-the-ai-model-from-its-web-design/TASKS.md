@@ -1,4 +1,17 @@
-# TASKS.md — Guess the AI model from its web design
+---
+id: "4423"
+slug: guess-the-ai-model-from-its-web-design
+title: Guess the AI model from its web design
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514013"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Guess the AI model from its web design
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

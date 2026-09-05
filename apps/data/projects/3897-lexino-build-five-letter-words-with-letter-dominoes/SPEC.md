@@ -1,7 +1,7 @@
 ---
 id: "3897"
 slug: lexino-build-five-letter-words-with-letter-dominoes
-title: "Lexino - Build five-letter words with letter dominoes"
+title: Lexino - Build five-letter words with letter dominoes
 status: enriched
 source:
   name: HackerNews

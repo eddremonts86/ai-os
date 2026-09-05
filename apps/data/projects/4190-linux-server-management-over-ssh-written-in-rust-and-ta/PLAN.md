@@ -1,28 +1,37 @@
-# PLAN.md — Linux server management over SSH – written in Rust and Tauri
+---
+id: "4190"
+slug: linux-server-management-over-ssh-written-in-rust-and-ta
+title: "Linux server management over SSH – written in Rust and Tauri"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509679"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Linux server management over SSH – written in Rust and Tauri
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+The desktop app is Rust + Tauri; the surrounding docs site uses React + TypeScript on TanStack Start with SQLite/Drizzle for the docs catalogue. Coolify hosts the docs behind Docker.
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+A Tauri shell hosts a Rust backend that opens SSH sessions and surfaces commands; the UI is the local web view. Credentials live in an encrypted vault on disk. The docs site is a TanStack Start app Coolify hosts behind Docker.
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+- M1 — Tauri shell with an SSH session per server.
+- M2 — Live dashboard per server.
+- M3 — Real terminal tab.
+- M4 — File manager over SFTP.
+- M5 — Tabs for Docker, services, cron, users, firewalls.
+- M6 — Encrypted credential vault.
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+- Agentless is a hard requirement; if any feature silently depends on a server-side helper, the claim collapses.
+- Distro coverage is a constant maintenance burden; a single distro regression breaks a real user.

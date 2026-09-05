@@ -1,4 +1,17 @@
-# TASKS.md — ToolJet – Build no-code internal tools using Codex/Claude Code
+---
+id: "4750"
+slug: tooljet-build-no-code-internal-tools-using-codex-claud
+title: ToolJet – Build no-code internal tools using Codex/Claude Code
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49547279"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# ToolJet – Build no-code internal tools using Codex/Claude Code
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

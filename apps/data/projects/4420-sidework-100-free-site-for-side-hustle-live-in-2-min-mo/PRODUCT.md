@@ -1,32 +1,37 @@
-# PRODUCT.md — Sidework – 100% free site for side hustle, live in 2 min mobile/desktop
+---
+id: "4420"
+slug: sidework-100-free-site-for-side-hustle-live-in-2-min-mo
+title: "Sidework – 100% free site for side hustle, live in 2 min mobile/desktop"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514050"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Sidework – 100% free site for side hustle, live in 2 min mobile/desktop
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ What do you guys think of this? Would it be useful for people doing side work? I originally built it because craigslist doesn&#x27;t have an MCP server.
+_Based on source brief:_ What do you guys think of this? Would it be useful for people doing side work? I originally built it because craigslist doesn't have an MCP server.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

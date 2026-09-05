@@ -1,4 +1,17 @@
-# TASKS.md — Higgsfield Genjutsu
+---
+id: "4810"
+slug: higgsfield-genjutsu
+title: Higgsfield Genjutsu
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/higgsfield"
+category: product-launch
+date: "2026-09-02"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Higgsfield Genjutsu
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

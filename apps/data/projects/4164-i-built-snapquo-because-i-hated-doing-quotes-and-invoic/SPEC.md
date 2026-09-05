@@ -1,31 +1,50 @@
-# SPEC.md — I built Snapquo because I hated doing quotes and invoices at night
+---
+id: "4164"
+slug: i-built-snapquo-because-i-hated-doing-quotes-and-invoic
+title: I built Snapquo because I hated doing quotes and invoices at night
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511368"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built Snapquo because I hated doing quotes and invoices at night
 
 ## Problem
 
-I spent years working on the tools in my family&#x27;s business, doing tiling, painting and decorating.<p>The work itself was fine. What I hated was getting home after a full day on site and then having to sit down and do quotes, invoices and chase customers.<p>We were also on Checkatrade. The old page is still there, so this is something I actually dealt with myself, not a problem I spotted from the outside.<p>You&#x27;d spend the day measuring up jobs and talking to customers, then get home tired and realise you&#x27;ve still got a load of quotes to write.<p>That was the reason I started building Snapquo.<p>It&#x27;s a mobile app and a web app, so you can use it however suits the job. You might put a quote together while you&#x27;re still on site, or take a few photos and finish it later in the office. If you&#x27;ve got a bigger quote to work on, you can sit at a computer and do it there.<p>The basic idea is pretty simple. Get the quote done, send it to the customer, let them accept and sign it, take a deposit if you want to, and then turn it into an invoice.<p>It now has things like:<p>• Quotes you can build quickly from your phone<p>• Photos and optional extras<p>• Customer acceptance and signatures<p>• Deposits<p>• Automatic quote follow-ups<p>• Quote-open tracking<p>• Saved prices<p>• Quote to invoice<p>• Online payments<p>• Pipeline and win&#x2F;loss tracking<p>• iPhone, Android and web apps<p>• Free tools for things like VAT, CIS, Day rate calculator, Invoice generator and a lot more.<p>I have deliberately tried not to turn it into another massive CRM with loads of features that a small trade business probably doesn&#x27;t need.<p>I wanted something I would have actually used when I was on the tools.<p>I&#x27;d genuinely like to hear your feedback. Thanks :)
+The author spent years working in their family's tiling/painting/decorating business. The trade work was fine; what they hated was getting home after a day on site and then sitting down to write quotes, send invoices and chase customers. Snapquo exists because of that lived experience, not because the author observed it from outside. After measuring up jobs and talking to customers all day, the team still had to write quotes once home. Snapquo is mobile and web, designed for on-site or office use, and turns a quote into a customer-accepted, signed, deposit-taking, invoice-generating flow.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49511368)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T16:05:32Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
+Give small trade businesses a single tool to build quotes on site, get customer signatures and deposits, follow up automatically, convert quotes into invoices, and take online payments — without dragging them into a heavyweight CRM.
 
----
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+Tradespeople and very small trade businesses (tiling, painting, decorating, similar) who run on their phone or a laptop and need to quote and invoice quickly without adopting a complex CRM. Assumes they already deal with customers who accept quotes by signature and pay deposits.
+
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+- Build a quote quickly from a phone or the web; add photos and optional extras.
+- Customer acceptance and signature on the quote.
+- Take a deposit on a quote.
+- Automatic follow-ups for open quotes.
+- Quote-open tracking.
+- Saved prices for reuse.
+- Convert a quote into an invoice.
+- Online payments on the resulting invoice.
+- A pipeline and win/loss view for the business.
+- iPhone, Android and web clients.
+- Free calculators: VAT, CIS, day-rate, invoice generator, etc.
+- Intentionally NOT a full CRM.
+
 
 ## Design Direction
 
@@ -33,5 +52,8 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+- Source explicitly states the product must not become a 'massive CRM with loads of features a small trade business probably doesn't need'.
+- Multi-platform delivery (iOS, Android, web) is in scope from day one.
+- Payments are online (card/wallet); the source does not detail which providers.
+- No stated pricing model in the source post.
+

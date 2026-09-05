@@ -1,47 +1,54 @@
-# PRODUCT.md — Scoring 4,811 job tasks against machine capability, 1970–2041
+---
+id: "4174"
+slug: scoring-4811-job-tasks-against-machine-capability-19702
+title: "Scoring 4,811 job tasks against machine capability, 1970–2041"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510775"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Scoring 4,811 job tasks against machine capability, 1970–2041
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://largelabormodel.com/mirror
+The Large Labor Model turns "Will AI replace my job?" from a vibe into a per-task capability score, indexed by year, broken out by sub-task. The visitor picks a job, sees which sub-tasks score high and which stay low, and walks away with a structured answer instead of a guess.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Workers curious about how their own job scores against machine capability, policy researchers, journalists, and educators who want a public-facing breakdown of a job into replaceable sub-tasks.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I wonder whether AI will replace my job, I want a per-task breakdown so I can see which sub-tasks are at risk and which are not.
+- When I write or teach about automation, I want a public catalogue so I can cite a number rather than make one up.
+- When I plan my career, I want a timeline view so I can see how the score moves over the next 20 years.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of jobs and tasks covered.
+- Number of visitor mirrors generated.
+- Time on site per visitor (proxy for engagement).
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes labour-economics research sites and O*NET-style occupation databases. The captured source post positions the Large Labor Model around per-task capability scores over time, but the precise list of named incumbents is not stated in the source text.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49510775) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Capability scores are model outputs, not measurements; the methodology page has to be honest about that or the numbers mislead.
+- 4,811 tasks is a lot to keep current; the corpus has to be updated as the underlying models move.
