@@ -318,6 +318,14 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>"
   merge_through "$branch" dev "chore(plans): daily corpus refresh $stamp"
   merge_through dev main "chore(plans): promote daily corpus refresh $stamp"
 
+  # The promotion is a merge commit, so main now holds one commit dev does not. Bring dev up
+  # to it: the flow is feature → dev → main and the two must be identical between promotions,
+  # or main reads as ahead of the branch that feeds it. A rejected push means somebody merged
+  # into dev meanwhile; that is fine, the next promotion carries it.
+  git fetch -q origin main
+  git push -q origin "origin/main:refs/heads/dev" 2>/dev/null \
+    || log "dev moved during the promotion — left as is; the next ship promotes it"
+
   log "shipped. The deploy workflows trigger on the push to main."
 }
 
