@@ -24,14 +24,6 @@ LOG_DIR="$AI_OS_ROOT/memory/logs"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
 
-# Source env if present (not strictly required for reindex, but harmless)
-if [ -f "$HOME_DIR/Projects/configs/env.ts" ]; then
-  set -a
-  # shellcheck disable=SC1090
-  source "$HOME_DIR/Projects/configs/env.ts" 2>/dev/null || true
-  set +a
-fi
-
 {
   echo "== AI-OS cron reindex $(date -Iseconds) =="
   echo ""
