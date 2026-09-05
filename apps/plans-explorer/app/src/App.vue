@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { RouterView, RouterLink } from 'vue-router';
 import { loadPlans, loadIndexedAt } from '@/data/load';
+import BrandMark from '@/components/BrandMark.vue';
 
 // The footer used to hardcode "525 plans" and print `new Date()` as the index
 // date, so it always claimed the corpus was indexed today. Both now come from
@@ -26,14 +27,7 @@ onMounted(async () => {
 
     <header class="app-header">
       <RouterLink to="/" class="brand">
-        <!-- The mark: three sheets stacked, the plan documents. One geometric glyph in the
-             brand colour, drawn inline so it takes the token and needs no request. The same
-             drawing is public/favicon.svg. -->
-        <svg class="brand-mark" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true" focusable="false">
-          <rect x="3" y="11" width="18" height="18" rx="5" fill="currentColor" opacity="0.32" />
-          <rect x="7" y="7" width="18" height="18" rx="5" fill="currentColor" opacity="0.6" />
-          <rect x="11" y="3" width="18" height="18" rx="5" fill="currentColor" />
-        </svg>
+        <BrandMark />
         <span class="brand-text">Plansmith</span>
       </RouterLink>
       <nav class="app-nav" aria-label="Main">
@@ -52,14 +46,44 @@ onMounted(async () => {
       </RouterView>
     </main>
 
+    <!-- Footer: brand and a one-line tagline, the four routes, and where else to go. The
+         meta line keeps what the old one-liner carried, from the generated index, never a
+         guess. Column labels are paragraphs, not headings, so the outline stays the page's. -->
     <footer class="app-footer">
-      <span>
-        <template v-if="planCount !== null">{{ planCount }} plans</template>
-        <template v-else>Plans</template>
-        <template v-if="indexedAt"> · indexed <em>{{ indexedAt }}</em></template>
-      </span>
-      <span class="dot" aria-hidden="true">·</span>
-      <a href="https://github.com/eddremonts86/ai-os" target="_blank" rel="noopener">source on GitHub</a>
+      <div class="container foot-grid">
+        <div class="foot-brand">
+          <RouterLink to="/" class="brand">
+            <BrandMark />
+            <span class="brand-text">Plansmith</span>
+          </RouterLink>
+          <p class="foot-tag">Product plans written from real problems people post. Free, no account.</p>
+        </div>
+
+        <nav class="foot-col" aria-label="Footer">
+          <p class="foot-head">Explore</p>
+          <RouterLink to="/plans">Plans</RouterLink>
+          <RouterLink to="/rankings">Rankings</RouterLink>
+          <RouterLink to="/submit">Submit a problem</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+        </nav>
+
+        <div class="foot-col">
+          <p class="foot-head">Elsewhere</p>
+          <a href="https://builderhunt.dev" target="_blank" rel="noopener">BuilderHunt<span class="ext" aria-hidden="true">↗</span></a>
+          <a href="https://hunterready.eduardoinerarte.dk" target="_blank" rel="noopener">HunterReady<span class="ext" aria-hidden="true">↗</span></a>
+          <a href="https://github.com/eddremonts86/ai-os" target="_blank" rel="noopener">Source on GitHub<span class="ext" aria-hidden="true">↗</span></a>
+          <a href="https://ai-os.eduardoinerarte.dk/" target="_blank" rel="noopener">Part of AI-OS<span class="ext" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <div class="container foot-meta">
+        <span>
+          <template v-if="planCount !== null">{{ planCount }} plans</template>
+          <template v-else>Plans</template>
+          <template v-if="indexedAt"> · indexed {{ indexedAt }}</template>
+        </span>
+        <span>The problems are other people's. The plans are free.</span>
+      </div>
     </footer>
   </div>
 </template>
@@ -121,11 +145,6 @@ onMounted(async () => {
   flex: none;
 }
 
-.brand-mark {
-  flex: none;
-  color: var(--accent);
-}
-
 .brand-text {
   font-size: 16px;
   font-weight: 650;
@@ -172,26 +191,102 @@ onMounted(async () => {
 }
 
 .app-footer {
-  padding: 20px 24px;
+  padding: 48px 0 28px;
   border-top: 1px solid var(--line);
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 13.5px;
+}
+
+/* Brand takes the wide share; the two link columns sit right, each as wide as its longest
+   label, so the footer ends where the page content ends instead of spreading four thin
+   columns across 1280px. */
+.foot-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: 72px;
+  row-gap: 32px;
+  align-items: start;
+}
+
+.foot-brand {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.app-footer .dot {
-  opacity: 0.5;
+.foot-tag {
+  margin: 0;
+  max-width: 34ch;
+  line-height: 1.55;
 }
 
-.app-footer a {
+.foot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.foot-head {
+  margin: 0 0 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-dim);
-  text-decoration: none;
 }
 
-.app-footer a:hover {
+.foot-col a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 150ms;
+}
+
+.foot-col a:hover {
   color: var(--accent-text);
+}
+
+.ext {
+  font-size: 11px;
+  opacity: 0.6;
+  transition: transform 150ms ease-out, opacity 150ms;
+}
+
+.foot-col a:hover .ext {
+  transform: translate(1px, -1px);
+  opacity: 1;
+}
+
+.foot-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  /* Brand across the top, the two link columns side by side beneath it. */
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+  }
+
+  .foot-brand {
+    grid-column: 1 / -1;
+  }
+
+  .foot-meta {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 560px) {
@@ -201,7 +296,7 @@ onMounted(async () => {
 
   /* The mark alone: with the segmented nav the wordmark truncated to "Pla…", which is worse
      than no wordmark. Visually hidden rather than display:none so the link keeps its name. */
-  .brand-text {
+  .app-header .brand-text {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -225,5 +320,15 @@ onMounted(async () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ext {
+    transition: none;
+  }
+
+  .foot-col a:hover .ext {
+    transform: none;
+  }
 }
 </style>
