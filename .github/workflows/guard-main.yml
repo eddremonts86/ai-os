@@ -1,0 +1,30 @@
+# Enforce the delivery flow: feature branch → dev → main. Only dev may open a PR against
+# main; anything else gets a red check that names the fix. Exists because two branches went
+# straight to main in one week and dev ended up behind the branch it is supposed to feed.
+name: Guard main
+
+on:
+  pull_request:
+    branches: [main]
+    # `edited` fires when a PR's base branch changes, so retargeting a PR onto main re-runs
+    # the guard instead of keeping a stale green tick from when it pointed at dev.
+    types: [opened, synchronize, reopened, edited]
+
+permissions: {}
+
+jobs:
+  only-from-dev:
+    name: main only receives dev
+    runs-on: ubuntu-latest
+    # Branch names go through env, never into the script body: a fork can name a branch
+    # anything, and "${{ }}" inside `run` is string interpolation into a shell.
+    env:
+      HEAD: ${{ github.head_ref }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      - run: |
+          if [ "$HEAD" != "dev" ]; then
+            echo "::error::PRs to main must come from dev (feature → dev → main). This one comes from '$HEAD'. Retarget it: gh pr edit $PR --base dev"
+            exit 1
+          fi
+          echo "head is dev — promotion allowed"
