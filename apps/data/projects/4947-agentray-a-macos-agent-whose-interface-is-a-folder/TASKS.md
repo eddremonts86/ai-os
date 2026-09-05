@@ -1,4 +1,17 @@
-# TASKS.md — Agentray, a macOS agent whose interface is a folder
+---
+id: "4947"
+slug: agentray-a-macos-agent-whose-interface-is-a-folder
+title: "Agentray, a macOS agent whose interface is a folder"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49555446"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Agentray, a macOS agent whose interface is a folder
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

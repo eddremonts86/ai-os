@@ -1,28 +1,30 @@
-# PLAN.md — MusicMaxxer – a songwriter's MiniMax Music 3 UI
+---
+id: "4742"
+slug: musicmaxxer-a-songwriter-s-minimax-music-3-ui
+title: "MusicMaxxer – a songwriter's MiniMax Music 3 UI"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49547757"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# MusicMaxxer – a songwriter's MiniMax Music 3 UI
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

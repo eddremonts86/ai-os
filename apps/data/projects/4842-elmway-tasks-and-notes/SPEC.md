@@ -1,31 +1,35 @@
-# SPEC.md — Elmway – Tasks and Notes
+---
+id: "4842"
+slug: elmway-tasks-and-notes
+title: Elmway – Tasks and Notes
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49548843"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Elmway – Tasks and Notes
 
 ## Problem
 
-I&#x27;m Victor, the founder of Elmway, an iOS app I built that I use daily and has the features I needed and enjoy:<p>- tasks: one off or repeatable with tracking<p>- events: no need to check off like tasks<p>- notes: simple or structured with field types<p>- subtasks for tasks<p>- notifications and alarms<p>- markdown support<p>- export and import data<p>- auto backups<p>- desktop mode (sync with browser)<p>- labels and lists for organizing data<p>- color themes, background image, greeting<p>- charts, insights, search, badges, community portal<p>Any feedback is welcome, the waitlist is open and the app is available on apple testflight if you want to test it early.<p>Link: elmway.app
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49548843)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T11:57:51Z
+I'm Victor, the founder of Elmway, an iOS app I built that I use daily and has the features I needed and enjoy:- tasks: one off or repeatable with tracking- events: no need to check off like tasks- notes: simple or structured with field types- subtasks for tasks- notifications and alarms- markdown support- export and import data- auto backups- desktop mode (sync with browser)- labels and lists for organizing data- color themes, background image, greeting- charts, insights, search, badges, community portalAny feedback is welcome, the waitlist is open and the app is available on apple testflight if you want to test it early.Link: elmway.app
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

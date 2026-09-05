@@ -1,47 +1,44 @@
-# PRODUCT.md — Claude 20x usage is only for the 5 hour window, not for the weekly limit
+---
+id: "4144"
+slug: claude-20x-usage-is-only-for-the-5-hour-window-not-for-
+title: "Claude 20x usage is only for the 5 hour window, not for the weekly limit"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509882"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Claude 20x usage is only for the 5 hour window, not for the weekly limit
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I thought I&#x27;d share this because it&#x27;s very misleading and I think almost everyone was misled by this. I had thought the entire time I was getting 4x the usage of the $100 5x plan by purchasing the $200 subscription.<p>I learned about it here:<p>https:&#x2F;&#x2F;x.com&#x2F;SataEricUX&#x2F;status&#x2F;2094121392229028236<p>and there is a lawsuit about it<p>https:&#x2F;&#x2F;www.cnet.com&#x2F;tech&#x2F;services-and-software&#x2F;anthropic-sued-alleged-false-advertising-claude-max-subscription-usage-limits&#x2F;
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A single page that disambiguates the Claude Max subscription tiers — distinguishing the 5-hour burst window multiplier from the weekly cap — so subscribers do not over-buy capacity they will never get under sustained heavy use.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Current or prospective Claude Max subscribers. Secondary reader: anyone writing or reviewing AI subscription comparison content who needs a citable disambiguation.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+When a reader is choosing between the $100 and the $200 Claude plans, give them a page that says clearly which cap multiplies with the price (the 5-hour window) and which does not (the weekly cap), and link the primary tweet and the lawsuit coverage as primary evidence.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+Whether the page is cited in subscription comparison posts or in comments under Anthropic pricing announcements. No quantitative target is set; the source post gives no baseline.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable — the deliverable is a free disambiguation page, not a product.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Adjacent consumer AI subscriptions (ChatGPT Plus/Pro, Gemini Advanced, Copilot Pro) all have their own burst-and-cap structures; the post does not compare them, so the page scopes only to Claude Max as named in the source.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509882) · **Category:** ask-hn · **Tags:** Ask HN,Problem
+Anthropic could change either the pricing or the 5-hour-vs-weekly split after publication; the page must date-stamp the claim and link to the source tweet and lawsuit filing rather than asserting numbers not in the source. The post does not name any specific weekly cap figure, so the page must not invent one.

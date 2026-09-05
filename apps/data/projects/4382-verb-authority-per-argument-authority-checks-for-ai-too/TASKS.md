@@ -1,4 +1,17 @@
-# TASKS.md — Verb Authority – per-argument authority checks for AI tool calls
+---
+id: "4382"
+slug: verb-authority-per-argument-authority-checks-for-ai-too
+title: Verb Authority – per-argument authority checks for AI tool calls
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49518575"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Verb Authority – per-argument authority checks for AI tool calls
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

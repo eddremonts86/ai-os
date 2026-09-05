@@ -1,4 +1,17 @@
-# TASKS.md — OpenStint – lap timing using RTL-SDR and near-field transponders
+---
+id: "5100"
+slug: openstint-lap-timing-using-rtl-sdr-and-near-field-tran
+title: OpenStint – lap timing using RTL-SDR and near-field transponders
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49564921"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# OpenStint – lap timing using RTL-SDR and near-field transponders
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

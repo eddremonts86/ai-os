@@ -1,4 +1,17 @@
-# TASKS.md — SlideOps – slides from a repo that flag when they drift from the code
+---
+id: "4208"
+slug: slideops-slides-from-a-repo-that-flag-when-they-drift-f
+title: "SlideOps – slides from a repo that flag when they drift from the code"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508735"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SlideOps – slides from a repo that flag when they drift from the code
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,18 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] "make" Agent Skill with repo scanner, topic candidates, intake questions, and outline approval
+- [ ] Self-contained HTML renderer with 13 patterns and 4 themes via `:root` + `color-mix()`
+- [ ] Keyboard navigation, URL hash deep links, Esc overview, N for speaker notes
+- [ ] Mermaid → themed SVG at build time
+- [ ] `check.py` stdlib-only drift scanner
+- [ ] Verified PDF export with round-trip page-to-image check
+- [ ] Per-agent install paths for Claude Code, Codex, Copilot CLI, OpenCode
+- [ ] Worked example: `skills/slideops/examples/skill-demo.md`
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
+- [ ] Publish skills to each agent marketplace
+- [ ] Optional: hosted PDF export on Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_

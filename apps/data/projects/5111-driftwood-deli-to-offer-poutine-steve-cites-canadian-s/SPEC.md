@@ -1,31 +1,35 @@
-# SPEC.md — Driftwood Deli to Offer Poutine, Steve Cites Canadian Solidarity
+---
+id: "5111"
+slug: driftwood-deli-to-offer-poutine-steve-cites-canadian-s
+title: "Driftwood Deli to Offer Poutine, Steve Cites Canadian Solidarity"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49569220"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Driftwood Deli to Offer Poutine, Steve Cites Canadian Solidarity
 
 ## Problem
 
-I&#x27;ve heard this from another Bay Area restaurant too.  Does anyone know if it&#x27;s a thing?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49569220)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T19:36:51Z
+I've heard this from another Bay Area restaurant too. Does anyone know if it's a thing?
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

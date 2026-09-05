@@ -1,4 +1,17 @@
-# TASKS.md — Teslacode.dev – use Claude Code on your Tesla screen
+---
+id: "4522"
+slug: teslacodedev-use-claude-code-on-your-tesla-screen
+title: Teslacode.dev – use Claude Code on your Tesla screen
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49527817"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Teslacode.dev – use Claude Code on your Tesla screen
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

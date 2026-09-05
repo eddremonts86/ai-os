@@ -1,33 +1,38 @@
-# PRODUCT.md — Asked Reddit support to give me API key so I can delete my data. They refused
+---
+id: "4259"
+slug: asked-reddit-support-to-give-me-api-key-so-i-can-delete
+title: Asked Reddit support to give me API key so I can delete my data. They refused
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521882"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Asked Reddit support to give me API key so I can delete my data. They refused
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Asked reddit support to give me API key so I can securely delete my data via ereddicator. I was honest, filling all the required fields, stating my purpose explicitly.<p>Here&#x27;s their response: 
-We have reviewed your request for access. Unfortunately, we cannot grant approval because the submission is not in compliance with Reddit’s Responsible Builder Policy and&#x2F;or lacks necessary details.
+_Based on source brief:_ Asked reddit support to give me API key so I can securely delete my data via ereddicator. I was honest, filling all the required fields, stating my purpose explicitly.Here's their response:
+We have reviewed your request for access. Unfortunately, we cannot grant approval because the submission is not in compliance with Reddit’s Responsible Builder Policy and/or lacks necessary details.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -35,7 +40,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

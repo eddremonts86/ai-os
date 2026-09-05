@@ -1,7 +1,7 @@
 ---
 id: "3896"
 slug: bolnee-chat-self-hosted-chatbot-integration-in-your-bus
-title: "Bolnee-Chat – Self Hosted Chatbot Integration in Your Business Website"
+title: Bolnee-Chat – Self Hosted Chatbot Integration in Your Business Website
 status: enriched
 source:
   name: HackerNews

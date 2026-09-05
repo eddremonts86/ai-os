@@ -1,34 +1,38 @@
-# SPEC.md — JarPeek – Online JAR viewer, decompile classes locally (no upload)
+---
+id: "4988"
+slug: jarpeek-online-jar-viewer-decompile-classes-locally-no
+title: "JarPeek – Online JAR viewer, decompile classes locally (no upload)"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49560203"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# JarPeek – Online JAR viewer, decompile classes locally (no upload)
 
 ## Problem
 
-When I have no JDK environment, I want to do some things:<p>browse files inside a JAR
+When I have no JDK environment, I want to do some things:browse files inside a JAR
 decompile .class, but not upload to server
 edit config files (YAML, properties, JSON), and export the modified JAR
-inspect class structure, constant pool, bytecode<p>Also can use on phone. (I use it on subway.)<p>So I built JarPeek.<p>Decompiler (Vineflower) runs entirely in browser via TeaVM. No upload, no server, no install.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49560203)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T03:31:16Z
+inspect class structure, constant pool, bytecodeAlso can use on phone. (I use it on subway.)So I built JarPeek.Decompiler (Vineflower) runs entirely in browser via TeaVM. No upload, no server, no install.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -36,5 +40,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

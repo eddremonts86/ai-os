@@ -1,28 +1,30 @@
-# PLAN.md — How to ask questions in Ask HN
+---
+id: "4547"
+slug: how-to-ask-questions-in-ask-hn
+title: How to ask questions in Ask HN
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49537706"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# How to ask questions in Ask HN
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

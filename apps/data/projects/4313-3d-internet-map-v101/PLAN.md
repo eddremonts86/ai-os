@@ -1,28 +1,30 @@
-# PLAN.md — 3D Internet Map v1.0.1
+---
+id: "4313"
+slug: "3d-internet-map-v101"
+title: "3D Internet Map v1.0.1"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49523073"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# 3D Internet Map v1.0.1
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,4 +1,17 @@
-# TASKS.md — Make open-source contributions fun and meaningful
+---
+id: "4636"
+slug: make-open-source-contributions-fun-and-meaningful
+title: Make open-source contributions fun and meaningful
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49534360"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Make open-source contributions fun and meaningful
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

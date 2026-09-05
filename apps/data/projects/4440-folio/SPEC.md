@@ -1,31 +1,35 @@
-# SPEC.md — Folio
+---
+id: "4440"
+slug: folio
+title: Folio
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/folio-e0a9e0fb-8ef8-4fcf-a558-fa5fdd41a3ba"
+category: product-launch
+date: "2026-08-27"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Folio
 
 ## Problem
 
 A read-later app sending a typeset digest to your e-reader Discussion | Link
 
-**Source:** [ProductHunt](https://www.producthunt.com/products/folio-e0a9e0fb-8ef8-4fcf-a558-fa5fdd41a3ba)
-**Primary category:** product-launch
-**Tags:** ProductHunt,Product Launch
-**Date:** 2026-08-27T03:01:12-07:00
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

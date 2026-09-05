@@ -1,32 +1,37 @@
-# PRODUCT.md — TERMy – A fast terminal assistant that does not use LLMs
+---
+id: "4998"
+slug: termy-a-fast-terminal-assistant-that-does-not-use-llms
+title: TERMy – A fast terminal assistant that does not use LLMs
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49562219"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# TERMy – A fast terminal assistant that does not use LLMs
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I love research and development, you may have heard of me because of PJON (Padded Jittering Operative Network). It is a network protocol I started developing in 2010, which was recently implemented in silicon by the ETH Zurich university thanks to the research of Pius Sieber.<p>I am excited to share with you TERMy, a terminal assistant built on top of the NPC-Forge framework. Unlike everything else being built today, TERMy does not use embeddings, machine-learning or LLMs. It runs on the CPU (even on a Raspberry Pi Zero) both in the terminal or client-side in a browser tab and responds in milliseconds. It is a cynical but very knowledgeable Linux terminal assistant that translates your natural language into shell commands without relying on a single artificial neuron.<p>I had a chance to focus for 2 months on my personal projects since early July, during the strange times of AI price hikes and the end of subsidized tokenmaxing. I was curious to see if I could develop from scratch a terminal assistant capable of handling simple natural language requests. I have a bad memory and got used to ask to copilot &quot;activate the virtual environment&quot; or similar trivial operations spending a non negligible sum every month. I started thinking, maybe I can do something to make my workflow more efficient? Do I really need trillions of parameters to accomplish those tasks?<p>How it Works<p>When you type a prompt, it goes through a lightweight NLU pipeline written in ~1000 lines of Python that implement the following steps:<p>1. Strip expletives, interjections, encouraging, discouraging and thanking words (remove noise)<p>2. Sentiment analysis<p>3. Exact Match (very fast)<p>4. Template Match (slower)<p>5. Probabilistic Match (even slower)<p>Step 5 relies on:<p>1. IDF (Inverse Document Frequency) to identify rare words.<p>2. BOW (Bag Of Words) to accommodate word inversions.<p>3. IDF weighted Levenshtein to safely handle typos.<p>Permission gating is hardcoded into the dataset and enforced for all potentially destructive commands, so it&#x27;s inherently safer than letting an unpredictable LLM run wild on your machine.<p>- TERMy in operation: <a href="https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=qeIp0xePLBg" rel="nofollow">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=qeIp0xePLBg</a><p>- Variance and typo tolerance: <a href="https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=tQvGDk6fkk0" rel="nofollow">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=tQvGDk6fkk0</a><p>- Copilot integration: <a href="https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=Wzzouhq2a8A" rel="nofollow">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=Wzzouhq2a8A</a><p>- Advanced features: <a href="https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=qeIp0xePLBg" rel="nofollow">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=qeIp0xePLBg</a><p>- Source Code: <a href="https:&#x2F;&#x2F;github.com&#x2F;gioblu&#x2F;NPC-Forge" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;gioblu&#x2F;NPC-Forge</a>
+_Based on source brief:_ I love research and development, you may have heard of me because of PJON (Padded Jittering Operative Network). It is a network protocol I started developing in 2010, which was recently implemented in silicon by the ETH Zurich university thanks to the research of Pius Sieber.I am excited to share with you TERMy, a terminal assistant built on top of the NPC-Forge framework. Unlike everything else being built today, TERMy does not use embeddings, machine-learning or LLMs. It runs on the CPU (even on a Raspberry Pi Zero) both in the terminal or client-side in a browser tab and responds in milliseconds. It is a cynical but very knowledgeable Linux terminal assistant that translates your natural language into shell commands without relying on a single artificial neuron.I had a chance to focus for 2 months on my personal projects since early July, during the strange times of AI price hikes and the end of subsidized tokenmaxing. I was curious to see if I could develop from scratch a terminal assistant capable of handling simple natural language requests. I have a bad memory and got used to ask to copilot "activate the virtual environment" or similar trivial operations spending a non negligible sum every month. I started thinking, maybe I can do something to make my workflow more efficient? Do I really need trillions of parameters to accomplish those tasks?How it WorksWhen you type a prompt, it goes through a lightweight NLU pipeline written in ~1000 lines of Python that implement the following steps:1. Strip expletives, interjections, encouraging, discouraging and thanking words (remove noise)2. Sentiment analysis3. Exact Match (very fast)4. Template Match (slower)5. Probabilistic Match (even slower)Step 5 relies on:1. IDF (Inverse Document Frequency) to identify rare words.2. BOW (Bag Of Words) to accommodate word inversions.3. IDF weighted Levenshtein to safely handle typos.Permission gating is hardcoded into the dataset and enforced for all potentially destructive commands, so it's inherently safer than letting an unpredictable LLM run wild on your machine.- TERMy in operation: https://www.youtube.com/watch?v=qeIp0xePLBg- Variance and typo tolerance: https://www.youtube.com/watch?v=tQvGDk6fkk0- Copilot integration: https://www.youtube.com/watch?v=Wzzouhq2a8A- Advanced features: https://www.youtube.com/watch?v=qeIp0xePLBg- Source Code: https://github.com/gioblu/NPC-Forge
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

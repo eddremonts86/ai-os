@@ -1,6 +1,6 @@
 ---
 id: "3880"
-slug: "an-anonymous-no-signup-alert-app-try-it-live-with-githu"
+slug: an-anonymous-no-signup-alert-app-try-it-live-with-githu
 title: "An anonymous, no-signup alert app – try it live with GitHub incidents"
 status: enriched
 source:

@@ -1,32 +1,36 @@
-# SPEC.md — Why does Claude not let me edit my questions?
+---
+id: "4700"
+slug: why-does-claude-not-let-me-edit-my-questions
+title: Why does Claude not let me edit my questions?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49548254"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Why does Claude not let me edit my questions?
 
 ## Problem
 
 In ChatGPT I can edit my questions and just resubmit them, but in Claude, eventhough there is an edit Button, the editing field is so small, its practicable unusable.
-I don&#x27;t get it.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49548254)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T10:30:45Z
+I don't get it.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -34,5 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

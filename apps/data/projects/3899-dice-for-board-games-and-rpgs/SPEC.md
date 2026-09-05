@@ -1,7 +1,7 @@
 ---
 id: "3899"
 slug: dice-for-board-games-and-rpgs
-title: "Dice for Board Games and RPGs"
+title: Dice for Board Games and RPGs
 status: enriched
 source:
   name: HackerNews

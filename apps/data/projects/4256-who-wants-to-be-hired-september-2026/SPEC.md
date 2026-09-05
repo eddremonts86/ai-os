@@ -1,39 +1,43 @@
-# SPEC.md — Who wants to be hired? (September 2026)
+---
+id: "4256"
+slug: who-wants-to-be-hired-september-2026
+title: Who wants to be hired? (September 2026)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49522896"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Who wants to be hired? (September 2026)
 
 ## Problem
 
-Share your information if you are looking for work. Please use this format:<p><pre><code>  Location:
-  Remote:
-  Willing to relocate:
-  Technologies:
-  Résumé&#x2F;CV:
-  Email:
-</code></pre>
-Please only post if you are personally looking for work. Agencies, recruiters, job boards,
-and so on, are off topic here.<p>Readers: please only email these addresses to discuss work opportunities.<p>Searchers: try <a href="https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-wants-to-be-hired" rel="nofollow">https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-wants-to-be-hired</a>, <a href="https:&#x2F;&#x2F;www.wantstobehired.com" rel="nofollow">https:&#x2F;&#x2F;www.wantstobehired.com</a>.
+Share your information if you are looking for work. Please use this format: Location:
+ Remote:
+ Willing to relocate:
+ Technologies:
+ Résumé/CV:
+ Email:
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49522896)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T15:01:17Z
+Please only post if you are personally looking for work. Agencies, recruiters, job boards,
+and so on, are off topic here.Readers: please only email these addresses to discuss work opportunities.Searchers: try https://nthesis.ai/public/hn-wants-to-be-hired, https://www.wantstobehired.com.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -41,5 +45,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

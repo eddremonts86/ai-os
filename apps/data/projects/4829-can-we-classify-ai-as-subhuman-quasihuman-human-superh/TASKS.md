@@ -1,4 +1,17 @@
-# TASKS.md — Can we classify AI as: subhuman, quasihuman, human, superhumam?
+---
+id: "4829"
+slug: can-we-classify-ai-as-subhuman-quasihuman-human-superh
+title: "Can we classify AI as: subhuman, quasihuman, human, superhumam?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49552230"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Can we classify AI as: subhuman, quasihuman, human, superhumam?
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

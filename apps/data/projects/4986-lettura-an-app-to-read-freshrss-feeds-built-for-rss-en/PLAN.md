@@ -1,28 +1,30 @@
-# PLAN.md — Lettura, an app to read FreshRSS feeds built for RSS enthusiasts
+---
+id: "4986"
+slug: lettura-an-app-to-read-freshrss-feeds-built-for-rss-en
+title: "Lettura, an app to read FreshRSS feeds built for RSS enthusiasts"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49560825"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Lettura, an app to read FreshRSS feeds built for RSS enthusiasts
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

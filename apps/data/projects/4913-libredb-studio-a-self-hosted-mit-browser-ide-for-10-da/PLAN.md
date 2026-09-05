@@ -1,28 +1,30 @@
-# PLAN.md — LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines
+---
+id: "4913"
+slug: libredb-studio-a-self-hosted-mit-browser-ide-for-10-da
+title: "LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49549111"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

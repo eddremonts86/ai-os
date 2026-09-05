@@ -1,33 +1,37 @@
-# SPEC.md — Major Model Providers Down
+---
+id: "4832"
+slug: major-model-providers-down
+title: Major Model Providers Down
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49551064"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Major Model Providers Down
 
 ## Problem
 
-https:&#x2F;&#x2F;status.x.ai
-https:&#x2F;&#x2F;status.claude.com
-https:&#x2F;&#x2F;status.openai.com
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49551064)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T15:05:35Z
+https://status.x.ai
+https://status.claude.com
+https://status.openai.com
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,31 +1,35 @@
-# SPEC.md — What did you achieve with GPT 6 Astra so far?
+---
+id: "5177"
+slug: what-did-you-achieve-with-gpt-6-astra-so-far
+title: What did you achieve with GPT 6 Astra so far?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49574294"
+category: ask-hn
+date: "2026-09-05"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What did you achieve with GPT 6 Astra so far?
 
 ## Problem
 
-I&#x27;m genuinely interested in what people do with their new tests on AI.<p>So what wonder have you done with Astra ?<p>Please no advertisements and try to stick with ChatGPT Sites urls if possible.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49574294)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-05T08:11:55Z
+I'm genuinely interested in what people do with their new tests on AI.So what wonder have you done with Astra ?Please no advertisements and try to stick with ChatGPT Sites urls if possible.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

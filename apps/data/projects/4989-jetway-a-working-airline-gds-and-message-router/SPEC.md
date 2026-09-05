@@ -1,31 +1,35 @@
-# SPEC.md — Jetway, a working airline GDS and message router
+---
+id: "4989"
+slug: jetway-a-working-airline-gds-and-message-router
+title: "Jetway, a working airline GDS and message router"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49559630"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Jetway, a working airline GDS and message router
 
 ## Problem
 
-Over the past few days I made an open-source GDS, message router, departure control system, faring engine, and a bunch of other airline systems.<p>It supports Type B&#x2F;AIRIMP, EDIFACT&#x2F;PADIS, NDC, MATIP; PNRs, tickets, EMDs, queues, IROPS; PNL&#x2F;ADL, bags, loadsheets, MVT, ACARS, flight plans, and more.<p>Is it vibe coded? Yes. Does it work? As far as I can test, yes. There&#x27;s a live demo running a full day at wholesky.io (which is also open source at <a href="https:&#x2F;&#x2F;github.com&#x2F;adamf&#x2F;wholesky" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;adamf&#x2F;wholesky</a>
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49559630)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T02:03:02Z
+Over the past few days I made an open-source GDS, message router, departure control system, faring engine, and a bunch of other airline systems.It supports Type B/AIRIMP, EDIFACT/PADIS, NDC, MATIP; PNRs, tickets, EMDs, queues, IROPS; PNL/ADL, bags, loadsheets, MVT, ACARS, flight plans, and more.Is it vibe coded? Yes. Does it work? As far as I can test, yes. There's a live demo running a full day at wholesky.io (which is also open source at https://github.com/adamf/wholesky
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

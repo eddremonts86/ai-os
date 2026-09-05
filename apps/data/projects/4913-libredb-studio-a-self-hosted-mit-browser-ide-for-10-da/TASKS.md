@@ -1,4 +1,17 @@
-# TASKS.md — LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines
+---
+id: "4913"
+slug: libredb-studio-a-self-hosted-mit-browser-ide-for-10-da
+title: "LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49549111"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# LibreDB Studio, a self-hosted MIT browser IDE for 10 database engines
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

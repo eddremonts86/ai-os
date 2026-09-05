@@ -1,47 +1,54 @@
-# PRODUCT.md — A file-based router for Cloudflare Workers
+---
+id: "4184"
+slug: a-file-based-router-for-cloudflare-workers
+title: "A file-based router for Cloudflare Workers"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509922"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# A file-based router for Cloudflare Workers
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://github.com/yusuke99/vite-plugin-cloudflare-router
+The plugin brings the file-based routing convention a Next.js / Remix developer already knows to a Cloudflare Workers project. Drop a file, the router picks it up; the rest of the Workers build is unchanged.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Developers building Cloudflare Workers who are used to file-based routing from Next.js / Remix / TanStack Start and want the same affordance on Workers. Assumes the reader is comfortable with Vite and Cloudflare Workers.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I build a Workers project, I want a routes folder so I can navigate by file shape, not by a hand-written handler map.
+- When the route set changes, I want the router to update so I do not have to edit a manifest by hand.
+- When I deploy, I want the plugin to integrate with the existing Vite / Workers build, not replace it.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Coverage of the file-based routing conventions (index, dynamic, catch-all).
+- Number of example apps using the plugin.
+- Bundle size overhead of the generated router.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other Cloudflare Workers routing libraries and file-based routing plugins (Next.js, Remix, SvelteKit). The captured source post positions this plugin around Workers-native file-based routing, but the precise list of named incumbents is not stated in the source text.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49509922) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- File conventions differ subtly across frameworks; copying Next.js too literally will confuse Workers developers.
+- Cloudflare Workers' runtime evolves; the plugin has to track the runtime, not just the file shape.
