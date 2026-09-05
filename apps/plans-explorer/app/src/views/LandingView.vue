@@ -44,8 +44,38 @@ const categoryCount = computed(() =>
 // fallback that only renders when the fetch fails is exactly where one survives review.
 const fmt = (n: number | null) => (n === null ? '-' : String(n));
 
-/** The five documents every plan directory carries, plus the archive of all of them. */
-const documents = ['SPEC', 'PRODUCT', 'PLAN', 'DESIGN', 'TASKS', '.zip'] as const;
+/**
+ * The five documents every plan carries, in reading order. Each answers one question, and the
+ * sections named here are the ones apps/data/projects/_schema.json requires, so this list and
+ * the gate cannot say different things.
+ */
+const docs = [
+  {
+    file: 'SPEC.md',
+    answers: 'What to build, and what not to.',
+    body: 'The problem in the poster\'s own words, the objective, who it is for, the smallest useful version, and the constraints.',
+  },
+  {
+    file: 'PRODUCT.md',
+    answers: 'Why anyone would pay, and how you would know it worked.',
+    body: 'Value proposition, jobs to be done, success metrics. Pricing and competitors when the source gives them.',
+  },
+  {
+    file: 'PLAN.md',
+    answers: 'How to build it, in what order.',
+    body: 'A stack chosen for this problem, the architecture, the milestones, the risks.',
+  },
+  {
+    file: 'DESIGN.md',
+    answers: 'What it should look like.',
+    body: 'Palette, type, spacing and components, so the interface does not come out generic.',
+  },
+  {
+    file: 'TASKS.md',
+    answers: 'The work as a checklist.',
+    body: 'Phase 0 scaffold, Phase 1 core, Phase 2 deploy. Each task small enough for an agent to do and for you to check.',
+  },
+] as const;
 
 /**
  * The three ranking lenses. `top` resolves to the real current leader so the section shows
@@ -167,18 +197,66 @@ onBeforeUnmount(() => clearInterval(latestTimer));
       </div>
     </section>
 
-    <!-- Anatomy: full-width media, then the document set as pills underneath. -->
+    <!-- Anatomy: what each of the five files is for, why there are five, and what to say
+         to a coding agent once they are in a repo. The pill row this replaces named the
+         files and explained nothing, which is fine for someone who already writes specs
+         and useless for everyone else. -->
     <section class="anatomy">
       <div class="container">
         <h2>A plan is five documents, not a one-line idea.</h2>
         <p class="lede">
-          The problem in the poster's own terms, who it is for, what the smallest useful
-          version is, a stack chosen for this problem, and the tasks to get there. Read it in
-          the browser or take the archive and open it in your editor.
+          A one-line idea makes the builder invent everything else: who it is for, what the
+          first version is, which stack, in what order. Coding agents invent confidently.
+          Every plan here splits that into five files, each answering one question, in the same
+          order every time.
         </p>
-        <ul class="docs" aria-label="What every plan includes">
-          <li v-for="d in documents" :key="d" class="doc">{{ d }}</li>
-        </ul>
+
+        <div class="anatomy-grid">
+          <dl class="docs" aria-label="The five documents in every plan">
+            <div v-for="(d, i) in docs" :key="d.file" class="doc">
+              <dt>
+                <span class="doc-n" aria-hidden="true">0{{ i + 1 }}</span>
+                <code class="doc-file">{{ d.file }}</code>
+              </dt>
+              <dd>
+                <strong>{{ d.answers }}</strong>
+                {{ d.body }}
+              </dd>
+            </div>
+            <p class="docs-foot">
+              All five, plus a README with the source link and the metadata, in one
+              <code>.zip</code> from the plan page.
+            </p>
+          </dl>
+
+          <aside class="why" aria-labelledby="why-title">
+            <p id="why-title" class="why-kicker">Why five files, and why for an agent</p>
+            <ul class="why-list">
+              <li>
+                <strong>One question per file.</strong> The agent, or you, reads only what this
+                step needs. The whole plan never has to fit in one prompt.
+              </li>
+              <li>
+                <strong>The same sections in every plan.</strong> A machine-checked contract:
+                every published plan has these headings, so an instruction that works on one
+                works on all of them.
+              </li>
+              <li>
+                <strong>Plain markdown next to the code.</strong> Claude Code, Codex and Cursor
+                read files in the repo as context. Nothing to import, nothing to install.
+              </li>
+              <li>
+                <strong>Decisions already made.</strong> Scope, stack and order are written
+                down, so the agent stops re-deciding them every session.
+              </li>
+            </ul>
+            <div class="prompt">
+              <p class="prompt-label">Unzip into an empty repo, open your coding agent, and say:</p>
+              <code class="prompt-line">Read SPEC.md and PLAN.md. Then do Phase 0 of TASKS.md and stop.</code>
+            </div>
+          </aside>
+        </div>
+
         <figure class="anatomy-shot">
           <img
             src="/img/shot-plan.webp"
@@ -607,22 +685,134 @@ h3 {
   max-width: 24ch;
 }
 
+/* Documents left, reasons right, 7/5: the documents carry the most text. Two columns of
+   prose, no cards; the hairline rows echo the lenses section below so the two read as the
+   same editorial register. */
+.anatomy-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 24px 64px;
+  align-items: start;
+  margin: 36px 0 40px;
+}
+
 .docs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
-  padding: 0;
-  margin: 28px 0 32px;
+  margin: 0;
 }
 
 .doc {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 4px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.doc:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.doc dt {
+  display: contents;
+}
+
+.doc-n {
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  padding: 7px 13px;
-  border-radius: var(--radius-pill);
+  font-size: 11.5px;
   color: var(--text-dim);
-  background: var(--surface-2);
+  padding-top: 3px;
+}
+
+.doc-file {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.doc dd {
+  grid-column: 2;
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.doc dd strong {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.docs-foot {
+  margin: 0;
+  padding: 16px 0 0 48px;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+  color: var(--text-dim);
+}
+
+.docs-foot code,
+.why code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.why {
+  padding-top: 2px;
+}
+
+.why-kicker {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.why-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.why-list strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* The one boxed thing in the section, because it is a line to type: an inset in the code
+   colours, not a card. */
+.prompt {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+}
+
+.prompt-label {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.prompt-line {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--code-fg);
+  user-select: all;
 }
 
 /* ---------- lenses ---------- */
@@ -1218,6 +1408,15 @@ a.latest-link:hover {
 
   .stop-visual {
     grid-column: 2;
+  }
+
+  .anatomy-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .docs-foot {
+    padding-left: 0;
   }
 
   .close {

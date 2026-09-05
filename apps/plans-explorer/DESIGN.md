@@ -205,6 +205,16 @@ light page instead of a black rectangle. The action button says the verb ("Open 
 the hostname sits beside it in mono, because a raw hostname as a button label read as a link
 nobody named. Under 768px the grid is `28px | 1fr` with the visual below the copy.
 
+**The anatomy** ("A plan is five documents") explains the files instead of naming them.
+Left, 7fr: a definition list, one hairline row per document, each with the filename in mono,
+a bold one-line answer ("What to build, and what not to.") and the sections it carries. The
+sections quoted are the ones `_schema.json` requires, so the page and the gate cannot drift.
+Right, 5fr: four reasons this shape suits a coding agent (one question per file, the same
+sections in every plan, plain markdown in the repo, decisions already made) and the one boxed
+element of the section, the line to type into the agent, set in the code colours because it
+is a line to type and not a card. The pill row this replaced named the files and explained
+nothing.
+
 **The close** is one tile with two doors, `7fr | 5fr`, divided by a hairline rather than by
 a second surface. The wide door repeats the hero's ask with the hero's label ("Browse
 plans", primary); the narrow one is the only place the site asks for something back, and
