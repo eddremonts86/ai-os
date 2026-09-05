@@ -1,31 +1,35 @@
-# SPEC.md — Claude Code UI Improvements
+---
+id: "4834"
+slug: claude-code-ui-improvements
+title: Claude Code UI Improvements
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49550800"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Claude Code UI Improvements
 
 ## Problem
 
-- remove the clickable buttons in terminal that i always click when i need to refocus the window, terminal doesnt need buttons<p>- when user types a message, associate it with a timestamp so that how slow claude ingests the messages doesnt create more problems<p>- ingest all available messages
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49550800)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T14:55:53Z
+- remove the clickable buttons in terminal that i always click when i need to refocus the window, terminal doesnt need buttons- when user types a message, associate it with a timestamp so that how slow claude ingests the messages doesnt create more problems- ingest all available messages
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

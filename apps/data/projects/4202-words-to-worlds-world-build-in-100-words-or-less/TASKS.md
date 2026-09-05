@@ -1,4 +1,17 @@
-# TASKS.md — Words to Worlds - world build in 100 words or less
+---
+id: "4202"
+slug: words-to-worlds-world-build-in-100-words-or-less
+title: "Words to Worlds - world build in 100 words or less"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508988"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Words to Worlds - world build in 100 words or less
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,19 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] React brief intake form with 100-word live counter
+- [ ] TanStack Start API for brief persistence and follow-up question generation
+- [ ] SQLite + Drizzle schema for worlds, briefs, answers
+- [ ] Question loop with 2-3 closing prompts
+- [ ] World render job producing ground, water, weather, buildings, creatures
+- [ ] 3D / isometric viewport with turn and tap interactions
+- [ ] Day-night cycle with weather parameters
+- [ ] Shareable short link with Open Graph preview card
+- [ ] Public gallery with search and tags
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional: Pro tier with longer briefs and private worlds

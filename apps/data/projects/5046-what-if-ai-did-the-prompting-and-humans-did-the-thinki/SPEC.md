@@ -1,31 +1,35 @@
-# SPEC.md — What if AI did the prompting – and humans did the thinking?
+---
+id: "5046"
+slug: what-if-ai-did-the-prompting-and-humans-did-the-thinki
+title: What if AI did the prompting – and humans did the thinking?
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49563390"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What if AI did the prompting – and humans did the thinking?
 
 ## Problem
 
-The agent asks you questions until you have clarity on what to do.<p>Experimenting with this idea through AntiAgent. I&#x27;d love Hacker News to challenge this idea.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49563390)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T11:59:32Z
+The agent asks you questions until you have clarity on what to do.Experimenting with this idea through AntiAgent. I'd love Hacker News to challenge this idea.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

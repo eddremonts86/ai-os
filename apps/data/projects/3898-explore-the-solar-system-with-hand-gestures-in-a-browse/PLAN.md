@@ -1,7 +1,7 @@
 ---
 id: "3898"
 slug: explore-the-solar-system-with-hand-gestures-in-a-browse
-title: "Explore the solar system with hand gestures in a browser"
+title: Explore the solar system with hand gestures in a browser
 status: enriched
 source:
   name: HackerNews

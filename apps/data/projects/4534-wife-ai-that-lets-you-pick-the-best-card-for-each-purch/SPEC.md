@@ -1,31 +1,35 @@
-# SPEC.md — Wife: AI that lets you pick the best Card for each Purchase
+---
+id: "4534"
+slug: wife-ai-that-lets-you-pick-the-best-card-for-each-purch
+title: "Wife: AI that lets you pick the best Card for each Purchase"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49525763"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Wife: AI that lets you pick the best Card for each Purchase
 
 ## Problem
 
-Hi Hackernews, being an avid maximizer of rewards&#x2F;gifts&#x2F;credit cards, I decided to build a product that enables me to select the best card for each purchase&#x2F;transaction.<p>You can be able to add your current Card to the wallet (we don&#x27;t store card information).<p>- Users can ask an llm to select the best card for an occassion and plan towards a trip.<p>- Users can search stores&#x2F;businesses nearby or a particular merchant and see the rewards&#x2F;benefits they can maximize.<p>- Best card on Tap (coming soon)
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49525763)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T18:17:38Z
+Hi Hackernews, being an avid maximizer of rewards/gifts/credit cards, I decided to build a product that enables me to select the best card for each purchase/transaction.You can be able to add your current Card to the wallet (we don't store card information).- Users can ask an llm to select the best card for an occassion and plan towards a trip.- Users can search stores/businesses nearby or a particular merchant and see the rewards/benefits they can maximize.- Best card on Tap (coming soon)
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

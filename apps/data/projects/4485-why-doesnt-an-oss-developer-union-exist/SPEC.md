@@ -1,31 +1,35 @@
-# SPEC.md — Why Doesn't an OSS Developer Union Exist?
+---
+id: "4485"
+slug: why-doesnt-an-oss-developer-union-exist
+title: "Why Doesn't an OSS Developer Union Exist?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49527752"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Why Doesn't an OSS Developer Union Exist?
 
 ## Problem
 
-I would like to open the floor for discussion.<p>I personally want an OSS Union for situations in which trillion dollar megacorps attempt to bully OSS interop project maintainers and give them trauma over C&amp;Ds which they get almost no support for.<p>I would pay at least $20 per month to be part of this union. I would like it to protect all OSS devs even if they have no propensity to pay.<p>I think this will be an important tool to fight enshittification.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49527752)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T20:31:03Z
+I would like to open the floor for discussion.I personally want an OSS Union for situations in which trillion dollar megacorps attempt to bully OSS interop project maintainers and give them trauma over C&Ds which they get almost no support for.I would pay at least $20 per month to be part of this union. I would like it to protect all OSS devs even if they have no propensity to pay.I think this will be an important tool to fight enshittification.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

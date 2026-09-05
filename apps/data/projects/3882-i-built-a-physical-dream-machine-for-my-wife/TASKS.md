@@ -1,7 +1,7 @@
 ---
 id: "3882"
-slug: "i-built-a-physical-dream-machine-for-my-wife"
-title: "I built a physical dream machine for my wife"
+slug: i-built-a-physical-dream-machine-for-my-wife
+title: I built a physical dream machine for my wife
 status: enriched
 source:
   name: HackerNews

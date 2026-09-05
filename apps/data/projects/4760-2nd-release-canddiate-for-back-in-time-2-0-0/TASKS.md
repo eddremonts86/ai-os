@@ -1,4 +1,17 @@
-# TASKS.md — 2nd Release Canddiate for Back in Time 2.0.0
+---
+id: "4760"
+slug: "2nd-release-canddiate-for-back-in-time-2-0-0"
+title: "2nd Release Canddiate for Back in Time 2.0.0"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49546577"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# 2nd Release Canddiate for Back in Time 2.0.0
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

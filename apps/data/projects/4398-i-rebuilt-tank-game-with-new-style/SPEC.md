@@ -1,31 +1,36 @@
-# SPEC.md — I rebuilt tank game with new style
+---
+id: "4398"
+slug: i-rebuilt-tank-game-with-new-style
+title: I rebuilt tank game with new style
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49516825"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+country: Still something must be done
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I rebuilt tank game with new style
 
 ## Problem
 
 Still something must be done
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49516825)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T01:21:25Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

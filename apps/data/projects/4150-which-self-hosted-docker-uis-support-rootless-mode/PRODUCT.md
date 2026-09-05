@@ -1,51 +1,44 @@
-# PRODUCT.md — Which self-hosted Docker UIs support rootless mode?
+---
+id: "4150"
+slug: which-self-hosted-docker-uis-support-rootless-mode
+title: Which self-hosted Docker UIs support rootless mode?
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508552"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Which self-hosted Docker UIs support rootless mode?
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I went through the docs of 10 Docker web UIs (Portainer, Dockge,
-Dockhand, Arcane, Dokploy, Coolify, Komodo, Runtipi, Rancher,
-Stacker) looking for one thing: which actually support rootless
-Docker? Anyone actually running these against a rootless daemon? What
-broke?
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A research note that turns a one-line HN question into a per-UI comparison table for rootless Docker support, so a homelab operator can pick a UI that will not refuse to start against their rootless daemon.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Homelab operators, small-team sysadmins, and self-hosters evaluating Docker UIs who want rootless mode to be a hard requirement. Secondary reader: maintainers of the UIs themselves.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+When a homelab operator is choosing between the ten self-hosted Docker UIs named in the post, give them a single page that names the rootless support story for each one and the caveat that comes with it.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+Whether the comparison is referenced in homelab guides, UI GitHub issues, or HN follow-ups. No quantitative target is set; the source post gives no baseline.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable — the deliverable is a free research note.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+The ten UIs themselves are the comparison set; the post does not name any other rootless-friendly container management tools (LXD, Podman UI, Kubernetes dashboards) so the page scopes to the ten in the title.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508552) · **Category:** ask-hn · **Tags:** Ask HN,Problem
+Rootless support changes between releases; a row marked "supported" could regress in a future version. The note must date-stamp the snapshot and link the docs it relied on rather than asserting the current state without citation. The post does not report any in-production breakage logs, so the caveat column will be sparse until a follow-up round of testing is done.

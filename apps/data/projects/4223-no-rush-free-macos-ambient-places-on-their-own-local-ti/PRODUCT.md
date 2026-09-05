@@ -1,47 +1,54 @@
-# PRODUCT.md — No Rush – Free macOS ambient places on their own local time and weather
+---
+id: "4223"
+slug: no-rush-free-macos-ambient-places-on-their-own-local-ti
+title: "No Rush – Free macOS ambient places on their own local time and weather"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49507180"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# No Rush – Free macOS ambient places on their own local time and weather
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://no-rush.app/
+No Rush places a real-looking environment on the user's desk, with its own local time, weather, and audio that responds to focus. The scene is not a wallpaper; it composes itself and follows the user's attention without any knobs to turn.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+macOS / Linux desktop users who want a quiet ambient scene on their second monitor or in a browser tab, with audio that responds to whether they are working or idle. Assumes the reader can install an AppImage or open a browser tab.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want a quiet ambient backdrop, I want a scene that runs on its own time and weather so the room feels real.
+- When I am working, I want the audio to swell so the mask covers the office noise.
+- When I am idle, I want the scene to ease back so I am not over-stimulated.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Time the app stays running per session.
+- Number of distinct scenes shipped.
+- Focus-mode vs idle-mode audio transition smoothness.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other ambient / soundscape apps (e.g. Endel, Calm, Noisli) and desktop wallpaper engines. The captured source post positions No Rush around the self-composing 'inhabit it' framing and the focus-aware audio mix, but does not enumerate specific competitors by name.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49507180) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- The "inhabit it" framing is a UX claim; if the scene reads as a wallpaper instead of a place, the product loses its character.
+- Focus detection has to be honest; a noisy transition breaks the spell.

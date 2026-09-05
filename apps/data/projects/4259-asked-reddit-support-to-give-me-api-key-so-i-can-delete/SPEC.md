@@ -1,32 +1,36 @@
-# SPEC.md — Asked Reddit support to give me API key so I can delete my data. They refused
+---
+id: "4259"
+slug: asked-reddit-support-to-give-me-api-key-so-i-can-delete
+title: Asked Reddit support to give me API key so I can delete my data. They refused
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521882"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Asked Reddit support to give me API key so I can delete my data. They refused
 
 ## Problem
 
-Asked reddit support to give me API key so I can securely delete my data via ereddicator. I was honest, filling all the required fields, stating my purpose explicitly.<p>Here&#x27;s their response: 
-We have reviewed your request for access. Unfortunately, we cannot grant approval because the submission is not in compliance with Reddit’s Responsible Builder Policy and&#x2F;or lacks necessary details.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49521882)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-01T13:38:35Z
+Asked reddit support to give me API key so I can securely delete my data via ereddicator. I was honest, filling all the required fields, stating my purpose explicitly.Here's their response:
+We have reviewed your request for access. Unfortunately, we cannot grant approval because the submission is not in compliance with Reddit’s Responsible Builder Policy and/or lacks necessary details.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -34,5 +38,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

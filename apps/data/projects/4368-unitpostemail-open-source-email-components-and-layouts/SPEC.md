@@ -1,33 +1,37 @@
-# SPEC.md — Unitpost/email – open-source Email Components and Layouts
+---
+id: "4368"
+slug: unitpostemail-open-source-email-components-and-layouts
+title: Unitpost/email – open-source Email Components and Layouts
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49519813"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Unitpost/email – open-source Email Components and Layouts
 
 ## Problem
 
-If you are using React, you&#x27;ve probably used or heard of React Email by Resend.<p>Ironically once we started building Unitpost we hit the limit: React Email works when an engineer owns a .tsx file. Add a designer or an agent and you get a second copy that drifts.<p>So we built @unitpost&#x2F;email. One inbox-safe document for Outlook, Apple Mail, and Gmail. React or string TSX.<p>24+ transactional and marketing emails
+If you are using React, you've probably used or heard of React Email by Resend.Ironically once we started building Unitpost we hit the limit: React Email works when an engineer owns a .tsx file. Add a designer or an agent and you get a second copy that drifts.So we built @unitpost/email. One inbox-safe document for Outlook, Apple Mail, and Gmail. React or string TSX.24+ transactional and marketing emails
 20+ pre-built email layouts
-15+ components<p>npx skills add unitpostcom&#x2F;email and the AI you already use can generate the emails.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49519813)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T09:30:51Z
+15+ componentsnpx skills add unitpostcom/email and the AI you already use can generate the emails.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

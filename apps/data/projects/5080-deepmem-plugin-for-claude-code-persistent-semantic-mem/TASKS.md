@@ -1,4 +1,17 @@
-# TASKS.md — DeepMem plugin for Claude Code – persistent semantic memory via MCP
+---
+id: "5080"
+slug: deepmem-plugin-for-claude-code-persistent-semantic-mem
+title: DeepMem plugin for Claude Code – persistent semantic memory via MCP
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49565805"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# DeepMem plugin for Claude Code – persistent semantic memory via MCP
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,4 +1,17 @@
-# TASKS.md — Airuncode – an AI runtime coding agent with a built-in 3D game engine
+---
+id: "5126"
+slug: airuncode-an-ai-runtime-coding-agent-with-a-built-in-3
+title: Airuncode – an AI runtime coding agent with a built-in 3D game engine
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49569121"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Airuncode – an AI runtime coding agent with a built-in 3D game engine
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

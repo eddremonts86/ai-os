@@ -1,31 +1,35 @@
-# SPEC.md — SyncLite – Offline-first apps with automatic database sync
+---
+id: "4954"
+slug: synclite-offline-first-apps-with-automatic-database-sy
+title: SyncLite – Offline-first apps with automatic database sync
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49554138"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SyncLite – Offline-first apps with automatic database sync
 
 ## Problem
 
-Website: <a href="https:&#x2F;&#x2F;www.synclite.io" rel="nofollow">https:&#x2F;&#x2F;www.synclite.io</a><p>GutHub: <a href="https:&#x2F;&#x2F;github.com&#x2F;syncliteio&#x2F;SyncLite" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;syncliteio&#x2F;SyncLite</a><p>We would love to hear feedback from the community.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49554138)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T18:08:32Z
+Website: https://www.synclite.ioGutHub: https://github.com/syncliteio/SyncLiteWe would love to hear feedback from the community.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

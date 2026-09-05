@@ -1,31 +1,33 @@
-# SPEC.md — What to do when a vendor doesn't respond to security issues?
+---
+id: "4152"
+slug: what-to-do-when-a-vendor-doesnt-respond-to-security-iss
+title: "What to do when a vendor doesn't respond to security issues?"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49507259"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What to do when a vendor doesn't respond to security issues?
 
 ## Problem
 
-I got fed up with a certain internet-connected appliance at home, and decided to investigate its firmware. Since the vendor claims the product is still in active support and not EOL, my main goal was to find a pre-existing CVE it was vulnerable to and report that so the vendor would need to release an updated firmware, hopefully with other improvements too.<p>The latest build was years old, so that wasn&#x27;t too hard. I found an outdated service that is reachable unauthenticated from LAN and has a known vulnerability that allows arbitrary file reads on the device. I also found another endpoint that is unauthenticated from LAN and with a single GET request essentially bricks the device, requiring disassembly and JTAG access to recover from. There are no cross-origin checks or restrictions of any kind, so a malicious site could put the URL in an img tag or similar and brick visitors&#x27; devices with no interaction.<p>I&#x27;m in the EU, so I went to their EU site where I was first instructed to create a ticket on their support site. I tried numerous times but it always failed with &quot;an unknown error&quot;, instructing me to &quot;contact the service desk&quot; with no clues how to reach them. I also found another form where you could select security issue as the topic, but the description field was barely long enough to fit &quot;I found security issues with ${product}, please contact me for more details.&quot; Three weeks later I&#x27;m still waiting.<p>Next I filed the same security issue form on their US site, and promptly got a reply. The exact model isn&#x27;t sold in the US so they wouldn&#x27;t handle it directly, but promised to forward any details to their EU counterpart since I had such a hard time reaching them directly. I sent the issue details and have not heard back since. I sent a follow-up email asking for a status update, but so far that has gone unanswered too.<p>What should I do next? Is there some EU entity that could step in? Can I get in trouble if I just publish what I found?
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49507259)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-08-31T08:55:36Z
-
----
+The poster, based in the EU, found two vulnerabilities in a consumer internet-connected appliance they own: an outdated service reachable unauthenticated from the LAN that allows arbitrary file reads via a known CVE, and a second unauthenticated LAN endpoint that can brick the device with a single GET request (recovery requires disassembly and JTAG). There are no cross-origin checks on either endpoint, so a malicious site could brick visitors' devices with no interaction. The vendor advertises the product as still in active support. The poster's responsible-disclosure attempts failed: the EU support ticket system errored on every attempt, the security-issue form was too short to fit a real write-up, US support replied promptly but the model is not sold there and the promised EU forwarding produced no reply after multiple follow-ups, and three weeks later the EU side is silent. The poster asks two concrete questions: what to do next (is there an EU body that can step in?) and whether publishing the findings would put them at legal risk.
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+Document a credible responsible-disclosure escalation playbook for EU-resident security researchers who hit a non-responsive consumer-vendor, drawing the steps that are real (CVD norms, ENISA contact, national CSIRT, regulator complaints) without inventing any.
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+Independent security researchers and homelab users in the EU who find a vulnerability in a consumer product, want to disclose responsibly, and cannot get a vendor response. Secondary reader: small vendor security teams who want a checklist of what their inbox looks like when disclosure works well.
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+A written escalation guide: (1) confirm and minimise the repro, (2) capture timestamped evidence, (3) retry the vendor with proof-of-concept that does not weaponise the bug, (4) engage the national CSIRT and ENISA as coordinator, (5) consult a lawyer before any public disclosure, (6) after a defined waiting period, consider coordinated public disclosure. No SaaS, no disclosure portal.
 
 ## Design Direction
 
@@ -33,5 +35,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+The post does not name the product, vendor, or country, so the guide cannot be tailored to a specific jurisdiction beyond "EU". The guide must label any time-bound claim ("wait N days before going public") as derived from CVD norms, not from the post. The post does not resolve whether the poster can legally disclose, so the guide must present the legal question as a question, not an answer.

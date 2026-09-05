@@ -1,31 +1,35 @@
-# SPEC.md — Tell HN: Anthropic just reset usage, including Fable
+---
+id: "5105"
+slug: tell-hn-anthropic-just-reset-usage-including-fable
+title: "Tell HN: Anthropic just reset usage, including Fable"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49570522"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Tell HN: Anthropic just reset usage, including Fable
 
 ## Problem
 
 _Pending manual analysis._
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49570522)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-04T21:36:34Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

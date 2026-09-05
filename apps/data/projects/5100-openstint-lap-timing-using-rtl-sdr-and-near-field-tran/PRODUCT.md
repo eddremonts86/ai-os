@@ -1,34 +1,39 @@
-# PRODUCT.md — OpenStint – lap timing using RTL-SDR and near-field transponders
+---
+id: "5100"
+slug: openstint-lap-timing-using-rtl-sdr-and-near-field-tran
+title: OpenStint – lap timing using RTL-SDR and near-field transponders
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49564921"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# OpenStint – lap timing using RTL-SDR and near-field transponders
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I race 1&#x2F;10 scale on-road radio-controlled cars. About a year ago, I started working on an open-source lap timing decoder, that reads the proprietary decoders commonly used in this hobby.<p>Overview:
-<a href="https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;introduction.html" rel="nofollow">https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;introduction.html</a><p>Radio signal chain:
-<a href="https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;dev-rx-architecture.html" rel="nofollow">https:&#x2F;&#x2F;openstint.org&#x2F;decoder&#x2F;docs&#x2F;dev-rx-architecture.html</a>
+_Based on source brief:_ I race 1/10 scale on-road radio-controlled cars. About a year ago, I started working on an open-source lap timing decoder, that reads the proprietary decoders commonly used in this hobby.Overview:
+https://openstint.org/decoder/docs/introduction.htmlRadio signal chain:
+https://openstint.org/decoder/docs/dev-rx-architecture.html
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -36,7 +41,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

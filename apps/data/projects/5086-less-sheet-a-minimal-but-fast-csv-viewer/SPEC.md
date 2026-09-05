@@ -1,31 +1,35 @@
-# SPEC.md — Less-sheet – A minimal but fast CSV viewer
+---
+id: "5086"
+slug: less-sheet-a-minimal-but-fast-csv-viewer
+title: Less-sheet – A minimal but fast CSV viewer
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49565406"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Less-sheet – A minimal but fast CSV viewer
 
 ## Problem
 
 Built this tool for my self, as a quick way to open CSV files of, almost, any size. Supports also gzipped csvs and can load directly over http(s)
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49565406)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-04T14:44:07Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

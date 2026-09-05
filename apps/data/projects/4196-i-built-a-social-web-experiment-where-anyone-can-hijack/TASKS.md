@@ -1,4 +1,17 @@
-# TASKS.md — I built a social web experiment where anyone can hijack my domain
+---
+id: "4196"
+slug: i-built-a-social-web-experiment-where-anyone-can-hijack
+title: "I built a social web experiment where anyone can hijack my domain"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509486"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I built a social web experiment where anyone can hijack my domain
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] React landing page with $5 button, live counters, and recent activity feed
+- [ ] TanStack Start API for webhook ingestion, leaderboard, and redirect control
+- [ ] SQLite + Drizzle schema for buyers, cumulative spend, and activity log
+- [ ] Whop webhook integration with payment signature verification
+- [ ] Apex domain DNS update via Cloudflare API
+- [ ] "Report this destination" button with operator override
+- [ ] Rate limiting on the $5 endpoint and abuse heuristics
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional: independent abuse-monitoring endpoint with on-call rotation

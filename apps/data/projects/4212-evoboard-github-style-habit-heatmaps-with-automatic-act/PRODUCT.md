@@ -1,47 +1,54 @@
-# PRODUCT.md — Evoboard – GitHub style habit heatmaps with automatic activity logging
+---
+id: "4212"
+slug: evoboard-github-style-habit-heatmaps-with-automatic-act
+title: Evoboard – GitHub style habit heatmaps with automatic activity logging
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508482"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Evoboard – GitHub style habit heatmaps with automatic activity logging
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hey HN!<p>I built evoboard, a web app which shows your consistency on a year long heatmap.<p>I liked the contribution graphs on GitHub and LeetCode, and wondered if I could make that idea for my everyday habits. I also made it so the habits can be completed automatically when you do them.<p>For example, if you commit to GitHub, play a game of chess, do a LeetCode problem, it can update your habit automatically. You can connect other apps with the use of the API or chrome extension.<p>You can also share your profile with others so you can stay motivated. I’m really proud of this project and I’m going to continue using it myself.<p>I’m happy to answer any questions or feedback!
+Evoboard turns the apps you already love into a year-long habit heatmap: your GitHub commits, chess games and LeetCode solves can each auto-complete a habit, with a Chrome extension and a public API for everything else.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A GitHub-style habit heatmap that fills itself in from the apps you already use.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Self-trackers and developers who already use GitHub/LeetCode-style contribution views. Adjacent: habit-tracker fans who want less manual logging.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I commit code, I want my habit board to tick automatically so I do not log twice.
+- When I do an unsupported activity, I want a Chrome extension or API to fill the gap so all my habits show up.
+- When I am on a streak, I want a public profile so friends can see it.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Number of daily active users.
+- Number of connected integrations per user.
+- Streak length and heatmap density.
+- Profile shares and clicks-through.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source does not state pricing. Treat as a free hobbyist tool until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Generic habit trackers (Streaks, Habitica, Way of Life) and developer-focused trackers (WakaTime, GitHub contribution view) cover parts of the use case. Evoboard's differentiator is the auto-completion from existing apps plus the GitHub-style heatmap.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508482) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Integration churn: GitHub/LeetCode APIs change; mitigation is to keep each connector isolated.
+- Chrome extension distribution and review risk; mitigation is to keep extension permissions minimal.
+- Privacy: tracking habits is sensitive; mitigation is to make every data point user-controllable.

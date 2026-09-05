@@ -1,31 +1,35 @@
-# SPEC.md — Gopdfrab – Open-source PDF/A processing for Go
+---
+id: "4533"
+slug: gopdfrab-open-source-pdfa-processing-for-go
+title: Gopdfrab – Open-source PDF/A processing for Go
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49526062"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Gopdfrab – Open-source PDF/A processing for Go
 
 ## Problem
 
 https://gopdfrab.voidrab.com/
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49526062)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T18:34:59Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._
