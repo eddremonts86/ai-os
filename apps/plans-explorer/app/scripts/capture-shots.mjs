@@ -43,12 +43,12 @@ const SHOTS = [
   // The two external ones are cropped to the hero: it is the part worth showing, and it sits
   // above the consent dialog. The dialog is hidden rather than dismissed — clicking a consent
   // control to tidy a screenshot is answering a question that was not ours to answer.
-  { name: 'shot-builderhunt.png', url: 'https://builderhunt.dev', wait: 3200, h: 660 },
-  // HunterReady opens straight onto step 1 of its wizard rather than a marketing hero, and
-  // its content starts 383px down. Clipped to the step itself; from y=0 the frame was three
-  // quarters white space and read as a broken image rather than as a product. The two cells
-  // are normalised to one aspect ratio in CSS, so these crops need not match.
-  { name: 'shot-hunterready.png', url: 'https://hunterready.eduardoinerarte.dk', wait: 3200, y: 340, h: 520 },
+  // Both are 1440x740 because the landing shows them in a browser frame with exactly that
+  // ratio and no CSS cropping (LandingView `.frame img`): what was captured is what is shown.
+  // HunterReady used to open on a wizard step with its content 383px down; it has a hero at
+  // the top now, so the old y-offset would cut its headline in half.
+  { name: 'shot-builderhunt.png', url: 'https://builderhunt.dev', wait: 3200, h: 740 },
+  { name: 'shot-hunterready.png', url: 'https://hunterready.eduardoinerarte.dk', wait: 3200, h: 740 },
 ];
 
 // Fixed overlays (consent dialogs, chat bubbles, banners) are page furniture, not product, and
