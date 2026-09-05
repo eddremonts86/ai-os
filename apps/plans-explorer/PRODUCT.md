@@ -1,4 +1,4 @@
-# PRODUCT.md — AI-OS Plans Explorer
+# PRODUCT.md — Plansmith (the plans explorer)
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 

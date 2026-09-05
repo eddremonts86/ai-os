@@ -35,31 +35,37 @@ const label = computed(() => {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
-  border-radius: 999px;
+  /* Same inset as .chip (4px 10px at small size). Once the text can wrap, 3px of vertical
+     padding puts two lines of type against the curve of the pill. */
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 500;
-  line-height: 1;
-  border: 1px solid var(--line);
+  /* Wraps. This is the price the person actually named, sometimes at length
+     ("₽500–₽1000/month ($6–12) for all apartments or ₽250 ($3) per apartment"), and the
+     nowrap version ran 38px past the card edge and got clipped mid-word. A two-line pill
+     reads; a truncated price does not. */
+  line-height: 1.3;
+  text-align: left;
+  min-width: 0;
+  max-width: 100%;
   background: var(--surface-2);
   color: var(--text-dim);
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .wtp-badge.is-sm {
-  padding: 2px 6px;
+  padding: 4px 10px;
   font-size: 11px;
 }
 
 .wtp-badge.is-high {
   background: var(--accent-2-a10);
-  border-color: var(--accent-2-a30);
   color: var(--accent-2);
 }
 
 .wtp-badge.is-mid {
   background: var(--warn-a10);
-  border-color: var(--warn-a30);
   color: var(--warn);
 }
 

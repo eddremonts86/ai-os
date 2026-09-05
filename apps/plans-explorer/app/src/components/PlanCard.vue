@@ -45,7 +45,7 @@ const countryFlag = computed(() => {
           {{ plan.country }}
         </span>
         <span v-if="plan.tech.length" class="meta-item tech" :title="plan.tech.join(', ')">
-          {{ plan.tech.slice(0, 2).join(' + ') }}
+          <span class="tech-names">{{ plan.tech.slice(0, 2).join(' + ') }}</span>
           <span v-if="plan.tech.length > 2" class="tech-more">+{{ plan.tech.length - 2 }}</span>
         </span>
         <WtpBadge v-if="plan.wtp" :wtp="plan.wtp" size="sm" />
@@ -77,19 +77,21 @@ const countryFlag = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
+  padding: 20px;
   background: var(--surface);
-  /* line-strong, not line: this outlines the card against the page rather than
-     dividing content inside it. */
-  border: 1px solid var(--line-strong);
+  /* Delimited by shadow and gap, not by a drawn border: on an off-white page a white card
+     with a resting shadow is the boundary, the way the reference UIs do it. The border is
+     transparent at rest and only exists so hover has a second, non-motion signal. */
+  border: 1px solid transparent;
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
   transition: transform 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .plan-card:hover {
   transform: translateY(-2px);
-  /* Full accent, not a 30% tint: the tint measured 1.43:1 on --surface, and with
-     reduced motion removing the transform this border is the only hover feedback. */
+  /* Full accent, not a tint: the 30% tint is 1.4:1 on white, and with reduced motion
+     removing the transform this border is the only hover feedback left. */
   border-color: var(--accent);
   box-shadow: var(--shadow-2);
 }
@@ -102,9 +104,9 @@ const countryFlag = computed(() => {
 
 .card-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   line-height: 1.35;
   color: var(--text);
 }
@@ -158,12 +160,14 @@ const countryFlag = computed(() => {
   min-height: 2.6em;
 }
 
+/* Two rows, always, in the same order: meta (country, stack, income) above, scores below
+   with the source link at the far right. The old footer was one wrapping flex row, so a card
+   with a short meta put its scores beside the country and a card with a long one pushed them
+   underneath: same data, two layouts, and the eye had to re-find the scores on every card.
+   An empty meta row keeps its height so the scores still line up across a row of cards. */
 .card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
   gap: 8px;
-  flex-wrap: wrap;
   margin-top: auto;
 }
 
@@ -172,6 +176,7 @@ const countryFlag = computed(() => {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+  min-height: 24px;
   font-size: 12px;
   color: var(--text-dim);
 }
@@ -187,13 +192,25 @@ const countryFlag = computed(() => {
 }
 
 .tech {
-  padding: 3px 8px;
+  padding: 3px 9px;
   background: var(--surface-2);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  max-width: 100%;
+}
+
+/* One line. Some stacks read "Block-based visual programming + kid-facing AI inspection
+   studio", which wrapped the pill to two lines and broke the footer's rhythm; the full list
+   is in the title attribute. */
+.tech-names {
+  min-width: 0;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tech-more {
+  flex: none;
   margin-left: 2px;
   opacity: 0.6;
 }
@@ -212,11 +229,12 @@ const countryFlag = computed(() => {
      is transparent until hover. */
   min-width: 44px;
   min-height: 44px;
-  margin: -10px -8px -10px 0;
+  /* auto on the left pins the link to the card's right edge whatever the badges measure. */
+  margin: -10px -8px -10px auto;
   color: var(--text-dim);
   text-decoration: none;
   font-size: 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   transition: color 150ms, background 150ms;
 }
 
