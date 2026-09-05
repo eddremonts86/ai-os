@@ -38,7 +38,7 @@ A second, LLM-free scheduler runs only the two deterministic input phases:
 
 | Scheduler | Runs | Phases | Needs an LLM | Cost per run |
 |---|---|---|---|---|
-| Hermes cron `59b1562e8007` | monthly, 1st at 09:00 — **paused** | all of them | yes | ~22M tokens |
+| Hermes cron `59b1562e8007` | monthly, 1st at 09:00 | all of them | yes | ~22M tokens |
 | launchd `ai.os.plans-pipeline` | 00, 04, 08, 12, 16, 20 local | `scrape`, `intake` | no | nothing |
 
 The gap between those two rows is the thing to understand about this pipeline: capture arrives
