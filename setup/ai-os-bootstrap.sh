@@ -3,7 +3,7 @@
 #
 # What it does (in order, all idempotent):
 #   1. Verify Docker is running
-#   2. Source ~/Projects/configs/env.ts if present (provides MINIMAX_API_KEY, etc.)
+#   2. Read dev-env/env-config/.env for MINIMAX_API_KEY (handed to compose via --env-file)
 #   3. Start FalkorDB (ia-os-falkordb) via memory/docker-compose.yml (unified)
 #   4. Start Graphiti MCP (ia-os-graphiti-mcp) if MINIMAX_API_KEY is set
 #   5. Ensure Ollama is running (start brew service on Mac, pull nomic-embed-text)
@@ -74,16 +74,17 @@ if ! docker info >/dev/null 2>&1; then
 fi
 ok "docker reachable"
 
-if [ -f "$HOME_DIR/Projects/configs/env.ts" ]; then
-  # env.ts is shell-compatible KEY=VALUE syntax despite the .ts extension
-  set -a
-  # shellcheck disable=SC1090,SC1091
-  source "$HOME_DIR/Projects/configs/env.ts" 2>/dev/null || true
-  set +a
-  ok "sourced ~/Projects/configs/env.ts (MINIMAX_API_KEY, OPENAI_API_KEY, etc.)"
-  [ -n "${MINIMAX_API_KEY:-}" ] && ok "  MINIMAX_API_KEY present" || warn "  MINIMAX_API_KEY missing (Graphiti will be skipped)"
+# Credentials live in the canonical merged local env file (context/04_tools.md). This used to
+# source ~/Projects/configs/env.ts, which no longer exists, so Graphiti was skipped on every
+# run behind a warning nobody read. Compose reads the file itself via --env-file: nothing is
+# sourced into this shell, so a value holding shell metacharacters cannot execute here.
+ENV_FILE="$AI_OS_ROOT/dev-env/env-config/.env"
+GRAPHITI_ENV_ARGS=()
+if [ -f "$ENV_FILE" ] && grep -qE '^(export )?MINIMAX_API_KEY=.+' "$ENV_FILE"; then
+  GRAPHITI_ENV_ARGS=(--env-file "$ENV_FILE")
+  ok "MINIMAX_API_KEY present in dev-env/env-config/.env"
 else
-  warn "~/Projects/configs/env.ts not found (Graphiti will be skipped)"
+  warn "MINIMAX_API_KEY missing from dev-env/env-config/.env (Graphiti will be skipped)"
 fi
 
 # ─── Stack: FalkorDB ──────────────────────────────────────────────────────────
@@ -122,12 +123,12 @@ start_falkordb() {
 
 # ─── Stack: Graphiti (opt-in) ─────────────────────────────────────────────────
 start_graphiti() {
-  if [ -z "${MINIMAX_API_KEY:-}" ]; then
+  if [ ${#GRAPHITI_ENV_ARGS[@]} -eq 0 ]; then
     warn "Graphiti skipped (no MINIMAX_API_KEY)"
     return 0
   fi
   hdr "Graphiti MCP (opt-in)"
-  if docker compose -f "$COMPOSE_FILE" up -d graphiti-mcp 2>&1 | sed 's/^/    /'; then
+  if docker compose "${GRAPHITI_ENV_ARGS[@]}" -f "$COMPOSE_FILE" up -d graphiti-mcp 2>&1 | sed 's/^/    /'; then
     : # ok
   else
     err "docker compose up -d failed for graphiti"

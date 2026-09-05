@@ -1,0 +1,38 @@
+# SPEC.md — Will we let you back into the club?
+
+## Problem
+
+In the 90s Bill gates and his corporate minions scared everyone into believing if they didnt &quot;learn computers&quot;, and &quot;learn Office&quot;, they would not be able to get a job.  That they would be &quot;unemployable&quot;.<p>And computers were new and to some kind of exciting to some threatening, and people internalized this fear and indeed imitated their corporate masters to stay employed.  Very few rebelled.  Yes, some secretaries cried at their desks, I was witness to it personally, but there was no stopping corporations from making this change and a keyboard was still a typewriter with better paper and a working backspace anyway.<p>But imitating corporate behavior has its limits even in America.  I see a huge percentage of software engineers now &quot;pretending to be interested&quot; in machine learning (a quite mature field of study) who have never cared one wit about it before (and still likely dont).  People running LLMs on their machines and buying systems with big RAM installations so they can &quot;imitate corporations&quot; and who (maybe rightfully?) fear for their jobs.<p>But here&#x27;s the thing, there is really nothing of interest to a software engineer in machine learning at all even really as a consumer.  And thats why most software engineers never got into it.  So the ladder of corporate attainment now containing references to LLMs, has people not only imitating their employers, and going through the motions of &quot;using&quot; machine learning tooling, which will lead (is leading) to these &quot;converted engineers&quot; into feigning expertise (its already happening in corp software shops everywhere) in machine learning to &quot;get ahead&quot;.<p>This is really cowardly and should be beneath those that believe in their chosen profession.
+All the people doing this should understand, that the rest of us software engineers who intend on <i>staying</i> oftware engineers are not fools.  We see what you are doing.<p>And when this is all over and crashes, you may ask yourself if we will &quot;let you back in the club&quot;.<p>Will we let you back in the club?, indeed is a good question for the pretenders to ponder.
+
+**Source:** [HackerNews](https://news.ycombinator.com/item?id=49548748)
+**Primary category:** ask-hn
+**Tags:** Ask HN,Problem
+**Date:** 2026-09-03T11:44:47Z
+
+---
+
+## Objective
+
+Build a solution that addresses this problem clearly and at scale.
+
+---
+
+## Target Users
+
+1. **[Primary user]** — the main user this serves
+2. **[Secondary user]** — other relevant users
+
+## MVP Scope
+
+- Core functionality
+- Leave out anything beyond the MVP
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+- Keep the MVP simple
+- No unnecessary external dependencies
