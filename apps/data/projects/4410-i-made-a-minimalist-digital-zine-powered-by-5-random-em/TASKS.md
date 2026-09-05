@@ -1,4 +1,17 @@
-# TASKS.md — I made a minimalist digital zine powered by 5 random emoji prompts
+---
+id: "4410"
+slug: i-made-a-minimalist-digital-zine-powered-by-5-random-em
+title: I made a minimalist digital zine powered by 5 random emoji prompts
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514599"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I made a minimalist digital zine powered by 5 random emoji prompts
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

@@ -1,31 +1,35 @@
-# SPEC.md — Motiofy AI – Turn a single image into a polished motion video in your browser
+---
+id: "5171"
+slug: motiofy-ai-turn-a-single-image-into-a-polished-motion
+title: Motiofy AI – Turn a single image into a polished motion video in your browser
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/motiofy-ai?utm_campaign=startup-182619&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-05"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Motiofy AI – Turn a single image into a polished motion video in your browser
 
 ## Problem
 
 Motiofy is a creative workspace for making with AI. It starts with video and aims to be a place where creators can explore ideas, shape their work, and carry a project from the first spark to something worth sharing. View startup
 
-**Source:** [BetaList](https://betalist.com/startups/motiofy-ai?utm_campaign=startup-182619&utm_medium=atom&utm_source=newsfeed)
-**Primary category:** beta
-**Tags:** BetaList,Beta,Product
-**Date:** 2026-09-05T06:00:00Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,32 +1,37 @@
-# PRODUCT.md — Srmed – an automated newsroom with a daily AI-narrated podcast
+---
+id: "4353"
+slug: srmed-an-automated-newsroom-with-a-daily-ai-narrated-po
+title: Srmed – an automated newsroom with a daily AI-narrated podcast
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521009"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Srmed – an automated newsroom with a daily AI-narrated podcast
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi HN — my co-founder and I built Srmed: a daily business and tech news feed plus a daily podcast, in both Arabic and English.<p>We would appreciate feedback and what would you like to see more of and what less of.<p>Apps if you want them <a href="https:&#x2F;&#x2F;srmed.ai&#x2F;app" rel="nofollow">https:&#x2F;&#x2F;srmed.ai&#x2F;app</a>
+_Based on source brief:_ Hi HN — my co-founder and I built Srmed: a daily business and tech news feed plus a daily podcast, in both Arabic and English.We would appreciate feedback and what would you like to see more of and what less of.Apps if you want them https://srmed.ai/app
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

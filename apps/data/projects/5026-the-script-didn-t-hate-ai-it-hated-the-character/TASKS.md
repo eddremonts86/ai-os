@@ -1,4 +1,17 @@
-# TASKS.md — The script didn't hate AI. It hated the "@" character
+---
+id: "5026"
+slug: the-script-didn-t-hate-ai-it-hated-the-character
+title: "The script didn't hate AI. It hated the \"@\" character"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49563620"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# The script didn't hate AI. It hated the "@" character
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

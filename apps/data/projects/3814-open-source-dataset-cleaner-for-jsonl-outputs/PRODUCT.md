@@ -9,7 +9,7 @@ source:
 category: show-hn
 date: "2026-08-30"
 tags: [Show HN, Product, Problem]
-tech: [Python CLI, PyPI packaging, JSONL parsing and validation, documentation-to-Q&A extraction, deterministic cleaning rules, pip install distribution]
+tech: [Python CLI, PyPI packaging, JSONL parsing and validation, "documentation-to-Q&A extraction", deterministic cleaning rules, pip install distribution]
 ---
 # Open source dataset cleaner for JSONL outputs
 

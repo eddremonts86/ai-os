@@ -1,32 +1,37 @@
-# PRODUCT.md — Local AI for Submitting Job Applications
+---
+id: "5117"
+slug: local-ai-for-submitting-job-applications
+title: Local AI for Submitting Job Applications
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49568137"
+category: ask-hn
+date: "2026-09-04"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Local AI for Submitting Job Applications
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I&#x27;ve submitted almost 200 job applications over the course of almost 5 days using only local AI. I can&#x27;t talk too much about the tech stack here (it&#x27;s running at this very moment!).<p>The only interaction that I&#x27;ve had with these websites has been to click on the captchas to bypass the I&#x27;m not a robot check.<p>So far, at the Claude Opus 5 rates, I&#x27;ve saved at least $400 in token costs, not including the estimated charges for cache storage.<p>Initially, the model made an enormous amount of mistakes, but with close monitoring and adjustment of the configuration files, I&#x27;ve been able to virtually eliminate errors.<p>Lastly, it&#x27;s also useful for doing the University trainings that waste your time.<p>The immediate consequence of all of this local AI is that we will not need to pay for BS YC startups that just wash everybody&#x27;s money around.<p>The years ahead will be an interesting time because everyone, even those who barely understand computers will be able to complete largely unlimited tasks on their personal computers for very little cost.<p>Let me know what y&#x27;all think! Very exciting to build more ai-integrated things.
+_Based on source brief:_ I've submitted almost 200 job applications over the course of almost 5 days using only local AI. I can't talk too much about the tech stack here (it's running at this very moment!).The only interaction that I've had with these websites has been to click on the captchas to bypass the I'm not a robot check.So far, at the Claude Opus 5 rates, I've saved at least $400 in token costs, not including the estimated charges for cache storage.Initially, the model made an enormous amount of mistakes, but with close monitoring and adjustment of the configuration files, I've been able to virtually eliminate errors.Lastly, it's also useful for doing the University trainings that waste your time.The immediate consequence of all of this local AI is that we will not need to pay for BS YC startups that just wash everybody's money around.The years ahead will be an interesting time because everyone, even those who barely understand computers will be able to complete largely unlimited tasks on their personal computers for very little cost.Let me know what y'all think! Very exciting to build more ai-integrated things.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

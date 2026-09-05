@@ -1,31 +1,35 @@
-# SPEC.md — OpenRouter for Sandboxes – Get sandboxes from any provider in seconds
+---
+id: "4392"
+slug: openrouter-for-sandboxes-get-sandboxes-from-any-provide
+title: OpenRouter for Sandboxes – Get sandboxes from any provider in seconds
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49517909"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# OpenRouter for Sandboxes – Get sandboxes from any provider in seconds
 
 ## Problem
 
 https://reachpad.dev/router
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49517909)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-01T04:19:16Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

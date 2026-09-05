@@ -1,4 +1,17 @@
-# TASKS.md — DanTerm – a fast macOS terminal emulator (compare with Ghostty, iTerm2)
+---
+id: "5074"
+slug: danterm-a-fast-macos-terminal-emulator-compare-with-gh
+title: "DanTerm – a fast macOS terminal emulator (compare with Ghostty, iTerm2)"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49567153"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# DanTerm – a fast macOS terminal emulator (compare with Ghostty, iTerm2)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

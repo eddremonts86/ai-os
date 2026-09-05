@@ -1,31 +1,35 @@
-# SPEC.md — AlparAI – Autonomous Swarm OS with Quantum Verification
+---
+id: "4797"
+slug: alparai-autonomous-swarm-os-with-quantum-verification
+title: AlparAI – Autonomous Swarm OS with Quantum Verification
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542138"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# AlparAI – Autonomous Swarm OS with Quantum Verification
 
 ## Problem
 
 Alpar AI is building the judicial and constitutional accountability infrastructure for artificial intelligence. We audit frontier LLMs against real-world incidents, hallucinations, and safety violations using an actuarial Bayesian TrustScore framework.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49542138)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T20:35:05Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

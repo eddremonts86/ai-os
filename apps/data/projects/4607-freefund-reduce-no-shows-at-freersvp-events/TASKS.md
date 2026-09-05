@@ -1,4 +1,17 @@
-# TASKS.md — Freefund – Reduce no shows at free/RSVP events
+---
+id: "4607"
+slug: freefund-reduce-no-shows-at-freersvp-events
+title: Freefund – Reduce no shows at free/RSVP events
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536434"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Freefund – Reduce no shows at free/RSVP events
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

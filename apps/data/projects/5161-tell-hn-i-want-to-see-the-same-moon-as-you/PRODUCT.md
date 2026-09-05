@@ -1,32 +1,37 @@
-# PRODUCT.md — Tell HN: I want to see the same moon as you
+---
+id: "5161"
+slug: tell-hn-i-want-to-see-the-same-moon-as-you
+title: "Tell HN: I want to see the same moon as you"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49573036"
+category: ask-hn
+date: "2026-09-05"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Tell HN: I want to see the same moon as you
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ My wife was at home in San Francisco and I was in Mexico City for work.<p>She told me to go look at the moon.<p>Being 2000 miles apart we could look at the same object at the same time.<p>The Internet used to be like that.<p>A shared experience - “did you see what was on the front page of Instagram?”<p>I miss that.<p>Now we are off in separate algorithms like the Tower of Babel.<p>Doesn’t it feel like without a shared experience it’s basically offline?
+_Based on source brief:_ My wife was at home in San Francisco and I was in Mexico City for work.She told me to go look at the moon.Being 2000 miles apart we could look at the same object at the same time.The Internet used to be like that.A shared experience - “did you see what was on the front page of Instagram?”I miss that.Now we are off in separate algorithms like the Tower of Babel.Doesn’t it feel like without a shared experience it’s basically offline?
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

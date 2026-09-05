@@ -1,4 +1,17 @@
-# TASKS.md — Lettura, an app to read FreshRSS feeds built for RSS enthusiasts
+---
+id: "4986"
+slug: lettura-an-app-to-read-freshrss-feeds-built-for-rss-en
+title: "Lettura, an app to read FreshRSS feeds built for RSS enthusiasts"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49560825"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Lettura, an app to read FreshRSS feeds built for RSS enthusiasts
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

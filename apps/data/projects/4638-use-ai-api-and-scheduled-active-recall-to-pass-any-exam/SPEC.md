@@ -1,31 +1,35 @@
-# SPEC.md — Use AI API and scheduled Active Recall to pass any exam: LongTerMemory
+---
+id: "4638"
+slug: use-ai-api-and-scheduled-active-recall-to-pass-any-exam
+title: "Use AI API and scheduled Active Recall to pass any exam: LongTerMemory"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49534284"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Use AI API and scheduled Active Recall to pass any exam: LongTerMemory
 
 ## Problem
 
 https://longtermemory.com
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49534284)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T10:21:01Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

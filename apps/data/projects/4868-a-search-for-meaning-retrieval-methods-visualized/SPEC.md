@@ -1,31 +1,35 @@
-# SPEC.md — A search for meaning: retrieval methods visualized
+---
+id: "4868"
+slug: a-search-for-meaning-retrieval-methods-visualized
+title: "A search for meaning: retrieval methods visualized"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49552302"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# A search for meaning: retrieval methods visualized
 
 ## Problem
 
 https://www.parsewise.ai/search-for-meaning
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49552302)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T16:06:17Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,31 +1,35 @@
-# SPEC.md — Redactle LLM Leaderboard
+---
+id: "4779"
+slug: redactle-llm-leaderboard
+title: Redactle LLM Leaderboard
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49544338"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Redactle LLM Leaderboard
 
 ## Problem
 
-I got nerd sniped and ran a bunch of evaluations to see how well models could play Redactle. It turns out Gemini flash is in a league of it&#x27;s own in both performance and cost. It&#x27;s able to one-shot every eval in a just a few seconds.
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49544338)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T00:11:55Z
+I got nerd sniped and ran a bunch of evaluations to see how well models could play Redactle. It turns out Gemini flash is in a league of it's own in both performance and cost. It's able to one-shot every eval in a just a few seconds.
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

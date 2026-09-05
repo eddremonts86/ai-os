@@ -1,4 +1,17 @@
-# TASKS.md — Markdown Viewer and Editor
+---
+id: "4406"
+slug: markdown-viewer-and-editor
+title: Markdown Viewer and Editor
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514729"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Markdown Viewer and Editor
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

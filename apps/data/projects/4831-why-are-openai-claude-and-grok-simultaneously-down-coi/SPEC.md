@@ -1,33 +1,37 @@
-# SPEC.md — Why are OpenAI, Claude, and Grok simultaneously down? Coincidence?
+---
+id: "4831"
+slug: why-are-openai-claude-and-grok-simultaneously-down-coi
+title: "Why are OpenAI, Claude, and Grok simultaneously down? Coincidence?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49551096"
+category: ask-hn
+date: "2026-09-03"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Why are OpenAI, Claude, and Grok simultaneously down? Coincidence?
 
 ## Problem
 
-https:&#x2F;&#x2F;status.openai.com
-https:&#x2F;&#x2F;status.claude.com
-https:&#x2F;&#x2F;status.x.ai
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49551096)
-**Primary category:** ask-hn
-**Tags:** Ask HN,Problem
-**Date:** 2026-09-03T15:07:01Z
+https://status.openai.com
+https://status.claude.com
+https://status.x.ai
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -35,5 +39,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

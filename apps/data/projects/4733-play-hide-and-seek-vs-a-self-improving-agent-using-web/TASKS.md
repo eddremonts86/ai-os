@@ -1,4 +1,17 @@
-# TASKS.md — Play Hide and Seek vs. a Self-Improving Agent Using WebMCP
+---
+id: "4733"
+slug: play-hide-and-seek-vs-a-self-improving-agent-using-web
+title: Play Hide and Seek vs. a Self-Improving Agent Using WebMCP
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49548526"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Play Hide and Seek vs. a Self-Improving Agent Using WebMCP
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

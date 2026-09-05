@@ -1,31 +1,35 @@
-# SPEC.md — Tiny Markdown CLI renderer – Streaming, 10x faster, 2MB flat RAM
+---
+id: "4759"
+slug: tiny-markdown-cli-renderer-streaming-10x-faster-2mb-fl
+title: "Tiny Markdown CLI renderer – Streaming, 10x faster, 2MB flat RAM"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49546657"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Tiny Markdown CLI renderer – Streaming, 10x faster, 2MB flat RAM
 
 ## Problem
 
 https://github.com/cjccjj/mdflow
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49546657)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T06:45:41Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

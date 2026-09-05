@@ -1,7 +1,7 @@
 ---
 id: "3890"
 slug: get-your-free-ai-search-visibility-scan
-title: "Get your free AI search visibility scan"
+title: Get your free AI search visibility scan
 status: enriched
 source:
   name: HackerNews

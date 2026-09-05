@@ -1,4 +1,17 @@
-# TASKS.md — Agent-to-agent payment. Your agents can pay each other
+---
+id: "5149"
+slug: agent-to-agent-payment-your-agents-can-pay-each-other
+title: Agent-to-agent payment. Your agents can pay each other
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49571563"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Agent-to-agent payment. Your agents can pay each other
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

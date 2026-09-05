@@ -1,4 +1,17 @@
-# TASKS.md — NanoUI – A small native macOS app for generating images with OpenRouter
+---
+id: "4740"
+slug: nanoui-a-small-native-macos-app-for-generating-images
+title: NanoUI – A small native macOS app for generating images with OpenRouter
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49547780"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# NanoUI – A small native macOS app for generating images with OpenRouter
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

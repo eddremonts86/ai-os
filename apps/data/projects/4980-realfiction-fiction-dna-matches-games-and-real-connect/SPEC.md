@@ -1,31 +1,35 @@
-# SPEC.md — RealFiction – Fiction DNA matches, games, and real connections
+---
+id: "4980"
+slug: realfiction-fiction-dna-matches-games-and-real-connect
+title: "RealFiction – Fiction DNA matches, games, and real connections"
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/realfiction?utm_campaign=startup-186108&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-04"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# RealFiction – Fiction DNA matches, games, and real connections
 
 ## Problem
 
 RealFiction combines dating with community and a sci-fi inspired experience. Users create a Real DNA and describe their Fiction Crush as Fiction DNA. The system compares both profiles, sends DNA signals, and highlights exciting matches in RealMatch. You chat, play mini-games, collect points and trophies, and trade items within the lounge and community. A live area and challenges keep you active, making discovering and getting to know people a game. View startup
 
-**Source:** [BetaList](https://betalist.com/startups/realfiction?utm_campaign=startup-186108&utm_medium=atom&utm_source=newsfeed)
-**Primary category:** beta
-**Tags:** BetaList,Beta,Product
-**Date:** 2026-09-04T00:00:00Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

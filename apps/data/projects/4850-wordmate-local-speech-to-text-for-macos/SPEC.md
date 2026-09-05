@@ -1,31 +1,35 @@
-# SPEC.md — Wordmate – local speech-to-text for macOS
+---
+id: "4850"
+slug: wordmate-local-speech-to-text-for-macos
+title: Wordmate – local speech-to-text for macOS
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49553252"
+category: show-hn
+date: "2026-09-03"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Wordmate – local speech-to-text for macOS
 
 ## Problem
 
-Hi HN!<p>I built Wordmate because I wanted WisprFlow-style dictation locally on my machine. It’s a free macOS app. Audio and transcripts never leave your Mac.<p>Speech recognition uses Parakeet and optional post-processing uses a tuned Qwen3 0.6B 4-bit to improve punctuation and capitalization and clean up fillers, stutters, and spoken corrections.<p>The complete transcription pipeline is open source: <a href="https:&#x2F;&#x2F;github.com&#x2F;vdszds&#x2F;wordmate" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;vdszds&#x2F;wordmate</a><p>You can download the app at <a href="https:&#x2F;&#x2F;wordmate.sh" rel="nofollow">https:&#x2F;&#x2F;wordmate.sh</a>. I’d appreciate your feedback!
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49553252)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-03T17:05:23Z
+Hi HN!I built Wordmate because I wanted WisprFlow-style dictation locally on my machine. It’s a free macOS app. Audio and transcripts never leave your Mac.Speech recognition uses Parakeet and optional post-processing uses a tuned Qwen3 0.6B 4-bit to improve punctuation and capitalization and clean up fillers, stutters, and spoken corrections.The complete transcription pipeline is open source: https://github.com/vdszds/wordmateYou can download the app at https://wordmate.sh. I’d appreciate your feedback!
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

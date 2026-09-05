@@ -1,31 +1,35 @@
-# SPEC.md — Pairmark, race Claude Code vs. Codex on your repo, blind cross-judged
+---
+id: "4642"
+slug: pairmark-race-claude-code-vs-codex-on-your-repo-blind-c
+title: "Pairmark, race Claude Code vs. Codex on your repo, blind cross-judged"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49533731"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Pairmark, race Claude Code vs. Codex on your repo, blind cross-judged
 
 ## Problem
 
 https://github.com/Hemanshu-Upadhyay/pairmark
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49533731)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T09:08:35Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

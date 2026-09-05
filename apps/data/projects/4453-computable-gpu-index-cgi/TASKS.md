@@ -1,4 +1,17 @@
-# TASKS.md — Computable GPU Index (CGI)
+---
+id: "4453"
+slug: computable-gpu-index-cgi
+title: Computable GPU Index (CGI)
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/computable-gpu-index-cgi"
+category: product-launch
+date: "2026-08-27"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Computable GPU Index (CGI)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

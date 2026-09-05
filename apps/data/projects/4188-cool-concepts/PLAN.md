@@ -1,28 +1,36 @@
-# PLAN.md — Cool Concepts
+---
+id: "4188"
+slug: cool-concepts
+title: "Cool Concepts"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509756"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Cool Concepts
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+The demo is a single-page browser app; the surrounding site uses React + TypeScript on TanStack Start with SQLite/Drizzle for the (anonymous) usage counters. Coolify hosts the site behind Docker.
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+A TanStack Start app serves the single-page demo; the word-brain is a small client-side model so no API call is required. A Drizzle-managed SQLite store holds (anonymous) usage counters; the demo does not collect personal data. Coolify hosts the site behind Docker.
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+- M1 — Word list and the drag-and-drop UI.
+- M2 — Mix two words into a new one.
+- M3 — Keyboard fallback (arrow keys, Space, E).
+- M4 — In-browser word-brain describes the mash-up.
+- M5 — Public release.
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+- The "word-brain" is a tiny client-side model; if the descriptions are off, the toy loses its charm.
+- The mash-ups need to read like real concepts; a bad starting vocabulary breaks the illusion.
