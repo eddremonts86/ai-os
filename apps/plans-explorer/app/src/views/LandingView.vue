@@ -367,17 +367,26 @@ onBeforeUnmount(() => clearInterval(latestTimer));
       </div>
     </section>
 
-    <!-- Single-purpose closing band. Same label as the hero: one intent, one wording. -->
+    <!-- Close: one tile, two doors. The wide door repeats the hero's ask with the same
+         label; the narrow one is the only place the site asks for something back, and its
+         explanation sits with its button instead of orphaned under the heading. -->
     <section class="close">
-      <div class="container close-inner">
-        <h2>{{ planCount === null ? 'Every plan' : planCount + ' plans' }}, nothing to sign up for.</h2>
-        <div class="close-actions">
-          <RouterLink to="/plans" class="btn btn-primary btn-lg">Browse plans</RouterLink>
-          <RouterLink to="/submit" class="btn btn-lg">Submit a problem</RouterLink>
+      <div class="container">
+        <div class="close-tile">
+          <div class="close-main">
+            <h2>{{ planCount === null ? 'Every plan' : planCount + ' plans' }}, nothing to sign up for.</h2>
+            <p>
+              Search by problem, filter by stack and country, take the five documents with you.
+              That is the whole product.
+            </p>
+            <RouterLink to="/plans" class="btn btn-primary btn-lg">Browse plans</RouterLink>
+          </div>
+          <div class="close-aside">
+            <h3>Seen a problem worth building?</h3>
+            <p>Send it. A person reads every submission, and the ones that hold up become plans here.</p>
+            <RouterLink to="/submit" class="btn btn-ghost">Submit a problem</RouterLink>
+          </div>
         </div>
-        <p class="close-fine">
-          Seen one worth building? Send it. A person reads every submission.
-        </p>
       </div>
     </section>
   </div>
@@ -386,19 +395,6 @@ onBeforeUnmount(() => clearInterval(latestTimer));
 <style scoped>
 /* Shape rule for this page: media frames and cells use --radius-lg, buttons --radius-md,
    pills fully rounded. Applied without exception below. */
-
-.close-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.close-fine {
-  margin: 16px 0 0;
-  font-size: 14px;
-  color: var(--text-dim);
-}
 
 .landing {
   padding-bottom: 96px;
@@ -1087,22 +1083,77 @@ a.latest-link:hover {
 /* ---------- close ---------- */
 
 .close {
-  padding: 72px 0 0;
+  padding: 64px 0 72px;
   border-top: 1px solid var(--line);
 }
 
-.close-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+/* The wash returns here, and only here besides the hero: the two ends of the page share
+   one background, so the close reads as the hero's answer and not as another section. On
+   white with a border, so it is a tile on the page rather than a band across it. */
+.close-tile {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--wash), var(--surface);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
 }
 
-.close h2 {
-  font-size: clamp(22px, 2.4vw, 30px);
-  font-weight: 700;
+.close-main,
+.close-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.close-main {
+  padding: 44px 48px;
+}
+
+.close-main h2 {
   margin: 0;
+  font-size: clamp(26px, 2.8vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-width: 18ch;
+}
+
+.close-main p,
+.close-aside p {
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-size: 15px;
+  max-width: 44ch;
+}
+
+.close-main .btn {
+  margin-top: 8px;
+}
+
+/* Divided by a hairline, not a second surface: one tile, two doors. */
+.close-aside {
+  padding: 44px 40px;
+  border-left: 1px solid var(--line);
+}
+
+.close-aside h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.close-aside p {
+  font-size: 14.5px;
+}
+
+.close-aside .btn {
+  margin-top: 4px;
 }
 
 /* ---------- motion ---------- */
@@ -1168,6 +1219,24 @@ a.latest-link:hover {
   .stop-visual {
     grid-column: 2;
   }
+
+  .close {
+    padding: 48px 0;
+  }
+
+  .close-tile {
+    grid-template-columns: 1fr;
+  }
+
+  .close-main,
+  .close-aside {
+    padding: 28px 24px;
+  }
+
+  .close-aside {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
 }
 
 @media (max-width: 700px) {
@@ -1187,9 +1256,5 @@ a.latest-link:hover {
     min-width: 3.2ch;
   }
 
-  .close-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 </style>
