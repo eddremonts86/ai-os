@@ -1,31 +1,42 @@
-# SPEC.md — Corporate Mind Games – logic puzzles with a sarcastic corporate theme
+---
+id: "4163"
+slug: corporate-mind-games-logic-puzzles-with-a-sarcastic-cor
+title: Corporate Mind Games – logic puzzles with a sarcastic corporate theme
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511400"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Corporate Mind Games – logic puzzles with a sarcastic corporate theme
 
 ## Problem
 
-I have always enjoyed building and playing puzzles. I am a regular user of NYT Games and LinkedIn Games. I thought it would be fun to create some corporate-themed puzzles as a silly alternative to LinkedIn Games.<p>So, I built Corporate Mind Games. The games are intended to be a little bit sassy and sarcastic, but I hope they are enjoyable and challenging.<p>I was planning to post this on HN last week. However, many years ago, I made a game called Don&#x27;t Wordle, which unexpectedly appeared on the front page last week. I ended up getting distracted by that, and I also figured it was more appropriate to post this game on HN on a Monday morning given the theme. So here we are.
+The author is a regular user of NYT Games and LinkedIn Games and wanted a corporate-themed alternative. Corporate Mind Games is a small set of logic puzzles with a slightly sassy, sarcastic corporate tone, presented as a tongue-in-cheek alternative to LinkedIn Games. The author had planned to post on HN last week but was derailed by an older game ('Don't Wordle') unexpectedly hitting the front page, then delayed this post until Monday morning to fit the corporate theme.
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49511400)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T16:08:08Z
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
+Publish a small catalog of logic puzzles themed around corporate life, with a sarcastic tone, that puzzle fans can play in the browser.
 
----
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+Casual puzzlers who already play NYT Games or LinkedIn Games and want a different theme and tone. Assumes web browser access; no install required.
+
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+- A playable catalog of logic puzzles (multiple games) themed around corporate life.
+- A sarcastic/cheeky writing voice applied across puzzles.
+- Web-based play in the browser, no app install.
+- Light social sharing so users can post a result.
+
 
 ## Design Direction
 
@@ -33,5 +44,7 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+- Source post does not state pricing, monetisation, or growth metrics.
+- Tone is intentionally sassy and sarcastic, which limits the audience it will resonate with.
+- Browser-only delivery; no mobile app called out in the source.
+

@@ -1,4 +1,17 @@
-# TASKS.md — KanVibe – Git worktree and tmux Kanban board for AI CLIs, now Electron
+---
+id: "4192"
+slug: kanvibe-git-worktree-and-tmux-kanban-board-for-ai-clis-
+title: "KanVibe – Git worktree and tmux Kanban board for AI CLIs, now Electron"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49509626"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# KanVibe – Git worktree and tmux Kanban board for AI CLIs, now Electron
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,18 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Monorepo skeleton with pnpm workspaces and shared React + TypeScript build
+- [ ] TanStack Start API with SQLite + Drizzle schema for tasks, worktrees, sessions, and AI quota
+- [ ] Kanban board UI with manual drag-and-drop and per-card git worktree creation
+- [ ] Embedded xterm.js pane bound to a per-card tmux or zellij session
+- [ ] Hook scripts for Claude Code, Gemini CLI, Codex CLI, and OpenCode that POST transition events to the API
+- [ ] AI usage panel showing per-account and per-model remaining quota
+- [ ] Keyboard shortcut layer (project filter, task search, notifications, panel toggle)
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Electron host packaging with electron-builder for macOS, Linux, Windows
+- [ ] Document the AGPL-3.0 obligations and a sample self-hosted Coolify recipe

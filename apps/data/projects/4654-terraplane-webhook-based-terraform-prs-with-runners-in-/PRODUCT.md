@@ -1,34 +1,39 @@
-# PRODUCT.md — Terraplane: webhook-based Terraform PRs with runners in your network
+---
+id: "4654"
+slug: terraplane-webhook-based-terraform-prs-with-runners-in-
+title: "Terraplane: webhook-based Terraform PRs with runners in your network"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49532920"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Terraplane: webhook-based Terraform PRs with runners in your network
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Terraplane lets you run Terraform from GitHub PRs against private networks without punching holes in firewalls.<p>I built Terraplane after running in to the same problem for years:<p>1: I don&#x27;t want the IaC pipeline to die when the server it&#x27;s running on does. An all-in-one box is a single point of failure.
-2: I don&#x27;t want to bend my network around the tools I use. I&#x27;d prefer not to punch holes in firewalls or peer networks just so automation can reach what it&#x27;s managing
-3: Cross-account IAM&#x2F;SA assumption isn&#x27;t the same as direct network access<p>A runner with cloud credentials can call a lot of APIs for sure. However many TF providers require direct access to the resource they&#x27;re managing and role assumption often doesn&#x27;t cut it.<p>Terraplane is designed to address this.<p>An orchestrator component runs somewhere you&#x27;re happy for public traffic to reach. Webhooks hit the runner and it queues jobs for execution.<p>Agents run inside your network and pull jobs from the orchestrator. They run TF plan&#x2F;apply locally, and return the output to the orchestrator.<p>Credentials for private services stay in the network they belong to.<p>Terraplane is roughly designed to be ready to write integrations for SCM providers other than GitHub. I haven&#x27;t done it yet, but it should be fairly trivial.<p>This is an early alpha. I use it for my org&#x27;s IaC pipeline and I&#x27;ve been happy with the results. I&#x27;m open to any and all feedback.<p>I built this for me, I hope it works for you.
+_Based on source brief:_ Terraplane lets you run Terraform from GitHub PRs against private networks without punching holes in firewalls.I built Terraplane after running in to the same problem for years:1: I don't want the IaC pipeline to die when the server it's running on does. An all-in-one box is a single point of failure.
+2: I don't want to bend my network around the tools I use. I'd prefer not to punch holes in firewalls or peer networks just so automation can reach what it's managing
+3: Cross-account IAM/SA assumption isn't the same as direct network accessA runner with cloud credentials can call a lot of APIs for sure. However many TF providers require direct access to the resource they're managing and role assumption often doesn't cut it.Terraplane is designed to address this.An orchestrator component runs somewhere you're happy for public traffic to reach. Webhooks hit the runner and it queues jobs for execution.Agents run inside your network and pull jobs from the orchestrator. They run TF plan/apply locally, and return the output to the orchestrator.Credentials for private services stay in the network they belong to.Terraplane is roughly designed to be ready to write integrations for SCM providers other than GitHub. I haven't done it yet, but it should be fairly trivial.This is an early alpha. I use it for my org's IaC pipeline and I've been happy with the results. I'm open to any and all feedback.I built this for me, I hope it works for you.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -36,7 +41,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

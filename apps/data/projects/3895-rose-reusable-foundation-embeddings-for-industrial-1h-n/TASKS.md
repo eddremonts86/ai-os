@@ -1,7 +1,7 @@
 ---
 id: "3895"
 slug: rose-reusable-foundation-embeddings-for-industrial-1h-n
-title: "Rose – reusable foundation embeddings for industrial 1H NMR"
+title: Rose – reusable foundation embeddings for industrial 1H NMR
 status: enriched
 source:
   name: HackerNews

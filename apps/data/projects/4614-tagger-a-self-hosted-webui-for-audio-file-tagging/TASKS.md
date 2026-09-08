@@ -1,4 +1,17 @@
-# TASKS.md — tagger – a self-hosted webui for audio file tagging
+---
+id: "4614"
+slug: tagger-a-self-hosted-webui-for-audio-file-tagging
+title: tagger – a self-hosted webui for audio file tagging
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536183"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# tagger – a self-hosted webui for audio file tagging
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

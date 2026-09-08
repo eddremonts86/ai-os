@@ -1,47 +1,54 @@
-# PRODUCT.md — Actionful – strongly typed workflows via native HTTP endpoints
+---
+id: "4181"
+slug: actionful-strongly-typed-workflows-via-native-http-endp
+title: "Actionful – strongly typed workflows via native HTTP endpoints"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510162"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Actionful – strongly typed workflows via native HTTP endpoints
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ https://app.mquark.com/start
+Actionful exposes strongly typed workflows as native HTTP endpoints, so a developer can call a workflow from any client and trust the types end-to-end. The server keeps the contract; the client generates from it.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Developers who want to call typed workflows over HTTP from any client (curl, server SDK, browser) without writing glue code. Assumes the reader is comfortable with typed API contracts and HTTP.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I want to call a typed workflow, I want an HTTP endpoint so I do not have to write a wrapper.
+- When the workflow contract changes, I want the client to update so I do not silently call a stale shape.
+- When I document the API, I want the type contract to be the documentation.
 
-## Success Metrics (North Star)
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+## Success Metrics
+
+- Number of workflows exposed per project.
+- Coverage of the typed contract from server to client.
+- Latency overhead of the endpoint vs. an in-process call.
+
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source post does not state pricing or monetisation beyond what is named in the live product page (which is referenced where relevant in the Value Proposition). Treat pricing as unstated until the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closely related work includes other typed-API-as-a-service products and schema-first workflow tools. The captured source post presents Actionful as strongly typed workflows over native HTTP endpoints but the precise list of named incumbents is not stated in the source text.
+
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49510162) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Strong typing has to survive the HTTP boundary; an untyped server breaks the promise.
+- The capture did not return live content, so concrete primitives (auth, retries) are not extractable and have to be inferred from the title alone.

@@ -4,11 +4,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>AI-OS Plans Explorer</title>
-    <meta name="description" content="Browse, search and rank the AI-OS product plan corpus by money, learn and fun score." />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f5f5f7" />
+    <title>Plansmith</title>
+    <meta name="description" content="Plansmith: product plans written from real problems people post. Browse, search and rank them by money, learn and fun. Free, no account." />
+    <link rel="canonical" href="https://plans.eduardoinerarte.dk/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- Open Graph / Twitter. One image for the whole app: routes are hash fragments, which
+         crawlers and link unfurlers never see, so there is exactly one shareable URL. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Plansmith" />
+    <meta property="og:url" content="https://plans.eduardoinerarte.dk/" />
+    <meta property="og:title" content="Plansmith: you don't need an idea, you need a plan" />
+    <meta property="og:description" content="Product plans written from real problems people post. Five documents per plan, ranked by money, learn and fun. Free, no account." />
+    <meta property="og:image" content="https://plans.eduardoinerarte.dk/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Plansmith explorer: a grid of product plans with filters for category, tag and tech stack." />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Plansmith: you don't need an idea, you need a plan" />
+    <meta name="twitter:description" content="Product plans written from real problems people post. Five documents per plan, ranked by money, learn and fun. Free, no account." />
+    <meta name="twitter:image" content="https://plans.eduardoinerarte.dk/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Plansmith",
+        "url": "https://plans.eduardoinerarte.dk/",
+        "description": "Product plans written from real problems people post. Browse, search and rank them by money, learn and fun.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@type": "Organization", "name": "AI-OS", "url": "https://ai-os.eduardoinerarte.dk/" },
+        "sameAs": ["https://github.com/eddremonts86/ai-os"]
+      }
+    </script>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <!-- Only ever seen without JavaScript: a crawler that does not execute scripts, or a
+           reader with them off. One honest paragraph beats an empty div. -->
+      <noscript>
+        <p>Plansmith is a free library of product plans written from real problems people have
+        posted: five documents per plan, ranked by revenue potential, learning and fun. It needs
+        JavaScript to browse. The corpus and the code are at
+        <a href="https://github.com/eddremonts86/ai-os">github.com/eddremonts86/ai-os</a>.</p>
+      </noscript>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

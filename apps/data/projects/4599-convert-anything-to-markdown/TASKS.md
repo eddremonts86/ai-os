@@ -1,4 +1,17 @@
-# TASKS.md — Convert Anything to Markdown
+---
+id: "4599"
+slug: convert-anything-to-markdown
+title: Convert Anything to Markdown
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536843"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Convert Anything to Markdown
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

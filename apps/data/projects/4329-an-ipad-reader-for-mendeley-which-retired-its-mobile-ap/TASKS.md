@@ -1,4 +1,17 @@
-# TASKS.md — An iPad reader for Mendeley, which retired its mobile app in 2021
+---
+id: "4329"
+slug: an-ipad-reader-for-mendeley-which-retired-its-mobile-ap
+title: "An iPad reader for Mendeley, which retired its mobile app in 2021"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521793"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# An iPad reader for Mendeley, which retired its mobile app in 2021
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

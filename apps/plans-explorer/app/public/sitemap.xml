@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  One URL on purpose. The app routes on hash fragments (/#/plans, /#/plans/228), and a
+  fragment is not part of a URL as far as a crawler is concerned, so listing them here would
+  be listing the same page 930 times. Real per-plan indexing needs path routing plus
+  prerendered pages; see DESIGN.md, "SEO ceiling".
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://plans.eduardoinerarte.dk/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

@@ -1,4 +1,17 @@
-# TASKS.md — Stickyboard – Kanban on real sticky notes, no account needed
+---
+id: "4209"
+slug: stickyboard-kanban-on-real-sticky-notes-no-account-need
+title: "Stickyboard – Kanban on real sticky notes, no account needed"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508721"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Stickyboard – Kanban on real sticky notes, no account needed
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Three-column board with drag-and-drop stickies
+- [ ] Keyboard layer: n (new note), b (new board), 1–9 (switch), Cmd-Z (undo)
+- [ ] Notes with checklists, colours, sketches
+- [ ] Browser-local persistence in IndexedDB / localStorage
+- [ ] Mobile-friendly long-press to start drag
+- [ ] Optional free signup with cross-device sync
+- [ ] Optional real-time collaboration via WebSocket / CRDT
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional Pro tier (collaboration, history, integrations)

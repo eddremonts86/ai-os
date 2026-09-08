@@ -1,31 +1,35 @@
-# SPEC.md — Cosmic Agent Plugins
+---
+id: "4449"
+slug: cosmic-agent-plugins
+title: Cosmic Agent Plugins
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/cosmic"
+category: product-launch
+date: "2026-08-31"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Cosmic Agent Plugins
 
 ## Problem
 
 Connect Cosmic agents to any service with an MCP server Discussion | Link
 
-**Source:** [ProductHunt](https://www.producthunt.com/products/cosmic)
-**Primary category:** product-launch
-**Tags:** ProductHunt,Product Launch
-**Date:** 2026-08-31T20:12:53-07:00
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

@@ -1,4 +1,17 @@
-# TASKS.md — SufferTrails, the Anti-AllTrails
+---
+id: "4562"
+slug: suffertrails-the-anti-alltrails
+title: "SufferTrails, the Anti-AllTrails"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49539954"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SufferTrails, the Anti-AllTrails
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

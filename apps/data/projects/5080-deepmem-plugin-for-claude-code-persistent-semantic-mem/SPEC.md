@@ -1,0 +1,40 @@
+---
+id: "5080"
+slug: deepmem-plugin-for-claude-code-persistent-semantic-mem
+title: DeepMem plugin for Claude Code – persistent semantic memory via MCP
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49565805"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# DeepMem plugin for Claude Code – persistent semantic memory via MCP
+
+## Problem
+
+https://github.com/deepmemteam/deepmem-claude-plugin
+
+---
+
+## Objective
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Target Users
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## MVP Scope
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+_Not written yet — `ai-os plans enrich` fills this section._
