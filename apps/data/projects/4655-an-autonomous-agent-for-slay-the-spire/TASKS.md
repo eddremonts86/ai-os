@@ -1,4 +1,17 @@
-# TASKS.md — An Autonomous Agent for Slay the Spire
+---
+id: "4655"
+slug: an-autonomous-agent-for-slay-the-spire
+title: An Autonomous Agent for Slay the Spire
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49532826"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# An Autonomous Agent for Slay the Spire
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

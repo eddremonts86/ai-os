@@ -1,31 +1,35 @@
-# SPEC.md — Sheet-Based Infrastructure, Sheeternetes and Sheet-Native Foundation
+---
+id: "4411"
+slug: sheet-based-infrastructure-sheeternetes-and-sheet-nativ
+title: "Sheet-Based Infrastructure, Sheeternetes and Sheet-Native Foundation"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514588"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Sheet-Based Infrastructure, Sheeternetes and Sheet-Native Foundation
 
 ## Problem
 
-Hi there,<p>I&#x27;m trying to rebuild the cloud native ecosystem but based on Google Sheets: Sheeternetes, Sheetstor, SheetOS, etc. All of them work in Google Sheets already and we created the whole Sheet-Native Computing Foundation around that. You can get a real certification with public proof, SheetAstronaut position or even become SNCF Ambassador.<p>Right now we already have a bunch of applications. In the roadmap: &quot;bare metal&quot; nodes on Excel&#x2F;LibreOffice Calc sheets, cluster federation between &quot;bare metal&quot; and &quot;cloud&quot; nodes and many-many other cool features.<p>Let&#x27;s do it together:) Be a SNCF enthusiast, move your Google Sheets based infrastructure projects to SNCF and make the world a better place with Sheet Native components!<p>Site: <a href="https:&#x2F;&#x2F;sncfoundation.github.io" rel="nofollow">https:&#x2F;&#x2F;sncfoundation.github.io</a><p>Org: <a href="https:&#x2F;&#x2F;github.com&#x2F;sncfoundation" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;sncfoundation</a><p>Landscape: <a href="https:&#x2F;&#x2F;sncfoundation.github.io&#x2F;landscape.html" rel="nofollow">https:&#x2F;&#x2F;sncfoundation.github.io&#x2F;landscape.html</a>
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49514588)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-08-31T20:38:21Z
+Hi there,I'm trying to rebuild the cloud native ecosystem but based on Google Sheets: Sheeternetes, Sheetstor, SheetOS, etc. All of them work in Google Sheets already and we created the whole Sheet-Native Computing Foundation around that. You can get a real certification with public proof, SheetAstronaut position or even become SNCF Ambassador.Right now we already have a bunch of applications. In the roadmap: "bare metal" nodes on Excel/LibreOffice Calc sheets, cluster federation between "bare metal" and "cloud" nodes and many-many other cool features.Let's do it together:) Be a SNCF enthusiast, move your Google Sheets based infrastructure projects to SNCF and make the world a better place with Sheet Native components!Site: https://sncfoundation.github.ioOrg: https://github.com/sncfoundationLandscape: https://sncfoundation.github.io/landscape.html
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

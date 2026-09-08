@@ -1,63 +1,44 @@
-# PRODUCT.md — African-hosted 4-vCPU / 8-GB / 200-GB VPS for $5.89/month
+---
+id: "4156"
+slug: african-hosted-4-vcpu-8-gb-200-gb-vps-for-589month
+title: African-hosted 4-vCPU / 8-GB / 200-GB VPS for $5.89/month
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49506792"
+category: ask-hn
+date: "2026-08-31"
+tags: [Ask HN, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# African-hosted 4-vCPU / 8-GB / 200-GB VPS for $5.89/month
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ African developers often deploy workloads in Europe because African compute can be expensive or difficult to access. Sive.Host infrastructure physically hosted on African soil.<p>R103.08&#x2F;month currently gets 4 CPU cores, 8 GiB RAM, 200 GB SSD&#x2F;NVMe, 4 TB bandwidth, 100 Mbps and an IPv4 address. Your larger plans go up to 24 CPU cores &#x2F; 96 GiB RAM &#x2F; 700 GB storage.
-We can price this way because most if not all our input costs are in ZAR, not in USD. The cloud is built and maintained by skilled personell earning in ZAR, the electricity in ZAR, The bandwidth in ZAR, the Data Center in ZAR etc. .. We are lowering the cost to innovation on the continent.<p>uMsunduzi River
-Location:Johannesburg, Gauteng, South Africa
-Network:AS329298 - Sive Setfu ICT Solutions (Pty) Ltd
-Virtualisation:KVM
-OS:Ubuntu 24.04.4 LTS
-Kernel:Linux 6.8.0-137
-vCPU:4 cores
-RAM visible to VM:7.7 GiB
-Virtual disk:200 GB
-Root filesystem:193 GB ext4
-Sequential disk write:747 MB&#x2F;s
-Sequential disk read:1.3 GB&#x2F;s
-Ping → Cloudflare 1.1.1.1:1.31 ms average, 0% loss
-Ping → Google 8.8.8.8:1.68 ms average, 0% loss
-SHA-256, single process:~444 MB&#x2F;s at 8K blocks
-SHA-256, 4 processes:~1.66 GB&#x2F;s at 8K blocks<p>What other technical benchmarks would you like to see?
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A reference page that captures the existence of an African-hosted VPS product at a ZAR-denominated price point (R103.08 / month for 4 vCPU / 8 GiB / 200 GB), the as-of benchmark numbers the poster published, and the rationale (ZAR input costs) so developers in the region have a citable starting point instead of having to re-derive the comparison from scratch.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+African developers, founders, and small-team operators who currently deploy to Europe and want to evaluate local African compute. Secondary reader: any reader comparing regional VPS pricing.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+When a developer is choosing where to host a workload in or near Africa, give them a single page that lists the spec sheet, the measured network and disk numbers, the pricing rationale, and the open questions the post invited (additional benchmarks).
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+Whether the page is cited in African-cloud roundups or in comparison posts about regional VPS pricing. No quantitative target is set; the source post gives no baseline.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Not applicable — the page is a free reference. The underlying product (the VPS itself) is priced at R103.08/month for the baseline plan per the post; the page restates this figure and links the source rather than acting as a storefront.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Adjacent providers (African data-centre operators, hyperscaler regions in Africa) exist but the post does not name any direct comparison, so the page scopes to the Sive.Host offering as announced and lists the open benchmark questions the poster invited.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49506792) · **Category:** ask-hn · **Tags:** Ask HN,Problem
+The pricing snapshot is FX-sensitive; the page must date-stamp the R-amount and the $5.89 USD conversion. SLA, abuse-handling, refund policy, and status-page URL are not in the post, so the page must leave those as open questions rather than invent answers.

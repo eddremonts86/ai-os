@@ -1,4 +1,17 @@
-# TASKS.md — What's a lesson about money you learned the expensive way?
+---
+id: "4262"
+slug: whats-a-lesson-about-money-you-learned-the-expensive-wa
+title: "What's a lesson about money you learned the expensive way?"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49520625"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What's a lesson about money you learned the expensive way?
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

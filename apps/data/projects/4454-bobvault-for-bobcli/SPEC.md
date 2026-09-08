@@ -1,31 +1,35 @@
-# SPEC.md — BobVault for BobCLI
+---
+id: "4454"
+slug: bobvault-for-bobcli
+title: BobVault for BobCLI
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/bob-s-cli"
+category: product-launch
+date: "2026-08-31"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# BobVault for BobCLI
 
 ## Problem
 
 CLI based Zero-Knowledge Architecture for code repositories Discussion | Link
 
-**Source:** [ProductHunt](https://www.producthunt.com/products/bob-s-cli)
-**Primary category:** product-launch
-**Tags:** ProductHunt,Product Launch
-**Date:** 2026-08-31T08:40:08-07:00
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

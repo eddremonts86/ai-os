@@ -1,31 +1,35 @@
-# SPEC.md — Rust compiler converting CPGs to Nuclei YAML
+---
+id: "4509"
+slug: rust-compiler-converting-cpgs-to-nuclei-yaml
+title: Rust compiler converting CPGs to Nuclei YAML
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49530631"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Rust compiler converting CPGs to Nuclei YAML
 
 ## Problem
 
 https://github.com/Tito0015/cpg-nuclei-compiler
 
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49530631)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T01:26:45Z
-
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

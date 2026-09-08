@@ -1,4 +1,17 @@
-# PRODUCT.md — ARC-24 Multitrack Groovebox for iOS
+---
+id: "4456"
+slug: arc-24-multitrack-groovebox-for-ios
+title: ARC-24 Multitrack Groovebox for iOS
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/arc-24-multitrack-groovebox-fro-ios"
+category: product-launch
+date: "2026-08-13"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# ARC-24 Multitrack Groovebox for iOS
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
@@ -10,23 +23,15 @@ _Based on source brief:_ Multitrack synth, sampler, drum machine, and looper for
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

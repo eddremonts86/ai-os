@@ -62,7 +62,7 @@ ai-os memory bootstrap
 It is **idempotent** — re-running it is safe and does the right thing each time:
 
 1. Verifies Docker is reachable.
-2. Sources `~/Projects/configs/env.ts` (for `MINIMAX_API_KEY` etc.).
+2. Reads `dev-env/env-config/.env` for `MINIMAX_API_KEY` etc. (handed to `docker compose --env-file`, never sourced).
 3. Starts `ia-os-falkordb` via `memory/docker-compose.yml` (unified) and waits
    for its healthcheck (max 30 s).
 4. Starts `ia-os-graphiti-mcp` if `MINIMAX_API_KEY` is set; waits for `:8021/health`.

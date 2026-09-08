@@ -11,13 +11,14 @@
  * would go stale the first time the daily pipeline ships new plans, and a landing page
  * quoting a count the app itself contradicts is worse than no count.
  */
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { loadPlans, loadRankings } from '@/data/load';
 import type { Plan, Rankings } from '@/types';
 
 const plans = ref<Plan[] | null>(null);
 const rankings = ref<Rankings | null>(null);
+const loadFailed = ref(false);
 
 onMounted(async () => {
   try {
@@ -27,6 +28,7 @@ onMounted(async () => {
   } catch {
     // Absent figures render as a dash. The page still reads without them; a wrong number
     // would not.
+    loadFailed.value = true;
   }
 });
 
@@ -42,8 +44,38 @@ const categoryCount = computed(() =>
 // fallback that only renders when the fetch fails is exactly where one survives review.
 const fmt = (n: number | null) => (n === null ? '-' : String(n));
 
-/** The five documents every plan directory carries, plus the archive of all of them. */
-const documents = ['SPEC', 'PRODUCT', 'PLAN', 'DESIGN', 'TASKS', '.zip'] as const;
+/**
+ * The five documents every plan carries, in reading order. Each answers one question, and the
+ * sections named here are the ones apps/data/projects/_schema.json requires, so this list and
+ * the gate cannot say different things.
+ */
+const docs = [
+  {
+    file: 'SPEC.md',
+    answers: 'What to build, and what not to.',
+    body: 'The problem in the poster\'s own words, the objective, who it is for, the smallest useful version, and the constraints.',
+  },
+  {
+    file: 'PRODUCT.md',
+    answers: 'Why anyone would pay, and how you would know it worked.',
+    body: 'Value proposition, jobs to be done, success metrics. Pricing and competitors when the source gives them.',
+  },
+  {
+    file: 'PLAN.md',
+    answers: 'How to build it, in what order.',
+    body: 'A stack chosen for this problem, the architecture, the milestones, the risks.',
+  },
+  {
+    file: 'DESIGN.md',
+    answers: 'What it should look like.',
+    body: 'Palette, type, spacing and components, so the interface does not come out generic.',
+  },
+  {
+    file: 'TASKS.md',
+    answers: 'The work as a checklist.',
+    body: 'Phase 0 scaffold, Phase 1 core, Phase 2 deploy. Each task small enough for an agent to do and for you to check.',
+  },
+] as const;
 
 /**
  * The three ranking lenses. `top` resolves to the real current leader so the section shows
@@ -72,6 +104,42 @@ const lenses = computed(() => [
 
 const titleOf = (id: string | undefined) =>
   id && plans.value ? plans.value.find((p) => p.id === id)?.title ?? null : null;
+
+/**
+ * The "you are here" stop of the path shows the corpus itself rather than a screenshot of the
+ * page the visitor is already on: the newest plans, four at a time, one swapped every few
+ * seconds so the list reads as the living thing it is. Newest by capture date, ties broken by
+ * id, so the order is stable between renders and between visitors.
+ */
+const LATEST_POOL = 12;
+const LATEST_SHOWN = 4;
+const latestPool = computed(() =>
+  plans.value
+    ? [...plans.value]
+        .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? '') || b.id.localeCompare(a.id))
+        .slice(0, LATEST_POOL)
+    : [],
+);
+const latestOffset = ref(0);
+const latest = computed(() => {
+  const pool = latestPool.value;
+  if (pool.length <= LATEST_SHOWN) return pool;
+  return Array.from({ length: LATEST_SHOWN }, (_, i) => pool[(latestOffset.value + i) % pool.length]);
+});
+const latestDate = computed(() => latestPool.value[0]?.date ?? null);
+
+// The rotation is decoration. It does not run for anyone who asked for less motion, and it
+// holds while the pointer or keyboard focus is on the list, or a title would move out from
+// under the click it was about to receive.
+const latestPaused = ref(false);
+let latestTimer: ReturnType<typeof setInterval> | undefined;
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  latestTimer = setInterval(() => {
+    if (!latestPaused.value && !document.hidden) latestOffset.value += 1;
+  }, 3500);
+});
+onBeforeUnmount(() => clearInterval(latestTimer));
 </script>
 
 <template>
@@ -129,18 +197,66 @@ const titleOf = (id: string | undefined) =>
       </div>
     </section>
 
-    <!-- Anatomy: full-width media, then the document set as pills underneath. -->
+    <!-- Anatomy: what each of the five files is for, why there are five, and what to say
+         to a coding agent once they are in a repo. The pill row this replaces named the
+         files and explained nothing, which is fine for someone who already writes specs
+         and useless for everyone else. -->
     <section class="anatomy">
       <div class="container">
         <h2>A plan is five documents, not a one-line idea.</h2>
         <p class="lede">
-          The problem in the poster's own terms, who it is for, what the smallest useful
-          version is, a stack chosen for this problem, and the tasks to get there. Read it in
-          the browser or take the archive and open it in your editor.
+          A one-line idea makes the builder invent everything else: who it is for, what the
+          first version is, which stack, in what order. Coding agents invent confidently.
+          Every plan here splits that into five files, each answering one question, in the same
+          order every time.
         </p>
-        <ul class="docs" aria-label="What every plan includes">
-          <li v-for="d in documents" :key="d" class="doc">{{ d }}</li>
-        </ul>
+
+        <div class="anatomy-grid">
+          <dl class="docs" aria-label="The five documents in every plan">
+            <div v-for="(d, i) in docs" :key="d.file" class="doc">
+              <dt>
+                <span class="doc-n" aria-hidden="true">0{{ i + 1 }}</span>
+                <code class="doc-file">{{ d.file }}</code>
+              </dt>
+              <dd>
+                <strong>{{ d.answers }}</strong>
+                {{ d.body }}
+              </dd>
+            </div>
+            <p class="docs-foot">
+              All five, plus a README with the source link and the metadata, in one
+              <code>.zip</code> from the plan page.
+            </p>
+          </dl>
+
+          <aside class="why" aria-labelledby="why-title">
+            <p id="why-title" class="why-kicker">Why five files, and why for an agent</p>
+            <ul class="why-list">
+              <li>
+                <strong>One question per file.</strong> The agent, or you, reads only what this
+                step needs. The whole plan never has to fit in one prompt.
+              </li>
+              <li>
+                <strong>The same sections in every plan.</strong> A machine-checked contract:
+                every published plan has these headings, so an instruction that works on one
+                works on all of them.
+              </li>
+              <li>
+                <strong>Plain markdown next to the code.</strong> Claude Code, Codex and Cursor
+                read files in the repo as context. Nothing to import, nothing to install.
+              </li>
+              <li>
+                <strong>Decisions already made.</strong> Scope, stack and order are written
+                down, so the agent stops re-deciding them every session.
+              </li>
+            </ul>
+            <div class="prompt">
+              <p class="prompt-label">Unzip into an empty repo, open your coding agent, and say:</p>
+              <code class="prompt-line">Read SPEC.md and PLAN.md. Then do Phase 0 of TASKS.md and stop.</code>
+            </div>
+          </aside>
+        </div>
+
         <figure class="anatomy-shot">
           <img
             src="/img/shot-plan.webp"
@@ -174,7 +290,9 @@ const titleOf = (id: string | undefined) =>
       </div>
     </section>
 
-    <!-- The path: one wide cell then two. Each cell is the real product, not a mockup. -->
+    <!-- The path: three stops on one rail, in the order you use them. The reader is on the
+         first one, so that stop shows the corpus itself instead of a screenshot of the page
+         they are looking at; the other two show the real product in a browser frame. -->
     <section class="path">
       <div class="container">
         <h2>Three tools, one path.</h2>
@@ -183,98 +301,170 @@ const titleOf = (id: string | undefined) =>
           CV you send can actually be read.
         </p>
 
-        <div class="path-grid">
-          <article class="path-cell path-cell-wide">
-            <div class="path-body">
-              <p class="path-where">You are here</p>
-              <h3>Plans</h3>
+        <ol class="stops" aria-label="The three tools, in the order you use them">
+          <li class="stop is-here">
+            <span class="stop-n" aria-hidden="true">01</span>
+            <div class="stop-copy">
+              <p class="stop-kicker">Find something worth building</p>
+              <div class="stop-title">
+                <h3>Plans</h3>
+                <span class="chip is-accent">You are here</span>
+              </div>
               <p>
                 Pick a problem somebody has already described, with the research done and the
                 build broken down. Everything here is free and always will be.
               </p>
-              <RouterLink to="/plans" class="btn btn-primary">Browse plans</RouterLink>
+              <div class="stop-actions">
+                <RouterLink to="/plans" class="btn btn-primary">Browse plans</RouterLink>
+              </div>
             </div>
-          </article>
 
-          <article class="path-cell">
+            <div
+              class="stop-visual latest"
+              @pointerenter="latestPaused = true"
+              @pointerleave="latestPaused = false"
+              @focusin="latestPaused = true"
+              @focusout="latestPaused = false"
+            >
+              <div class="latest-head">
+                <span>Newest plans</span>
+                <span v-if="latestDate" class="latest-date">added {{ latestDate }}</span>
+              </div>
+              <TransitionGroup v-if="latest.length" name="latest" tag="ul" class="latest-list">
+                <li v-for="p in latest" :key="p.id" class="latest-item">
+                  <RouterLink :to="`/plans/${p.id}`" class="latest-link">
+                    <span class="latest-text">
+                      <span class="latest-title">{{ p.title }}</span>
+                      <span class="latest-excerpt">{{ p.excerpt }}</span>
+                    </span>
+                    <span class="chip">{{ p.category }}</span>
+                  </RouterLink>
+                </li>
+              </TransitionGroup>
+              <p v-else-if="loadFailed" class="latest-empty">
+                The newest plans did not load. <RouterLink to="/plans">Open the explorer</RouterLink>.
+              </p>
+              <ul v-else class="latest-list" aria-hidden="true">
+                <li v-for="i in LATEST_SHOWN" :key="i" class="latest-item">
+                  <span class="latest-link latest-text">
+                    <span class="skeleton-line" />
+                    <span class="skeleton-line is-dim" />
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="stop">
+            <span class="stop-n" aria-hidden="true">02</span>
+            <div class="stop-copy">
+              <p class="stop-kicker">Find the people already shipping</p>
+              <div class="stop-title"><h3>BuilderHunt</h3></div>
+              <p>
+                Find the people shipping right now, not just the repos. Activity from GitHub,
+                Reddit, Hacker News and DEV.to, scored for recency.
+              </p>
+              <div class="stop-actions">
+                <a class="btn btn-ghost" href="https://builderhunt.dev" target="_blank" rel="noopener">
+                  Open BuilderHunt<span aria-hidden="true"> ↗</span>
+                </a>
+                <span class="stop-domain">builderhunt.dev</span>
+              </div>
+            </div>
+
+            <!-- Decorative duplicate of the visible link: out of the tab order so one
+                 destination is one stop. -->
             <a
-              class="path-shot"
+              class="stop-visual frame"
               href="https://builderhunt.dev"
               target="_blank"
               rel="noopener"
               tabindex="-1"
               aria-hidden="true"
             >
+              <span class="frame-bar">
+                <span class="frame-dots"><span /><span /><span /></span>
+                <span class="frame-url">builderhunt.dev</span>
+              </span>
               <img
                 src="/img/shot-builderhunt.webp"
                 width="2160"
-                height="990"
+                height="1110"
                 alt=""
                 loading="lazy"
                 decoding="async"
               />
             </a>
-            <div class="path-body">
-              <h3>BuilderHunt</h3>
-              <p>
-                Find the people shipping right now, not just the repos. Activity from GitHub,
-                Reddit, Hacker News and DEV.to, scored for recency.
-              </p>
-              <a class="btn btn-ghost" href="https://builderhunt.dev" target="_blank" rel="noopener">
-                builderhunt.dev
-              </a>
-            </div>
-          </article>
+          </li>
 
-          <article class="path-cell">
+          <li class="stop">
+            <span class="stop-n" aria-hidden="true">03</span>
+            <div class="stop-copy">
+              <p class="stop-kicker">Make sure the CV you send can be read</p>
+              <div class="stop-title"><h3>HunterReady</h3></div>
+              <p>
+                Upload the CV you already have and see it the way automated screening reads
+                it. Fix what it got wrong, download a PDF that parses.
+              </p>
+              <div class="stop-actions">
+                <a
+                  class="btn btn-ghost"
+                  href="https://hunterready.eduardoinerarte.dk"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Open HunterReady<span aria-hidden="true"> ↗</span>
+                </a>
+                <span class="stop-domain">hunterready.eduardoinerarte.dk</span>
+              </div>
+            </div>
+
             <a
-              class="path-shot"
+              class="stop-visual frame"
               href="https://hunterready.eduardoinerarte.dk"
               target="_blank"
               rel="noopener"
               tabindex="-1"
               aria-hidden="true"
             >
+              <span class="frame-bar">
+                <span class="frame-dots"><span /><span /><span /></span>
+                <span class="frame-url">hunterready.eduardoinerarte.dk</span>
+              </span>
               <img
                 src="/img/shot-hunterready.webp"
                 width="2160"
-                height="990"
+                height="1110"
                 alt=""
                 loading="lazy"
                 decoding="async"
               />
             </a>
-            <div class="path-body">
-              <h3>HunterReady</h3>
-              <p>
-                Upload the CV you already have and see it the way automated screening reads
-                it. Fix what it got wrong, download a PDF that parses.
-              </p>
-              <a
-                class="btn btn-ghost"
-                href="https://hunterready.eduardoinerarte.dk"
-                target="_blank"
-                rel="noopener"
-              >
-                hunterready.eduardoinerarte.dk
-              </a>
-            </div>
-          </article>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- Single-purpose closing band. Same label as the hero: one intent, one wording. -->
+    <!-- Close: one tile, two doors. The wide door repeats the hero's ask with the same
+         label; the narrow one is the only place the site asks for something back, and its
+         explanation sits with its button instead of orphaned under the heading. -->
     <section class="close">
-      <div class="container close-inner">
-        <h2>{{ planCount === null ? 'Every plan' : planCount + ' plans' }}, nothing to sign up for.</h2>
-        <div class="close-actions">
-          <RouterLink to="/plans" class="btn btn-primary btn-lg">Browse plans</RouterLink>
-          <RouterLink to="/submit" class="btn btn-lg">Submit a problem</RouterLink>
+      <div class="container">
+        <div class="close-tile">
+          <div class="close-main">
+            <h2>{{ planCount === null ? 'Every plan' : planCount + ' plans' }}, nothing to sign up for.</h2>
+            <p>
+              Search by problem, filter by stack and country, take the five documents with you.
+              That is the whole product.
+            </p>
+            <RouterLink to="/plans" class="btn btn-primary btn-lg">Browse plans</RouterLink>
+          </div>
+          <div class="close-aside">
+            <h3>Seen a problem worth building?</h3>
+            <p>Send it. A person reads every submission, and the ones that hold up become plans here.</p>
+            <RouterLink to="/submit" class="btn btn-ghost">Submit a problem</RouterLink>
+          </div>
         </div>
-        <p class="close-fine">
-          Seen one worth building? Send it. A person reads every submission.
-        </p>
       </div>
     </section>
   </div>
@@ -283,19 +473,6 @@ const titleOf = (id: string | undefined) =>
 <style scoped>
 /* Shape rule for this page: media frames and cells use --radius-lg, buttons --radius-md,
    pills fully rounded. Applied without exception below. */
-
-.close-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.close-fine {
-  margin: 16px 0 0;
-  font-size: 14px;
-  color: var(--text-dim);
-}
 
 .landing {
   padding-bottom: 96px;
@@ -324,8 +501,8 @@ h3 {
   /* Nowrap plus generous inline padding: a wrapped CTA label reads as a broken button, and
      these labels are short enough that they never need two lines. */
   white-space: nowrap;
-  padding: 11px 20px;
-  border-radius: var(--radius-md);
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
   border: 1px solid transparent;
   font: inherit;
   font-weight: 600;
@@ -344,30 +521,27 @@ h3 {
   outline-offset: 2px;
 }
 
-/* --accent sits in a dead zone for a 14px label: measured on this page it gives 4.35:1 with
-   white text and 4.47:1 with --bg, so BOTH miss the 4.5:1 floor. Lifting the fill two steps
-   and keeping the dark label clears it (4.97:1, hover 5.96:1) while staying the same hue, so
-   the button still reads as the brand.
-   Deliberately local rather than a new shared token: --accent keeps its documented job as the
-   fill/rail/border colour, and this is only the derivation a filled label needs. */
+/* Token fill, white label: 5.48:1, measured. The dark palette needed a local #8467ff here
+   because its accent failed AA under a label; the light accent was chosen so it does not,
+   and this literal was the first thing the palette change would have broken. */
 .btn-primary {
-  background: #8467ff;
-  color: var(--bg);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .btn-primary:hover {
-  background: #9479ff;
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
 }
 
 .btn-ghost {
   border-color: var(--line-strong);
   color: var(--text);
-  background: transparent;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
 }
 
 .btn-ghost:hover {
   border-color: var(--accent);
-  background: var(--accent-a05);
 }
 
 .btn-lg {
@@ -381,6 +555,9 @@ h3 {
   /* Capped deliberately: more top padding and the copy floats down the viewport and reads
      as a layout fault rather than as space. */
   padding: 72px 0 24px;
+  /* The one gradient on the site. Three soft washes fading into the page, under the hero
+     only: the brand moment gets colour, everything below it stays on the plain ground. */
+  background: var(--wash);
 }
 
 .hero-grid {
@@ -445,8 +622,7 @@ h3 {
 }
 
 .hero-shot img,
-.anatomy-shot img,
-.path-shot img {
+.anatomy-shot img {
   display: block;
   width: 100%;
   height: auto;
@@ -458,14 +634,19 @@ h3 {
   padding: 56px 0;
 }
 
+/* A white panel, not two hairlines: the figures are the first thing under the hero and the
+   reference UIs carry their stats on a raised tile. Width and padding are set here because
+   the element also carries .container, whose gutter this replaces. */
 .figures-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 32px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding-top: 28px;
-  padding-bottom: 28px;
+  width: calc(100% - 48px);
+  max-width: 1232px;
+  padding: 28px 32px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
 }
 
 .figure {
@@ -504,23 +685,134 @@ h3 {
   max-width: 24ch;
 }
 
+/* Documents left, reasons right, 7/5: the documents carry the most text. Two columns of
+   prose, no cards; the hairline rows echo the lenses section below so the two read as the
+   same editorial register. */
+.anatomy-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 24px 64px;
+  align-items: start;
+  margin: 36px 0 40px;
+}
+
 .docs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
-  padding: 0;
-  margin: 28px 0 32px;
+  margin: 0;
 }
 
 .doc {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 4px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.doc:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.doc dt {
+  display: contents;
+}
+
+.doc-n {
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
+  font-size: 11.5px;
   color: var(--text-dim);
-  background: var(--surface);
+  padding-top: 3px;
+}
+
+.doc-file {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.doc dd {
+  grid-column: 2;
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.doc dd strong {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.docs-foot {
+  margin: 0;
+  padding: 16px 0 0 48px;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+  color: var(--text-dim);
+}
+
+.docs-foot code,
+.why code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.why {
+  padding-top: 2px;
+}
+
+.why-kicker {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.why-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.why-list strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* The one boxed thing in the section, because it is a line to type: an inset in the code
+   colours, not a card. */
+.prompt {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+}
+
+.prompt-label {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.prompt-line {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--code-fg);
+  user-select: all;
 }
 
 /* ---------- lenses ---------- */
@@ -589,10 +881,9 @@ h3 {
   font-family: var(--font-mono);
   font-size: 12.5px;
   color: var(--accent-text);
-  border: 1px solid var(--accent-a30);
   background: var(--accent-a10);
-  border-radius: 999px;
-  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
   flex: none;
 }
 
@@ -609,107 +900,450 @@ h3 {
   border-top: 1px solid var(--line);
 }
 
-/* Three cells for three products: one wide, then two. Not three equal columns, and no
-   empty cell to pad a grid nobody filled. */
-.path-grid {
+/* An ordered list on a rail. The three products are steps in one sequence and the layout
+   says so, instead of a 1+2 card grid that left the lede to explain how three cards relate.
+   Per stop: number, copy, visual at 5/7, so the product gets the wider share and the copy
+   holds a readable measure. */
+.stops {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+}
+
+.stop {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-  margin-top: 36px;
+  grid-template-columns: 32px minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: 32px;
+  row-gap: 20px;
+  align-items: start;
+  padding: 8px 0 56px;
 }
 
-.path-cell {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+.stop:last-child {
+  padding-bottom: 0;
+}
+
+/* The rail: one segment per stop, from this node's centre (8px padding + 16px) to the next
+   node's centre, which is 24px into the next stop. Segments overlap under the nodes, which
+   have a solid fill, so there is no seam and no rail dangling past the last node. */
+.stop:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 24px;
+  bottom: -24px;
+  width: 2px;
+  background: var(--line-strong);
+}
+
+.stop-n {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   background: var(--surface);
-  overflow: hidden;
+  border: 2px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
 }
 
-.path-cell-wide {
-  grid-column: 1 / -1;
-  background:
-    radial-gradient(120% 140% at 8% 0%, var(--accent-a10), transparent 58%),
-    var(--surface);
-  border-color: var(--accent-a30);
+/* The current stop is the only filled node and the only accent on the rail: the position
+   is the message, not the number. */
+.is-here .stop-n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
 }
 
-.path-body {
-  padding: 24px;
+.stop-copy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
+  padding-top: 4px;
+  max-width: 46ch;
 }
 
-.path-cell-wide .path-body {
-  padding: 32px;
-  max-width: 58ch;
-}
-
-.path-where {
+/* The kicker is the lede's verb for this step, so the sentence above and the list below are
+   visibly the same three things. */
+.stop-kicker {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: 11.5px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.is-here .stop-kicker {
   color: var(--accent-text);
+}
+
+.stop-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stop-title h3 {
   margin: 0;
-}
-
-.path-cell h3 {
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
-.path-cell p {
+.stop-copy p {
   margin: 0;
   color: var(--text-dim);
   line-height: 1.6;
-  font-size: 14.5px;
+  font-size: 15px;
 }
 
-.path-cell .btn {
-  margin-top: 4px;
+.stop-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
 }
 
-/* The image is decorative here: the heading and body carry the meaning, and the visible
-   link below is the real target. Keeping it out of the tab order avoids two stops on one
-   destination. */
-.path-shot {
+/* The button says the action; the domain says where it goes. A raw hostname as a button
+   label was the previous version and read as a link somebody forgot to name. */
+.stop-domain {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.stop-visual {
+  min-width: 0;
+}
+
+/* Browser frame for the two external shots. The bar with the real hostname is what makes a
+   dark BuilderHunt hero read as "their site" on this light page rather than as a black
+   rectangle. The image is captured at exactly the frame's ratio (scripts/capture-shots.mjs),
+   so nothing is cropped in CSS and the frame shows what was captured. */
+.frame {
   display: block;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface-2);
-  /* One aspect ratio for both cells regardless of how each source page had to be cropped:
-     BuilderHunt has a marketing hero, HunterReady opens on a wizard step, and matching their
-     crops by hand would break the moment either site changes. */
-  aspect-ratio: 1440 / 560;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
   overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  text-decoration: none;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.path-shot img {
-  height: 100%;
+.frame:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+}
+
+.frame-bar,
+.latest-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.frame-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.frame-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.frame-url {
+  flex: 1;
+  text-align: center;
+  /* Keep the hostname clear of the dots when the frame is narrow. */
+  padding-right: 34px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2160 / 1110;
   object-fit: cover;
-  object-position: center top;
+  object-position: left top;
+}
+
+/* The live list on the "here" stop: same frame language as the shots, with real titles
+   inside instead of pixels. */
+.latest {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+}
+
+.latest-head {
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.latest-date {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.latest-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.latest-item + .latest-item {
+  border-top: 1px solid var(--line);
+}
+
+.latest-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  /* Fixed row height, not min-height: the rotation lifts the leaving row out of flow and
+     the three that stay slide by exactly one row, which only lines up if every row is the
+     same height. Two lines of 14.5/13px type plus padding. */
+  height: 66px;
+  padding: 0 16px;
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+
+a.latest-link:hover {
+  background: var(--accent-a05);
+}
+
+/* Title over a one-line excerpt. The scrape keeps titles as the poster wrote them, and a
+   one-word title ("Type") on its own reads as a broken row; the excerpt underneath says what
+   it is. */
+.latest-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.latest-title,
+.latest-excerpt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.latest-title {
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.latest-excerpt {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+
+.latest-link .chip {
+  flex: none;
+}
+
+.latest-empty {
+  margin: 0;
+  padding: 20px 16px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+/* One swap every 3.5s: the leaving row is lifted out of flow so the three that stay slide
+   up into place and the newcomer fades in at the bottom, with the list never changing
+   height. */
+.latest-move,
+.latest-enter-active,
+.latest-leave-active {
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.35s ease;
+}
+
+.latest-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.latest-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.latest-leave-active {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+/* Loading: four rows the height of the real ones, so the list does not jump when the index
+   arrives. */
+.skeleton-line {
+  display: block;
+  width: 62%;
+  height: 11px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--line) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.latest-item:nth-child(2) .skeleton-line {
+  width: 78%;
+}
+
+.latest-item:nth-child(3) .skeleton-line {
+  width: 55%;
+}
+
+.latest-item:nth-child(4) .skeleton-line {
+  width: 70%;
+}
+
+.skeleton-line.is-dim {
+  width: 84%;
+  height: 9px;
+  opacity: 0.7;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .latest-move,
+  .latest-enter-active,
+  .latest-leave-active {
+    transition: none;
+  }
+
+  .frame:hover {
+    transform: none;
+  }
+
+  .skeleton-line {
+    animation: none;
+  }
 }
 
 /* ---------- close ---------- */
 
 .close {
-  padding: 72px 0 0;
+  padding: 64px 0 72px;
   border-top: 1px solid var(--line);
 }
 
-.close-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+/* The wash returns here, and only here besides the hero: the two ends of the page share
+   one background, so the close reads as the hero's answer and not as another section. On
+   white with a border, so it is a tile on the page rather than a band across it. */
+.close-tile {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--wash), var(--surface);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
 }
 
-.close h2 {
-  font-size: clamp(22px, 2.4vw, 30px);
-  font-weight: 700;
+.close-main,
+.close-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.close-main {
+  padding: 44px 48px;
+}
+
+.close-main h2 {
   margin: 0;
+  font-size: clamp(26px, 2.8vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-width: 18ch;
+}
+
+.close-main p,
+.close-aside p {
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-size: 15px;
+  max-width: 44ch;
+}
+
+.close-main .btn {
+  margin-top: 8px;
+}
+
+/* Divided by a hairline, not a second surface: one tile, two doors. */
+.close-aside {
+  padding: 44px 40px;
+  border-left: 1px solid var(--line);
+}
+
+.close-aside h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.close-aside p {
+  font-size: 14.5px;
+}
+
+.close-aside .btn {
+  margin-top: 4px;
 }
 
 /* ---------- motion ---------- */
@@ -751,11 +1385,60 @@ h3 {
   }
 }
 
-@media (max-width: 700px) {
-  .path-grid {
+@media (max-width: 768px) {
+  /* Single column under the rail: number and copy side by side, the visual below the copy
+     in the same column. The node shrinks to 28px, so the rail moves with its centre. */
+  .stop {
+    grid-template-columns: 28px minmax(0, 1fr);
+    column-gap: 16px;
+    padding-bottom: 40px;
+  }
+
+  .stop-n {
+    width: 28px;
+    height: 28px;
+    font-size: 10.5px;
+  }
+
+  .stop:not(:last-child)::before {
+    left: 13px;
+    top: 22px;
+    bottom: -22px;
+  }
+
+  .stop-visual {
+    grid-column: 2;
+  }
+
+  .anatomy-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .docs-foot {
+    padding-left: 0;
+  }
+
+  .close {
+    padding: 48px 0;
+  }
+
+  .close-tile {
     grid-template-columns: 1fr;
   }
 
+  .close-main,
+  .close-aside {
+    padding: 28px 24px;
+  }
+
+  .close-aside {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 700px) {
   .figures-row {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -772,14 +1455,5 @@ h3 {
     min-width: 3.2ch;
   }
 
-  .close-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .path-cell-wide .path-body,
-  .path-body {
-    padding: 20px;
-  }
 }
 </style>

@@ -1,47 +1,55 @@
-# PRODUCT.md — D5s, an AI coworking space for people and agents
+---
+id: "4161"
+slug: d5s-an-ai-coworking-space-for-people-and-agents
+title: "D5s, an AI coworking space for people and agents"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511513"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# D5s, an AI coworking space for people and agents
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi HN, I’m Michael. Theodore and I are the co-founders of d5s, the multiplayer AI for cross-human-agent collaboration, and we’re building it together.<p>We’re building d5s with d5s. From day one, we’ve created dedicated workspaces for engineering, go-to-market, finance, and other parts of the company. Each workspace has a few coworkers helping with the day-to-day, with access only to what they need. They work with us through Slack and Gmail.<p>As a startup, we’ve found this incredibly useful. Our coworkers take care of repeatable work across marketing, invoice processing, and other operational areas.<p>We believe this is how every company will work in the near future: people set direction and make decisions in shared workspaces, while agentic coworkers move the work forward.<p>We’re opening early access now. The first teams to sign up will get a free early-access plan with credits included, so they can start using d5s immediately.<p>We’ll be here to answer technical questions and share what has and hasn’t worked for us.
+D5s turns a startup's Slack and Gmail into a coworking floor where humans set direction and AI coworkers handle the repeatable work. Workspaces scope what each coworker can see and do, so the team can ship operations the same way they ship product.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** A shared workspace where humans set direction and AI coworkers execute repeatable operational work via Slack and Gmail.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Founders and operators of small startups that already coordinate over Slack and Gmail. Adjacent: lean ops teams at scale-ups that want to delegate marketing, finance or invoice workflows to AI agents with scoped access.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When operational work piles up, I want AI coworkers scoped to my workspace so I can hand off repeatable tasks without giving them the keys to the company.
+- When I coordinate in Slack and Gmail, I want agents that live in those tools so I do not switch apps.
+- When my team grows, I want a workspace model that maps to engineering, GTM and finance so each function gets its own coworker.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Number of early-access teams onboarded through the free plan with credits.
+- Share of repeatable operational work (e.g. invoice processing) actually completed by coworkers rather than humans.
+- Retention of early-access teams week-over-week.
+- Scope-correctness: zero incidents of a coworker acting outside its workspace's permissions.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Free early-access plan with credits for the first teams to sign up. Source does not state post-early-access pricing, monetisation model, or paid tiers.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+General-purpose AI agent platforms (AutoGPT-style and SaaS copilots) target individual workflows. D5s's differentiator is the explicit 'coworker in a shared workspace' framing plus tight Slack/Gmail integration and per-workspace access controls, intended for whole startups rather than single users.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511513) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Source is founder narrative, not third-party validation; risk of building for the founders' own habits.
+- Free-credit early access could distort willingness-to-pay signal.
+- Scope-correctness bugs (an agent acting outside its workspace) are the highest-stakes failure mode.
+- Slack/Gmail dependency means API changes can break the product.

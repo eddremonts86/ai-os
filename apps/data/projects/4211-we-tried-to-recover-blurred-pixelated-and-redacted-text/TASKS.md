@@ -1,4 +1,17 @@
-# TASKS.md — We tried to recover blurred, pixelated and redacted text (480 cases)
+---
+id: "4211"
+slug: we-tried-to-recover-blurred-pixelated-and-redacted-text
+title: "We tried to recover blurred, pixelated and redacted text (480 cases)"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508614"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# We tried to recover blurred, pixelated and redacted text (480 cases)
 
 ## Phase 0: Scaffold
 
@@ -12,17 +25,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Browser-local blur / pixelate / solid-box pipeline
+- [ ] Parametric rule check (radius ≥ 0.8 × font size)
+- [ ] Default to solid-box redaction with a clear warning on weaker treatments
+- [ ] Study blog with methodology, results table, and parametric rule
+- [ ] CC-BY dataset and reproduction kit published
+- [ ] Optional Tauri / Electron desktop overlay
+- [ ] Reference 480-case dataset under CC-BY
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
 - [ ] Deploy to Coolify
 - [ ] Verify in production
-
----
-
-_Generated automatically by Lúa on 2026-08-31_
+- [ ] Optional Pro tier for teams and SDK

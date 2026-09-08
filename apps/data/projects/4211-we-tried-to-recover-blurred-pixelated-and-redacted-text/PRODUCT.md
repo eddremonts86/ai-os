@@ -1,47 +1,55 @@
-# PRODUCT.md — We tried to recover blurred, pixelated and redacted text (480 cases)
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4211"
+slug: we-tried-to-recover-blurred-pixelated-and-redacted-text
+title: "We tried to recover blurred, pixelated and redacted text (480 cases)"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508614"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# We tried to recover blurred, pixelated and redacted text (480 cases)
 
 ## Value Proposition
 
-_Based on source brief:_ https://datablur.app/blog/blur-recovery-study
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+A 480-case empirical study that quantifies how much blur is needed to stop an attacker from reading back sensitive text from a screenshot, plus a 100%-local blur tool that defaults to solid-box redaction — the only treatment that leaked nothing in the study.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Security teams producing screenshots and recordings for documentation
+- Support agents sharing screen recordings with customers
+- Engineers posting screenshots to GitHub issues or Slack
+- Anyone who has shared a "blurred" screenshot and wondered if it was safe
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I share a screenshot, I want a tool that defaults to solid-box redaction so I do not accidentally leak a card number or API key
+- When I am tempted to use a "blur", I want a parametric rule tied to font size so I know if it actually works
+- When I want to verify the study, I want the dataset and code under CC-BY so I can re-run it
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- 100,000 weekly active users of the blur tool within the first quarter
+- Zero reported leaks from a default solid-box export
+- Study cited in security guidelines within 6 months
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+_TODO:_ source did not state a price. The site is free; the underlying tool is free; the study is CC-BY. Possible Pro tier for teams or for an SDK.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- Screenshot tools with built-in blur (CleanShot X, Cleanshot) — UX over correctness
+- Open-source redaction libraries (OpenCV, ffmpeg) — easy to misuse
+- Manual blur in Photoshop — frequently wrong radius
+- Security awareness training — anecdotal, not parametric
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508614) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Parametric rule is for known font / size / position; real attacks may be stronger
+- JPEG recompression is one of many downstream paths (Slack, Discord, screenshots)
+- Local tool may be bypassed by users who pick a blur treatment
+- Study does not cover video redaction; only still images
