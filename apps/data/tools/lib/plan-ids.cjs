@@ -36,6 +36,35 @@ const PLAN_DIR_RE = /^(\d{3,})-(.+)$/;
 
 const MIN_WIDTH = 3;
 
+/**
+ * Slug length. Arbitrary but shared: the scraper truncated to 55, intake to 54 and an older writer to 61, each with
+ * its own regex chain, so the same post could land under two different directory names. That
+ * is how a plan ends up with a sibling directory the corpus then treats as a second plan.
+ * Existing directories are never renamed -- published URLs contain the slug -- so this only
+ * governs names allocated from here on.
+ */
+const SLUG_MAX = 54;
+
+/**
+ * The one slug function every writer of the corpus uses. Folds accents (a title with a
+ * diacritic must not produce a different name depending on which writer saw it first),
+ * collapses everything else to single hyphens, truncates, then trims again: truncation lands
+ * mid-word often enough that a trailing hyphen would otherwise be common.
+ */
+function planSlug(title) {
+  const slug = String(title ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, SLUG_MAX)
+    .replace(/-+$/g, '');
+  // Always a string. The scraper wants null for "no usable title" and wraps this; returning
+  // null from here instead would have every other caller guarding for it.
+  return slug;
+}
+
 /** `{ id, num, slug }` for a plan directory name, or null when it is not one. */
 function parsePlanDir(name) {
   const m = String(name).match(PLAN_DIR_RE);
@@ -109,6 +138,8 @@ function listPlanDirNames(projectsDir) {
 module.exports = {
   PLAN_DIR_RE,
   MIN_WIDTH,
+  SLUG_MAX,
+  planSlug,
   parsePlanDir,
   formatPlanId,
   highestOnDisk,

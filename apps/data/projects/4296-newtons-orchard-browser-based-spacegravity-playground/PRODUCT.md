@@ -1,33 +1,38 @@
-# PRODUCT.md — Newton's Orchard, browser-based space/gravity playground
+---
+id: "4296"
+slug: newtons-orchard-browser-based-spacegravity-playground
+title: "Newton's Orchard, browser-based space/gravity playground"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49524469"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Newton's Orchard, browser-based space/gravity playground
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi HN!<p>My son spent a lot of time in 5th grade playing with the 2-dimensional PhET gravity&#x2F;space sims[1]. His STEM class uses it, and he was playing with it at home, and has been looking for more. I found several space sims&#x2F;playgrounds online, including NASA&#x27;s Eyes on the Solar System[2], but nothing that seemed to offer a real progression from what he was getting out of the PhET sims, so I built Newton&#x27;s Orchard over the summer for him.<p><a href="https:&#x2F;&#x2F;newtonsorchard.app" rel="nofollow">https:&#x2F;&#x2F;newtonsorchard.app</a><p>The source is also published at <a href="https:&#x2F;&#x2F;github.com&#x2F;andrewchilds&#x2F;newtons-orchard" rel="nofollow">https:&#x2F;&#x2F;github.com&#x2F;andrewchilds&#x2F;newtons-orchard</a><p>It features deterministic time scrubbing, all bodies are editable, different preset systems and experiments, missions to complete (complete 3 to unlock the blackhole object type and mission), and a gallery for user submissions.<p>I would very much appreciate feedback from HN - particularly from the lens of making it engaging and illuminating for students, and anyone that would like to just get a feel for how gravity works. Thank you!<p>[1] <a href="https:&#x2F;&#x2F;phet.colorado.edu&#x2F;sims&#x2F;html&#x2F;gravity-and-orbits&#x2F;latest&#x2F;gravity-and-orbits_all.html" rel="nofollow">https:&#x2F;&#x2F;phet.colorado.edu&#x2F;sims&#x2F;html&#x2F;gravity-and-orbits&#x2F;lates...</a>
-[2] <a href="https:&#x2F;&#x2F;eyes.nasa.gov&#x2F;apps&#x2F;solar-system&#x2F;" rel="nofollow">https:&#x2F;&#x2F;eyes.nasa.gov&#x2F;apps&#x2F;solar-system&#x2F;</a>
+_Based on source brief:_ Hi HN!My son spent a lot of time in 5th grade playing with the 2-dimensional PhET gravity/space sims[1]. His STEM class uses it, and he was playing with it at home, and has been looking for more. I found several space sims/playgrounds online, including NASA's Eyes on the Solar System[2], but nothing that seemed to offer a real progression from what he was getting out of the PhET sims, so I built Newton's Orchard over the summer for him.https://newtonsorchard.appThe source is also published at https://github.com/andrewchilds/newtons-orchardIt features deterministic time scrubbing, all bodies are editable, different preset systems and experiments, missions to complete (complete 3 to unlock the blackhole object type and mission), and a gallery for user submissions.I would very much appreciate feedback from HN - particularly from the lens of making it engaging and illuminating for students, and anyone that would like to just get a feel for how gravity works. Thank you![1] https://phet.colorado.edu/sims/html/gravity-and-orbits/lates...
+[2] https://eyes.nasa.gov/apps/solar-system/
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -35,7 +40,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

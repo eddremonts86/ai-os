@@ -1,28 +1,30 @@
-# PLAN.md — EntreDash – Validate and shape your idea with a private AI advisory board
+---
+id: "4465"
+slug: entredash-validate-and-shape-your-idea-with-a-private-a
+title: EntreDash – Validate and shape your idea with a private AI advisory board
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/entredash?utm_campaign=startup-185242&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-01"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# EntreDash – Validate and shape your idea with a private AI advisory board
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript
-- **Backend:** Node.js API (TanStack Start)
-- **DB:** SQLite with Drizzle ORM
-- **Deployment:** Coolify + Docker
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│   API       │────▶│   DB        │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Milestones
 
-1. **M0:** Project setup + SPEC.md + DESIGN.md approved
-2. **M1:** Scaffold + auth
-3. **M2:** Core feature
-4. **M3:** Testing + deployment
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks
 
-- Dependency on external APIs
-- Ambiguous scope without further detail
+_Not written yet — `ai-os plans enrich` fills this section._

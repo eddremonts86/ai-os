@@ -1,47 +1,54 @@
-# PRODUCT.md — Review large code changes in your terminal, one chapter at a time
+---
+id: "4168"
+slug: review-large-code-changes-in-your-terminal-one-chapter-
+title: "Review large code changes in your terminal, one chapter at a time"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511126"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Review large code changes in your terminal, one chapter at a time
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I&#x27;ve been hunting for ways to better review &amp; provide feedback on agent output without facing walls of files or leaving my multiplexer!<p>I&#x27;ve really enjoyed using both hunk and stage-cli and was inspired to combine and extend ideas from both<p>Revue is a terminal-based code review tool that breaks down large code changes into ordered, narrated chunks. You can think it as like a guided tour of a code change - as opposed to a big ol&#x27; list of files<p>Using a skill, you can have any agent generate a guided tour that you can then open using a TUI - stepping through organized chapters whilst leaving comments that can be sent back to the agent<p>You can also just run `revue diff` to get the same UI without the narration.<p>All feedback welcome!
+Revue turns a wall-of-files code review into a guided tour you can step through in your terminal, with an optional agent-generated narration and per-chapter comments that flow back to the agent.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Step through a large code change chapter by chapter in the terminal.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Developers who use coding agents daily and want to review large diffs without leaving their multiplexer. Adjacent: any developer who finds current diff UIs overwhelming on large changes.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I face a wall-of-files diff, I want it broken into chapters so I can pace my review.
+- When I want context, I want an agent-generated narration so I do not have to figure out the diff by hand.
+- When I leave a comment, I want it to flow back to the agent so I do not retype my feedback.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Number of chapters generated per review session.
+- Comments-per-review as a proxy for engagement.
+- Latency between launching the TUI and seeing the first chapter.
+- Qualitative: do reviewers actually finish large diffs they would otherwise have skipped?
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source does not state pricing or monetisation. Treat as a free developer tool unless the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+Closest tools are hunk and stage-cli (which the author cites by name) and general-purpose diff/patch UIs. Revue's differentiator is the combination of chapter-by-chapter stepping with an agent-generated narration that loops comments back to the agent.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511126) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- TUI ergonomics are subjective; mitigation is to keep the keybindings minimal and consistent.
+- Agent-skill UX is only valuable if the generated narration is actually useful; mitigation is to make the narration skippable and easy to edit.
+- Distribution is via the terminal; risk of low discoverability outside CLI-native developers.

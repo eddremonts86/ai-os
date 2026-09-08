@@ -1,4 +1,17 @@
-# TASKS.md — Vesting Gap – Calculate your true RSU tax bill and avoid surprise IRS penalties
+---
+id: "4686"
+slug: vesting-gap-calculate-your-true-rsu-tax-bill-and-avoid-
+title: Vesting Gap – Calculate your true RSU tax bill and avoid surprise IRS penalties
+status: draft
+source:
+  name: BetaList
+  url: "https://betalist.com/startups/vesting-gap?utm_campaign=startup-185541&utm_medium=atom&utm_source=newsfeed"
+category: beta
+date: "2026-09-02"
+tags: [BetaList, Beta, Product]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Vesting Gap – Calculate your true RSU tax bill and avoid surprise IRS penalties
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

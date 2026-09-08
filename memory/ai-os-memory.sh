@@ -125,7 +125,7 @@ sub_status() {
         warn "  HTTP  http://127.0.0.1:8021/health not reachable"
       fi
     else
-      warn "Graphiti MCP container not running (opt-in — needs MINIMAX_API_KEY; source ~/Projects/configs/env.ts then run: bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh)"
+      warn "Graphiti MCP container not running (opt-in — needs MINIMAX_API_KEY in dev-env/env-config/.env; run: bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh)"
     fi
   else
     warn "Docker not running"

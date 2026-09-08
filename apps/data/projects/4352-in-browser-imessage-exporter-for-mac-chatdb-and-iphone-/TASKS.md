@@ -1,4 +1,17 @@
-# TASKS.md — In-browser iMessage exporter for Mac chat.db and iPhone backups
+---
+id: "4352"
+slug: in-browser-imessage-exporter-for-mac-chatdb-and-iphone-
+title: In-browser iMessage exporter for Mac chat.db and iPhone backups
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521066"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# In-browser iMessage exporter for Mac chat.db and iPhone backups
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

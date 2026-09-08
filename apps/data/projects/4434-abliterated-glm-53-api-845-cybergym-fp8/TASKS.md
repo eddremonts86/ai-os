@@ -1,4 +1,17 @@
-# TASKS.md — Abliterated GLM-5.3 API (84.5% CyberGym, FP8)
+---
+id: "4434"
+slug: abliterated-glm-53-api-845-cybergym-fp8
+title: "Abliterated GLM-5.3 API (84.5% CyberGym, FP8)"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49512773"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Abliterated GLM-5.3 API (84.5% CyberGym, FP8)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

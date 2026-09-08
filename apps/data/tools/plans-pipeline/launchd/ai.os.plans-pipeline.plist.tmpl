@@ -38,11 +38,44 @@
         <string>__AI_OS_ROOT__</string>
     </dict>
 
+    <!-- Every 4 hours. Fixed clock hours rather than StartInterval, which counts from load
+         and so drifts to a different set of times after every reboot.
+
+         This is the cheap half of the pipeline and it runs often; the expensive half does not.
+         Authoring a slice costs ~22M tokens a run, so it is a separate weekly Hermes job that
+         is deliberately NOT on this schedule. Consequence worth knowing: this writes captures
+         into apps/data/projects/ and never commits them -- only `daily.sh ship`, which the
+         authoring job calls, does that. Between authoring runs the corpus is expected to have
+         thousands of uncommitted files. That is the design, not a broken run. -->
     <key>StartCalendarInterval</key>
     <array>
         <dict>
             <key>Hour</key>
+            <integer>0</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>4</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
             <integer>8</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>12</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>16</integer>
             <key>Minute</key>
             <integer>0</integer>
         </dict>

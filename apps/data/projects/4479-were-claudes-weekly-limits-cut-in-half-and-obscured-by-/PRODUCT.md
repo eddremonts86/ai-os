@@ -1,32 +1,37 @@
-# PRODUCT.md — Were Claude's Weekly Limits Cut in Half? (and obscured by another 50% "deal"?)
+---
+id: "4479"
+slug: were-claudes-weekly-limits-cut-in-half-and-obscured-by-
+title: "Were Claude's Weekly Limits Cut in Half? (and obscured by another 50% \"deal\"?)"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49530888"
+category: ask-hn
+date: "2026-09-02"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Were Claude's Weekly Limits Cut in Half? (and obscured by another 50% "deal"?)
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ The &quot;50% higher&quot; capacity through August 31 ended last night. Until then, 100% use of a 5-hour session would use 10% of my weekly capacity.<p>Today, there&#x27;s a new &quot;50% higher&quot; capacity message through September 13.<p>But I&#x27;m burning capacity at 2x the rate. 100% of a 5-hour session is now using 20% of my weekly capacity, not 10%.<p>Is anyone else seeing this? I&#x27;m on a max plan, btw.
+_Based on source brief:_ The "50% higher" capacity through August 31 ended last night. Until then, 100% use of a 5-hour session would use 10% of my weekly capacity.Today, there's a new "50% higher" capacity message through September 13.But I'm burning capacity at 2x the rate. 100% of a 5-hour session is now using 20% of my weekly capacity, not 10%.Is anyone else seeing this? I'm on a max plan, btw.
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

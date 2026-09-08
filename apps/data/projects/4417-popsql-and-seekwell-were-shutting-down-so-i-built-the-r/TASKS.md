@@ -1,4 +1,17 @@
-# TASKS.md — PopSQL and SeekWell were shutting down, so I built the replacement
+---
+id: "4417"
+slug: popsql-and-seekwell-were-shutting-down-so-i-built-the-r
+title: "PopSQL and SeekWell were shutting down, so I built the replacement"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49514362"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# PopSQL and SeekWell were shutting down, so I built the replacement
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

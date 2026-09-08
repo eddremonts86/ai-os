@@ -1,0 +1,30 @@
+---
+id: "5072"
+slug: nationaldex-minimal-open-source-pokedex
+title: NationalDex • minimal open-source Pokédex
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49567346"
+category: show-hn
+date: "2026-09-04"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# NationalDex • minimal open-source Pokédex
+
+## Tech Stack
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Architecture
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Milestones
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Risks
+
+_Not written yet — `ai-os plans enrich` fills this section._

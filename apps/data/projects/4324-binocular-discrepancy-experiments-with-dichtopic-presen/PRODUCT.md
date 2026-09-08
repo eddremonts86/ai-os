@@ -1,32 +1,37 @@
-# PRODUCT.md — Binocular Discrepancy – experiments with dichtopic presentation (WebXR)
+---
+id: "4324"
+slug: binocular-discrepancy-experiments-with-dichtopic-presen
+title: Binocular Discrepancy – experiments with dichtopic presentation (WebXR)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49522473"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Binocular Discrepancy – experiments with dichtopic presentation (WebXR)
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ Hi!<p>This little project is meant to show what happens when different images are presented to the left and right eye. This is a research paradigm used in cognitive science - it comes with an article for those, who would like to explore the topic.<p>Although the main experience requires VR headset (tested with Oculus Quest 2), the whole configuration is available from regular browser, so everyone can spot what it is about.<p>Sky is the limit with creativity here, so if you think something interesting is missing - I&#x27;ll be grateful for your opinions.<p>Cheers!
+_Based on source brief:_ Hi!This little project is meant to show what happens when different images are presented to the left and right eye. This is a research paradigm used in cognitive science - it comes with an article for those, who would like to explore the topic.Although the main experience requires VR headset (tested with Oculus Quest 2), the whole configuration is available from regular browser, so everyone can spot what it is about.Sky is the limit with creativity here, so if you think something interesting is missing - I'll be grateful for your opinions.Cheers!
 
 **One-liner:** _[Define the single sentence that explains why this product exists.]_
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Pricing & Monetization
 
@@ -34,7 +39,7 @@ _TODO:_ define model (freemium / subscription / one-time / marketplace fee).
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Risks & Open Questions
 

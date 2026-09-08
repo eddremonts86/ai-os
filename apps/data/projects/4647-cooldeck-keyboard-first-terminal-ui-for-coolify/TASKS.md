@@ -1,4 +1,17 @@
-# TASKS.md — CoolDeck – keyboard-first terminal UI for Coolify
+---
+id: "4647"
+slug: cooldeck-keyboard-first-terminal-ui-for-coolify
+title: CoolDeck – keyboard-first terminal UI for Coolify
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49533494"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# CoolDeck – keyboard-first terminal UI for Coolify
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

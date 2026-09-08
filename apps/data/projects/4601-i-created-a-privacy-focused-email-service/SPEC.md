@@ -1,31 +1,35 @@
-# SPEC.md — I created a privacy-focused email service
+---
+id: "4601"
+slug: i-created-a-privacy-focused-email-service
+title: I created a privacy-focused email service
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49536794"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# I created a privacy-focused email service
 
 ## Problem
 
-I built JustReceiveEmail because I don&#x27;t want data collectors tracking my online activity through my email address.<p>The idea is simple: use a different email address whenever you sign up for something, while still being able to keep that address and receive emails from it later.<p>Privacy was the main goal. Incoming emails are encrypted before being stored, no tracking&#x2F;logging is used, and the service tries to collect as little data as possible. Only a username is required to create an account.<p>There are no ads or trackers. Instead, it costs a small fee to help keep the service running.<p>I&#x27;d love to get feedback, especially on the privacy model and anything you think I should improve.<p><a href="https:&#x2F;&#x2F;justreceive.email" rel="nofollow">https:&#x2F;&#x2F;justreceive.email</a>
-
-**Source:** [HackerNews](https://news.ycombinator.com/item?id=49536794)
-**Primary category:** show-hn
-**Tags:** Show HN,Product,Problem
-**Date:** 2026-09-02T14:27:35Z
+I built JustReceiveEmail because I don't want data collectors tracking my online activity through my email address.The idea is simple: use a different email address whenever you sign up for something, while still being able to keep that address and receive emails from it later.Privacy was the main goal. Incoming emails are encrypted before being stored, no tracking/logging is used, and the service tries to collect as little data as possible. Only a username is required to create an account.There are no ads or trackers. Instead, it costs a small fee to help keep the service running.I'd love to get feedback, especially on the privacy model and anything you think I should improve.https://justreceive.email
 
 ---
 
 ## Objective
 
-Build a solution that addresses this problem clearly and at scale.
-
----
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Target Users
 
-1. **[Primary user]** — the main user this serves
-2. **[Secondary user]** — other relevant users
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## MVP Scope
 
-- Core functionality
-- Leave out anything beyond the MVP
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Design Direction
 
@@ -33,5 +37,4 @@ See `DESIGN.md` for this project's design tokens.
 
 ## Constraints
 
-- Keep the MVP simple
-- No unnecessary external dependencies
+_Not written yet — `ai-os plans enrich` fills this section._

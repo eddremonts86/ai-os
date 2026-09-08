@@ -1,4 +1,17 @@
-# TASKS.md — Onset MCP
+---
+id: "4658"
+slug: onset-mcp
+title: Onset MCP
+status: draft
+source:
+  name: ProductHunt
+  url: "https://www.producthunt.com/products/onset-io"
+category: product-launch
+date: "2026-07-28"
+tags: [ProductHunt, Product Launch]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Onset MCP
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

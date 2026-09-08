@@ -1,47 +1,54 @@
-# PRODUCT.md — Corporate Mind Games – logic puzzles with a sarcastic corporate theme
+---
+id: "4163"
+slug: corporate-mind-games-logic-puzzles-with-a-sarcastic-cor
+title: Corporate Mind Games – logic puzzles with a sarcastic corporate theme
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49511400"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# Corporate Mind Games – logic puzzles with a sarcastic corporate theme
 
 > Auto-generated product brief. Review and refine before MVP scoping.
 
 ## Value Proposition
 
-_Based on source brief:_ I have always enjoyed building and playing puzzles. I am a regular user of NYT Games and LinkedIn Games. I thought it would be fun to create some corporate-themed puzzles as a silly alternative to LinkedIn Games.<p>So, I built Corporate Mind Games. The games are intended to be a little bit sassy and sarcastic, but I hope they are enjoyable and challenging.<p>I was planning to post this on HN last week. However, many years ago, I made a game called Don&#x27;t Wordle, which unexpectedly appeared on the front page last week. I ended up getting distracted by that, and I also figured it was more appropriate to post this game on HN on a Monday morning given the theme. So here we are.
+Corporate Mind Games is a tongue-in-cheek alternative to LinkedIn Games: logic puzzles with corporate themes and a sarcastic voice, playable in the browser.
 
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+**One-liner:** Sarcastic corporate-themed logic puzzles in the browser.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+Casual puzzlers who play LinkedIn Games, NYT Games, or similar; people who enjoy a satirical take on corporate culture; commuters killing five minutes in a tab.
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I have a coffee break, I want a quick logic puzzle themed around office life so it feels familiar and funny.
+- When I am bored of LinkedIn Games, I want something with a different voice so the puzzles feel fresh.
+- When I finish a puzzle, I want to share my time or score so I can poke fun at my coworkers.
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- Number of distinct puzzles playable end-to-end.
+- Daily active players (qualitative; source gives no target).
+- Completion rate per puzzle (do players actually finish?).
+- Share rate of finished runs.
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+Source does not state pricing or monetisation. Treat as a free hobbyist site unless the author publishes a model.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+NYT Games (subscription) and LinkedIn Games (free with a LinkedIn login) are the closest substitutes. Corporate Mind Games differentiates on its satirical corporate theme and tone, not on puzzle mechanics.
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49511400) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Sarcastic tone can alienate as many users as it attracts; mitigation is to keep tone consistent so the audience self-selects.
+- No stated monetisation; if the puzzles grow, hosting and content authoring cost grows with them.
+- Risk of being a one-off novelty; mitigation is to keep shipping new puzzles.

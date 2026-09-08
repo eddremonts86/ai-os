@@ -1,47 +1,56 @@
-# PRODUCT.md — SwiftMo Power captures real-time exercise kinematics from a webcam
-
-> Auto-generated product brief. Review and refine before MVP scoping.
+---
+id: "4214"
+slug: swiftmo-power-captures-real-time-exercise-kinematics-fr
+title: "SwiftMo Power captures real-time exercise kinematics from a webcam"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49508062"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SwiftMo Power captures real-time exercise kinematics from a webcam
 
 ## Value Proposition
 
-_Based on source brief:_ https://app.swiftmo.com/#/stage/:manualMode/:demo
-
-**One-liner:** _[Define the single sentence that explains why this product exists.]_
+Real-time exercise kinematics from a standard webcam — no IMUs, no depth cameras — so a coach, gym, or home user can measure form and progress without buying hardware.
 
 ## Target Users
 
-| Stakeholder | Why they care |
-|---|---|
-| Early adopters | _[What pain they feel, and how this solves it]_ |
-| Founders | _[What pain they feel, and how this solves it]_ |
-| SMEs | _[What pain they feel, and how this solves it]_ |
+- Coaches and personal trainers tracking client progress
+- Home fitness users wanting objective feedback on form
+- Gyms offering tech-enabled training without rigs
+- Sports scientists doing field studies without instrumenting subjects
 
 ## Jobs To Be Done
 
-1. **Functional job** — _[What the user is trying to accomplish]_
-2. **Emotional job** — _[How they want to feel]_
-3. **Social job** — _[How others perceive them using this]_
+- When I run a session, I want a webcam to capture my form so I can review kinematics after
+- When I am mid-set, I want manual mode so I can drive the analysis live
+- When I train over weeks, I want a training diary so I can see progress
+- When the service is down, I want a status page so I do not blame my form for a missing measurement
 
-## Success Metrics (North Star)
+## Success Metrics
 
-- **Activation:** _[% of signups who complete X within Y days]_
-- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
-- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+- 10,000 weekly active users within the first quarter
+- Median session length over 12 minutes
+- 70% of returning users record at least one diary entry per week
 
 ## Pricing & Monetization
 
-_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+_TODO:_ source did not state a price. Likely free + Pro tier for advanced analytics, social features, and gym-side dashboards.
 
 ## Competitive Landscape
 
-_TODO:_ list 2-3 alternatives + differentiation.
+- Wearable IMU stacks (Whoop, Garmin) — hardware-first, not webcam
+- Depth-camera apps (Kinect-based) — hardware-required
+- Form-check apps that rely on manual video review — no kinematics
+- AI pose-estimation libraries (MediaPipe, OpenPose) — DIY, no product surface
 
 ## Risks & Open Questions
 
-- [ ] Validate problem with 5 user interviews before MVP
-- [ ] Confirm willingness to pay
-- [ ] Define compliance scope (GDPR, payments, etc.)
-
----
-
-_Source:_ [HackerNews](https://news.ycombinator.com/item?id=49508062) · **Category:** show-hn · **Tags:** Show HN,Product,Problem
+- Webcam-only kinematics are inherently noisy compared to IMUs
+- Lighting, clothing, and occlusion can break the model
+- Safety disclaimer is a regulatory hedge; claims must be modest
+- Privacy of webcam capture is a sensitive surface

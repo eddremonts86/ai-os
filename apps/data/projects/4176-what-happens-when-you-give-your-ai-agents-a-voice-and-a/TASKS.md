@@ -1,10 +1,24 @@
-# TASKS.md — What Happens When You Give Your AI Agents a Voice and an Attitude
+---
+id: "4176"
+slug: what-happens-when-you-give-your-ai-agents-a-voice-and-a
+title: "What Happens When You Give Your AI Agents a Voice and an Attitude"
+status: enriched
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49510547"
+category: show-hn
+date: "2026-08-31"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+
+# What Happens When You Give Your AI Agents a Voice and an Attitude
 
 ## Phase 0: Scaffold
 
 - [ ] Create the project folder under `apps/`
 - [ ] Initialise the git repo
-- [ ] Copiar `edd-app-template` → `apps/4176-what-happens-when-you-give-your-ai-agents-a-voice-and-a/`
+- [ ] Copy `edd-app-template` → `apps/4176-what-happens-when-you-give-your-ai-agents-a-voice-and-a/`
 - [ ] Write SPEC.md (this document)
 - [ ] Write DESIGN.md (tokens + visual direction)
 - [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
@@ -12,16 +26,17 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+- [ ] Implement the MCP server and the synthesise-speech tool.
+- [ ] Wire OmniVoice and the `say` backend.
+- [ ] Add the non-overlapping FIFO queue.
+- [ ] Build the persona registry and the demo site.
 
 ## Phase 2: Deploy
 
 - [ ] Create the GitHub repo
-- [ ] Deploy to Coolify
+- [ ] Deploy the demo site to Coolify
 - [ ] Verify in production
+
 
 ---
 

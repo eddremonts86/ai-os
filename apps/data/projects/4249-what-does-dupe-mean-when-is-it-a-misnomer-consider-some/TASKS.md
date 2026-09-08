@@ -1,4 +1,17 @@
-# TASKS.md — What does "[dupe]" mean. When is it a misnomer. Consider some scenarios
+---
+id: "4249"
+slug: what-does-dupe-mean-when-is-it-a-misnomer-consider-some
+title: "What does \"[dupe]\" mean. When is it a misnomer. Consider some scenarios"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49524525"
+category: ask-hn
+date: "2026-09-01"
+tags: [Ask HN, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# What does "[dupe]" mean. When is it a misnomer. Consider some scenarios
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

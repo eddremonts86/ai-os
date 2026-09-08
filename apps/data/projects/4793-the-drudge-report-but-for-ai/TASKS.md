@@ -1,0 +1,38 @@
+---
+id: "4793"
+slug: the-drudge-report-but-for-ai
+title: "The Drudge Report, but for AI"
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49542561"
+category: show-hn
+date: "2026-09-02"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# The Drudge Report, but for AI
+
+## Phase 0: Scaffold
+
+- [ ] Create the project folder under `apps/`
+- [ ] Initialise the git repo
+- [ ] Copiar `edd-app-template` → `apps/4793-the-drudge-report-but-for-ai/`
+- [ ] Write SPEC.md (this document)
+- [ ] Write DESIGN.md (tokens + visual direction)
+- [ ] Wire `tailwind.config.ts` to the DESIGN.md tokens
+- [ ] Set up the development environment
+
+## Phase 1: Core
+
+_Not written yet — `ai-os plans enrich` fills this section._
+
+## Phase 2: Deploy
+
+- [ ] Create the GitHub repo
+- [ ] Deploy to Coolify
+- [ ] Verify in production
+
+---
+
+_Generated automatically by Lúa on 2026-09-03_

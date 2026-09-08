@@ -1,4 +1,17 @@
-# TASKS.md — Throttling AI models under load can backfire and increase demand (SIM)
+---
+id: "4349"
+slug: throttling-ai-models-under-load-can-backfire-and-increa
+title: Throttling AI models under load can backfire and increase demand (SIM)
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521092"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# Throttling AI models under load can backfire and increase demand (SIM)
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

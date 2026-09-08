@@ -1,4 +1,17 @@
-# TASKS.md — SQLFlow (DuckDB for streaming data) Go Rewrite 10x Throughput
+---
+id: "4342"
+slug: sqlflow-duckdb-for-streaming-data-go-rewrite-10x-throug
+title: SQLFlow (DuckDB for streaming data) Go Rewrite 10x Throughput
+status: draft
+source:
+  name: HackerNews
+  url: "https://news.ycombinator.com/item?id=49521329"
+category: show-hn
+date: "2026-09-01"
+tags: [Show HN, Product, Problem]
+tech: [React, TypeScript, Node.js API (TanStack Start), SQLite with Drizzle ORM, Coolify, Docker]
+---
+# SQLFlow (DuckDB for streaming data) Go Rewrite 10x Throughput
 
 ## Phase 0: Scaffold
 
@@ -12,10 +25,7 @@
 
 ## Phase 1: Core
 
-- [ ] Implement the project scaffold
-- [ ] Implement the core features
-- [ ] Apply the design tokens to the components
-- [ ] Write tests
+_Not written yet — `ai-os plans enrich` fills this section._
 
 ## Phase 2: Deploy
 

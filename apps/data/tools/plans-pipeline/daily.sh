@@ -318,12 +318,26 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>"
   merge_through "$branch" dev "chore(plans): daily corpus refresh $stamp"
   merge_through dev main "chore(plans): promote daily corpus refresh $stamp"
 
+  # The promotion is a merge commit, so main now holds one commit dev does not. Bring dev up
+  # to it: the flow is feature → dev → main and the two must be identical between promotions,
+  # or main reads as ahead of the branch that feeds it. A rejected push means somebody merged
+  # into dev meanwhile; that is fine, the next promotion carries it.
+  git fetch -q origin main
+  git push -q origin "origin/main:refs/heads/dev" 2>/dev/null \
+    || log "dev moved during the promotion — left as is; the next ship promotes it"
+
   log "shipped. The deploy workflows trigger on the push to main."
 }
 
 # Open a PR head→base, wait for its checks, merge it. Never merges on a red or missing check.
 merge_through() {
   local head="$1" base="$2" title="$3"
+
+  # Refresh both refs first. The previous merge_through just moved dev on the remote, but the
+  # local origin/dev still pointed where the run-start fetch left it, so the promotion compared
+  # two stale refs, found them equal, and skipped: the corpus landed on dev and never reached
+  # main (2026-09-05, first ship after dev had been synced to main).
+  git fetch -q origin "$head" "$base"
 
   # dev→main on an unchanged dev is a normal no-op, not a failure.
   if [ "$(git rev-parse "origin/$head")" = "$(git rev-parse "origin/$base")" ]; then
