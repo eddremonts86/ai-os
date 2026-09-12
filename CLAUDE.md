@@ -281,6 +281,7 @@ Categories:
 - **anthropics (skills)**: claude-code, claude-api, frontend-design, mcp-builder, claude-best-practices, webapp-testing.
 - **taste-skill (v1, v2)**: anti-slop frontend design.
 - **secondsky (8)**: open-design, hcloud, coolify, prod-deploy, pnpm-docker, fleet-register, env-sync, containers-architecture.
+- **patterns-and-refactoring (1, third-party MIT)**: 22 code smells, 66 refactoring techniques, characterization-tests-first workflow, GoF/PoEAA/DDD/distributed catalogues and per-stack idioms. Vendored with a narrowed trigger (refactor, legacy, structural review) so it does not collide with ponytail on new code — see `ai-config/skills/patterns-and-refactoring/VENDORED_FROM.md`.
 - **diagram-design (1, third-party MIT)**: 27 editorial diagram types → self-contained HTML + inline SVG, skinned with the AI-OS brand. Vendored, dark-first, brand already onboarded — see `ai-config/skills/diagram-design/VENDORED_FROM.md`.
 - **custom (Edd)**: ai-os-karpathy, ai-os-quickstart, wave-template, tanstack-*, vue-*, react-*, 30+ more.
 
