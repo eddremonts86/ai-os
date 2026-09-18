@@ -17,6 +17,8 @@
 #   SKIP_VERIFY=1    → skip verification at the end
 #   ASSUME_YES=1     → skip the preflight confirmation prompt
 #   DRY_RUN=1        → simulate without executing (CI mode)
+#   EXTRAS=1         → also install dev-env/packages/Brewfile.extras (optional
+#                      GUI apps, language runtimes, infra CLIs). Default: core only.
 
 set -euo pipefail
 
@@ -53,6 +55,7 @@ preserve_or_replace() {
 
 # ─── Install manifest (shown before anything is installed) ───
 BREWFILE="$AI_OS_ROOT/dev-env/packages/Brewfile"
+BREWFILE_EXTRAS="$AI_OS_ROOT/dev-env/packages/Brewfile.extras"
 NPM_GLOBALS="$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
 PIP_PACKAGES="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
 SKILLS_DIR="$AI_OS_ROOT/ai-config/skills"
@@ -77,6 +80,16 @@ show_manifest() {
   echo ""
   echo "  🖥  Homebrew apps & fonts (casks, $n_casks):"
   grep -E '^cask ' "$BREWFILE" 2>/dev/null | sed -E 's/cask "([^"]+)".*/\1/' | join_fold
+  echo ""
+  if [ "${EXTRAS:-0}" = "1" ]; then
+    local n_formulae_x n_casks_x
+    n_formulae_x=$(grep -cE '^brew ' "$BREWFILE_EXTRAS" 2>/dev/null || echo 0)
+    n_casks_x=$(grep -cE '^cask ' "$BREWFILE_EXTRAS" 2>/dev/null || echo 0)
+    echo "  ➕ EXTRAS=1 — also installing ($n_formulae_x CLI + $n_casks_x apps):"
+    { grep -E '^(brew|cask) ' "$BREWFILE_EXTRAS" 2>/dev/null | sed -E 's/(brew|cask) "([^"]+)".*/\2/'; } | join_fold
+  else
+    log "Skipping optional apps/runtimes in Brewfile.extras (set EXTRAS=1 to include them)"
+  fi
   echo ""
   echo "  🟢 Global Node packages via pnpm ($n_node):"
   grep -vE '^[[:space:]]*(#|$)' "$NPM_GLOBALS" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
@@ -156,6 +169,11 @@ if [ "${SKIP_BREW:-0}" != "1" ]; then
   brew trust aws/tap >/dev/null 2>&1 || true
   brew bundle install --file=dev-env/packages/Brewfile --verbose
   ok "Brew packages installed"
+  if [ "${EXTRAS:-0}" = "1" ]; then
+    log "1b. EXTRAS=1 — installing dev-env/packages/Brewfile.extras..."
+    brew bundle install --file=dev-env/packages/Brewfile.extras --verbose
+    ok "Brew extras installed"
+  fi
 else
   log "1. SKIP_BREW=1, skipping brew"
 fi
