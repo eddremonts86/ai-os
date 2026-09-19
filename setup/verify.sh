@@ -460,7 +460,14 @@ if command -v ollama >/dev/null 2>&1; then
     else
       warn "  Ollama API :11500 not reachable (default port 11434 may be in use; OLLAMA_HOST env may be needed)"
     fi
-    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
+    # Captured first, then grepped via here-string — piping straight into `grep -q`
+    # is fragile under `set -o pipefail`: grep exits the instant it matches, and if
+    # `ollama list` still had more lines queued it gets SIGPIPE'd and this whole `if`
+    # reads as false even though the model IS there (bit us for real on 5c below,
+    # where qwen3 sorts first and nomic-embed-text second — the opposite order
+    # happened to save this check, not correctness).
+    ollama_models="$(OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null)" || true
+    if grep -q "nomic-embed-text" <<< "$ollama_models"; then
       opt_ok "  nomic-embed-text model available"
     else
       warn "  nomic-embed-text not pulled (run: OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text)"
@@ -480,6 +487,42 @@ for bin in codebase-memory-mcp grepai; do
     warn "$bin not installed (run install-mac.sh to retry)"
   fi
 done
+fi
+
+# ─── 5c. llm/router.mjs local model + opencode service (best-effort) ───
+# SKIP_OPENCODE=1 opts out, same convention as SKIP_MEMORY
+if [ "${SKIP_OPENCODE:-0}" = "1" ]; then
+  section "5c. llm/router.mjs + opencode (SKIPPED)"
+  log "SKIP_OPENCODE=1, skipping verification"
+else
+  section "5c. llm/router.mjs + opencode"
+
+  ollama_models="$(OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null)" || true
+  if grep -q "gemma3:12b" <<< "$ollama_models"; then
+    opt_ok "gemma3:12b pulled on the native Ollama daemon (llm/router.mjs's default)"
+  else
+    opt_miss "gemma3:12b not pulled (run: OLLAMA_HOST=127.0.0.1:11500 ollama pull gemma3:12b)"
+  fi
+
+  if command -v opencode >/dev/null 2>&1; then
+    opt_ok "opencode-ai installed ($(command -v opencode))"
+    if bash "$AI_OS_ROOT/llm/launchd/install-opencode.sh" --status 2>&1 | sed 's/^/  /'; then
+      :
+    fi
+  else
+    opt_miss "opencode-ai not installed (run: npm install -g opencode-ai)"
+  fi
+
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-open-webui$'; then
+    opt_ok "open-webui container running"
+    if curl -s -m 3 http://localhost:3301/ -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
+      opt_ok "  open-webui at http://localhost:3301 reachable"
+    else
+      warn "  open-webui :3301 not reachable (give it a few seconds to start)"
+    fi
+  else
+    opt_miss "open-webui container not running (run: cd memory && docker compose up -d open-webui)"
+  fi
 fi
 
 # ─── 6. Shell (Oh My Zsh + Powerlevel10k, optional dev-env preference) ───
