@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  opencode headless server, as a real service — the tool-use harness for the
+  llm/router.mjs "local" provider (Qwen3-8B via the native Ollama daemon on :11500).
+
+  WorkingDirectory is deliberately a disposable sandbox, NOT this repo. opencode's tools
+  (read/write/edit/bash) operate relative to whatever directory a session is bound to,
+  and this daemon runs unattended (KeepAlive, RunAtLoad, nobody watching prompts). A
+  weak local model getting a tool call wrong (it once tried to read `/hello.txt` instead
+  of `./hello.txt` in testing) should only ever be able to damage the sandbox, not a real
+  project. Point a specific session at a real directory explicitly when you actually want
+  it to touch that project — see llm/README.md.
+
+  Rendered by install-opencode.sh, which substitutes __OPENCODE_BIN__, __HOME__,
+  __SANDBOX_DIR__ and __PASSWORD__ (never committed — see llm/README.md).
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.opencode</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__OPENCODE_BIN__</string>
+        <string>serve</string>
+        <string>--port</string>
+        <string>4096</string>
+        <string>--hostname</string>
+        <string>127.0.0.1</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__SANDBOX_DIR__</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- Without this, anything else on the machine that can reach :4096 can drive
+             the harness — see llm/README.md's security model. -->
+        <key>OPENCODE_SERVER_PASSWORD</key>
+        <string>__PASSWORD__</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/.ai-os/opencode.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/.ai-os/opencode.log</string>
+</dict>
+</plist>

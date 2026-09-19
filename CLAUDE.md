@@ -177,6 +177,7 @@ ai-os/
 ├── archive/                     # completed Specs
 ├── outputs/                     # the framework's artifacts: research, audits, diagrams
 ├── memory/                      # loop registry + graph state
+├── llm/                         # local/cloud chat router (qwen3:8b via native Ollama, MiniMax fallback)
 ├── prompts/                     # original Karpathy prompts (English)
 ├── ai-config/                   # AI config: skills, MCP, commands
 ├── dev-env/                     # dev env: dotfiles, Brewfile, packages
