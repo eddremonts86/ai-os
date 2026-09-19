@@ -759,18 +759,18 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
 
   # 9b.2 — Unified AI-OS memory stack (FalkorDB + Graphiti in one compose project)
   if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-    mkdir -p "$AI_OS_ROOT/memory/falkordb/data"
+    mkdir -p "$AI_OS_ROOT/memory/falkordb/data" "$AI_OS_ROOT/memory/openwebui/data"
     COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
     if docker compose version >/dev/null 2>&1; then
-      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
-      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker-compose up failed"
@@ -1100,6 +1100,70 @@ PONYTAIL_CLAUDE
   ok "Ponytail ${PONYTAIL_VERSION} wiring complete (defaultMode=${PONYTAIL_DEFAULT_MODE}, src=${PONYTAIL_SRC:-none})"
 else
   log "9c. SKIP_PONYTAIL=1, skipping ponytail"
+fi
+echo ""
+
+# ─── 9d. llm/router.mjs local model + opencode service (model-less by default) ───
+# Pulls gemma3:12b onto the same native Ollama daemon 9b already started — that's
+# router.mjs's default for plain chat (classification/extraction, no tool use).
+# gemma3, not qwen3: this daemon has a single request slot, and qwen3 is a
+# "thinking" model whose reasoning trace can block every other caller
+# (router.mjs, opencode, open-webui) until it finishes — observed for real
+# 2026-09-19 (see llm/README.md, "Model selection, final state"). gemma3 has no
+# thinking mechanism at all, so it can't hit that failure mode structurally.
+# Also installs opencode-ai globally and persists it as a password-protected
+# launchd service scoped to a disposable sandbox directory, but deliberately
+# WITHOUT a model configured: the 2026-09-19 trial (llm/README.md, "Plan-enrichment
+# trial") found every model 8B-32B unreliable for opencode's actual multi-step
+# tool-use loop, so it isn't wired up by default anymore. See llm/README.md for
+# the full security model and why the sandbox default matters for an unattended
+# service, if you re-enable it deliberately.
+if [ "${SKIP_OPENCODE:-0}" != "1" ]; then
+  log "9d. Setting up llm/router.mjs (Gemma3-12B) + opencode service (model-less)..."
+
+  if command -v ollama >/dev/null 2>&1; then
+    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "gemma3:12b"; then
+      ok "  gemma3:12b already pulled"
+    else
+      log "  pulling gemma3:12b (~8.1GB, one-time)"
+      OLLAMA_HOST=127.0.0.1:11500 ollama pull gemma3:12b \
+        && ok "  gemma3:12b pulled" \
+        || warn "  gemma3:12b pull failed — llm/router.mjs's local provider will have nothing to talk to"
+    fi
+    # Ollama's default num_ctx (4096) truncates real prompts. 131072 is
+    # Gemma 3's full native context and loads 100% GPU on this 24GB Mac (9GB
+    # footprint — see llm/gemma3-12b.Modelfile). Re-applying is idempotent and
+    # cheap (no re-download, just a manifest update).
+    if OLLAMA_HOST=127.0.0.1:11500 ollama create gemma3:12b -f "$AI_OS_ROOT/llm/gemma3-12b.Modelfile" >/dev/null 2>&1; then
+      ok "  gemma3:12b context set to 131072"
+    else
+      warn "  could not set gemma3:12b's context (non-fatal — default 4096 still works, just truncates more)"
+    fi
+  else
+    warn "  ollama not installed — skipping gemma3:12b pull (see 9b)"
+  fi
+
+  if command -v npm >/dev/null 2>&1; then
+    if command -v opencode >/dev/null 2>&1; then
+      ok "  opencode-ai already installed ($(command -v opencode))"
+    elif npm install -g opencode-ai@latest 2>&1 | tail -3; then
+      ok "  opencode-ai installed globally"
+    else
+      warn "  npm install -g opencode-ai failed"
+    fi
+  else
+    warn "  npm not installed — opencode-ai skipped"
+  fi
+
+  if command -v opencode >/dev/null 2>&1; then
+    if bash "$SCRIPT_DIR/../llm/launchd/install-opencode.sh" 2>&1 | sed 's/^/    /'; then
+      ok "  opencode service on 127.0.0.1:4096 (sandbox: ~/.ai-os/opencode-sandbox, logs: ~/.ai-os/opencode.log)"
+    else
+      warn "  opencode service did not come up — tool-use harness disabled"
+    fi
+  fi
+else
+  log "9d. SKIP_OPENCODE=1, skipping opencode local agent"
 fi
 echo ""
 
