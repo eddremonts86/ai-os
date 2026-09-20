@@ -1,0 +1,16 @@
+[Unit]
+# opencode headless server, as a real service — the Linux equivalent of
+# llm/launchd/ai.os.opencode.plist.tmpl (see that file's comment for the full
+# rationale: sandbox-by-default WorkingDirectory, password required).
+Description=AI-OS opencode local agent (tool-use harness for llm/router.mjs)
+After=network.target
+
+[Service]
+ExecStart=__OPENCODE_BIN__ serve --port 4096 --hostname 127.0.0.1
+WorkingDirectory=__SANDBOX_DIR__
+Environment=OPENCODE_SERVER_PASSWORD=__PASSWORD__
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

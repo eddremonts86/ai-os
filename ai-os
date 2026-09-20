@@ -32,9 +32,10 @@ Usage:
   ai-os memory <subcommand> [args]    Memory stack (status, browse, reindex, bootstrap, ...)
   ai-os loop   <subcommand> [args]    Loop runner (start, status, ...)
   ai-os plans  <subcommand> [args]     Plan documents (check, format, test, enrich)
+  ai-os llm    <subcommand> [args]    Local/cloud chat router (ask, test)
   ai-os bootstrap [--refresh]         First-time / on-demand full-stack setup + auto-index
 
-Run \`ai-os memory help\`, \`ai-os loop help\` or \`ai-os plans help\` for the subcommand list.
+Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
 }
 
@@ -42,6 +43,10 @@ case "${1:-}" in
   memory)
     shift
     exec bash "$AI_OS_ROOT/memory/ai-os-memory.sh" "$@"
+    ;;
+  llm)
+    shift
+    exec bash "$AI_OS_ROOT/llm/ai-os-llm.sh" "$@"
     ;;
   loop)
     shift
