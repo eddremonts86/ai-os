@@ -506,6 +506,73 @@ else
 fi
 echo ""
 
+# ─── 7e. Selective ECC skills (vendor/ecc/, DAILY subset only) ───
+# vendor/ecc/ holds the full upstream ECC snapshot (292 skills) as reference —
+# see vendor/ecc/VENDORED_FROM.md. Unlike vendor/gstack/ (7c), we do NOT
+# symlink everything in it: only the names in vendor/ecc/DAILY_SKILLS.txt,
+# picked by an evidence-backed agent-sort pass against this repo (2026-09-20).
+# That file is the single source of truth for the list — don't duplicate it
+# here or in setup/verify.sh; both read the same file.
+ECC_DAILY_LIST="$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt"
+if [ -d "$AI_OS_ROOT/vendor/ecc/skills" ] && [ -f "$ECC_DAILY_LIST" ]; then
+  log "7e. Setting curated ECC DAILY skills in 5 CLIs..."
+  ECC_DAILY_COUNT=0
+  while IFS=$'\t' read -r client_id client_path client_required; do
+    cli_dir="$HOME_DIR/$client_path"
+    mkdir -p "$cli_dir"
+    # Prune stale ECC symlinks whose target is gone (mirrors 7c's gstack prune).
+    for link in "$cli_dir"/*; do
+      [ -L "$link" ] || continue
+      tgt=$(readlink "$link")
+      case "$tgt" in
+        *"/vendor/ecc/skills/"*) [ -f "${tgt%/}/SKILL.md" ] || rm -f "$link" ;;
+      esac
+    done
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      case "$name" in \#*) continue ;; esac
+      skill_dir="$AI_OS_ROOT/vendor/ecc/skills/$name"
+      [ -f "$skill_dir/SKILL.md" ] || { warn "  ECC skill '$name' listed in DAILY_SKILLS.txt but missing SKILL.md — skipping"; continue; }
+      if [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ]; then
+        preserve_or_replace "$cli_dir/$name" || continue
+      fi
+      ln -sfn "$skill_dir" "$cli_dir/$name"
+    done < "$ECC_DAILY_LIST"
+  done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
+  ECC_DAILY_COUNT=$(grep -vc '^\s*#\|^\s*$' "$ECC_DAILY_LIST")
+  ok "Curated ECC DAILY skills propagated ($ECC_DAILY_COUNT skills, per vendor/ecc/DAILY_SKILLS.txt)"
+else
+  log "7e. vendor/ecc/skills/ or DAILY_SKILLS.txt absent, skipping"
+fi
+echo ""
+
+# ─── 7f. Selective ECC agents (Claude Code only — no multi-CLI agent convention yet) ───
+# ai-os has no existing distribution mechanism for Claude Code subagent
+# definitions (.claude/agents/*.md) — this is the first one, deliberately
+# scoped to Claude Code only, since that's the only CLI ai-os documents
+# subagent support for today. 3 agents, picked by the same 2026-09-20
+# agent-sort pass: real gaps in ai-os's own Node/TS/Vue stack.
+ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
+if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
+  log "7f. Setting curated ECC DAILY agents in Claude Code..."
+  mkdir -p "$HOME_DIR/.claude/agents"
+  ECC_AGENT_COUNT=0
+  for name in "${ECC_DAILY_AGENTS[@]}"; do
+    src="$AI_OS_ROOT/vendor/ecc/agents/$name.md"
+    [ -f "$src" ] || { warn "  ECC agent '$name' missing at $src — skipping"; continue; }
+    dest="$HOME_DIR/.claude/agents/$name.md"
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+      preserve_or_replace "$dest" || continue
+    fi
+    ln -sfn "$src" "$dest"
+    ECC_AGENT_COUNT=$((ECC_AGENT_COUNT + 1))
+  done
+  ok "Curated ECC DAILY agents propagated ($ECC_AGENT_COUNT/${#ECC_DAILY_AGENTS[@]}) to ~/.claude/agents/"
+else
+  log "7f. vendor/ecc/agents/ absent, skipping"
+fi
+echo ""
+
 # ─── 7d. Global commands (source of truth: ai-config/commands) ───
 # Mirrors the skills flow (step 7) for slash-command-style combos (/action,
 # /full, /gen-html, ...) that don't fit the Agent Skills model as a distinct
@@ -759,18 +826,18 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
 
   # 9b.2 — Unified AI-OS memory stack (FalkorDB + Graphiti in one compose project)
   if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-    mkdir -p "$AI_OS_ROOT/memory/falkordb/data"
+    mkdir -p "$AI_OS_ROOT/memory/falkordb/data" "$AI_OS_ROOT/memory/openwebui/data"
     COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
     if docker compose version >/dev/null 2>&1; then
-      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
-      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker-compose up failed"
@@ -1103,7 +1170,71 @@ else
 fi
 echo ""
 
-# ─── 9d. Strategic-compact hook (Claude Code PreToolUse) ───
+# ─── 9d. llm/router.mjs local model + opencode service (model-less by default) ───
+# Pulls gemma3:12b onto the same native Ollama daemon 9b already started — that's
+# router.mjs's default for plain chat (classification/extraction, no tool use).
+# gemma3, not qwen3: this daemon has a single request slot, and qwen3 is a
+# "thinking" model whose reasoning trace can block every other caller
+# (router.mjs, opencode, open-webui) until it finishes — observed for real
+# 2026-09-19 (see llm/README.md, "Model selection, final state"). gemma3 has no
+# thinking mechanism at all, so it can't hit that failure mode structurally.
+# Also installs opencode-ai globally and persists it as a password-protected
+# launchd service scoped to a disposable sandbox directory, but deliberately
+# WITHOUT a model configured: the 2026-09-19 trial (llm/README.md, "Plan-enrichment
+# trial") found every model 8B-32B unreliable for opencode's actual multi-step
+# tool-use loop, so it isn't wired up by default anymore. See llm/README.md for
+# the full security model and why the sandbox default matters for an unattended
+# service, if you re-enable it deliberately.
+if [ "${SKIP_OPENCODE:-0}" != "1" ]; then
+  log "9d. Setting up llm/router.mjs (Gemma3-12B) + opencode service (model-less)..."
+
+  if command -v ollama >/dev/null 2>&1; then
+    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "gemma3:12b"; then
+      ok "  gemma3:12b already pulled"
+    else
+      log "  pulling gemma3:12b (~8.1GB, one-time)"
+      OLLAMA_HOST=127.0.0.1:11500 ollama pull gemma3:12b \
+        && ok "  gemma3:12b pulled" \
+        || warn "  gemma3:12b pull failed — llm/router.mjs's local provider will have nothing to talk to"
+    fi
+    # Ollama's default num_ctx (4096) truncates real prompts. 131072 is
+    # Gemma 3's full native context and loads 100% GPU on this 24GB Mac (9GB
+    # footprint — see llm/gemma3-12b.Modelfile). Re-applying is idempotent and
+    # cheap (no re-download, just a manifest update).
+    if OLLAMA_HOST=127.0.0.1:11500 ollama create gemma3:12b -f "$AI_OS_ROOT/llm/gemma3-12b.Modelfile" >/dev/null 2>&1; then
+      ok "  gemma3:12b context set to 131072"
+    else
+      warn "  could not set gemma3:12b's context (non-fatal — default 4096 still works, just truncates more)"
+    fi
+  else
+    warn "  ollama not installed — skipping gemma3:12b pull (see 9b)"
+  fi
+
+  if command -v npm >/dev/null 2>&1; then
+    if command -v opencode >/dev/null 2>&1; then
+      ok "  opencode-ai already installed ($(command -v opencode))"
+    elif npm install -g opencode-ai@latest 2>&1 | tail -3; then
+      ok "  opencode-ai installed globally"
+    else
+      warn "  npm install -g opencode-ai failed"
+    fi
+  else
+    warn "  npm not installed — opencode-ai skipped"
+  fi
+
+  if command -v opencode >/dev/null 2>&1; then
+    if bash "$SCRIPT_DIR/../llm/launchd/install-opencode.sh" 2>&1 | sed 's/^/    /'; then
+      ok "  opencode service on 127.0.0.1:4096 (sandbox: ~/.ai-os/opencode-sandbox, logs: ~/.ai-os/opencode.log)"
+    else
+      warn "  opencode service did not come up — tool-use harness disabled"
+    fi
+  fi
+else
+  log "9d. SKIP_OPENCODE=1, skipping opencode local agent"
+fi
+echo ""
+
+# ─── 9e. Strategic-compact hook (Claude Code PreToolUse) ───
 # Third token layer next to ponytail (code) and caveman (prose): suggests
 # /compact at phase boundaries instead of letting auto-compact fire mid-task.
 # The suggester itself is vendored (vendor/ecc/scripts/hooks/suggest-compact.js);
@@ -1111,7 +1242,7 @@ echo ""
 # merges the PreToolUse entry into ~/.claude/settings.json. Needs node — the
 # hook is a node script, so without it there is nothing to wire.
 if [ "${SKIP_COMPACT_HOOK:-0}" != "1" ]; then
-  log "9d. Strategic-compact hook (Claude Code PreToolUse)..."
+  log "9e. Strategic-compact hook (Claude Code PreToolUse)..."
   if ! command -v node >/dev/null 2>&1; then
     warn "  node not installed — skipping (the hook is a node script)"
   elif node "$SCRIPT_DIR/wire-compact-hook.mjs"; then
@@ -1120,7 +1251,7 @@ if [ "${SKIP_COMPACT_HOOK:-0}" != "1" ]; then
     warn "  strategic-compact hook not wired — see the message above (never blocks the install)"
   fi
 else
-  log "9d. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
+  log "9e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
 fi
 echo ""
 
