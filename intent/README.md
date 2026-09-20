@@ -35,7 +35,7 @@ intent.md  →  spec.md  →  plan.md  →  diff + tests  →  PR + review findi
 
 - **Code tokens:** `ponytail` (`full`, `~/.config/ponytail/config.json:1`) — ladder rung 2 encourages service extraction before new code; see `ai-config/skills/service-layer/SKILL.md:1`.
 - **Prose tokens:** `caveman` (`ai-config/skills/caveman/SKILL.md:1`) — `/caveman lite|full|ultra`, complements ponytail (ponytail = code, caveman = prose, -75%).
-- **Context window:** `strategic-compact` (`ai-config/skills/strategic-compact/SKILL.md:1`) — `PreToolUse` hook `~/.claude/scripts/hooks/suggest-compact.js` (threshold 50, then every 25) suggests `/compact` at phase boundaries; `/compact` after `intent-to-spec` and after plan keeps 200k window healthy.
+- **Context window:** `strategic-compact` (`ai-config/skills/strategic-compact/SKILL.md:1`) — `PreToolUse` hook `~/.claude/scripts/hooks/suggest-compact.js` suggests `/compact` at phase boundaries; `/compact` after `intent-to-spec` and after plan keeps the window healthy. Wired by `setup/wire-compact-hook.mjs` (installer step 9d on mac, 7e on win), which symlinks the vendored suggester (`vendor/ecc/scripts/hooks/suggest-compact.js`) and merges the hook into `~/.claude/settings.json`. Two signals: context size read from the transcript (~160k on a 200k window, ~250k on 1M, re-arming every +60k) and, as a weak proxy, tool-call count (`COMPACT_THRESHOLD`, default 50, then every 25).
 - **Visual proof (on-demand):** `@vercel/before-and-after` CLI (`pnpm add -g @vercel/before-and-after`, `before-and-after <before> <after> --markdown`) — not vendored (PolyForm Shield), use via `npx` for `plans-explorer` PRs. `vendor/shimeles/README.md:1` documents shimeles on-demand skills.
 
 ## Relation to prior spec
