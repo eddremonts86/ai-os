@@ -108,10 +108,15 @@ EXPECTED_SKILL_NAMES=$(
       find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" 2>/dev/null \
         | sed -E 's#.*/([^/]+)/SKILL\.md$#\1#'
     fi
+    # Curated ECC DAILY subset (vendor/ecc/DAILY_SKILLS.txt is the source of
+    # truth for the names — see setup/install-mac.sh section 7e).
+    if [ -f "$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt" ]; then
+      grep -v '^\s*#\|^\s*$' "$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt"
+    fi
   } | sort -u
 )
 EXPECTED_SKILL_COUNT=$(echo "$EXPECTED_SKILL_NAMES" | grep -c .)
-log "  Source of truth: $EXPECTED_SKILL_COUNT expected skill names per client (flat + gstack)"
+log "  Source of truth: $EXPECTED_SKILL_COUNT expected skill names per client (flat + gstack + ECC DAILY)"
 
 # id:relative_path:required:executable
 # Hermes is intentionally absent here: it natively supports skills.external_dirs
@@ -523,6 +528,21 @@ else
   else
     opt_miss "open-webui container not running (run: cd memory && docker compose up -d open-webui)"
   fi
+fi
+
+# ─── 5d. Curated ECC DAILY agents (Claude Code only, best-effort) ───
+section "5d. ECC DAILY agents (Claude Code)"
+ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
+ECC_AGENTS_FOUND=0
+for name in "${ECC_DAILY_AGENTS[@]}"; do
+  if [ -f "$HOME_DIR/.claude/agents/$name.md" ]; then
+    ECC_AGENTS_FOUND=$((ECC_AGENTS_FOUND + 1))
+  else
+    opt_miss "agent '$name' missing at ~/.claude/agents/ (run: bash setup/install-mac.sh, section 7f)"
+  fi
+done
+if [ "$ECC_AGENTS_FOUND" -eq "${#ECC_DAILY_AGENTS[@]}" ]; then
+  opt_ok "$ECC_AGENTS_FOUND/${#ECC_DAILY_AGENTS[@]} curated ECC agents present in ~/.claude/agents/"
 fi
 
 # ─── 6. Shell (Oh My Zsh + Powerlevel10k, optional dev-env preference) ───

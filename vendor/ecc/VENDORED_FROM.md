@@ -82,6 +82,35 @@ To refresh the vendored snapshot to a newer upstream release:
 5. Review `vendor/ecc/CHANGELOG.md` and `vendor/ecc/.claude-plugin/plugin.json`
    to record notable changes in the ai-os release notes.
 
+## Phase 2 — DAILY subset promoted (2026-09-20)
+
+An evidence-backed `agent-sort` pass classified all of `agents/`, `commands/`,
+`skills/`, `rules/`, `hooks/`, and the remaining top-level extras against this
+repo. The DAILY bucket (16 skills, 3 agents, 2 commands — genuine gaps, not
+duplicates of ai-os's own 14 superpowers or already-vendored skills) is now
+symlinked into every CLI:
+
+- **Skills** — `vendor/ecc/DAILY_SKILLS.txt` is the source of truth for the
+  16 names; `setup/install-mac.sh` section 7e symlinks each into every CLI's
+  skill directory (same pattern as `vendor/gstack/`, section 7c, except
+  filtered to this named list instead of "everything in the vendor dir").
+  `contract-first` was missing from this June-28 snapshot (added upstream
+  after that date) and was added here as a single-skill patch, not a full
+  re-vendor.
+- **Agents** — `typescript-reviewer`, `vue-reviewer`, `build-error-resolver`
+  symlinked into `~/.claude/agents/` (section 7f) — Claude Code only, since
+  ai-os had no prior subagent-distribution convention for any CLI.
+- **Commands** — `vue-review`, `build-fix` copied into `ai-config/commands/`
+  *and* wrapped as proper `ai-config/skills/{vue-review,build-fix}/SKILL.md`
+  entries (per `ai-config/commands/README.md`'s own "preferred path" —
+  a Skill IS a `/name` command on Claude Code/Codex/Antigravity/Hermes/VS
+  Code; the `ai-config/commands/` copy only covers VS Code prompts + Gemini
+  TOML, the two client types that don't consume Skills as literal commands).
+
+Everything else from the classification (LIBRARY and SKIP buckets, including
+the reasoning for each) is not re-vendored anywhere — `vendor/ecc/` itself
+already has it, unfiltered, as reference.
+
 ## License obligations
 
 ECC is MIT licensed. When redistributing the vendored copy:

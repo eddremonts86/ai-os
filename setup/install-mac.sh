@@ -506,6 +506,73 @@ else
 fi
 echo ""
 
+# ─── 7e. Selective ECC skills (vendor/ecc/, DAILY subset only) ───
+# vendor/ecc/ holds the full upstream ECC snapshot (292 skills) as reference —
+# see vendor/ecc/VENDORED_FROM.md. Unlike vendor/gstack/ (7c), we do NOT
+# symlink everything in it: only the names in vendor/ecc/DAILY_SKILLS.txt,
+# picked by an evidence-backed agent-sort pass against this repo (2026-09-20).
+# That file is the single source of truth for the list — don't duplicate it
+# here or in setup/verify.sh; both read the same file.
+ECC_DAILY_LIST="$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt"
+if [ -d "$AI_OS_ROOT/vendor/ecc/skills" ] && [ -f "$ECC_DAILY_LIST" ]; then
+  log "7e. Setting curated ECC DAILY skills in 5 CLIs..."
+  ECC_DAILY_COUNT=0
+  while IFS=$'\t' read -r client_id client_path client_required; do
+    cli_dir="$HOME_DIR/$client_path"
+    mkdir -p "$cli_dir"
+    # Prune stale ECC symlinks whose target is gone (mirrors 7c's gstack prune).
+    for link in "$cli_dir"/*; do
+      [ -L "$link" ] || continue
+      tgt=$(readlink "$link")
+      case "$tgt" in
+        *"/vendor/ecc/skills/"*) [ -f "${tgt%/}/SKILL.md" ] || rm -f "$link" ;;
+      esac
+    done
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      case "$name" in \#*) continue ;; esac
+      skill_dir="$AI_OS_ROOT/vendor/ecc/skills/$name"
+      [ -f "$skill_dir/SKILL.md" ] || { warn "  ECC skill '$name' listed in DAILY_SKILLS.txt but missing SKILL.md — skipping"; continue; }
+      if [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ]; then
+        preserve_or_replace "$cli_dir/$name" || continue
+      fi
+      ln -sfn "$skill_dir" "$cli_dir/$name"
+    done < "$ECC_DAILY_LIST"
+  done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
+  ECC_DAILY_COUNT=$(grep -vc '^\s*#\|^\s*$' "$ECC_DAILY_LIST")
+  ok "Curated ECC DAILY skills propagated ($ECC_DAILY_COUNT skills, per vendor/ecc/DAILY_SKILLS.txt)"
+else
+  log "7e. vendor/ecc/skills/ or DAILY_SKILLS.txt absent, skipping"
+fi
+echo ""
+
+# ─── 7f. Selective ECC agents (Claude Code only — no multi-CLI agent convention yet) ───
+# ai-os has no existing distribution mechanism for Claude Code subagent
+# definitions (.claude/agents/*.md) — this is the first one, deliberately
+# scoped to Claude Code only, since that's the only CLI ai-os documents
+# subagent support for today. 3 agents, picked by the same 2026-09-20
+# agent-sort pass: real gaps in ai-os's own Node/TS/Vue stack.
+ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
+if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
+  log "7f. Setting curated ECC DAILY agents in Claude Code..."
+  mkdir -p "$HOME_DIR/.claude/agents"
+  ECC_AGENT_COUNT=0
+  for name in "${ECC_DAILY_AGENTS[@]}"; do
+    src="$AI_OS_ROOT/vendor/ecc/agents/$name.md"
+    [ -f "$src" ] || { warn "  ECC agent '$name' missing at $src — skipping"; continue; }
+    dest="$HOME_DIR/.claude/agents/$name.md"
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+      preserve_or_replace "$dest" || continue
+    fi
+    ln -sfn "$src" "$dest"
+    ECC_AGENT_COUNT=$((ECC_AGENT_COUNT + 1))
+  done
+  ok "Curated ECC DAILY agents propagated ($ECC_AGENT_COUNT/${#ECC_DAILY_AGENTS[@]}) to ~/.claude/agents/"
+else
+  log "7f. vendor/ecc/agents/ absent, skipping"
+fi
+echo ""
+
 # ─── 7d. Global commands (source of truth: ai-config/commands) ───
 # Mirrors the skills flow (step 7) for slash-command-style combos (/action,
 # /full, /gen-html, ...) that don't fit the Agent Skills model as a distinct
