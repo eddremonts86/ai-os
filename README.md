@@ -11,7 +11,7 @@
 [![Skills: dynamic](https://img.shields.io/badge/skills-dynamic-green.svg)](ai-config/skills/)
 [![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
 [![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
-[![Commands: 5 (action/full/gen-html/saas-review/fix-ui-ux)](https://img.shields.io/badge/commands-5-orange.svg)](ai-config/commands/)
+[![Commands: 6 (action/full/gen-html/saas-review/sass-review/fix-ui-ux)](https://img.shields.io/badge/commands-6-orange.svg)](ai-config/commands/)
 
 ---
 

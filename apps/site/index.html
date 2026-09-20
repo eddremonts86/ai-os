@@ -733,6 +733,11 @@
         <h3>Diagrams that match the brand</h3>
         <p>27 editorial diagram types via the vendored <code>diagram-design</code> skill — self-contained HTML + inline SVG, dark-first, skinned from one token file. No Mermaid-slop, no shadows.</p>
       </div>
+      <div class="card third reveal">
+        <div class="ic">// local llm, evidence-checked</div>
+        <h3>A chat router, honestly scoped</h3>
+        <p><code>llm/router.mjs</code> swaps between native Ollama (<code>gemma3:12b</code>, 131K context) and MiniMax. A 5-attempt trial against the real plan-enrichment task found 8B–32B local models at 0% success on multi-file tool-use — so it stays chat-only by design, always-on behind a web UI at <code>:3301</code>.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -755,6 +760,7 @@
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="skills"><span class="btn-prompt">➜</span> <span class="btn-cmd">skills --info</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="mcp"><span class="btn-prompt">➜</span> <span class="btn-cmd">mcp --config</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="memory"><span class="btn-prompt">➜</span> <span class="btn-cmd">memory --status</span></button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="llm"><span class="btn-prompt">➜</span> <span class="btn-cmd">llm --status</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="commands"><span class="btn-prompt">➜</span> <span class="btn-cmd">commands --list</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="bridge"><span class="btn-prompt">➜</span> <span class="btn-cmd">bridge --check</span></button></li>
           <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" data-cmd="install"><span class="btn-prompt">➜</span> <span class="btn-cmd">install --steps</span></button></li>
@@ -823,6 +829,8 @@
         <div class="cmd-row"><code>ai-os-memory</code><p>Operate and inspect the memory stack: graph status, project indexing, semantic code search, graph browsing.</p></div>
         <div class="cmd-row"><code>ai-os-loop</code><p>Build and run reusable loops — the 4-file system (TASK, INSTRUCTIONS, PROGRESS, outputs) with 6 blast-radius safety levels.</p></div>
         <div class="cmd-row"><code>diagram-design</code><p>27 editorial diagram types as self-contained HTML + inline SVG, skinned from <code>context/06_brand.md</code>. The diagram above came from it.</p></div>
+        <div class="cmd-row"><code>vue-review</code><p>Vue-specific code review — reactivity, composables, template security, a11y. Vendored from ECC's DAILY subset, invokes the <code>vue-reviewer</code> agent.</p></div>
+        <div class="cmd-row"><code>build-fix</code><p>Detects the build system and fixes build/type errors one at a time, minimal diffs. Invokes the <code>build-error-resolver</code> agent.</p></div>
       </div>
 
       <div class="reveal">
@@ -837,6 +845,7 @@
         <div class="cmd-row"><code>ai-os memory search "&lt;q&gt;" [path]</code><p>Same, but falls back to the AST index when grepai isn't running.</p></div>
         <div class="cmd-row"><code>ai-os memory reindex [path]</code><p>Refresh the codebase-memory-mcp AST index.</p></div>
         <div class="cmd-row"><code>ai-os memory browse | visualize</code><p>Open the FalkorDB web UI, or every memory UI plus grepai status at once.</p></div>
+        <div class="cmd-row"><code>ai-os llm ask "&lt;prompt&gt;" | test</code><p>One-shot chat through the local/MiniMax router, or a sanity check of the configured provider.</p></div>
         <div class="cmd-row"><code>ai-os loop ls | add &lt;dir&gt; | rm &lt;id&gt;</code><p>List loops, register one (needs TASK.md + LOOP_INSTRUCTIONS.md), or mark one removed while keeping its directory.</p></div>
         <div class="cmd-row"><code>ai-os loop status | show | run | pause &lt;id&gt;</code><p>Inspect a loop's files, level and last activity; cat its PROGRESS.md; open a terminal at it; or disable its scheduling.</p></div>
       </div>
@@ -945,6 +954,7 @@ bash setup/verify.sh</pre>
           <h3>Optional layers</h3>
           <ul>
             <li><code>setup/install-ecc.sh</code>: +271 ECC skills</li>
+            <li><code>vendor/ecc/DAILY_SKILLS.txt</code>: 16 evidence-picked skills + 3 agents + 2 commands, symlinked by default (section 7e/7f)</li>
             <li><code>setup/install-claude-tools.sh</code>: +12 claude.tools / gstack skills</li>
             <li><code>DRY_RUN=1</code>: simulate without touching your machine</li>
           </ul>
@@ -1344,9 +1354,27 @@ ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainst
       <div class="c-item-desc">
         <code>ai-os-karpathy</code>, <code>ai-os-loop</code>, <code>ai-os-memory</code>, <code>ai-os-quickstart</code>,
         <code>autonomous-loops</code>, <code>mcp-dynamic-orchestrator</code>, <code>mcp-server-patterns</code>,
-        <code>mcp-management</code>, <code>diagram</code>, <code>freeze</code>, <code>unfreeze</code>, <code>guard</code>, 
-        <code>careful</code>, <code>humanizer</code>, <code>output-skill</code>, <code>strategic-compact</code>, 
+        <code>mcp-management</code>, <code>diagram</code>, <code>freeze</code>, <code>unfreeze</code>, <code>guard</code>,
+        <code>careful</code>, <code>humanizer</code>, <code>output-skill</code>, <code>strategic-compact</code>,
         <code>deep-research</code>, <code>exa-search</code>, <code>notebooklm-skill</code>, <code>brandkit</code>
+      </div>
+    </li>
+    <li>
+      <span class="c-item-title">ECC DAILY subset (evidence-backed, not the full bundle):</span>
+      <div class="c-item-desc">
+        <code>vendor/ecc/</code> holds the full 272-skill Everything-Claude-Code snapshot as unfiltered
+        reference. Rather than installing it wholesale, an <code>agent-sort</code> pass classified every
+        agent/skill/command against this specific repo with grep evidence, not opinion. The DAILY bucket —
+        genuine gaps, not duplicates of the 14 superpowers or skills above — is symlinked into every CLI:
+        <code>continuous-learning-v2</code>, <code>security-scan</code>, <code>gateguard</code>,
+        <code>codebase-onboarding</code>, <code>architecture-decision-records</code>, <code>contract-first</code>,
+        <code>inherit-legacy-style</code>, <code>ai-first-engineering</code>, <code>ai-regression-testing</code>,
+        <code>config-gc</code>, <code>context-budget</code>, <code>cost-tracking</code>, <code>skill-comply</code>,
+        <code>skill-scout</code>, <code>skill-stocktake</code>, <code>rules-distill</code> — plus two commands
+        (<code>/vue-review</code>, <code>/build-fix</code>) and three Claude-Code-only agents
+        (<code>typescript-reviewer</code>, <code>vue-reviewer</code>, <code>build-error-resolver</code> in
+        <code>~/.claude/agents/</code>). See <code>vendor/ecc/DAILY_SKILLS.txt</code> and
+        <code>vendor/ecc/VENDORED_FROM.md</code> § Phase 2 for the full classification.
       </div>
     </li>
   </ul>
@@ -1398,6 +1426,7 @@ ln -sfn ~/Projects/ai-os/ai-config/skills/brainstorming ~/.claude/skills/brainst
     <li><span class="c-item-title">codebase-memory-mcp:</span> Go-compiled MCP server exposing that index as searchable tools (<code>search</code>, <code>symbols</code>, <code>stats</code>) to any wired client.</li>
     <li><span class="c-item-title">Ollama (embeddings):</span> Serves <code>nomic-embed-text</code> at <code>127.0.0.1:11500</code>. macOS defaults to native (Metal GPU); Windows defaults to a Docker container (<code>ollama-docker</code> Compose profile) since there's no reliable no-admin native install path. Opt out with <code>OLLAMA_NATIVE=1</code>.</li>
     <li><span class="c-item-title">FalkorDB (knowledge graph):</span> Persistent graph memory across sessions, containerized via <code>memory/falkordb/docker-compose.yml</code>, browsable at <code>localhost:3300</code>.</li>
+    <li><span class="c-item-title">open-webui (chat UI, new):</span> Docker container <code>ia-os-open-webui</code> at <code>localhost:3301</code>, fronting the same always-on Ollama instance — see <code>llm --status</code> for the router it talks to.</li>
     <li><span class="c-item-title">Graphiti (temporal memory, opt-in):</span> Custom-built image (<code>ai-os/graphiti-mcp:minimax-standalone</code>) built locally from <code>getzep/graphiti</code> source, patched to strip MiniMax's <code>&lt;think&gt;</code> reasoning blocks before JSON parsing. Verified end-to-end 2026-07-30 &mdash; <code>add_memory</code>/<code>search_nodes</code>/<code>search_memory_facts</code>/<code>get_episodes</code> all confirmed against a live FalkorDB graph with a real <code>MINIMAX_API_KEY</code>. Not started by <code>ai-os memory start</code> by default (needs the key); only the hardcoded reranker inside <code>search</code> still wants a real <code>OPENAI_API_KEY</code>.</li>
   </ul>
   <div class="c-code-header">Daily driver: memory/ai-os-memory.sh</div>
@@ -1407,6 +1436,22 @@ ai-os memory reindex     # force a full grepai re-index of the current repo
 ai-os memory search "how does the installer wire MCP servers"
 ai-os memory visualize   # open FalkorDB's graph browser</pre>
   <div class="c-text">Cross-platform by design: process checks use a pure HTTP probe against Ollama's API (no CLI-presence assumption) with a <code>ps</code>-based fallback where <code>pgrep</code> doesn't exist (Git Bash on Windows).</div>
+</div>`,
+    llm: `
+<div class="c-section">
+  <div class="c-header">Local LLM Router (llm/) — chat-only, by evidence not by guess</div>
+  <div class="c-text"><code>llm/router.mjs</code> is a provider-swappable OpenAI-compatible chat client, built to cut the token bill of expensive tasks like <code>plans-pipeline</code> (35–40M tokens/run) by routing plain chat to a local model first.</div>
+  <ul class="c-list">
+    <li><span class="c-item-title">Default model:</span> <code>gemma3:12b</code> on native Ollama, <code>:11500</code>, context widened to <code>131072</code> via <code>llm/gemma3-12b.Modelfile</code> (Ollama's default 4096 truncates real prompts — re-applied after every <code>pull</code>).</li>
+    <li><span class="c-item-title">Fallback provider:</span> MiniMax-M3, same interface, toggled via <code>AI_LLM_PROVIDER=local|minimax</code>.</li>
+    <li><span class="c-item-title">Why Gemma, not Qwen3:</span> Qwen3/Gemma4 are "thinking" models — a separate <code>thinking</code> stream that can run indefinitely, and Ollama serves one request at a time (<code>-np 1</code>), so a stuck thinking call blocks every other caller. Gemma3 doesn't think; it can't hit that failure mode. This was a real production incident, root-caused via <code>ps</code>/TCP state, fixed with a container restart.</li>
+    <li><span class="c-item-title">Chat UI:</span> <code>open-webui</code> at <code>:3301</code> (Docker, <code>ia-os-open-webui</code>), always-on since the model stays resident. Wired into <code>.claude/launch.json</code> so it previews from inside the repo.</li>
+    <li><span class="c-item-title">Tool-use trial — closed, evidence-backed:</span> 5 attempts running the real multi-file plan-enrichment task (read rules, rewrite a plan, follow constraints) through <code>opencode</code> against local 8B–32B models (qwen3, llama3-groq-tool-use, gemma) → <b>0% success</b>. Not "never calls a tool" — it calls tools, just often the wrong one, or drops the task partway. Closed pending better local hardware/models; the router stays chat-only.</li>
+  </ul>
+  <div class="c-code-header">Usage</div>
+  <pre class="c-code">ai-os llm ask "summarize this diff"   # one-shot, routes to AI_LLM_PROVIDER
+ai-os llm test                        # sanity-check the configured provider</pre>
+  <div class="c-text">Full trial data, model comparison table and the corrected narrative (an early "model never calls tools" conclusion was wrong and replaced after re-testing) live in <code>llm/README.md</code>.</div>
 </div>`,
     commands: `
 <div class="c-section">
@@ -1483,10 +1528,10 @@ powershell -ExecutionPolicy Bypass -File .\\setup\\install-windows.ps1  # Window
     <li><span class="c-item-title">2. Database Config:</span> <code>DATABASE_URL</code> (postgres system dev DB), <code>LOCAL_DATABASE_URL</code> (port 5433 Docker postgres), <code>PROD_DATABASE_URL</code> (production database on Coolify's internal network), <code>DB_CONFIG_SECRET</code> (AES encryption key for connection profiles).</li>
     <li><span class="c-item-title">3. Authentication:</span> <code>AUTH_MODE=hybrid</code> (Better Auth + Clerk), publishable and secret keys.</li>
     <li><span class="c-item-title">4. Cloud LLMs:</span> Keys and base URLs for <code>MINIMAX_API_KEY</code> (MiniMax-M3), <code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>.</li>
-    <li><span class="c-item-title">5. Local LLMs:</span> <code>AI_API_BASE_URL=http://localhost:11435/v1</code> for Ollama, llama.cpp, LM Studio, and models (qwen3.5:2b).</li>
+    <li><span class="c-item-title">5. Local LLMs:</span> <code>AI_LLM_PROVIDER=local|minimax</code>, <code>AI_OLLAMA_NATIVE_BASE_URL=http://localhost:11500/v1</code>, <code>AI_OLLAMA_NATIVE_MODEL=gemma3:12b</code> — see <code>llm --status</code>.</li>
     <li><span class="c-item-title">6. Vector Store & Agent Stack:</span> ChromaDB URL, <code>nomic-embed-text</code> embeddings, OpenClaw gateway credentials, Telegram bot token.</li>
     <li><span class="c-item-title">7. Cloud Infrastructure:</span> <code>HETZNER_API_TOKEN</code> (for Hetzner cloud VPS) and <code>COOLIFY_API_TOKEN</code> (for Coolify staging/prod).</li>
-    <li><span class="c-item-title">8. GitHub / Packaging:</span> <code>GH_TOKEN</code> / <code>GIT_HUB</code> (personal access tokens), npm tokens, Sentry DSN, Percy tokens.</li>
+    <li><span class="c-item-title">8. GitHub / Packaging:</span> <code>GH_TOKEN</code> / <code>GIT_HUB</code> (personal access tokens), npm tokens, Sentry DSN, Percy tokens, <code>OPENCODE_SERVER_PASSWORD</code> (generated, machine-local).</li>
   </ul>
   
   <div class="c-code-header">Initialize Environment:</div>
@@ -1550,6 +1595,7 @@ git config --global user.email "you@example.com"</div>
     skills: "skills --info",
     mcp: "mcp --config",
     memory: "memory --status",
+    llm: "llm --status",
     commands: "commands --list",
     bridge: "bridge --check",
     install: "install --steps",

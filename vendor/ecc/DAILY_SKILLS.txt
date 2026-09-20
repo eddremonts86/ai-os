@@ -1,0 +1,23 @@
+# Curated DAILY subset of vendor/ecc/skills/, selected by the agent-sort skill
+# 2026-09-20 (evidence-backed classification against ai-os's own repo — see
+# the session that produced this file for the full DAILY/LIBRARY/SKIP table).
+# One skill name per line, matching a directory under vendor/ecc/skills/.
+# Symlinked into every CLI by setup/install-mac.sh section 7e — this file is
+# the single source of truth for which names get symlinked; don't hardcode
+# the list a second time anywhere else.
+continuous-learning-v2
+security-scan
+gateguard
+codebase-onboarding
+architecture-decision-records
+contract-first
+inherit-legacy-style
+ai-first-engineering
+ai-regression-testing
+config-gc
+context-budget
+cost-tracking
+skill-comply
+skill-scout
+skill-stocktake
+rules-distill
