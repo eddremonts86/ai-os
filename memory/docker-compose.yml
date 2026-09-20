@@ -11,6 +11,12 @@
 #   ia-os-ollama         — embedding model (opt-in profile, used on Windows; Mac
 #                          defaults to a host-side `ollama serve` for Metal GPU
 #                          acceleration, which containers can't reach)
+#   ia-os-open-webui     — chat UI for the host's native Ollama (:3301), so
+#                          qwen3:14b (llm/router.mjs's model — see llm/README.md)
+#                          is actually usable from a browser while it sits loaded
+#                          in memory all the time anyway. Reaches the host daemon
+#                          via host.docker.internal:11500, same pattern as
+#                          graphiti-mcp's embedder below.
 #
 # Ollama has TWO supported shapes on Mac, and both publish 127.0.0.1:11500 so nothing
 # downstream has to know which is running:
@@ -141,6 +147,30 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  open-webui:
+    # Not pinned by digest like the ollama service above: a chat UI's version drift is
+    # cosmetic (new features, layout), not the "silently changes your data" risk that
+    # justified pinning the embedder. `:main` matches the tag containers-architecture.md
+    # already documents for the iaWorkSpace stack's own open-webui.
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ia-os-open-webui
+    restart: unless-stopped
+    networks:
+      - ia-os-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # reach the host's native Ollama (:11500); no-op on Docker Desktop, required on Linux Docker Engine
+    ports:
+      - "127.0.0.1:3301:8080"
+    volumes:
+      - ./openwebui/data:/app/backend/data
+    environment:
+      OLLAMA_BASE_URL: http://host.docker.internal:11500
+      # ⚠ No login wall. Acceptable here: bound to 127.0.0.1 only (never LAN), and this
+      # is a single-user local tool, not a shared service — same trade-off containers-
+      # architecture.md makes for OLLAMA_ORIGINS=* on the iaWorkSpace stack.
+      WEBUI_AUTH: "False"
+      ANONYMIZED_TELEMETRY: "False"
 
 networks:
   ia-os-net:

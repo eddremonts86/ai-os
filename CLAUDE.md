@@ -177,6 +177,7 @@ ai-os/
 ├── archive/                     # completed Specs
 ├── outputs/                     # the framework's artifacts: research, audits, diagrams
 ├── memory/                      # loop registry + graph state
+├── llm/                         # local/cloud chat router (qwen3:8b via native Ollama, MiniMax fallback)
 ├── prompts/                     # original Karpathy prompts (English)
 ├── ai-config/                   # AI config: skills, MCP, commands
 ├── dev-env/                     # dev env: dotfiles, Brewfile, packages
@@ -277,6 +278,7 @@ Categories:
 - **superpowers (14 required, see section 16)**: using-superpowers, brainstorming, writing-plans, writing-skills, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees. Plus `code-review-and-quality` (required, but separate from the 14).
 - **AI-OS workflow skills (native)**: ai-os-karpathy, ai-os-quickstart.
 - **Vendored from gstack (optional, third-party)**: spec, context-save, context-restore — see `vendor/gstack/`. The native Spec/Plan workflow remains `workflows/project_start.md`.
+- **Vendored from ECC, DAILY subset (evidence-backed via `agent-sort`, 2026-09-20)**: continuous-learning-v2, security-scan, gateguard, codebase-onboarding, architecture-decision-records, contract-first, inherit-legacy-style, ai-first-engineering, ai-regression-testing, config-gc, context-budget, cost-tracking, skill-comply, skill-scout, skill-stocktake, rules-distill, plus commands `vue-review`/`build-fix` and Claude-Code-only agents `typescript-reviewer`/`vue-reviewer`/`build-error-resolver` — see `vendor/ecc/VENDORED_FROM.md` § Phase 2 for the classification and why each was picked. The full 292-skill ECC snapshot stays at `vendor/ecc/` as unfiltered reference; only this named subset is symlinked out.
 - **antfu (19)**: vite, vue, nuxt, nitro, pinia, pnpm, vitest, unocss, etc.
 - **anthropics (skills)**: claude-code, claude-api, frontend-design, mcp-builder, claude-best-practices, webapp-testing.
 - **taste-skill (v1, v2)**: anti-slop frontend design.
