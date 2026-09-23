@@ -67,11 +67,17 @@ Windows 11
    on Ubuntu by `test-linux.yml` in CI, so it's the right script to run, not
    `install-windows.ps1` (that one targets native PowerShell, a different
    codepath we don't need once we're inside a real Linux userspace).
-3. One real gap: `install-mac.sh`'s package list doesn't include `pnpm`
-   (only `node`) — every `actives/` project needs it. Add it
-   (`corepack enable && corepack prepare pnpm@latest --activate`, matching
-   how the Mac side gets it) as part of this phase's implementation, not
-   assumed already covered.
+3. **Correction from an earlier pass of this spec**: `install-mac.sh` already
+   installs `pnpm` — it's in `dev-env/packages/Brewfile:48` and gets pulled
+   in by `brew bundle install`, which the script already runs unconditionally.
+   The actual gap is one step earlier: `install-mac.sh` doesn't self-install
+   Homebrew if it's missing (it just errors with the official installer
+   command) — Linuxbrew has to exist on the WSL2 Ubuntu box *before*
+   `install-mac.sh` runs, which is a one-line manual/documented step, not a
+   code change:
+   `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+   (the official installer auto-detects Linux and installs to
+   `/home/linuxbrew/.linuxbrew`).
 4. Verify: `nvidia-smi` runs inside WSL2 and shows the 2060S; `docker info`
    inside WSL2 talks to the Windows-side Docker Desktop engine.
 
