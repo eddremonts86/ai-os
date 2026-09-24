@@ -1,0 +1,47 @@
+# PRODUCT.md — Indices – Automate web workflows with a fast, reliable API for any website
+
+> Auto-generated product brief. Review and refine before MVP scoping.
+
+## Value Proposition
+
+_Based on source brief:_ Indices provides a production-grade platform to automate actions and data retrieval from any web application when official APIs are missing or limited. It learns how target sites work at the network level and exposes a reliable REST API and MCP/CLI interface to execute workflows with low latency and consistent results. It handles logins, MFA, CAPTCHA, proxies, auditing, and self-heals through cosmetic site changes so your agents and services can operate reliably at scale. No browser agents or GUI automation needed. View startup
+
+**One-liner:** _[Define the single sentence that explains why this product exists.]_
+
+## Target Users
+
+| Stakeholder | Why they care |
+|---|---|
+| Early adopters | _[What pain they feel, and how this solves it]_ |
+| Founders | _[What pain they feel, and how this solves it]_ |
+| SMEs | _[What pain they feel, and how this solves it]_ |
+
+## Jobs To Be Done
+
+1. **Functional job** — _[What the user is trying to accomplish]_
+2. **Emotional job** — _[How they want to feel]_
+3. **Social job** — _[How others perceive them using this]_
+
+## Success Metrics (North Star)
+
+- **Activation:** _[% of signups who complete X within Y days]_
+- **Retention:** _[DAU/MAU, week-1 retention, cohort curves]_
+- **Revenue:** _[MRR target, ARPU, LTV/CAC]_
+
+## Pricing & Monetization
+
+_TODO:_ define model (freemium / subscription / one-time / marketplace fee).
+
+## Competitive Landscape
+
+_TODO:_ list 2-3 alternatives + differentiation.
+
+## Risks & Open Questions
+
+- [ ] Validate problem with 5 user interviews before MVP
+- [ ] Confirm willingness to pay
+- [ ] Define compliance scope (GDPR, payments, etc.)
+
+---
+
+_Source:_ [BetaList](https://betalist.com/startups/indices?utm_campaign=startup-183967&utm_medium=atom&utm_source=newsfeed) · **Category:** beta · **Tags:** BetaList,Beta,Product
