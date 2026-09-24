@@ -1,0 +1,112 @@
+# -----------------------------------------------------------------------------
+# Deploy plans-api to Coolify.
+#
+# Mirrors deploy-submission-api.yml and deploy-plans-explorer.yml: pokes the
+# Coolify API on push to main when the service, the corpus it bakes in at build
+# time, or its Dockerfile changed.
+#
+# SAFE BY DEFAULT: until the secrets below are set, this runs a green no-op.
+# A successful run is therefore not evidence of a deploy — read the annotation.
+#
+# Activation:
+#   gh secret set COOLIFY_API_URL
+#   gh secret set COOLIFY_API_TOKEN
+#   gh secret set COOLIFY_APP_UUID_PLANS_API
+#   gh secret set SITE_URL_PLANS_API           # optional, for the health probe
+#   gh secret set PLANS_API_HEALTH_TOKEN       # optional, Bearer token to probe /api/stats too
+#
+# The Coolify app itself must exist first, with:
+#   build_pack=dockerfile · dockerfile_location=/Dockerfile.plans-api
+#   base_directory=/      · ports_exposes=8080
+#
+# And its environment must carry:
+#   PLANS_API_TOKEN   the server refuses to start without it (apps/plans-api/server.mjs)
+# -----------------------------------------------------------------------------
+name: Deploy plans-api
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/plans-api/**"
+      # The corpus is generated at build time by plans-explorer's own indexer
+      # (see Dockerfile.plans-api), so a change to either alters what ships.
+      - "apps/plans-explorer/app/scripts/build-index.mjs"
+      - "apps/plans-explorer/app/package.json"
+      - "apps/plans-explorer/app/package-lock.json"
+      - "apps/data/projects/**"
+      - "Dockerfile.plans-api"
+      - ".dockerignore"
+      - ".github/workflows/deploy-plans-api.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-plans-api
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # All the Coolify talking lives in the reusable workflow so the deploys
+    # here cannot drift apart. It waits for the deployment to reach
+    # `finished`; a bare "queued" is not evidence the build passed.
+    uses: ./.github/workflows/reusable-coolify-deploy.yml
+    with:
+      app: plans-api
+    secrets:
+      coolify_api_url: ${{ secrets.COOLIFY_API_URL }}
+      coolify_api_token: ${{ secrets.COOLIFY_API_TOKEN }}
+      app_uuid: ${{ secrets.COOLIFY_APP_UUID_PLANS_API }}
+
+  verify:
+    name: Verify plans-api
+    needs: deploy
+    # Only when something was actually deployed. An unconfigured deploy is a
+    # green no-op and has nothing to probe.
+    if: needs.deploy.outputs.deployed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify by content, not by status code
+        env:
+          SITE_URL_PLANS_API: ${{ secrets.SITE_URL_PLANS_API }}
+          PLANS_API_HEALTH_TOKEN: ${{ secrets.PLANS_API_HEALTH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SITE_URL_PLANS_API:-}" ]; then
+            echo "::notice::SITE_URL_PLANS_API not set — skipping the health probe."
+            exit 0
+          fi
+          echo "Probing ${SITE_URL_PLANS_API}/health …"
+          for i in 1 2 3 4 5; do
+            body=$(curl -fsS --max-time 15 "${SITE_URL_PLANS_API%/}/health" || true)
+            echo "attempt ${i}: ${body:-(no response)}"
+            # A 200 with plans:0 means the corpus never made it into the image — the same
+            # failure the Dockerfile's own build-time check exists to catch, just at runtime.
+            case "$body" in
+              *'"status":"ok"'*'"plans":0'*)
+                echo "::error title=Deployed with an empty corpus::/health reports plans:0. The build-time indexer step likely failed silently, or apps/data/projects/ was missing from the build context."
+                exit 1 ;;
+              *'"status":"ok"'*) echo "✓ Live, corpus loaded."; break ;;
+            esac
+            sleep 10
+          done
+          if [ -z "${body:-}" ]; then
+            echo "::error title=No health response::plans-api deployed but /health never answered."
+            exit 1
+          fi
+          if [ -z "${PLANS_API_HEALTH_TOKEN:-}" ]; then
+            echo "::notice::PLANS_API_HEALTH_TOKEN not set — skipping the auth probe."
+            exit 0
+          fi
+          # The whole point of this service is the authenticated /api/* surface;
+          # /health alone does not prove the token Coolify holds actually works.
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 \
+            -H "Authorization: Bearer ${PLANS_API_HEALTH_TOKEN}" \
+            "${SITE_URL_PLANS_API%/}/api/stats")
+          if [ "$code" != "200" ]; then
+            echo "::error title=Auth probe failed::GET /api/stats with the configured token answered ${code}, not 200."
+            exit 1
+          fi
+          echo "✓ Authenticated /api/stats answered 200."
