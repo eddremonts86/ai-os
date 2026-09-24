@@ -78,6 +78,16 @@ For full client guidance, see [`docs/API.md`](./docs/API.md) — covers every
 endpoint, the auth flow, common client patterns (curl, fetch, requests),
 troubleshooting, and how to rotate the token.
 
+## Rate limiting
+
+Every `/api/*` route is also capped per IP: `RATE_LIMIT_MAX` requests (default
+60) per `RATE_LIMIT_WINDOW_MS` (default 60000, one minute), reset on restart.
+Over the limit answers `429` with a `Retry-After` hint. `/health` is exempt.
+
+Set `TRUST_PROXY=1` in production (this box sits behind Traefik) so the limit
+keys on the real client's `X-Forwarded-For` address rather than the proxy's —
+same rule, same env var, as `apps/submission-api`.
+
 ## Refresh after new plans
 
 The corpus grows whenever the `problemhunt-scraper` cron runs (or you trigger
