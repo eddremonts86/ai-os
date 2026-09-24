@@ -1,4 +1,4 @@
-// plans-api/routes/rankings.mjs
+// apps/plans-api/routes/rankings.mjs
 //
 // GET /api/rankings
 // Returns the top-5 plans for money / learn / fun axes from

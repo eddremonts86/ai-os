@@ -1,4 +1,4 @@
-// plans-api/server.mjs
+// apps/plans-api/server.mjs
 //
 // Fastify bootstrap. Loads plans.json + rankings.json + meta.json into
 // memory at startup, registers CORS, mounts routes under /api/*, and

@@ -1,4 +1,4 @@
-// plans-api/routes/facets.mjs
+// apps/plans-api/routes/facets.mjs
 //
 // GET /api/facets
 // Returns unique values + counts for tech[], tags[], category, country.

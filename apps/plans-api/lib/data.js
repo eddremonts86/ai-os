@@ -1,4 +1,4 @@
-// plans-api/lib/data.js
+// apps/plans-api/lib/data.js
 //
 // Loads plans.json + rankings.json + meta.json from the plans-explorer indexer
 // output into in-memory snapshots. Filtering and sorting are pure functions
@@ -7,6 +7,7 @@
 import { readFileSync, statSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
+// Sibling under apps/: apps/plans-api/lib -> apps -> apps/plans-explorer/...
 const DEFAULT_DATA_DIR = resolve(
   import.meta.dirname, '..', '..',
   'plans-explorer', 'app', 'public', 'data'
