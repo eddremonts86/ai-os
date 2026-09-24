@@ -23,7 +23,7 @@ All responses are JSON. All `GET` endpoints return
 ## Data flow
 
 ```
-~/Projects/ai-os/
+apps/
 ├── plans-explorer/app/public/data/
 │   ├── plans.json              ← source of truth for list/details
 │   ├── rankings.json           ← top5 money/learn/fun
@@ -32,8 +32,7 @@ All responses are JSON. All `GET` endpoints return
 └── plans-api/                  ← this service
     ├── server.mjs              ← bootstrap, loads plans.json in memory
     ├── lib/
-    │   ├── data.js             ← loader + filter/sort logic
-    │   └── search.js           ← text search
+    │   └── data.js             ← loader + filter/search/sort logic
     └── routes/
         ├── plans.mjs
         ├── plan.mjs

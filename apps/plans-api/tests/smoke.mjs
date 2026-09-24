@@ -1,4 +1,4 @@
-// plans-api/tests/smoke.mjs
+// apps/plans-api/tests/smoke.mjs
 //
 // End-to-end smoke: assumes the API is running on $BASE (default
 // http://127.0.0.1:8787). Hits every endpoint and validates basic shape

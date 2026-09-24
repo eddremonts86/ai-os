@@ -1,4 +1,4 @@
-// plans-api/routes/stats.mjs
+// apps/plans-api/routes/stats.mjs
 //
 // GET /api/stats
 // Returns corpus totals + last refresh + distribution summary.
