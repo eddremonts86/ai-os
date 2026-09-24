@@ -371,6 +371,7 @@ What gets vendored:
 | claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`)                        | `ai-config/skills/`                                                                | 4 skills            |
 | gstack (`careful`, `context-save`, `context-restore`, `freeze`, `guard`, `spec`, `unfreeze`)            | `ai-config/skills/`                                                                | 7 skills            |
 | diagram-design (MIT, `cathrynlavery/diagram-design`) — re-skinned to the AI-OS brand                    | `ai-config/skills/diagram-design/`                                                 | 1 skill             |
+| patterns-and-refactoring (MIT, `christianpasinrey/refactoring.guru-skill`) — trigger narrowed to refactor/review | `ai-config/skills/patterns-and-refactoring/` | 1 skill |
 | OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
 Why a separate installer (instead of folding into `install-mac.sh`)?
