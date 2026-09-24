@@ -1,0 +1,39 @@
+# SPEC.md — Talleyrand – Open-source AI thinking workspace built as a question tree
+
+## Problem
+
+I like to discuss complex topics with LLMs, but their linear chat is a bad place to think through hard questions. Every good answer raises three new questions. You ask one, then scroll back and forth to find the other two. Twenty messages in, you&#x27;ve forgotten some of the questions you wanted to dig into. You start a new chat and it forgets everything, so you have to re-read what you already know. And you can&#x27;t just click &quot;yeah, I know this, skip it&quot; or &quot;off topic&quot;.<p>I built Talleyrand (working at Sage, a nonprofit), which keeps your questions in a tree. You can branch out from any sentence in an answer. Every LLM prompt is built from the brief, the other threads, your highlights, your reactions and what you&#x27;ve read, so the answers are personalized to you. After each answer it suggests follow-ups and &quot;big-picture&quot; questions that challenge your framing. You can react to anything in one click (&quot;off-topic&quot;, &quot;already know this&quot;, &quot;interesting&quot;), and later prompts take the reactions into account.<p>Some details:
+- Free, MIT. Sign in with Google, bring your own OpenAI key. If you want to use Claude, add an Anthropic key. Keys are stored in your browser only.
+- Self-hostable with Docker. Stack: FastAPI and MongoDB on the backend, React and TypeScript on the front. The only setup work is Google OAuth credentials, which I know is annoying, but you can ask Claude to remove that if you need to.<p>Happy to iterate on your feedback and make it easier to use!
+
+**Source:** [HackerNews](https://news.ycombinator.com/item?id=49646061)
+**Primary category:** show-hn
+**Tags:** Show HN,Product,Problem
+**Date:** 2026-09-10T16:06:00Z
+
+---
+
+## Objective
+
+Build a solution that addresses this problem clearly and at scale.
+
+---
+
+## Target Users
+
+1. **[Primary user]** — the main user this serves
+2. **[Secondary user]** — other relevant users
+
+## MVP Scope
+
+- Core functionality
+- Leave out anything beyond the MVP
+
+## Design Direction
+
+See `DESIGN.md` for this project's design tokens.
+
+## Constraints
+
+- Keep the MVP simple
+- No unnecessary external dependencies
