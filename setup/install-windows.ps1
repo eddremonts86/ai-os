@@ -903,7 +903,7 @@ if (-not $env:SKIP_PONYTAIL) {
     if ($ponytailSrc -and (Test-Path (Join-Path $ponytailSrc "AGENTS.md"))) {
         $marker = "PONYTAIL (DietrichGebert/ponytail v$ponytailVersion)"
         $agentsContent = Get-Content (Join-Path $ponytailSrc "AGENTS.md") -Raw
-        foreach ($rel in @(".agents\AGENTS.md", ".codex\AGENTS.md")) {
+        foreach ($rel in @(".agents\AGENTS.md", ".codex\AGENTS.md", ".config\opencode\AGENTS.md")) {
             $agPath = Join-Path $HomeDir $rel
             if (Test-Path $agPath) {
                 $existing = Get-Content $agPath -Raw -ErrorAction SilentlyContinue

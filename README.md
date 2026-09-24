@@ -294,13 +294,16 @@ ai-os/
 │   ├── test-linux.yml             #   ubuntu-latest
 │   ├── test-windows.yml           #   windows-latest
 │   ├── deploy-site.yml            #   apps/site → Coolify
-│   └── deploy-plans-explorer.yml  #   apps/plans-explorer + projects → Coolify
+│   ├── deploy-plans-explorer.yml  #   apps/plans-explorer + projects → Coolify
+│   ├── deploy-submission-api.yml  #   apps/submission-api → Coolify
+│   └── deploy-plans-api.yml       #   apps/plans-api → Coolify
 │
 │   # ───────────── what the framework produced ─────────────
 └── apps/                          # The products, one directory each
     ├── site/                      #   the AI-OS landing
     ├── plans-explorer/            #   the plans SPA
     ├── submission-api/            #   submissions write path (not deployed)
+    ├── plans-api/                 #   read-only REST API over the corpus (e.g. builderhunt)
     ├── create-ai-os/              #   published npm package @edd_remonts/create-ai-os
     └── data/                      #   the plans product
         ├── projects/              #     the corpus: 466 machine-written plan dirs
@@ -371,6 +374,7 @@ What gets vendored:
 | claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`)                        | `ai-config/skills/`                                                                | 4 skills            |
 | gstack (`careful`, `context-save`, `context-restore`, `freeze`, `guard`, `spec`, `unfreeze`)            | `ai-config/skills/`                                                                | 7 skills            |
 | diagram-design (MIT, `cathrynlavery/diagram-design`) — re-skinned to the AI-OS brand                    | `ai-config/skills/diagram-design/`                                                 | 1 skill             |
+| patterns-and-refactoring (MIT, `christianpasinrey/refactoring.guru-skill`) — trigger narrowed to refactor/review | `ai-config/skills/patterns-and-refactoring/` | 1 skill |
 | OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
 Why a separate installer (instead of folding into `install-mac.sh`)?

@@ -62,3 +62,12 @@ jobs:
           push: false
           cache-from: type=gha,scope=submission-api
           cache-to: type=gha,mode=max,scope=submission-api
+
+      - name: Build plans-api (Dockerfile.plans-api)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.plans-api
+          push: false
+          cache-from: type=gha,scope=plans-api
+          cache-to: type=gha,mode=max,scope=plans-api
