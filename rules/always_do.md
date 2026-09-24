@@ -87,6 +87,8 @@ Rules:
 
 ## When writing code
 
+**Ponytail is always on (`full`).** Before writing any code, climb the ladder and stop at the first rung that holds: does this need to exist at all (YAGNI) → is it already in this codebase → stdlib → native platform feature → already-installed dependency → one line → minimum that works. Shortest working diff wins, but only after you understand the flow the change touches; a bug fix means the root cause in the shared function, not a guard per caller. Never simplify away input validation at trust boundaries, error handling that prevents data loss, security, accessibility, or anything explicitly requested. Non-trivial logic leaves one runnable check behind. Per-session override: `/ponytail lite|full|ultra|off`. Machine default: `~/.config/ponytail/config.json` (Windows: `%APPDATA%\ponytail\config.json`).
+
 13. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
 14. Run tests (Vitest, pytest, bats, Pester).
 15. Run lint (ESLint, ruff, shellcheck, PSScriptAnalyzer).
