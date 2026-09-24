@@ -7,6 +7,16 @@
 // Auth: every /api/* route requires a Bearer token from PLANS_API_TOKEN
 // (read from process.env at boot, or from ~/.hermes/.env). /health stays
 // open so monitors and load balancers don't need credentials.
+//
+// Rate limit: /api/* is also capped per IP (RATE_LIMIT_MAX per
+// RATE_LIMIT_WINDOW_MS). This is read-only — nothing here can be
+// corrupted by a flood — but the token is a shared secret handed to at
+// least one external consumer (builderhunt), and unlike submission-api's
+// hand-rolled per-IP limiter this app already depends on Fastify, so
+// @fastify/rate-limit is the one-line answer: same idea (per-IP, in
+// memory, resets on restart), same TRUST_PROXY-gated proxy trust,
+// exercised by Fastify's own well-tested request.ip resolution instead of
+// a second XFF parser to keep in sync with the first.
 
 import { readFileSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -14,6 +24,7 @@ import { join } from 'node:path';
 import { timingSafeEqual } from 'node:crypto';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import rateLimit from '@fastify/rate-limit';
 import { loadAll } from './lib/data.js';
 import plansRoutes from './routes/plans.mjs';
 import planRoutes from './routes/plan.mjs';
@@ -45,7 +56,14 @@ if (!TOKEN) {
 }
 const TOKEN_BUF = Buffer.from(TOKEN, 'utf8');
 
+// Only when TRUST_PROXY is set — correct behind this box's Traefik, wrong
+// anywhere the service is directly reachable, same rule submission-api's
+// clientIp() follows for the same header. With it on, Fastify's own
+// request.ip (and therefore the rate limiter's default keyGenerator)
+// resolves from X-Forwarded-For instead of the socket, which would
+// otherwise be Traefik's own address for every client.
 const app = Fastify({
+  trustProxy: process.env.TRUST_PROXY === '1',
   logger: {
     level: process.env.PLANS_API_LOG || 'info'
   }
@@ -91,12 +109,20 @@ app.addHook('onRequest', async (req, reply) => {
   }
 });
 
-// Routes — mounted under /api/* so the auth hook above applies.
-await app.register(plansRoutes, { prefix: '/api' });
-await app.register(planRoutes, { prefix: '/api' });
-await app.register(rankingsRoutes, { prefix: '/api' });
-await app.register(facetsRoutes, { prefix: '/api' });
-await app.register(statsRoutes, { prefix: '/api' });
+// Routes — mounted under /api/* so the auth hook above applies. Wrapped in
+// one encapsulated context (Fastify's own scoping mechanism) so the rate
+// limiter registered inside it decorates only these routes, not /health.
+await app.register(async (api) => {
+  await api.register(rateLimit, {
+    max: Number(process.env.RATE_LIMIT_MAX || 60),
+    timeWindow: Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000)
+  });
+  await api.register(plansRoutes);
+  await api.register(planRoutes);
+  await api.register(rankingsRoutes);
+  await api.register(facetsRoutes);
+  await api.register(statsRoutes);
+}, { prefix: '/api' });
 
 // Liveness probe — public, no auth.
 app.get('/health', async () => ({ status: 'ok', plans: app.plans?.length ?? 0 }));
