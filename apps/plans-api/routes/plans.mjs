@@ -1,4 +1,4 @@
-// plans-api/routes/plans.mjs
+// apps/plans-api/routes/plans.mjs
 //
 // GET /api/plans
 // Query params: q, tech, category, tag, country, wtp_min, wtp_max,

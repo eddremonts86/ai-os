@@ -146,7 +146,7 @@ curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8787/api/stats
   "scores": { "money": 7, "learn": 5, "fun": 10 },
   "lastRefresh": "2026-08-17T05:35:27.820Z",
   "generatedAt": null,
-  "dataDir": "/Users/edd/Projects/ai-os/plans-explorer/app/public/data"
+  "dataDir": "/Users/edd/Projects/ai-os/apps/plans-explorer/app/public/data"
 }
 ```
 
@@ -387,4 +387,4 @@ If you need higher rate limits or per-client quotas, that's a future feature
 - `README.md` (top of this repo) — architecture, how to run, env vars
 - `tests/smoke.mjs` — runnable smoke that validates every endpoint
 - The corpus itself: `../plans-explorer/app/public/data/plans.json`
-- The scraper that grows the corpus: `../tools/problemhunt-scraper/README.md`
+- The scraper that grows the corpus: `../data/tools/problemhunt-scraper/README.md`

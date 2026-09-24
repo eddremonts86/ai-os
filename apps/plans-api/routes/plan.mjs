@@ -1,4 +1,4 @@
-// plans-api/routes/plan.mjs
+// apps/plans-api/routes/plan.mjs
 //
 // GET /api/plans/:id
 // Optional ?docs=1 to inline SPEC/PRODUCT/PLAN/DESIGN/TASKS bodies.
