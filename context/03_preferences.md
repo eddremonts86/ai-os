@@ -22,6 +22,10 @@
 - For lists → use real lists, not paragraph-form summaries.
 - For errors → first the cause, then the fix, then the prevention.
 - For "ok crea todos los docs" → tight and operational, not pedagogical.
+- Multi-step work → restate position every turn ("step 3 of 5 done: X. next: Y"); use the task list if the harness has one.
+- Time estimates → concrete units ("15 min if tests cover it, an afternoon if not"), never "some work".
+- Anything left open → end with ONE action doable in under two minutes.
+- Lists in the final answer → cap at 5 per group, most relevant first; keep the rest and show on request.
 
 ## Autonomy + verification
 
