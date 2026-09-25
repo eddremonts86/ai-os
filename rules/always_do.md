@@ -125,7 +125,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error, **fix it 
 
 24. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
     budget, and the accessible-SVG contract; a hand-rolled figure silently drops all three.
-25. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `site/index.html`
+25. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/index.html`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
 26. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and

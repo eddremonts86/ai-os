@@ -190,35 +190,31 @@ ai-os/
 │   # ── the products the framework produces ────────────────────────────
 └── apps/                        # the products, one directory each
     ├── site/                    # the AI-OS landing (ai-os.eduardoinerarte.dk)
-    ├── plans-explorer/          # the plans SPA (plans.eduardoinerarte.dk)
-    ├── submission-api/          # the submissions write path (not deployed yet)
-    ├── create-ai-os/            # published npm package @edd_remonts/create-ai-os
-    └── data/                    # the plans product
-        ├── projects/            #   the corpus: 466 machine-written plan dirs
-        ├── tools/               #   the machinery
-        │   ├── problemhunt-scraper/  # capture
-        │   ├── plan-format/          # the contract, the gate, the formatter
-        │   ├── plans-pipeline/       # the daily loop
-        │   └── lib/                  # shared id allocation
-        ├── skills/              #   skills documenting this product's machinery
-        ├── progress/            #   the enrichment loop's 4-file set + per-agent logs
-        └── outputs/             #   the product's run artifacts (ignored, machine-local)
+    └── create-ai-os/            # published npm package @edd_remonts/create-ai-os
 ```
+
+The plans product (corpus, scraper, plan-format, plans-pipeline, plans-explorer, plans-api,
+submission-api — formerly `apps/data`, `apps/plans-explorer`, `apps/plans-api`,
+`apps/submission-api`) moved to its own repo, **plansmith**, on 2026-09-25 — see
+`docs/repo-layout.md` for the split rationale. `ai-os plans <cmd>` now requires
+`PLANSMITH_ROOT=/path/to/plansmith`; it no longer resolves inside this repo.
 
 Three things in that tree are deliberate and must not be "tidied":
 
 - **`AGENTS.md` is a symlink to `CLAUDE.md`.** It is how Codex and Antigravity find these
   instructions. Deleting it breaks them silently — they start with no instructions at all.
-- **`Dockerfile*` stay at the repo root.** They are deploy descriptors for the repository, and
-  Coolify addresses them by absolute path (`dockerfile_location=/Dockerfile`, `base_directory=/`);
-  moving them would mean editing live production configuration to land a directory rename.
-- **`outputs/` exists twice.** The root one holds the framework's research and audits; the one
-  under `apps/data/` holds the plans product's run artifacts. Both are ignored with a tracked
-  `.gitkeep`, separately, so either can start being tracked without the other.
+- **`Dockerfile` stays at the repo root.** It is a deploy descriptor for the repository, and
+  Coolify addresses it by absolute path (`dockerfile_location=/Dockerfile`, `base_directory=/`);
+  moving it would mean editing live production configuration to land a directory rename.
+- **`outputs/` holds the framework's own research and audits**, ignored with a tracked
+  `.gitkeep`. Before the plansmith split it existed twice (a second copy under `apps/data/`
+  held the plans product's run artifacts) — that copy moved with the product.
 
-Tooling never counts `..` hops to find the root — it walks up to the `CLAUDE.md` marker
-(`apps/data/tools/plan-format/lib/plan.mjs`). Hop counting broke silently on every move: an
-empty glob reads as "zero plans" and every downstream check still passes.
+The `CLAUDE.md`-marker root walk (rather than counting `..` hops) is the same pattern the
+plansmith repo's tools use for its own root; here the framework's own scripts mostly resolve
+`AI_OS_ROOT` by symlink-following (`ai-os`) or hop-counting (`install-mac.sh`). Hop counting
+broke silently on every product-side move before the split: an empty glob reads as "zero plans"
+and every downstream check still passes.
 
 ## 12. Commands quick reference
 
