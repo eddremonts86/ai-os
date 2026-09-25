@@ -54,7 +54,11 @@ case "${1:-}" in
     ;;
   plans)
     shift
-    exec bash "$AI_OS_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" "$@"
+    if [ -z "${PLANSMITH_ROOT:-}" ]; then
+      echo "ai-os: plans moved to the plansmith repo. Set PLANSMITH_ROOT=/path/to/plansmith" >&2
+      exit 1
+    fi
+    exec bash "$PLANSMITH_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" "$@"
     ;;
   bootstrap)
     shift
