@@ -4,6 +4,18 @@
 > Written 2026-08-18, when the reorganisation finished. Read this before moving anything at
 > the repo root — several entries look like clutter and are load-bearing.
 
+## 2026-09-25 update: the plans product moved to its own repo
+
+Everything this document originally filed under `apps/data/`, `apps/plans-explorer/`,
+`apps/plans-api/` and `apps/submission-api/` moved out to a new repo, **plansmith**, because the
+repo had grown four unrelated things (a personal AI-tooling framework, a data product, two
+deployed web apps, vendored third-party skills) with almost no coupling between the framework
+side and the product side (19 of 275 commits touched both). Internal paths inside plansmith are
+unchanged (`apps/data/projects`, `apps/plans-explorer`, ...) so its own tools, Dockerfiles and
+workflows needed no path edits — only `ai-os plans` in this repo changed, now requiring
+`PLANSMITH_ROOT` to be set. See plansmith's own `CLAUDE.md` for its layout. The corpus count
+below (466) and the tree under "Layout" describe the **pre-split** state; read them as history.
+
 ## The rule
 
 **Everything above `apps/` is the operating system. Everything from `apps/` down is what the

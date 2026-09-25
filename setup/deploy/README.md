@@ -86,34 +86,17 @@ COOLIFY_API_TOKEN="4|xxxxxxxx…"
 TOKEN=$(grep -m1 '^COOLIFY_API_TOKEN=' dev-env/env-config/.env | cut -d= -f2- | tr -d '"'"'"')
 ```
 
-## plans-explorer (second app — live since 2026-08-14)
+## plans-explorer, plans-api, submission-api moved to plansmith (2026-09-25)
 
-The explorer in [`apps/plans-explorer/`](../../apps/plans-explorer/) is a separate Coolify application
-built from [`Dockerfile.plans-explorer`](../../Dockerfile.plans-explorer), serving
-**https://plans.eduardoinerarte.dk**. Created via the API and deployed; both repo secrets are
-set, so pushes to `main` touching `apps/plans-explorer/**` or `apps/data/projects/**` now deploy it
-automatically.
+Those three apps' Coolify runbooks (settings, verification-by-content, the shared
+`edd-app-template` project) moved to plansmith's own `setup/deploy/README.md`. Nothing here
+changed for them mechanically — same UUIDs, same domains — only which repo's Actions push the
+deploy.
 
-Its settings — mirrored from `ai-os-landing`, same repo and deploy key, in project
-`edd-app-template` / environment `production`:
-
-| Setting | Value | Why |
-|---|---|---|
-| `build_pack` | `dockerfile` | |
-| `dockerfile_location` | `/Dockerfile.plans-explorer` | |
-| `base_directory` | `/` | The indexer reads `../projects/`; scoping the context to `apps/plans-explorer/` yields a green build serving **zero** plans |
-| `ports_exposes` | `80` | |
-| domain | `https://plans.eduardoinerarte.dk` | Wildcard DNS already resolved to the box; no DNS change was needed |
-
-Verified in production by content, not by status code: `/` serves the SPA shell (678 B, distinct
-from the landing's 96 kB), `/data/plans.json` returns 10 plans all at `status: enriched`, the SPA
-fallback answers unknown paths, and the container's own healthcheck — which probes
-`/data/plans.json`, not just the shell — reports `healthy`.
-
-> Both deploy workflows are safe-by-default: they run a **green no-op** when their secrets are
-> absent. A successful run is therefore not evidence of a deploy. Check the run's annotation for
-> `Deploy skipped`, and confirm the live site by content. `/plans/` on the landing returns
-> HTTP 200 serving the landing itself via nginx's SPA fallback — a 404 wearing a 200.
+> Every deploy workflow in this fleet is safe-by-default: it runs a **green no-op** when its
+> secrets are absent. A successful run is therefore not evidence of a deploy. Check the run's
+> annotation for `Deploy skipped`, and confirm the live site by content. `/plans/` on the landing
+> returns HTTP 200 serving the landing itself via nginx's SPA fallback — a 404 wearing a 200.
 
 ## Notes / decisions
 
