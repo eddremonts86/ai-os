@@ -3,7 +3,7 @@
 Canonical brand tokens for AI-OS. Any skill, diagram, slide, or generated asset that needs
 brand colors or typography reads **this file**, not a hardcoded hex value.
 
-Source of truth for the values below: `site/index.html` (the AI-OS landing page), whose CSS
+Source of truth for the values below: `apps/site/index.html` (the AI-OS landing page), whose CSS
 custom properties are authored in oklch. Extracted and verified 2026-08-13.
 
 ---
@@ -100,7 +100,7 @@ blanket face for body text.
 Skills and files that read these tokens. Update them in the same commit when the brand changes:
 
 - `ai-config/skills/diagram-design/references/style-guide.md` — diagram skin (dark-first).
-- `site/index.html` — the origin of the values; changes here start there.
+- `apps/site/index.html` — the origin of the values; changes here start there.
 
 ### Per-project override
 

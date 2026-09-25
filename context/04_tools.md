@@ -105,8 +105,8 @@ Hermes also refuses to run any **unpinned** job after the global inference confi
 `~/.hermes/cron/jobs.json` (`{"jobs": [...]}`) but not in `hermes cron list`.
 
 All three of these were live at once on 2026-08-25 and the visible symptom was only that the
-plans corpus stopped gaining published plans. See
-`apps/data/tools/plans-pipeline/README.md`.
+plans corpus stopped gaining published plans. See `apps/data/tools/plans-pipeline/README.md` in
+the **plansmith** repo (moved there 2026-09-25).
 
 ## The preview pane reads `launch.json` from the session root, not the project
 
@@ -131,8 +131,9 @@ Three standing constraints on this machine:
 - **Port 3000 is taken** by the Hermes WhatsApp bridge (`hermes-agent/scripts/whatsapp-bridge/bridge.js`).
   Port 5173 is also usually in use. Pick 3007+ for a new dev server, and record *why* in the config's
   `//` key so nobody moves it back and kills the bridge.
-- **AI-OS pins its two front-ends:** the plans explorer is **3020**, the landing (`apps/site/`) is
-  **3021**. Both are declared in `.claude/launch.json`, and the explorer's `vite.config.ts` sets
+- **Two front-ends pin their ports across two repos:** the landing (`apps/site/`, this repo) is
+  **3021**, declared in this repo's `.claude/launch.json`. The plans explorer is **3020**, declared
+  in **plansmith**'s own `.claude/launch.json` since the 2026-09-25 split; its `vite.config.ts` sets
   `strictPort: true` so a stale server fails the boot instead of drifting onto 3021 and serving the
   explorer where the landing should be. Ports in use when they were chosen: 3000 (bridge), 3010,
   3011, 3013, 3015, 5173.
