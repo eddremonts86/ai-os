@@ -8,6 +8,10 @@ metadata:
 
 # Plan authoring
 
+> `apps/data/` (the corpus this documents) moved to its own repo, **plansmith**, on 2026-09-25.
+> Every `ai-os plans ...` command below needs `PLANSMITH_ROOT=/path/to/plansmith` set first, or
+> run `apps/data/tools/plan-format/ai-os-plans.sh` directly from inside that repo.
+
 Turn a captured problem into a plan a reader would trust, one plan at a time.
 
 The corpus this exists for had 14 of 24 sections byte-identical across all 552 plans,

@@ -9,7 +9,10 @@ metadata:
 
 # plans-explorer
 
-Static SPA inside the AI-OS framework that indexes 525 product plans (in `../projects/`) plus the auto-generated `TOP_PROJECTS.md` rankings (money / learn / fun).
+> This app (and the whole plans product) moved to its own repo, **plansmith**, on 2026-09-25.
+> Paths below are relative to that repo's root, not `ai-os`'s.
+
+Static SPA that indexes the corpus (in `apps/data/projects/`) plus the auto-generated `TOP_PROJECTS.md` rankings (money / learn / fun).
 
 ## When to use
 

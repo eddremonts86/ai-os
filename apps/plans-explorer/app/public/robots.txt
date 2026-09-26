@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://plans.eduardoinerarte.dk/sitemap.xml
