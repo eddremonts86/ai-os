@@ -45,29 +45,5 @@ jobs:
           cache-from: type=gha,scope=landing
           cache-to: type=gha,mode=max,scope=landing
 
-      - name: Build plans-explorer (Dockerfile.plans-explorer)
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile.plans-explorer
-          push: false
-          cache-from: type=gha,scope=plans-explorer
-          cache-to: type=gha,mode=max,scope=plans-explorer
-
-      - name: Build submission-api (Dockerfile.submission-api)
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile.submission-api
-          push: false
-          cache-from: type=gha,scope=submission-api
-          cache-to: type=gha,mode=max,scope=submission-api
-
-      - name: Build plans-api (Dockerfile.plans-api)
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: Dockerfile.plans-api
-          push: false
-          cache-from: type=gha,scope=plans-api
-          cache-to: type=gha,mode=max,scope=plans-api
+      # plans-explorer, submission-api and plans-api moved to the plansmith repo
+      # (2026-09-25 split) — their image builds live in plansmith's own image.yml.
