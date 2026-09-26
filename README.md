@@ -222,8 +222,7 @@ ai-os/
 │   └── skill-creation/            # When discovering patterns (1 file)
 │
 ├── archive/                      # Versioned completed Specs
-├── outputs/                      # The FRAMEWORK's artifacts: research, audits, diagrams
-│                                 #   (gitignored; the plans product has its own under apps/data/)
+├── outputs/                      # The FRAMEWORK's artifacts: research, audits, diagrams (gitignored)
 │
 ├── ai-config/                    # AI config (replicable, 1297 files)
 │   ├── skills/                    #   flat skills + nested plugin bundles
@@ -293,39 +292,27 @@ ai-os/
 │   ├── test-mac.yml               #   macos-latest
 │   ├── test-linux.yml             #   ubuntu-latest
 │   ├── test-windows.yml           #   windows-latest
-│   ├── deploy-site.yml            #   apps/site → Coolify
-│   ├── deploy-plans-explorer.yml  #   apps/plans-explorer + projects → Coolify
-│   ├── deploy-submission-api.yml  #   apps/submission-api → Coolify
-│   └── deploy-plans-api.yml       #   apps/plans-api → Coolify
+│   └── deploy-site.yml            #   apps/site → Coolify
 │
 │   # ───────────── what the framework produced ─────────────
 └── apps/                          # The products, one directory each
     ├── site/                      #   the AI-OS landing
-    ├── plans-explorer/            #   the plans SPA
-    ├── submission-api/            #   submissions write path (not deployed)
-    ├── plans-api/                 #   read-only REST API over the corpus (e.g. builderhunt)
-    ├── create-ai-os/              #   published npm package @edd_remonts/create-ai-os
-    └── data/                      #   the plans product
-        ├── projects/              #     the corpus: 466 machine-written plan dirs
-        ├── tools/                 #     the machinery that maintains it
-        │   ├── problemhunt-scraper/     # capture
-        │   ├── plan-format/             # contract + gate + formatter
-        │   ├── plans-pipeline/          # the daily loop
-        │   └── lib/                     # shared id allocation
-        ├── skills/                #     skills documenting that machinery
-        ├── progress/              #     the enrichment loop's 4-file set + agent logs
-        └── outputs/               #     the product's run artifacts (gitignored)
+    └── create-ai-os/              #   published npm package @edd_remonts/create-ai-os
 ```
+
+The plans product (corpus, scraper, plan-format, plans-pipeline, the explorer SPA, the read API,
+the submissions write path) moved to its own repo, **plansmith**, on 2026-09-25 — see the
+2026-09-25 note in [`docs/repo-layout.md`](docs/repo-layout.md).
 
 Everything above `apps/` is the operating system. Everything from `apps/` down is what it
 produced — the full decision record, including which root entries look like clutter but are
 load-bearing, is [`docs/repo-layout.md`](docs/repo-layout.md).
 
 Two that catch people out: **`AGENTS.md` is a symlink to `CLAUDE.md`** (that is how Codex and
-Antigravity find these instructions — deleting it breaks them silently), and **`Dockerfile*`
-stay at the repo root** because they are deploy descriptors for the repository and Coolify
-addresses them absolutely (`dockerfile_location=/Dockerfile`), so moving them would mean
-editing live production config to land a directory rename.
+Antigravity find these instructions — deleting it breaks them silently), and **`Dockerfile`
+stays at the repo root** because it is a deploy descriptor for the repository and Coolify
+addresses it absolutely (`dockerfile_location=/Dockerfile`), so moving it would mean editing
+live production config to land a directory rename.
 
 ### ECC Integration (optional layer)
 
