@@ -744,10 +744,11 @@ if ($env:SKIP_MEMORY -ne "1") {
 
     # 7b.2 — FalkorDB graph DB (+ Ollama container if chosen in 7b.1)
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        Push-Location "$AIOSRoot\memory\falkordb"
+        Push-Location "$AIOSRoot\memory"
         try {
-            if (-not (Test-Path "data")) { New-Item -ItemType Directory -Path "data" | Out-Null }
-            if (-not (Test-Path "ollama-data")) { New-Item -ItemType Directory -Path "ollama-data" | Out-Null }
+            foreach ($d in "falkordb\data", "falkordb\ollama-data", "openwebui\data") {
+                if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
+            }
             $composeArgs = @("up", "-d")
             if ($useDockerOllama) { $composeArgs = @("--profile", "ollama-docker") + $composeArgs }
             docker compose @composeArgs 2>&1 | Select-Object -Last 5
@@ -766,7 +767,7 @@ if ($env:SKIP_MEMORY -ne "1") {
             }
         }
         catch {
-            Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory\falkordb; docker compose up -d)"
+            Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory; docker compose up -d)"
         }
         finally {
             Pop-Location

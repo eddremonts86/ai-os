@@ -83,6 +83,7 @@ services:
     # and Ollama are both reached through the base 'openai' client). Rebuild with:
     #   git clone https://github.com/getzep/graphiti.git /tmp/graphiti-build/graphiti
     #   cp /Users/edd/Projects/ai-os/memory/graphiti/Dockerfile.standalone.minimal /tmp/graphiti-build/graphiti/mcp_server/docker/
+    #   cp -r /Users/edd/Projects/ai-os/memory/graphiti/patches /tmp/graphiti-build/graphiti/mcp_server/patches   # COPY'd by the Dockerfile; build fails without it
     #   cd /tmp/graphiti-build/graphiti/mcp_server/docker
     #   docker build -f Dockerfile.standalone.minimal -t ai-os/graphiti-mcp:minimax-standalone ..
     image: ai-os/graphiti-mcp:minimax-standalone
@@ -156,6 +157,15 @@ services:
     image: ghcr.io/open-webui/open-webui:main
     container_name: ia-os-open-webui
     restart: unless-stopped
+    # The image's own healthcheck pipes /health into `jq -ne 'input.status == true'`, which
+    # errors ("break") on the jq shipped in the image and leaves the container permanently
+    # `unhealthy` while /health answers {"status":true}. Same probe, without jq.
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:8080/health | grep -q '\"status\":true' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
     networks:
       - ia-os-net
     extra_hosts:
