@@ -75,7 +75,7 @@ COMPONENTS = [
     mcp_component("pdf", "pypi", "mcp-pdf"),
     mcp_component("time", "pypi", "mcp-server-time"),
     {"id": "ollama", "source": ("brew", "ollama"), "pins": [],
-     "apply": [["brew", "upgrade", "ollama"], ["launchctl", "kickstart", "-k", f"gui/{os.getuid()}/ai.os.ollama"]],
+     "apply": [["brew", "upgrade", "ollama"], ["launchctl", "kickstart", "-k", "gui/%UID%/ai.os.ollama"]],
      "health": ["ollama", "graphiti-llm", "grepai"], "no_rollback": True},
     {"id": "graphiti-image", "source": ("github", "getzep/graphiti"), "pins": [],
      "manual": "custom image ai-os/graphiti-mcp:minimax-standalone — rebuild with the steps in the comment above "
@@ -159,6 +159,8 @@ def report():
 
 def run(cmds):
     for cmd in cmds:
+        # os.getuid() does not exist on Windows, and this module is imported by CI there.
+        cmd = [c.replace("%UID%", str(os.getuid())) if "%UID%" in c else c for c in cmd]
         p = subprocess.run(cmd, cwd=ROOT, env={**os.environ, **INSTALL_MEMORY_ENV}, capture_output=True, text=True)
         if p.returncode != 0:
             return False, f"`{' '.join(cmd[:3])}…` exited {p.returncode}: {(p.stdout + p.stderr).strip()[-300:]}"
