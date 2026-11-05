@@ -478,11 +478,31 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
         warn "  FalkorDB Redis :6390 PING via docker exec failed"
       fi
     fi
+    # Persistence: redis writes to FALKORDB_DATA_PATH; a mount anywhere else means
+    # every write is lost on recreate (the /data mount bug, fixed 2026-11-05).
+    if docker inspect ia-os-falkordb --format '{{range .Mounts}}{{.Destination}} {{end}}' 2>/dev/null | grep -q "/var/lib/falkordb/data"; then
+      opt_ok "  FalkorDB data persisted to memory/falkordb/data"
+    else
+      opt_miss "  FalkorDB data dir not mounted — graph is lost on recreate (run: ai-os memory start)"
+    fi
   else
-    opt_miss "FalkorDB container 'ia-os-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
+    opt_miss "FalkorDB container 'ia-os-falkordb' not running (run: ai-os memory start)"
+  fi
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-graphiti-mcp$' \
+     && curl -sf -m 3 http://127.0.0.1:8021/health 2>/dev/null | grep -q healthy; then
+    opt_ok "Graphiti MCP healthy at http://127.0.0.1:8021/mcp/"
+  else
+    opt_miss "Graphiti MCP not healthy (run: ai-os memory start; logs: docker logs ia-os-graphiti-mcp)"
   fi
 else
-  warn "Docker not running (FalkorDB disabled)"
+  warn "Docker not running (FalkorDB + Graphiti disabled)"
+fi
+
+# Scheduled code reindex (codebase-memory-mcp + grepai)
+if launchctl print "gui/$(id -u)/ai.os.reindex" >/dev/null 2>&1; then
+  opt_ok "Reindex agent ai.os.reindex loaded (00/04/08/12/16/20)"
+else
+  opt_miss "Reindex agent ai.os.reindex not loaded (run: bash memory/launchd/install-reindex.sh)"
 fi
 
 # Ollama (best-effort)
