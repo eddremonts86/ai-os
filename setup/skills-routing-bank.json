@@ -1,0 +1,209 @@
+[
+  {
+    "prompt": "audit the whole app UI across every route and give me a prioritised backlog",
+    "expect": [
+      "saas-review",
+      "app-route-inventory"
+    ]
+  },
+  {
+    "prompt": "make this landing page look premium and not like generic AI slop",
+    "expect": [
+      "taste-skill",
+      "saas-expensive-ui",
+      "impeccable",
+      "frontend-design"
+    ]
+  },
+  {
+    "prompt": "add hover, press and enter animations to the buttons and cards",
+    "expect": [
+      "micro-interactions",
+      "emil-design-eng"
+    ]
+  },
+  {
+    "prompt": "write a failing test first, then make it pass",
+    "expect": [
+      "test-driven-development"
+    ]
+  },
+  {
+    "prompt": "this test fails intermittently, find the root cause of the bug",
+    "expect": [
+      "systematic-debugging"
+    ]
+  },
+  {
+    "prompt": "deploy this docker compose app to Coolify and sync the env vars",
+    "expect": [
+      "coolify-deploy"
+    ]
+  },
+  {
+    "prompt": "set up GitHub Actions CI with lint, typecheck and tests as quality gates",
+    "expect": [
+      "ci-cd-pipeline"
+    ]
+  },
+  {
+    "prompt": "turn this vague idea into a written spec with acceptance criteria",
+    "expect": [
+      "intent-to-spec",
+      "brainstorming"
+    ]
+  },
+  {
+    "prompt": "draw an architecture diagram of this repository from its real code",
+    "expect": [
+      "archify"
+    ]
+  },
+  {
+    "prompt": "make a branded diagram for the README",
+    "expect": [
+      "diagram-design"
+    ]
+  },
+  {
+    "prompt": "refactor this messy legacy module without breaking behaviour",
+    "expect": [
+      "patterns-and-refactoring"
+    ]
+  },
+  {
+    "prompt": "build an Expo screen with a native bottom sheet and picker",
+    "expect": [
+      "expo-ui",
+      "expo-overview",
+      "expo-native-ui"
+    ]
+  },
+  {
+    "prompt": "add Reanimated gesture animations to my React Native screen",
+    "expect": [
+      "expo-animation"
+    ]
+  },
+  {
+    "prompt": "create an MCP server that exposes my API as tools",
+    "expect": [
+      "mcp-builder"
+    ]
+  },
+  {
+    "prompt": "use Claude API with prompt caching and tool use",
+    "expect": [
+      "claude-api"
+    ]
+  },
+  {
+    "prompt": "improve the validation UX and error messages of this form",
+    "expect": [
+      "optimizing-forms"
+    ]
+  },
+  {
+    "prompt": "audit this web app on phones at 320 and 375 pixels and fix the mobile layout",
+    "expect": [
+      "optimize-mobile"
+    ]
+  },
+  {
+    "prompt": "create a git worktree so I can work on two branches in parallel",
+    "expect": [
+      "using-git-worktrees"
+    ]
+  },
+  {
+    "prompt": "split this task into independent parts and run subagents in parallel",
+    "expect": [
+      "dispatching-parallel-agents",
+      "subagent-driven-development",
+      "orchestrator-minion"
+    ]
+  },
+  {
+    "prompt": "write an implementation plan from this spec",
+    "expect": [
+      "writing-plans"
+    ]
+  },
+  {
+    "prompt": "the work is done, finish the branch and open the pull request",
+    "expect": [
+      "finishing-a-development-branch"
+    ]
+  },
+  {
+    "prompt": "address the review comments I received on my pull request",
+    "expect": [
+      "receiving-code-review"
+    ]
+  },
+  {
+    "prompt": "run a drizzle migration safely on the production database",
+    "expect": [
+      "drizzle-prod-migrations",
+      "database-migrations"
+    ]
+  },
+  {
+    "prompt": "publish this package to npm with a proper release",
+    "expect": [
+      "npm-package-publishing",
+      "release-it-framework"
+    ]
+  },
+  {
+    "prompt": "rewrite this text so it does not sound like AI",
+    "expect": [
+      "humanizer"
+    ]
+  },
+  {
+    "prompt": "save my working context so I can resume this session later",
+    "expect": [
+      "context-save",
+      "context-restore"
+    ]
+  },
+  {
+    "prompt": "I have too many skills, audit and clean up my claude config",
+    "expect": [
+      "config-gc"
+    ]
+  },
+  {
+    "prompt": "scan this repo for leaked secrets and security problems",
+    "expect": [
+      "security-scan",
+      "owasp-security"
+    ]
+  },
+  {
+    "prompt": "write a document for the team with a plain front part and technical detail at the back",
+    "expect": [
+      "two-layer-doc"
+    ]
+  },
+  {
+    "prompt": "set up a Vue component test with vitest and test utils",
+    "expect": [
+      "antfu-vue-testing",
+      "antfu-vitest"
+    ]
+  },
+  {
+    "prompt": "resolve this git merge conflict",
+    "expect": [
+      "resolving-merge-conflicts"
+    ]
+  },
+  {
+    "prompt": "watch this pull request until CI is green and approved",
+    "expect": [
+      "babysit-pr"
+    ]
+  }
+]

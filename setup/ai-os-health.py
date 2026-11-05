@@ -252,7 +252,10 @@ def check_graphiti_llm():
     st, body, _ = http(f"{OLLAMA}/v1/chat/completions", {
         "model": model, "max_tokens": 20, "messages": [{"role": "user", "content": "Return JSON {\"a\":\"ok\"}"}],
         "response_format": {"type": "json_schema", "json_schema": {"name": "p", "schema": {
-            "type": "object", "properties": {"a": {"type": "string"}}, "required": ["a"]}}}}, timeout=180)
+            "type": "object", "properties": {"a": {"type": "string"}}, "required": ["a"]}}}}, timeout=90)
+    if st == 0 and "timed out" in body.lower():
+        # One slot: a long extraction (gemma3 sometimes loops for 10+ minutes) queues the probe behind it.
+        return WARN, f"{model} did not answer in 90s — Ollama is busy; if graphiti has been 'Processing episode' for many minutes: docker restart ia-os-graphiti-mcp"
     if st != 200:
         return FAIL, f"{model} structured output → HTTP {st or 'unreachable'}: {body[:100]}"
     return OK, f"{model} answers structured output"
@@ -431,6 +434,14 @@ def check_backup():
     return OK, detail
 
 
+def check_secrets():
+    rc, out = run([sys.executable, str(ROOT / "setup" / "ai-os-secrets.py")], 30)
+    lines = [l for l in out.strip().splitlines() if l.strip()]
+    if rc != 0:
+        return FAIL, "; ".join(l.lstrip("❌⚠️ ") for l in lines if l.startswith(("❌", "⚠️")))[:200] or "ai-os secrets failed"
+    return OK, "; ".join(l.lstrip("✅ ") for l in lines) + " (leak scan of repo histories: ai-os secrets audit)"
+
+
 def check_disk():
     worst = []
     for p in {Path("/"), ROOT}:
@@ -454,6 +465,7 @@ CHECKS = [
     ("mcp", "MCP servers", check_mcp_servers),
     ("tokens", "API tokens", check_tokens),
     ("ci", "CI on main", check_ci),
+    ("secrets", "Secrets (.env)", check_secrets),
     ("backup", "Backups", check_backup),
     ("disk", "Disk", check_disk),
 ]
@@ -498,4 +510,7 @@ def main():
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):  # Windows consoles default to cp1252 and choke on the status symbols
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())
