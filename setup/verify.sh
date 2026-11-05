@@ -541,6 +541,11 @@ if security find-generic-password -s ai-os-backup-key -a ai-os >/dev/null 2>&1; 
 else
   opt_miss "Backup encryption key not created yet (run: ai-os backup)"
 fi
+if [ "$(readlink "$HOME_DIR/.local/bin/ai-os" 2>/dev/null)" = "$AI_OS_ROOT/ai-os" ]; then
+  opt_ok "ai-os command on the PATH (~/.local/bin/ai-os → this repo)"
+else
+  opt_miss "ai-os command missing or pointing elsewhere (run: bash setup/install-mac.sh, or ln -sfn \"\$AI_OS_ROOT/ai-os\" ~/.local/bin/ai-os)"
+fi
 if launchctl print "gui/$(id -u)/ai.os.backup" >/dev/null 2>&1; then
   opt_ok "Backup agent ai.os.backup loaded (13:00, restore-verified; run now: ai-os backup)"
 else
