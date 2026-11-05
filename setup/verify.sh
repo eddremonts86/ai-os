@@ -415,6 +415,11 @@ elif hook_status=$(node "$AI_OS_ROOT/setup/wire-compact-hook.mjs" --check 2>&1);
 else
   opt_miss "${hook_status#\[compact-hook\] }"
 fi
+if mem_hook=$(python3 "$AI_OS_ROOT/setup/wire-memory-hook.py" --check 2>&1); then
+  opt_ok "$mem_hook (graphiti facts preloaded per repo)"
+else
+  opt_miss "$mem_hook"
+fi
 # A dangling skill symlink is invisible to the loops that create them (the
 # source dir is gone, so the name is never revisited) — count them explicitly.
 broken_links=0
