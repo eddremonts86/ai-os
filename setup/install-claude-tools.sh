@@ -27,8 +27,8 @@
 # Idempotent: safe to run multiple times. Re-running refreshes every symlink.
 #
 # Companion scripts:
-#   setup/install-ecc.sh     - Everything Claude Code plugin (271 skills)
-#   setup/install-mac.sh     - Mac base install (handles ~/.claude/skills)
+#   setup/install-mac.sh     - Mac base install (handles ~/.claude/skills and the
+#                              curated vendor/ecc subset, see docs/ecc-integration.md)
 #   setup/install-windows.ps1 - Windows base install
 
 set -euo pipefail

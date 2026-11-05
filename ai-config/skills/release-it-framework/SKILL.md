@@ -473,5 +473,5 @@ Scheduled chaos experiments with the whole team present to learn and improve res
 - [Google SRE Book](https://sre.google/sre-book/table-of-contents/)
 - Related skill: `shipping-and-launch` (deploy + rollback)
 - Related skill: `ci-cd-pipeline` (pipeline)
-- Related skill: `prod-deploy-verification` (pre-deploy checks)
+- Related skill: `prod-deploy-verification` (project-local skill in iaWorkSpace) (pre-deploy checks)
 - Related skill: `owasp-security` (security patterns)

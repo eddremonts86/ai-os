@@ -2,7 +2,7 @@
 
 This document explains how AI-OS vendors a curated set of skills from **[claude.tools](https://claude.tools)** and cherry-picked skills from **[gstack](https://github.com/earendil-works/gstack)**, and how the two systems stay in sync.
 
-This is the **lightweight counterpart** to [ECC Integration](ecc-integration.md): ECC brings 271 community-maintained skills as a packaged plugin, while claude.tools/gstack brings a smaller set of carefully chosen skills that are highly useful in everyday AI-OS workflows.
+This is the sibling of [ECC Integration](ecc-integration.md): both vendor a small, curated set of skills that are highly useful in everyday AI-OS workflows rather than a whole upstream library.
 
 ---
 
@@ -89,14 +89,13 @@ Same reasoning as [ECC Integration](ecc-integration.md): we want updates to be a
 
 ### How is this different from ECC?
 
-|                       | ECC                                             | claude.tools / gstack                                                                                     |
-| --------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Scale                 | 271 skills + 28 hooks + agents + plugin runtime | 11 individual skills + 1 plugin (3 internal skills)                                                       |
-| Plugin runtime        | Yes — `~/.claude/plugins/ecc`                   | Yes for codex-plugin-cc only                                                                              |
-| Hooks                 | 28 declarative hooks in `hooks/hooks.json`      | None                                                                                                      |
-| Installer             | `install-ecc.sh` (271 × 5 symlinks + hooks)     | `install-claude-tools.sh` (12 × 4 + 3 × 5 + 1 plugin link)                                                |
-| Where do skills live? | `vendor/ecc/skills/` (read-only subtree)        | `ai-config/skills/` (treated as AI-OS-native, fully editable)                                             |
-| Updates               | `cd vendor/ecc && git pull`                     | Individual skills are versioned with the repo; plugin updates via `cd vendor/codex-plugin-cc && git pull` |
+|                       | ECC                                                         | claude.tools / gstack                                                                                     |
+| --------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Scale                 | 14 skills + 3 Claude Code agents + 1 hook (curated subset)  | 11 individual skills + 1 plugin (3 internal skills)                                                       |
+| Plugin runtime        | No                                                          | Yes for codex-plugin-cc only                                                                              |
+| Installer             | `install-mac.sh` steps 7e/7f (no separate script)           | `install-claude-tools.sh` (12 × 4 + 3 × 5 + 1 plugin link)                                                |
+| Where do skills live? | `vendor/ecc/skills/` (only the names in `DAILY_SKILLS.txt`) | `ai-config/skills/` (treated as AI-OS-native, fully editable)                                             |
+| Updates               | copy from an upstream clone — see `vendor/ecc/README.md`    | Individual skills are versioned with the repo; plugin updates via `cd vendor/codex-plugin-cc && git pull` |
 
 The claude.tools/gstack skills were deliberately promoted from "vendored read-only" to "AI-OS-native" by checking the `SKILL.md` files into `ai-config/skills/`. Reason: these skills are small, stable, and worth evolving alongside AI-OS's own skills.
 
@@ -108,8 +107,9 @@ The claude.tools/gstack skills were deliberately promoted from "vendored read-on
 
 ```bash
 # From a fresh AI-OS checkout:
-git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-cd ~/Projects/ai-os
+export AI_OS_ROOT="$HOME/Projects/ai-os"   # any location works
+git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"
+cd "$AI_OS_ROOT"
 
 # Run the standard AI-OS install first (sets up skills, MCP, dotfiles).
 # This already propagates the 12 new skills to ~/.claude/skills/ via step 5.
@@ -220,16 +220,7 @@ The script:
 5. Symlinks the 3 codex-plugin-cc internal skills into the core CLIs.
 6. In `--check` mode, validates structure only: package.json present, every `SKILL.md` has `---` delimiters and `name:` + `description:` fields.
 
-### Comparison with `install-ecc.sh`
-
-|                       | `install-ecc.sh`                         | `install-claude-tools.sh`                                           |
-| --------------------- | ---------------------------------------- | ------------------------------------------------------------------- |
-| Skill source          | `vendor/ecc/skills/` (read-only subtree) | `ai-config/skills/` + `vendor/codex-plugin-cc/`                     |
-| Per-CLI symlink count | 271 × 5 = 1,355                          | 12 × 4 + 3 × 5 = 63                                                 |
-| Plugin link           | Yes (`~/.claude/plugins/ecc`)            | Yes for codex-plugin-cc only                                        |
-| Hooks                 | Validates `hooks/hooks.json` (28 hooks)  | None                                                                |
-| `--check` behavior    | Plugin manifest + skill frontmatter      | Plugin manifest + skill frontmatter + `name:`/`description:` fields |
-| Idempotent            | Yes                                      | Yes                                                                 |
+ECC has no installer of its own any more: its curated subset is linked by `install-mac.sh` steps 7e/7f (see [ECC Integration](ecc-integration.md)).
 
 ---
 
@@ -275,8 +266,7 @@ The step is **non-fatal** because the plugin clone is large and not every PR nee
 
 - [`setup/install-claude-tools.sh`](../setup/install-claude-tools.sh) — the installer (this doc explains it).
 - [`setup/install-mac.sh`](../setup/install-mac.sh) — runs first; sets up `~/.claude/skills/` from `ai-config/skills/`.
-- [`setup/install-ecc.sh`](../setup/install-ecc.sh) — sister installer for the ECC plugin.
 - [`vendor/codex-plugin-cc/`](../vendor/codex-plugin-cc/) — vendored OpenAI Codex plugin for Claude Code.
 - [`ai-config/skills/humanizer/`](../ai-config/skills/humanizer/SKILL.md) and the other 11 new skill directories.
-- [`docs/ecc-integration.md`](ecc-integration.md) — sibling doc for the larger ECC plugin.
+- [`docs/ecc-integration.md`](ecc-integration.md) — sibling doc for the curated ECC subset.
 - [`docs/cross-platform.md`](cross-platform.md) — symlink caveats on Windows.

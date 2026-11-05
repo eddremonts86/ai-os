@@ -71,14 +71,22 @@ jobs:
           # On Linux, $HOME is /home/runner
         run: bash setup/install-mac.sh
 
-      - name: "Verify ECC integration (--check, non-fatal if vendor/ecc/ missing)"
+      - name: "Verify curated ECC subset (vendor/ecc/, required)"
+        # vendor/ecc/ holds only what install-mac.sh 7e/7f and the compact hook
+        # (9e) link; every listed file must exist so no deployed symlink dangles.
         run: |
-          if [ -d vendor/ecc ]; then
-            echo "vendor/ecc/ present, running install-ecc.sh --check..."
-            bash setup/install-ecc.sh --check
-          else
-            echo "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
-          fi
+          fail=0
+          while IFS= read -r n; do
+            case "$n" in ''|\#*) continue ;; esac
+            f="vendor/ecc/skills/$n/SKILL.md"
+            if [ -f "$f" ] && head -1 "$f" | grep -q '^---$'; then echo "ok   skill $n"; else echo "::error::missing or malformed $f"; fail=1; fi
+          done < vendor/ecc/DAILY_SKILLS.txt
+          for f in LICENSE agents/typescript-reviewer.md agents/vue-reviewer.md agents/build-error-resolver.md \
+                   commands/vue-review.md commands/build-fix.md scripts/hooks/suggest-compact.js; do
+            if [ -f "vendor/ecc/$f" ]; then echo "ok   $f"; else echo "::error::missing vendor/ecc/$f"; fail=1; fi
+          done
+          node -e "require('./vendor/ecc/scripts/hooks/suggest-compact.js')" </dev/null || { echo "::error::suggest-compact.js require closure broken"; fail=1; }
+          exit $fail
 
       - name: "Verify claude.tools / gstack integration (--check, non-fatal)"
         # The 12 individual skills live in ai-config/skills/ (checked in), so
@@ -112,7 +120,7 @@ jobs:
         run: |
           echo "## $TEST_OS Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Install dry-run: ✅ (required)" >> $GITHUB_STEP_SUMMARY
-          echo "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)" >> $GITHUB_STEP_SUMMARY
+          echo "- ECC subset check: ✅ (required)" >> $GITHUB_STEP_SUMMARY
           echo "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)" >> $GITHUB_STEP_SUMMARY
           echo "- setup unit tests: ✅ (required)" >> $GITHUB_STEP_SUMMARY
           echo "- Note: setup/verify.sh validates a live installed machine and is not run against the bare CI runner; run it locally after setup/install-mac.sh." >> $GITHUB_STEP_SUMMARY

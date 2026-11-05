@@ -43,11 +43,11 @@ Inventory of installed tools. Update when something changes.
 
 ## Global skills
 
-- Flat skills live in `~/Projects/ai-os/ai-config/skills/`.
+- Flat skills live in `$AI_OS_ROOT/ai-config/skills/`.
 - Mac setup distributes flat skills via symlinks to 6 CLI targets.
 - Windows setup distributes flat skills to the 5 core CLI targets.
 - **14 superpowers skills** (REQUIRED for AI-OS).
-- **Source of truth:** `~/Projects/ai-os/ai-config/skills/`.
+- **Source of truth:** `$AI_OS_ROOT/ai-config/skills/`.
 
 ### Diagrams
 
@@ -82,14 +82,14 @@ Inventory of installed tools. Update when something changes.
 
 ## Dotfiles (symlinks)
 
-- `~/.zshrc` → `~/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc`
-- `~/.p10k.zsh` → `~/Projects/ai-os/dev-env/dotfiles/zsh/.p10k.zsh`
-- `~/.gitignore_global` → `~/Projects/ai-os/dev-env/dotfiles/git/.gitignore_global`
+- `~/.zshrc` → `$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc`
+- `~/.p10k.zsh` → `$AI_OS_ROOT/dev-env/dotfiles/zsh/.p10k.zsh`
+- `~/.gitignore_global` → `$AI_OS_ROOT/dev-env/dotfiles/git/.gitignore_global`
 
 ## Setup
 
-- **1-command:** `bash ~/Projects/ai-os/setup/install-mac.sh`
-- **Verify:** `bash ~/Projects/ai-os/setup/verify.sh`
+- **1-command:** `bash $AI_OS_ROOT/setup/install-mac.sh`
+- **Verify:** `bash $AI_OS_ROOT/setup/verify.sh`
 - **CI:** GitHub Actions (`.github/workflows/test-{mac,linux,windows}.yml`).
 
 ## Scheduled jobs are not verified by reading their files
@@ -111,7 +111,7 @@ the **plansmith** repo (moved there 2026-09-25).
 ## The preview pane reads `launch.json` from the session root, not the project
 
 `preview_start` looks for `.claude/launch.json` relative to the **session's working directory**. When
-a session is opened at the scope root (`~/Projects`) rather than inside a project, a project-local
+a session is opened at the projects root (the directory containing `ai-os/`) rather than inside a project, a project-local
 `.claude/launch.json` is invisible to it — the tool reports "No .claude/launch.json found" and names
 the root path it wanted.
 
@@ -121,7 +121,7 @@ Fix: put the config at the session root and have each entry cd into its own proj
 {
   "name": "myapp-dev",
   "runtimeExecutable": "bash",
-  "runtimeArgs": ["-lc", "cd ~/Projects/scope/myapp && exec ./node_modules/.bin/vite dev --port 3007"],
+  "runtimeArgs": ["-lc", "cd /path/to/projects/scope/myapp && exec ./node_modules/.bin/vite dev --port 3007"],
   "port": 3007
 }
 ```

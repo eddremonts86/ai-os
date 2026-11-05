@@ -8,7 +8,7 @@ Template for `specs/current_spec.md`. Copy this structure for each new task.
 
 - **Date:** YYYY-MM-DD
 - **Status:** draft / approved / in-progress / completed / cancelled
-- **Blocks:** N (each <= 30 min)
+- **Blocks:** N (each small enough to verify on its own)
 - **Author:** Edd
 - **Reviewer:** Edd
 

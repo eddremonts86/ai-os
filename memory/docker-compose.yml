@@ -2,7 +2,7 @@
 #
 # One compose project (`ia-os`) so all services show up grouped under a single
 # header in the Docker Desktop dashboard, exactly like `builderhunt` (see
-# /Users/edd/Projects/eddremonts86/builderhunt/docker-compose.yml). All
+# <projects>/eddremonts86/actives/builderhunt/docker-compose.yml). All
 # containers are named `ia-os-*` for the same reason.
 #
 # Services:
@@ -12,7 +12,7 @@
 #                          defaults to a host-side `ollama serve` for Metal GPU
 #                          acceleration, which containers can't reach)
 #   ia-os-open-webui     — chat UI for the host's native Ollama (:3301), so
-#                          qwen3:14b (llm/router.mjs's model — see llm/README.md)
+#                          the local chat model llm/router.mjs uses (see llm/README.md)
 #                          is actually usable from a browser while it sits loaded
 #                          in memory all the time anyway. Reaches the host daemon
 #                          via host.docker.internal:11500, same pattern as
@@ -34,11 +34,11 @@
 # graphiti/config.yaml and ai-os-memory.sh both address 11500 and neither falls back.
 #
 # First-time / on-demand bring-up:
-#   bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
+#   bash $AI_OS_ROOT/setup/ai-os-bootstrap.sh
 # Or just this stack:
-#   cd ~/Projects/ai-os/memory && docker compose up -d
+#   cd $AI_OS_ROOT/memory && docker compose up -d
 # With Ollama in the container (Windows / opt-in):
-#   cd ~/Projects/ai-os/memory && docker compose --profile ollama-docker up -d
+#   cd $AI_OS_ROOT/memory && docker compose --profile ollama-docker up -d
 #
 # Quick health checks (all should pass):
 #   docker exec ia-os-falkordb redis-cli -p 6379 PING
@@ -62,7 +62,7 @@ services:
       # Relative to this compose file (memory/), not an absolute Mac path --
       # docker compose resolves relative host paths against the compose
       # file's own directory on every OS, so this works unmodified on both
-      # Mac and Windows (fixed 2026-07-30; was hardcoded to /Users/edd/...).
+      # Mac and Windows (fixed 2026-07-30; was hardcoded to an absolute Mac home path).
       # Target is FALKORDB_DATA_PATH (/var/lib/falkordb/data), where run.sh points
       # redis `--dir`. It was mounted at /data until 2026-11-05, so every write
       # lived in the container layer and vanished on each recreate.
@@ -89,7 +89,7 @@ services:
     # alone drags in the full PyTorch+CUDA wheel set, ~3GB, unused here since MiniMax
     # and Ollama are both reached through the base 'openai' client). Rebuild with:
     #   git clone https://github.com/getzep/graphiti.git /tmp/graphiti-build/graphiti
-    #   cp /Users/edd/Projects/ai-os/memory/graphiti/Dockerfile.standalone.minimal /tmp/graphiti-build/graphiti/mcp_server/docker/
+    #   cp $AI_OS_ROOT/memory/graphiti/Dockerfile.standalone.minimal /tmp/graphiti-build/graphiti/mcp_server/docker/
     #   cd /tmp/graphiti-build/graphiti/mcp_server/docker
     #   docker build -f Dockerfile.standalone.minimal -t ai-os/graphiti-mcp:minimax-standalone ..
     image: ai-os/graphiti-mcp:minimax-standalone
