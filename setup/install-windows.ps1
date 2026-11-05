@@ -780,7 +780,7 @@ if ($env:SKIP_MEMORY -ne "1") {
     # the checksums.txt published for the SAME pinned release tag (P1-4).
     $localBin = "$HomeDir\.local\bin"
     New-Item -ItemType Directory -Path $localBin -Force | Out-Null
-    $cbmVersion = "v0.8.1"  # pinned: last release with assets — bump deliberately, keep in sync with install-mac.sh
+    $cbmVersion = "v0.12.1"  # pinned: last release with assets — bump deliberately, keep in sync with install-mac.sh
     $cbmAsset = "codebase-memory-mcp-windows-amd64.zip"
     $cbmUrl = "https://github.com/deusdata/codebase-memory-mcp/releases/download/$cbmVersion/$cbmAsset"
     $cbmSumsUrl = "https://github.com/deusdata/codebase-memory-mcp/releases/download/$cbmVersion/checksums.txt"

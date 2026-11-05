@@ -984,7 +984,7 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   CBM_ARCH="$(uname -m | sed 's/x86_64/amd64/; s/arm64/arm64/')"
   CBM_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
   CBM_ASSET="codebase-memory-mcp-${CBM_OS}-${CBM_ARCH}.tar.gz"
-  CBM_VERSION="v0.8.1"  # pinned: last release with assets
+  CBM_VERSION="v0.12.1"  # pinned; bump with: ai-os update --apply codebase-memory-mcp
   CBM_URL="https://github.com/deusdata/codebase-memory-mcp/releases/download/${CBM_VERSION}/${CBM_ASSET}"
   # checksums.txt is published for the same pinned tag, so bumping CBM_VERSION
   # automatically verifies against the matching release's hashes (P1-4).
