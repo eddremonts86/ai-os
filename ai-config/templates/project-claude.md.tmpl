@@ -1,0 +1,18 @@
+# {{PROJECT}}
+
+This project follows AI-OS (`{{AI_OS_ROOT}}`): read its `CLAUDE.md` for how to work (method, rules,
+skills). Project-specific instructions go below; keep them short.
+
+## Working here
+
+- Chat in Spanish; repository files, commits, comments and logs in English.
+- Project-specific skills live in `.agents/skills/` (not in the global AI-OS set).
+- Memory: graphiti group_id is `{{PROJECT}}`. Search it before non-trivial work; record settled
+  decisions, root causes and conventions with `add_memory` (never secrets or raw logs).
+- Secrets never enter git: `.env*` stays ignored, `.playwright-mcp/` too (page snapshots capture
+  whatever the page showed). `ai-os secrets audit` scans every local repo for leaked values.
+- Verify behaviour before calling something done; confirm irreversible or outward-facing actions.
+
+## Project notes
+
+<!-- stack, how to run it, how to test it, deploy target, gotchas -->
