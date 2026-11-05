@@ -4,12 +4,24 @@ Actions that you MUST always do when working with me.
 
 ## At session start
 
-1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md`.
-2. Read `$AI_OS_ROOT/context/00_profile.md`, `02_projects.md`, `03_preferences.md`, `04_tools.md`.
+Keep the session-start read small; everything else is read on demand.
+
+1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md` — skip if your CLI already loaded it (Claude Code inside the repo does).
+2. Read `$AI_OS_ROOT/context/00_profile.md` and `03_preferences.md`.
 3. Read `$AI_OS_ROOT/rules/never_do.md` and `ask_before_doing.md`.
 4. Read `$AI_OS_ROOT/specs/current_spec.md`. It must contain only the active Spec; an empty template means there is no active Spec.
 5. Load skill `using-superpowers` (router).
-6. Follow `workflows/daily_start.md` (AI-OS).
+
+Read only when the task needs it:
+
+| File | Read when |
+|---|---|
+| `context/02_projects.md` | the task names or touches one of Edd's projects |
+| `context/04_tools.md` | installing, configuring, or debugging the local toolchain |
+| `context/01_business_or_work.md`, `07_edi_company.md` | work for Schilling or EDI |
+| `context/05_sources.md` | looking up official docs or reference repos |
+| `context/06_brand.md` | branded deliverables (diagrams, site, decks) |
+| `workflows/*.md` | the matching kind of task (coding, research, content, new Spec) |
 
 ## ALWAYS: use sub-agents in parallel when possible
 
