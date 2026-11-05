@@ -56,11 +56,5 @@ cask "warp"
 # ─── Editor ───
 cask "visual-studio-code"
 
-# ─── Browser ───
-cask "google-chrome"
-
-# ─── System utilities ───
-cask "alt-tab"              # window switcher
-cask "appcleaner"
-cask "balenaetcher"         # USB bootable
-cask "the-unarchiver"
+# Browser and system-utility GUI apps live in Brewfile.extras: AI-OS does not
+# need them, and keeping them here made every install touch unrelated apps.

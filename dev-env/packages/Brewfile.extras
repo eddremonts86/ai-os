@@ -59,3 +59,10 @@ cask "firefox"
 # ─── Communication ───
 cask "slack"
 cask "discord"
+
+# ─── Browser / system utilities (moved from core Brewfile 2026-11-05) ───
+cask "google-chrome"
+cask "alt-tab"              # window switcher
+cask "appcleaner"
+cask "balenaetcher"         # USB bootable
+cask "the-unarchiver"

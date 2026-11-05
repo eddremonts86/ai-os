@@ -66,29 +66,21 @@ The `daily_start` workflow of AI-OS has 7 steps:
 1. Load AI-OS (step 1 of this workflow).
 2. → Load `using-superpowers` (step 2 of this workflow).
 3. → Load `brainstorming` if the idea is vague (step 3 of this workflow).
-4. Read `context/` (profile, projects, preferences, tools).
+4. Read `context/00_profile.md` and `03_preferences.md`; the rest of `context/` on demand.
 5. Read `rules/` (always_do, ask_before_doing, never_do).
 6. Read `specs/current_spec.md`. If it contains the no-active-Spec template → there is no active Spec. Otherwise, continue the one active task.
 7. Start the task. Follow `workflows/project_start.md` if a new Spec is needed.
 
 ### 5. Read `context/` (read files)
 
-```bash
-# Read all context in order
-for f in "$AI_OS_ROOT"/context/*.md; do
-  echo "=== $f ==="
-  cat "$f"
-done
-```
-
-These 6 files give you the durable context:
+Read only the two small files up front:
 
 - `00_profile.md` — who I am.
-- `01_business_or_work.md` — Schilling + personal projects.
-- `02_projects.md` — active/archived inventory.
 - `03_preferences.md` — language, tone, formatting.
-- `04_tools.md` — macOS, terminals, CLIs, packages.
-- `05_sources.md` — official docs + reference repos.
+
+The rest of `context/` is read on demand — see the "Read only when the task needs it" table
+in `rules/always_do.md`. Reading all of it up front cost ~15K tokens per session
+(`02_projects.md` alone is 28K characters) for files most tasks never use.
 
 ### 6. Read `rules/` (read files)
 
