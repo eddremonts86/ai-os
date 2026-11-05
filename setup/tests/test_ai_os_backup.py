@@ -29,5 +29,65 @@ class BackupTests(unittest.TestCase):
             self.assertNotIn("Traceback", p.stderr)
 
 
+try:
+    import cryptography  # noqa: F401
+    HAVE_CRYPTO = True
+except ImportError:
+    HAVE_CRYPTO = False
+
+
+@unittest.skipUnless(HAVE_CRYPTO, "cryptography is only in the AI-OS venv")
+class OffsiteCryptoTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("ai_os_backup", SCRIPT)
+        cls.b = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.b)
+
+    def test_roundtrip_and_header(self):
+        key = os.urandom(32)
+        blob = self.b.encrypt(b"secret graph bytes", key)
+        self.assertTrue(blob.startswith(self.b.MAGIC))
+        self.assertNotIn(b"secret graph bytes", blob)
+        self.assertEqual(self.b.decrypt(blob, key), b"secret graph bytes")
+
+    def test_wrong_key_and_tampering_are_rejected(self):
+        from cryptography.exceptions import InvalidTag
+        key = os.urandom(32)
+        blob = self.b.encrypt(b"data", key)
+        with self.assertRaises(InvalidTag):
+            self.b.decrypt(blob, os.urandom(32))
+        flipped = blob[:-1] + bytes([blob[-1] ^ 1])
+        with self.assertRaises(InvalidTag):
+            self.b.decrypt(flipped, key)
+
+    def test_nonce_is_fresh_each_time(self):
+        key = os.urandom(32)
+        self.assertNotEqual(self.b.encrypt(b"x", key), self.b.encrypt(b"x", key))
+
+    def test_non_backup_file_is_refused(self):
+        with self.assertRaises(RuntimeError):
+            self.b.decrypt(b"not a backup", os.urandom(32))
+
+    def test_env_key_overrides_keychain(self):
+        import base64
+        key = os.urandom(32)
+        os.environ["AI_OS_BACKUP_KEY"] = base64.b64encode(key).decode()
+        try:
+            self.assertEqual(self.b.get_key(), key)
+        finally:
+            del os.environ["AI_OS_BACKUP_KEY"]
+
+    def test_pack_roundtrip_through_offsite_reader(self):
+        key = os.urandom(32)
+        with tempfile.TemporaryDirectory() as d:
+            snap = Path(d) / "2099-01-01-000000"
+            snap.mkdir()
+            (snap / "manifest.json").write_text('{"graphs": {"ai-os": 1}}')
+            blob = self.b.encrypt(self.b.pack(snap), key)
+            with self.b.open_offsite(blob, key) as tar:
+                self.assertIn("2099-01-01-000000/manifest.json", tar.getnames())
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -66,7 +66,7 @@ before="$(last_log)"
 launchctl kickstart "$DOMAIN/$LABEL"
 for _ in $(seq 1 90); do
   f="$(last_log)"
-  if [ -n "$f" ] && [ "$f" != "$before" ] && grep -qE "restores|backup failed|❌" "$f"; then
+  if [ -n "$f" ] && [ "$f" != "$before" ] && tail -1 "$f" | grep -qE "decrypts|failed|❌|Error"; then
     tail -1 "$f" | sed 's/^/[backup]   /'
     exit 0
   fi
