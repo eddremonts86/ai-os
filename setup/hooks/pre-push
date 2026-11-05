@@ -101,6 +101,9 @@ else
   pass "docker compose not installed, skipped"
 fi
 
+step "published numbers (ai-os stats)"
+out=$(python3 setup/ai-os-stats.py --check 2>&1) && pass || fail "$out"
+
 step "setup unit tests"
 out=$("$PY" -m unittest discover -s setup/tests 2>&1) && pass "$(grep -oE 'Ran [0-9]+ tests' <<<"$out")" || fail "$(tail -15 <<<"$out")"
 
