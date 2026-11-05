@@ -390,6 +390,17 @@ def check_backup():
     if off_h > 36:
         return FAIL, f"newest iCloud copy is {off_h:.0f}h old — the off-site upload stopped"
     detail = f"local {age_h:.0f}h ago ({len(snaps)} kept), encrypted iCloud copy {off_h:.0f}h ago ({len(files)} kept)"
+    # A file sitting in the iCloud folder is not an off-site copy until iCloud uploads it, and
+    # iCloud Drive can stall silently (2026-11-05: last sync six days old, `brctl` not answering).
+    # Only for the real iCloud path; AI_OS_OFFSITE_DIR overrides are not iCloud.
+    if "AI_OS_OFFSITE_DIR" not in os.environ and sys.platform == "darwin":
+        rc, out = run(["brctl", "status", "com.apple.CloudDocs"], 25)
+        m = re.search(r"last-sync:(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)", re.sub(r"\x1b\[[0-9;]*m", "", out))
+        if rc == 124 or not m:
+            return WARN, detail + " — iCloud's sync daemon did not answer (brctl timed out): the upload cannot be confirmed"
+        last = time.mktime(time.strptime(m.group(1), "%Y-%m-%d %H:%M:%S"))
+        if (time.time() - last) / 3600 > 36:
+            return WARN, detail + f" — but iCloud Drive last synced {m.group(1)}: the copy is only local until it syncs (System Settings → Apple ID → iCloud → iCloud Drive)"
     if not (HOME / ".ai-os" / "backup-key-saved").exists():
         return WARN, detail + " — the key is only in this Mac's Keychain: run `ai-os backup --show-key`, save it in a password manager, then `ai-os backup --confirm-key-saved`"
     return OK, detail
