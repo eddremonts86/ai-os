@@ -366,8 +366,8 @@
   <div class="wrap">
     <div class="stats reveal">
       <div class="stat"><div class="n" data-count="6">6</div><div class="l">AI CLIs, one config</div></div>
-      <div class="stat"><div class="n" data-count="186">186</div><div class="l">skills, symlinked</div></div>
-      <div class="stat"><div class="n" data-count="10">10</div><div class="l">MCP servers (YAML)</div></div>
+      <div class="stat"><div class="n" data-count="174">174</div><div class="l">skills, symlinked</div></div>
+      <div class="stat"><div class="n" data-count="7">7</div><div class="l">MCP servers (YAML)</div></div>
       <div class="stat"><div class="n" data-count="3">3</div><div class="l">OS runners green in CI</div></div>
     </div>
   </div>
@@ -549,24 +549,24 @@ bash setup/verify.sh</pre>
     </div>
     <div class="manifest-grid">
       <div class="req reveal">
-        <h3><span class="m-count" style="color:var(--acid)">70</span> CLI tools &amp; runtimes</h3>
-        <p>git, gh, node, python, uv, go, rust, docker, kubernetes-cli, terraform, ripgrep, fzf, bat, eza, lazygit, ollama, helm… <span class="m-src">Homebrew</span></p>
+        <h3><span class="m-count" style="color:var(--acid)">66</span> CLI tools &amp; runtimes</h3>
+        <p>32 core (git, gh, node, python, uv, docker, ripgrep, fzf, bat, eza, lazygit, ollama…) + 34 opt-in with <code>EXTRAS=1</code> (go, rust, kubernetes-cli, terraform, helm…) <span class="m-src">Homebrew</span></p>
       </div>
       <div class="req reveal">
-        <h3><span class="m-count" style="color:var(--plasma)">43</span> Global Node packages</h3>
-        <p>claude-code, codex, gemini-cli, MCP servers, typescript, vite, eslint, prettier, biome, turbo, nx… <span class="m-src">via pnpm</span></p>
+        <h3><span class="m-count" style="color:var(--plasma)">42</span> Global Node packages</h3>
+        <p>codex, gemini-cli, MCP servers, typescript, vite, eslint, prettier, biome, turbo, nx… <span class="m-src">via pnpm</span></p>
       </div>
       <div class="req reveal">
         <h3><span class="m-count" style="color:var(--amber)">30</span> Python packages</h3>
         <p>ruff, black, mypy, pytest, ipython, pandas, numpy, httpx, typer, bandit, pip-audit, poetry, mcp… <span class="m-src">isolated uv venv</span></p>
       </div>
       <div class="req reveal">
-        <h3><span class="m-count" style="color:var(--acid)">186</span> AI skills</h3>
-        <p>Symlinked into every CLI (Claude, Codex, Gemini, Hermes, Antigravity, MiniMax) plus the 14 required superpowers. <span class="m-src">ai-config/skills</span></p>
+        <h3><span class="m-count" style="color:var(--acid)">174</span> AI skills</h3>
+        <p>Symlinked into every CLI (Claude, Codex, Gemini, Hermes, Antigravity, MiniMax), including the 14 required superpowers. <span class="m-src">ai-config/skills</span></p>
       </div>
       <div class="req reveal">
-        <h3><span class="m-count" style="color:var(--cyan)">9</span> Global commands</h3>
-        <p><code>/action</code> <code>/full</code> <code>/gen-html</code> <code>/saas-review</code> <code>/fix-ui-ux</code> and 4 more, in every CLI that supports slash commands. <span class="m-src">ai-config/commands</span></p>
+        <h3><span class="m-count" style="color:var(--cyan)">8</span> Global commands</h3>
+        <p><code>/action</code> <code>/full</code> <code>/gen-html</code> <code>/saas-review</code> <code>/fix-ui-ux</code> and 3 more, in every CLI that supports slash commands. <span class="m-src">ai-config/commands</span></p>
       </div>
       <div class="req reveal">
         <h3><span class="m-count" style="color:var(--cyan)">+</span> Services &amp; shell</h3>
@@ -607,12 +607,12 @@ bash setup/verify.sh</pre>
   const heroTerm = document.getElementById("hero-term");
   const seq = [
     { t: 'npx @edd_remonts/create-ai-os', cls: 'cm' },
-    { o: '✓ 70 brew packages · zsh · p10k' },
+    { o: '✓ 32 brew packages · zsh · p10k' },
     { o: '✓ 174 skills → claude · codex · gemini · hermes' },
     { o: '✓ 7 MCP servers generated' },
     { t: 'cd ai-os', cls: 'cm' },
     { t: 'bash setup/verify.sh', cls: 'cm' },
-    { o: '✓ 20/20 sections passed, ready.' },
+    { o: '✓ 19/19 required checks passed, ready.' },
   ];
   let heroStarted = false;
   function startHeroTerminal() {
