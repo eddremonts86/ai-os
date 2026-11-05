@@ -24,7 +24,7 @@ COMMAND = f'python3 "{SCRIPT}"'
 def main():
     check = "--check" in sys.argv
     try:
-        settings = json.loads(SETTINGS.read_text()) if SETTINGS.exists() else {}
+        settings = json.loads(SETTINGS.read_text(encoding="utf-8")) if SETTINGS.exists() else {}
     except ValueError:
         print(f"{SETTINGS} is not valid JSON — not touching it")
         return 2

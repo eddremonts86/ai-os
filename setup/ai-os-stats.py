@@ -27,7 +27,7 @@ SITE = ROOT / "apps" / "site"
 
 
 def count_lines(path):
-    return sum(1 for l in path.read_text().splitlines() if l.strip() and not l.lstrip().startswith("#"))
+    return sum(1 for l in path.read_text(encoding="utf-8").splitlines() if l.strip() and not l.lstrip().startswith("#"))
 
 
 def compute():
@@ -35,12 +35,12 @@ def compute():
     flat = sum(1 for d in skills.iterdir() if (d / "SKILL.md").is_file())
     gstack = sum(1 for d in (ROOT / "vendor" / "gstack").iterdir() if (d / "SKILL.md").is_file())
     ecc = count_lines(ROOT / "vendor" / "ecc" / "DAILY_SKILLS.txt")
-    manifest = (ROOT / "ai-config" / "manifest.yaml").read_text()
+    manifest = (ROOT / "ai-config" / "manifest.yaml").read_text(encoding="utf-8")
     req = re.search(r"^required_skills:\n((?:\s+-.*\n)+)", manifest, re.M)
     superpowers = len(re.findall(r"^\s+-", req.group(1), re.M)) if req else 0
     mcp = list((ROOT / "ai-config" / "mcp").glob("*.yaml"))
-    mcp_enabled = sum(1 for f in mcp if not re.search(r"^enabled:\s*false\s*$", f.read_text(), re.M))
-    brew = lambda f: len(re.findall(r'^\s*(?:brew|cask) "', (ROOT / "dev-env" / "packages" / f).read_text(), re.M))
+    mcp_enabled = sum(1 for f in mcp if not re.search(r"^enabled:\s*false\s*$", f.read_text(encoding="utf-8"), re.M))
+    brew = lambda f: len(re.findall(r'^\s*(?:brew|cask) "', (ROOT / "dev-env" / "packages" / f).read_text(encoding="utf-8"), re.M))
     linked = flat + gstack + ecc
     return {
         "skills_linked": linked,            # what every CLI gets
@@ -57,7 +57,7 @@ def compute():
         "brew_total": brew("Brewfile") + brew("Brewfile.extras"),
         "npm_globals": count_lines(ROOT / "dev-env" / "packages" / "npm-globals.txt"),
         "pip_packages": count_lines(ROOT / "dev-env" / "packages" / "pip-packages.txt"),
-        "verify_sections": len(re.findall(r'^section "', (ROOT / "setup" / "verify.sh").read_text(), re.M)),
+        "verify_sections": len(re.findall(r'^section "', (ROOT / "setup" / "verify.sh").read_text(encoding="utf-8"), re.M)),
     }
 
 

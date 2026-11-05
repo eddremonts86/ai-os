@@ -84,7 +84,7 @@ def http(url, data=None, headers=None, timeout=20, method=None):
 def load_env():
     env = {}
     if ENV_FILE.exists():
-        for line in ENV_FILE.read_text().splitlines():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
             m = re.match(r"^(?:export )?([A-Z][A-Z0-9_]*)=(.*)$", line.strip())
             if m:
                 env[m.group(1)] = m.group(2).strip().strip('"').strip("'")
@@ -94,7 +94,7 @@ def load_env():
 def mcp_definitions():
     defs = []
     for path in sorted((ROOT / "ai-config" / "mcp").glob("*.yaml")):
-        d = yaml.safe_load(path.read_text()) if yaml else None
+        d = yaml.safe_load(path.read_text(encoding="utf-8")) if yaml else None
         if isinstance(d, dict) and d.get("enabled", True) is not False:
             defs.append(d)
     return defs
@@ -181,7 +181,7 @@ def check_docker():
         return FAIL, "Docker daemon not reachable (FalkorDB + graphiti are down)"
     store = HOME / "Library/Group Containers/group.com.docker/settings-store.json"
     try:
-        autostart = json.loads(store.read_text()).get("AutoStart")
+        autostart = json.loads(store.read_text(encoding="utf-8")).get("AutoStart")
     except (OSError, ValueError):  # TCC blocks launchd agents from Group Containers
         autostart = None
     if autostart is False:
