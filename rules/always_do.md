@@ -92,7 +92,7 @@ projects or are about Edd go in `main`.
   done", codebase-memory `search_graph` / `trace_path` for callers and structure —
   before a broad Grep.
 - A memory tool that does not answer never blocks the task: note it and continue.
-  Health: `bash setup/verify.sh` (section 5b), `bash memory/launchd/install-reindex.sh --status`.
+  Health: `ai-os health` (functional checks; also runs twice a day and notifies on failure).
 
 ## When a task needs an env value or secret
 

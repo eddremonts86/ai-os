@@ -20,7 +20,7 @@ log() { printf '[reindex] %s\n' "$*"; }
 
 loaded() { launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1; }
 
-last_log() { ls -t "$LOG_DIR"/cron-reindex-*.log 2>/dev/null | head -1; }
+last_log() { ls -t "$LOG_DIR"/cron-reindex-*.log 2>/dev/null | head -1 || true; }
 
 case "${1:-install}" in
   --status)

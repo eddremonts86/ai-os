@@ -82,6 +82,13 @@ reference it.
 
 ## Failure modes
 
+Start with `ai-os health` — it exercises every layer (graph query, extraction log,
+LLM structured output, Ollama version, grepai search, cbm index, reindex age, all MCP
+handshakes, API tokens, CI) and names the broken one. It also runs at 09:30/15:30 via
+the launchd agent `ai.os.health` and raises a macOS notification on any FAIL
+(`bash memory/launchd/install-health.sh --status` shows the last report).
+
+
 - **`FalkorDB container not running`** → run `ai-os memory start` (idempotent).
 - **Graph empty after a restart** → check the mount: `docker inspect ia-os-falkordb` must show `/var/lib/falkordb/data` (it was `/data` until 2026-11-05, which lost every write).
 - **`add_memory` never shows up** → `docker logs ia-os-graphiti-mcp | grep -E "Failed to process|402|ERROR"`; a hosted LLM out of credit fails every episode.

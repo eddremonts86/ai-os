@@ -18,7 +18,8 @@ cat "$AI_OS_ROOT/CLAUDE.md"
 # → paste at the start of the conversation
 
 # Verify
-bash "$AI_OS_ROOT/setup/verify.sh"
+bash "$AI_OS_ROOT/setup/verify.sh"          # installed correctly?
+"$AI_OS_ROOT/ai-os" health                   # working right now? (graph, MCP, tokens, CI…)
 
 # Create new Spec (only when one is required — see CLAUDE.md "Method")
 $EDITOR "$AI_OS_ROOT/specs/current_spec.md"
