@@ -20,6 +20,7 @@ Stdlib + PyYAML only (the AI-OS venv has it). Never prints secret values.
 """
 
 import argparse
+import calendar
 import concurrent.futures as cf
 import json
 import os
@@ -380,27 +381,51 @@ def check_backup():
     age_h = (time.time() - (snaps[-1] / "manifest.json").stat().st_mtime) / 3600
     if age_h > 36:  # runs daily at 13:00
         return FAIL, f"last AI-OS backup {age_h:.0f}h ago — the schedule is not firing"
+    parts = [f"local {age_h:.0f}h ago ({len(snaps)} kept)"]
+    real_offsite = False  # a copy that has demonstrably left this SSD
 
-    # Off-site: the encrypted copy in iCloud Drive. ~/Backups sits on the same SSD as the data.
+    # Off-site 1: the encrypted copy in iCloud Drive. A file in that folder is not off-site until
+    # iCloud uploads it, and iCloud Drive can stall silently (2026-11-05: last sync six days old).
     offsite = Path(os.environ.get("AI_OS_OFFSITE_DIR", HOME / "Library/Mobile Documents/com~apple~CloudDocs/Backups/ai-os"))
     files = sorted(offsite.glob("ai-os-*.tar.gz.enc")) if offsite.exists() else []
-    if not files:
-        return WARN, f"AI-OS backup {age_h:.0f}h ago ({len(snaps)} kept) but no encrypted iCloud copy — nothing is off this SSD (ai-os backup)"
-    off_h = (time.time() - files[-1].stat().st_mtime) / 3600
-    if off_h > 36:
-        return FAIL, f"newest iCloud copy is {off_h:.0f}h old — the off-site upload stopped"
-    detail = f"local {age_h:.0f}h ago ({len(snaps)} kept), encrypted iCloud copy {off_h:.0f}h ago ({len(files)} kept)"
-    # A file sitting in the iCloud folder is not an off-site copy until iCloud uploads it, and
-    # iCloud Drive can stall silently (2026-11-05: last sync six days old, `brctl` not answering).
-    # Only for the real iCloud path; AI_OS_OFFSITE_DIR overrides are not iCloud.
-    if "AI_OS_OFFSITE_DIR" not in os.environ and sys.platform == "darwin":
-        rc, out = run(["brctl", "status", "com.apple.CloudDocs"], 25)
-        m = re.search(r"last-sync:(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)", re.sub(r"\x1b\[[0-9;]*m", "", out))
-        if rc == 124 or not m:
-            return WARN, detail + " — iCloud's sync daemon did not answer (brctl timed out): the upload cannot be confirmed"
-        last = time.mktime(time.strptime(m.group(1), "%Y-%m-%d %H:%M:%S"))
-        if (time.time() - last) / 3600 > 36:
-            return WARN, detail + f" — but iCloud Drive last synced {m.group(1)}: the copy is only local until it syncs (System Settings → Apple ID → iCloud → iCloud Drive)"
+    if files:
+        off_h = (time.time() - files[-1].stat().st_mtime) / 3600
+        if off_h > 36:
+            return FAIL, "; ".join(parts) + f"; newest iCloud copy is {off_h:.0f}h old — the off-site write stopped"
+        note = f"iCloud copy {off_h:.0f}h ago"
+        if "AI_OS_OFFSITE_DIR" not in os.environ and sys.platform == "darwin":
+            rc, out = run(["brctl", "status", "com.apple.CloudDocs"], 25)
+            m = re.search(r"last-sync:(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)", re.sub(r"\x1b\[[0-9;]*m", "", out))
+            if rc == 124 or not m:
+                note += " (iCloud's sync daemon did not answer: upload unconfirmed)"
+            elif (time.time() - time.mktime(time.strptime(m.group(1), "%Y-%m-%d %H:%M:%S"))) / 3600 > 36:
+                note += f" (iCloud Drive last synced {m.group(1)}: not uploaded yet)"
+            else:
+                real_offsite = True
+        else:
+            real_offsite = True
+        parts.append(note)
+
+    # Off-site 2: the private GitHub mirror.
+    if os.environ.get("AI_OS_GITHUB") != "0":
+        repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO")
+        if not repo:
+            rc, login = run(["gh", "api", "user", "--jq", ".login"], 20)
+            repo = f"{login.strip()}/ai-os-backups" if rc == 0 and login.strip() else None
+        if repo:
+            rc, out = run(["gh", "api", f"repos/{repo}/commits/main", "--jq", ".commit.committer.date"], 30)
+            if rc == 0 and out.strip():
+                gh_h = (time.time() - calendar.timegm(time.strptime(out.strip(), "%Y-%m-%dT%H:%M:%SZ"))) / 3600  # the API date is UTC
+                if gh_h > 36:
+                    return FAIL, "; ".join(parts) + f"; GitHub mirror {repo} is {gh_h:.0f}h old — the upload stopped"
+                parts.append(f"GitHub mirror {gh_h:.0f}h ago")
+                real_offsite = True
+            else:
+                parts.append(f"GitHub mirror {repo} unreachable or not created")
+
+    detail = "; ".join(parts)
+    if not real_offsite:
+        return WARN, detail + " — no confirmed off-site copy: nothing has left this SSD yet"
     if not (HOME / ".ai-os" / "backup-key-saved").exists():
         return WARN, detail + " — the key is only in this Mac's Keychain: run `ai-os backup --show-key`, save it in a password manager, then `ai-os backup --confirm-key-saved`"
     return OK, detail
