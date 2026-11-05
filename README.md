@@ -640,6 +640,7 @@ Counts are not hard-coded here because they go stale; read them live:
 - **CI workflows:** `ls .github/workflows/` (test-mac, test-linux, test-windows + deploys).
 - **Health:** `bash setup/verify.sh` (installed) and `ai-os health` (working; also runs twice a day and notifies on failure).
 - **Published numbers:** `ai-os stats` computes the counts the site and README state (skills, MCP, commands, packages); `--check` runs in the pre-push hook and CI, `--write` fixes them and re-renders the PNGs.
+- **Upgrades:** the installer never upgrades (pinned tags/images, `brew --no-upgrade`). `ai-os update` lists pinned vs upstream versions; `ai-os update --apply <component>` bumps one, installs it, runs its `ai-os health` checks and rolls back automatically on failure. Commit the pin change after.
 - **Pre-push gate:** `setup/hooks/pre-push` (enabled by `install-mac.sh`) checks the commit being pushed — shell/node syntax, YAML and skill frontmatter, compose config, unit tests, the install dry-run — in ~10s. Skip once with `git push --no-verify`.
 - **License:** MIT.
 
