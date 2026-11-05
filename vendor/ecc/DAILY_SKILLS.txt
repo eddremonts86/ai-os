@@ -15,9 +15,7 @@ inherit-legacy-style
 ai-first-engineering
 ai-regression-testing
 config-gc
-context-budget
 cost-tracking
 skill-comply
 skill-scout
-skill-stocktake
 rules-distill

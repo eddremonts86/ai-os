@@ -359,5 +359,5 @@ Rules:
 - [Feature flag best practices](https://launchdarkly.com/blog/feature-flag-best-practices/)
 - [RED/USE methods](https://www.brendangregg.com/methodology.html)
 - Related skill: `prod-deploy-verification` (pre-flight)
-- Related skill: `coolify-deploy` / `tanstack-start-coolify-deploy`
+- Related skill: `coolify-deploy` (incl. references/tanstack-start.md)
 - Related skill: `code-review-and-quality` (workspace)

@@ -1,7 +1,10 @@
 ---
 name: patterns-and-refactoring
-description: Use before any refactor of existing code, when a feature must land on tangled or legacy code, and when reviewing a design or pull request for structure. Triggers on refactoring, cleaning up, "this code is messy", "which pattern fits", legacy migration, preparatory refactoring, and reviewing someone else's abstractions. Covers 22 code smells, 66 refactoring techniques, characterization tests, GoF, PoEAA, architectural, DDD, distributed, messaging, concurrency, functional and frontend patterns, anti-patterns, testing shapes, and per-stack framework idioms. For brand-new code the YAGNI gate is already enforced by ponytail; invoke this only when a nameable force (a second variant with a ticket) exists.
+description: "Use before refactoring existing code, when a feature must land on tangled or legacy code, or when reviewing a design or PR for structure. Triggers: refactor, clean up, \"this code is messy\", \"which pattern fits\", legacy migration. Covers code smells, refactoring techniques, characterization tests and design-pattern catalogues."
 ---
+
+> **Trigger notes (moved from the frontmatter description):** Use before any refactor of existing code, when a feature must land on tangled or legacy code, and when reviewing a design or pull request for structure. Triggers on refactoring, cleaning up, "this code is messy", "which pattern fits", legacy migration, preparatory refactoring, and reviewing someone else's abstractions. Covers 22 code smells, 66 refactoring techniques, characterization tests, GoF, PoEAA, architectural, DDD, distributed, messaging, concurrency, functional and frontend patterns, anti-patterns, testing shapes, and per-stack framework idioms. For brand-new code the YAGNI gate is already enforced by ponytail; invoke this only when a nameable force (a second variant with a ticket) exists.
+
 
 # Patterns & Refactoring
 

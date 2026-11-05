@@ -122,3 +122,13 @@ ECC is MIT licensed. When redistributing the vendored copy:
   of the upstream code.
 
 ai-os does not claim authorship of the vendored contents.
+
+## Local modifications (2026-11-05)
+
+- `skills/config-gc/` absorbed the DAILY skills `skill-stocktake` and
+  `context-budget` as modes (`references/skill-stocktake.md`,
+  `references/context-budget.md`, `scripts/` copied from
+  `skills/skill-stocktake/scripts/`). Both names were removed from
+  `DAILY_SKILLS.txt`; their upstream directories stay here unmodified as
+  reference. DAILY is now 14 ECC skills.
+- `skills/inherit-legacy-style/SKILL.md` description trimmed to <=350 chars.

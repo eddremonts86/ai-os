@@ -355,4 +355,4 @@ gh pr review --comment --body "..."
 - Related skill: `requesting-code-review` (how to ask)
 - Related skill: `receiving-code-review` (how to receive)
 - Related skill: `owasp-security` (security checklist)
-- Related skill: `code-simplification` (how to simplify)
+- Related skill: `patterns-and-refactoring` (how to simplify / refactor)

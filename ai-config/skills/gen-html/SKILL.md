@@ -1,6 +1,6 @@
 ---
 name: gen-html
-description: 'Generate rich, responsive, self-contained HTML documents from a description or from existing .md/.mdx files. Use for specs, plans, reports, code reviews, PR writeups, design explorations, and any output meant to be read, shared, or navigated. HTML is always preferred over Markdown for outputs longer than ~50 lines. Produces beautiful, responsive output using the workspace design system (shadcn-inspired CSS variables + Tailwind CDN).'
+description: 'Generate self-contained, responsive HTML documents (specs, plans, reports, reviews, comparisons, UI mocks) from a description or .md/.mdx file, written to communicate. Preferred over Markdown for outputs >~50 lines, or when the user just says HTML. Not for HTML that ships in a product.'
 argument-hint: 'Describe the document OR pass a .md/.mdx file path to convert'
 user-invocable: true
 ---
@@ -38,13 +38,31 @@ Select the appropriate layout based on content:
 
 | Type                         | Layout                      | Key components                                   |
 | ---------------------------- | --------------------------- | ------------------------------------------------ |
-| **Plan / Spec**              | Full-page with sidebar nav  | Hero, phases, timeline, checklist, code snippets |
+| **Plan / Spec**              | Full-page with sidebar nav  | Title + problem statement, phases, timeline, checklist, code snippets |
 | **Report**                   | Single-column with sections | Summary card, charts (via SVG), tables, findings |
 | **Code Review / PR**         | Side-by-side or annotated   | Diff view, severity badges, annotations          |
 | **Exploration / Brainstorm** | Grid or tabs                | Option cards, comparison tables, pros/cons       |
 | **Design Prototype**         | Canvas-style                | Interactive controls, live preview panels        |
 
-### 3. Apply the Design System
+### 3. Write It to Communicate
+
+The point is a document someone actually wants to read, not a landing page. Not for HTML that ships
+as part of a product — that is normal frontend work.
+
+- **Problem first.** Open with the user's original ask in plain language, then the outcome. Do not
+  lead with an implementation inventory.
+  - BAD: "Removed implicit workspace carryover from every new thread entry point."
+  - GOOD: "New threads were ignoring your default work tree — fixed; your preference now always applies."
+- **Spec, not marketing.** The title section states the subject; no marketing hero, no promo copy,
+  no decorative chrome. Information-dense, scannable headings: context → findings/body → decisions →
+  next steps. Timestamps on anything time-sensitive.
+- **Labeled variants.** When presenting options, label them A, B, C… side by side in the same file
+  so the user can answer "C plus D plus A". Never renumber between iterations; keep one stable file
+  across revisions.
+- **Keep it small.** Cap around 512KB.
+- **Don't open a browser to verify unless asked.** Write the file, report the path, stop.
+
+### 4. Apply the Design System
 
 Always load and embed the design system from [assets/base.html](./assets/base.html). Use these rules:
 
@@ -145,7 +163,7 @@ Always load and embed the design system from [assets/base.html](./assets/base.ht
 </script>
 ```
 
-### 4. Component Patterns
+### 5. Component Patterns
 
 Use these reusable patterns in every HTML document:
 
@@ -315,7 +333,7 @@ Use these reusable patterns in every HTML document:
 </ul>
 ```
 
-### 5. Responsive Rules (non-negotiable)
+### 6. Responsive Rules (non-negotiable)
 
 Every generated HTML document MUST:
 
@@ -327,7 +345,7 @@ Every generated HTML document MUST:
 6. **Use fluid typography**: `text-base md:text-lg`
 7. **Never use fixed pixel widths** on layout elements — always use `%`, `rem`, or Tailwind utilities
 
-### 6. Self-Contained Requirement
+### 7. Self-Contained Requirement
 
 Every file must work when opened locally (double-click) with only CDN dependencies:
 
@@ -339,7 +357,7 @@ Every file must work when opened locally (double-click) with only CDN dependenci
 
 No JavaScript frameworks. No build step. No `node_modules`.
 
-### 7. Output File Naming
+### 8. Output File Naming
 
 | Input                 | Output               |
 | --------------------- | -------------------- |
@@ -350,7 +368,7 @@ No JavaScript frameworks. No build step. No `node_modules`.
 
 Save in the same directory as the input file, or in the project root if generating from scratch.
 
-### 8. File Creation (MANDATORY)
+### 9. File Creation (MANDATORY)
 
 **You MUST write the output file to disk. Never output HTML only in the chat.**
 
@@ -380,7 +398,7 @@ echo "Written: $?"
 
 Never finish without a confirmed file on disk.
 
-### 9. Quality Checklist
+### 10. Quality Checklist
 
 Before finishing, verify:
 
@@ -392,5 +410,5 @@ Before finishing, verify:
 - [ ] File opens locally without errors
 - [ ] Sidebar hidden on mobile, visible on desktop
 - [ ] All code blocks have copy buttons
-- [ ] Document has a clear hero/title section
+- [ ] Document opens with a clear title and the problem statement, not a marketing hero
 - [ ] No external images that could 404

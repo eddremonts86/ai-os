@@ -1,6 +1,6 @@
 ---
 name: app-route-inventory
-description: Enumerate and then actually visit every page/route of a web app before auditing, redesigning or testing it. Use when asked to "list all the pages", "navigate the whole app", "map the routes", "I want to review every screen", "audit the complete app", or whenever a task's scope is "the whole app" and the route list is not already known. Covers static discovery (Next.js, TanStack Router, React Router, Vue Router, Nuxt, SvelteKit, Remix, Astro, Angular, Laravel, Django, Drupal, Rails), runtime discovery, auth-gated and parameterised routes, and per-route evidence capture.
+description: "Enumerate and actually visit every page/route of a web app before auditing, redesigning or testing it. Use for \"list all the pages\", \"navigate the whole app\", \"map the routes\", \"review every screen\", \"audit the complete app\", or any whole-app task where the route list is unknown. Static + runtime discovery across major frameworks."
 ---
 
 # App route inventory
@@ -119,5 +119,4 @@ Write `docs/ui-audit/route-inventory.md` in the audited repo:
 
 ## Related skills
 
-`saas-ui-audit` (the consumer of this inventory) · `saas-expensive-ui` (the judgement criteria) ·
-`/saas-review` (chains both) · `webapp-testing` / `browser-qa` (deeper interaction testing).
+`/saas-review` (the consumer of this inventory; runs the audit matrix) · `saas-expensive-ui` (the judgement criteria) · · `webapp-testing` / `browser-qa` (deeper interaction testing).

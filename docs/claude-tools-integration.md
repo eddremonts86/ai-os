@@ -30,12 +30,10 @@ These are checked directly into `ai-config/skills/` and treated like any other A
 | `humanizer`           | claude.tools | Strip AI-writing tells from prose (Wikipedia "Signs of AI writing" patterns).                    |
 | `caveman`             | claude.tools | Reduce text to minimal-token, imperative form for token-constrained contexts.                    |
 | `notebooklm-skill`    | claude.tools | Query Google NotebookLM notebooks directly from a CLI session.                                   |
-| `frontend-design-alt` | claude.tools | Build a frontend with a deliberate visual direction held through pages.                          |
 | `careful`             | gstack       | Safety guardrails for destructive commands.                                                      |
 | `context-restore`     | gstack       | Restore working context saved earlier by `context-save`.                                         |
 | `context-save`        | gstack       | Save working context (paths, decisions, open threads) for later.                                 |
 | `freeze`              | gstack       | Restrict file edits to a specific directory for the session.                                     |
-| `guard`               | gstack       | Full safety mode: destructive-command warnings + directory-scoped edits.                         |
 | `spec`                | gstack       | Turn vague intent into a precise, executable spec in five phases.                                |
 | `unfreeze`            | gstack       | Clear the freeze boundary set by `freeze`.                                                       |
 
@@ -61,9 +59,9 @@ These are checked directly into `ai-config/skills/` and treated like any other A
 │  Layer 0b: Vendor subtree (ai-os)                                  │
 │  vendor/codex-plugin-cc/      ← SOURCE OF TRUTH (vendored plugin)  │
 │  ai-config/skills/{humanizer,caveman,notebooklm-skill,              │
-│    frontend-design-alt,careful,context-restore,context-save,       │
-│    diagram,freeze,guard,spec,unfreeze}/                            │
-│                                ← 12 cherry-picked skills           │
+│    careful,context-restore,context-save,                          │
+│    freeze,spec,unfreeze}/                                          │
+│                                ← 9 cherry-picked skills            │
 └────────────────────────────────────────────────────────────────────┘
                               │ install-claude-tools.sh (symlinks)
               ┌───────────────┼────────────────┬─────────────────┐
@@ -148,11 +146,10 @@ Antigravity:    same — by name
 | `humanizer`                        | After drafting prose that reads "too AI" — strips em-dashes, AI vocabulary, rule-of-three, etc.                        |
 | `caveman`                          | When you need to squeeze a long context into a smaller window — token-efficient imperative restatement.                |
 | `notebooklm-skill`                 | When you want to ground answers in your own uploaded Google NotebookLM notebooks.                                      |
-| `frontend-design-alt`              | Frontend builds where you want a deliberate visual direction held through pages, not generic "AI landing page" output. |
 | `careful`                          | Sessions where you'll run `rm`, `git reset`, `git push --force`, `kubectl delete`, etc. — confirms before each.        |
 | `context-restore` / `context-save` | At the start/end of a long session: `context-save` snapshots paths/decisions; `context-restore` brings them back.      |
 | `freeze` / `unfreeze`              | Pin edits to a single subdirectory for the session (e.g., only `src/api/`).                                            |
-| `guard`                            | Full safety mode — combines `careful` warnings + `freeze`-style directory scoping.                                     |
+| `careful` + `freeze`               | Full safety mode (formerly `guard`) — run both for warnings plus directory-scoped edits.                               |
 | `spec`                             | Turn "make a thing that does X" into a 5-phase executable spec — similar to AI-OS's own `project_start` workflow.      |
 
 #### Use codex-plugin-cc (plugin)

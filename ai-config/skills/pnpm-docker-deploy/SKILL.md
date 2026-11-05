@@ -296,4 +296,4 @@ out of the box (Actions sets `CI=true` by default) but a plain
 - [pnpm settings](https://pnpm.io/settings)
 - [pnpm ERR_PNPM_IGNORED_BUILDS](https://github.com/pnpm/pnpm/issues/7254)
 - Related skill: `prod-deploy-verification` (check #1 lockfile, #3 Dockerfile)
-- Related skill: `tanstack-start-coolify-deploy` (full pattern)
+- Related skill: `coolify-deploy` (full pattern; TanStack Start in references/tanstack-start.md)

@@ -1,6 +1,6 @@
 ---
 name: saas-expensive-ui
-description: Make a SaaS interface read as expensive — deliberate, calm, trustworthy — instead of generic AI-generated slop. Use when asked to "make this look expensive/premium/high-end", "why does my app look cheap or AI-generated", "remove the AI slop", "make the UI feel like a paid product", or before designing or reviewing any product surface where perceived quality matters. Supplies the 10 quality pillars, the slop catalog, hierarchy/color/typography rules, and an anti-slop prompting contract. Pairs with `saas-ui-audit` for scoring an existing app and `/saas-review` for a whole-app pass.
+description: "Make a SaaS interface read as expensive (deliberate, calm, trustworthy) instead of generic AI slop. Use for \"make this look premium/high-end\", \"why does my app look cheap or AI-generated\", \"remove the AI slop\", or before designing a product surface where perceived quality matters. Supplies quality pillars, a slop catalog and type/color rules."
 ---
 
 # Expensive-looking SaaS
@@ -126,7 +126,7 @@ Read the one that matches the task; do not read them all up front.
 
 ## Related skills
 
-- `saas-ui-audit` — score an existing product against a 21-criterion matrix, per screen.
+- `saas-review` — score an existing product against a 21-criterion matrix, per screen.
 - `app-route-inventory` — enumerate and walk every route before auditing anything.
 - `saas-data-trust` · `saas-perceived-speed` · `saas-onboarding-activation` ·
   `saas-landing-continuity` — the four deep areas, each with its own rules.
