@@ -380,13 +380,19 @@ def check_backup():
     age_h = (time.time() - (snaps[-1] / "manifest.json").stat().st_mtime) / 3600
     if age_h > 36:  # runs daily at 13:00
         return FAIL, f"last AI-OS backup {age_h:.0f}h ago — the schedule is not firing"
-    # Off-disk copy: Time Machine. The backup dir sits on the same SSD as the data.
-    rc, out = run(["tmutil", "latestbackup"], 30)
-    tm = out.strip()
-    if rc != 0 or not tm.startswith("/"):
-        reason = "destination not mounted" if "mount" in tm.lower() else (tm.splitlines() or ["no backup"])[0][:80]
-        return WARN, f"AI-OS backup {age_h:.0f}h ago ({len(snaps)} kept); Time Machine: {reason} — nothing is off this SSD"
-    return OK, f"AI-OS backup {age_h:.0f}h ago ({len(snaps)} kept); Time Machine: {Path(tm).name}"
+
+    # Off-site: the encrypted copy in iCloud Drive. ~/Backups sits on the same SSD as the data.
+    offsite = Path(os.environ.get("AI_OS_OFFSITE_DIR", HOME / "Library/Mobile Documents/com~apple~CloudDocs/Backups/ai-os"))
+    files = sorted(offsite.glob("ai-os-*.tar.gz.enc")) if offsite.exists() else []
+    if not files:
+        return WARN, f"AI-OS backup {age_h:.0f}h ago ({len(snaps)} kept) but no encrypted iCloud copy — nothing is off this SSD (ai-os backup)"
+    off_h = (time.time() - files[-1].stat().st_mtime) / 3600
+    if off_h > 36:
+        return FAIL, f"newest iCloud copy is {off_h:.0f}h old — the off-site upload stopped"
+    detail = f"local {age_h:.0f}h ago ({len(snaps)} kept), encrypted iCloud copy {off_h:.0f}h ago ({len(files)} kept)"
+    if not (HOME / ".ai-os" / "backup-key-saved").exists():
+        return WARN, detail + " — the key is only in this Mac's Keychain: run `ai-os backup --show-key`, save it in a password manager, then `ai-os backup --confirm-key-saved`"
+    return OK, detail
 
 
 def check_disk():

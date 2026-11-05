@@ -41,7 +41,7 @@ Usage:
   ai-os health [--json|--notify]      Functional checks of the running system (graph, MCP, tokens, CI…)
   ai-os stats [--check|--write]       Published counts (skills, MCP, …) computed from the repo
   ai-os update [--apply COMPONENT]    Pinned vs upstream versions; --apply bumps one, verifies, rolls back
-  ai-os backup [--list|--verify]      Snapshot graph + .env + Claude memory; --verify test-restores it
+  ai-os backup [--verify|--show-key]  Snapshot graph + .env + Claude memory, encrypted copy to iCloud Drive
 
 Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
@@ -74,7 +74,9 @@ case "${1:-}" in
     ;;
   backup)
     shift
-    exec python3 "$AI_OS_ROOT/setup/ai-os-backup.py" "$@"
+    py="$HOME/.ai-os/venv/bin/python"   # cryptography lives in the AI-OS venv
+    [ -x "$py" ] || py=python3
+    exec "$py" "$AI_OS_ROOT/setup/ai-os-backup.py" "$@"
     ;;
   update)
     shift
