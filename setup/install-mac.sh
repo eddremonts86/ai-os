@@ -899,12 +899,17 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     ok "  codebase-memory-mcp already installed"
   fi
 
-  # grepai via go install (pinned: bump this tag deliberately, not @latest — P1-4)
-  GREPAI_VERSION="v0.35.0"
+  # grepai built from a shallow clone of a pinned tag (bump deliberately, not
+  # @latest — P1-4). `go install pkg@version` is rejected because upstream's
+  # go.mod carries `exclude` directives, which Go only honours in the main module.
+  GREPAI_VERSION="v1.2.0"
   if command -v go >/dev/null 2>&1; then
-    if go install "github.com/yoanbernabeu/grepai/cmd/grepai@${GREPAI_VERSION}" 2>&1 | tail -2; then
-      [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
-      ok "  grepai ${GREPAI_VERSION} installed via go install"
+    GREPAI_SRC="$(mktemp -d)"
+    if git clone --quiet --depth 1 --branch "$GREPAI_VERSION" https://github.com/yoanbernabeu/grepai.git "$GREPAI_SRC" 2>&1 | tail -2 &&
+       mkdir -p "$HOME_DIR/go/bin" &&
+       (cd "$GREPAI_SRC" && go build -ldflags "-s -w -X main.version=${GREPAI_VERSION#v}" -o "$HOME_DIR/go/bin/grepai" ./cmd/grepai) 2>&1 | tail -2; then
+      ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
+      ok "  grepai ${GREPAI_VERSION} built from source"
 
       # grepai's init wizard hard-codes Ollama at :11434, but AI-OS uses :11500
       # (see OLLAMA_URL above). Auto-init the AI-OS repo with the right URL so
@@ -930,8 +935,9 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
         fi
       fi
     else
-      warn "  go install grepai failed (will retry on first use)"
+      warn "  grepai build failed (re-run install-mac.sh to retry)"
     fi
+    rm -rf "$GREPAI_SRC"
   else
     warn "  go not installed (grepai skipped; install: brew install go)"
   fi
