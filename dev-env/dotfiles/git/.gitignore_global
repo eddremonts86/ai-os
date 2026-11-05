@@ -113,3 +113,7 @@ kubeconfig
 *.swp
 
 **/.claude/settings.local.json
+
+# Playwright MCP page snapshots: they capture whatever the page showed, API keys included
+# (one landed in a public repo in 2026-07; see `ai-os secrets audit`).
+.playwright-mcp/

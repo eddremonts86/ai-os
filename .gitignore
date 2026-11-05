@@ -101,3 +101,6 @@ memory/openwebui/data/
 # copy of these rules lives in the plansmith repo now (2026-09-25 split).
 PROGRESS.*.md
 _agent*/
+
+# Playwright MCP page snapshots can contain secrets shown on the page
+.playwright-mcp/
