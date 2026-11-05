@@ -40,7 +40,9 @@ by default (`AI_OS_REINDEX_SKIP`); root is `AI_OS_PROJECTS_DIR` (default: the
 directory that contains ai-os). Also refreshes grepai's ai-os index.
 
 When to read and write graphiti during normal work is a rule, not part of this
-skill: `rules/always_do.md` "Use the memory stack".
+skill: `rules/always_do.md` "Use the memory stack". In Claude Code the SessionStart hook
+`setup/hooks/claude-session-memory.py` (wired by `setup/wire-memory-hook.py`) preloads
+the repo's facts; `ai-os health` reports memories recorded per group in the last 7 days.
 
 There is no session-sync subcommand — an earlier draft advertised one
 (`sync-sessions`) before it was implemented; it was removed rather than shipped

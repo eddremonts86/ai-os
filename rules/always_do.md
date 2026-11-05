@@ -84,7 +84,8 @@ The memory MCP servers are always running; use them instead of re-discovering.
 projects or are about Edd go in `main`.
 
 - **Before** work on a project or a past decision: graphiti `search_memory_facts`
-  (and `search_nodes`) with the project and topic.
+  (and `search_nodes`) with the project and topic. In Claude Code a SessionStart hook
+  (`setup/hooks/claude-session-memory.py`) already preloads the repo's facts; search for more.
 - **After** a decision, a root cause, a convention or an environment fact is settled:
   graphiti `add_memory` — one short, self-contained, dated episode in English. Never
   secrets, raw logs, or task progress (that goes in `specs/`).
@@ -124,6 +125,12 @@ Rules:
 15. Run format (Prettier, black, shfmt).
 16. If a hook or build script exists, run it.
 
+**Git flow in ai-os: feature → `dev` → `main`.** Work on `dev` (or a feature branch merged
+into `dev`); `main` changes only through a `dev` → `main` PR (`gh pr create --base main
+--head dev`). `guard-main.yml` rejects PRs to `main` from anything but `dev`, and the
+pre-push hook (`setup/hooks/pre-push`) blocks direct pushes to `main` — hotfix only with
+`AIOS_ALLOW_MAIN_PUSH=1`. Pushing still needs the user's OK (`ask_before_doing.md`).
+
 ## When you find an error, anywhere
 
 If a check (type-check, lint, test, build, runtime) surfaces an error:
@@ -147,6 +154,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Destination | Use |
     |---|---|
     | Branded deliverable — docs, ADRs, README, decks, social cards | `diagram-design` skill (HTML + inline SVG, AI-OS skin, dark by default) |
+    | Understand or plan real code — repo architecture, request sequence, data flow, state machine, Spec/Plan figure | `archify` skill (interactive HTML from typed JSON, source-backed with `--repo-root`) |
     | The diagram lives in FigJam / Figma | figma MCP `generate_diagram` |
     | The destination is a claude.ai Artifact | `artifact-diagramming` |
     | Throwaway shape inside a chat reply | fenced mermaid, no skill |
@@ -156,8 +164,11 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 24. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/index.html`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
-25. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and
+25. Before shipping a `diagram-design` diagram, run the skill's taste gate (`SKILL.md` §9) and
     `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>`. Report the result.
+    `archify` output is working material, not a branded deliverable: it keeps its own skin, must
+    pass its own `finalize` gate (a non-zero exit is a failure), and is not embedded in docs
+    that need the AI-OS brand.
 
 ## When a task is UI or visual design
 

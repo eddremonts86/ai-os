@@ -120,7 +120,7 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 
 | Step | What happens                                                                                           |
 | ---- | ------------------------------------------------------------------------------------------------------ |
-| 1    | Installs Homebrew packages from `dev-env/packages/Brewfile` (60+ packages).                            |
+| 1    | Installs Homebrew packages from `dev-env/packages/Brewfile` (32 packages).                            |
 | 2    | Installs npm globals from `dev-env/packages/npm-globals.txt`.                                          |
 | 3    | Installs Python user packages from `dev-env/packages/pip-packages.txt`.                                |
 | 4    | Installs Oh My Zsh + Powerlevel10k + custom plugins.                                                   |
@@ -129,7 +129,7 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 | 7    | Installs the 14 required superpowers skills (if missing).                                              |
 | 8    | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers).                             |
 | 9    | Configures Warp (Mac) + Terminal.app.                                                                  |
-| 10   | Runs verification (12 sections).                                                                       |
+| 10   | Runs verification (20 sections).                                                                       |
 
 ---
 
@@ -342,6 +342,7 @@ What gets vendored:
 | claude.tools (`humanizer`, `caveman`, `notebooklm-skill`; `frontend-design-alt` merged into `frontend-design`) | `ai-config/skills/`                                                                | 3 skills            |
 | gstack (`careful`, `context-save`, `context-restore`, `freeze`, `spec`, `unfreeze`; `guard` folded into `careful`) | `ai-config/skills/`                                                                | 6 skills            |
 | diagram-design (MIT, `cathrynlavery/diagram-design`) — re-skinned to the AI-OS brand                    | `ai-config/skills/diagram-design/`                                                 | 1 skill             |
+| archify (MIT, `tt-a1i/archify`) — pinned v3.0.1, interactive diagrams from code or a description | `ai-config/skills/archify/` | 1 skill |
 | patterns-and-refactoring (MIT, `christianpasinrey/refactoring.guru-skill`) — trigger narrowed to refactor/review | `ai-config/skills/patterns-and-refactoring/` | 1 skill |
 | OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
@@ -559,7 +560,7 @@ Differences:
 | -------------------------------- | --- | ------------------------------- | ---------------- |
 | **AI-OS core**                   | ✅  | ✅                              | ✅               |
 | **Flat skills**                  | ✅  | ✅                              | ✅               |
-| **10 MCP servers (all enabled)** | ✅  | ✅                              | ✅               |
+| **10 MCP servers (7 enabled)** | ✅  | ✅                              | ✅               |
 | **Oh My Zsh + p10k**             | ✅  | ❌ (use Oh-My-Posh or Starship) | ✅               |
 | **Warp**                         | ✅  | ✅ (Windows version)            | ❌ (use Wezterm) |
 | **Homebrew**                     | ✅  | ❌ (Chocolatey)                 | ❌ (apt)         |
@@ -638,6 +639,9 @@ Counts are not hard-coded here because they go stale; read them live:
 - **Workflows / rules / verifiers:** `ls workflows/ rules/ verifiers/`.
 - **CI workflows:** `ls .github/workflows/` (test-mac, test-linux, test-windows + deploys).
 - **Health:** `bash setup/verify.sh` (installed) and `ai-os health` (working; also runs twice a day and notifies on failure).
+- **Published numbers:** `ai-os stats` computes the counts the site and README state (skills, MCP, commands, packages); `--check` runs in the pre-push hook and CI, `--write` fixes them and re-renders the PNGs.
+- **Upgrades:** the installer never upgrades (pinned tags/images, `brew --no-upgrade`). `ai-os update` lists pinned vs upstream versions; `ai-os update --apply <component>` bumps one, installs it, runs its `ai-os health` checks and rolls back automatically on failure. Commit the pin change after.
+- **Backups:** `ai-os backup` snapshots what cannot be rebuilt — the graphiti graph, `dev-env/env-config/.env`, Claude memory — to `~/Backups/ai-os` (0700, newest 14) and an AES-256-GCM encrypted copy to iCloud Drive (`Backups/ai-os`, key in the Keychain). `--verify` restores the newest local snapshot into a throwaway FalkorDB; `--verify-offsite` decrypts the newest iCloud and GitHub copies and compares them. The same ciphertext also goes to a **private** GitHub repo (`<login>/ai-os-backups`; refuses to publish if the repo is not private; its history is one force-pushed commit, so it holds only the newest 14 files), because iCloud Drive can stall silently. Runs daily at 13:00 (`ai.os.backup`). **Save the recovery key off this Mac once** (`ai-os backup --show-key`, then `--confirm-key-saved`): the Keychain dies with the Mac. To restore on a new Mac: `AI_OS_BACKUP_KEY=<key> ai-os backup --restore-offsite <dir>` (iCloud copy, else GitHub; `AI_OS_RESTORE_FROM=github` forces GitHub).
 - **Pre-push gate:** `setup/hooks/pre-push` (enabled by `install-mac.sh`) checks the commit being pushed — shell/node syntax, YAML and skill frontmatter, compose config, unit tests, the install dry-run — in ~10s. Skip once with `git push --no-verify`.
 - **License:** MIT.
 
