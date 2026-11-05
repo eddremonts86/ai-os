@@ -1080,6 +1080,13 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   else
     warn "  reindex agent install failed (run: bash memory/launchd/install-reindex.sh)"
   fi
+
+  # 9b.5 — Functional health check twice a day, macOS notification on failure
+  if bash "$AI_OS_ROOT/memory/launchd/install-health.sh" 2>&1 | sed 's/^/    /'; then
+    ok "  health agent ai.os.health installed (ai-os health)"
+  else
+    warn "  health agent install failed (run: bash memory/launchd/install-health.sh)"
+  fi
 else
   log "9b. SKIP_MEMORY=1, skipping memory stack"
 fi
