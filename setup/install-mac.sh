@@ -161,18 +161,29 @@ echo ""
 
 # ─── 1. Brew packages ───
 if [ "${SKIP_BREW:-0}" != "1" ]; then
-  log "1. Installing Brew packages (may take 5-15 min)..."
+  log "1. Installing missing Brew packages (first run may take 5-15 min)..."
   cd "$AI_OS_ROOT"
   # Homebrew 4.6+ refuses formulae from untrusted third-party taps;
   # `brew trust` doesn't exist on older versions, so ignore failures there.
   brew trust hashicorp/tap >/dev/null 2>&1 || true
   brew trust aws/tap >/dev/null 2>&1 || true
-  brew bundle install --file=dev-env/packages/Brewfile --verbose
-  ok "Brew packages installed"
+  # --no-upgrade: install what is missing, never upgrade what is already there
+  # (a re-run used to upgrade every outdated cask, e.g. docker-desktop mid-use).
+  # A failed package is reported at the end instead of aborting every later step.
+  if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile; then
+    ok "Brew packages installed"
+  else
+    BREW_FAILED=1
+    warn "brew bundle reported failures; continuing (see output above)"
+  fi
   if [ "${EXTRAS:-0}" = "1" ]; then
     log "1b. EXTRAS=1 — installing dev-env/packages/Brewfile.extras..."
-    brew bundle install --file=dev-env/packages/Brewfile.extras --verbose
-    ok "Brew extras installed"
+    if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile.extras; then
+      ok "Brew extras installed"
+    else
+      BREW_FAILED=1
+      warn "brew bundle (extras) reported failures; continuing"
+    fi
   fi
 else
   log "1. SKIP_BREW=1, skipping brew"
@@ -1288,13 +1299,9 @@ fi
 echo ""
 
 # ─── 12. Reload shell ───
-log "12. Reload zsh..."
-# Reload shell only if interactive
-if [ -n "${PS1:-}" ]; then
-  exec zsh
-else
-  ok "zsh (manual reload: exec zsh or open new terminal)"
-fi
+# No `exec zsh` here: it replaced this process, so step 13 and the failure
+# report below never ran in an interactive terminal.
+log "12. Reload zsh manually: exec zsh (or open a new terminal)"
 echo ""
 
 # ─── 13. Final verification ───
@@ -1304,6 +1311,11 @@ if [ "${SKIP_VERIFY:-0}" != "1" ]; then
 fi
 
 echo ""
+if [ "${BREW_FAILED:-0}" = "1" ]; then
+  err "Setup finished, but brew bundle failed for some packages (scroll up for 'brew bundle')."
+  err "Fix them, then re-run: SKIP_NPM=1 SKIP_PIP=1 bash setup/install-mac.sh"
+  exit 1
+fi
 log "═══════════════════════════════════════════════════════════"
 ok "AI-OS setup complete!"
 log ""

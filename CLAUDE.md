@@ -11,7 +11,7 @@ examples below use `$AI_OS_ROOT`; a typical local default is
 
 Before doing any non-trivial task:
 
-1. **Read** the relevant `context/` files (00_profile, 02_projects, 03_preferences, 04_tools, 05_sources).
+1. **Read** `context/00_profile.md` and `03_preferences.md`; other `context/` files only when the task needs them (see the on-demand table in `rules/always_do.md`).
 2. **Check** `specs/current_spec.md`. It is reserved for one active task; if it contains the no-active-Spec template, use `workflows/project_start.md` when a Spec is needed.
 3. **Execute** in blocks of <=30 min each. Between blocks, run `verifiers/critic_prompt.md` against the output.
 4. **Archive** completed Specs to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary, then reset `specs/current_spec.md` to the no-active-Spec template.
@@ -178,7 +178,7 @@ ai-os/
 ├── archive/                     # completed Specs
 ├── outputs/                     # the framework's artifacts: research, audits, diagrams
 ├── memory/                      # loop registry + graph state
-├── llm/                         # local/cloud chat router (qwen3:8b via native Ollama, MiniMax fallback)
+├── llm/                         # local/cloud chat router (gemma3:12b via native Ollama, MiniMax fallback)
 ├── prompts/                     # original Karpathy prompts (English)
 ├── ai-config/                   # AI config: skills, MCP, commands
 ├── dev-env/                     # dev env: dotfiles, Brewfile, packages
