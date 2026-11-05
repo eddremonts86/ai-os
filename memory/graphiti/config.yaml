@@ -142,7 +142,10 @@ server:
 llm:
   provider: "openai" # any OpenAI-compatible endpoint impersonates "openai" via a custom api_url (Ollama, MiniMax)
   model: ${GRAPHITI_LLM_MODEL:gemma3:12b}
-  max_tokens: 16384 # reasoning models spend completion tokens on <think>; 4096 truncated the fact/edge-extraction JSON under MiniMax-M3
+  # 4096 for local gemma3: it sometimes loops in JSON mode, and at ~25 tok/s a 16384 cap
+  # meant ~11 min per stuck call (seen 2026-11-05). Raise to 16384 for a reasoning model
+  # (MiniMax-M3 spends completion tokens on <think>; 4096 truncated its JSON).
+  max_tokens: ${GRAPHITI_LLM_MAX_TOKENS:4096}
   providers:
     openai:
       api_key: ${GRAPHITI_LLM_API_KEY:ollama} # Ollama ignores it
