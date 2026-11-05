@@ -28,6 +28,7 @@ class SecretsTests(unittest.TestCase):
         self.assertEqual(sec.classify("DEEPSEEK_MODEL", "deepseek-v4-pro-experimental-xyz")[0], "info")
         self.assertEqual(sec.classify("CONDUCTOR_SSH_KEY", "~/.ssh/id_ed25519_conductor")[0], "info")
         self.assertEqual(sec.classify("VITE_SENTRY_DSN", REAL)[0], "info")  # DSNs ship in client bundles
+        self.assertEqual(sec.classify("COOLIFY_GITHUB_DEPLOY_KEY_UUID", "abcd1234efgh5678ijkl9012")[0], "info")  # "KEY" in the name, but a UUID
 
     def test_credential_values_skips_short_prose_and_public_urls(self):
         env = {"A": "short", "B": "two words here are prose-like", "C": "https://example.com/path", "D": REAL, "E": REAL}
