@@ -124,6 +124,12 @@ Rules:
 15. Run format (Prettier, black, shfmt).
 16. If a hook or build script exists, run it.
 
+**Git flow in ai-os: feature → `dev` → `main`.** Work on `dev` (or a feature branch merged
+into `dev`); `main` changes only through a `dev` → `main` PR (`gh pr create --base main
+--head dev`). `guard-main.yml` rejects PRs to `main` from anything but `dev`, and the
+pre-push hook (`setup/hooks/pre-push`) blocks direct pushes to `main` — hotfix only with
+`AIOS_ALLOW_MAIN_PUSH=1`. Pushing still needs the user's OK (`ask_before_doing.md`).
+
 ## When you find an error, anywhere
 
 If a check (type-check, lint, test, build, runtime) surfaces an error:
