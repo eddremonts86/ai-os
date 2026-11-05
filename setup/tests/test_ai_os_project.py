@@ -46,6 +46,16 @@ class ProjectInitTests(unittest.TestCase):
             self.assertEqual(ignore.count(".env"), 1)
             self.assertIn("node_modules", ignore)
 
+    def test_output_survives_a_windows_cp1252_console(self):
+        import io
+        from contextlib import redirect_stdout
+        with tempfile.TemporaryDirectory() as d:
+            r = self.repo(d)
+            console = io.TextIOWrapper(io.BytesIO(), encoding="cp1252")  # strict: no '\u2192'
+            with redirect_stdout(console):
+                proj.init(r)
+                proj.init(r, dry=True)
+
     def test_dry_run_writes_nothing_and_non_repo_is_refused(self):
         with tempfile.TemporaryDirectory() as d:
             r = self.repo(d)
