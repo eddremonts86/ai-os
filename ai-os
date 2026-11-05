@@ -13,6 +13,7 @@
 #   health [...]      →  setup/ai-os-health.py      (functional checks of the running system)
 #   stats [...]       →  setup/ai-os-stats.py       (published counts, --check / --write)
 #   update [...]      →  setup/ai-os-update.py      (pinned vs upstream, verified upgrades)
+#   backup [...]      →  setup/ai-os-backup.py      (snapshot + restore check of what cannot be rebuilt)
 
 set -euo pipefail
 
@@ -40,6 +41,7 @@ Usage:
   ai-os health [--json|--notify]      Functional checks of the running system (graph, MCP, tokens, CI…)
   ai-os stats [--check|--write]       Published counts (skills, MCP, …) computed from the repo
   ai-os update [--apply COMPONENT]    Pinned vs upstream versions; --apply bumps one, verifies, rolls back
+  ai-os backup [--list|--verify]      Snapshot graph + .env + Claude memory; --verify test-restores it
 
 Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
@@ -69,6 +71,10 @@ case "${1:-}" in
   bootstrap)
     shift
     exec bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" "$@"
+    ;;
+  backup)
+    shift
+    exec python3 "$AI_OS_ROOT/setup/ai-os-backup.py" "$@"
     ;;
   update)
     shift

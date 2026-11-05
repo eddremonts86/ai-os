@@ -536,6 +536,11 @@ if launchctl print "gui/$(id -u)/ai.os.health" >/dev/null 2>&1; then
 else
   opt_miss "Health agent ai.os.health not loaded (run: bash memory/launchd/install-health.sh)"
 fi
+if launchctl print "gui/$(id -u)/ai.os.backup" >/dev/null 2>&1; then
+  opt_ok "Backup agent ai.os.backup loaded (13:00, restore-verified; run now: ai-os backup)"
+else
+  opt_miss "Backup agent ai.os.backup not loaded (run: bash memory/launchd/install-backup.sh)"
+fi
 if [ "$(git -C "$AI_OS_ROOT" config --get core.hooksPath 2>/dev/null)" = "setup/hooks" ]; then
   opt_ok "Pre-push gate enabled (core.hooksPath = setup/hooks)"
 else

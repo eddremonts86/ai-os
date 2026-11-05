@@ -641,6 +641,7 @@ Counts are not hard-coded here because they go stale; read them live:
 - **Health:** `bash setup/verify.sh` (installed) and `ai-os health` (working; also runs twice a day and notifies on failure).
 - **Published numbers:** `ai-os stats` computes the counts the site and README state (skills, MCP, commands, packages); `--check` runs in the pre-push hook and CI, `--write` fixes them and re-renders the PNGs.
 - **Upgrades:** the installer never upgrades (pinned tags/images, `brew --no-upgrade`). `ai-os update` lists pinned vs upstream versions; `ai-os update --apply <component>` bumps one, installs it, runs its `ai-os health` checks and rolls back automatically on failure. Commit the pin change after.
+- **Backups:** `ai-os backup` snapshots what cannot be rebuilt — the graphiti graph, `dev-env/env-config/.env`, Claude memory — to `~/Backups/ai-os` (0700, newest 14), and `--verify` restores the newest into a throwaway FalkorDB. Runs daily at 13:00 (`ai.os.backup`); `ai-os health` fails if it stops and warns while nothing is off this SSD (Time Machine).
 - **Pre-push gate:** `setup/hooks/pre-push` (enabled by `install-mac.sh`) checks the commit being pushed — shell/node syntax, YAML and skill frontmatter, compose config, unit tests, the install dry-run — in ~10s. Skip once with `git push --no-verify`.
 - **License:** MIT.
 
