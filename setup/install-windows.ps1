@@ -814,20 +814,31 @@ if ($env:SKIP_MEMORY -ne "1") {
         Ok "  codebase-memory-mcp already installed"
     }
 
-    # 7b.4 — grepai via go install (pinned tag, not @latest — P1-4, kept in sync with install-mac.sh)
-    $grepaiVersion = "v0.35.0"
+    # 7b.4 — grepai built from a shallow clone of a pinned tag (not @latest — P1-4, kept in
+    # sync with install-mac.sh). `go install pkg@version` is rejected because upstream's
+    # go.mod carries `exclude` directives, which Go only honours in the main module.
+    $grepaiVersion = "v1.2.0"
     if (Get-Command go -ErrorAction SilentlyContinue) {
+        $grepaiSrc = Join-Path ([System.IO.Path]::GetTempPath()) "grepai-src-$([guid]::NewGuid())"
         try {
-            & go install "github.com/yoanbernabeu/grepai/cmd/grepai@$grepaiVersion" 2>&1 | Select-Object -Last 2
-            if ($LASTEXITCODE -ne 0) { throw "go install exited with code $LASTEXITCODE" }
+            & git clone --quiet --depth 1 --branch $grepaiVersion https://github.com/yoanbernabeu/grepai.git $grepaiSrc 2>&1 | Select-Object -Last 2
+            if ($LASTEXITCODE -ne 0) { throw "git clone exited with code $LASTEXITCODE" }
             $goBinGrepai = "$HomeDir\go\bin\grepai.exe"
-            if (Test-Path $goBinGrepai) {
-                Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
+            New-Item -ItemType Directory -Force -Path (Split-Path $goBinGrepai) | Out-Null
+            Push-Location $grepaiSrc
+            try {
+                & go build -ldflags "-s -w -X main.version=$($grepaiVersion.TrimStart('v'))" -o $goBinGrepai ./cmd/grepai 2>&1 | Select-Object -Last 2
+                if ($LASTEXITCODE -ne 0) { throw "go build exited with code $LASTEXITCODE" }
             }
-            Ok "  grepai $grepaiVersion installed via go install"
+            finally { Pop-Location }
+            Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
+            Ok "  grepai $grepaiVersion built from source"
         }
         catch {
-            Warn "  go install grepai failed (will retry on first use)"
+            Warn "  grepai build failed (re-run install-windows.ps1 to retry): $_"
+        }
+        finally {
+            Remove-Item -Recurse -Force $grepaiSrc -ErrorAction SilentlyContinue
         }
     }
     else {
