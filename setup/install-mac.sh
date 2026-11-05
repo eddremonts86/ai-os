@@ -464,6 +464,14 @@ if [ -e "$AIOS_ZSHRC" ] || [ -L "$AIOS_ZSHRC" ]; then
   esac
 fi
 
+# ─── 5b2. `ai-os` on the PATH ───
+# The dispatcher resolves symlinks to find the repo, so a link in ~/.local/bin (already
+# on PATH via the zshrc) is all it needs. The installer never created it before, so every
+# `ai-os health|backup|update|...` in the docs failed with "command not found".
+mkdir -p "$HOME_DIR/.local/bin"
+ln -sfn "$AI_OS_ROOT/ai-os" "$HOME_DIR/.local/bin/ai-os"
+ok "5b2. ai-os command: ~/.local/bin/ai-os → $AI_OS_ROOT/ai-os"
+
 # ─── 5c. Git hooks for this clone (pre-push gate, see setup/hooks/pre-push) ───
 # Repo-local config only; never touches the global git config or other repos.
 if [ -d "$AI_OS_ROOT/.git" ] || git -C "$AI_OS_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
@@ -984,7 +992,7 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   CBM_ARCH="$(uname -m | sed 's/x86_64/amd64/; s/arm64/arm64/')"
   CBM_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
   CBM_ASSET="codebase-memory-mcp-${CBM_OS}-${CBM_ARCH}.tar.gz"
-  CBM_VERSION="v0.8.1"  # pinned: last release with assets
+  CBM_VERSION="v0.12.1"  # pinned; bump with: ai-os update --apply codebase-memory-mcp
   CBM_URL="https://github.com/deusdata/codebase-memory-mcp/releases/download/${CBM_VERSION}/${CBM_ASSET}"
   # checksums.txt is published for the same pinned tag, so bumping CBM_VERSION
   # automatically verifies against the matching release's hashes (P1-4).
@@ -1093,6 +1101,13 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     ok "  health agent ai.os.health installed (ai-os health)"
   else
     warn "  health agent install failed (run: bash memory/launchd/install-health.sh)"
+  fi
+
+  # 9b.6 — Daily backup of the graph, .env and Claude memory, restore-verified
+  if bash "$AI_OS_ROOT/memory/launchd/install-backup.sh" 2>&1 | sed 's/^/    /'; then
+    ok "  backup agent ai.os.backup installed (ai-os backup)"
+  else
+    warn "  backup agent install failed (run: bash memory/launchd/install-backup.sh)"
   fi
 else
   log "9b. SKIP_MEMORY=1, skipping memory stack"
@@ -1453,6 +1468,16 @@ if [ "${SKIP_COMPACT_HOOK:-0}" != "1" ]; then
   fi
 else
   log "9e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
+fi
+
+# 9f. Session-memory hook: every Claude Code session starts with what graphiti
+# remembers about its repo (setup/hooks/claude-session-memory.py).
+if [ "${SKIP_MEMORY_HOOK:-0}" != "1" ]; then
+  if python3 "$SCRIPT_DIR/wire-memory-hook.py"; then
+    ok "  session-memory hook wired (Claude Code SessionStart)"
+  else
+    warn "  session-memory hook not wired — see the message above (never blocks the install)"
+  fi
 fi
 echo ""
 

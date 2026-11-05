@@ -6,7 +6,8 @@
 #
 # Runs what CI runs on every OS runner, plus the checks that would have caught
 # today's (2026-11-05) breakages before CI did: invalid YAML in skill
-# frontmatter, a syntax error in a setup script, an invalid compose file.
+# frontmatter, a syntax error in a setup script, an invalid compose file,
+# and a direct push to main.
 # Windows' install-windows.dry-run.ps1 only runs here when pwsh is installed.
 
 set -uo pipefail
@@ -19,13 +20,18 @@ step() { printf '[pre-push] %-34s' "$1"; }
 pass() { echo "ok${1:+ ($1)}"; }
 fail() { echo "FAIL"; printf '%s\n' "$1" | sed 's/^/           /' | head -15; failed=$((failed + 1)); }
 
-# Direct pushes to main skip the feature → dev → main flow that guard-main.yml
-# enforces on PRs; say so, but don't block (some fixes need to land on main).
+# The flow is feature → dev → main, and main only changes through a dev → main PR
+# (guard-main.yml checks the PR side; branch protection needs a paid plan, so this
+# hook is the push side). Hotfix escape hatch: AIOS_ALLOW_MAIN_PUSH=1 git push ...
 ZERO=0000000000000000000000000000000000000000
 sha=""
 while read -r _local_ref local_sha remote_ref _remote_sha; do
-  [ "$remote_ref" = "refs/heads/main" ] && \
-    echo "[pre-push] note: pushing straight to main (the repo flow is feature → dev → main)"
+  if [ "$remote_ref" = "refs/heads/main" ] && [ "${AIOS_ALLOW_MAIN_PUSH:-0}" != "1" ]; then
+    echo "[pre-push] blocked: direct push to main. Push to dev (or a feature branch) and open a PR:"
+    echo "           git push origin HEAD:dev && gh pr create --base main --head dev"
+    echo "           Hotfix only: AIOS_ALLOW_MAIN_PUSH=1 git push origin main"
+    exit 1
+  fi
   [ "$local_sha" != "$ZERO" ] && sha="$local_sha"
 done
 [ -z "$sha" ] && { echo "[pre-push] only deletions — nothing to check"; exit 0; }
@@ -41,8 +47,10 @@ echo "[pre-push] checking ${sha:0:9}"
 step "shell syntax"
 out=""
 while IFS= read -r f; do
+  # setup/hooks/ also holds Python; only syntax-check what is actually shell.
+  case "$f" in *.sh) ;; *) head -1 "$f" | grep -qE '^#!.*\b(ba)?sh\b' || continue ;; esac
   e=$(bash -n "$f" 2>&1) || out+="$f: $e"$'\n'
-done < <(git ls-files '*.sh' 'ai-os' 'setup/hooks/*' | grep -v '^vendor/' | grep -v '\.ps1$')
+done < <(git ls-files '*.sh' 'ai-os' 'setup/hooks/*' | grep -v '^vendor/')
 [ -z "$out" ] && pass || fail "$out"
 
 step "node syntax (setup/, llm/)"
@@ -94,6 +102,9 @@ if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; 
 else
   pass "docker compose not installed, skipped"
 fi
+
+step "published numbers (ai-os stats)"
+out=$(python3 setup/ai-os-stats.py --check 2>&1) && pass || fail "$out"
 
 step "setup unit tests"
 out=$("$PY" -m unittest discover -s setup/tests 2>&1) && pass "$(grep -oE 'Ran [0-9]+ tests' <<<"$out")" || fail "$(tail -15 <<<"$out")"

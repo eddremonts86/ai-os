@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Source of og.png (the social card). Edit here, then: ai-os stats --write (re-renders og.png). -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+  html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0a0a0d}
+  .card{position:relative;width:1200px;height:630px;box-sizing:border-box;padding:72px 80px;
+    background:
+      radial-gradient(700px 420px at 960px 40px, rgba(120,30,90,.32), transparent 70%),
+      radial-gradient(520px 360px at 0px 640px, rgba(20,90,90,.22), transparent 70%),
+      #0a0a0d;
+    font-family:"Space Grotesk",system-ui,sans-serif;color:#f4f4f6}
+  .grid{position:absolute;inset:0;background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:44px 44px}
+  .brand{position:relative;display:flex;align-items:center;gap:18px}
+  .mark{width:52px;height:52px;border-radius:12px;background:#b6f24a;display:grid;place-items:center;
+    box-shadow:0 0 28px rgba(182,242,74,.45);color:#111;font-size:20px}
+  .name{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:26px;letter-spacing:.5px}
+  h1{position:relative;margin:46px 0 0;font-size:76px;line-height:1.02;font-weight:700;letter-spacing:-1.5px}
+  h1 .hi{color:#b6f24a}
+  .sub{position:relative;margin-top:30px;font-family:"JetBrains Mono",monospace;font-size:25px;color:#a2a4ae}
+  .row{position:relative;display:flex;align-items:center;gap:12px;margin-top:40px}
+  .pill{font-family:"JetBrains Mono",monospace;font-size:19px;color:#c9cad1;border:1px solid rgba(255,255,255,.14);
+    border-radius:999px;padding:11px 18px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.02)}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .url{margin-left:26px;font-family:"JetBrains Mono",monospace;font-size:20px;color:#b6f24a}
+</style></head>
+<body><div class="card"><div class="grid"></div>
+  <div class="brand"><div class="mark">◆</div><div class="name">AI-OS</div></div>
+  <h1>Your AI setup, booted<br>like an <span class="hi">operating</span><br><span class="hi">system</span>.</h1>
+  <div class="sub">Spec → Verifier → Environment · one command · 175 skills · 6 CLIs</div>
+  <div class="row">
+    <div class="pill"><span class="dot" style="background:#b6f24a"></span>Karpathy method</div>
+    <div class="pill"><span class="dot" style="background:#3dd6f0"></span>6 AI CLIs</div>
+    <div class="pill"><span class="dot" style="background:#ff4fa3"></span>Mac · Win · Linux</div>
+    <div class="url">ai-os.eduardoinerarte.dk</div>
+  </div>
+</div></body></html>
