@@ -11,6 +11,7 @@
 #   loop    →  memory/ai-os-loop.sh            (Spec → Verifier → Environment)
 #   bootstrap [...]   →  setup/ai-os-bootstrap.sh   (on-demand full-stack + auto-index)
 #   health [...]      →  setup/ai-os-health.py      (functional checks of the running system)
+#   stats [...]       →  setup/ai-os-stats.py       (published counts, --check / --write)
 
 set -euo pipefail
 
@@ -36,6 +37,7 @@ Usage:
   ai-os llm    <subcommand> [args]    Local/cloud chat router (ask, test)
   ai-os bootstrap [--refresh]         First-time / on-demand full-stack setup + auto-index
   ai-os health [--json|--notify]      Functional checks of the running system (graph, MCP, tokens, CI…)
+  ai-os stats [--check|--write]       Published counts (skills, MCP, …) computed from the repo
 
 Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
@@ -65,6 +67,10 @@ case "${1:-}" in
   bootstrap)
     shift
     exec bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" "$@"
+    ;;
+  stats)
+    shift
+    exec python3 "$AI_OS_ROOT/setup/ai-os-stats.py" "$@"
     ;;
   health)
     shift

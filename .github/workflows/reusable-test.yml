@@ -113,6 +113,12 @@ jobs:
         # unit tests (PyYAML-required parsing, config preservation, idempotency).
         run: python3 -m unittest discover -s setup/tests -v
 
+      - name: "Published numbers match the repo (required)"
+        # The site/README/diagram counts (skills, MCP, commands, packages) are
+        # checked against the repo, so a catalogue change cannot leave them stale.
+        # Fix locally with: ai-os stats --write
+        run: python3 setup/ai-os-stats.py --check
+
       - name: Summary
         if: always()
         env:

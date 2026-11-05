@@ -120,7 +120,7 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 
 | Step | What happens                                                                                           |
 | ---- | ------------------------------------------------------------------------------------------------------ |
-| 1    | Installs Homebrew packages from `dev-env/packages/Brewfile` (60+ packages).                            |
+| 1    | Installs Homebrew packages from `dev-env/packages/Brewfile` (32 packages).                            |
 | 2    | Installs npm globals from `dev-env/packages/npm-globals.txt`.                                          |
 | 3    | Installs Python user packages from `dev-env/packages/pip-packages.txt`.                                |
 | 4    | Installs Oh My Zsh + Powerlevel10k + custom plugins.                                                   |
@@ -129,7 +129,7 @@ DRY_RUN=1 bash setup/install-mac.sh   # simulates everything, doesn't touch your
 | 7    | Installs the 14 required superpowers skills (if missing).                                              |
 | 8    | Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (7 servers).                             |
 | 9    | Configures Warp (Mac) + Terminal.app.                                                                  |
-| 10   | Runs verification (12 sections).                                                                       |
+| 10   | Runs verification (20 sections).                                                                       |
 
 ---
 
@@ -560,7 +560,7 @@ Differences:
 | -------------------------------- | --- | ------------------------------- | ---------------- |
 | **AI-OS core**                   | ✅  | ✅                              | ✅               |
 | **Flat skills**                  | ✅  | ✅                              | ✅               |
-| **10 MCP servers (all enabled)** | ✅  | ✅                              | ✅               |
+| **10 MCP servers (7 enabled)** | ✅  | ✅                              | ✅               |
 | **Oh My Zsh + p10k**             | ✅  | ❌ (use Oh-My-Posh or Starship) | ✅               |
 | **Warp**                         | ✅  | ✅ (Windows version)            | ❌ (use Wezterm) |
 | **Homebrew**                     | ✅  | ❌ (Chocolatey)                 | ❌ (apt)         |
@@ -639,6 +639,7 @@ Counts are not hard-coded here because they go stale; read them live:
 - **Workflows / rules / verifiers:** `ls workflows/ rules/ verifiers/`.
 - **CI workflows:** `ls .github/workflows/` (test-mac, test-linux, test-windows + deploys).
 - **Health:** `bash setup/verify.sh` (installed) and `ai-os health` (working; also runs twice a day and notifies on failure).
+- **Published numbers:** `ai-os stats` computes the counts the site and README state (skills, MCP, commands, packages); `--check` runs in the pre-push hook and CI, `--write` fixes them and re-renders the PNGs.
 - **Pre-push gate:** `setup/hooks/pre-push` (enabled by `install-mac.sh`) checks the commit being pushed — shell/node syntax, YAML and skill frontmatter, compose config, unit tests, the install dry-run — in ~10s. Skip once with `git push --no-verify`.
 - **License:** MIT.
 
