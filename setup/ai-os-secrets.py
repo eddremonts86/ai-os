@@ -209,4 +209,7 @@ def main():
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):  # Windows consoles default to cp1252 and choke on the status symbols
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())
