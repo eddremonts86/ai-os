@@ -415,6 +415,11 @@ elif hook_status=$(node "$AI_OS_ROOT/setup/wire-compact-hook.mjs" --check 2>&1);
 else
   opt_miss "${hook_status#\[compact-hook\] }"
 fi
+if mem_hook=$(python3 "$AI_OS_ROOT/setup/wire-memory-hook.py" --check 2>&1); then
+  opt_ok "$mem_hook (graphiti facts preloaded per repo)"
+else
+  opt_miss "$mem_hook"
+fi
 # A dangling skill symlink is invisible to the loops that create them (the
 # source dir is gone, so the name is never revisited) — count them explicitly.
 broken_links=0
@@ -530,6 +535,21 @@ if launchctl print "gui/$(id -u)/ai.os.health" >/dev/null 2>&1; then
   opt_ok "Health agent ai.os.health loaded (09:30/15:30; run now: ai-os health)"
 else
   opt_miss "Health agent ai.os.health not loaded (run: bash memory/launchd/install-health.sh)"
+fi
+if security find-generic-password -s ai-os-backup-key -a ai-os >/dev/null 2>&1; then
+  opt_ok "Backup encryption key in the Keychain (recovery key: ai-os backup --show-key)"
+else
+  opt_miss "Backup encryption key not created yet (run: ai-os backup)"
+fi
+if [ "$(readlink "$HOME_DIR/.local/bin/ai-os" 2>/dev/null)" = "$AI_OS_ROOT/ai-os" ]; then
+  opt_ok "ai-os command on the PATH (~/.local/bin/ai-os → this repo)"
+else
+  opt_miss "ai-os command missing or pointing elsewhere (run: bash setup/install-mac.sh, or ln -sfn \"\$AI_OS_ROOT/ai-os\" ~/.local/bin/ai-os)"
+fi
+if launchctl print "gui/$(id -u)/ai.os.backup" >/dev/null 2>&1; then
+  opt_ok "Backup agent ai.os.backup loaded (13:00, restore-verified; run now: ai-os backup)"
+else
+  opt_miss "Backup agent ai.os.backup not loaded (run: bash memory/launchd/install-backup.sh)"
 fi
 if [ "$(git -C "$AI_OS_ROOT" config --get core.hooksPath 2>/dev/null)" = "setup/hooks" ]; then
   opt_ok "Pre-push gate enabled (core.hooksPath = setup/hooks)"

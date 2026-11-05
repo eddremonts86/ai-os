@@ -20,6 +20,7 @@ Stdlib + PyYAML only (the AI-OS venv has it). Never prints secret values.
 """
 
 import argparse
+import calendar
 import concurrent.futures as cf
 import json
 import os
@@ -84,7 +85,7 @@ def http(url, data=None, headers=None, timeout=20, method=None):
 def load_env():
     env = {}
     if ENV_FILE.exists():
-        for line in ENV_FILE.read_text().splitlines():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
             m = re.match(r"^(?:export )?([A-Z][A-Z0-9_]*)=(.*)$", line.strip())
             if m:
                 env[m.group(1)] = m.group(2).strip().strip('"').strip("'")
@@ -94,7 +95,7 @@ def load_env():
 def mcp_definitions():
     defs = []
     for path in sorted((ROOT / "ai-config" / "mcp").glob("*.yaml")):
-        d = yaml.safe_load(path.read_text()) if yaml else None
+        d = yaml.safe_load(path.read_text(encoding="utf-8")) if yaml else None
         if isinstance(d, dict) and d.get("enabled", True) is not False:
             defs.append(d)
     return defs
@@ -181,7 +182,7 @@ def check_docker():
         return FAIL, "Docker daemon not reachable (FalkorDB + graphiti are down)"
     store = HOME / "Library/Group Containers/group.com.docker/settings-store.json"
     try:
-        autostart = json.loads(store.read_text()).get("AutoStart")
+        autostart = json.loads(store.read_text(encoding="utf-8")).get("AutoStart")
     except (OSError, ValueError):  # TCC blocks launchd agents from Group Containers
         autostart = None
     if autostart is False:
@@ -219,6 +220,26 @@ def check_graphiti():
     if fails:
         return WARN, f"search ok; episodes 24h: {wins} ok, {fails} failed"
     return OK, f"search ok; episodes 24h: {wins} ok"
+
+
+def check_memory_usage():
+    """Is the graph actually being used? graphiti keeps one FalkorDB graph per group."""
+    rc, out = run(["docker", "exec", "ia-os-falkordb", "redis-cli", "GRAPH.LIST"], 15)
+    if rc != 0:
+        return FAIL, "cannot list FalkorDB graphs"
+    since = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() - 7 * 86400))
+    per_group, total = {}, 0
+    for g in [l.strip() for l in out.splitlines() if l.strip() and l.strip() != "default_db"]:
+        rc, res = run(["docker", "exec", "ia-os-falkordb", "redis-cli", "GRAPH.QUERY", g,
+                       f"MATCH (e:Episodic) WHERE e.created_at >= '{since}' RETURN count(e)"], 15)
+        lines = res.splitlines()
+        n = int(lines[1]) if rc == 0 and len(lines) > 1 and lines[1].strip().isdigit() else 0
+        if n:
+            per_group[g] = n
+            total += n
+    if not total:
+        return WARN, "no memories recorded in 7 days — the graph is running but unused"
+    return OK, f"{total} memories in 7 days: " + ", ".join(f"{g} {n}" for g, n in sorted(per_group.items()))
 
 
 def check_graphiti_llm():
@@ -268,11 +289,18 @@ def check_codebase_memory():
     rc, out = run(["codebase-memory-mcp", "cli", "list_projects", "{}"], 30)
     if rc != 0:
         return FAIL, "codebase-memory-mcp cli failed"
+    # <= 0.8 answers JSON; 0.12 answers a compact text table ("projects: 21  (cols: …)").
     m = re.search(r"\{.*\}", out, re.S)
-    projects = json.loads(m.group(0)).get("projects", []) if m else []
-    if not projects:
+    try:
+        count = len(json.loads(m.group(0)).get("projects", [])) if m else 0
+    except ValueError:
+        count = 0
+    if not count:
+        t = re.search(r"^projects: (\d+)", out, re.M)
+        count = int(t.group(1)) if t else 0
+    if not count:
         return FAIL, "no projects indexed"
-    return OK, f"{len(projects)} projects indexed"
+    return OK, f"{count} projects indexed"
 
 
 def check_reindex():
@@ -345,6 +373,64 @@ def check_ci():
     return OK, f"latest run green for {len(latest)} workflows"
 
 
+def check_backup():
+    dest = Path(os.environ.get("AI_OS_BACKUP_DIR", HOME / "Backups" / "ai-os"))
+    snaps = sorted(p for p in dest.iterdir() if (p / "manifest.json").exists()) if dest.exists() else []
+    if not snaps:
+        return FAIL, f"no AI-OS backup in {dest} (run: ai-os backup)"
+    age_h = (time.time() - (snaps[-1] / "manifest.json").stat().st_mtime) / 3600
+    if age_h > 36:  # runs daily at 13:00
+        return FAIL, f"last AI-OS backup {age_h:.0f}h ago — the schedule is not firing"
+    parts = [f"local {age_h:.0f}h ago ({len(snaps)} kept)"]
+    real_offsite = False  # a copy that has demonstrably left this SSD
+
+    # Off-site 1: the encrypted copy in iCloud Drive. A file in that folder is not off-site until
+    # iCloud uploads it, and iCloud Drive can stall silently (2026-11-05: last sync six days old).
+    offsite = Path(os.environ.get("AI_OS_OFFSITE_DIR", HOME / "Library/Mobile Documents/com~apple~CloudDocs/Backups/ai-os"))
+    files = sorted(offsite.glob("ai-os-*.tar.gz.enc")) if offsite.exists() else []
+    if files:
+        off_h = (time.time() - files[-1].stat().st_mtime) / 3600
+        if off_h > 36:
+            return FAIL, "; ".join(parts) + f"; newest iCloud copy is {off_h:.0f}h old — the off-site write stopped"
+        note = f"iCloud copy {off_h:.0f}h ago"
+        if "AI_OS_OFFSITE_DIR" not in os.environ and sys.platform == "darwin":
+            rc, out = run(["brctl", "status", "com.apple.CloudDocs"], 25)
+            m = re.search(r"last-sync:(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)", re.sub(r"\x1b\[[0-9;]*m", "", out))
+            if rc == 124 or not m:
+                note += " (iCloud's sync daemon did not answer: upload unconfirmed)"
+            elif (time.time() - time.mktime(time.strptime(m.group(1), "%Y-%m-%d %H:%M:%S"))) / 3600 > 36:
+                note += f" (iCloud Drive last synced {m.group(1)}: not uploaded yet)"
+            else:
+                real_offsite = True
+        else:
+            real_offsite = True
+        parts.append(note)
+
+    # Off-site 2: the private GitHub mirror.
+    if os.environ.get("AI_OS_GITHUB") != "0":
+        repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO")
+        if not repo:
+            rc, login = run(["gh", "api", "user", "--jq", ".login"], 20)
+            repo = f"{login.strip()}/ai-os-backups" if rc == 0 and login.strip() else None
+        if repo:
+            rc, out = run(["gh", "api", f"repos/{repo}/commits/main", "--jq", ".commit.committer.date"], 30)
+            if rc == 0 and out.strip():
+                gh_h = (time.time() - calendar.timegm(time.strptime(out.strip(), "%Y-%m-%dT%H:%M:%SZ"))) / 3600  # the API date is UTC
+                if gh_h > 36:
+                    return FAIL, "; ".join(parts) + f"; GitHub mirror {repo} is {gh_h:.0f}h old — the upload stopped"
+                parts.append(f"GitHub mirror {gh_h:.0f}h ago")
+                real_offsite = True
+            else:
+                parts.append(f"GitHub mirror {repo} unreachable or not created")
+
+    detail = "; ".join(parts)
+    if not real_offsite:
+        return WARN, detail + " — no confirmed off-site copy: nothing has left this SSD yet"
+    if not (HOME / ".ai-os" / "backup-key-saved").exists():
+        return WARN, detail + " — the key is only in this Mac's Keychain: run `ai-os backup --show-key`, save it in a password manager, then `ai-os backup --confirm-key-saved`"
+    return OK, detail
+
+
 def check_disk():
     worst = []
     for p in {Path("/"), ROOT}:
@@ -360,6 +446,7 @@ CHECKS = [
     ("falkordb", "FalkorDB", check_falkordb),
     ("graphiti", "Graphiti memory", check_graphiti),
     ("graphiti-llm", "Graphiti LLM", check_graphiti_llm),
+    ("memory-usage", "Memory usage", check_memory_usage),
     ("ollama", "Ollama", check_ollama),
     ("grepai", "grepai", check_grepai),
     ("cbm", "codebase-memory", check_codebase_memory),
@@ -367,6 +454,7 @@ CHECKS = [
     ("mcp", "MCP servers", check_mcp_servers),
     ("tokens", "API tokens", check_tokens),
     ("ci", "CI on main", check_ci),
+    ("backup", "Backups", check_backup),
     ("disk", "Disk", check_disk),
 ]
 
