@@ -464,6 +464,14 @@ if [ -e "$AIOS_ZSHRC" ] || [ -L "$AIOS_ZSHRC" ]; then
   esac
 fi
 
+# ─── 5b2. `ai-os` on the PATH ───
+# The dispatcher resolves symlinks to find the repo, so a link in ~/.local/bin (already
+# on PATH via the zshrc) is all it needs. The installer never created it before, so every
+# `ai-os health|backup|update|...` in the docs failed with "command not found".
+mkdir -p "$HOME_DIR/.local/bin"
+ln -sfn "$AI_OS_ROOT/ai-os" "$HOME_DIR/.local/bin/ai-os"
+ok "5b2. ai-os command: ~/.local/bin/ai-os → $AI_OS_ROOT/ai-os"
+
 # ─── 5c. Git hooks for this clone (pre-push gate, see setup/hooks/pre-push) ───
 # Repo-local config only; never touches the global git config or other repos.
 if [ -d "$AI_OS_ROOT/.git" ] || git -C "$AI_OS_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
