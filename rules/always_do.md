@@ -153,6 +153,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Destination | Use |
     |---|---|
     | Branded deliverable — docs, ADRs, README, decks, social cards | `diagram-design` skill (HTML + inline SVG, AI-OS skin, dark by default) |
+    | Understand or plan real code — repo architecture, request sequence, data flow, state machine, Spec/Plan figure | `archify` skill (interactive HTML from typed JSON, source-backed with `--repo-root`) |
     | The diagram lives in FigJam / Figma | figma MCP `generate_diagram` |
     | The destination is a claude.ai Artifact | `artifact-diagramming` |
     | Throwaway shape inside a chat reply | fenced mermaid, no skill |
@@ -162,8 +163,11 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 24. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/index.html`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
-25. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and
+25. Before shipping a `diagram-design` diagram, run the skill's taste gate (`SKILL.md` §9) and
     `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>`. Report the result.
+    `archify` output is working material, not a branded deliverable: it keeps its own skin, must
+    pass its own `finalize` gate (a non-zero exit is a failure), and is not embedded in docs
+    that need the AI-OS brand.
 
 ## When a task is UI or visual design
 
