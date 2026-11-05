@@ -288,11 +288,18 @@ def check_codebase_memory():
     rc, out = run(["codebase-memory-mcp", "cli", "list_projects", "{}"], 30)
     if rc != 0:
         return FAIL, "codebase-memory-mcp cli failed"
+    # <= 0.8 answers JSON; 0.12 answers a compact text table ("projects: 21  (cols: …)").
     m = re.search(r"\{.*\}", out, re.S)
-    projects = json.loads(m.group(0)).get("projects", []) if m else []
-    if not projects:
+    try:
+        count = len(json.loads(m.group(0)).get("projects", [])) if m else 0
+    except ValueError:
+        count = 0
+    if not count:
+        t = re.search(r"^projects: (\d+)", out, re.M)
+        count = int(t.group(1)) if t else 0
+    if not count:
         return FAIL, "no projects indexed"
-    return OK, f"{len(projects)} projects indexed"
+    return OK, f"{count} projects indexed"
 
 
 def check_reindex():

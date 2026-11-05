@@ -20,6 +20,7 @@ cat "$AI_OS_ROOT/CLAUDE.md"
 # Verify
 bash "$AI_OS_ROOT/setup/verify.sh"          # installed correctly?
 "$AI_OS_ROOT/ai-os" health                   # working right now? (graph, MCP, tokens, CI…)
+"$AI_OS_ROOT/ai-os" update                   # pinned vs upstream; --apply <component> to upgrade one
 git -C "$AI_OS_ROOT" config core.hooksPath setup/hooks   # pre-push gate (install-mac.sh sets it)
 
 # Create new Spec (only when one is required — see CLAUDE.md "Method")
