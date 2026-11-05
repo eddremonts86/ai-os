@@ -1094,6 +1094,13 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   else
     warn "  health agent install failed (run: bash memory/launchd/install-health.sh)"
   fi
+
+  # 9b.6 — Daily backup of the graph, .env and Claude memory, restore-verified
+  if bash "$AI_OS_ROOT/memory/launchd/install-backup.sh" 2>&1 | sed 's/^/    /'; then
+    ok "  backup agent ai.os.backup installed (ai-os backup)"
+  else
+    warn "  backup agent install failed (run: bash memory/launchd/install-backup.sh)"
+  fi
 else
   log "9b. SKIP_MEMORY=1, skipping memory stack"
 fi

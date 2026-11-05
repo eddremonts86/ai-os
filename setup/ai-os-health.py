@@ -372,6 +372,23 @@ def check_ci():
     return OK, f"latest run green for {len(latest)} workflows"
 
 
+def check_backup():
+    dest = Path(os.environ.get("AI_OS_BACKUP_DIR", HOME / "Backups" / "ai-os"))
+    snaps = sorted(p for p in dest.iterdir() if (p / "manifest.json").exists()) if dest.exists() else []
+    if not snaps:
+        return FAIL, f"no AI-OS backup in {dest} (run: ai-os backup)"
+    age_h = (time.time() - (snaps[-1] / "manifest.json").stat().st_mtime) / 3600
+    if age_h > 36:  # runs daily at 13:00
+        return FAIL, f"last AI-OS backup {age_h:.0f}h ago — the schedule is not firing"
+    # Off-disk copy: Time Machine. The backup dir sits on the same SSD as the data.
+    rc, out = run(["tmutil", "latestbackup"], 30)
+    tm = out.strip()
+    if rc != 0 or not tm.startswith("/"):
+        reason = "destination not mounted" if "mount" in tm.lower() else (tm.splitlines() or ["no backup"])[0][:80]
+        return WARN, f"AI-OS backup {age_h:.0f}h ago ({len(snaps)} kept); Time Machine: {reason} — nothing is off this SSD"
+    return OK, f"AI-OS backup {age_h:.0f}h ago ({len(snaps)} kept); Time Machine: {Path(tm).name}"
+
+
 def check_disk():
     worst = []
     for p in {Path("/"), ROOT}:
@@ -395,6 +412,7 @@ CHECKS = [
     ("mcp", "MCP servers", check_mcp_servers),
     ("tokens", "API tokens", check_tokens),
     ("ci", "CI on main", check_ci),
+    ("backup", "Backups", check_backup),
     ("disk", "Disk", check_disk),
 ]
 
