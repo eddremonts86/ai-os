@@ -525,6 +525,12 @@ if launchctl print "gui/$(id -u)/ai.os.reindex" >/dev/null 2>&1; then
 else
   opt_miss "Reindex agent ai.os.reindex not loaded (run: bash memory/launchd/install-reindex.sh)"
 fi
+# verify.sh checks what is installed; `ai-os health` checks that it works.
+if launchctl print "gui/$(id -u)/ai.os.health" >/dev/null 2>&1; then
+  opt_ok "Health agent ai.os.health loaded (09:30/15:30; run now: ai-os health)"
+else
+  opt_miss "Health agent ai.os.health not loaded (run: bash memory/launchd/install-health.sh)"
+fi
 
 # Ollama (best-effort)
 if command -v ollama >/dev/null 2>&1; then

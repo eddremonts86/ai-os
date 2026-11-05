@@ -86,6 +86,7 @@ Then verify:
 
 ```bash
 bash setup/verify.sh                                   # Mac/Linux
+./ai-os health                                         # functional checks of the running system
 powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1   # Windows
 ```
 
@@ -636,7 +637,7 @@ Counts are not hard-coded here because they go stale; read them live:
 - **Global commands:** `ls ai-config/commands/`.
 - **Workflows / rules / verifiers:** `ls workflows/ rules/ verifiers/`.
 - **CI workflows:** `ls .github/workflows/` (test-mac, test-linux, test-windows + deploys).
-- **Health:** `bash setup/verify.sh`.
+- **Health:** `bash setup/verify.sh` (installed) and `ai-os health` (working; also runs twice a day and notifies on failure).
 - **License:** MIT.
 
 ---

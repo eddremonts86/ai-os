@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Daily functional health check of the running AI-OS (setup/ai-os-health.py).
+
+  Raises a macOS notification only when a check FAILs, so a silent failure (empty graph,
+  dead schedule, expired token, broken MCP) surfaces the same day instead of weeks later.
+  Runs at 09:30 and 15:30; launchd catches up on runs missed while the Mac slept.
+
+  Rendered by install-health.sh, which substitutes __AI_OS_ROOT__ and __PYTHON__.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.health</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>"__PYTHON__" "__AI_OS_ROOT__/setup/ai-os-health.py" --notify &gt; "__AI_OS_ROOT__/memory/logs/health-$(date +%Y-%m-%d-%H%M%S).log" 2&gt;&amp;1; find "__AI_OS_ROOT__/memory/logs" -name 'health-*.log' -mtime +30 -delete</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>30</integer></dict>
+        <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>30</integer></dict>
+    </array>
+
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>__AI_OS_ROOT__/memory/logs/launchd-health.log</string>
+    <key>StandardErrorPath</key>
+    <string>__AI_OS_ROOT__/memory/logs/launchd-health.log</string>
+</dict>
+</plist>

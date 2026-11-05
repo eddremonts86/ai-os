@@ -111,6 +111,24 @@ bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --only-index
 > ai-os loop ...          # routes to $AI_OS_ROOT/memory/ai-os-loop.sh
 > ```
 
+## Health monitor: `ai-os health`
+
+`setup/verify.sh` checks that things are installed; `ai-os health`
+(`setup/ai-os-health.py`) checks that they work: a real graphiti search plus the last
+24h of extraction results, the graphiti LLM's structured output, Ollama's running vs
+installed version, a grepai search, the codebase-memory index, reindex freshness, an
+MCP `initialize` against every enabled server, the Coolify/Hetzner/GitHub tokens, the
+latest CI run per workflow on main, and free disk. `--json` for machines, `--only
+mcp,graphiti` to narrow it, exit 1 on any FAIL.
+
+The launchd agent `ai.os.health` runs it at 09:30 and 15:30 with `--notify` (macOS
+notification on FAIL) and keeps 30 days of `memory/logs/health-*.log`:
+
+```bash
+bash memory/launchd/install-health.sh            # install + run once
+bash memory/launchd/install-health.sh --status   # last report
+```
+
 ## Scheduled reindex: launchd 6×/day
 
 The launchd agent `ai.os.reindex` runs `memory/cron-reindex.sh` at 00:00, 04:00,
