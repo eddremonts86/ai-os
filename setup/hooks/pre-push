@@ -101,6 +101,9 @@ print("\n".join(bad)); sys.exit(1 if bad else 0)
 EOF
 ) && pass || fail "$out"
 
+step "skill catalogue (budget + routing)"
+out=$("$PY" setup/ai-os-skills.py lint --strict 2>&1) && out2=$("$PY" setup/ai-os-skills.py bank 2>&1) && pass "$(grep -oE '[0-9]+/[0-9]+ requests' <<<"$out2")" || fail "$(grep -E '❌|alarm' <<<"$out"$'\n'"${out2:-}" | head -8)"
+
 step "docker compose config"
 if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
   out=$(docker compose -f memory/docker-compose.yml config --quiet 2>&1) && pass || fail "$out"
