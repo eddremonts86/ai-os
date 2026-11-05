@@ -638,6 +638,7 @@ Counts are not hard-coded here because they go stale; read them live:
 - **Workflows / rules / verifiers:** `ls workflows/ rules/ verifiers/`.
 - **CI workflows:** `ls .github/workflows/` (test-mac, test-linux, test-windows + deploys).
 - **Health:** `bash setup/verify.sh` (installed) and `ai-os health` (working; also runs twice a day and notifies on failure).
+- **Pre-push gate:** `setup/hooks/pre-push` (enabled by `install-mac.sh`) checks the commit being pushed — shell/node syntax, YAML and skill frontmatter, compose config, unit tests, the install dry-run — in ~10s. Skip once with `git push --no-verify`.
 - **License:** MIT.
 
 ---

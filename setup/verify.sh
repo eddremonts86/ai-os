@@ -531,6 +531,11 @@ if launchctl print "gui/$(id -u)/ai.os.health" >/dev/null 2>&1; then
 else
   opt_miss "Health agent ai.os.health not loaded (run: bash memory/launchd/install-health.sh)"
 fi
+if [ "$(git -C "$AI_OS_ROOT" config --get core.hooksPath 2>/dev/null)" = "setup/hooks" ]; then
+  opt_ok "Pre-push gate enabled (core.hooksPath = setup/hooks)"
+else
+  opt_miss "Pre-push gate not enabled (run: git -C \"\$AI_OS_ROOT\" config core.hooksPath setup/hooks)"
+fi
 
 # Ollama (best-effort)
 if command -v ollama >/dev/null 2>&1; then
