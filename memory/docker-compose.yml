@@ -114,10 +114,11 @@ services:
       # does NOT pass through arbitrary host shell env vars (a real bug once sent
       # requests to api.openai.com because the base URL fell through to null).
       # To use MiniMax again: GRAPHITI_LLM_BASE_URL=https://api.minimaxi.chat/v1
-      # GRAPHITI_LLM_MODEL=MiniMax-M3 GRAPHITI_LLM_API_KEY=$MINIMAX_API_KEY.
+      # GRAPHITI_LLM_MODEL=MiniMax-M3 GRAPHITI_LLM_API_KEY=$MINIMAX_API_KEY GRAPHITI_LLM_MAX_TOKENS=16384.
       GRAPHITI_LLM_BASE_URL: ${GRAPHITI_LLM_BASE_URL:-http://host.docker.internal:11500/v1}
       GRAPHITI_LLM_MODEL: ${GRAPHITI_LLM_MODEL:-gemma3:12b}
       GRAPHITI_LLM_API_KEY: ${GRAPHITI_LLM_API_KEY:-ollama}
+      GRAPHITI_LLM_MAX_TOKENS: ${GRAPHITI_LLM_MAX_TOKENS:-4096} # 16384 for MiniMax-M3
       # The openai SDK's client constructor validates api_key is a non-empty string at
       # *instantiation* time (not just when actually calling the API) — graphiti-core's
       # hardcoded reranker (see config.yaml's STATUS note) crashes the whole server on boot

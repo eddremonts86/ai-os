@@ -56,7 +56,7 @@ reference it.
 | Code AST index | codebase-memory-mcp | (stdio) | 158 langs, sub-ms, checksum-verified download |
 | Semantic search | grepai | (stdio) | uses Ollama |
 | Chat UI | open-webui (Docker) | 3301 | `ia-os-open-webui` | Talks to the native Ollama daemon above via `host.docker.internal:11500`, not the embedder-only `nomic-embed-text` — it's for `llm/router.mjs`'s chat model (`qwen3:14b`, see `llm/README.md`). No login wall (`WEBUI_AUTH=False`) — acceptable since it's bound to `127.0.0.1` only. |
-| Graph memory | graphiti | HTTP 8021 | `ia-os-graphiti-mcp` | Custom image `ai-os/graphiti-mcp:minimax-standalone` (custom-`api_url` support). Started by `ai-os memory start`. Extraction LLM = host Ollama (`GRAPHITI_LLM_MODEL`, default gemma) since 2026-11-05 — MiniMax returned `402 insufficient balance`; override the three `GRAPHITI_LLM_*` vars in the compose to use a hosted model. `add_memory` is async (~1–3 min per episode locally); check `docker logs ia-os-graphiti-mcp` for `Successfully processed episode`. Verified end-to-end 2026-11-05 |
+| Graph memory | graphiti | HTTP 8021 | `ia-os-graphiti-mcp` | Custom image `ai-os/graphiti-mcp:minimax-standalone` (custom-`api_url` support). Started by `ai-os memory start`. Extraction LLM = host Ollama (`GRAPHITI_LLM_MODEL`, default gemma) since 2026-11-05 — MiniMax returned `402 insufficient balance`; override the three `GRAPHITI_LLM_*` vars in the compose to use a hosted model. `add_memory` is async (~1–5 min per episode locally; output capped by `GRAPHITI_LLM_MAX_TOKENS`, default 4096); check `docker logs ia-os-graphiti-mcp` for `Successfully processed episode`. Verified end-to-end 2026-11-05 |
 
 **Ports are intentionally OUTSIDE 3000-3050** (Edd's other apps use that range).
 
