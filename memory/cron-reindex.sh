@@ -1,25 +1,29 @@
 #!/usr/bin/env bash
-# memory/cron-reindex.sh — periodic reindex of every project under ~/Projects.
+# memory/cron-reindex.sh — periodic reindex of every git project next to ai-os.
 #
-# Runs 6x/day via crontab (0,4,8,12,16,20). Idempotent — codebase-memory-mcp's
+# Runs 6x/day (0,4,8,12,16,20) via the launchd agent ai.os.reindex — install it
+# with: bash memory/launchd/install-reindex.sh. Idempotent — codebase-memory-mcp's
 # index_repository is content-addressed and skips files whose checksum hasn't
-# changed, so repeat calls are cheap on the index side and free on the work side.
+# changed, so repeat calls are cheap (ai-os itself: ~1.3s). Also refreshes the
+# grepai index of ai-os.
+#
+# Projects: every git repo up to 3 levels below AI_OS_PROJECTS_DIR (default: the
+# directory that contains ai-os), skipping paths that match AI_OS_REINDEX_SKIP
+# (default: /inHold/ — parked projects).
 #
 # Logs to memory/logs/cron-reindex-YYYY-MM-DD-HHMMSS.log. Keeps the last 30
 # days of logs.
-#
-# Add the crontab entry with:
-#   (crontab -l 2>/dev/null | grep -v 'memory/cron-reindex.sh'; \
-#    echo '0 0,4,8,12,16,20 * * * /Users/edd/Projects/ai-os/memory/cron-reindex.sh') \
-#   | crontab -
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 AI_OS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-HOME_DIR="${HOME:-$(dscl . -read /Users/"$(id -un)" NFSHomeDirectory 2>/dev/null | awk '{print $2}')}"
-[ -z "$HOME_DIR" ] && HOME_DIR="/Users/$(id -un)"
-PROJECTS_DIR="$HOME_DIR/Projects"
+# Was hard-coded to $HOME/Projects, which is empty on this Mac (projects live on
+# /Volumes/Works/...), so every run indexed nothing.
+PROJECTS_DIR="${AI_OS_PROJECTS_DIR:-$(dirname "$AI_OS_ROOT")}"
+SKIP_RE="${AI_OS_REINDEX_SKIP:-/inHold/}"
+# launchd starts jobs with a bare PATH; codebase-memory-mcp and grepai live here.
+export PATH="$HOME/.local/bin:$HOME/go/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 LOG_DIR="$AI_OS_ROOT/memory/logs"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
@@ -34,28 +38,17 @@ LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
     echo "  ! codebase-memory-mcp binary not found; run: bash $AI_OS_ROOT/setup/install-mac.sh"
     exit 0
   fi
-  if ! docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-falkordb$'; then
-    echo "  ! ia-os-falkordb not running; skipping (run: bash $AI_OS_ROOT/setup/ai-os-bootstrap.sh)"
-    exit 0
-  fi
+  # (No FalkorDB check: codebase-memory-mcp keeps its own index and does not
+  # need the graph container. The old check made every run skip when Docker
+  # was down.)
 
-  # 1. Discover projects: top-level and one nested level under ~/Projects/,
-  #    filtered to those with .git/. Skips ai-os itself (the toolchain).
+  # 1. Discover projects: git repos up to 3 levels deep, minus SKIP_RE.
   declare -a projects=()
-  for d in "$PROJECTS_DIR"/*/; do
-    [ -d "$d.git" ] || continue
-    case "$d" in
-      "$PROJECTS_DIR/ai-os/"|"$PROJECTS_DIR/configs/") continue ;;
-    esac
+  while IFS= read -r gitdir; do
+    d="${gitdir%/.git}/"
+    [[ "$d" =~ $SKIP_RE ]] && continue
     projects+=("$d")
-  done
-  for d in "$PROJECTS_DIR"/*/*/; do
-    [ -d "$d.git" ] || continue
-    case "$d" in
-      "$PROJECTS_DIR/ai-os/"*) continue ;;
-    esac
-    projects+=("$d")
-  done
+  done < <(find "$PROJECTS_DIR" -mindepth 2 -maxdepth 4 -name .git -type d -not -path '*/node_modules/*' 2>/dev/null | sort)
 
   echo "  → ${#projects[@]} project(s) to reindex"
   echo ""
@@ -71,7 +64,7 @@ LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
         echo "  ✓ $label  ($nodes nodes)"
         ok=$((ok + 1))
       else
-        echo "  ! $label  unexpected response: $out"
+        echo "  ! $label  unexpected response: $(echo "$out" | tail -c 300)"
         fail=$((fail + 1))
       fi
     else
@@ -82,6 +75,16 @@ LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
 
   echo ""
   echo "  summary: $ok ok, $fail failed, $((ok + fail)) total"
+  echo ""
+
+  # 2. grepai: refresh the semantic index of ai-os (the only repo with .grepai/).
+  if command -v grepai >/dev/null 2>&1 && [ -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
+    if (cd "$AI_OS_ROOT" && grepai index >/dev/null 2>&1); then
+      echo "  ✓ grepai index (ai-os)"
+    else
+      echo "  ✗ grepai index (ai-os) failed — is Ollama answering on :11500?"
+    fi
+  fi
   echo ""
   echo "== done =="
 } >> "$LOG_FILE" 2>&1

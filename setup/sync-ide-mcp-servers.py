@@ -178,9 +178,14 @@ def sync_codex(path, definitions):
         if name in mcp_servers:
             skipped.append(name)
             continue
+        if definition["transport"] == "http":
+            # Same shape `codex mcp add <name> --url <url>` writes (codex-cli 0.154).
+            server = tomlkit.table()
+            server["url"] = definition["url"]
+            mcp_servers[name] = server
+            added.append(name)
+            continue
         if definition["transport"] != "stdio":
-            # Codex CLI's MCP support is stdio-first; skip remote/http servers
-            # here rather than guess at an unverified schema.
             unsupported.append(name)
             continue
         server = tomlkit.table()

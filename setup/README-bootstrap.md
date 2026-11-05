@@ -62,10 +62,10 @@ ai-os memory bootstrap
 It is **idempotent** — re-running it is safe and does the right thing each time:
 
 1. Verifies Docker is reachable.
-2. Reads `dev-env/env-config/.env` for `MINIMAX_API_KEY` etc. (handed to `docker compose --env-file`, never sourced).
+2. Hands `dev-env/env-config/.env` to `docker compose --env-file` (never sourced) for optional `GRAPHITI_LLM_*` overrides.
 3. Starts `ia-os-falkordb` via `memory/docker-compose.yml` (unified) and waits
    for its healthcheck (max 30 s).
-4. Starts `ia-os-graphiti-mcp` if `MINIMAX_API_KEY` is set; waits for `:8021/health`.
+4. Starts `ia-os-graphiti-mcp` (LLM = host Ollama by default, no key needed); waits for `:8021/health`.
 5. Ensures Ollama answers on `:11500` (installing the `ai.os.ollama` launchd service if
    not) and that `nomic-embed-text` is pulled.
 6. Auto-indexes every project under `~/Projects/` via `codebase-memory-mcp
@@ -111,26 +111,27 @@ bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --only-index
 > ai-os loop ...          # routes to ~/Projects/ai-os/memory/ai-os-loop.sh
 > ```
 
-## Scheduled reindex: cron 6×/day
+## Scheduled reindex: launchd 6×/day
 
-A system crontab entry runs `memory/cron-reindex.sh` at 00:00, 04:00, 08:00, 12:00,
-16:00, 20:00 — six evenly-spaced runs per day. It:
+The launchd agent `ai.os.reindex` runs `memory/cron-reindex.sh` at 00:00, 04:00,
+08:00, 12:00, 16:00, 20:00 (and catches up after sleep). It replaced a crontab entry
+that pointed at the old machine's path and had not run since 2026-09-18. It:
 
-- bails early (and quietly) if `ia-os-falkordb` is not running, so the cron's
-  absence of the stack does not produce confusing errors
-- iterates the same set of projects as the bootstrap
+- iterates the same set of projects as the bootstrap: git repos up to 3 levels
+  below `AI_OS_PROJECTS_DIR` (default: the directory containing ai-os), minus
+  `AI_OS_REINDEX_SKIP` (default `/inHold/`)
 - re-indexes each (cheap on the index side; `codebase-memory-mcp` is
-  content-addressed)
+  content-addressed — ai-os takes ~1.3 s)
+- refreshes grepai's index of ai-os
 - writes a log to `memory/logs/cron-reindex-<timestamp>.log` and prunes logs
   older than 30 days
 
-View / re-install the crontab:
+Install / check / remove the agent (install also runs it once and prints the summary):
 
 ```bash
-crontab -l
-# (crontab -l 2>/dev/null | grep -v 'memory/cron-reindex.sh'; \
-#   echo '0 0,4,8,12,16,20 * * * /Users/edd/Projects/ai-os/memory/cron-reindex.sh') \
-#  | crontab -
+bash memory/launchd/install-reindex.sh
+bash memory/launchd/install-reindex.sh --status
+bash memory/launchd/install-reindex.sh --uninstall
 ```
 
 ## What goes where
@@ -142,7 +143,7 @@ crontab -l
 │   ├── ai-os-memory.sh        # Memory-stack CLI: status / start / stop / browse / reindex / bootstrap
 │   ├── docker-compose.yml     # UNIFIED compose: `name: ia-os` — all services in one Docker project
 │   │                          # Defines: ia-os-falkordb, ia-os-graphiti-mcp, ia-os-ollama (profile)
-│   ├── cron-reindex.sh        # 6x/day reindex (called by system crontab)
+│   ├── cron-reindex.sh        # 6x/day reindex (launchd agent ai.os.reindex)
 │   ├── ai-os-loop.sh          # Spec → Verifier → Environment loop
 │   ├── falkordb/
 │   │   ├── data/              # FalkorDB persistence (bind mount, absolute path in compose)

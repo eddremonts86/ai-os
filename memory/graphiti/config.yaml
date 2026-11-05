@@ -133,14 +133,20 @@ server:
   host: "0.0.0.0"
   port: 8000
 
+# UPDATE 2026-11-05: the default LLM is now the host's native Ollama, not MiniMax.
+# The MiniMax account returned `402 insufficient balance` on every call, so every
+# add_memory failed and the graph stayed empty. Local extraction is verified
+# end-to-end (add_memory → search_memory_facts) and costs nothing. MiniMax (or
+# any OpenAI-compatible endpoint) still works by overriding the three
+# GRAPHITI_LLM_* variables in memory/docker-compose.yml's environment.
 llm:
-  provider: "openai" # MiniMax impersonates "openai" via a custom api_url — same trick as the official Ollama example. Confirmed working with the custom-built image (see STATUS note above).
-  model: ${MINIMAX_MODEL:MiniMax-M3} # reasoning model — safe again now the image patches force json_object mode and strip <think> blocks, see STATUS note above
-  max_tokens: 16384 # M3's <think> reasoning counts against the same completion budget as the final JSON answer (MiniMax bills it as "reasoning_tokens", same pattern as OpenAI o1/o3) — 4096 was too small and caused truncated/malformed JSON ("Unterminated string", "Extra data") on the larger fact/edge-extraction schema specifically
+  provider: "openai" # any OpenAI-compatible endpoint impersonates "openai" via a custom api_url (Ollama, MiniMax)
+  model: ${GRAPHITI_LLM_MODEL:gemma3:12b}
+  max_tokens: 16384 # reasoning models spend completion tokens on <think>; 4096 truncated the fact/edge-extraction JSON under MiniMax-M3
   providers:
     openai:
-      api_key: ${MINIMAX_API_KEY}
-      api_url: ${MINIMAX_BASE_URL:https://api.minimaxi.chat/v1}
+      api_key: ${GRAPHITI_LLM_API_KEY:ollama} # Ollama ignores it
+      api_url: ${GRAPHITI_LLM_BASE_URL:http://host.docker.internal:11500/v1}
 
 embedder:
   provider: "openai" # Ollama (local, already running for the rest of the AI-OS memory stack) impersonates "openai" the same way

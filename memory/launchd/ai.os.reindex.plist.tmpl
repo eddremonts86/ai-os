@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Periodic code-index refresh for the AI-OS memory stack (codebase-memory-mcp + grepai).
+
+  Replaces the crontab entry memory/cron-reindex.sh used to document. That entry pointed at
+  the old machine's /Users/edd path and was never re-added here, so nothing had reindexed
+  since 2026-09-18. launchd also catches up on runs missed while the Mac slept.
+
+  Rendered by install-reindex.sh, which substitutes __AI_OS_ROOT__.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.reindex</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__AI_OS_ROOT__/memory/cron-reindex.sh</string>
+    </array>
+
+    <!-- Same schedule the crontab used: 00, 04, 08, 12, 16, 20. -->
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>0</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>4</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>12</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Hour</key><integer>20</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
+
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>__AI_OS_ROOT__/memory/logs/launchd-reindex.log</string>
+    <key>StandardErrorPath</key>
+    <string>__AI_OS_ROOT__/memory/logs/launchd-reindex.log</string>
+</dict>
+</plist>
