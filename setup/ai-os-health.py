@@ -252,7 +252,10 @@ def check_graphiti_llm():
     st, body, _ = http(f"{OLLAMA}/v1/chat/completions", {
         "model": model, "max_tokens": 20, "messages": [{"role": "user", "content": "Return JSON {\"a\":\"ok\"}"}],
         "response_format": {"type": "json_schema", "json_schema": {"name": "p", "schema": {
-            "type": "object", "properties": {"a": {"type": "string"}}, "required": ["a"]}}}}, timeout=180)
+            "type": "object", "properties": {"a": {"type": "string"}}, "required": ["a"]}}}}, timeout=90)
+    if st == 0 and "timed out" in body.lower():
+        # One slot: a long extraction (gemma3 sometimes loops for 10+ minutes) queues the probe behind it.
+        return WARN, f"{model} did not answer in 90s — Ollama is busy; if graphiti has been 'Processing episode' for many minutes: docker restart ia-os-graphiti-mcp"
     if st != 200:
         return FAIL, f"{model} structured output → HTTP {st or 'unreachable'}: {body[:100]}"
     return OK, f"{model} answers structured output"
