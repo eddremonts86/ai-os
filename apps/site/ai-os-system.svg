@@ -2,7 +2,7 @@
 <svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img"
          aria-labelledby="ai-os-system-title ai-os-system-desc">
       <title id="ai-os-system-title">AI-OS whole-system architecture</title>
-      <desc id="ai-os-system-desc">The ai-os repository holds context, rules, workflows, verifiers, skills and dev-env as the single source of truth; the installer propagates them to six AI CLIs and generates the MCP and memory-stack configuration those CLIs call into; every non-trivial task runs the same Spec, Execute, Verify, Archive loop.</desc>
+      <desc id="ai-os-system-desc">The ai-os repository holds context, rules, workflows, verifiers, skills and dev-env as the single source of truth; the installer propagates them to six AI CLIs and generates the MCP and memory-stack configuration those CLIs call into; every substantial task runs the same Spec, Execute, Verify, Archive loop.</desc>
 
       <defs>
     <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap');</style>
@@ -105,7 +105,7 @@
       <text x="180" y="116" fill="#f4f5f9" font-size="16" font-weight="600"
             font-family="'Space Grotesk', system-ui, sans-serif" text-anchor="middle">context/</text>
       <text x="180" y="136" fill="#a2a4ae" font-size="12"
-            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">7 files · identity · brand</text>
+            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">8 files · identity · brand</text>
 
       <rect x="56" y="164" width="248" height="52" rx="6" fill="#08090e"/>
       <rect x="56" y="164" width="248" height="52" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
@@ -133,7 +133,7 @@
       <text x="180" y="388" fill="#f4f5f9" font-size="16" font-weight="600"
             font-family="'Space Grotesk', system-ui, sans-serif" text-anchor="middle">ai-config/</text>
       <text x="180" y="408" fill="#a2a4ae" font-size="12"
-            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">186 skills · 10 MCP · 9 cmd</text>
+            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">174 skills · 7 MCP · 8 cmd</text>
 
       <rect x="56" y="436" width="248" height="52" rx="6" fill="#08090e"/>
       <rect x="56" y="436" width="248" height="52" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
@@ -205,9 +205,9 @@
       <rect x="736" y="372" width="232" height="52" rx="6" fill="#08090e"/>
       <rect x="736" y="372" width="232" height="52" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
       <text x="852" y="392" fill="#f4f5f9" font-size="16" font-weight="600"
-            font-family="'Space Grotesk', system-ui, sans-serif" text-anchor="middle">10 MCP servers</text>
+            font-family="'Space Grotesk', system-ui, sans-serif" text-anchor="middle">7 MCP servers</text>
       <text x="852" y="412" fill="#a2a4ae" font-size="12"
-            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">fs · chrome · pdf · time</text>
+            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">graphiti · chrome · pdf · time</text>
 
       <rect x="992" y="372" width="232" height="52" rx="6" fill="#08090e"/>
       <rect x="992" y="372" width="232" height="52" rx="6" fill="#0f1119" stroke="#a2a4ae" stroke-width="1"/>
@@ -221,7 +221,7 @@
       <text x="852" y="460" fill="#f4f5f9" font-size="16" font-weight="600"
             font-family="'Space Grotesk', system-ui, sans-serif" text-anchor="middle">Ollama</text>
       <text x="852" y="480" fill="#a2a4ae" font-size="12"
-            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">embeddings · :11500</text>
+            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">LLM + embeddings · :11500</text>
 
       <rect x="992" y="440" width="232" height="52" rx="6" fill="#08090e"/>
       <rect x="992" y="440" width="232" height="52" rx="6" fill="#0f1119" stroke="#a2a4ae" stroke-width="1"/>
@@ -234,7 +234,7 @@
       <line x1="40" y1="540" x2="1240" y2="540" stroke="rgba(244,245,249,0.10)" stroke-width="0.8"/>
       <text x="40" y="560" fill="rgba(244,245,249,0.40)" font-size="8"
             font-family="'JetBrains Mono', ui-monospace, monospace"
-            letter-spacing="0.14em">THE LOOP · EVERY NON-TRIVIAL TASK</text>
+            letter-spacing="0.14em">THE LOOP · EVERY SUBSTANTIAL TASK</text>
 
       <rect x="40" y="580" width="248" height="48" rx="6" fill="#08090e"/>
       <rect x="40" y="580" width="248" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
@@ -248,7 +248,7 @@
       <text x="480" y="600" fill="#f4f5f9" font-size="16" font-weight="600"
             font-family="'Space Grotesk', system-ui, sans-serif" text-anchor="middle">Execute</text>
       <text x="480" y="620" fill="#a2a4ae" font-size="12"
-            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">blocks of 30 min or less</text>
+            font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">small, verified steps</text>
 
       <rect x="672" y="580" width="248" height="48" rx="6" fill="#08090e"/>
       <rect x="672" y="580" width="248" height="48" rx="6" fill="#0f1119" stroke="#f4f5f9" stroke-width="1"/>
