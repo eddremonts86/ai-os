@@ -536,6 +536,11 @@ if launchctl print "gui/$(id -u)/ai.os.health" >/dev/null 2>&1; then
 else
   opt_miss "Health agent ai.os.health not loaded (run: bash memory/launchd/install-health.sh)"
 fi
+if security find-generic-password -s ai-os-backup-key -a ai-os >/dev/null 2>&1; then
+  opt_ok "Backup encryption key in the Keychain (recovery key: ai-os backup --show-key)"
+else
+  opt_miss "Backup encryption key not created yet (run: ai-os backup)"
+fi
 if launchctl print "gui/$(id -u)/ai.os.backup" >/dev/null 2>&1; then
   opt_ok "Backup agent ai.os.backup loaded (13:00, restore-verified; run now: ai-os backup)"
 else

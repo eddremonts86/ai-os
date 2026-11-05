@@ -13,11 +13,25 @@ per-project memory (~/.claude/projects/*/memory).
 
 Destination: $AI_OS_BACKUP_DIR or ~/Backups/ai-os (dirs 0700, files 0600 — it
 holds secrets). That is the same SSD as /Volumes/Works, so it covers mistakes
-and corruption, not disk loss; Time Machine picks it up when its disk is
-attached. Runs daily via the launchd agent ai.os.backup.
+and corruption, not disk loss.
+
+Off-site: every snapshot is also encrypted (AES-256-GCM, authenticated) and
+copied to iCloud Drive/Backups/ai-os as one `.enc` file (newest 14). The key is
+random, lives in the macOS Keychain (service ai-os-backup-key) and NEVER leaves
+the Mac unencrypted — which is also the catch: if the Mac is lost, so is the
+Keychain. Save the recovery key once, somewhere that is not this Mac:
+
+  ai-os backup --show-key               # run in your own terminal; copy into a password manager
+  ai-os backup --confirm-key-saved      # silences the health warning
+  ai-os backup --verify-offsite         # decrypt the newest iCloud copy and compare it
+  ai-os backup --restore-offsite DIR    # decrypt + extract it (key: Keychain or $AI_OS_BACKUP_KEY)
+
+Runs daily via the launchd agent ai.os.backup.
 """
 
 import argparse
+import base64
+import io
 import json
 import os
 import shutil
@@ -32,6 +46,11 @@ ROOT = Path(__file__).resolve().parent.parent
 HOME = Path.home()
 DEST = Path(os.environ.get("AI_OS_BACKUP_DIR", HOME / "Backups" / "ai-os"))
 KEEP = 14
+ICLOUD = HOME / "Library" / "Mobile Documents" / "com~apple~CloudDocs"
+OFFSITE = Path(os.environ.get("AI_OS_OFFSITE_DIR", ICLOUD / "Backups" / "ai-os"))
+KEY_SERVICE, KEY_ACCOUNT = "ai-os-backup-key", "ai-os"
+KEY_CONFIRMED = HOME / ".ai-os" / "backup-key-saved"
+MAGIC = b"AIOSBK1"  # file header; also the GCM associated data
 FALKOR = "ia-os-falkordb"
 FALKOR_DATA = ROOT / "memory" / "falkordb" / "data"
 # launchd starts jobs with a bare PATH; docker lives in /usr/local/bin.
@@ -75,6 +94,107 @@ def snapshot_graph(out):
     return graph_sizes(FALKOR)
 
 
+def get_key(create=False):
+    """32-byte key: $AI_OS_BACKUP_KEY (base64, for restoring on a new Mac) or the Keychain."""
+    env = os.environ.get("AI_OS_BACKUP_KEY")
+    if env:
+        return base64.b64decode(env)
+    rc, out = sh("security", "find-generic-password", "-s", KEY_SERVICE, "-a", KEY_ACCOUNT, "-w")
+    if rc == 0 and out:
+        return base64.b64decode(out)
+    if not create:
+        raise RuntimeError("no backup key in the Keychain (and $AI_OS_BACKUP_KEY is unset)")
+    key = os.urandom(32)
+    # `security` only takes the secret as an argument (visible in `ps` for a moment); acceptable
+    # on a single-user Mac, and the item is created by `security` itself so it needs no prompt.
+    rc, out = sh("security", "add-generic-password", "-s", KEY_SERVICE, "-a", KEY_ACCOUNT, "-U",
+                 "-w", base64.b64encode(key).decode(), "-j", "AI-OS backup encryption key")
+    if rc != 0:
+        raise RuntimeError(f"could not store the key in the Keychain: {out}")
+    return key
+
+
+def encrypt(data, key):
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    nonce = os.urandom(12)
+    return MAGIC + nonce + AESGCM(key).encrypt(nonce, data, MAGIC)
+
+
+def decrypt(blob, key):
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    if not blob.startswith(MAGIC):
+        raise RuntimeError("not an AI-OS backup file")
+    nonce, body = blob[len(MAGIC):len(MAGIC) + 12], blob[len(MAGIC) + 12:]
+    return AESGCM(key).decrypt(nonce, body, MAGIC)  # raises InvalidTag on a wrong key or tampering
+
+
+def pack(snap):
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz") as tar:
+        tar.add(snap, arcname=snap.name)
+    return buf.getvalue()
+
+
+def push_offsite(snap):
+    if not ICLOUD.exists() and "AI_OS_OFFSITE_DIR" not in os.environ:
+        raise RuntimeError("iCloud Drive is not available on this Mac")
+    OFFSITE.mkdir(parents=True, exist_ok=True)
+    out = OFFSITE / f"ai-os-{snap.name}.tar.gz.enc"
+    tmp = out.with_suffix(".part")
+    tmp.write_bytes(encrypt(pack(snap), get_key(create=True)))
+    os.replace(tmp, out)  # iCloud never sees a half-written file under the final name
+    files = sorted(OFFSITE.glob("ai-os-*.tar.gz.enc"))
+    for old in files[:-KEEP]:
+        old.unlink()
+    return out
+
+
+def offsite_files():
+    return sorted(OFFSITE.glob("ai-os-*.tar.gz.enc")) if OFFSITE.exists() else []
+
+
+def open_offsite(blob, key):
+    return tarfile.open(fileobj=io.BytesIO(decrypt(blob, key)), mode="r:gz")
+
+
+def verify_offsite():
+    """Decrypt the newest off-site copy and compare it with the local snapshot of the same name."""
+    files = offsite_files()
+    if not files:
+        print("no off-site copy to verify")
+        return 1
+    newest = files[-1]
+    stamp = newest.name[len("ai-os-"):-len(".tar.gz.enc")]
+    try:
+        with open_offsite(newest.read_bytes(), get_key()) as tar:
+            names = tar.getnames()
+            manifest = json.load(tar.extractfile(f"{stamp}/manifest.json"))
+            rdb = tar.extractfile(f"{stamp}/falkordb-dump.rdb").read()
+    except Exception as e:
+        print(f"❌ {newest.name}: cannot decrypt/read ({type(e).__name__}: {e})")
+        return 1
+    local = DEST / stamp
+    if local.exists():
+        if (local / "falkordb-dump.rdb").read_bytes() != rdb:
+            print(f"❌ {newest.name}: RDB differs from the local snapshot")
+            return 1
+    print(f"✅ off-site {newest.name} decrypts: {manifest['graphs']} ({len(names)} entries, {newest.stat().st_size // 1024} KB)")
+    return 0
+
+
+def restore_offsite(target):
+    files = offsite_files()
+    if not files:
+        print("no off-site copy found in " + str(OFFSITE))
+        return 1
+    target = Path(target)
+    target.mkdir(parents=True, exist_ok=True, mode=0o700)
+    with open_offsite(files[-1].read_bytes(), get_key()) as tar:
+        tar.extractall(target, filter="data")
+    print(f"restored {files[-1].name} into {target} (graph: falkordb-dump.rdb → memory/falkordb/data/dump.rdb)")
+    return 0
+
+
 def take():
     stamp = time.strftime("%Y-%m-%d-%H%M%S")
     out = DEST / stamp
@@ -109,6 +229,12 @@ def take():
     for old in snapshots[:-KEEP]:
         shutil.rmtree(old)
     print(f"backup {out}  graphs={manifest['graphs']}  files={list(manifest['items'])}")
+    if os.environ.get("AI_OS_OFFSITE") != "0":
+        try:
+            print(f"off-site {push_offsite(out)}  (AES-256-GCM, key in the Keychain)")
+        except Exception as e:  # the local snapshot is kept; a failed off-site copy fails the run
+            print(f"off-site copy failed: {type(e).__name__}: {e}")
+            return 1
     return 0
 
 
@@ -157,7 +283,23 @@ def main():
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--list", action="store_true")
     g.add_argument("--verify", action="store_true", help="restore the newest snapshot into a throwaway FalkorDB")
+    g.add_argument("--verify-offsite", action="store_true", help="decrypt the newest iCloud copy and compare it")
+    g.add_argument("--restore-offsite", metavar="DIR", help="decrypt + extract the newest iCloud copy into DIR")
+    g.add_argument("--show-key", action="store_true", help="print the recovery key (store it OFF this Mac)")
+    g.add_argument("--confirm-key-saved", action="store_true", help="record that the recovery key is saved elsewhere")
     a = ap.parse_args()
+    if a.show_key:
+        print(base64.b64encode(get_key(create=True)).decode())
+        return 0
+    if a.confirm_key_saved:
+        KEY_CONFIRMED.parent.mkdir(parents=True, exist_ok=True)
+        KEY_CONFIRMED.write_text(time.strftime("%Y-%m-%d") + "\n", encoding="utf-8")
+        print(f"recorded in {KEY_CONFIRMED}")
+        return 0
+    if a.verify_offsite:
+        return verify_offsite()
+    if a.restore_offsite:
+        return restore_offsite(a.restore_offsite)
     if a.list:
         for p in sorted(DEST.iterdir()) if DEST.exists() else []:
             m = p / "manifest.json"
