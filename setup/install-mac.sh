@@ -434,6 +434,9 @@ cat > "$AIOS_ENV_FILE" <<EOF
 # Sourced by dev-env/dotfiles/zsh/.zshrc through a committed guard.
 export AI_OS_ROOT="\${AI_OS_ROOT:-$AI_OS_ROOT}"
 export OLLAMA_URL="\${OLLAMA_URL:-http://localhost:11500}"
+# The \`ollama\` CLI reads OLLAMA_HOST, not OLLAMA_URL; without it every
+# \`ollama list/pull/rm\` dials the default :11434 and finds no server.
+export OLLAMA_HOST="\${OLLAMA_HOST:-127.0.0.1:11500}"
 EOF
 # Part of the same render (see "Ponytail pin" at the top), not a 9c append.
 if [ "$PONYTAIL_ENABLED" = "1" ]; then
