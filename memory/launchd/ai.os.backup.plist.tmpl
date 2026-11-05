@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Daily snapshot of what AI-OS cannot rebuild (setup/ai-os-backup.py): the graphiti
+  graph, dev-env/env-config/.env and Claude memory, then a restore check in a throwaway
+  FalkorDB. On failure it raises a macOS notification. Runs at 13:00 (the Mac is
+  likely awake); launchd catches up on a run missed while it slept.
+
+  Rendered by install-backup.sh, which substitutes __AI_OS_ROOT__ and __PYTHON__.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.backup</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>log="__AI_OS_ROOT__/memory/logs/backup-$(date +%Y-%m-%d-%H%M%S).log"; { "__PYTHON__" "__AI_OS_ROOT__/setup/ai-os-backup.py" &amp;&amp; "__PYTHON__" "__AI_OS_ROOT__/setup/ai-os-backup.py" --verify; } &gt; "$log" 2&gt;&amp;1 || osascript -e 'display notification "AI-OS backup failed — see memory/logs" with title "AI-OS backup" sound name "Basso"'; find "__AI_OS_ROOT__/memory/logs" -name 'backup-*.log' -mtime +30 -delete</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>13</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
+
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>__AI_OS_ROOT__/memory/logs/launchd-backup.log</string>
+    <key>StandardErrorPath</key>
+    <string>__AI_OS_ROOT__/memory/logs/launchd-backup.log</string>
+</dict>
+</plist>
