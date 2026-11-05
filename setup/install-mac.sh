@@ -1454,6 +1454,16 @@ if [ "${SKIP_COMPACT_HOOK:-0}" != "1" ]; then
 else
   log "9e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
 fi
+
+# 9f. Session-memory hook: every Claude Code session starts with what graphiti
+# remembers about its repo (setup/hooks/claude-session-memory.py).
+if [ "${SKIP_MEMORY_HOOK:-0}" != "1" ]; then
+  if python3 "$SCRIPT_DIR/wire-memory-hook.py"; then
+    ok "  session-memory hook wired (Claude Code SessionStart)"
+  else
+    warn "  session-memory hook not wired — see the message above (never blocks the install)"
+  fi
+fi
 echo ""
 
 # ─── 10. Warp defaults (Mac only) ───

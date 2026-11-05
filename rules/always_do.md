@@ -84,7 +84,8 @@ The memory MCP servers are always running; use them instead of re-discovering.
 projects or are about Edd go in `main`.
 
 - **Before** work on a project or a past decision: graphiti `search_memory_facts`
-  (and `search_nodes`) with the project and topic.
+  (and `search_nodes`) with the project and topic. In Claude Code a SessionStart hook
+  (`setup/hooks/claude-session-memory.py`) already preloads the repo's facts; search for more.
 - **After** a decision, a root cause, a convention or an environment fact is settled:
   graphiti `add_memory` — one short, self-contained, dated episode in English. Never
   secrets, raw logs, or task progress (that goes in `specs/`).
