@@ -41,7 +41,7 @@ def init(path, dry=False):
                 agents.symlink_to("CLAUDE.md")
             except OSError:  # Windows without symlink rights
                 agents.write_text("Read `CLAUDE.md` in this directory: it holds the instructions for this project.\n", encoding="utf-8")
-        done.append("AGENTS.md → CLAUDE.md (for Codex/Gemini/Antigravity)")
+        done.append("AGENTS.md -> CLAUDE.md (for Codex/Gemini/Antigravity)")
 
     skills = path / ".agents" / "skills"
     if not skills.exists():
@@ -76,4 +76,7 @@ def main():
 
 
 if __name__ == "__main__":
+    for _stream in (sys.stdout, sys.stderr):  # Windows consoles default to cp1252 and choke on the status symbols
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())
