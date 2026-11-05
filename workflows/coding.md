@@ -42,6 +42,7 @@ Depending on the type of work:
 | Tests                      | → Load skill `test-driven-development`                                            |
 | New skill                  | → Load skill `writing-skills`                                                     |
 | Architecture change        | → Load skill `diagram-design` for the before/after figure in the Spec             |
+| Unfamiliar codebase        | → Load skill `archify` to map it from source before changing anything             |
 | Hotfix (urgent)            | Do it directly, document later                                                    |
 
 A diagram is worth it when the change moves boundaries — a new service, a new data path, a
