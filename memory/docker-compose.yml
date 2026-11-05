@@ -7,7 +7,7 @@
 #
 # Services:
 #   ia-os-falkordb       — graph DB (Redis wire on :6390, Web UI on :3300)
-#   ia-os-graphiti-mcp   — temporal knowledge-graph MCP (opt-in, needs MINIMAX_API_KEY)
+#   ia-os-graphiti-mcp   — temporal knowledge-graph MCP (LLM + embeddings via host Ollama)
 #   ia-os-ollama         — embedding model (opt-in profile, used on Windows; Mac
 #                          defaults to a host-side `ollama serve` for Metal GPU
 #                          acceleration, which containers can't reach)
@@ -63,7 +63,14 @@ services:
       # docker compose resolves relative host paths against the compose
       # file's own directory on every OS, so this works unmodified on both
       # Mac and Windows (fixed 2026-07-30; was hardcoded to /Users/edd/...).
-      - ./falkordb/data:/data
+      # Target is FALKORDB_DATA_PATH (/var/lib/falkordb/data), where run.sh points
+      # redis `--dir`. It was mounted at /data until 2026-11-05, so every write
+      # lived in the container layer and vanished on each recreate.
+      - ./falkordb/data:/var/lib/falkordb/data
+    environment:
+      # AOF on top of the image's RDB snapshots: a crash or `docker kill` loses
+      # at most ~1s of graph writes instead of up to an hour.
+      REDIS_ARGS: "--appendonly yes --appendfsync everysec"
     healthcheck:
       test: ["CMD", "redis-cli", "-p", "6379", "PING"]
       interval: 10s
@@ -101,14 +108,16 @@ services:
       - ./graphiti/config.yaml:/app/mcp/config/config.yaml:ro
     environment:
       CONFIG_PATH: /app/mcp/config/config.yaml
-      MINIMAX_API_KEY: ${MINIMAX_API_KEY:?set MINIMAX_API_KEY before starting this service}
-      # MINIMAX_BASE_URL/MINIMAX_MODEL must be explicitly listed here to reach the
-      # container — docker compose does NOT pass through arbitrary host shell env vars,
-      # only ones named in this environment: block (confirmed by a real bug: without
-      # these, config.yaml's ${MINIMAX_BASE_URL:default} fell through to a null base_url,
-      # and the LLM client silently hit real api.openai.com instead of MiniMax).
-      MINIMAX_BASE_URL: ${MINIMAX_BASE_URL:-https://api.minimaxi.chat/v1}
-      MINIMAX_MODEL: ${MINIMAX_MODEL:-MiniMax-M3}
+      # Entity-extraction LLM. Defaults to the host's native Ollama (free, local,
+      # always up) since 2026-11-05 — MiniMax returned 402 insufficient balance.
+      # Every variable must be listed here to reach the container: docker compose
+      # does NOT pass through arbitrary host shell env vars (a real bug once sent
+      # requests to api.openai.com because the base URL fell through to null).
+      # To use MiniMax again: GRAPHITI_LLM_BASE_URL=https://api.minimaxi.chat/v1
+      # GRAPHITI_LLM_MODEL=MiniMax-M3 GRAPHITI_LLM_API_KEY=$MINIMAX_API_KEY.
+      GRAPHITI_LLM_BASE_URL: ${GRAPHITI_LLM_BASE_URL:-http://host.docker.internal:11500/v1}
+      GRAPHITI_LLM_MODEL: ${GRAPHITI_LLM_MODEL:-gemma3:12b}
+      GRAPHITI_LLM_API_KEY: ${GRAPHITI_LLM_API_KEY:-ollama}
       # The openai SDK's client constructor validates api_key is a non-empty string at
       # *instantiation* time (not just when actually calling the API) — graphiti-core's
       # hardcoded reranker (see config.yaml's STATUS note) crashes the whole server on boot

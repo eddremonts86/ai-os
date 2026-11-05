@@ -77,6 +77,23 @@ When you find a useful parallel-dispatch pattern (e.g., "research + verify + imp
 11. → Load skill `code-review-and-quality` before the final commit.
 12. → Load skill `finishing-a-development-branch` at the end.
 
+## Use the memory stack
+
+The memory MCP servers are always running; use them instead of re-discovering.
+`group_id` = the repo directory name (e.g. `ai-os`, `plansmith`); facts that span
+projects or are about Edd go in `main`.
+
+- **Before** work on a project or a past decision: graphiti `search_memory_facts`
+  (and `search_nodes`) with the project and topic.
+- **After** a decision, a root cause, a convention or an environment fact is settled:
+  graphiti `add_memory` — one short, self-contained, dated episode in English. Never
+  secrets, raw logs, or task progress (that goes in `specs/`).
+- **Code questions** in an indexed repo: grepai `grepai_search` for "where/how is X
+  done", codebase-memory `search_graph` / `trace_path` for callers and structure —
+  before a broad Grep.
+- A memory tool that does not answer never blocks the task: note it and continue.
+  Health: `bash setup/verify.sh` (section 5b), `bash memory/launchd/install-reindex.sh --status`.
+
 ## When a task needs an env value or secret
 
 Before inventing, hardcoding, or asking the user for any environment value, read the

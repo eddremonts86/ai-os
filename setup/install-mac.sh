@@ -952,6 +952,13 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
   else
     warn "  go not installed (grepai skipped; install: brew install go)"
   fi
+
+  # 9b.4 — Scheduled reindex (codebase-memory-mcp + grepai), 6x/day via launchd
+  if bash "$AI_OS_ROOT/memory/launchd/install-reindex.sh" 2>&1 | sed 's/^/    /'; then
+    ok "  reindex agent ai.os.reindex installed"
+  else
+    warn "  reindex agent install failed (run: bash memory/launchd/install-reindex.sh)"
+  fi
 else
   log "9b. SKIP_MEMORY=1, skipping memory stack"
 fi
