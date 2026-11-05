@@ -342,6 +342,7 @@ What gets vendored:
 | claude.tools (`humanizer`, `caveman`, `notebooklm-skill`; `frontend-design-alt` merged into `frontend-design`) | `ai-config/skills/`                                                                | 3 skills            |
 | gstack (`careful`, `context-save`, `context-restore`, `freeze`, `spec`, `unfreeze`; `guard` folded into `careful`) | `ai-config/skills/`                                                                | 6 skills            |
 | diagram-design (MIT, `cathrynlavery/diagram-design`) — re-skinned to the AI-OS brand                    | `ai-config/skills/diagram-design/`                                                 | 1 skill             |
+| archify (MIT, `tt-a1i/archify`) — pinned v3.0.1, interactive diagrams from code or a description | `ai-config/skills/archify/` | 1 skill |
 | patterns-and-refactoring (MIT, `christianpasinrey/refactoring.guru-skill`) — trigger narrowed to refactor/review | `ai-config/skills/patterns-and-refactoring/` | 1 skill |
 | OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
 
