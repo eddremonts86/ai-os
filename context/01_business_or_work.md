@@ -8,8 +8,8 @@ Software company. Role: full-stack developer.
 
 | Project              | Stack                                                      | Path                                       |
 | -------------------- | ---------------------------------------------------------- | ------------------------------------------ |
-| **wave-template**    | Vite + React 19 + TanStack Router/Query/Start + Tailwind 4 | `~/Projects/ei-schilling/wave-template`    |
-| **kontrakt-manager** | PHP/Drupal                                                 | `~/Projects/ei-schilling/kontrakt-manager` |
+| **wave-template**    | Vite + React 19 + TanStack Router/Query/Start + Tailwind 4 | `<projects>/AppExternas/ei-schilling/wave-template`    |
+| **kontrakt-manager** | PHP/Drupal                                                 | `<projects>/AppExternas/ei-schilling/kontrakt-manager` |
 
 ### Conventions
 
@@ -24,10 +24,10 @@ Software company. Role: full-stack developer.
 
 | Project                          | Stack                    | Path                                                                                                       |
 | -------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| **hermes-agent** (Nous Research) | Python 3.11 + Hermes     | `~/Projects/eddremonts86/hermes-agent` (source repo; `~/.hermes` is the CLI config/data dir, not the repo) |
-| **iaWorkSpace** (meta-repo)      | Multi-repo orchestration | `~/Projects/eddremonts86/iaWorkSpace`                                                                      |
-| **ai-os** (this repo)            | AI Operating System      | `~/Projects/ai-os`                                                                                         |
-| **anySolutions**                 | Vue 3 + Node             | `~/Projects/eddremonts86/anySolutions`                                                                     |
+| **hermes-agent** (Nous Research) | Python 3.11 + Hermes     | `<projects>/eddremonts86/inHold/hermes-agent` (source repo; `~/.hermes` is the CLI config/data dir, not the repo) |
+| **iaWorkSpace** (meta-repo)      | Multi-repo orchestration | `<projects>/eddremonts86/inHold/iaWorkSpace`                                                                      |
+| **ai-os** (this repo)            | AI Operating System      | `$AI_OS_ROOT`                                                                                         |
+| **anySolutions**                 | Vue 3 + Node             | `<projects>/eddremonts86/inHold/anySolutions`                                                                     |
 
 ## Personal (other)
 

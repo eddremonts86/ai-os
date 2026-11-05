@@ -107,4 +107,4 @@ spot-check the live schema after any deploy that changed migrations.
 ## Resources
 
 - [Coolify post-deployment scripts](https://coolify.io/docs/knowledge-base/post-deployment-scripts)
-- Related skill: `prod-deploy-verification` (pre-flight checks)
+- Related skill: `prod-deploy-verification` (project-local skill in iaWorkSpace) (pre-flight checks)

@@ -1,6 +1,6 @@
 ---
 name: ai-os-karpathy
-description: AI Operating System local of Edd based on the "Spec + Verifier + Environment" method from Andrej Karpathy. Loads persistent context (profile, projects, preferences, tools, sources), 99 global skills, MCP servers, and rules for daily work with any AI CLI. Use when starting any AI session in Claude Code, Hermes, Codex, Gemini, or Antigravity.
+description: AI Operating System local of Edd based on the "Spec + Verifier + Environment" method from Andrej Karpathy. Loads persistent context (profile, projects, preferences, tools, sources), the global skills in ai-config/skills/, MCP servers, and rules for daily work with any AI CLI. Use when starting any AI session in Claude Code, Hermes, Codex, Gemini, or Antigravity.
 license: MIT
 metadata:
   hermes:
@@ -13,12 +13,12 @@ Personal AI work system. Local, versioned, replicable.
 
 ## What it provides
 
-- **18 master instructions** in `CLAUDE.md` (method, workflows, prohibitions).
+- **Master instructions** in `CLAUDE.md` (method, always-follow rules, priorities, prohibitions); reference material in `docs/cli-reference.md` and `docs/skills-catalog.md`.
 - **6 context files** (`context/`): profile, business/work, projects, preferences, tools, sources.
 - **3 rules files** (`rules/`): always_do, ask_before_doing, never_do.
-- **3 verifiers** (`verifiers/`): quality_checklist, critic_prompt, source_check_prompt.
+- **3 optional verifier prompts** (`verifiers/`): quality_checklist, critic_prompt, source_check_prompt — tools for a second look, not a mandatory pass.
 - **5 workflows** (`workflows/`): daily_start, project_start, coding, research, content_creation.
-- **99 global skills** distributed to 5 CLIs.
+- **Global skills** (`ai-config/skills/`, see `docs/skills-catalog.md`) distributed to the supported CLIs.
 - **14 superpowers skills (REQUIRED)** integrated into the workflows.
 - **10 declarative MCP servers** generated automatically, all enabled (graphiti's Docker deployment passed a structural smoke test 2026-07-12; actual knowledge-graph operations still need a real `OPENAI_API_KEY` — see `ai-config/mcp/graphiti.yaml`).
 
@@ -38,7 +38,7 @@ hermes chat --skills ai-os-karpathy
 
 Or paste at the start of the conversation:
 
-> Load and apply `~/Projects/ai-os/CLAUDE.md`. Read `context/`, `rules/`, and `specs/current_spec.md` before responding.
+> Load and apply `$AI_OS_ROOT/CLAUDE.md`. Read `context/`, `rules/`, and `specs/current_spec.md` before responding.
 
 ### In Claude Code
 
@@ -84,10 +84,10 @@ If any dependency fails, run `bash setup/verify.sh` to diagnose.
 1. → Load skill `workflows/daily_start.md` (AI-OS)
 2. → Load skill `using-superpowers` (router)
 3. Check `specs/current_spec.md`
-4. If new task → → Load skill `workflows/project_start.md`
+4. If the task needs a Spec (>~2 hours, more than one repo, or the user asks) → follow `workflows/project_start.md`; otherwise plan inline
 5. If existing Spec → execute block by block
 6. At the end → → Load skill `verification-before-completion`
-7. Archive the Spec
+7. Archive the Spec, if there was one
 ```
 
 ## How it integrates with superpowers
@@ -98,7 +98,7 @@ If any dependency fails, run `bash setup/verify.sh` to diagnose.
 | `project_start` | `brainstorming`, `writing-plans`, `executing-plans`, `verification-before-completion` |
 | `coding` | `test-driven-development`, `systematic-debugging`, `code-review-and-quality`, `verification-before-completion`, `using-git-worktrees`, `finishing-a-development-branch` |
 | `research` | `verification-before-completion`, `code-review-and-quality` |
-| `content_creation` | `documentation-and-adrs`, `code-review-and-quality` |
+| `content_creation` | `architecture-decision-records`, `diagram-design`, `verification-before-completion`, `code-review-and-quality` |
 
 ## How it integrates with sub-agents (parallel dispatch)
 
@@ -129,7 +129,7 @@ After loading this skill, the AI should have:
 ## Verification
 
 ```bash
-bash ~/Projects/ai-os/setup/verify.sh
+bash "$AI_OS_ROOT/setup/verify.sh"
 ```
 
 If it shows "Pasados: 14, Fallados: 0", AI-OS is functional.

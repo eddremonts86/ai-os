@@ -27,4 +27,4 @@ chmod 700 "$HOME/.ssh" 2>/dev/null || true
 chmod 600 "$HOME/.ssh/"* 2>/dev/null || true
 [ -d "$HOME/.gnupg" ] && chmod 700 "$HOME/.gnupg"
 
-log "done. Next: cd ~/Projects/ai-os && bash setup/install-mac.sh"
+log "done. Next: cd \"\$AI_OS_ROOT\" && bash setup/install-mac.sh  (AI_OS_ROOT = the restored ai-os checkout)"

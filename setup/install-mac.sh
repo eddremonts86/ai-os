@@ -3,8 +3,9 @@
 # Setup AI-OS on Mac from zero. 1-command.
 #
 # Usage:
-#   git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-#   cd ~/Projects/ai-os
+#   git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"
+#   cd "$AI_OS_ROOT"
+#   (AI_OS_ROOT = any checkout path you choose; the script derives it from its own location)
 #   bash setup/install-mac.sh
 #
 # Idempotent: runs multiple times without breaking anything.
@@ -540,8 +541,8 @@ echo ""
 require_manifest_tool
 log "7. Setting global skills in native client destinations..."
 # Only flat skills (a dir with a top-level SKILL.md) are symlinked here. Plugin
-# bundles in ai-config/skills/ that have a NESTED layout (claude.tools, ECC) are
-# installed by their own scripts (install-claude-tools.sh, install-ecc.sh).
+# bundles in ai-config/skills/ that have a NESTED layout (claude.tools) are
+# installed by their own script (install-claude-tools.sh); ECC is steps 7e/7f.
 #   Claude ~/.claude/skills | Codex ~/.codex/skills | Gemini ~/.gemini/skills
 #   Antigravity ~/.agents/skills | Hermes reads ~/.agents/skills via skills.external_dirs (no copy)
 #   MiniMax Code ~/.minimax/skills (global skills.paths entry in opencode.json)
@@ -608,10 +609,10 @@ fi
 echo ""
 
 # ─── 7e. Selective ECC skills (vendor/ecc/, DAILY subset only) ───
-# vendor/ecc/ holds the full upstream ECC snapshot (292 skills) as reference —
-# see vendor/ecc/VENDORED_FROM.md. Unlike vendor/gstack/ (7c), we do NOT
-# symlink everything in it: only the names in vendor/ecc/DAILY_SKILLS.txt,
-# picked by an evidence-backed agent-sort pass against this repo (2026-09-20).
+# vendor/ecc/ holds only the curated ECC subset AI-OS uses (see
+# vendor/ecc/VENDORED_FROM.md). Like vendor/gstack/ (7c) but driven by the
+# named list in vendor/ecc/DAILY_SKILLS.txt, picked by an evidence-backed
+# agent-sort pass against this repo (2026-09-20).
 # That file is the single source of truth for the list — don't duplicate it
 # here or in setup/verify.sh; both read the same file.
 ECC_DAILY_LIST="$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt"
@@ -778,7 +779,7 @@ fi
 MM_OVERLAY="$AI_OS_ROOT/ai-config/clis/minimax-overlay.md"
 if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && [ -d "$HOME_DIR/.minimax/agents" ] && [ -f "$MM_OVERLAY" ]; then
   for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
-    [ -d "$agent_dir" ] && cp "$MM_OVERLAY" "$agent_dir/agent.md"
+    [ -d "$agent_dir" ] && sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$MM_OVERLAY" > "$agent_dir/agent.md"
   done
 fi
 # VS Code (GitHub Copilot Chat): unlike the CLIs above, Copilot Chat already
@@ -953,7 +954,7 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
         ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
-        warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory && docker compose -f docker-compose.yml up -d)"
+        warn "  docker compose up failed (run manually: cd $AI_OS_ROOT/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
       if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
@@ -1052,10 +1053,10 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     if [ ! -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
       if [ -t 0 ]; then
         # interactive terminal: full wizard
-        (cd "$AI_OS_ROOT" && "$HOME_DIR/.local/bin/grepai" init) || warn "  grepai init interactive failed; run manually: cd ~/Projects/ai-os && grepai init"
+        (cd "$AI_OS_ROOT" && "$HOME_DIR/.local/bin/grepai" init) || warn "  grepai init interactive failed; run manually: cd $AI_OS_ROOT && grepai init"
       else
         # non-interactive (CI, piped): pipe the answers
-        (cd "$AI_OS_ROOT" && printf "1\n%s\ngob\n\n" "$OLLAMA_URL" | "$HOME_DIR/.local/bin/grepai" init >/dev/null 2>&1) || warn "  grepai init non-interactive failed; run manually: cd ~/Projects/ai-os && grepai init"
+        (cd "$AI_OS_ROOT" && printf "1\n%s\ngob\n\n" "$OLLAMA_URL" | "$HOME_DIR/.local/bin/grepai" init >/dev/null 2>&1) || warn "  grepai init non-interactive failed; run manually: cd $AI_OS_ROOT && grepai init"
       fi
     fi
     # Always reconcile endpoint: if the user (or a previous install) used
@@ -1064,7 +1065,7 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     if [ -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
       "$HOME_DIR/.local/bin/grepai" config get embedder.endpoint >/dev/null 2>&1 || true
       if grep -q "localhost:11434" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null; then
-        sed -i.bak "s|http://localhost:11434|$OLLAMA_URL|g" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null &&             ok "  grepai config: rewrote Ollama endpoint 11434 -> $OLLAMA_URL" ||             warn "  grepai config: could not rewrite endpoint (run: sed -i '' 's|11434|11500|' ~/Projects/ai-os/.grepai/config.yaml)"
+        sed -i.bak "s|http://localhost:11434|$OLLAMA_URL|g" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null &&             ok "  grepai config: rewrote Ollama endpoint 11434 -> $OLLAMA_URL" ||             warn "  grepai config: could not rewrite endpoint (run: sed -i '' 's|11434|11500|' $AI_OS_ROOT/.grepai/config.yaml)"
         rm -f "$AI_OS_ROOT/.grepai/config.yaml.bak"
       fi
     fi

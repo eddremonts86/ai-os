@@ -217,7 +217,7 @@ sys.exit(0)
 index_all() {
   hdr "Auto-index projects under $PROJECTS_DIR"
   if ! command -v codebase-memory-mcp >/dev/null 2>&1; then
-    err "codebase-memory-mcp not installed (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
+    err "codebase-memory-mcp not installed (run: bash $AI_OS_ROOT/setup/install-mac.sh)"
     return 1
   fi
 

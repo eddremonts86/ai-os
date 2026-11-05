@@ -93,7 +93,7 @@ fi
 # missing 1+ skills (or an absent CLI executable) still counted as a pass. Each
 # client now gets checked against the exact set of expected skill NAMES (not
 # just a count) — a plain count comparison breaks the moment a client also has
-# ECC (271 skills) or claude.tools/gstack installed, since those legitimately
+# ECC DAILY or claude.tools/gstack installed, since those legitimately
 # add more names on top of the baseline and can even net-change the total via
 # symlink name collisions. Checking names catches a real missing skill no
 # matter what optional bundles are also installed. The CLI executable is

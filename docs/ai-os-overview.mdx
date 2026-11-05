@@ -97,7 +97,7 @@ The `setup/install-mac.sh` script is idempotent. Re-run it any time.
 
 ```bash
 # From a fresh Mac (or fresh shell):
-cd /Users/edd/Projects/ai-os
+cd $AI_OS_ROOT
 bash setup/install-mac.sh
 
 # Verify:
@@ -110,14 +110,14 @@ The script:
 
 1. Installs Homebrew packages from `dev-env/packages/Brewfile` (docker, ollama, uv, etc.)
 2. Creates symlinks in `~/.local/bin/` for `codebase-memory-mcp`, `grepai`, `ai-os`, `ai-os-loop`
-3. Starts the FalkorDB container via `docker compose -f memory/falkordb/docker-compose.yml up -d`
+3. Starts the FalkorDB container via `docker compose -f memory/docker-compose.yml up -d` (FalkorDB + graphiti-mcp; data persists to `memory/falkordb/data`)
 4. Starts `ollama serve` on `127.0.0.1:11500` (background, logs to `/tmp/ollama-server.log`)
 5. Pulls `nomic-embed-text` model (274 MB) into Ollama
-6. Downloads `codebase-memory-mcp` v0.8.1 (darwin-arm64) and `grepai` v0.35.0 to `~/.local/bin/`
-7. Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (10 MCPs total: 7 existing + 3 memory-related)
+6. Downloads `codebase-memory-mcp` v0.8.1 (darwin-arm64) to `~/.local/bin/`; builds `grepai` v1.2.0 from source (pinned tag, needs `go`) and links it into `~/.local/bin/`
+7. Generates `~/.hermes/config.yaml` from `ai-config/mcp/*.yaml` (every YAML with `enabled: true`; 7 as of 2026-11-05)
 8. Adds an `ai-os` alias to `~/.zshrc` so the CLI is on PATH
 9. Adds a self-healing PATH block to `~/.zshrc` so `codebase-memory-mcp` and `grepai` resolve even when `~/.local/bin` is missing from PATH (e.g. under `env -i` from MCP loaders)
-10. Registers a `cron-reindex.sh` (currently manual, cron creation is up to the user)
+10. Installs the launchd agent `ai.os.reindex` (`memory/launchd/install-reindex.sh`), which runs `memory/cron-reindex.sh` 6x/day
 
 ### 3.3 Verifying the memory stack
 
@@ -140,12 +140,12 @@ Output:
   ✓ grepai binary
 
 == MCP servers (ai-os memory-related) ==
-  ✓ codebase-memory-mcp → /Users/edd/.local/bin/codebase-memory-mcp
-  ✓ grepai             → /Users/edd/.local/bin/grepai
+  ✓ codebase-memory-mcp → ~/.local/bin/codebase-memory-mcp
+  ✓ grepai             → ~/.local/bin/grepai
   ✓ graphiti           → uv
 ```
 
-The `✓ codebase-memory-mcp → /Users/edd/.local/bin/codebase-memory-mcp`
+The `✓ codebase-memory-mcp → ~/.local/bin/codebase-memory-mcp`
 lines confirm the MCP servers are registered with Hermes AND have
 absolute paths in the config (no `${HOME}` placeholders that
 some clients don't expand).
@@ -173,8 +173,8 @@ ai-os memory <subcommand> [args]
 **`reindex`**: reindexes the AST of a directory. Example:
 
 ```bash
-ai-os memory reindex /Users/edd/Projects
-# Output:
+ai-os memory reindex "$(dirname "$AI_OS_ROOT")"   # the projects directory
+# Output (example run):
 #   index_status: nodes=568452 edges=2053993 size_bytes=1452998656
 # This is a 1.45 GB graph covering 4 top-level projects.
 ```
@@ -216,10 +216,10 @@ you always know what's indexed.
 
 | File | Purpose |
 |---|---|
-| `memory/falkordb/docker-compose.yml` | FalkorDB container definition |
+| `memory/docker-compose.yml` | Unified `ia-os` stack: FalkorDB, graphiti-mcp, opt-in Ollama, open-webui |
 | `memory/ai-os-memory.sh` | The `ai-os memory` CLI |
 | `memory/ai-os-loop.sh` | The `ai-os loop` CLI (phase 2) |
-| `memory/cron-reindex.sh` | Helper for reindex via cron (manual wiring needed) |
+| `memory/cron-reindex.sh` | Reindex worker, run 6x/day by the launchd agent `ai.os.reindex` (`memory/launchd/`) |
 | `memory/dev-env/.env.example` | FALKORDB_URL, FALKORDB_WEB, OLLAMA_URL templates |
 | `ai-config/mcp/codebase-memory-mcp.yaml` | MCP server config (uses cbm binary) |
 | `ai-config/mcp/grepai.yaml` | MCP server config (uses grepai binary) |
@@ -304,7 +304,7 @@ Pure text → grep-friendly → any CLI can read it.
 ```bash
 # 1. Create the loop directory + copy templates
 mkdir -p ~/my-loop/outputs
-cp /Users/edd/Projects/ai-os/workflows/loop_template.md /tmp/_ref.md
+cp $AI_OS_ROOT/workflows/loop_template.md /tmp/_ref.md
 # copy the 3 templates from there into TASK.md, LOOP_INSTRUCTIONS.md, PROGRESS.md
 
 # 2. Fill TASK.md and LOOP_INSTRUCTIONS.md (PROGRESS.md starts empty)
@@ -413,7 +413,10 @@ configuration needed — just point Claude Code at the AI-OS repo.
 MCP servers in `ai-config/mcp/*.yaml` are auto-discovered by
 `setup/install-mac.sh` and merged into `~/.hermes/config.yaml`.
 
-### 6.1 The 10MCPs (current as of 2026-07-07)
+### 6.1 The 7 enabled MCPs (current as of 2026-11-05)
+
+`memory`, `filesystem` and `sequential-thinking` still have YAMLs in `ai-config/mcp/` but are
+`enabled: false`.
 
 | MCP | Command | Purpose |
 |---|---|---|
@@ -429,9 +432,9 @@ MCP servers in `ai-config/mcp/*.yaml` are auto-discovered by
 
 ```bash
 # Regenerate from YAMLs:
-python3 /Users/edd/Projects/ai-os/setup/generate-mcp-config.py \
-  /Users/edd/Projects/ai-os/ai-config/mcp \
-  /Users/edd/.hermes/config.yaml
+python3 $AI_OS_ROOT/setup/generate-mcp-config.py \
+  $AI_OS_ROOT/ai-config/mcp \
+  ~/.hermes/config.yaml
 ```
 
 The generator:
@@ -449,7 +452,7 @@ All binary MCPs use **absolute paths** in the config:
 
 ```yaml
 # ai-config/mcp/codebase-memory-mcp.yaml
-command: /Users/edd/.local/bin/codebase-memory-mcp
+command: ~/.local/bin/codebase-memory-mcp
 args: []
 ```
 
@@ -459,20 +462,12 @@ If you see that, run the generator manually.
 
 ### 6.4 Configuring `graphiti` (the FalkorDB writer)
 
-Graphiti is theMCP that actually populates FalkorDB with entities.
-`ai-config/mcp/graphiti.yaml` env block:
-
-```yaml
-env:
-  FALKORDB_HOST: localhost
-  FALKORDB_PORT: "6390"
-  FALKORDB_URL: redis://localhost:6390
-  GRAPHITI_GROUP_ID: aios
-  OPENAI_API_KEY: ${OPENAI_API_KEY}    # required: graphiti uses OpenAI embeddings
-```
-
-If `OPENAI_API_KEY` is unset, graphiti will fail at startup. Set
-it in `~/.env` (or pass via the env block after expansion).
+Graphiti is the MCP that actually populates FalkorDB with entities. It runs as the
+`ia-os-graphiti-mcp` container (`memory/docker-compose.yml`) and is reached over HTTP
+(`ai-config/mcp/graphiti.yaml` → `http://127.0.0.1:8021/mcp/`). Entity extraction uses the
+host Ollama (`GRAPHITI_LLM_MODEL`, default a local gemma model) and embeddings use
+`nomic-embed-text` on the same Ollama, so **no MiniMax/OpenAI API key is needed**. Override
+`GRAPHITI_LLM_BASE_URL` / `GRAPHITI_LLM_MODEL` / `GRAPHITI_LLM_API_KEY` to use a hosted LLM.
 
 ---
 
@@ -486,9 +481,9 @@ This is the heart of AI-OS. It comes from Karpathy's
 ```
 1. Read  CLAUDE.md + relevant context/ files
 2. Check specs/current_spec.md
-   └─ If empty → workflows/project_start.md
-3. Execute in blocks of ≤30 min
-   └─ Between blocks → verifiers/critic_prompt.md
+   └─ Spec is opt-in (>~2h, multi-repo, or on request) → workflows/project_start.md
+3. Execute and verify with runtime evidence
+   └─ Optional: verifiers/critic_prompt.md for a self-critique pass
 4. Archive completed Specs to archive/YYYY-MM-DD-<slug>.md
 ```
 
@@ -543,9 +538,9 @@ under every agent.**
 ai-os memory status                       # health of all 4 services
 ai-os memory browse                       # open FalkorDB UI
 ai-os memory visualize                    # open FalkorDB + cbm UIs
-ai-os memory search "<q>" ~/Projects      # semantic code search (tier 1+2)
-ai-os memory reindex /Users/edd/Projects   # index AST of a repo
-ai-os memory query "<q>" ~/Projects       # grepai-only semantic search
+ai-os memory search "<q>" "$(dirname "$AI_OS_ROOT")"  # semantic code search (tier 1+2)
+ai-os memory reindex "$(dirname "$AI_OS_ROOT")" # index AST of a repo
+ai-os memory query "<q>" "$(dirname "$AI_OS_ROOT")"   # grepai-only semantic search
 ai-os memory sync-sessions 90             # ingest last 90 days of Hermes sessions
 ai-os memory logs                         # tail FalkorDB logs
 ai-os memory start / stop                 # FalkorDB lifecycle
@@ -568,16 +563,16 @@ curl -sI -m 3 http://localhost:3300/ | head -1       # FalkorDB Web
 curl -sI -m 3 http://localhost:9749/ | head -1       # cbm UI
 
 # ==== INSTALL / VERIFY ====
-bash ~/Projects/ai-os/setup/install-mac.sh   # full install (idempotent)
-bash ~/Projects/ai-os/setup/verify.sh        # 38-check verifier
-python3 ~/Projects/ai-os/setup/generate-mcp-config.py \
-  ~/Projects/ai-os/ai-config/mcp \
+bash $AI_OS_ROOT/setup/install-mac.sh   # full install (idempotent)
+bash $AI_OS_ROOT/setup/verify.sh        # 38-check verifier
+python3 $AI_OS_ROOT/setup/generate-mcp-config.py \
+  $AI_OS_ROOT/ai-config/mcp \
   ~/.hermes/config.yaml                      # regenerate MCPs
 
 # ==== AI-OS WORKFLOW ====
-cat ~/Projects/ai-os/AGENTS.md              # read agent instructions
-cat ~/Projects/ai-os/specs/current_spec.md  # active Spec (or empty)
-ls ~/Projects/ai-os/archive/                # completed Specs
+cat $AI_OS_ROOT/AGENTS.md              # read agent instructions
+cat $AI_OS_ROOT/specs/current_spec.md  # active Spec (or empty)
+ls $AI_OS_ROOT/archive/                # completed Specs
 ```
 
 ---
@@ -600,7 +595,7 @@ source ~/.zshrc
 ```bash
 docker ps -a --format '{{.Names}}\t{{.Status}}' | grep falkor
 # If Exited, restart:
-docker compose -f /Users/edd/Projects/ai-os/memory/falkordb/docker-compose.yml up -d
+docker compose -f $AI_OS_ROOT/memory/docker-compose.yml up -d
 ```
 
 ### 10.3 `Ollama not running`
@@ -616,8 +611,8 @@ brew services restart ollama
 
 ```bash
 # Regenerate:
-python3 ~/Projects/ai-os/setup/generate-mcp-config.py \
-  ~/Projects/ai-os/ai-config/mcp \
+python3 $AI_OS_ROOT/setup/generate-mcp-config.py \
+  $AI_OS_ROOT/ai-config/mcp \
   ~/.hermes/config.yaml
 # Verify:
 ai-os memory status
@@ -636,7 +631,7 @@ Known bug in `codebase-memory-mcp` v0.8.1. Workarounds:
 
 ```bash
 # Manually clean:
-rm -rf ~/Projects/ai-os/memory/loop_state
+rm -rf "${AI_OS_ROOT:?}/memory/loop_state"
 # Re-register your loops:
 ai-os loop add ~/my-loop
 ```
@@ -655,7 +650,7 @@ The `.zshrc` is a symlink. To fix:
 
 ```bash
 ls -la ~/.zshrc
-# If broken: ln -sf /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc ~/.zshrc
+# If broken: ln -sf $AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc ~/.zshrc
 exec zsh
 ```
 
@@ -681,9 +676,9 @@ exec zsh
 - `codebase-memory-mcp` reads your code, writes to your agent config
   (that's its design — see its README)
 - `grepai` is privacy-first, all-embedding baked in, no API key
-- `graphiti` requires `OPENAI_API_KEY` (cost consideration)
+- `graphiti` uses the host Ollama for both LLM and embeddings (no API key, no cost)
 - `Ollama` runs locally, no data leaves your Mac
-- `FalkorDB` is a local Docker container, data stays in `./data/`
+- `FalkorDB` is a local Docker container, data stays in `memory/falkordb/data/`
 
 ### 11.4 What we DON'T do
 
@@ -705,10 +700,10 @@ This is a deep reference. Use it to find files by purpose.
 
 | File | Lines | Purpose |
 |---|---|---|
-| `memory/falkordb/docker-compose.yml` | 32 | FalkorDB container definition (port 3300/6390) |
+| `memory/docker-compose.yml` | — | Unified `ia-os` stack: FalkorDB (port 3300/6390), graphiti-mcp (:8021), open-webui |
 | `memory/ai-os-memory.sh` | 397 | `ai-os memory` CLI (10 sub-commands) |
 | `memory/ai-os-loop.sh` | 320 | `ai-os loop` CLI (7 sub-commands) |
-| `memory/cron-reindex.sh` | 30 | Helper for cron-based reindex |
+| `memory/cron-reindex.sh` | — | Reindex worker, scheduled 6x/day by launchd agent `ai.os.reindex` |
 | `memory/dev-env/.env.example` | 12 | FALKORDB_URL, FALKORDB_WEB, OLLAMA_URL templates |
 | `ai-config/mcp/codebase-memory-mcp.yaml` | 8 | MCP server config for cbm |
 | `ai-config/mcp/grepai.yaml` | 8 |MCP server config for grepai |
@@ -743,7 +738,7 @@ This is a deep reference. Use it to find files by purpose.
 | `rules/ask_before_doing.md` | What to confirm with the user |
 | `rules/never_do.md` | What never to do (5+ rules) |
 | `rules/loop_safety.md` | (phase 2) Loop safety levels |
-| `verifiers/critic_prompt.md` | Inter-block quality gate |
+| `verifiers/critic_prompt.md` | Optional self-critique pass |
 | `verifiers/verification-loop.md` | Final verification before commit |
 | `workflows/daily_start.md` | Start of session |
 | `workflows/project_start.md` | New task → Spec |
@@ -757,7 +752,7 @@ This is a deep reference. Use it to find files by purpose.
 | File | Source | Purpose |
 |---|---|---|
 | `vendor/gstack/` | https://github.com/garrytan/gstack | Karpathy-related skills (review, planning, etc.) |
-| `vendor/ecc/` | https://github.com/eyaltoledano/claude-task-manager | Task management |
+| `vendor/ecc/` | https://github.com/affaan-m/ECC — curated subset | 14 DAILY skills, 3 agents, 2 commands, 1 hook |
 | `vendor/codex-plugin-cc/` | Codex CLI plugin | Cross-CLI bridge |
 
 ---
@@ -779,10 +774,10 @@ This is a deep reference. Use it to find files by purpose.
 
 ```bash
 # 1. Install everything (idempotent):
-bash ~/Projects/ai-os/setup/install-mac.sh
+bash $AI_OS_ROOT/setup/install-mac.sh
 
 # 2. Verify:
-bash ~/Projects/ai-os/setup/verify.sh
+bash $AI_OS_ROOT/setup/verify.sh
 # Expected: 38 passed, 0 failed. Banner: "AI-OS is correctly installed. 🎉"
 
 # 3. Open new terminal so PATH updates apply:
@@ -792,17 +787,17 @@ exec zsh
 ai-os memory status
 
 # 5. Index your projects:
-ai-os memory reindex /Users/edd/Projects
+ai-os memory reindex "$(dirname "$AI_OS_ROOT")"
 
 # 6. Search semantically:
-ai-os memory search "where is the Spec+Verifier loop" /Users/edd/Projects
+ai-os memory search "where is the Spec+Verifier loop" "$(dirname "$AI_OS_ROOT")"
 
 # 7. Open the browser:
 ai-os memory visualize
 
 # 8. Create your first loop:
 mkdir -p ~/my-loop/outputs
-cp ~/Projects/ai-os/workflows/loop_template.md /tmp/_ref.md
+cp $AI_OS_ROOT/workflows/loop_template.md /tmp/_ref.md
 # (fill TASK.md and LOOP_INSTRUCTIONS.md from the template)
 ai-os loop add ~/my-loop
 ai-os loop ls
@@ -823,7 +818,7 @@ your Mac, all vendor-neutral.
 - `docs/architecture.md` — high-level architecture
 - `docs/claude-tools-integration.md` — Claude Code specifics
 - `docs/cross-platform.md` — Linux + Windows install notes
-- `docs/ecc-integration.md` — Task manager integration
+- `docs/ecc-integration.md` — ECC curated subset
 - `docs/sharing.md` — How to share AI-OS with collaborators
 
 For the memory stack specifically:

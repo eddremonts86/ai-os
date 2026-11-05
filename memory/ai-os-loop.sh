@@ -43,7 +43,7 @@ if [ -z "${AI_OS_ROOT:-}" ]; then
     _cur="$(dirname "$_cur")"
   done
 fi
-: "${AI_OS_ROOT:=/Users/edd/Projects/ai-os}"
+: "${AI_OS_ROOT:?could not locate the AI-OS root (no CLAUDE.md above this script); set AI_OS_ROOT}"
 
 # Loop state lives here, alongside ai-os-memory.sh's docker/falkordb work
 LOOP_STATE_DIR="$AI_OS_ROOT/memory/loop_state"

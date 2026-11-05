@@ -31,15 +31,15 @@ Two layers, both documented in full in `llm/README.md`:
   tool use), reused by any app via the `AI_LLM_PROVIDER` / `AI_OLLAMA_NATIVE_*` /
   `MINIMAX_*` variables in `dev-env/env-config/.env.example` section 6. `local`
   (default) hits the native Ollama daemon AI-OS already runs for memory-stack
-  embeddings (`ai.os.ollama`, launchd, `:11500`), now also carrying `qwen3:8b-q4_K_M`
-  alongside `nomic-embed-text`. `minimax` is the explicit opt-in cloud fallback.
+  embeddings (`ai.os.ollama`, launchd, `:11500`), now also carrying the local chat
+  model named in `llm/router.mjs` alongside `nomic-embed-text`. `minimax` is the explicit opt-in cloud fallback.
   CLI: `ai-os llm ask "<prompt>" [--provider local|minimax]`, `ai-os llm test`.
 - **`opencode`** (npm `opencode-ai`) — an actual tool-use harness (read/write files,
   run shell) on top of the same local model, persisted as a password-protected
   service (`llm/launchd/install-opencode.sh` on macOS, `llm/systemd/` on Linux —
   see `llm/README.md`'s security model before pointing a session at a real project).
   Verified working end to end across 3 repeated identical trials: the tool-calling
-  protocol, permission gate, and file I/O all work with `qwen3:8b-q4_K_M` — every
+  protocol, permission gate, and file I/O all work with `qwen3:8b-q4_K_M` (the local model at the time) — every
   trial emitted a real tool call (checked via full session/message history, not
   just terminal output). 2/3 called `read` with the right path and answered
   correctly; 1/3 called `glob` instead of `read` for a literal path, found 0
@@ -50,9 +50,9 @@ Two layers, both documented in full in `llm/README.md`:
   the full repro and the correction; it directly informs the risk assessment
   below.
 
-**What this does not fix — tested directly, not just assumed:** `apps/data/tools/plans-pipeline`'s
-35-40M-token runs are still Task-tool / `delegate_task` subagent dispatch, per
-`apps/data/progress/LOOP_INSTRUCTIONS.md`. Whether a local model could actually do
+**What this does not fix — tested directly, not just assumed:** the plans pipeline's
+(now in the plansmith repo: `apps/data/tools/plans-pipeline`) 35-40M-token runs are still
+Task-tool / `delegate_task` subagent dispatch, per plansmith's `apps/data/progress/LOOP_INSTRUCTIONS.md`. Whether a local model could actually do
 the enrichment work was tried for real (2026-09-19): one draft plan, isolated
 sandbox, 4 model/flag combinations (`qwen3:8b`, `llama3-groq-tool-use:8b`,
 `qwen3:14b`, `qwen3:14b --pure`). **All four failed to complete the task** — each

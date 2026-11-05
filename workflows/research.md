@@ -2,9 +2,9 @@
 
 Workflow to research a new topic and summarize actionable findings.
 
-> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+> **Prerequisite:** have the 14 superpowers skills installed (see `docs/skills-catalog.md` "Superpowers skills"). Without them, the load skill steps in this workflow will fail.
 >
-> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
+> Run `bash $AI_OS_ROOT/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
 ## When to use
 
@@ -165,7 +165,7 @@ Do not use long tables for 2-option comparisons. Use prose.
 If the research is reusable, save to `outputs/`:
 
 ```bash
-cp ~/tmp/research-<topic>.md ~/Projects/ai-os/outputs/$(date +%Y-%m-%d)-<slug>.md
+cp ~/tmp/research-<topic>.md $AI_OS_ROOT/outputs/$(date +%Y-%m-%d)-<slug>.md
 ```
 
 ### 10. Update context (write file)
