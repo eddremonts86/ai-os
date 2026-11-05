@@ -468,7 +468,7 @@ The pattern that handles all of this cleanly:
    `migrate-prod` then `seed-prod` before `exec`ing the server. Every
    cold start either bootstraps the DB (fresh) or no-ops (populated).
    `post_deployment_command` is left for optional work only (see
-   `coolify-env-sync-and-postdeploy`).
+   `coolify-deploy`, references/env-sync-and-postdeploy.md).
 
 ### Per-script production guard template
 

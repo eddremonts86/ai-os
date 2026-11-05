@@ -36,7 +36,7 @@ Depending on the type of work:
 | New feature (with Spec)    | `workflows/project_start.md` (AI-OS)                                              |
 | New feature (without Spec) | `workflows/project_start.md` first, then this                                     |
 | Bug                        | → Load skill `systematic-debugging`                                               |
-| Refactor                   | → Load skill `code-simplification` (if available, else `code-review-and-quality`) |
+| Refactor                   | → Load skill `patterns-and-refactoring`                                           |
 | Tests                      | → Load skill `test-driven-development`                                            |
 | New skill                  | → Load skill `writing-skills`                                                     |
 | Architecture change        | → Load skill `diagram-design` for the before/after figure in the Spec             |

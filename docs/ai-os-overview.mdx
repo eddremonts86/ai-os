@@ -419,14 +419,11 @@ MCP servers in `ai-config/mcp/*.yaml` are auto-discovered by
 |---|---|---|
 | `agent-browser` | `npx -y @playwright/mcp` | Browser automation (Playwright) |
 | `chrome` | `npx -y chrome-devtools-mcp` | Chrome DevTools Protocol |
-| `codebase-memory-mcp` | `/Users/edd/.local/bin/codebase-memory-mcp` | AST knowledge graph of code |
-| `filesystem` | `npx -y @modelcontextprotocol/server-filesystem` | Local file ops |
-| `graphiti` | `uv run --with graphiti-core[falkordb] --python 3.11 python -m graphiti_mcp_server` | Temporal knowledge graph → FalkorDB |
-| `grepai` | `/Users/edd/.local/bin/grepai mcp` | Semantic code search |
-| `memory` | `npx -y @modelcontextprotocol/server-memory` | Built-in memory store |
+| `codebase-memory-mcp` | `~/.local/bin/codebase-memory-mcp` | AST knowledge graph of code |
+| `graphiti` | HTTP `http://127.0.0.1:8021/mcp/` (`ia-os-graphiti-mcp` container) | Temporal knowledge graph → FalkorDB |
+| `grepai` | `~/.local/bin/grepai mcp-serve` | Semantic code search |
 | `pdf` | Python-based PDF tooling | Read, fill, extract from PDFs |
-| `sequential-thinking` | `npx -y @modelcontextprotocol/server-sequential-thinking` | Multi-step reasoning |
-| `time` | `npx -y @modelcontextprotocol/server-time` | Time utilities |
+| `time` | `uvx mcp-server-time==2026.11.4` | Time utilities |
 
 ### 6.2 Generating the config
 

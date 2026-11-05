@@ -270,9 +270,9 @@ Each app must have:
 | Sync env | `coolify-deploy`, `env-config` |
 | Configure containers | `containers-architecture` |
 | OpenClaw/OpenCode/OpenDesign | `containers-architecture`, `open-design-integration` |
-| Build a TanStack app | `tanstack-start-coolify-deploy`, `tanstack-template/tt-*` |
+| Build a TanStack app | `coolify-deploy` (references/tanstack-start.md), `tanstack-template/tt-*` |
 | Create a new app | `new-app-setup`, `create-app` |
 | Build feature | `wave/wave-feature-builder`, `wave/wave-form-builder` |
 | Security audit | `pnpm audit`, `security-and-hardening`, `owasp-security` |
-| Code review | `code-review-and-quality`, `code-simplification` |
+| Code review | `code-review-and-quality`, `patterns-and-refactoring` |
 | Release | `release-it`, `shipping-and-launch` |

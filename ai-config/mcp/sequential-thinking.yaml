@@ -5,4 +5,6 @@ command: npx
 args:
   - -y
   - "@modelcontextprotocol/server-sequential-thinking@2026.7.4"
-enabled: true
+# Disabled 2026-11-05: no recorded use; the CLIs reason natively, and each server adds tool schemas to every session.
+# setup/sync-ide-mcp-servers.py removes disabled servers from every client config.
+enabled: false

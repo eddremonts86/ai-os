@@ -1,6 +1,6 @@
 ---
 name: optimize-mobile
-description: End-to-end mobile audit and repair of an existing web app — every route, every flow, measured at 320/375/430/768 and verified in real iOS Safari (simulator), then fixed with small committed diffs. Use when asked to "/optimize-mobile", "optimiza la app para móvil", "audita la app en mobile", "revisa todo en el móvil", "make this work on phones", "fix the mobile view", or when an app's phone experience needs a full pass (layout, touch targets, iOS input zoom, safe areas, sticky hover, flows, states). For shipped products, not greenfield design.
+description: "End-to-end mobile audit and repair of an existing web app: every route and flow at 320/375/430/768, verified in iOS Safari (simulator), fixed with small commits. Use for \"/optimize-mobile\", \"optimiza la app para móvil\", \"audita la app en mobile\", \"make this work on phones\", \"fix the mobile view\". For shipped products, not greenfield."
 argument-hint: 'Optional: a route, section or component to scope the pass (defaults to the whole app, including signed-in and admin areas)'
 user-invocable: true
 ---

@@ -1,6 +1,6 @@
 ---
 name: typescript-advanced
-description: Advanced TypeScript — generics, conditional types, satisfies, template literals, utility types. For projects with `strict: true` that want to squeeze the type system.
+description: "Advanced TypeScript — generics, conditional types, satisfies, template literals, utility types. For projects with `strict: true` that want to squeeze the type system."
 license: MIT
 ---
 

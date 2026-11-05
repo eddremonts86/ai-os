@@ -258,7 +258,11 @@ if [ -d "$HOME_DIR/.minimax/agents" ]; then
     mm_total=$((mm_total+1))
     grep -q "AI-OS operating context" "$agent_dir/agent.md" 2>/dev/null && mm_ok=$((mm_ok+1))
   done
-  if [ "$mm_ok" -eq "$mm_total" ] && [ "$mm_total" -gt 0 ]; then
+  # 0 agents = mavis has not seeded any yet (only its hidden .builtin): nothing
+  # to overlay, so it is neither a pass nor a miss.
+  if [ "$mm_total" -eq 0 ]; then
+    log "  ~/.minimax: no agents yet (skip — overlay is applied once mavis seeds agent.md)"
+  elif [ "$mm_ok" -eq "$mm_total" ]; then
     opt_ok "  ~/.minimax: AI-OS overlay in $mm_ok/$mm_total agent.md"
   else
     opt_miss "  ~/.minimax: overlay only in $mm_ok/$mm_total agent.md (run setup/install-mac.sh)"
@@ -336,15 +340,32 @@ fi
 # return 141 even though grep found a match, so `if cmd | grep -q` would take
 # the else branch. Temporarily disable pipefail so the pipeline returns grep's
 # status.
-for pony_check in "claude:claude plugin list:claude" "codex:codex plugin list:codex" "hermes:hermes plugins list:hermes" "gemini:gemini extensions list:gemini"; do
-  IFS=':' read -r p_id p_cmd p_bin <<< "$pony_check"
+# Claude Code: a `claude` on PATH can be a broken pnpm shim ("claude native
+# binary not installed"), so resolve a binary that answers --version — same
+# order as install-mac.sh's resolve_claude — and report the shim on its own.
+claude_bin=""
+for c in "$HOME_DIR/.local/bin/claude" "$HOME_DIR/.claude/local/claude" /opt/homebrew/bin/claude "$(command -v claude 2>/dev/null || true)"; do
+  [ -n "$c" ] && [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && { claude_bin="$c"; break; }
+done
+if [ -n "$claude_bin" ]; then
+  opt_ok "  Claude Code CLI works: $claude_bin"
+else
+  for c in "$HOME_DIR/Library/Application Support/Claude/claude-code/"*/*/claude.app/Contents/MacOS/claude; do
+    [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && claude_bin="$c"
+  done
+  opt_miss "  no working Claude Code CLI on PATH ($(command -v claude 2>/dev/null || echo none) fails --version) — install the native build: curl -fsSL https://claude.ai/install.sh | bash"
+fi
+for pony_check in "claude:plugin list:claude" "codex:plugin list:codex" "hermes:plugins list:hermes" "gemini:extensions list:gemini"; do
+  IFS=':' read -r p_id p_args p_bin <<< "$pony_check"
+  [ "$p_id" = "claude" ] && p_bin="${claude_bin:-claude}"
   if ! command -v "$p_bin" >/dev/null 2>&1; then
     opt_miss "  [$p_id] $p_bin not in PATH — skipping ponytail plugin check"
     continue
   fi
   set +e
   set +o pipefail
-  $p_cmd 2>&1 | grep -qi "ponytail"
+  # shellcheck disable=SC2086 # p_args is a fixed word list
+  "$p_bin" $p_args 2>&1 | grep -qi "ponytail"
   grep_status=$?
   set -e
   set -o pipefail

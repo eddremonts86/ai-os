@@ -11,7 +11,7 @@
 [![Skills: dynamic](https://img.shields.io/badge/skills-dynamic-green.svg)](ai-config/skills/)
 [![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
 [![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
-[![Commands: 6 (action/full/gen-html/saas-review/sass-review/fix-ui-ux)](https://img.shields.io/badge/commands-6-orange.svg)](ai-config/commands/)
+[![Commands: 5 (action/full/gen-html/saas-review/fix-ui-ux)](https://img.shields.io/badge/commands-5-orange.svg)](ai-config/commands/)
 
 ---
 
@@ -257,9 +257,8 @@ ai-os/
 │   │   ├── full.md
 │   │   ├── gen-html.md
 │   │   ├── saas-review.md
-│   │   ├── sass-review.md
 │   │   └── fix-ui-ux.md
-│   └── mcp/                       #   10 declarative MCP servers (YAML, all enabled)
+│   └── mcp/                       #   10 declarative MCP servers (YAML, 7 enabled)
 │       ├── README.md
 │       ├── time.yaml
 │       ├── filesystem.yaml
@@ -358,8 +357,8 @@ What gets vendored:
 
 | Source                                                                                                  | Where it lives                                                                     | Count               |
 | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------- |
-| claude.tools (`humanizer`, `caveman`, `notebooklm-skill`, `frontend-design-alt`)                        | `ai-config/skills/`                                                                | 4 skills            |
-| gstack (`careful`, `context-save`, `context-restore`, `freeze`, `guard`, `spec`, `unfreeze`)            | `ai-config/skills/`                                                                | 7 skills            |
+| claude.tools (`humanizer`, `caveman`, `notebooklm-skill`; `frontend-design-alt` merged into `frontend-design`) | `ai-config/skills/`                                                                | 3 skills            |
+| gstack (`careful`, `context-save`, `context-restore`, `freeze`, `spec`, `unfreeze`; `guard` folded into `careful`) | `ai-config/skills/`                                                                | 6 skills            |
 | diagram-design (MIT, `cathrynlavery/diagram-design`) — re-skinned to the AI-OS brand                    | `ai-config/skills/diagram-design/`                                                 | 1 skill             |
 | patterns-and-refactoring (MIT, `christianpasinrey/refactoring.guru-skill`) — trigger narrowed to refactor/review | `ai-config/skills/patterns-and-refactoring/` | 1 skill |
 | OpenAI Codex plugin for Claude Code                                                                     | `vendor/codex-plugin-cc/` (plugin) + 3 internal skills propagated to the core CLIs | 1 plugin + 3 skills |
@@ -378,10 +377,10 @@ Five combo workflows, available as literal slash commands everywhere, not just a
 
 | Command        | Runs                                                                                          |
 | -------------- | ---------------------------------------------------------------------------------------------- |
-| `/action`      | spec → plan → build → review                                                                     |
+| `/action`      | spec → plan → build → review (alias: `full` skill in review mode)                                |
 | `/full`        | spec → plan → build → review → code-simplify → ship                                              |
 | `/gen-html`    | generate a rich, responsive, self-contained HTML doc from a description or `.md`/`.mdx` file |
-| `/saas-review` | enumerate every route, audit against expensive-UI criteria, apply approved fixes with verification (alias `/sass-review`) |
+| `/saas-review` | enumerate every route, audit against expensive-UI criteria, apply approved fixes with verification |
 | `/fix-ui-ux`   | full Impeccable remediation pass: context + audit + critique, targeted repairs, then polish   |
 
 Distribution, by client:
@@ -488,22 +487,21 @@ If any is missing, run [`prompts/setup/03-required-skills.md`](prompts/setup/03-
 
 ## MCP servers
 
-10 declarative servers in `ai-config/mcp/*.yaml`. Generated to `~/.hermes/config.yaml` at install time:
+10 declarative servers in `ai-config/mcp/*.yaml`, 7 enabled. `setup/generate-mcp-config.py` writes them to `~/.hermes/config.yaml` and `setup/sync-ide-mcp-servers.py` to Claude Code, Codex, Gemini and VS Code — adding, updating drifted entries and removing disabled ones:
 
 | Server                | Purpose                                                                            |
-| --------------------- | ------------------------------------------------------------------------------------ |
+| --------------------- | ---------------------------------------------------------------------------------- |
 | `time`                | Time/date/timezone utilities                                                       |
-| `filesystem`          | Read/write files outside cwd                                                       |
 | `pdf`                 | PDF reading, extraction, OCR                                                       |
-| `sequential-thinking` | Multi-step planning                                                                |
-| `memory`              | Persistent knowledge graph                                                         |
 | `chrome`              | Browser automation, screenshots                                                    |
 | `agent-browser`       | Vercel agent-browser (token-efficient @ref)                                        |
-| `codebase-memory-mcp` | Go-compiled semantic repository index (AST + embeddings)                          |
-| `grepai`              | AI-powered semantic code search                                                    |
-| `graphiti`            | Temporal knowledge-graph memory — **opt-in**, not started by `ai-os memory start` |
+| `codebase-memory-mcp` | AST knowledge graph of every indexed repo (reindexed 6×/day by `ai.os.reindex`)   |
+| `grepai`              | Semantic code search over Ollama embeddings                                        |
+| `graphiti`            | Temporal knowledge-graph memory on FalkorDB — started by `ai-os memory start`      |
 
-`graphiti` is verified working end-to-end (2026-07-30): a custom image (`ai-os/graphiti-mcp:minimax-standalone`) is built locally from `getzep/graphiti` source + this repo's patches (`memory/graphiti/Dockerfile.standalone.minimal`, `memory/graphiti/patches/strip_think_tags.py`) because MiniMax's OpenAI-compatible endpoint needs `<think>`-tag stripping the pinned upstream image doesn't do. `add_memory`/`search_nodes`/`search_memory_facts`/`get_episodes` all confirmed against a live FalkorDB graph with a real `MINIMAX_API_KEY`; only the hardcoded reranker inside `search` still wants a real `OPENAI_API_KEY`. See `ai-config/mcp/graphiti.yaml` and the `ai-os-memory` skill.
+Disabled 2026-11-05 (`enabled: false`, reasons in each YAML): `memory` (graphiti is the single graph memory), `filesystem` (duplicated the CLIs' native file tools), `sequential-thinking` (unused).
+
+`graphiti` extracts entities with the host's native Ollama (`GRAPHITI_LLM_*` in `memory/docker-compose.yml`), so it needs no API key; verified end-to-end 2026-11-05. When to read and write it: `rules/always_do.md` "Use the memory stack". See `ai-config/mcp/graphiti.yaml` and the `ai-os-memory` skill.
 
 To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/generate-mcp-config.py`, commit.
 

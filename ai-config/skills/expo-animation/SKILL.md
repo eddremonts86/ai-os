@@ -1,6 +1,6 @@
 ---
 name: expo-animation
-description: Framework (OSS). Build animations in React Native and Expo, making the decisions in the order that determines whether they feel right — should it animate, which thread it runs on, which properties, spring or timing, how the gesture hands off, how it degrades. Writes the implementation with Reanimated, Gesture Handler, Expo Router and expo-haptics. Use when animating anything in an Expo app, adding gestures, sheets, screen transitions, press feedback or haptics, or fixing motion that stutters on device. For web animation use `animate`.
+description: "Build animations in React Native and Expo with Reanimated, Gesture Handler, Expo Router and expo-haptics, deciding in order: should it animate, which thread, which properties, spring or timing, gesture hand-off. Use when animating anything in an Expo app, adding gestures, sheets, screen transitions, press feedback or haptics, or fixing stutter."
 version: 1.0.0
 license: MIT
 ---

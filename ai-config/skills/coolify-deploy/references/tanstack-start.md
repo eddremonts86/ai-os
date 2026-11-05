@@ -1,10 +1,7 @@
----
-name: tanstack-start-coolify-deploy
-description: Deploy TanStack Start apps (Vite plugin with SSR) to Coolify. Covers server.prod.mjs wrapper, multi-stage Dockerfile with target=prod, fqdn bug fix, isSsrBuild server-only imports. Applies to any TanStack Start app deployed to Coolify or any Docker host.
-license: Internal
----
+# TanStack Start on Coolify
 
-# TanStack Start → Coolify Deploy
+TanStack-Start-specific detail for the `coolify-deploy` skill. Generic Coolify setup (app
+creation, env vars, domains, deploy trigger, migrations in the entrypoint) is in `../SKILL.md`.
 
 ## The problem
 
@@ -178,8 +175,6 @@ COPY --from=builder /app/drizzle ./drizzle
 COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
 COPY --from=builder /app/scripts ./scripts
 
-RUN touch .env  # stub for tsx --env-file
-
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOST=0.0.0.0
@@ -188,23 +183,9 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
   CMD node -e "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1))"
 
-CMD ["node", "server.prod.mjs"]
-```
-
-## package.json scripts
-
-```json
-{
-  "scripts": {
-    "dev": "vinxi dev",
-    "build": "vinxi build",
-    "start": "vinxi start",
-    "serve:prod": "node server.prod.mjs",
-    "docker:build": "docker build --target prod -t <name> .",
-    "docker:run": "docker run --rm -p 3000:3000 --env-file .env <name>",
-    "coolify:deploy": "node scripts/coolify/sync-env.mjs && curl -X POST ..."
-  }
-}
+# Run migrations first, then exec the server (see "migrations in the entrypoint" in ../SKILL.md).
+# Read config from process.env; do not bake a stub .env for tsx --env-file.
+CMD ["sh", "scripts/docker-app-entrypoint.sh"]
 ```
 
 ## Server-only imports (CRITICAL)
@@ -334,80 +315,6 @@ self-host the fonts:
 Verify: 0 CSP violations in the console, and
 `curl -sI https://app.example.com/fonts/inter-latin-wght-normal.woff2` → `200`
 `font/woff2`.
-
-## Coolify setup
-
-### 1. Create app via API
-
-```bash
-# Get project + server UUIDs
-curl -fsS http://<server-ip>:8000/api/v1/projects \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-  | jq '.[] | {uuid, name}'
-
-curl -fsS http://<server-ip>:8000/api/v1/servers \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-  | jq '.[] | {uuid, name}'
-
-# Create Postgres DB
-curl -X POST http://<server-ip>:8000/api/v1/databases/postgresql \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "server_uuid": "<server-uuid>",
-    "project_uuid": "<project-uuid>",
-    "environment_name": "production",
-    "name": "my-app-db",
-    "postgres_user": "my_app",
-    "postgres_password": "<openssl rand -hex 16>",
-    "postgres_db": "my_app"
-  }'
-
-# Create application
-curl -X POST http://<server-ip>:8000/api/v1/applications/public \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "server_uuid": "<server-uuid>",
-    "project_uuid": "<project-uuid>",
-    "environment_name": "production",
-    "git_repository": "https://github.com/user/my-app",
-    "git_branch": "main",
-    "build_pack": "dockerfile",
-    "dockerfile_target_build": "prod",
-    "fqdn": "https://my-app.example.com"
-  }'
-```
-
-### 2. Sync env vars
-
-```bash
-node scripts/coolify/sync-env.mjs --app my-app
-```
-
-Critical env vars:
-
-```bash
-DATABASE_URL=postgresql://my_app:<password>@my-app-db:5432/my_app
-BETTER_AUTH_URL=https://my-app.example.com
-NODE_ENV=production
-PORT=3000
-```
-
-### 3. Set post-deploy command
-
-```bash
-node scripts/coolify/set-post-deploy.mjs --app my-app \
-  --command "pnpm db:migrate && (pnpm db:seed:admin || true)"
-```
-
-### 4. Trigger deploy
-
-```bash
-APP_UUID=<from-step-1>
-curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
-```
 
 ## Gotcha: `h-screen + overflow-y-auto` on the layout silently breaks the whole app
 
@@ -546,132 +453,9 @@ paint), but be careful with two things:
    50 in the loader and load more via a server function as the user
    scrolls.
 
-## fqdn bug fix (Coolify caching Traefik labels)
-
-**Symptom:** you change `fqdn` in the app dashboard but Traefik still routes to the old container.
-
-**Cause:** Coolify caches Traefik labels in `custom_labels` (JSON in the DB). Changing fqdn in the UI does not update `custom_labels`.
-
-**Solution:**
-
-```bash
-# SSH into Coolify server
-ssh root@<server-ip>
-
-# List apps with custom_labels
-docker exec coolify php artisan tinker --execute='foreach (App\Models\Application::all() as $a) { echo $a->name . ": " . json_encode($a->custom_labels) . "\n"; }'
-
-# Clear custom_labels for a specific app
-docker exec coolify php artisan tinker --execute='
-$a = App\Models\Application::where("name", "my-app")->first();
-$a->custom_labels = null;
-$a->save();
-echo "Cleared\n";
-'
-
-# Redeploy (this regenerates Traefik labels correctly)
-curl -X POST "http://<server-ip>:8000/api/v1/deploy?uuid=${APP_UUID}" \
-  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
-```
-
-Alternative: delete the app and recreate it with the correct fqdn.
-
-## Token generation (if createToken fails)
-
-**Symptom:** `POST /api/v1/tokens` returns 500 with "team_id cannot be null".
-
-**Solution:** insert directly via tinker:
-
-```bash
-docker exec coolify php artisan tinker --execute='
-$user = App\Models\User::first();
-$token = Str::random(40);
-$hashedToken = hash("sha256", $token);
-DB::table("personal_access_tokens")->insert([
-  "tokenable_type" => "App\\Models\\User",
-  "tokenable_id" => $user->id,
-  "name" => "deploy-bot",
-  "token" => $hashedToken,
-  "abilities" => json_encode(["*"]),
-  "created_at" => now(),
-  "updated_at" => now(),
-]);
-echo "Token: <user_id>|<token>\n";
-'
-```
-
-Format: `<user_id>|<plain_token>` (not just `<plain_token>`).
-
-## DNS + port setup
-
-```bash
-# Wildcard DNS
-*.example.com  A  <server-ip>
-@              A  <server-ip>     # apex domain
-
-# Port 8000 (Coolify UI/API) open in firewall
-sudo ufw allow 8000/tcp
-```
-
-Coolify uses:
-
-- `:80` (HTTP → redirect)
-- `:443` (HTTPS)
-- `:8000` (dashboard + API)
-
-## Post-deploy verification
-
-```bash
-# 1. Health
-curl -fsS https://my-app.example.com/api/health
-# → {"status":"ok"}
-
-# 2. Logs
-ssh root@<server-ip> "docker logs --tail 100 my-app-app-1"
-
-# 3. Container status
-ssh root@<server-ip> "docker ps | grep my-app"
-
-# 4. Traefik labels correct
-ssh root@<server-ip> "docker inspect my-app-app-1 | jq '.[0].Config.Labels' | grep traefik"
-
-# 5. DB migrations applied
-docker exec my-app-app-1 pnpm db:migrate:status
-```
-
-## Common errors
-
-1. ❌ Running `dist/server/server.js` directly → exits immediately, port not listening → use the `server.prod.mjs` wrapper.
-2. ❌ Server-only imports without subpath → `process is not defined` in browser.
-3. ❌ `isSsrBuild` flag not set by Vite plugin → client bundle includes server code.
-4. ❌ `dockerfile_target_build` not specified in Coolify → build uses the last stage (= may not be the right one).
-5. ❌ `fqdn` with `http://` instead of `https://` → Let's Encrypt cert fails.
-6. ❌ DNS not propagated → cert issuance timeout.
-7. ❌ Stale `custom_labels` in Coolify → Traefik doesn't update.
-8. ❌ Non-idempotent post-deploy command → second deploy breaks DB.
-9. ❌ `BETTER_AUTH_URL` pointing to localhost → cookies not set on prod domain.
-10. ❌ Port 8000 closed in firewall → dashboard/API inaccessible.
-11. ❌ Layout uses `h-screen` + `overflow-y-auto` on `<main>` for ALL routes → non-split-view pages (home, about, sign-in) silently lose their scroll, `framer-motion` `whileInView` never fires, animations broken, mobile users see a frozen page. Only apply the split-view shell to routes that need it (e.g. `/explore`).
-12. ❌ Trying to read a server-fn response as plain JSON (`response.json()`) → it's devalue-encoded (`{t:9, p:{k,v}}`), you get back garbage. Use `useServerFn` in React or `parse()` from `devalue` in tests / debugging.
-13. ❌ Returning 25k rows from a route loader "for SEO" → ships them all in the initial HTML payload. Paginate the loader, stream the rest.
-14. ❌ Returning a `user.passwordHash` (or any secret) from a route loader → it ends up in the rendered HTML on first paint. Strip sensitive fields server-side before returning.
-15. ❌ The client and SSR build passes content-hash `globals.css` differently on Linux → SSR `<link>` 404s → **unstyled site after deploy** (recurs every deploy). Pin CSS to a stable unhashed name in `vite.config.ts` `assetFileNames`, and don't `immutable`-cache unhashed assets in `server.prod.mjs`.
-16. ❌ A native `.node` addon (`@resvg/resvg-js`, `sharp`, `bcrypt`) reachable from the client dep graph → Vite dep optimizer crashes at build. Add it to `optimizeDeps.exclude` + `ssr.external`.
-17. ❌ CSP `style-src 'self'` with a Google Fonts `<link>` → fonts blocked, console CSP violations, system-font fallback. Self-host the `.woff2` + `@font-face`, or widen the CSP (privacy tradeoff).
-18. ❌ No `.dockerignore` when the Dockerfile does `COPY . .` → the host's `node_modules` (macOS-native binaries) leak into the Linux image → runtime "invalid ELF header" / wrong-arch crashes. Add `.dockerignore` (`node_modules`, `.git`, `dist`, `.env`, `docs`, `plans`) even with a multi-stage build.
-
-## Resources
-
-- [TanStack Start docs](https://tanstack.com/start)
-- [Coolify API](https://coolify.io/docs/api)
-- [Coolify fqdn bug discussion](https://github.com/coollabsio/coolify/issues)
-- Related skill: `coolify-deploy` (overview)
-- Related skill: `coolify-env-sync-and-postdeploy` (env sync + the idempotent DB deploy orchestrator)
-- Related skill: `pnpm-docker-deploy` (lockfile + build scripts)
-- Related skill: `prod-deploy-verification` (pre-flight checks)
 ## Gotcha: an eagerly-constructed Postgres client kills hydration silently
 
-Learned in `builderhunt` and worth more than any other item on this page, because the symptom points
+Learned in `builderhunt` and worth more than any other item in this reference, because the symptom points
 nowhere near the cause.
 
 Constructing the DB client at **module scope**…
@@ -710,7 +494,7 @@ function lazyPostgresDb(role: PoolRole, resolveUrl: () => string): PostgresJsDat
 ```
 
 See `builderhunt/src/shared/lib/db/client.ts`, which carries the full account in a comment. Related:
-the "server-only imports" section above — the explicit-subpath rule addresses the same underlying
+the "Server-only imports" section above — the explicit-subpath rule addresses the same underlying
 problem from the import side, and both are needed.
 
 ## Database roles: created without passwords, provisioned out of band
@@ -725,5 +509,77 @@ CREATE ROLE builderhunt_app   LOGIN;   -- no password
 Deployment automation provisions and rotates the LOGIN passwords afterwards, so a migration file in
 git never contains one and the web service never holds the owner identity. The consequence to
 remember: **`drizzle-kit migrate` alone leaves the app unable to authenticate.** Run the orchestrator
-(`pnpm deploy:db`) as the post-deployment command, never bare `drizzle-kit migrate` — builderhunt's
+(`pnpm deploy:db`, see [env-sync-and-postdeploy.md](env-sync-and-postdeploy.md)) from the
+container entrypoint, never bare `drizzle-kit migrate` — builderhunt's
 runbook records four failed deploys learning that.
+
+## Coolify server-side fixes (found while deploying TanStack Start, not specific to it)
+
+### fqdn bug fix (Coolify caching Traefik labels)
+
+**Symptom:** you change the domain in the app dashboard (or via `domains` on PATCH) but Traefik still routes to the old container.
+
+**Cause:** Coolify caches Traefik labels in `custom_labels` (JSON in the DB). Changing fqdn in the UI does not update `custom_labels`.
+
+**Solution:**
+
+```bash
+# SSH into Coolify server
+ssh root@<server-ip>
+
+# List apps with custom_labels
+docker exec coolify php artisan tinker --execute='foreach (App\Models\Application::all() as $a) { echo $a->name . ": " . json_encode($a->custom_labels) . "\n"; }'
+
+# Clear custom_labels for a specific app
+docker exec coolify php artisan tinker --execute='
+$a = App\Models\Application::where("name", "my-app")->first();
+$a->custom_labels = null;
+$a->save();
+echo "Cleared\n";
+'
+
+# Redeploy (this regenerates Traefik labels correctly)
+curl -X POST "$COOLIFY_API_URL/api/v1/applications/${APP_UUID}/start" \
+  -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"
+```
+
+Alternative: delete the app and recreate it with the correct fqdn.
+
+### Token generation (if createToken fails)
+
+**Symptom:** `POST /api/v1/tokens` returns 500 with "team_id cannot be null".
+
+**Solution:** insert directly via tinker:
+
+```bash
+docker exec coolify php artisan tinker --execute='
+$user = App\Models\User::first();
+$token = Str::random(40);
+$hashedToken = hash("sha256", $token);
+DB::table("personal_access_tokens")->insert([
+  "tokenable_type" => "App\\Models\\User",
+  "tokenable_id" => $user->id,
+  "name" => "deploy-bot",
+  "token" => $hashedToken,
+  "abilities" => json_encode(["*"]),
+  "created_at" => now(),
+  "updated_at" => now(),
+]);
+echo "Token: <user_id>|<token>\n";
+'
+```
+
+Format: `<user_id>|<plain_token>` (not just `<plain_token>`).
+
+## Common errors
+
+1. ❌ Running `dist/server/server.js` directly → exits immediately, port not listening → use the `server.prod.mjs` wrapper.
+2. ❌ Server-only imports without subpath → `process is not defined` in browser.
+3. ❌ `isSsrBuild` flag not set by Vite plugin → client bundle includes server code.
+4. ❌ Trying to read a server-fn response as plain JSON (`response.json()`) → it's devalue-encoded (`{t:9, p:{k,v}}`), you get back garbage. Use `useServerFn` in React or `parse()` from `devalue` in tests / debugging.
+5. ❌ Returning 25k rows from a route loader "for SEO" → ships them all in the initial HTML payload. Paginate the loader, stream the rest.
+6. ❌ Returning a `user.passwordHash` (or any secret) from a route loader → it ends up in the rendered HTML on first paint. Strip sensitive fields server-side before returning.
+7. ❌ The client and SSR build passes content-hash `globals.css` differently on Linux → SSR `<link>` 404s → **unstyled site after deploy** (recurs every deploy). Pin CSS to a stable unhashed name in `vite.config.ts` `assetFileNames`, and don't `immutable`-cache unhashed assets in `server.prod.mjs`.
+8. ❌ A native `.node` addon (`@resvg/resvg-js`, `sharp`, `bcrypt`) reachable from the client dep graph → Vite dep optimizer crashes at build. Add it to `optimizeDeps.exclude` + `ssr.external`.
+9. ❌ CSP `style-src 'self'` with a Google Fonts `<link>` → fonts blocked, console CSP violations, system-font fallback. Self-host the `.woff2` + `@font-face`, or widen the CSP (privacy tradeoff).
+10. ❌ No `.dockerignore` when the Dockerfile does `COPY . .` → the host's `node_modules` (macOS-native binaries) leak into the Linux image → runtime "invalid ELF header" / wrong-arch crashes. Add `.dockerignore` (`node_modules`, `.git`, `dist`, `.env`, `docs`, `plans`) even with a multi-stage build.
