@@ -24,8 +24,13 @@ fail() { echo "FAIL"; printf '%s\n' "$1" | sed 's/^/           /' | head -15; fa
 # (guard-main.yml checks the PR side; branch protection needs a paid plan, so this
 # hook is the push side). Hotfix escape hatch: AIOS_ALLOW_MAIN_PUSH=1 git push ...
 ZERO=0000000000000000000000000000000000000000
+ORIG="$(git rev-parse --show-toplevel)"   # the real checkout: only it has the untracked .env
 sha=""
-while read -r _local_ref local_sha remote_ref _remote_sha; do
+ranges=()
+while read -r _local_ref local_sha remote_ref remote_sha; do
+  if [ "$local_sha" != "$ZERO" ]; then
+    if [ "$remote_sha" = "$ZERO" ]; then ranges+=("$local_sha --not --remotes"); else ranges+=("$remote_sha..$local_sha"); fi
+  fi
   if [ "$remote_ref" = "refs/heads/main" ] && [ "${AIOS_ALLOW_MAIN_PUSH:-0}" != "1" ]; then
     echo "[pre-push] blocked: direct push to main. Push to dev (or a feature branch) and open a PR:"
     echo "           git push origin HEAD:dev && gh pr create --base main --head dev"
@@ -105,6 +110,15 @@ fi
 
 step "published numbers (ai-os stats)"
 out=$(python3 setup/ai-os-stats.py --check 2>&1) && pass || fail "$out"
+
+step "no .env value in what you push"
+out=""
+for r in ${ranges[@]+"${ranges[@]}"}; do
+  # shellcheck disable=SC2086  # $r is "A..B" or "SHA --not --remotes": word splitting is intended
+  e=$(cd "$ORIG" && python3 "$ORIG/setup/ai-os-secrets.py" check-push $r 2>&1) || out+="$e"$'\n'
+done
+[ -z "$out" ] && pass || fail "a value from dev-env/env-config/.env is in the commits being pushed (names only):
+$out"
 
 step "setup unit tests"
 out=$("$PY" -m unittest discover -s setup/tests 2>&1) && pass "$(grep -oE 'Ran [0-9]+ tests' <<<"$out")" || fail "$(tail -15 <<<"$out")"
