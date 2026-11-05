@@ -1,0 +1,316 @@
+<title>KM Rights Alignment</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow reading column; each topic = today -> picture -> proposal -> decision. */
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --fg: #1b2330;
+  --muted: #5b6676;
+  --line: #d5dae2;
+  --accent: #0b6e6e;
+  --accent-soft: #e0f1f0;
+  --warn: #b4531a;
+  --warn-soft: #fbeee3;
+  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161c; --surface: #1a2028; --fg: #e6eaf0; --muted: #9aa5b4; --line: #2d3642;
+    --accent: #5cc4c0; --accent-soft: #16312f; --warn: #e69a63; --warn-soft: #33241a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161c; --surface: #1a2028; --fg: #e6eaf0; --muted: #9aa5b4; --line: #2d3642;
+  --accent: #5cc4c0; --accent-soft: #16312f; --warn: #e69a63; --warn-soft: #33241a;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.5;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+h1 { font-size: 1.7rem; line-height: 1.2; margin: 0 0 6px; text-wrap: balance; }
+h2 { font-size: 1.2rem; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.lead { color: var(--muted); max-width: 62ch; }
+.agenda { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.agenda div { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.agenda div + div { border-left: 1px solid var(--line); }
+.agenda b { font-size: .95rem; }
+.agenda span { font-size: .8rem; color: var(--muted); }
+.agenda .min { font-family: var(--font-mono); color: var(--accent); }
+@media (max-width: 560px) {
+  .agenda { grid-template-columns: 1fr; }
+  .agenda div + div { border-left: 0; border-top: 1px solid var(--line); }
+}
+section { display: flex; flex-direction: column; gap: 14px; }
+.head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.min { font-family: var(--font-mono); font-size: .8rem; color: var(--accent); }
+.today { color: var(--muted); max-width: 66ch; }
+figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; overflow-x: auto; }
+figure svg { display: block; width: 100%; min-width: 560px; height: auto; color: var(--muted); }
+figcaption { font-size: .82rem; color: var(--muted); margin-top: 8px; max-width: 70ch; }
+.cols { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+.box { padding: 14px 16px; border-radius: 6px; min-width: 0; }
+.box h3 { margin: 0 0 6px; font-size: .75rem; font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.propose { background: var(--accent-soft); border: 1px solid var(--accent); }
+.propose h3 { color: var(--accent); }
+.decide { background: var(--surface); border: 1px solid var(--line); }
+.decide h3 { color: var(--warn); }
+.box ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; }
+/* SVG parts */
+.s-box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.s-new { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.s-warn { fill: var(--warn-soft); stroke: var(--warn); stroke-width: 1.5; }
+.s-gap { fill: none; stroke: var(--warn); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.s-gap-new { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.s-ln { stroke: currentColor; stroke-width: 1.4; fill: none; }
+.s-t { fill: var(--fg); font: 13px var(--font-body); }
+.s-b { fill: var(--fg); font: 600 13px var(--font-body); }
+.s-m { fill: var(--muted); font: 11.5px var(--font-body); }
+.s-a { fill: var(--accent); font: 600 13px var(--font-body); }
+.s-w { fill: var(--warn); font: 600 13px var(--font-body); }
+.s-h { fill: var(--muted); font: 500 11px var(--font-mono); letter-spacing: .06em; }
+.s-on { fill: var(--accent); }
+.s-off { fill: var(--line); }
+.s-knob { fill: var(--surface); }
+/* Technical appendix: quieter than the meeting part, set off by a rule and a banner. */
+.tech { border-top: 2px solid var(--line); padding-top: 28px; display: flex; flex-direction: column; gap: 28px; }
+.banner { background: var(--warn-soft); border: 1px solid var(--warn); border-radius: 6px; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; }
+.banner b { color: var(--warn); }
+.tech h3 { font-size: 1.05rem; margin: 0; }
+.tech section { gap: 10px; }
+.tech ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; max-width: 74ch; }
+.tech li b { font-weight: 600; }
+code { font-family: var(--font-mono); font-size: .82em; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; overflow-wrap: anywhere; }
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">Kontrakt Manager · rights step</p>
+    <h1>Three points to settle in one meeting</h1>
+    <p class="lead">Each point shows how KM works today, what we propose, and the one thing we need decided. 30 minutes.</p>
+  </header>
+
+  <div class="agenda" role="list">
+    <div role="listitem"><span class="min">10 min</span><b>1 · The split</b><span>Co-authors and heirs</span></div>
+    <div role="listitem"><span class="min">10 min</span><b>2 · Left to distribute</b><span>The 100 % rule</span></div>
+    <div role="listitem"><span class="min">10 min</span><b>3 · AI rights</b><span>Small or large</span></div>
+  </div>
+
+  <section aria-labelledby="t1">
+    <div class="head"><h2 id="t1">1 · The split: co-authors and heirs</h2><span class="min">Thomas, Elaine</span></div>
+    <p class="today"><b>Today:</b> step 4 handles two different things together, before signing: splitting a share between co-authors, and a deceased author whose share goes to heirs.</p>
+    <figure>
+      <svg viewBox="0 0 760 230" role="img" aria-label="Today the deceased and heirs step sits before signing; in the proposal it moves to after signing">
+        <defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+        <text class="s-h" x="0" y="14">TODAY</text>
+        <rect class="s-box" x="0" y="26" width="220" height="60" rx="6"/>
+        <text class="s-t" x="110" y="52" text-anchor="middle">Create</text>
+        <text class="s-m" x="110" y="70" text-anchor="middle">co-authors + shares</text>
+        <line class="s-ln" x1="220" y1="56" x2="270" y2="56" marker-end="url(#ar1)"/>
+        <rect class="s-warn" x="272" y="26" width="220" height="60" rx="6"/>
+        <text class="s-t" x="382" y="52" text-anchor="middle">Mark deceased</text>
+        <text class="s-m" x="382" y="70" text-anchor="middle">add heirs, shares must match</text>
+        <line class="s-ln" x1="492" y1="56" x2="542" y2="56" marker-end="url(#ar1)"/>
+        <rect class="s-box" x="544" y="26" width="216" height="60" rx="6"/>
+        <text class="s-t" x="652" y="61" text-anchor="middle">Sign</text>
+
+        <text class="s-h" x="0" y="134">PROPOSAL</text>
+        <rect class="s-new" x="0" y="146" width="220" height="60" rx="6"/>
+        <text class="s-b" x="110" y="172" text-anchor="middle">Create</text>
+        <text class="s-m" x="110" y="190" text-anchor="middle">co-authors, "Split share"</text>
+        <line class="s-ln" x1="220" y1="176" x2="270" y2="176" marker-end="url(#ar1)"/>
+        <rect class="s-box" x="272" y="146" width="220" height="60" rx="6"/>
+        <text class="s-t" x="382" y="181" text-anchor="middle">Sign</text>
+        <line class="s-ln" x1="492" y1="176" x2="542" y2="176" marker-end="url(#ar1)"/>
+        <rect class="s-new" x="544" y="146" width="216" height="60" rx="6"/>
+        <text class="s-b" x="652" y="172" text-anchor="middle">After signing</text>
+        <text class="s-m" x="652" y="190" text-anchor="middle">heirs take a deceased share</text>
+      </svg>
+      <figcaption>The deceased and heirs step moves from the wizard to after signing. The wizard keeps only the split between co-authors.</figcaption>
+    </figure>
+    <div class="cols">
+      <div class="box propose"><h3>We propose</h3><ul>
+        <li>Offer "Split share" for co-authors at creation.</li>
+        <li>Remove "Deceased" and "Add heir" from the wizard. Heirs are set on the signed contract, when a share has to go to them.</li>
+      </ul></div>
+      <div class="box decide"><h3>Decide</h3><ul>
+        <li>Is the split between co-authors all the wizard needs?</li>
+        <li>After signing, who records the heirs: Schilling or KM?</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t2">
+    <div class="head"><h2 id="t2">2 · Left to distribute</h2><span class="min">Elaine, Thomas</span></div>
+    <p class="today"><b>Today:</b> each person's share is typed in, and the total is only checked afterwards. Approval needs each group at exactly 100 %.</p>
+    <figure>
+      <svg viewBox="0 0 760 250" role="img" aria-label="Today the total is checked after typing; in the proposal a left-to-distribute counter counts down to zero while typing">
+        <text class="s-h" x="0" y="14">TODAY</text>
+        <rect class="s-box" x="0" y="26" width="160" height="44" rx="4"/>
+        <text class="s-t" x="80" y="53" text-anchor="middle">Author A · 50 %</text>
+        <rect class="s-box" x="160" y="26" width="112" height="44" rx="4"/>
+        <text class="s-t" x="216" y="53" text-anchor="middle">B · 35 %</text>
+        <rect class="s-gap" x="272" y="26" width="48" height="44" rx="4"/>
+        <text class="s-w" x="296" y="53" text-anchor="middle">?</text>
+        <text class="s-w" x="0" y="96">Total 85 %. Approval waits for exactly 100 %.</text>
+        <text class="s-m" x="0" y="114">The gap is only visible after the shares are typed.</text>
+
+        <text class="s-h" x="400" y="14">PROPOSAL</text>
+        <rect class="s-new" x="400" y="26" width="160" height="44" rx="4"/>
+        <text class="s-b" x="480" y="53" text-anchor="middle">Author A · 50 %</text>
+        <rect class="s-new" x="560" y="26" width="112" height="44" rx="4"/>
+        <text class="s-b" x="616" y="53" text-anchor="middle">B · 35 %</text>
+        <rect class="s-gap-new" x="672" y="26" width="48" height="44" rx="4"/>
+        <text class="s-a" x="696" y="53" text-anchor="middle">15 %</text>
+        <text class="s-a" x="400" y="96">Left to distribute: 15 %</text>
+        <text class="s-m" x="400" y="114">Counts down while you type. At 0 % the group is ready.</text>
+
+        <text class="s-h" x="400" y="156">THE COUNTER</text>
+        <rect class="s-box" x="400" y="168" width="64" height="34" rx="4"/><text class="s-t" x="432" y="190" text-anchor="middle">100 %</text>
+        <line class="s-ln" x1="464" y1="185" x2="494" y2="185" marker-end="url(#ar2)"/>
+        <rect class="s-box" x="496" y="168" width="64" height="34" rx="4"/><text class="s-t" x="528" y="190" text-anchor="middle">50 %</text>
+        <line class="s-ln" x1="560" y1="185" x2="590" y2="185" marker-end="url(#ar2)"/>
+        <rect class="s-box" x="592" y="168" width="64" height="34" rx="4"/><text class="s-t" x="624" y="190" text-anchor="middle">15 %</text>
+        <line class="s-ln" x1="656" y1="185" x2="686" y2="185" marker-end="url(#ar2)"/>
+        <rect class="s-new" x="688" y="168" width="64" height="34" rx="4"/><text class="s-b" x="720" y="190" text-anchor="middle">0 %</text>
+        <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+        <text class="s-m" x="0" y="190">Rule unchanged: shares still add up to 100 %.</text>
+        <text class="s-m" x="0" y="208">Only the way the gap is shown changes.</text>
+      </svg>
+      <figcaption>Same rule, different feedback: the gap is visible while typing, and the group is done at 0.</figcaption>
+    </figure>
+    <div class="cols">
+      <div class="box propose"><h3>We propose</h3><ul>
+        <li>Show "Left to distribute" counting down to 0 as shares are entered.</li>
+        <li>Keep the stored shares as they are. They still add up to 100 %.</li>
+      </ul></div>
+      <div class="box decide"><h3>Decide</h3><ul>
+        <li>Thomas: how does the DB hold the original author's share today?</li>
+        <li>Elaine: is the original author the balance (100 minus the others), or a share like any other?</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t3">
+    <div class="head"><h2 id="t3">3 · AI rights</h2><span class="min">Thomas</span></div>
+    <p class="today"><b>Today:</b> step 3 has two yes/no switches, both off by default. Schilling's AI Rights &amp; Royalties plan proposes up to eight uses, each with its own royalty rate.</p>
+    <figure>
+      <svg viewBox="0 0 760 240" role="img" aria-label="Small option: two yes/no switches. Large option: eight AI uses, each with a royalty rate">
+        <text class="s-h" x="0" y="14">SMALL · LIKE THE FORMATS</text>
+        <rect class="s-new" x="0" y="26" width="320" height="44" rx="6"/>
+        <text class="s-t" x="14" y="53">AI training allowed</text>
+        <rect class="s-off" x="262" y="38" width="40" height="20" rx="10"/><circle class="s-knob" cx="272" cy="48" r="8"/>
+        <rect class="s-new" x="0" y="78" width="320" height="44" rx="6"/>
+        <text class="s-t" x="14" y="105">Generative AI derivation</text>
+        <rect class="s-on" x="262" y="90" width="40" height="20" rx="10"/><circle class="s-knob" cx="292" cy="100" r="8"/>
+        <text class="s-m" x="0" y="150">Two choices, no rates. Matches Schilling's first step:</text>
+        <text class="s-m" x="0" y="167">one yes/no AI rights format.</text>
+
+        <text class="s-h" x="400" y="14">LARGE · EIGHT USES WITH RATES</text>
+        <g>
+          <rect class="s-box" x="400" y="26" width="172" height="30" rx="5"/><text class="s-t" x="410" y="46">Training</text><text class="s-m" x="562" y="46" text-anchor="end">rate %</text>
+          <rect class="s-box" x="588" y="26" width="172" height="30" rx="5"/><text class="s-t" x="598" y="46">Fine-tuning</text><text class="s-m" x="750" y="46" text-anchor="end">rate %</text>
+          <rect class="s-box" x="400" y="64" width="172" height="30" rx="5"/><text class="s-t" x="410" y="84">Retrieval (RAG)</text><text class="s-m" x="562" y="84" text-anchor="end">rate %</text>
+          <rect class="s-box" x="588" y="64" width="172" height="30" rx="5"/><text class="s-t" x="598" y="84">Excerpt display</text><text class="s-m" x="750" y="84" text-anchor="end">rate %</text>
+          <rect class="s-box" x="400" y="102" width="172" height="30" rx="5"/><text class="s-t" x="410" y="122">Summarization</text><text class="s-m" x="562" y="122" text-anchor="end">rate %</text>
+          <rect class="s-box" x="588" y="102" width="172" height="30" rx="5"/><text class="s-t" x="598" y="122">Synthetic data</text><text class="s-m" x="750" y="122" text-anchor="end">rate %</text>
+          <rect class="s-box" x="400" y="140" width="172" height="30" rx="5"/><text class="s-t" x="410" y="160">Derivative output</text><text class="s-m" x="562" y="160" text-anchor="end">rate %</text>
+          <rect class="s-box" x="588" y="140" width="172" height="30" rx="5"/><text class="s-t" x="598" y="160">Internal workflow</text><text class="s-m" x="750" y="160" text-anchor="end">rate %</text>
+        </g>
+        <text class="s-m" x="400" y="194">Needs sales channels and rate lines per use in step 5,</text>
+        <text class="s-m" x="400" y="211">and Schilling to ship the eight uses first.</text>
+      </svg>
+      <figcaption>Small: the two choices KM has now. Large: eight uses, each paying its own rate.</figcaption>
+    </figure>
+    <div class="cols">
+      <div class="box propose"><h3>We propose</h3><ul>
+        <li>Start small: the two yes/no choices, shown like the formats.</li>
+        <li>Show them as a list of uses, so more uses are added later without changing the screen.</li>
+      </ul></div>
+      <div class="box decide"><h3>Decide</h3><ul>
+        <li>Do contracts need AI royalty rates now, or is yes/no enough until Schilling ships the eight uses?</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <div class="tech">
+    <div class="banner">
+      <b>Technical notes: not needed for the meeting</b>
+      <p>For people who want to know how each change would be built. Nothing below needs a decision today.</p>
+    </div>
+
+    <section aria-labelledby="x1">
+      <h3 id="x1">1 · The split: how we would build it</h3>
+      <figure>
+        <svg viewBox="0 0 760 230" role="img" aria-label="The heirs check moves from the approval gate to the payout gate">
+          <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+          <text class="s-h" x="0" y="14">TODAY</text>
+          <rect class="s-box" x="0" y="26" width="360" height="64" rx="6"/>
+          <text class="s-b" x="12" y="46">Approval gate</text>
+          <text class="s-t" x="12" y="64">shares = 100 %</text>
+          <text class="s-w" x="12" y="81">heirs = deceased share</text>
+          <line class="s-ln" x1="360" y1="58" x2="410" y2="58" marker-end="url(#ar3)"/>
+          <rect class="s-box" x="412" y="26" width="120" height="64" rx="6"/>
+          <text class="s-t" x="472" y="63" text-anchor="middle">Sign</text>
+          <line class="s-ln" x1="532" y1="58" x2="582" y2="58" marker-end="url(#ar3)"/>
+          <rect class="s-box" x="584" y="26" width="176" height="64" rx="6"/>
+          <text class="s-t" x="672" y="63" text-anchor="middle">Pay</text>
+
+          <text class="s-h" x="0" y="134">PROPOSAL</text>
+          <rect class="s-box" x="0" y="146" width="250" height="64" rx="6"/>
+          <text class="s-b" x="12" y="166">Approval gate</text>
+          <text class="s-t" x="12" y="186">shares = 100 %</text>
+          <line class="s-ln" x1="250" y1="178" x2="290" y2="178" marker-end="url(#ar3)"/>
+          <rect class="s-box" x="292" y="146" width="100" height="64" rx="6"/>
+          <text class="s-t" x="342" y="183" text-anchor="middle">Sign</text>
+          <line class="s-ln" x1="392" y1="178" x2="432" y2="178" marker-end="url(#ar3)"/>
+          <rect class="s-new" x="434" y="146" width="326" height="64" rx="6"/>
+          <text class="s-b" x="446" y="166">Payout gate</text>
+          <text class="s-t" x="446" y="184">heirs = deceased share</text>
+          <text class="s-t" x="446" y="201">payee is not deceased (already there)</text>
+        </svg>
+        <figcaption>The heirs check moves later: a contract can be approved and signed first, and money for a deceased author waits until the heirs add up.</figcaption>
+      </figure>
+      <ul>
+        <li><b>Data does not change.</b> Recipients keep <code>sharePct</code>, <code>deceased</code> and <code>inheritedFromId</code> (heir points to the parent). No migration.</li>
+        <li><b>Wizard.</b> Step 4 hides "Mark deceased" and "Add heir". "Split share" is a row action: it divides one author's share between co-authors and keeps the group at 100 %.</li>
+        <li><b>Rule.</b> <code>heirsBalanced</code> in <code>server/src/domain/approvalValidation.ts</code> leaves the approval gate (code <code>heirs_sum_mismatch</code>) and joins the payout checks next to <code>payment_recipient_deceased</code> in <code>domain/shared/payments.ts</code>, which already blocks paying a deceased person.</li>
+        <li><b>After signing.</b> Heirs are entered in the locked contract's payout section, the one part that stays editable. Each save is a history event. Schilling's deceased date pre-fills the row, as the step 4 hint already does.</li>
+        <li><b>Our assumption, to confirm.</b> Heirs change who is paid, not the signed text: the document keeps the original author.</li>
+        <li><b>Tests.</b> The heirs unit test in <code>approvalValidation.test.ts</code> moves to the payout rule; one browser test covers split at creation, then heirs after signing.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="x2">
+      <h3 id="x2">2 · Left to distribute: how we would build it</h3>
+      <ul>
+        <li><b>Frontend only.</b> Per group: left = 100 − the sum of <code>sharePct</code> of active royalty recipients, with heirs counted in their parent's group. It is the same sum <code>royaltyGroupsBalanced</code> already uses, rounded to two decimals with the server's 0.005 tolerance.</li>
+        <li><b>Where.</b> The group total row in step 4 shows the counter and replaces the "must sum to 100 %" error while typing. The server rule <code>share_sum_not_100</code> stays as the safety net, so nothing can be approved off by a cent.</li>
+        <li><b>Share ladders.</b> The counter reads the share at volume zero. Every other print run still goes through <code>shareBalanceIssues</code> (<code>share_ladder_unbalanced</code>).</li>
+        <li><b>If the original author is the balance.</b> Their <code>sharePct</code> is computed as 100 minus the others, shown read-only, and still stored. Schilling's write and the documents see the same numbers as today. This is the case that depends on how the DB holds the share.</li>
+        <li><b>Test.</b> One unit test on the counter: 50 + 35 leaves 15; a full group leaves 0; three shares of 33.33 leave 0.01.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="x3">
+      <h3 id="x3">3 · AI rights: how we would build it</h3>
+      <ul>
+        <li><b>Today.</b> <code>coverage.aiRights</code> holds two booleans, <code>trainingAllowed</code> and <code>generativeDerivation</code>. They show in step 3, the summary, the history labels, the terms-template defaults and the document preview. They are not sent to Schilling: no write in <code>server/src/domain/schillingWrites/</code> reads them.</li>
+        <li><b>Small.</b> No data change. Step 3 draws the switches from one short list of uses instead of two hand-written rows, so a third use is one new entry and one field.</li>
+        <li><b>Large.</b> The eight uses become rights formats, the way Schilling's plan models them. KM's format checklist (<code>coverage.formatCodes</code>) and rate table (<code>royaltyRates</code>, step 5) already carry formats with rates, so no new field is needed. It waits for the eight formats to exist in Schilling's catalogue.</li>
+        <li><b>Moving from small to large.</b> One migration maps the two booleans to two format codes. Then <code>fieldLabels</code>, <code>fieldDiff</code> and the template defaults change with it.</li>
+        <li><b>Effort.</b> Small touches a few frontend files. Large is mostly Schilling's work first, then catalogue entries and templates on our side.</li>
+      </ul>
+    </section>
+  </div>
+</main>
