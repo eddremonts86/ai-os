@@ -1,6 +1,6 @@
 # Setup Required Skills (for another Mac)
 
-> ⚠️ **CRITICAL:** This AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to work correctly. Without them, the workflows in `~/Projects/ai-os/workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`).
+> ⚠️ **CRITICAL:** This AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to work correctly. Without them, the workflows in `$AI_OS_ROOT/workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`).
 >
 > If the user is on a fresh Mac or another profile, run this prompt FIRST before using AI-OS.
 >
@@ -162,14 +162,14 @@ After running this prompt:
 
 - 14/14 superpowers skills installed in `~/.claude/skills/`.
 - Distributed via symlinks to supported CLIs.
-- Verified with `bash ~/Projects/ai-os/setup/verify.sh`.
+- Verified with `bash $AI_OS_ROOT/setup/verify.sh`.
 
 ## Next step
 
 Run the AI-OS verification script:
 
 ```bash
-bash ~/Projects/ai-os/setup/verify.sh
+bash $AI_OS_ROOT/setup/verify.sh
 ```
 
 If it reports "14/14 superpowers skills OK", you're ready to use AI-OS.

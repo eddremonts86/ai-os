@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ai-os — top-level dispatcher for the AI-OS CLI.
 #
-# Routes the first argument to the right subcommand script under ~/Projects/ai-os/.
+# Routes the first argument to the right subcommand script under $AI_OS_ROOT/.
 # Without this, `ai-os memory status` would fail because the symlink
 # ~/.local/bin/ai-os historically pointed straight at memory/ai-os-memory.sh
 # (which only knows its own subcommands, not the `memory` keyword).

@@ -9,7 +9,7 @@
 [![Test Windows](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml/badge.svg)](https://github.com/eddremonts86/ai-os/actions/workflows/test-windows.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Skills: dynamic](https://img.shields.io/badge/skills-dynamic-green.svg)](ai-config/skills/)
-[![+ ECC: 271](https://img.shields.io/badge/%2B_ECC-271-blue.svg)](vendor/ecc/)
+[![+ ECC: 14](https://img.shields.io/badge/%2B_ECC-14-blue.svg)](vendor/ecc/)
 [![+ claude.tools/gstack: 12](https://img.shields.io/badge/%2B_claude.tools%2Fgstack-12-purple.svg)](docs/claude-tools-integration.md)
 [![Commands: 5 (action/full/gen-html/saas-review/fix-ui-ux)](https://img.shields.io/badge/commands-5-orange.svg)](ai-config/commands/)
 
@@ -20,12 +20,12 @@
 AI-OS is the **single source of truth** for everything AI in your dev workflow:
 
 - **Flat global skills** propagated to the supported AI CLIs (Claude Code, Codex, Gemini, Antigravity, Hermes, plus MiniMax on Mac).
-- **+271 optional ECC skills** (vendored at `vendor/ecc/`, opt-in via `bash setup/install-ecc.sh`).
+- **+14 curated ECC skills** (`vendor/ecc/`, linked by `install-mac.sh`).
 - **+12 optional claude.tools / gstack skills** (4 from claude.tools, 8 cherry-picked from gstack, plus the OpenAI Codex plugin at `vendor/codex-plugin-cc/`).
 - **14 required superpowers skills** (the framework that powers all workflows).
 - **5 recurring workflows** (daily_start, project_start, coding, research, content_creation).
 - **3 rules** (always_do, ask_before_doing, never_do) — enforced constraints.
-- **3 verifiers** (quality_checklist, critic_prompt, source_check_prompt) — applied after every task.
+- **3 verifiers** (quality_checklist, critic_prompt, source_check_prompt) — optional tools, used when a task warrants them.
 - **10 declarative MCP servers** (time, filesystem, pdf, sequential-thinking, memory, chrome, agent-browser, codebase-memory-mcp, grepai, graphiti — graphiti runs a custom-built image with MiniMax as LLM provider, verified end-to-end 2026-07-30 with a real `MINIMAX_API_KEY`; opt-in, not started by `ai-os memory start`; see `ai-config/mcp/graphiti.yaml`).
 - **5 global commands** (`/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux`) as Agent Skills + `ai-config/commands/`, distributed to all 6 CLIs, VS Code's prompts folder, and Gemini's TOML custom commands.
 - **Replicable dev env** (zsh + Oh My Zsh + p10k, Warp, Brewfile, git/ssh config templates).
@@ -77,8 +77,9 @@ for you. Pass a target folder to change where it lands, or `--clone-only` to
 skip the installer:
 
 ```bash
-npx @edd_remonts/create-ai-os ~/Projects/ai-os
-npx @edd_remonts/create-ai-os --clone-only ~/Projects/ai-os   # clone without installing
+export AI_OS_ROOT="$HOME/Projects/ai-os"   # any location works
+npx @edd_remonts/create-ai-os "$AI_OS_ROOT"
+npx @edd_remonts/create-ai-os --clone-only "$AI_OS_ROOT"   # clone without installing
 ```
 
 Then verify:
@@ -92,8 +93,9 @@ powershell -ExecutionPolicy Bypass -File .\setup\verify-windows.ps1   # Windows
 <summary>Prefer plain git clone?</summary>
 
 ```bash
-git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-cd ~/Projects/ai-os
+export AI_OS_ROOT="$HOME/Projects/ai-os"   # any location works
+git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"
+cd "$AI_OS_ROOT"
 bash setup/install-mac.sh
 ```
 
@@ -138,7 +140,7 @@ AI-OS is structured in **3 layers**, each with a clear responsibility:
 ┌──────────────────────────────────────────────────────────────────┐
 │  Layer 0: AI-OS (this repo)                                      │
 │  • Method: Spec → Verifier → Environment (Karpathy)             │
-│  • 18 master instructions in CLAUDE.md                            │
+│  • Master instructions in CLAUDE.md (reference in docs/)          │
 │  • 5 workflows, 3 rules, 3 verifiers                            │
 │  • Flat global skills + optional plugin bundles                  │
 │  • 10 declarative MCP servers in YAML (all enabled)              │
@@ -169,7 +171,7 @@ AI-OS is structured in **3 layers**, each with a clear responsibility:
 
 ```
 ai-os/
-├── CLAUDE.md                    # Master instructions (18 sections)
+├── CLAUDE.md                    # Master instructions (compact; reference in docs/)
 ├── README.md                    # This file
 ├── LICENSE                      # MIT
 │
@@ -313,31 +315,10 @@ stays at the repo root** because it is a deploy descriptor for the repository an
 addresses it absolutely (`dockerfile_location=/Dockerfile`), so moving it would mean editing
 live production config to land a directory rename.
 
-### ECC Integration (optional layer)
+### ECC Integration (curated subset)
 
-AI-OS can optionally vendor **[Everything Claude Code (ECC)](https://github.com/affaan-m/ECC)** — the largest publicly available Claude Code skill corpus (271 skills, 67 agents, 28 hooks) — as a **read-only subtree** at `vendor/ecc/`. It propagates to the core CLIs via symlinks, same as the AI-OS native skills, but with its own installer:
-
-```bash
-# One-time: vendor ECC
-git clone --depth=1 https://github.com/affaan-m/everything-claude-code.git vendor/ecc
-
-# Install (idempotent)
-bash setup/install-ecc.sh
-
-# Verify only (CI mode)
-bash setup/install-ecc.sh --check
-```
-
-Why two skill sources of truth?
-
-| Source                     | Owner        | What                                         |
-| -------------------------- | ------------ | -------------------------------------------- |
-| `ai-config/skills/`        | AI-OS (you)  | Hand-curated, evolve with your workflows     |
-| `vendor/ecc/skills/` (271) | ECC upstream | Community-maintained, update with `git pull` |
-
-The two never conflict in practice because ECC and AI-OS use different naming conventions (ECC: `tdd-workflow`, AI-OS: `test-driven-development`). In Claude Code specifically, ECC also loads as a **plugin** (`~/.claude/plugins/ecc → vendor/ecc/`), exposing hooks and slash commands that the AI-OS installer doesn't manage.
-
-Full architecture, hook policy, and update procedure: [`docs/ecc-integration.md`](docs/ecc-integration.md). CI validates the ECC integration in [`test-mac.yml`](.github/workflows/test-mac.yml), [`test-linux.yml`](.github/workflows/test-linux.yml), and [`test-windows.yml`](.github/workflows/test-windows.yml) — the `--check` step is non-fatal and skips if `vendor/ecc/` is absent.
+`vendor/ecc/` is a curated subset of [ECC](https://github.com/affaan-m/ECC) (14 DAILY skills, 3 agents, 2 commands, one hook), linked by `install-mac.sh`.
+What is kept, why, and how to update it: [`docs/ecc-integration.md`](docs/ecc-integration.md).
 
 ### claude.tools / gstack Integration (optional layer)
 
@@ -367,7 +348,6 @@ Why a separate installer (instead of folding into `install-mac.sh`)?
 
 - **Idempotency**: `install-claude-tools.sh --check` is the CI entrypoint — it validates frontmatter on every PR without touching the filesystem. Keeps `install-mac.sh` focused on Mac bootstrap.
 - **Selective install**: Users who don't want the plugin (it's optional, requires ChatGPT sub or OpenAI API key) can skip it.
-- **Mirrors ECC**: Same shape as `install-ecc.sh`, so the CI pattern is consistent.
 
 Full architecture, skill catalog, and update procedure: [`docs/claude-tools-integration.md`](docs/claude-tools-integration.md). CI validates it in the three platform workflows — the `--check` step is non-fatal and uses `|| echo ::warning::` so PRs that don't touch the integration stay green.
 
@@ -407,10 +387,10 @@ This is Karpathy's framework for AI-assisted work. Every non-trivial task follow
 └─────────────┘     └──────────────┘     └──────────────┘     └─────────────┘
 ```
 
-1. **Spec**: Create a Spec in `specs/current_spec.md` using `specs/spec_template.md`. Define objective, acceptance criteria, non-goals, plan (blocks of ≤30 min), risks.
+1. **Spec** (opt-in: tasks over ~2h, multi-repo, or on request): create a Spec in `specs/current_spec.md` using `specs/spec_template.md`. Define objective, acceptance criteria, non-goals, plan (blocks of ≤30 min), risks.
 2. **Plan**: → Load skill `writing-plans` to break the Spec into detailed blocks.
 3. **Execute**: Block by block. → Load skill `verification-before-completion` after each block.
-4. **Verify**: Apply the 3 verifiers (`quality_checklist`, `critic_prompt`, `source_check_prompt`). 6 gates per task.
+4. **Verify**: Exercise the runtime and report evidence. The verifiers (`quality_checklist`, `critic_prompt`, `source_check_prompt`) are optional tools, not mandatory gates.
 
 At the end: after explicit authorization for any protected git action, archive a
 completed Spec to `archive/`, reset `current_spec.md`, then commit or push as
@@ -428,7 +408,7 @@ Full details: [`CLAUDE.md`](CLAUDE.md).
 2. Load skill `using-superpowers` as the router.
 3. Follow the Spec → Plan → Execute → Verify loop.
 4. **Use sub-agents in parallel when possible** (if a task has 2+ independent workstreams, dispatching is mandatory).
-5. Run verifiers before declaring done.
+5. Verify with runtime evidence before declaring done.
 6. Use conventional commits.
 7. Archive completed Specs.
 
@@ -517,7 +497,7 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 3. → Load skill `using-superpowers` (router)
 4. Follow `workflows/daily_start.md` (load context + rules + Spec)
 5. Check `specs/current_spec.md`. The no-active-Spec template means a new task; otherwise execute the one active Spec.
-6. At the end → run verifiers → archive a completed Spec → reset `current_spec.md` → commit only when authorized.
+6. At the end → verify with runtime evidence → archive a completed Spec → reset `current_spec.md` → commit only when authorized.
 ```
 
 ### New task (>30 min)
@@ -553,7 +533,7 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 2. Search official docs
 3. Summarize with sources
 4. → Load skill `verifiers/source_check_prompt` to verify URLs
-5. → Load skill `verifiers/critic_prompt` to review
+5. → (optional) `verifiers/critic_prompt` for a self-critique pass
 ```
 
 ### Writing docs
@@ -563,7 +543,7 @@ To add a new server: create `ai-config/mcp/<name>.yaml`, run `python3 setup/gene
 2. Define audience and goal
 3. Write first draft
 4. → Load skill `verification-before-completion`
-5. → Load skill `verifiers/critic_prompt`
+5. → (optional) `verifiers/critic_prompt`
 ```
 
 ---
@@ -640,7 +620,7 @@ AI-OS is successful if:
 - ✅ Setup on Windows completes in <60 min.
 - ✅ All flat skills invokable from supported CLIs.
 - ✅ All 14/14 superpowers skills present.
-- ✅ All 10 enabled MCP servers auto-connect in Hermes.
+- ✅ Every enabled MCP server (`enabled: true` in `ai-config/mcp/*.yaml`) auto-connects in Hermes.
 - ✅ Zero secrets in the repo (`git log -p | grep -iE "secret|api[_-]?key|password"` returns nothing).
 - ✅ CI: 3/3 success on PRs to main.
 
@@ -648,16 +628,15 @@ AI-OS is successful if:
 
 ## State (current)
 
-- **Files:** 1363
-- **Skills:** dynamic; count with `find ai-config/skills -maxdepth 2 -name SKILL.md -path "*/ai-config/skills/*/SKILL.md" | wc -l`.
-- **MCP servers:** 10 (declarative YAML).
-- **Global commands:** 5 (`action`, `full`, `gen-html`, `saas-review`, `fix-ui-ux`).
-- **Workflows:** 5.
-- **Rules:** 3.
-- **Verifiers:** 3.
-- **CI workflows:** 3 (macOS, Linux, Windows).
-- **Setup scripts:** 7 (3 install + 3 verify + 1 generator).
-- **Commits:** 11.
+Counts are not hard-coded here because they go stale; read them live:
+
+- **Files / history:** `git ls-files | wc -l`, `git log --oneline | head`.
+- **Skills:** `find ai-config/skills -maxdepth 2 -name SKILL.md | wc -l`.
+- **MCP servers:** `grep -l "enabled: true" ai-config/mcp/*.yaml` (see the MCP table above).
+- **Global commands:** `ls ai-config/commands/`.
+- **Workflows / rules / verifiers:** `ls workflows/ rules/ verifiers/`.
+- **CI workflows:** `ls .github/workflows/` (test-mac, test-linux, test-windows + deploys).
+- **Health:** `bash setup/verify.sh`.
 - **License:** MIT.
 
 ---

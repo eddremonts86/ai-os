@@ -33,8 +33,8 @@ GPU only pays off on generation. Pick whichever you would rather look at.
 The host shape is a launchd service (`ai.os.ollama`), so it survives a reboot:
 
 ```bash
-bash ~/Projects/ai-os/memory/launchd/install-ollama.sh            # install / repair
-bash ~/Projects/ai-os/memory/launchd/install-ollama.sh --status    # loaded? answering? model?
+bash "$AI_OS_ROOT/memory/launchd/install-ollama.sh"            # install / repair
+bash "$AI_OS_ROOT/memory/launchd/install-ollama.sh" --status    # loaded? answering? model?
 ```
 
 Two traps it exists to avoid, both of which had already bitten:
@@ -54,7 +54,7 @@ When you want to bring the stack up and index every project under `~/Projects/`,
 run **one** command:
 
 ```bash
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh"
 # or, via the CLI wrapper:
 ai-os memory bootstrap
 ```
@@ -89,26 +89,26 @@ It is **idempotent** — re-running it is safe and does the right thing each tim
 
 ```bash
 # First-time setup on a fresh machine
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh"
 
 # After a big batch of changes — reindex everything
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --refresh
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --refresh
 
 # Just bring the stack up (no indexing)
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --only-start
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --only-start
 
 # Just refresh the indexes (stack assumed running)
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --only-index
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --only-index
 ```
 
 > **The `ai-os memory` wrapper** is the preferred way to invoke these scripts
 > once `ai-os` is on your PATH (the symlink `~/.local/bin/ai-os` points at the
-> dispatcher `~/Projects/ai-os/ai-os`):
+> dispatcher `$AI_OS_ROOT/ai-os`):
 >
 > ```bash
-> ai-os memory status     # same as bash ~/Projects/ai-os/memory/ai-os-memory.sh status
-> ai-os memory bootstrap  # same as bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
-> ai-os loop ...          # routes to ~/Projects/ai-os/memory/ai-os-loop.sh
+> ai-os memory status     # same as bash "$AI_OS_ROOT/memory/ai-os-memory.sh" status
+> ai-os memory bootstrap  # same as bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh"
+> ai-os loop ...          # routes to $AI_OS_ROOT/memory/ai-os-loop.sh
 > ```
 
 ## Scheduled reindex: launchd 6×/day
@@ -137,7 +137,7 @@ bash memory/launchd/install-reindex.sh --uninstall
 ## What goes where
 
 ```
-~/Projects/ai-os/
+$AI_OS_ROOT/
 ├── ai-os                      # Top-level CLI dispatcher (routes memory|loop|bootstrap)
 ├── memory/
 │   ├── ai-os-memory.sh        # Memory-stack CLI: status / start / stop / browse / reindex / bootstrap
@@ -163,7 +163,7 @@ bash memory/launchd/install-reindex.sh --uninstall
 ## Quick health check
 
 ```bash
-bash ~/Projects/ai-os/memory/ai-os-memory.sh status
+bash "$AI_OS_ROOT/memory/ai-os-memory.sh" status
 ```
 
 Should print all green. If something is red, the message tells you what to do

@@ -1,6 +1,6 @@
 # Create a Spec Before Any Task
 
-> Run before any non-trivial task. Creates the Spec that will guide execution.
+> Spec is opt-in: use it for tasks over ~2h, multi-repo work, or when requested. Creates the Spec that will guide execution.
 
 ---
 
@@ -10,17 +10,17 @@ Create a Spec for the following task:
 
 ## Instructions
 
-1. Read `~/Projects/ai-os/CLAUDE.md` to understand the AI-OS method.
-2. Read `~/Projects/ai-os/specs/spec_template.md` for the template.
-3. Create the Spec in `~/Projects/ai-os/specs/current_spec.md` (replace if there's existing content).
+1. Read `$AI_OS_ROOT/CLAUDE.md` to understand the AI-OS method.
+2. Read `$AI_OS_ROOT/specs/spec_template.md` for the template.
+3. Create the Spec in `$AI_OS_ROOT/specs/current_spec.md` (replace if there's existing content).
 4. Fill ALL sections:
    - Metadata (date, status, blocks).
    - Objective (1 sentence).
    - Context (why this task exists).
    - Acceptance criteria (specific, measurable).
    - Non-goals (what we WON'T do).
-   - Plan (blocks of <= 30 min).
-   - Verification per block.
+   - Plan (blocks sized to the work).
+   - Verification (runtime evidence).
    - Risks and mitigation.
    - References.
 5. Show me the Spec and ask: "OK to proceed?"

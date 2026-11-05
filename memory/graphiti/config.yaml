@@ -10,7 +10,7 @@
 # official docs use for local Ollama models. No code changes needed in
 # Graphiti itself.
 #
-# Real credentials (from /Users/edd/Projects/configs/env.ts, 2026-07-13):
+# Real credentials (from $(dirname "$AI_OS_ROOT")/configs/env.ts, 2026-07-13):
 # this Mac's actual MiniMax account uses the international endpoint
 # https://api.minimaxi.chat/v1 (NOT api.minimax.io — both may work, but this
 # is the one this specific account/key is confirmed against) and model
@@ -34,7 +34,7 @@
 # from sentence-transformers).
 #
 # Tested end-to-end with the real MiniMax key from
-# /Users/edd/Projects/configs/env.ts via manual MCP protocol calls
+# $(dirname "$AI_OS_ROOT")/configs/env.ts via manual MCP protocol calls
 # (initialize -> notifications/initialized -> tools/call add_memory over the
 # streamable-HTTP endpoint). Real container logs confirm the request now
 # genuinely reaches MiniMax: `POST https://api.minimaxi.chat/v1/chat/completions`

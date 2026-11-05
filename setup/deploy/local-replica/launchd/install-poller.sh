@@ -55,7 +55,7 @@ esac
 [ -f "$TMPL" ] || { echo "template missing: $TMPL" >&2; exit 1; }
 
 mkdir -p "$LOGDIR" "$(dirname "$TARGET")"
-sed "s#__AI_OS_ROOT__#$AI_OS_ROOT#g" "$TMPL" > "$TARGET"
+sed -e "s#__AI_OS_ROOT__#$AI_OS_ROOT#g" -e "s#__HOME__#$HOME#g" "$TMPL" > "$TARGET"
 log "wrote $TARGET"
 
 # bootout first: bootstrap on an already-loaded label fails, and "already loaded" is the

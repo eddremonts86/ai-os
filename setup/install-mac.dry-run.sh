@@ -27,6 +27,10 @@ err() { echo "$LOG_PREFIX ❌ $*"; }
 # it because the runners have PyYAML system-wide, so the dry-run was green in CI and
 # red on the developer machine that is supposed to run it before pushing.
 REAL_USER_SITE=$(python3 -m site --user-site 2>/dev/null || true)
+# Same preference as install-mac.sh step 9: the AI-OS venv has PyYAML; Homebrew's
+# python3 has no user site with it at all, so the PYTHONPATH trick above is not enough.
+PY="python3"
+[ -x "$HOME/.ai-os/venv/bin/python" ] && PY="$HOME/.ai-os/venv/bin/python"
 
 TMP_HOME=$(mktemp -d -t aios-dryrun-XXXX)
 export HOME="$TMP_HOME"
@@ -214,7 +218,7 @@ log "6. Simulating MCP config generation..."
 # Create test config
 TEMP_CONFIG="$TMP_HOME/hermes-config-test.yaml"
 
-if python3 "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$TEMP_CONFIG" "$HOME/.agents/skills" >/dev/null 2>&1; then
+if "$PY" "$AI_OS_ROOT/setup/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$TEMP_CONFIG" "$HOME/.agents/skills" >/dev/null 2>&1; then
   # Count generated server keys without requiring yq or PyYAML. Scoped to the
   # lines between "mcp_servers:" and the next top-level (0-indent) key, so the
   # unrelated "skills: / external_dirs:" block added below it isn't miscounted

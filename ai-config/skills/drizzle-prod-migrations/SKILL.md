@@ -239,7 +239,7 @@ log the skip than to fail the whole migration and roll back the deploy.
 ## Defense in depth: 3 things to also do
 
 1. **Always include a schema spot-check in your post-deploy verification.**
-   See `prod-deploy-verification` for the table-list query. This catches
+   See `prod-deploy-verification` (project-local skill in iaWorkSpace) for the table-list query. This catches
    the case where the runner itself has a bug.
 
 2. **Test the new feature path with a real authenticated request** (see
@@ -275,5 +275,5 @@ log the skip than to fail the whole migration and roll back the deploy.
 
 - `coolify-deploy` — entrypoint pattern, env injection, scraper app separation
 - `coolify-deploy` (references/env-sync-and-postdeploy.md) — why `post_deployment_command` is the wrong place for migrations
-- `prod-deploy-verification` — schema spot-check, post-deploy real-browser verification
+- `prod-deploy-verification` (project-local skill in iaWorkSpace) — schema spot-check, post-deploy real-browser verification
 - `deployment-patterns` — idempotent seed orchestrator pattern (complementary to migrations)

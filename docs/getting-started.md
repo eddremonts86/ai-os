@@ -12,8 +12,9 @@
 ## Step 1: Clone the repo
 
 ```bash
-git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-cd ~/Projects/ai-os
+export AI_OS_ROOT="$HOME/Projects/ai-os"   # any location works
+git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"
+cd "$AI_OS_ROOT"
 ```
 
 > **Windows:** `git clone https://github.com/eddremonts86/ai-os $HOME\Projects\ai-os`
@@ -60,8 +61,8 @@ bash setup/verify.sh
 **Expected output (abridged; exact skill/MCP counts vary by checkout):**
 
 ```
-[ai-os verify] ✅ AI-OS at /Users/edd/Projects/ai-os
-[ai-os verify] ✅   .zshrc → /Users/edd/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc
+[ai-os verify] ✅ AI-OS at <your AI_OS_ROOT>
+[ai-os verify] ✅   .zshrc → <your AI_OS_ROOT>/dev-env/dotfiles/zsh/.zshrc
 [ai-os verify]   Source of truth: <N> flat skills + <N> gstack skills = <N> expected per client
 [ai-os verify] ✅   [claude] ~/.claude/skills: <N>/<N> skills (exact match)
 [ai-os verify] ✅   [codex] ~/.codex/skills: <N>/<N> skills (exact match)

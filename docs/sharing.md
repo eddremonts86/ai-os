@@ -64,7 +64,7 @@ metadata:
 
 ### Naming
 
-- **Skills:** kebab-case (`react-patterns`, `wave-template-conventions`).
+- **Skills:** kebab-case (`react-patterns`, `vue-patterns`).
 - **Workflows:** kebab-case (`daily_start.md`, `project_start.md`).
 - **Scripts:** snake_case (`install-mac.sh`, `verify.sh`).
 

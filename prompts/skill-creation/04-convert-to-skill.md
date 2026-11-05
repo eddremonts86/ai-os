@@ -10,15 +10,15 @@ You have discovered that you (or the AI) repeat this task frequently:
 
 ## Instructions
 
-1. Determine if the skill should be **global** (`~/.claude/skills/<name>/`) or **local** (`~/Projects/ai-os/skills/<name>/`):
+1. Determine if the skill should be **global** (`~/.claude/skills/<name>/`) or **local** (`$AI_OS_ROOT/skills/<name>/`):
 
    - **Global** if it applies to any project (debugging, testing, etc.).
    - **Local** if it only applies to AI-OS (creating Specs, archiving, etc.).
 
 2. If global, place it in `~/.claude/skills/<name>/SKILL.md`.
-   If local, place it in `~/Projects/ai-os/skills/<name>/SKILL.md`.
+   If local, place it in `$AI_OS_ROOT/skills/<name>/SKILL.md`.
 
-3. Use `~/Projects/ai-os/skills/skill_template.md` as the base.
+3. Use `$AI_OS_ROOT/skills/skill_template.md` as the base.
 
 4. Fill ALL sections:
 
@@ -63,7 +63,7 @@ When you complete a task with an active Spec.
 
 # Check status
 
-grep "^Status:" ~/Projects/ai-os/specs/current_spec.md
+grep "^Status:" $AI_OS_ROOT/specs/current_spec.md
 \`\`\`
 
 If status is not "completed", apply verifiers/quality_checklist.md first.
@@ -71,14 +71,14 @@ If status is not "completed", apply verifiers/quality_checklist.md first.
 ### 2. Archive the Spec
 
 \`\`\`bash
-cd ~/Projects/ai-os
+cd $AI_OS_ROOT
 mv specs/current_spec.md archive/$(date +%Y-%m-%d)-<slug>.md
 \`\`\`
 
 ### 3. Reset current_spec.md
 
 \`\`\`bash
-cat > ~/Projects/ai-os/specs/current_spec.md <<'EOF'
+cat > $AI_OS_ROOT/specs/current_spec.md <<'EOF'
 
 # Current Spec
 

@@ -8,7 +8,7 @@ version: 0.2.0
 
 Operate the AI-OS persistent memory stack. One CLI, no daemon, no API keys, all
 local-first. Designed for a single developer with many local projects under
-`~/Projects/`.
+`$(dirname "$AI_OS_ROOT")`.
 
 ## When to use
 
@@ -62,23 +62,23 @@ reference it.
 
 ## Files in this skill's surface
 
-- `~/Projects/ai-os/ai-os` — top-level dispatcher (routes `ai-os memory|loop|bootstrap` to the right script). Symlinked at `~/.local/bin/ai-os`.
-- `~/Projects/ai-os/memory/ai-os-memory.sh` — the memory-stack CLI (entry point)
-- `~/Projects/ai-os/memory/docker-compose.yml` — **unified** compose: `name: ia-os` so all services group under one header in the Docker Desktop dashboard (like `builderhunt`). Defines `ia-os-falkordb`, `ia-os-graphiti-mcp`, `ia-os-ollama` (opt-in profile), and the internal `ia-os-net` network.
-- `~/Projects/ai-os/memory/cron-reindex.sh` — 6x/day periodic reindex (launchd agent `ai.os.reindex`)
-- `~/Projects/ai-os/memory/launchd/install-reindex.sh` — installs/checks that agent
-- `~/Projects/ai-os/memory/falkordb/data/` — FalkorDB persistence (mounted at `/var/lib/falkordb/data`, RDB + AOF)
-- `~/Projects/ai-os/memory/falkordb/ollama-data/` — only exists if the `ollama-docker` profile was ever started; `ai-os memory start` ignores it when native Ollama already answers :11500
-- `~/Projects/ai-os/memory/graphiti/config.yaml` — Graphiti config (LLM via `GRAPHITI_LLM_*`, no key needed for local Ollama)
-- `~/Projects/ai-os/memory/graphiti/Dockerfile.standalone.minimal` — the custom build (rebuilds the local `ai-os/graphiti-mcp:minimax-standalone` image)
-- `~/Projects/ai-os/setup/ai-os-bootstrap.sh` — first-time / on-demand bring-up of the whole stack + auto-indexing
-- `~/Projects/ai-os/setup/README-bootstrap.md` — full user-facing doc for the bootstrap + cron
-- `~/Projects/ai-os/ai-config/mcp/{codebase-memory-mcp,graphiti,grepai}.yaml` — MCPs
-- `~/Projects/ai-os/setup/install-mac.sh` — section 9b installs everything (Mac)
-- `~/Projects/ai-os/setup/install-windows.ps1` — section 7b installs the same stack (Windows)
-- `~/Projects/ai-os/setup/verify.sh` — section 5b verifies everything (Mac)
-- `~/Projects/ai-os/dev-env/.env.example` — port assignments
-- `~/Projects/ai-os/archive/2026-07-03-persistent-memory-phase-1.md` — the original phase 1 plan (completed, archived)
+- `$AI_OS_ROOT/ai-os` — top-level dispatcher (routes `ai-os memory|loop|bootstrap` to the right script). Symlinked at `~/.local/bin/ai-os`.
+- `$AI_OS_ROOT/memory/ai-os-memory.sh` — the memory-stack CLI (entry point)
+- `$AI_OS_ROOT/memory/docker-compose.yml` — **unified** compose: `name: ia-os` so all services group under one header in the Docker Desktop dashboard (like `builderhunt`). Defines `ia-os-falkordb`, `ia-os-graphiti-mcp`, `ia-os-ollama` (opt-in profile), and the internal `ia-os-net` network.
+- `$AI_OS_ROOT/memory/cron-reindex.sh` — 6x/day periodic reindex (launchd agent `ai.os.reindex`)
+- `$AI_OS_ROOT/memory/launchd/install-reindex.sh` — installs/checks that agent
+- `$AI_OS_ROOT/memory/falkordb/data/` — FalkorDB persistence (mounted at `/var/lib/falkordb/data`, RDB + AOF)
+- `$AI_OS_ROOT/memory/falkordb/ollama-data/` — only exists if the `ollama-docker` profile was ever started; `ai-os memory start` ignores it when native Ollama already answers :11500
+- `$AI_OS_ROOT/memory/graphiti/config.yaml` — Graphiti config (LLM via `GRAPHITI_LLM_*`, no key needed for local Ollama)
+- `$AI_OS_ROOT/memory/graphiti/Dockerfile.standalone.minimal` — the custom build (rebuilds the local `ai-os/graphiti-mcp:minimax-standalone` image)
+- `$AI_OS_ROOT/setup/ai-os-bootstrap.sh` — first-time / on-demand bring-up of the whole stack + auto-indexing
+- `$AI_OS_ROOT/setup/README-bootstrap.md` — full user-facing doc for the bootstrap + cron
+- `$AI_OS_ROOT/ai-config/mcp/{codebase-memory-mcp,graphiti,grepai}.yaml` — MCPs
+- `$AI_OS_ROOT/setup/install-mac.sh` — section 9b installs everything (Mac)
+- `$AI_OS_ROOT/setup/install-windows.ps1` — section 7b installs the same stack (Windows)
+- `$AI_OS_ROOT/setup/verify.sh` — section 5b verifies everything (Mac)
+- `$AI_OS_ROOT/dev-env/.env.example` — port assignments
+- `$AI_OS_ROOT/archive/2026-07-03-persistent-memory-phase-1.md` — the original phase 1 plan (completed, archived)
 
 ## Failure modes
 
@@ -86,7 +86,7 @@ reference it.
 - **Graph empty after a restart** → check the mount: `docker inspect ia-os-falkordb` must show `/var/lib/falkordb/data` (it was `/data` until 2026-11-05, which lost every write).
 - **`add_memory` never shows up** → `docker logs ia-os-graphiti-mcp | grep -E "Failed to process|402|ERROR"`; a hosted LLM out of credit fails every episode.
 - **`Ollama API :11500 not reachable`** → check if another process grabbed 11434; OLLAMA_HOST env may be needed.
-- **`codebase-memory-mcp not installed`** → run `bash ~/Projects/ai-os/setup/install-mac.sh` (or `install-windows.ps1` on Windows).
+- **`codebase-memory-mcp not installed`** → run `bash "$AI_OS_ROOT/setup/install-mac.sh"` (or `install-windows.ps1` on Windows).
 - **`grepai query fails`** → check `OLLAMA_URL` is reachable; check `ollama list` has `nomic-embed-text`.
 
 ## Acceptance

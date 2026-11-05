@@ -9,7 +9,8 @@ symlink flat skills from here into the supported CLI skill directories.
 - Nested plugin bundles are directories with skills under `skills/<name>/SKILL.md`.
 - `setup/install-mac.sh` propagates flat skills to the Mac CLI targets.
 - Plugin bundles with nested layouts are installed by their own scripts, such as
-  `setup/install-claude-tools.sh` and `setup/install-ecc.sh`.
+  `setup/install-claude-tools.sh`. The curated `vendor/ecc/` subset is linked by
+  `setup/install-mac.sh` (see `docs/ecc-integration.md`).
 
 ## Supported CLI Targets
 

@@ -20,13 +20,13 @@ metadata:
 
 ## When NOT to use
 
-- If you haven't cloned the repo yet. Run `git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os` first.
+- If you haven't cloned the repo yet. Run `git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"` first.
 - If you want to modify AI-OS internals. This skill is read-only verification + setup.
 - In a project that doesn't have AI-OS. The paths won't exist.
 
 ## What it does
 
-1. **Verifies** that the AI-OS repo exists at `~/Projects/ai-os/`.
+1. **Verifies** that the AI-OS repo exists at `$AI_OS_ROOT/`.
 2. **Verifies** that the 14 superpowers skills are installed.
 3. **Loads** the master instructions (`CLAUDE.md`).
 4. **Loads** the context (`context/`).
@@ -60,7 +60,7 @@ Paste at the start of the conversation:
 ### 1. Verify AI-OS exists
 
 ```bash
-[ -f ~/Projects/ai-os/CLAUDE.md ] && echo "✅ AI-OS installed" || echo "❌ AI-OS missing — clone: git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os"
+[ -f "$AI_OS_ROOT/CLAUDE.md" ] && echo "✅ AI-OS installed" || echo "❌ AI-OS missing — clone: git clone https://github.com/eddremonts86/ai-os \"$AI_OS_ROOT\""
 ```
 
 If missing → STOP. The user must clone the repo first.
@@ -82,9 +82,9 @@ If < 14 → provide the install command.
 
 Read (do not execute, only read for context):
 
-- `~/Projects/ai-os/CLAUDE.md` (master instructions).
-- `~/Projects/ai-os/context/` (who I am, my projects, my preferences).
-- `~/Projects/ai-os/rules/never_do.md` (absolute prohibitions).
+- `$AI_OS_ROOT/CLAUDE.md` (master instructions).
+- `$AI_OS_ROOT/context/` (who I am, my projects, my preferences).
+- `$AI_OS_ROOT/rules/never_do.md` (absolute prohibitions).
 
 ### 4. Load skill `ai-os-karpathy` (mandatory after quickstart)
 
@@ -102,7 +102,7 @@ command -v yq >/dev/null && echo "✅ yq" || echo "❌ yq missing (brew install 
 ### 6. Verify Spec status
 
 ```bash
-[ -s ~/Projects/ai-os/specs/current_spec.md ] && echo "✅ Active Spec" || echo "ℹ️ No active Spec"
+[ -s "$AI_OS_ROOT/specs/current_spec.md" ] && echo "✅ Active Spec" || echo "ℹ️ No active Spec"
 ```
 
 ### 7. Check skills in 4 CLI dirs (usable by 5 CLIs — Hermes reads ~/.agents/skills via skills.external_dirs)
@@ -122,7 +122,7 @@ All should show 99 skills.
 ```markdown
 ## AI-OS Status
 
-✅ AI-OS installed at ~/Projects/ai-os/
+✅ AI-OS installed at $AI_OS_ROOT/
 ✅ 14/14 superpowers skills
 ✅ Context loaded (CLAUDE.md + context/ + rules/)
 ✅ 99 skills in 5 CLIs
@@ -158,13 +158,13 @@ All should show 99 skills.
 ## Pitfalls
 
 - ❌ **Don't skip the prerequisites check.** Without the 14 superpowers, workflows silently degrade (TDD without TDD, code-review without code-review).
-- ❌ **Don't invent paths.** If `~/Projects/ai-os/CLAUDE.md` doesn't exist, **fail** (don't assume).
+- ❌ **Don't invent paths.** If `$AI_OS_ROOT/CLAUDE.md` doesn't exist, **fail** (don't assume).
 - ❌ **Don't execute the setup script automatically.** The setup is heavy (brew, npm). The user must explicitly approve it.
 - ❌ **Don't modify the AI-OS repo.** This skill is read-only verification.
 
 ## Anti-patterns
 
-- Loading `ai-os-quickstart` on a Mac without `~/Projects/ai-os/` (path missing).
+- Loading `ai-os-quickstart` on a Mac without `$AI_OS_ROOT/` (path missing).
 - assuming the user wants to install when they only want to verify.
 - loading `ai-os-karpathy` without first verifying with `ai-os-quickstart`.
 
@@ -188,8 +188,8 @@ After running this skill, the agent should have:
 ## Related
 
 - **Skill:** `ai-os-karpathy` (loaded after this skill).
-- **Workflow:** `~/Projects/ai-os/workflows/project_start.md` — Spec + execution.
-- **Verify:** `bash ~/Projects/ai-os/setup/verify.sh` — 14 health checks.
+- **Workflow:** `$AI_OS_ROOT/workflows/project_start.md` — Spec + execution, only for work >~2 hours, multi-repo, or when the user asks for a Spec.
+- **Verify:** `bash "$AI_OS_ROOT/setup/verify.sh"` — 14 health checks.
 - **Setup:** `prompts/setup/03-required-skills.md` — install missing superpowers.
 
 ## Anti-patterns (extended)
