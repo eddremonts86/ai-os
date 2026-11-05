@@ -53,6 +53,8 @@ def entropy(v):
 
 def classify(key, value):
     """Heuristic verdict for a value found in a repo: (severity, reason). Never includes the value."""
+    if re.search(r"(^|_)(UUID|ID)$", key):
+        return "info", "identifier (UUID/ID), not a credential"
     if re.search(r"/|\.pem$|\.key$", value) and not re.search(r"://", value):
         return "info", "file path"
     if PLACEHOLDER.search(value) or re.search(r"localhost|127\.0\.0\.1", value):
