@@ -7,7 +7,7 @@
     name = Eduardo Schilling
     email = eddremonts86@gmail.com
 
-# Proyectos personales: ~/Projects/eddremonts86/* y ~/Projects/ai-os
+# Proyectos personales: ~/Projects/eddremonts86/* y $AI_OS_ROOT
 
 [alias]
     # No adicionales por ahora

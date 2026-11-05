@@ -370,7 +370,7 @@ grep -rE "(api[_-]?key|token|password|secret)\s*[:=]\s*['\"][a-zA-Z0-9_\-]{20,}"
 ## AI-OS canonical local env (source of truth)
 
 Inside the AI-OS workspace, the merged local environment lives at
-**`$AI_OS_ROOT/dev-env/env-config/.env`** (default root `~/Projects/ai-os`). It
+**`$AI_OS_ROOT/dev-env/env-config/.env`** (`$AI_OS_ROOT` = the AI-OS repo root). It
 unifies the env vars of every project (App, Database, Auth, Admin, LLM cloud/local,
 RAG, Agents, Hermes, Infra, GitHub, Monitoring, tokens).
 

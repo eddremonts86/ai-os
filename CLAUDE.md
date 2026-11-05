@@ -1,150 +1,86 @@
 # AI Operating System — Master Instructions
 
 > "Spec + Verifier + Environment" — Karpathy method applied to your Mac.
-> Any CLI (Claude Code, Hermes, Codex, Gemini, Antigravity) that reads this file or any sibling in `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, or `verifiers/` should follow these instructions.
+> Any CLI (Claude Code, Hermes, Codex, Gemini, Antigravity) that reads this file — directly or
+> via the `AGENTS.md` symlink — should follow these instructions and the files they point to in
+> `context/`, `rules/`, `workflows/`, `specs/` and `verifiers/`.
 
-## 1. Method: Spec → Verifier → Environment
+Set `AI_OS_ROOT` to this repository root before running path-based commands (typical default:
+`$HOME/Projects/ai-os`). Reference material lives in `docs/`: commands and per-CLI invocation in
+[`docs/cli-reference.md`](docs/cli-reference.md), the skills inventory and superpowers install
+notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree in
+[`docs/repo-layout.md`](docs/repo-layout.md).
 
-Set `AI_OS_ROOT` to this repository root before running path-based commands. The
-examples below use `$AI_OS_ROOT`; a typical local default is
-`$HOME/Projects/ai-os`.
+## 1. Method
 
-Before doing any non-trivial task:
+1. **Read** `context/00_profile.md` and `03_preferences.md`; other `context/` files only when the
+   task needs them (on-demand table in `rules/always_do.md`).
+2. **Decide whether the task needs a Spec.** A Spec (`workflows/project_start.md` →
+   `specs/current_spec.md`) is required only when the work is expected to take more than ~2
+   hours, touches more than one repo, or the user asks for one. Otherwise plan inline (use
+   `writing-plans` for multi-step work) and go.
+3. **Execute and verify** with `verification-before-completion` before claiming done. The
+   prompts in `verifiers/` (`critic_prompt.md`, `quality_checklist.md`,
+   `source_check_prompt.md`) are optional tools — use them when a second look is worth it,
+   not as a mandatory pass between blocks.
+4. **Archive** a completed Spec to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary, then
+   reset `specs/current_spec.md` to the no-active-Spec template. `specs/current_spec.md` holds
+   at most one active Spec.
 
-1. **Read** the relevant `context/` files (00_profile, 02_projects, 03_preferences, 04_tools, 05_sources).
-2. **Check** `specs/current_spec.md`. It is reserved for one active task; if it contains the no-active-Spec template, use `workflows/project_start.md` when a Spec is needed.
-3. **Execute** in blocks of <=30 min each. Between blocks, run `verifiers/critic_prompt.md` against the output.
-4. **Archive** completed Specs to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary, then reset `specs/current_spec.md` to the no-active-Spec template.
+## 2. Always follow
 
-## 2. Daily workflow
-
-```
-1. daily_start.md          # load context + skills
-2. project_start.md        # if new task, create Spec
-3. execute and verify the active task
-4. archive completed Specs + reset current_spec.md
-```
-
-## 3. Always follow
-
-- Read this file + relevant `context/` at the start of every session.
-- Use `using-superpowers` as the router for all skills (see `rules/always_do.md`).
-- When a task needs an env value/secret (DB URL, API key, port, LLM endpoint, token),
-  read `dev-env/env-config/.env` first (canonical merged local source) before inventing,
-  hardcoding, or asking; never echo or commit the real values. See `context/04_tools.md`
-  and `rules/always_do.md`.
-- Verify before claiming complete (see `verifiers/`).
-- Be terse, no ceremony, no over-formatting.
+- Read this file + relevant `context/` at the start of every session; session-start and
+  per-task steps are in `rules/always_do.md`.
+- Use `using-superpowers` as the router for all skills. Skill triggers per phase (brainstorming,
+  writing-plans, verification-before-completion, code-review-and-quality,
+  finishing-a-development-branch), diagram routing and UI-skill routing are owned by
+  `rules/always_do.md`; workflows for coding, research and content are in `workflows/`.
+- Ponytail (lazy senior dev, `full`) governs every code change on every CLI — climb the ladder
+  before writing, never at the cost of validation/security/a11y (see `rules/always_do.md`
+  "When writing code").
+- When a task needs an env value/secret (DB URL, API key, port, LLM endpoint, token), read
+  `dev-env/env-config/.env` first (canonical merged local source) before inventing,
+  hardcoding, or asking; never echo or commit the real values. See `context/04_tools.md` and
+  `rules/always_do.md`.
+- Parallel sub-agents are the default for 2+ independent workstreams (max 3 concurrent, this
+  CLI's native mechanism); always verify their output yourself. Details: `rules/always_do.md`
+  "ALWAYS: use sub-agents in parallel when possible".
+- Language and tone: chat in Spanish; code, commits, docs, logs, comments, error messages and
+  every AI-OS file in English. Terse, no ceremony, formatting only when it adds clarity. Owner:
+  `context/03_preferences.md`.
+- "luce como funciona, continua con la otra" = accept partial, keep going (do not ask "should I
+  continue?").
+- For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime
+  (browser nav, smoke test) and report concrete evidence. Always finish on URL + status for any
+  started service.
 - Report final state with concrete evidence (what worked, what failed, next step).
 
-## 4. Skill loading order (superpowers + AI-OS)
+## 3. Priority order
 
-1. **`using-superpowers`** (router) — at the start of every task.
-2. **`brainstorming`** — if the idea is vague.
-3. **`workflows/project_start.md`** (AI-OS native) — for new tasks or underspecified objectives. Produces a Spec in `specs/current_spec.md`. The gstack-vendored `spec` skill is an alternative 5-phase issue-filing flow, not part of AI-OS's Karpathy loop.
-4. **`writing-plans`** — after Spec, to break into blocks.
-5. **`executing-plans`** — execute block by block.
-6. **`verification-before-completion`** — between blocks.
-7. **`code-review-and-quality`** — before PR.
-8. **`finishing-a-development-branch`** — at the end.
-
-Plus AI-OS internal:
-
-9. **`workflows/daily_start.md`** — at the start of session.
-10. **`workflows/project_start.md`** — for new tasks.
-11. **`workflows/coding.md`** — for code work (feature, bug, refactor).
-12. **`workflows/research.md`** — for research.
-13. **`workflows/content_creation.md`** — for docs/ADRs.
-
-## 5. Output style
-
-- **Conversational**: terse, lowercase, direct. No "as you can see" or "I hope this helps".
-- **code/commits/docs**: English.
-- **error messages / logs**: English.
-- **comments in code**: English.
-- **formatting**: only use it when it adds clarity. Tables only when comparing 3+ items.
-
-## 6. Autonomy + max runtime evidence
-
-- Multi-step tasks (research/install/migration): dispatch subagents in parallel (max 3 concurrent) as default, using this CLI's own mechanism (see "How to dispatch" below).
-- "luce como funciona, continua con la otra" = accept partial, keep going (do not ask "should I continue?").
-- For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime (browser nav, smoke test) and report concrete evidence.
-- Always finish on URL + status for any started service.
-
-### Parallel sub-agents: the default
-
-**If a task has 2+ independent workstreams, dispatch them in parallel.** This is the default, not an exception. Sequential execution is only for tightly coupled steps.
-
-Concrete patterns where parallelism wins:
-
-- **Research + setup**: gather docs / context while preparing the environment.
-- **Multiple file edits**: 3+ files that don't depend on each other → 3 sub-agents in parallel.
-- **Multiple verifications**: lint + type check + tests in parallel (one subagent each).
-- **Multi-repo work**: changes in 2+ repos at once.
-- **Multi-CLI verification**: run the same check across Claude Code + Hermes + Codex + Gemini in parallel.
-
-How to dispatch (each CLI has its own mechanism — use the native one):
-
-| CLI                                    | Mechanism                                                                                                                                    |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Claude Code                            | `Task`/`Agent` tool — launch multiple agents in one message                                                                                  |
-| Hermes                                 | `delegate_task(tasks=[{"goal": "...", "toolsets": [...]}, ...])`                                                                             |
-| Codex / Gemini / Antigravity / MiniMax | Use native subagents or agent teams when available in the installed client; otherwise run independent background shells or work sequentially |
-
-Max 3 concurrent (in Hermes configured via `delegation.max_concurrent_children`; in Claude Code just cap yourself at 3).
-
-When NOT to dispatch: tasks <2 min, tightly coupled steps, interactive tasks, or when you don't know what the subagent would do.
-
-**Always verify subagent output yourself.** Subagents are self-reporting; require verifiable handles (URLs, paths, IDs) and check them before claiming success.
-
-Full details: `rules/always_do.md` section "ALWAYS: use sub-agents in parallel when possible".
-
-## 7. Languages
-
-- **Chat**: Spanish (lowercase, terse, no ceremonies).
-- **Code/commits/docs/logs/comments**: English.
-- **Error messages**: English.
-- **AI-OS files** (`CLAUDE.md`, `context/`, `rules/`, `workflows/`, `skills/`, `specs/`, `verifiers/`, `docs/`, `setup/`, `ai-config/`, `dev-env/`, `archive/`, `outputs/`, `prompts/`): all in English, always.
-
-## 8. Priority order
-
-1. Spec quality.
+1. Spec quality (or plan quality, when no Spec is required).
 2. Verifier passes.
 3. Runtime evidence.
 4. User experience.
 5. Code quality.
 6. Performance (last — premature optimization is the root of all evil).
 
-## 9. Memory
+## 4. Memory
 
-Canonical identity/preferences live in `context/` (this repo) — that is the source
-of truth. `setup/install-mac.sh` and `setup/install-windows.ps1` render
-`ai-config/templates/global-bridge.md.tmpl` into a per-machine adapter
-(`~/.ai-os/adapters/global-bridge.md`, with the discovered AI-OS root
-substituted — no committed user path) and symlink each CLI's global
-instruction file to it.
+Canonical identity/preferences live in `context/` (this repo) — that is the source of truth.
+Per-CLI global instruction files are symlinks to a rendered bridge (see
+`docs/cli-reference.md` "Per-machine bridge").
 
-Save durable per-CLI facts to that CLI's own memory store when (see below for when):
+Save durable per-CLI facts to that CLI's own memory store — Claude Code: the project memory dir
+(`MEMORY.md` index + one file per fact); Hermes: `~/.hermes/memories/` (`MEMORY.md` +
+`USER.md`); Codex: its built-in store. Sync notable cross-CLI facts back into `context/`. The
+graphiti/grepai memory stack is covered in `rules/always_do.md` "Use the memory stack".
 
-- **Claude Code** → the project memory dir (`MEMORY.md` index + one file per fact).
-- **Hermes** → `~/.hermes/memories/` (`MEMORY.md` + `USER.md`).
-- **Codex** → built-in memory store (sqlite, managed by the CLI).
+Save when the user states a preference or correction, an environment fact is discovered (OS
+quirk, path, tool version), or a convention or workflow stabilizes. Skip trivial or easily
+re-discoverable facts, raw data dumps, task progress (`specs/current_spec.md`) and
+completed-work logs (`archive/`).
 
-Sync notable, cross-CLI facts back into `context/` so every tool benefits. Save when:
-
-- User states a preference or correction.
-- Environment fact discovered (OS quirk, path, tool version).
-- Convention or workflow stabilized.
-
-Skip:
-
-- Trivial/obvious info.
-- Easily re-discoverable facts.
-- Raw data dumps.
-- Task progress (use `specs/current_spec.md`).
-- Completed-work logs (use `archive/`).
-
-## 10. Prohibitions (absolute)
+## 5. Prohibitions (absolute)
 
 See `rules/never_do.md`. In short:
 
@@ -154,226 +90,34 @@ See `rules/never_do.md`. In short:
 - Do not change config of other Hermes profiles without explicit user direction.
 - Do not install unverified skills without reviewing the source.
 
-## 11. Project structure
+## 6. Skills: where they live
 
-**The rule: everything above `apps/` is the operating system; everything from `apps/` down is
-what it produced.** Full decision record, including the entries that look like clutter and are
-load-bearing: [`docs/repo-layout.md`](docs/repo-layout.md).
+- Global skills: `ai-config/skills/<name>/` is the source of truth, symlinked to every CLI.
+  Never author a global skill directly in `~/.claude/skills/`.
+- Project-specific skills: `<project>/.agents/skills/<name>/`, not propagated. Several former
+  globals (iaworkspace, prod-fleet/deploy, containers, open-design, wave-template, drupal8,
+  hermes-mcp, plans) now live there — see `docs/skills-catalog.md`.
+- The 14 obra/superpowers skills plus `code-review-and-quality` are required; `setup/verify.sh`
+  checks them. Install and update notes: `docs/skills-catalog.md`.
 
-```
-ai-os/
-├── CLAUDE.md                    # this file (master instructions)
-├── AGENTS.md                    # symlink → CLAUDE.md, for CLIs that read that name
-├── Dockerfile*                  # deploy descriptors; root by necessity (see below)
-├── ai-os                        # the CLI entry point
-│
-│   # ── the framework ──────────────────────────────────────────────────
-├── context/                     # persistent context (profile, prefs, projects, tools)
-├── rules/                       # hard rules (always/ask/never)
-├── specs/                       # active Specs
-├── verifiers/                   # quality gates (post-task)
-├── skills/                      # the skill template + README only
-├── workflows/                   # recurring processes
-├── archive/                     # completed Specs
-├── outputs/                     # the framework's artifacts: research, audits, diagrams
-├── memory/                      # loop registry + graph state
-├── prompts/                     # original Karpathy prompts (English)
-├── ai-config/                   # AI config: skills, MCP, commands
-├── dev-env/                     # dev env: dotfiles, Brewfile, packages
-├── setup/                       # install scripts (Mac + Windows + dry-run)
-├── vendor/                      # third-party vendored skills (gstack, ecc, codex-plugin-cc)
-├── .github/                     # CI workflows (test-mac/linux/windows) + deploys
-├── docs/                        # documentation (README + guides)
-│
-│   # ── the products the framework produces ────────────────────────────
-└── apps/                        # the products, one directory each
-    ├── site/                    # the AI-OS landing (ai-os.eduardoinerarte.dk)
-    ├── plans-explorer/          # the plans SPA (plans.eduardoinerarte.dk)
-    ├── submission-api/          # the submissions write path (not deployed yet)
-    ├── create-ai-os/            # published npm package @edd_remonts/create-ai-os
-    └── data/                    # the plans product
-        ├── projects/            #   the corpus: 466 machine-written plan dirs
-        ├── tools/               #   the machinery
-        │   ├── problemhunt-scraper/  # capture
-        │   ├── plan-format/          # the contract, the gate, the formatter
-        │   ├── plans-pipeline/       # the daily loop
-        │   └── lib/                  # shared id allocation
-        ├── skills/              #   skills documenting this product's machinery
-        ├── progress/            #   the enrichment loop's 4-file set + per-agent logs
-        └── outputs/             #   the product's run artifacts (ignored, machine-local)
-```
+## 7. Do not "tidy" these
 
-Three things in that tree are deliberate and must not be "tidied":
+The rule: everything above `apps/` is the operating system; everything from `apps/` down is
+what it produced. The plans product moved to its own repo, **plansmith** (2026-09-25);
+`ai-os plans <cmd>` requires `PLANSMITH_ROOT`. Three things are deliberate:
 
 - **`AGENTS.md` is a symlink to `CLAUDE.md`.** It is how Codex and Antigravity find these
   instructions. Deleting it breaks them silently — they start with no instructions at all.
-- **`Dockerfile*` stay at the repo root.** They are deploy descriptors for the repository, and
-  Coolify addresses them by absolute path (`dockerfile_location=/Dockerfile`, `base_directory=/`);
-  moving them would mean editing live production configuration to land a directory rename.
-- **`outputs/` exists twice.** The root one holds the framework's research and audits; the one
-  under `apps/data/` holds the plans product's run artifacts. Both are ignored with a tracked
-  `.gitkeep`, separately, so either can start being tracked without the other.
+- **`Dockerfile` stays at the repo root.** Coolify addresses it by absolute path
+  (`dockerfile_location=/Dockerfile`, `base_directory=/`); moving it means editing live
+  production configuration.
+- **`outputs/` holds the framework's own research and audits**, ignored with a tracked
+  `.gitkeep`.
 
-Tooling never counts `..` hops to find the root — it walks up to the `CLAUDE.md` marker
-(`apps/data/tools/plan-format/lib/plan.mjs`). Hop counting broke silently on every move: an
-empty glob reads as "zero plans" and every downstream check still passes.
+New code that needs the repo root walks up to the `CLAUDE.md` marker instead of counting `..`
+hops (see `docs/repo-layout.md`).
 
-## 12. Commands quick reference
-
-```bash
-# Set once per shell; override it when the repository lives elsewhere.
-export AI_OS_ROOT="${AI_OS_ROOT:-$HOME/Projects/ai-os}"
-
-# Start session with AI-OS
-hermes chat --skills ai-os-quickstart
-
-# Or in any CLI
-cat "$AI_OS_ROOT/CLAUDE.md"
-# → paste at the start of the conversation
-
-# Verify
-bash "$AI_OS_ROOT/setup/verify.sh"
-
-# Create new Spec
-$EDITOR "$AI_OS_ROOT/specs/current_spec.md"
-
-# Archive completed Spec
-mv "$AI_OS_ROOT/specs/current_spec.md" "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-slug.md"
-```
-
-## 13. How to invoke from each CLI
-
-### Claude Code
-
-```bash
-# Auto-loads from ~/.claude/skills/
-# Manual: paste CLAUDE.md content at the start of the conversation
-```
-
-### Hermes
-
-```bash
-hermes chat --skills ai-os-karpathy
-hermes chat --skills ai-os-quickstart
-# or
-hermes chat   # skills already loaded from imported:
-```
-
-### Codex / Gemini / Antigravity
-
-```bash
-# Auto-loads from ~/.codex/skills/, ~/.gemini/skills/, ~/.agents/skills/
-```
-
-## 14. Skills already installed (quick reference)
-
-**Flat global skills** in `ai-config/skills/`, distributed to:
-
-- Claude Code, Codex, Gemini, Antigravity, Hermes, and MiniMax on Mac (via symlinks).
-- Workspace-scoped: `~/Projects/<project>/.agents/skills/`.
-
-Categories:
-
-- **superpowers (14 required, see section 16)**: using-superpowers, brainstorming, writing-plans, writing-skills, executing-plans, verification-before-completion, test-driven-development, systematic-debugging, finishing-a-development-branch, requesting-code-review, receiving-code-review, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees. Plus `code-review-and-quality` (required, but separate from the 14).
-- **AI-OS workflow skills (native)**: ai-os-karpathy, ai-os-quickstart.
-- **Vendored from gstack (optional, third-party)**: spec, context-save, context-restore — see `vendor/gstack/`. The native Spec/Plan workflow remains `workflows/project_start.md`.
-- **antfu (19)**: vite, vue, nuxt, nitro, pinia, pnpm, vitest, unocss, etc.
-- **anthropics (skills)**: claude-code, claude-api, frontend-design, mcp-builder, claude-best-practices, webapp-testing.
-- **taste-skill (v1, v2)**: anti-slop frontend design.
-- **secondsky (8)**: open-design, hcloud, coolify, prod-deploy, pnpm-docker, fleet-register, env-sync, containers-architecture.
-- **diagram-design (1, third-party MIT)**: 27 editorial diagram types → self-contained HTML + inline SVG, skinned with the AI-OS brand. Vendored, dark-first, brand already onboarded — see `ai-config/skills/diagram-design/VENDORED_FROM.md`.
-- **custom (Edd)**: ai-os-karpathy, ai-os-quickstart, wave-template, tanstack-*, vue-*, react-*, 30+ more.
-
-### Diagram routing
-
-Route by **destination artifact**, not by the word "diagram". Full rule in `rules/always_do.md`:
-branded deliverable → `diagram-design`; FigJam/Figma → figma MCP `generate_diagram`;
-claude.ai Artifact → `artifact-diagramming`; throwaway shape in a reply → fenced mermaid.
-Brand tokens live in `context/06_brand.md`. The gstack `diagram` skill (excalidraw triplet) was
-retired 2026-08-13 — it collided on every trigger with `diagram-design`.
-
-## 15. AI-OS as orchestrator
-
-AI-OS is the single source of truth for the AI setup:
-
-- **Skills** → `ai-config/skills/` (source of truth) → symlinks to supported CLIs.
-- **MCP servers** → `ai-config/mcp/*.yaml` → generated to `~/.hermes/config.yaml`.
-- **Dotfiles** → `dev-env/dotfiles/` → symlinks to `~/`.
-- **Setup scripts** → `setup/install-{mac,windows}.sh/ps1` (1-command per OS).
-- **CI** → `.github/workflows/test-{mac,linux,windows}.yml` validates that setup scripts work.
-
-To replicate on another Mac: `git clone + bash setup/install-mac.sh`. To replicate on Windows: `git clone + powershell -File setup/install-windows.ps1`.
-
-## 16. ⚠️ REQUIREMENT: superpowers skills (MANDATORY)
-
-AI-OS depends on the **14 superpowers skills** of `obra/superpowers` to function. Without them, workflows in `workflows/` will fail (they explicitly invoke skills like `using-superpowers`, `writing-plans`, `verification-before-completion`). This is the exact set checked by `setup/verify.sh` and `setup/install-mac.dry-run.sh` — treat those scripts as the source of truth for this list.
-
-### Required superpowers skills
-
-| Skill                            | Loaded when                             |
-| -------------------------------- | --------------------------------------- |
-| `using-superpowers`              | At the start of every task (router)     |
-| `brainstorming`                  | Idea is vague                           |
-| `using-git-worktrees`            | Large feature work or parallel branches |
-| `writing-plans`                  | After Spec, before execution            |
-| `writing-skills`                 | Creating or improving skills            |
-| `executing-plans`                | During execution (block by block)       |
-| `verification-before-completion` | Before claiming done                    |
-| `test-driven-development`        | Writing tests                           |
-| `systematic-debugging`           | Bug or unexpected behavior              |
-| `finishing-a-development-branch` | At the end of work                      |
-| `requesting-code-review`         | Asking for review                       |
-| `receiving-code-review`          | Receiving review                        |
-| `dispatching-parallel-agents`    | Multi-task work                         |
-| `subagent-driven-development`    | Executing implementation plans          |
-
-`code-review-and-quality` is a separate, equally-required skill (loaded "before PR", see section 4) but is not part of the obra/superpowers 14 and is not checked by `verify.sh` — don't conflate it with this list.
-
-AI-OS also ships 3 gstack-vendored skills (`spec`, `context-save`, `context-restore`) under `vendor/gstack/`. They are **not** part of the 14 required superpowers and follow gstack's own workflow (5-phase AskUserQuestion spec + GitHub issue filing). For AI-OS's Karpathy-style Spec → Plan → Execute → Verify, use `workflows/project_start.md` instead.
-
-### Verify that all 14 are installed
-
-```bash
-for skill in brainstorming dispatching-parallel-agents executing-plans finishing-a-development-branch receiving-code-review requesting-code-review subagent-driven-development systematic-debugging test-driven-development using-git-worktrees using-superpowers verification-before-completion writing-plans writing-skills; do
-  [ -d "$HOME/.claude/skills/$skill" ] || echo "MISSING: $skill"
-done
-```
-
-### Setup on a new Mac (required for AI-OS to work)
-
-The 14 superpowers are vendored in `ai-config/skills/` (committed to this repo) and
-distributed by `setup/install-mac.sh` along with every other skill — no separate
-download needed:
-
-```bash
-# 1. Install (links all skills, including the 14 superpowers, into every CLI)
-bash "$AI_OS_ROOT/setup/install-mac.sh"
-
-# 2. Verify
-bash "$AI_OS_ROOT/setup/verify.sh"
-# → Section 4 should show: 14/14 superpowers skills OK
-```
-
-To update the vendored superpowers from upstream, diff against
-https://github.com/obra/superpowers and copy changes into `ai-config/skills/`.
-
-Or use the comprehensive script `prompts/setup/03-required-skills.md` which automates the full setup.
-
-## 17. SKILLS.md locations (do not confuse)
-
-There are TWO levels of skills:
-
-1. **Global** (`ai-config/skills/<name>/`) — flat skills propagated via symlinks to supported CLIs.
-2. **Workspace** (`~/Projects/<project>/.agents/skills/<name>/`) — project-specific, NOT propagated.
-
-Hermes does not get a symlinked skill copy at all: it natively scans
-`~/.agents/skills/` via `skills.external_dirs` in `~/.hermes/config.yaml`
-(registered by `setup/generate-mcp-config.py`), confirmed against
-[Hermes's External Skill Directories docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills).
-
-When writing a new skill, ask: "is this workspace-specific or globally useful?". If global → put it in `ai-config/skills/`. If workspace → put it in `<project>/.agents/skills/`.
-
-## 18. Final rule
+## 8. Final rule
 
 If you're not sure what to do:
 
@@ -381,4 +125,5 @@ If you're not sure what to do:
 2. Re-read `context/03_preferences.md`.
 3. Run `workflows/daily_start.md`.
 4. If the doubt persists, ask the user (with options).
-5. If the user says "go", execute approved reversible work without further questions; keep action-specific approval for protected actions.
+5. If the user says "go", execute approved reversible work without further questions; keep
+   action-specific approval for protected actions.

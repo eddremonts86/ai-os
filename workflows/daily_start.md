@@ -2,9 +2,9 @@
 
 Workflow to start any work session with me.
 
-> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, this workflow will fail at step 2 (using-superpowers is missing).
+> **Prerequisite:** have the 14 superpowers skills installed (see `docs/skills-catalog.md` "Superpowers skills"). Without them, this workflow will fail at step 2 (using-superpowers is missing).
 >
-> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
+> Run `bash "$AI_OS_ROOT/setup/verify.sh"` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
 ## When to use
 
@@ -27,9 +27,8 @@ cat "$AI_OS_ROOT/CLAUDE.md"
 
 The skill `ai-os-karpathy` (or reading CLAUDE.md) provides:
 
-- 18 sections of master instructions.
-- Link to `rules/`, `context/`, `specs/`, `verifiers/`, `workflows/`.
-- List of all installed skills.
+- The master instructions (method, always-follow rules, priorities, prohibitions).
+- Links to `rules/`, `context/`, `specs/`, `verifiers/`, `workflows/`, and the reference docs (`docs/skills-catalog.md`, `docs/cli-reference.md`).
 
 ### 2. → Load skill `using-superpowers` (load skill)
 
@@ -41,7 +40,7 @@ How it works:
 - Loads the specific skill that applies.
 - Continuously re-evaluates as the task progresses.
 
-If `using-superpowers` is not installed → see CLAUDE.md section 16 for the install script.
+If `using-superpowers` is not installed → see `docs/skills-catalog.md` "Setup on a new Mac".
 
 ### 3. → Load skill `brainstorming` (load skill)
 
@@ -66,29 +65,21 @@ The `daily_start` workflow of AI-OS has 7 steps:
 1. Load AI-OS (step 1 of this workflow).
 2. → Load `using-superpowers` (step 2 of this workflow).
 3. → Load `brainstorming` if the idea is vague (step 3 of this workflow).
-4. Read `context/` (profile, projects, preferences, tools).
+4. Read `context/00_profile.md` and `03_preferences.md`; the rest of `context/` on demand.
 5. Read `rules/` (always_do, ask_before_doing, never_do).
 6. Read `specs/current_spec.md`. If it contains the no-active-Spec template → there is no active Spec. Otherwise, continue the one active task.
-7. Start the task. Follow `workflows/project_start.md` if a new Spec is needed.
+7. Start the task. Follow `workflows/project_start.md` only if the task needs a Spec (>~2 hours, more than one repo, or the user asks for one).
 
 ### 5. Read `context/` (read files)
 
-```bash
-# Read all context in order
-for f in "$AI_OS_ROOT"/context/*.md; do
-  echo "=== $f ==="
-  cat "$f"
-done
-```
-
-These 6 files give you the durable context:
+Read only the two small files up front:
 
 - `00_profile.md` — who I am.
-- `01_business_or_work.md` — Schilling + personal projects.
-- `02_projects.md` — active/archived inventory.
 - `03_preferences.md` — language, tone, formatting.
-- `04_tools.md` — macOS, terminals, CLIs, packages.
-- `05_sources.md` — official docs + reference repos.
+
+The rest of `context/` is read on demand — see the "Read only when the task needs it" table
+in `rules/always_do.md`. Reading all of it up front cost ~15K tokens per session
+(`02_projects.md` alone is 28K characters) for files most tasks never use.
 
 ### 6. Read `rules/` (read files)
 
@@ -101,7 +92,7 @@ done
 
 The 3 rules files are **hard constraints**:
 
-- `always_do.md` — 23 mandatory actions.
+- `always_do.md` — mandatory actions per phase + parallel dispatch rule.
 - `ask_before_doing.md` — 30+ actions that require explicit confirmation.
 - `never_do.md` — 60+ absolute prohibitions.
 
@@ -113,9 +104,9 @@ After reading CLAUDE.md + context/ + rules/, ask the user:
 
 Possible paths:
 
-- **New task** → follow `workflows/project_start.md` to create a Spec.
+- **Large task** (>~2 hours, more than one repo, or the user asks for a Spec) → follow `workflows/project_start.md` to create a Spec.
 - **Existing Spec** → execute block by block.
-- **Quick task** (<15 min) → do it directly; only create and archive a Spec when the task needs one.
+- **Any other task** → plan inline (`writing-plans` for multi-step work), do it, verify with `verification-before-completion`. No Spec.
 - **Research** → follow `workflows/research.md`.
 - **Code work** → follow `workflows/coding.md`.
 
@@ -133,5 +124,5 @@ At the end of this workflow, you should have:
 - ❌ Skipping step 2 (using-superpowers) → tasks lose the superpowers framework.
 - ❌ Skipping step 5 (context/) → you'll forget preferences or project details.
 - ❌ Skipping step 6 (rules/) → you might violate `never_do.md`.
-- ❌ Starting a task without a Spec → use `workflows/project_start.md` first.
+- ❌ Starting a large task (>~2 hours or multi-repo) without a Spec → use `workflows/project_start.md` first. Smaller tasks do not need one.
 - ❌ Asking "should I continue?" mid-task for approved reversible work. Protected actions still require action-specific approval.

@@ -1,13 +1,13 @@
 # Local Skills
 
-Skills specific to this AI-OS. **Not global** — they live here because they apply only to the `~/Projects/ai-os/` context.
+Skills specific to this AI-OS. **Not global** — they live here because they apply only to the `$AI_OS_ROOT/` context.
 
 ## Difference with global skills
 
 | Type          | Path                               | Purpose                                        |
 | ------------- | ---------------------------------- | ---------------------------------------------- |
 | **Global**    | `~/.claude/skills/<name>/`         | Skills available to any project (99 in AI-OS). |
-| **Local**     | `~/Projects/ai-os/skills/<name>/`  | Skills specific to AI-OS (this directory).     |
+| **Local**     | `$AI_OS_ROOT/skills/<name>/`  | Skills specific to AI-OS (this directory).     |
 | **Workspace** | `<project>/.agents/skills/<name>/` | Project-specific skills, not propagated.       |
 
 ## When to create a local skill

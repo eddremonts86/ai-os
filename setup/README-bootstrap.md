@@ -33,8 +33,8 @@ GPU only pays off on generation. Pick whichever you would rather look at.
 The host shape is a launchd service (`ai.os.ollama`), so it survives a reboot:
 
 ```bash
-bash ~/Projects/ai-os/memory/launchd/install-ollama.sh            # install / repair
-bash ~/Projects/ai-os/memory/launchd/install-ollama.sh --status    # loaded? answering? model?
+bash "$AI_OS_ROOT/memory/launchd/install-ollama.sh"            # install / repair
+bash "$AI_OS_ROOT/memory/launchd/install-ollama.sh" --status    # loaded? answering? model?
 ```
 
 Two traps it exists to avoid, both of which had already bitten:
@@ -54,7 +54,7 @@ When you want to bring the stack up and index every project under `~/Projects/`,
 run **one** command:
 
 ```bash
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh"
 # or, via the CLI wrapper:
 ai-os memory bootstrap
 ```
@@ -62,10 +62,10 @@ ai-os memory bootstrap
 It is **idempotent** — re-running it is safe and does the right thing each time:
 
 1. Verifies Docker is reachable.
-2. Sources `~/Projects/configs/env.ts` (for `MINIMAX_API_KEY` etc.).
+2. Hands `dev-env/env-config/.env` to `docker compose --env-file` (never sourced) for optional `GRAPHITI_LLM_*` overrides.
 3. Starts `ia-os-falkordb` via `memory/docker-compose.yml` (unified) and waits
    for its healthcheck (max 30 s).
-4. Starts `ia-os-graphiti-mcp` if `MINIMAX_API_KEY` is set; waits for `:8021/health`.
+4. Starts `ia-os-graphiti-mcp` (LLM = host Ollama by default, no key needed); waits for `:8021/health`.
 5. Ensures Ollama answers on `:11500` (installing the `ai.os.ollama` launchd service if
    not) and that `nomic-embed-text` is pulled.
 6. Auto-indexes every project under `~/Projects/` via `codebase-memory-mcp
@@ -89,60 +89,79 @@ It is **idempotent** — re-running it is safe and does the right thing each tim
 
 ```bash
 # First-time setup on a fresh machine
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh"
 
 # After a big batch of changes — reindex everything
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --refresh
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --refresh
 
 # Just bring the stack up (no indexing)
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --only-start
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --only-start
 
 # Just refresh the indexes (stack assumed running)
-bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh --only-index
+bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" --only-index
 ```
 
 > **The `ai-os memory` wrapper** is the preferred way to invoke these scripts
 > once `ai-os` is on your PATH (the symlink `~/.local/bin/ai-os` points at the
-> dispatcher `~/Projects/ai-os/ai-os`):
+> dispatcher `$AI_OS_ROOT/ai-os`):
 >
 > ```bash
-> ai-os memory status     # same as bash ~/Projects/ai-os/memory/ai-os-memory.sh status
-> ai-os memory bootstrap  # same as bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh
-> ai-os loop ...          # routes to ~/Projects/ai-os/memory/ai-os-loop.sh
+> ai-os memory status     # same as bash "$AI_OS_ROOT/memory/ai-os-memory.sh" status
+> ai-os memory bootstrap  # same as bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh"
+> ai-os loop ...          # routes to $AI_OS_ROOT/memory/ai-os-loop.sh
 > ```
 
-## Scheduled reindex: cron 6×/day
+## Health monitor: `ai-os health`
 
-A system crontab entry runs `memory/cron-reindex.sh` at 00:00, 04:00, 08:00, 12:00,
-16:00, 20:00 — six evenly-spaced runs per day. It:
+`setup/verify.sh` checks that things are installed; `ai-os health`
+(`setup/ai-os-health.py`) checks that they work: a real graphiti search plus the last
+24h of extraction results, the graphiti LLM's structured output, Ollama's running vs
+installed version, a grepai search, the codebase-memory index, reindex freshness, an
+MCP `initialize` against every enabled server, the Coolify/Hetzner/GitHub tokens, the
+latest CI run per workflow on main, and free disk. `--json` for machines, `--only
+mcp,graphiti` to narrow it, exit 1 on any FAIL.
 
-- bails early (and quietly) if `ia-os-falkordb` is not running, so the cron's
-  absence of the stack does not produce confusing errors
-- iterates the same set of projects as the bootstrap
+The launchd agent `ai.os.health` runs it at 09:30 and 15:30 with `--notify` (macOS
+notification on FAIL) and keeps 30 days of `memory/logs/health-*.log`:
+
+```bash
+bash memory/launchd/install-health.sh            # install + run once
+bash memory/launchd/install-health.sh --status   # last report
+```
+
+## Scheduled reindex: launchd 6×/day
+
+The launchd agent `ai.os.reindex` runs `memory/cron-reindex.sh` at 00:00, 04:00,
+08:00, 12:00, 16:00, 20:00 (and catches up after sleep). It replaced a crontab entry
+that pointed at the old machine's path and had not run since 2026-09-18. It:
+
+- iterates the same set of projects as the bootstrap: git repos up to 3 levels
+  below `AI_OS_PROJECTS_DIR` (default: the directory containing ai-os), minus
+  `AI_OS_REINDEX_SKIP` (default `/inHold/`)
 - re-indexes each (cheap on the index side; `codebase-memory-mcp` is
-  content-addressed)
+  content-addressed — ai-os takes ~1.3 s)
+- refreshes grepai's index of ai-os
 - writes a log to `memory/logs/cron-reindex-<timestamp>.log` and prunes logs
   older than 30 days
 
-View / re-install the crontab:
+Install / check / remove the agent (install also runs it once and prints the summary):
 
 ```bash
-crontab -l
-# (crontab -l 2>/dev/null | grep -v 'memory/cron-reindex.sh'; \
-#   echo '0 0,4,8,12,16,20 * * * /Users/edd/Projects/ai-os/memory/cron-reindex.sh') \
-#  | crontab -
+bash memory/launchd/install-reindex.sh
+bash memory/launchd/install-reindex.sh --status
+bash memory/launchd/install-reindex.sh --uninstall
 ```
 
 ## What goes where
 
 ```
-~/Projects/ai-os/
+$AI_OS_ROOT/
 ├── ai-os                      # Top-level CLI dispatcher (routes memory|loop|bootstrap)
 ├── memory/
 │   ├── ai-os-memory.sh        # Memory-stack CLI: status / start / stop / browse / reindex / bootstrap
 │   ├── docker-compose.yml     # UNIFIED compose: `name: ia-os` — all services in one Docker project
 │   │                          # Defines: ia-os-falkordb, ia-os-graphiti-mcp, ia-os-ollama (profile)
-│   ├── cron-reindex.sh        # 6x/day reindex (called by system crontab)
+│   ├── cron-reindex.sh        # 6x/day reindex (launchd agent ai.os.reindex)
 │   ├── ai-os-loop.sh          # Spec → Verifier → Environment loop
 │   ├── falkordb/
 │   │   ├── data/              # FalkorDB persistence (bind mount, absolute path in compose)
@@ -162,7 +181,7 @@ crontab -l
 ## Quick health check
 
 ```bash
-bash ~/Projects/ai-os/memory/ai-os-memory.sh status
+bash "$AI_OS_ROOT/memory/ai-os-memory.sh" status
 ```
 
 Should print all green. If something is red, the message tells you what to do

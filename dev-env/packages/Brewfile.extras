@@ -1,0 +1,68 @@
+# Brewfile.extras — optional packages, installed only with EXTRAS=1
+# bash setup/install-mac.sh            → core only (dev-env/packages/Brewfile)
+# EXTRAS=1 bash setup/install-mac.sh   → core + everything below
+#
+# Install standalone at any time:
+#   brew bundle install --file=dev-env/packages/Brewfile.extras
+
+# ─── Taps ───
+tap "hashicorp/tap"  # for terraform
+tap "aws/tap"        # for awscli
+
+# ─── Language runtimes (only if you code in these) ───
+brew "go"
+brew "rust"
+brew "rustup"               # superseded by "rust"; kept for completeness
+brew "ruby"
+brew "openjdk@17"
+
+# ─── Infra / Cloud CLIs (only if you do k8s/terraform/ansible work) ───
+brew "kubernetes-cli"       # kubectl
+brew "helm"
+brew "minikube"
+brew "k9s"
+brew "terraform"
+brew "ansible"
+brew "hcloud"                # Hetzner Cloud CLI
+
+# ─── Build / Package managers ───
+brew "yarn"                  # redundant with pnpm
+brew "composer"              # PHP
+
+# ─── Network / API ───
+brew "httpie"
+brew "mkcert"                # local TLS certs
+
+# ─── Fonts ───
+cask "font-caskaydia-cove-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "font-fira-code-nerd-font"
+
+# ─── Terminal (alternative) ───
+cask "iterm2"                 # fallback if Warp fails
+
+# ─── Editor (alternative) ───
+cask "windsurf"               # Antigravity / VSCode fork with AI
+
+# ─── Productivity ───
+cask "raycast"                # launcher
+cask "keepassxc"              # password manager
+
+# ─── Dev tools (GUI) ───
+cask "postman"                # API testing
+cask "tableplus"              # DB client
+cask "fork"                   # Git client
+
+# ─── Browser (alternative) ───
+cask "firefox"
+
+# ─── Communication ───
+cask "slack"
+cask "discord"
+
+# ─── Browser / system utilities (moved from core Brewfile 2026-11-05) ───
+cask "google-chrome"
+cask "alt-tab"              # window switcher
+cask "appcleaner"
+cask "balenaetcher"         # USB bootable
+cask "the-unarchiver"

@@ -203,3 +203,9 @@ Concrete case from `ai-os/`: `~/.hermes/config.yaml` reported `external_dirs: []
 9. Deploy verifies the app answers — health endpoint *and* a real page.
 10. `paths-ignore` for documentation.
 11. Cache lockfile-keyed browsers, eslint and tsc fingerprints; measure anything else before adding it.
+
+---
+
+## Gates, previews and rollouts
+
+Gate order (lint → typecheck → unit → build → integration → e2e → security → bundle size), branch protection, per-PR preview deploys, feature-flag on/off runs, staged production rollouts and size budgets: see [`references/gates-and-rollouts.md`](references/gates-and-rollouts.md).

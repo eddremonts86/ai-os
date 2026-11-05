@@ -53,3 +53,7 @@ Use active voice as default. A control should say exactly what happens when it's
 Treat failure and emptiness as moments for direction, not mood. Explain what went wrong and how to fix it, in the interface's voice rather than a person's. Errors don't apologize, and they are never vague about what happened. An empty screen is an invitation to act.
 
 Keep the register conversational and tuned: plain verbs, sentence case, no filler, with tone matched to the brand and the audience. Let each element do exactly one job. A label labels, an example demonstrates, and nothing quietly does double duty.
+
+## Optional: token-locked aesthetic anchors
+
+When the brief leaves direction open and you want a hard-edged territory instead of a vibe, see [references/aesthetic-anchors.md](references/aesthetic-anchors.md): eight anchors (Swiss, Industrial, Brutalist, Aurora, Chaotic, Retro-Futuristic, Organic, Lo-Fi) with exact palette/type/texture tokens and "breaks if" rules, plus a content-discipline list (no fabricated data, filler labels, themed standard copy, or glyph icons).

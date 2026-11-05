@@ -4,6 +4,18 @@
 > Written 2026-08-18, when the reorganisation finished. Read this before moving anything at
 > the repo root — several entries look like clutter and are load-bearing.
 
+## 2026-09-25 update: the plans product moved to its own repo
+
+Everything this document originally filed under `apps/data/`, `apps/plans-explorer/`,
+`apps/plans-api/` and `apps/submission-api/` moved out to a new repo, **plansmith**, because the
+repo had grown four unrelated things (a personal AI-tooling framework, a data product, two
+deployed web apps, vendored third-party skills) with almost no coupling between the framework
+side and the product side (19 of 275 commits touched both). Internal paths inside plansmith are
+unchanged (`apps/data/projects`, `apps/plans-explorer`, ...) so its own tools, Dockerfiles and
+workflows needed no path edits — only `ai-os plans` in this repo changed, now requiring
+`PLANSMITH_ROOT` to be set. See plansmith's own `CLAUDE.md` for its layout. The corpus count
+below (466) and the tree under "Layout" describe the **pre-split** state; read them as history.
+
 ## The rule
 
 **Everything above `apps/` is the operating system. Everything from `apps/` down is what the
@@ -43,6 +55,8 @@ ai-os/
 ├── docs/                       # this file and its siblings
 ├── intent/                     # AI-native SDLC intake — intent.md home (template + accepted intents)
 ├── memory/                     # loop registry + graph state
+├── llm/                        # local/cloud chat router (native Ollama, MiniMax fallback)
+├── .github/                    # CI workflows (test-mac/linux/windows) + deploys
 ├── archive/                    # completed Specs
 ├── outputs/                    # the FRAMEWORK's artifacts: research, audits, diagrams
 ├── vendor/                     # third-party vendored skills (193 MB, read-only) — plus ponytail cache at ~/.cache/ai-os/ponytail
@@ -102,7 +116,7 @@ either can start being tracked without dragging the other along.
 
 `README.md` and `skill_template.md`. `prompts/setup/02-master-prompt.md` and
 `prompts/skill-creation/04-convert-to-skill.md` both point at the template, and
-`CLAUDE.md` §17 documents this as the workspace-skill location. Global skills live in
+`docs/skills-catalog.md` ("Where skills live") documents the skill locations. Global skills live in
 `ai-config/skills/`; nothing auto-scans root `skills/`, which is why a product skill could
 live there unnoticed for weeks.
 
@@ -124,6 +138,11 @@ function findRoot(from) {
 This exists **because** of this reorganisation. Every `../..` hop count in the tooling broke
 the moment a directory moved, and the failures were silent (an empty glob reads as "zero plans"
 and every downstream check passes). Anything new that needs the repo root must use the marker.
+
+After the plansmith split (2026-09-25) the marker walk is the pattern the plansmith repo's
+tools use for their own root. Here the framework's own scripts mostly resolve `AI_OS_ROOT` by
+symlink-following (`ai-os`) or hop-counting (`install-mac.sh`); hop counting is the thing that
+broke silently on every product-side move before the split.
 
 ### An explicit `AI_OS_ROOT` beats the marker, and the container has no marker
 
@@ -197,7 +216,7 @@ Earlier stages of the same reorganisation: `site/` → `apps/site/`, `plans-expl
 | What         | Note                                                                                                                                                                |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `_agent5/`   | 268 KB of Python scratch from the aborted batch-3 enrichment. Gitignored via `_agent*/`, so invisible to git                                                        |
-| `plans-api/` | 13 MB containing **only `node_modules`**. Its source lives on the unmerged `feat/plans-api` branch. When that branch lands, the source belongs at `apps/plans-api/` |
+| `plans-api/` | 13 MB containing **only `node_modules`**. Its source landed in the **plansmith** repo at `apps/plans-api/` (split 2026-09-25); nothing of it belongs here any more |
 
 ## Work that is deliberately not here yet
 
@@ -209,7 +228,7 @@ on 2026-08-18. Recorded because "why is this still a branch?" is otherwise unans
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `feat/plans-cron`              | **absorbed.** Its `scrape-cron.sh` was ported to `apps/data/tools/plans-pipeline/`, because the launchd plist already pointed at the new path and the file existed nowhere. Its README rewrite was *not* taken — dev's version is later and documents the 4 h cadence and the real Hermes job id                                                                                                                                                                                                                                                                                                                                                                      |
 | `chore/cron-corpus-2026-08-17` | **partially taken.** The scraper's modular `sources/` refactor and its HN/IndieHackers fixes landed. Its 1,014 draft plans and its `state.json` did not: importing the cursor would have marked them seen and stopped future scrapes from finding them. **The re-scrape only partly worked.** It ran on 2026-08-18 and brought 810 captures, but comparing by source url shows **360 of the branch's captures are still absent from main** — 288 Hacker News, 42 BetaList, 30 ProductHunt. HN's Algolia feed returns only recent items and those ids have aged out, so those do not come back from a scrape. They have to be ported off the branch or they go with it |
-| `feat/plans-api`               | **deferred, branch intact.** A Fastify read-only API over the corpus, built for builderhunt to consume. Nothing consumes it yet. When it lands it belongs at `apps/plans-api/`, and the zero-dependency shape of `apps/submission-api/` is worth reconsidering against it first                                                                                                                                                                                                                                                                                                                                                                                       |
+| `feat/plans-api`               | **deferred, branch intact.** A Fastify read-only API over the corpus, built for builderhunt to consume. Nothing consumes it yet. It has since landed in the **plansmith** repo at `apps/plans-api/`, and the zero-dependency shape of `apps/submission-api/` is worth reconsidering against it first                                                                                                                                                                                                                                                                                                                                                                                       |
 
 The general rule these follow: a branch older than a layout change is ported, not merged. Take
 its content, re-apply the current paths, and re-verify by running the thing — the scraper port

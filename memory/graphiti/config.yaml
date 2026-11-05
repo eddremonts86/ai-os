@@ -10,7 +10,7 @@
 # official docs use for local Ollama models. No code changes needed in
 # Graphiti itself.
 #
-# Real credentials (from /Users/edd/Projects/configs/env.ts, 2026-07-13):
+# Real credentials (from $(dirname "$AI_OS_ROOT")/configs/env.ts, 2026-07-13):
 # this Mac's actual MiniMax account uses the international endpoint
 # https://api.minimaxi.chat/v1 (NOT api.minimax.io — both may work, but this
 # is the one this specific account/key is confirmed against) and model
@@ -34,7 +34,7 @@
 # from sentence-transformers).
 #
 # Tested end-to-end with the real MiniMax key from
-# /Users/edd/Projects/configs/env.ts via manual MCP protocol calls
+# $(dirname "$AI_OS_ROOT")/configs/env.ts via manual MCP protocol calls
 # (initialize -> notifications/initialized -> tools/call add_memory over the
 # streamable-HTTP endpoint). Real container logs confirm the request now
 # genuinely reaches MiniMax: `POST https://api.minimaxi.chat/v1/chat/completions`
@@ -133,14 +133,23 @@ server:
   host: "0.0.0.0"
   port: 8000
 
+# UPDATE 2026-11-05: the default LLM is now the host's native Ollama, not MiniMax.
+# The MiniMax account returned `402 insufficient balance` on every call, so every
+# add_memory failed and the graph stayed empty. Local extraction is verified
+# end-to-end (add_memory → search_memory_facts) and costs nothing. MiniMax (or
+# any OpenAI-compatible endpoint) still works by overriding the three
+# GRAPHITI_LLM_* variables in memory/docker-compose.yml's environment.
 llm:
-  provider: "openai" # MiniMax impersonates "openai" via a custom api_url — same trick as the official Ollama example. Confirmed working with the custom-built image (see STATUS note above).
-  model: ${MINIMAX_MODEL:MiniMax-M3} # reasoning model — safe again now the image patches force json_object mode and strip <think> blocks, see STATUS note above
-  max_tokens: 16384 # M3's <think> reasoning counts against the same completion budget as the final JSON answer (MiniMax bills it as "reasoning_tokens", same pattern as OpenAI o1/o3) — 4096 was too small and caused truncated/malformed JSON ("Unterminated string", "Extra data") on the larger fact/edge-extraction schema specifically
+  provider: "openai" # any OpenAI-compatible endpoint impersonates "openai" via a custom api_url (Ollama, MiniMax)
+  model: ${GRAPHITI_LLM_MODEL:gemma3:12b}
+  # 4096 for local gemma3: it sometimes loops in JSON mode, and at ~25 tok/s a 16384 cap
+  # meant ~11 min per stuck call (seen 2026-11-05). Raise to 16384 for a reasoning model
+  # (MiniMax-M3 spends completion tokens on <think>; 4096 truncated its JSON).
+  max_tokens: ${GRAPHITI_LLM_MAX_TOKENS:4096}
   providers:
     openai:
-      api_key: ${MINIMAX_API_KEY}
-      api_url: ${MINIMAX_BASE_URL:https://api.minimaxi.chat/v1}
+      api_key: ${GRAPHITI_LLM_API_KEY:ollama} # Ollama ignores it
+      api_url: ${GRAPHITI_LLM_BASE_URL:http://host.docker.internal:11500/v1}
 
 embedder:
   provider: "openai" # Ollama (local, already running for the rest of the AI-OS memory stack) impersonates "openai" the same way

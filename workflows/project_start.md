@@ -2,18 +2,20 @@
 
 Workflow to start a new task, creating a Spec and breaking it into blocks.
 
-> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+> **Prerequisite:** have the 14 superpowers skills installed (see `docs/skills-catalog.md` "Superpowers skills"). Without them, the load skill steps in this workflow will fail.
 >
-> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
+> Run `bash "$AI_OS_ROOT/setup/verify.sh"` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
 ## When to use
 
-- Task >30 min estimated.
-- Task touches multiple files.
-- New feature, large refactor, complex bug.
-- Anything that needs a Spec before execution.
+A Spec is opt-in. Use this workflow only when:
 
-Do not use for: trivial tasks, single-line fixes, quick questions.
+- The work is expected to take more than ~2 hours.
+- The work touches more than one repo.
+- The user asks for a Spec.
+
+For everything else, plan inline (`writing-plans` for multi-step work) and verify with
+`verification-before-completion` — no Spec, no archive.
 
 ## Steps
 
@@ -44,7 +46,7 @@ one active task only. Fill in each section:
 - **Context**: why this task exists, what problem it solves.
 - **Acceptance criteria**: specific, measurable conditions.
 - **Non-goals**: explicit list of what we WON'T do.
-- **Plan**: blocks of <=30 min each.
+- **Plan**: blocks small enough to verify one at a time.
 - **Verification per block**: how to know each block worked.
 - **Risk and mitigation**: known risks + how to mitigate.
 - **References**: links to related docs, code, conversations.
@@ -160,7 +162,8 @@ At the end of this workflow, you should have:
 
 ## Anti-patterns
 
-- ❌ Skipping Spec creation for "small" tasks → they grow and become unmanageable.
+- ❌ Skipping the Spec once a task crosses the threshold (>~2 hours or multi-repo) → re-scope and write one.
+- ❌ Writing a Spec the user did not ask for on a task below the threshold → ceremony, not value.
 - ❌ Not getting user approval before executing → wrong direction wastes time.
 - ❌ Executing all blocks at once without verifying → cascading failures.
 - ❌ Not archiving the Spec → loses institutional knowledge.

@@ -1,6 +1,6 @@
 ---
 name: quality-rubrics
-description: "Use when you need an explicit pass/fail evaluation matrix to judge work before declaring it done — reviewing a feature, PR, spec, deliverable, or another agent's output against objective criteria. Produces a rubric of weighted, binary-checkable criteria, scores the artifact against it, and returns a PASS/FAIL verdict with evidence per criterion. Pairs with verification-before-completion (runtime evidence) and eval-harness (EDD metrics). Use when 'is this actually good enough?' needs a defensible answer, not a vibe."
+description: "Use when you need an explicit pass/fail matrix to judge work before declaring it done: a feature, PR, spec, deliverable or another agent's output. Builds weighted, binary-checkable criteria, scores the artifact and returns PASS/FAIL with evidence per criterion. Use when \"is this actually good enough?\" needs a defensible answer."
 user-invocable: true
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 license: Apache 2.0

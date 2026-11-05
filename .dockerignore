@@ -1,7 +1,8 @@
-# Keep the Docker build context small. All three images build from the repo root:
+# Keep the Docker build context small. All four images build from the repo root:
 #   Dockerfile                  → the landing (apps/site/)
 #   Dockerfile.plans-explorer   → the explorer (apps/data/projects/ + apps/plans-explorer/)
 #   Dockerfile.submission-api   → the write path (apps/submission-api/ + the schema)
+#   Dockerfile.plans-api        → the read API (apps/plans-api/, corpus via the indexer)
 #
 # Nothing here is required by either build. Excluding node_modules matters most:
 # the image runs `npm ci` itself, and shipping a host-built tree into the context

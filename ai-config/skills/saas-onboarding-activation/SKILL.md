@@ -1,6 +1,6 @@
 ---
 name: saas-onboarding-activation
-description: Design onboarding that reaches first real value fast, around a defined activation event — instead of a feature tour nobody finishes. Use when asked to "design/fix the onboarding", "improve activation", "users sign up and never come back", "add a setup checklist", "reduce time to value", or when reviewing signup, first-run, empty states or the first session of a product. Covers activation definition, linear vs exploratory onboarding, friction reduction, the welcome message and the onboarding funnel metrics.
+description: "Design onboarding that reaches first real value fast around a defined activation event. Use for \"design/fix the onboarding\", \"improve activation\", \"users sign up and never come back\", \"add a setup checklist\", \"reduce time to value\", or when reviewing signup, first-run, empty states or the first session."
 ---
 
 # Onboarding and activation
@@ -129,4 +129,4 @@ allowed properties · data that must **not** be captured · owner · the dashboa
 
 ## Related skills
 
-`saas-expensive-ui` · `saas-ui-audit` · `saas-landing-continuity` · `saas-data-trust` (progress display).
+`saas-expensive-ui` · `saas-review` · `saas-landing-continuity` · `saas-data-trust` (progress display).

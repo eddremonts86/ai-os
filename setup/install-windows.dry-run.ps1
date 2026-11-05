@@ -155,12 +155,17 @@ if ($pythonCmd) {
     if (Test-Path $tempConfig) {
         $content = Get-Content $tempConfig -Raw
         if ($content -match "mcp_servers:") {
-            # Parse with simple regex
-            $mcpCount = ([regex]::Matches($content, "^\s+[a-z-]+:\s*$", "Multiline") | Where-Object { $_.Value.Trim() -in @("time:","filesystem:","pdf:","sequential-thinking:","memory:","chrome:","agent-browser:") }).Count
-            if ($mcpCount -ge 7) {
-                Ok "MCP config: $mcpCount servers generated"
+            # Expected = every ai-config/mcp/*.yaml not marked `enabled: false` (a fixed
+            # name list here broke when memory/filesystem/sequential-thinking were disabled).
+            $expected = @(Get-ChildItem (Join-Path $AIOSRoot "ai-config\mcp") -Filter *.yaml |
+                Where-Object { (Get-Content $_.FullName -Raw) -notmatch "(?m)^enabled:\s*false\s*$" } |
+                ForEach-Object { if ((Get-Content $_.FullName -Raw) -match "(?m)^name:\s*(\S+)") { $Matches[1] } })
+            $generated = @([regex]::Matches($content, "(?m)^  ([A-Za-z0-9_-]+):\s*$") | ForEach-Object { $_.Groups[1].Value })
+            $mcpCount = @($expected | Where-Object { $_ -in $generated }).Count
+            if ($expected.Count -gt 0 -and $mcpCount -eq $expected.Count) {
+                Ok "MCP config: $mcpCount/$($expected.Count) enabled servers generated"
             } else {
-                Err "MCP config: only $mcpCount servers (expected >=7)"
+                Err "MCP config: $mcpCount/$($expected.Count) enabled servers generated"
                 exit 1
             }
         } else {
