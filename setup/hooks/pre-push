@@ -47,8 +47,10 @@ echo "[pre-push] checking ${sha:0:9}"
 step "shell syntax"
 out=""
 while IFS= read -r f; do
+  # setup/hooks/ also holds Python; only syntax-check what is actually shell.
+  case "$f" in *.sh) ;; *) head -1 "$f" | grep -qE '^#!.*\b(ba)?sh\b' || continue ;; esac
   e=$(bash -n "$f" 2>&1) || out+="$f: $e"$'\n'
-done < <(git ls-files '*.sh' 'ai-os' 'setup/hooks/*' | grep -v '^vendor/' | grep -v '\.ps1$')
+done < <(git ls-files '*.sh' 'ai-os' 'setup/hooks/*' | grep -v '^vendor/')
 [ -z "$out" ] && pass || fail "$out"
 
 step "node syntax (setup/, llm/)"

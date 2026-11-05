@@ -221,6 +221,26 @@ def check_graphiti():
     return OK, f"search ok; episodes 24h: {wins} ok"
 
 
+def check_memory_usage():
+    """Is the graph actually being used? graphiti keeps one FalkorDB graph per group."""
+    rc, out = run(["docker", "exec", "ia-os-falkordb", "redis-cli", "GRAPH.LIST"], 15)
+    if rc != 0:
+        return FAIL, "cannot list FalkorDB graphs"
+    since = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() - 7 * 86400))
+    per_group, total = {}, 0
+    for g in [l.strip() for l in out.splitlines() if l.strip() and l.strip() != "default_db"]:
+        rc, res = run(["docker", "exec", "ia-os-falkordb", "redis-cli", "GRAPH.QUERY", g,
+                       f"MATCH (e:Episodic) WHERE e.created_at >= '{since}' RETURN count(e)"], 15)
+        lines = res.splitlines()
+        n = int(lines[1]) if rc == 0 and len(lines) > 1 and lines[1].strip().isdigit() else 0
+        if n:
+            per_group[g] = n
+            total += n
+    if not total:
+        return WARN, "no memories recorded in 7 days — the graph is running but unused"
+    return OK, f"{total} memories in 7 days: " + ", ".join(f"{g} {n}" for g, n in sorted(per_group.items()))
+
+
 def check_graphiti_llm():
     rc, model = run(["docker", "exec", "ia-os-graphiti-mcp", "printenv", "GRAPHITI_LLM_MODEL"], 15)
     model = model.strip() if rc == 0 and model.strip() else "gemma3:12b"
@@ -360,6 +380,7 @@ CHECKS = [
     ("falkordb", "FalkorDB", check_falkordb),
     ("graphiti", "Graphiti memory", check_graphiti),
     ("graphiti-llm", "Graphiti LLM", check_graphiti_llm),
+    ("memory-usage", "Memory usage", check_memory_usage),
     ("ollama", "Ollama", check_ollama),
     ("grepai", "grepai", check_grepai),
     ("cbm", "codebase-memory", check_codebase_memory),
