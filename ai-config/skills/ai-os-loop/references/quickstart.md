@@ -5,7 +5,7 @@ Five commands from zero to a running loop:
 ```bash
 # 1. Set up the loop directory and copy templates
 mkdir -p ~/my-loop/outputs
-cp /Users/edd/Projects/ai-os/workflows/loop_template.md /tmp/_ref.md  # reference
+cp "$AI_OS_ROOT/workflows/loop_template.md" /tmp/_ref.md  # reference
 # copy the 3 templates' content from there into TASK.md, LOOP_INSTRUCTIONS.md, PROGRESS.md
 
 # 2. Fill TASK.md and LOOP_INSTRUCTIONS.md (PROGRESS.md starts empty)

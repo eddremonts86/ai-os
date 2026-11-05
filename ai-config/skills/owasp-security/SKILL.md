@@ -551,5 +551,5 @@ jobs:
 - [Helmet](https://helmetjs.github.io/)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
 - [Snyk](https://snyk.io/)
-- Related skill: `prod-deploy-verification` (pre-deploy security check)
+- Related skill: `prod-deploy-verification` (project-local skill in iaWorkSpace) (pre-deploy security check)
 - Related skill: `env-config-and-secrets` (secrets management)

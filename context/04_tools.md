@@ -43,11 +43,11 @@ Inventory of installed tools. Update when something changes.
 
 ## Global skills
 
-- Flat skills live in `~/Projects/ai-os/ai-config/skills/`.
+- Flat skills live in `$AI_OS_ROOT/ai-config/skills/`.
 - Mac setup distributes flat skills via symlinks to 6 CLI targets.
 - Windows setup distributes flat skills to the 5 core CLI targets.
 - **14 superpowers skills** (REQUIRED for AI-OS).
-- **Source of truth:** `~/Projects/ai-os/ai-config/skills/`.
+- **Source of truth:** `$AI_OS_ROOT/ai-config/skills/`.
 
 ### Diagrams
 
@@ -82,14 +82,14 @@ Inventory of installed tools. Update when something changes.
 
 ## Dotfiles (symlinks)
 
-- `~/.zshrc` → `~/Projects/ai-os/dev-env/dotfiles/zsh/.zshrc`
-- `~/.p10k.zsh` → `~/Projects/ai-os/dev-env/dotfiles/zsh/.p10k.zsh`
-- `~/.gitignore_global` → `~/Projects/ai-os/dev-env/dotfiles/git/.gitignore_global`
+- `~/.zshrc` → `$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc`
+- `~/.p10k.zsh` → `$AI_OS_ROOT/dev-env/dotfiles/zsh/.p10k.zsh`
+- `~/.gitignore_global` → `$AI_OS_ROOT/dev-env/dotfiles/git/.gitignore_global`
 
 ## Setup
 
-- **1-command:** `bash ~/Projects/ai-os/setup/install-mac.sh`
-- **Verify:** `bash ~/Projects/ai-os/setup/verify.sh`
+- **1-command:** `bash $AI_OS_ROOT/setup/install-mac.sh`
+- **Verify:** `bash $AI_OS_ROOT/setup/verify.sh`
 - **CI:** GitHub Actions (`.github/workflows/test-{mac,linux,windows}.yml`).
 
 ## Scheduled jobs are not verified by reading their files
@@ -105,13 +105,13 @@ Hermes also refuses to run any **unpinned** job after the global inference confi
 `~/.hermes/cron/jobs.json` (`{"jobs": [...]}`) but not in `hermes cron list`.
 
 All three of these were live at once on 2026-08-25 and the visible symptom was only that the
-plans corpus stopped gaining published plans. See
-`apps/data/tools/plans-pipeline/README.md`.
+plans corpus stopped gaining published plans. See `apps/data/tools/plans-pipeline/README.md` in
+the **plansmith** repo (moved there 2026-09-25).
 
 ## The preview pane reads `launch.json` from the session root, not the project
 
 `preview_start` looks for `.claude/launch.json` relative to the **session's working directory**. When
-a session is opened at the scope root (`~/Projects`) rather than inside a project, a project-local
+a session is opened at the projects root (the directory containing `ai-os/`) rather than inside a project, a project-local
 `.claude/launch.json` is invisible to it — the tool reports "No .claude/launch.json found" and names
 the root path it wanted.
 
@@ -121,7 +121,7 @@ Fix: put the config at the session root and have each entry cd into its own proj
 {
   "name": "myapp-dev",
   "runtimeExecutable": "bash",
-  "runtimeArgs": ["-lc", "cd ~/Projects/scope/myapp && exec ./node_modules/.bin/vite dev --port 3007"],
+  "runtimeArgs": ["-lc", "cd /path/to/projects/scope/myapp && exec ./node_modules/.bin/vite dev --port 3007"],
   "port": 3007
 }
 ```
@@ -131,8 +131,9 @@ Three standing constraints on this machine:
 - **Port 3000 is taken** by the Hermes WhatsApp bridge (`hermes-agent/scripts/whatsapp-bridge/bridge.js`).
   Port 5173 is also usually in use. Pick 3007+ for a new dev server, and record *why* in the config's
   `//` key so nobody moves it back and kills the bridge.
-- **AI-OS pins its two front-ends:** the plans explorer is **3020**, the landing (`apps/site/`) is
-  **3021**. Both are declared in `.claude/launch.json`, and the explorer's `vite.config.ts` sets
+- **Two front-ends pin their ports across two repos:** the landing (`apps/site/`, this repo) is
+  **3021**, declared in this repo's `.claude/launch.json`. The plans explorer is **3020**, declared
+  in **plansmith**'s own `.claude/launch.json` since the 2026-09-25 split; its `vite.config.ts` sets
   `strictPort: true` so a stale server fails the boot instead of drifting onto 3021 and serving the
   explorer where the landing should be. Ports in use when they were chosen: 3000 (bridge), 3010,
   3011, 3013, 3015, 5173.

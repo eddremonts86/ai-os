@@ -1,17 +1,11 @@
 ---
 name: optimizing-forms
-description: >
-  Use when auditing or improving the UX quality of an existing form — wizard steps,
-  admin editors, settings panels, dialogs, checkout, signup. Triggers on "optimize
-  this form", "improve the form", "form UX", "form accessibility", "validation feels
-  wrong", "errors not showing", "too many columns", "field labels", "screen reader",
-  "form audit", or a form that works but is hard to fill in. For BUILDING a new form,
-  use the host project's form-construction skill instead; this skill judges quality.
+description: "Use when auditing or improving the UX of an existing form (wizards, editors, settings, dialogs, checkout, signup). Triggers: \"optimize this form\", \"form UX\", \"form accessibility\", \"validation feels wrong\", \"errors not showing\", \"field labels\", \"form audit\". For building a new form use the project's form-construction skill."
 license: MIT
 metadata:
   hermes:
     tags: [forms, ux, accessibility, audit, wcag, validation]
-    related_skills: [antfu-web-design, react-hook-form-zod, fix-ui-ux]
+    related_skills: [web-design-guidelines, react-hook-form-zod, fix-ui-ux]
 ---
 
 # Optimizing Forms
@@ -165,6 +159,6 @@ It detects the stack and self-disables rules it cannot judge for that project �
 
 - **The host project's own form-construction skill** — mechanics. Verify its claims against source.
 - **`react-hook-form-zod`** — construction for React Hook Form + Zod stacks.
-- **`antfu-web-design`** — broader web interface guideline review.
+- **`web-design-guidelines`** — broader web interface guideline review.
 - **`fix-ui-ux`** — full-product interface remediation, when forms are one part of a larger pass.
 - **`references/profiles/`** — per-stack specifics; add one when you profile a new stack.

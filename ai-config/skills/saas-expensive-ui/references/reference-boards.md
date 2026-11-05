@@ -58,4 +58,4 @@ permissions · disconnected integrations · partial states · stale data · tran
 ## Step 7 — review against a rubric
 
 Never accept an output because it "looks good". Score it on clarity, hierarchy, consistency, speed,
-accessibility, states, trust, and alignment with the user's job. Use `saas-ui-audit` for the matrix.
+accessibility, states, trust, and alignment with the user's job. Use `saas-review` for the matrix.

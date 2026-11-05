@@ -1,27 +1,13 @@
 name: graphiti
 description: >-
-  Architecture decision made (2026-07-12): run the pre-built
-  `zepai/knowledge-graph-mcp:1.0.2-standalone` Docker image against our
-  existing FalkorDB container over HTTP transport, instead of vendoring
-  https://github.com/getzep/graphiti under vendor/graphiti/ — this avoids a
-  second language toolchain (uv/Python) just to run one MCP server, and pins
-  a versioned image the same way FalkorDB itself already is. See
-  memory/graphiti/docker-compose.yml for the full compose definition and
-  activation steps.
-  SMOKE-TESTED (2026-07-12): started `aios-falkordb` on the shared
-  `aios-memory` network and `aios-graphiti-mcp` against it with a placeholder
-  OPENAI_API_KEY. Confirmed real end-to-end deployment: image pulled, server
-  logs show "Successfully initialized Graphiti client" and connected to
-  FalkorDB (index checks passed), and `curl -sf http://127.0.0.1:8021/health`
-  returned `{"status":"healthy","service":"graphiti-mcp"}`. Container was
-  torn down afterward (`docker compose down`) since its key was a
-  placeholder, not left running.
-  REMAINING CAVEAT: the placeholder key only proves the deployment path
-  (Docker, network, FalkorDB wiring, HTTP transport) works — it does NOT
-  prove actual knowledge-graph operations (add_memory/search, which call the
-  OpenAI API for entity extraction). Whoever activates this for real use
-  must `export OPENAI_API_KEY=<real key>` before
-  `cd memory/graphiti && docker compose up -d`.
+  Temporal knowledge-graph memory (getzep/graphiti) served over HTTP by the
+  ia-os-graphiti-mcp container, backed by ia-os-falkordb. Both are defined in
+  memory/docker-compose.yml and started by `ai-os memory start`.
+  Entity extraction uses the host's native Ollama (gemma via
+  GRAPHITI_LLM_MODEL), embeddings use nomic-embed-text on the same Ollama, so
+  it needs no API key. Verified end-to-end 2026-11-05 (add_memory →
+  search_memory_facts). Usage rules: rules/always_do.md "Use the memory
+  stack". Health: `ai-os memory status` or setup/verify.sh section 5b.
 transport: http
 url: http://127.0.0.1:8021/mcp/
 enabled: true

@@ -80,6 +80,8 @@ mkdir -p "$HOME/Library/LaunchAgents" "$HOME/.ollama"
 tmp=$(mktemp -t aios-ollama-plist-XXXX)
 sed -e "s|__OLLAMA_BIN__|$OLLAMA_BIN|g" -e "s|__HOME__|$HOME|g" "$TMPL" > "$tmp"
 plutil -lint "$tmp" >/dev/null || { rm -f "$tmp"; echo "rendered plist is malformed — refusing to install" >&2; exit 1; }
+unchanged=0
+cmp -s "$tmp" "$TARGET" 2>/dev/null && unchanged=1
 mv "$tmp" "$TARGET"
 log "wrote $TARGET (ollama at $OLLAMA_BIN)"
 
@@ -91,8 +93,21 @@ if answers && ! loaded; then
   for _ in 1 2 3 4 5; do answers || break; sleep 1; done
 fi
 
-launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
-launchctl bootstrap "$DOMAIN" "$TARGET"
+if loaded && [ "$unchanged" = 1 ]; then
+  # Same definition: restart in place. This also picks up a brew-upgraded binary
+  # (a running server keeps its old version until restarted).
+  launchctl kickstart -k "$DOMAIN/$LABEL"
+else
+  # bootout returns before launchd has finished tearing the job down; an immediate
+  # bootstrap then fails with "5: Input/output error" and leaves Ollama down.
+  launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
+  for _ in $(seq 1 10); do loaded || break; sleep 1; done
+  for attempt in 1 2 3; do
+    launchctl bootstrap "$DOMAIN" "$TARGET" 2>/dev/null && break
+    [ "$attempt" = 3 ] && { echo "launchctl bootstrap failed 3 times — run: launchctl bootstrap $DOMAIN $TARGET" >&2; exit 1; }
+    sleep 2
+  done
+fi
 
 for _ in $(seq 1 20); do answers && break; sleep 1; done
 answers || { echo "loaded but nothing answers on $URL — see $HOME/.ollama/ai-os-ollama.log" >&2; exit 1; }

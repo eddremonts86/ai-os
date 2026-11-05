@@ -1,6 +1,7 @@
 # pip-packages.txt — pip packages to install globally
 # Install: pipx install <pkg> (preferred) or pip install --user <pkg>
-# For Hermes, we use uv pip install in a venv (see setup/install-mac.sh)
+# install-mac.sh step 3 installs the missing ones into ~/.ai-os/venv with one
+# `uv pip install -r` (comments after a name are stripped first)
 
 # AI tools
 mcp[cli]                  # MCP SDK

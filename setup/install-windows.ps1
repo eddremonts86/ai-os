@@ -372,6 +372,25 @@ foreach ($cliDir in $cliDirs) {
     if (-not (Test-Path $cliDir)) {
         New-Item -ItemType Directory -Path $cliDir -Force | Out-Null
     }
+    # Prune stale ai-os links whose target no longer has a top-level SKILL.md —
+    # a retired skill (or a bundle wrongly linked by an older run) otherwise
+    # leaves a dangling reparse point here forever: the source dir is gone, so
+    # the loop below never revisits that name. Mirrors setup/install-mac.sh
+    # step 7. Only links pointing INTO ai-config\skills are ours to remove.
+    foreach ($link in @(Get-ChildItem $cliDir -Force -ErrorAction SilentlyContinue)) {
+        if (-not ($link.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+        $linkTarget = $link.Target
+        if (-not $linkTarget) { continue }
+        if ($linkTarget -notmatch '[\\/]ai-config[\\/]skills[\\/]') { continue }
+        if (Test-Path (Join-Path $linkTarget "SKILL.md")) { continue }
+        try {
+            # No -Recurse: on a reparse point that would reach through to the
+            # target's contents. Deleting the link is all we want.
+            Remove-Item -LiteralPath $link.FullName -Force -ErrorAction Stop
+            Ok "  pruned stale skill link: $($link.Name) (target gone: $linkTarget)"
+        }
+        catch { Warn "  could not prune stale link $($link.FullName): $($_.Exception.Message)" }
+    }
     $skillDirs = Get-ChildItem "$AIOSRoot\ai-config\skills" -Directory | Where-Object {
         Test-Path (Join-Path $_.FullName "SKILL.md")
     }
@@ -795,20 +814,31 @@ if ($env:SKIP_MEMORY -ne "1") {
         Ok "  codebase-memory-mcp already installed"
     }
 
-    # 7b.4 — grepai via go install (pinned tag, not @latest — P1-4, kept in sync with install-mac.sh)
-    $grepaiVersion = "v0.35.0"
+    # 7b.4 — grepai built from a shallow clone of a pinned tag (not @latest — P1-4, kept in
+    # sync with install-mac.sh). `go install pkg@version` is rejected because upstream's
+    # go.mod carries `exclude` directives, which Go only honours in the main module.
+    $grepaiVersion = "v1.2.0"
     if (Get-Command go -ErrorAction SilentlyContinue) {
+        $grepaiSrc = Join-Path ([System.IO.Path]::GetTempPath()) "grepai-src-$([guid]::NewGuid())"
         try {
-            & go install "github.com/yoanbernabeu/grepai/cmd/grepai@$grepaiVersion" 2>&1 | Select-Object -Last 2
-            if ($LASTEXITCODE -ne 0) { throw "go install exited with code $LASTEXITCODE" }
+            & git clone --quiet --depth 1 --branch $grepaiVersion https://github.com/yoanbernabeu/grepai.git $grepaiSrc 2>&1 | Select-Object -Last 2
+            if ($LASTEXITCODE -ne 0) { throw "git clone exited with code $LASTEXITCODE" }
             $goBinGrepai = "$HomeDir\go\bin\grepai.exe"
-            if (Test-Path $goBinGrepai) {
-                Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
+            New-Item -ItemType Directory -Force -Path (Split-Path $goBinGrepai) | Out-Null
+            Push-Location $grepaiSrc
+            try {
+                & go build -ldflags "-s -w -X main.version=$($grepaiVersion.TrimStart('v'))" -o $goBinGrepai ./cmd/grepai 2>&1 | Select-Object -Last 2
+                if ($LASTEXITCODE -ne 0) { throw "go build exited with code $LASTEXITCODE" }
             }
-            Ok "  grepai $grepaiVersion installed via go install"
+            finally { Pop-Location }
+            Copy-Item $goBinGrepai "$localBin\grepai.exe" -Force
+            Ok "  grepai $grepaiVersion built from source"
         }
         catch {
-            Warn "  go install grepai failed (will retry on first use)"
+            Warn "  grepai build failed (re-run install-windows.ps1 to retry): $_"
+        }
+        finally {
+            Remove-Item -Recurse -Force $grepaiSrc -ErrorAction SilentlyContinue
         }
     }
     else {
@@ -884,7 +914,7 @@ if (-not $env:SKIP_PONYTAIL) {
     if ($ponytailSrc -and (Test-Path (Join-Path $ponytailSrc "AGENTS.md"))) {
         $marker = "PONYTAIL (DietrichGebert/ponytail v$ponytailVersion)"
         $agentsContent = Get-Content (Join-Path $ponytailSrc "AGENTS.md") -Raw
-        foreach ($rel in @(".agents\AGENTS.md", ".codex\AGENTS.md")) {
+        foreach ($rel in @(".agents\AGENTS.md", ".codex\AGENTS.md", ".config\opencode\AGENTS.md")) {
             $agPath = Join-Path $HomeDir $rel
             if (Test-Path $agPath) {
                 $existing = Get-Content $agPath -Raw -ErrorAction SilentlyContinue
@@ -902,6 +932,25 @@ if (-not $env:SKIP_PONYTAIL) {
     } else { Warn "  ponytail source not available — AGENTS.md fallback skipped (plugins above remain)" }
     Ok "Ponytail $ponytailVersion wiring complete (defaultMode=$ponytailDefault, src=$ponytailSrc)"
 } else { Log "7d. SKIP_PONYTAIL=1, skipping ponytail" }
+Write-Host ""
+
+# ─── 7e. Strategic-compact hook (Claude Code PreToolUse) ───
+# Mirrors setup/install-mac.sh section 9d. The suggester is vendored at
+# vendor\ecc\scripts\hooks\suggest-compact.js; setup/wire-compact-hook.mjs does
+# the symlink + settings.json merge in one cross-platform implementation, so
+# the JSON handling is not written twice (bash/python here, PowerShell there).
+if (-not $env:SKIP_COMPACT_HOOK) {
+    Log "7e. Strategic-compact hook (Claude Code PreToolUse)..."
+    if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+        Warn "  node not installed — skipping (the hook is a node script)"
+    }
+    else {
+        & node (Join-Path $AIOSRoot "setup\wire-compact-hook.mjs")
+        if ($LASTEXITCODE -eq 0) { Ok "  strategic-compact hook wired (threshold: `$env:COMPACT_THRESHOLD, default 50)" }
+        else { Warn "  strategic-compact hook not wired — see the message above (never blocks the install)" }
+    }
+}
+else { Log "7e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook" }
 Write-Host ""
 
 # ─── 8. Terminal ───

@@ -1,0 +1,7 @@
+FROM gemma3:12b
+# gemma3 has no "thinking" mechanism at all (unlike qwen3/gemma4) — the reason
+# it replaced qwen3:14b here, see llm/README.md's "Model selection, final state".
+# 131072 (Gemma 3's full native context) confirmed to load 100% on GPU on this
+# 24GB Mac, 9.0GB total footprint — no CPU spillover, no need to find a lower
+# ceiling the way qwen3 needed (confirmed 2026-09-19).
+PARAMETER num_ctx 131072

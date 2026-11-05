@@ -79,7 +79,7 @@
 
 **Trade-off:** very personal dotfiles are NOT in the public repo. Solution: `.gitconfig.template` with placeholders, each dev copies and personalizes.
 
-### Why global skills in `~/.claude/skills/` and not in `~/Projects/ai-os/ai-config/skills/`?
+### Why global skills in `~/.claude/skills/` and not in `$AI_OS_ROOT/ai-config/skills/`?
 
 - **Compatibility:** CLIs expect skills in their own user-level skill directories. Changing the path requires modifying each CLI.
 - **Source of truth:** AI-OS keeps the canonical copy in `ai-config/skills/` and symlinks to supported destinations.

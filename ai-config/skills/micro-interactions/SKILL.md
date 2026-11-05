@@ -1,6 +1,6 @@
 ---
 name: micro-interactions
-description: "Use when adding, auditing, or refining motion in a frontend — hover/press/focus states, enter/exit transitions, list reordering, layout shifts, loading and skeleton states, scroll-linked effects, or page transitions. Covers easing-curve choice, duration budgets, staggering, spring vs tween, reduced-motion accessibility, and a three-lens review (purpose, physics, performance) to catch motion that is decorative, janky, or distracting. Use for React/Vue/Tailwind/Framer-Motion/CSS work when the ask is specifically about how things move, not overall visual design. For broad UI/visual redesign use impeccable or taste-skill instead."
+description: "Use when adding, auditing or refining motion in a frontend: hover/press/focus states, enter/exit transitions, list reordering, loading and skeleton states, scroll-linked effects, page transitions. Covers easing, duration, springs, reduced motion and a purpose/physics/performance review. For broad visual redesign use impeccable or taste-skill."
 user-invocable: true
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 license: Apache 2.0

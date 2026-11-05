@@ -1,14 +1,14 @@
 ---
 name: ai-os-memory
-description: Operate and inspect the AI-OS persistent memory stack (FalkorDB graph DB, Ollama embeddings, codebase-memory-mcp AST index, grepai semantic search). Use when the user asks about memory status, indexing a project, querying code semantically, or browsing the graph. Graphiti temporal memory is opt-in (separate compose file, not started by `ai-os memory start`), uses MiniMax (not OpenAI) as its LLM via a custom-built image (`ai-os/graphiti-mcp:minimax-standalone`), and is VERIFIED WORKING with real data as of 2026-07-13 — `add_memory`/`search_nodes`/`search_memory_facts`/`get_episodes` all confirmed against a live FalkorDB graph. Known caveat: `add_memory` has a non-trivial failure rate (MiniMax occasionally returns malformed/wrong-shape JSON during entity extraction) — retrying the same call usually succeeds. `search` reranking still needs a real `OPENAI_API_KEY` for the hardcoded cross-encoder, though testing found `search_nodes`/`search_memory_facts` work fine without one for typical result sizes.
-version: 0.1.0
+description: Operate, repair and inspect the AI-OS memory stack — graphiti temporal memory on FalkorDB, Ollama (local LLM + embeddings), codebase-memory-mcp AST index, grepai semantic search, and the scheduled reindex. Use when the user asks about memory status, indexing a project, semantic code search, the knowledge graph, or a memory tool that is down.
+version: 0.2.0
 ---
 
 # ai-os-memory
 
 Operate the AI-OS persistent memory stack. One CLI, no daemon, no API keys, all
 local-first. Designed for a single developer with many local projects under
-`~/Projects/`.
+`$(dirname "$AI_OS_ROOT")`.
 
 ## When to use
 
@@ -33,9 +33,14 @@ ai-os memory reindex [path]      # refresh codebase-memory-mcp index over a sing
 ai-os memory bootstrap [--refresh]   # first-time / on-demand: start the whole stack + auto-index every project under ~/Projects/ (see setup/ai-os-bootstrap.sh)
 ```
 
-For periodic reindex of every project (cron, 6x/day at 00/04/08/12/16/20) see
-`memory/cron-reindex.sh` — installed via system crontab by `setup/`. Full docs in
-`setup/README-bootstrap.md`.
+Periodic reindex of every git project next to ai-os (6x/day at 00/04/08/12/16/20):
+`memory/cron-reindex.sh`, scheduled by the launchd agent `ai.os.reindex`
+(`bash memory/launchd/install-reindex.sh [--status|--uninstall]`). Skips `/inHold/`
+by default (`AI_OS_REINDEX_SKIP`); root is `AI_OS_PROJECTS_DIR` (default: the
+directory that contains ai-os). Also refreshes grepai's ai-os index.
+
+When to read and write graphiti during normal work is a rule, not part of this
+skill: `rules/always_do.md` "Use the memory stack".
 
 There is no session-sync subcommand — an earlier draft advertised one
 (`sync-sessions`) before it was implemented; it was removed rather than shipped
@@ -50,34 +55,45 @@ reference it.
 | Embeddings | Ollama + nomic-embed-text | 11500 | **Mac**: native `brew install ollama` by default (Apple Silicon Metal GPU accel, which containers can't reach). **Windows**: Docker by default (`ia-os-ollama` container, opt-in Compose profile `ollama-docker` in `memory/docker-compose.yml`) — `choco install ollama` needs admin and was unreliable without it. Set `$env:OLLAMA_NATIVE = "1"` before `install-windows.ps1` to force native instead. Either way it's the same port (11500), so grepai/codebase-memory-mcp never know or care which backend is running. `ai-os memory start/stop` auto-detect the Docker path via `memory/falkordb/ollama-data/` (a bind-mount dir that only exists if that profile was ever started — `docker ps` alone doesn't work here since `compose down` removes containers, losing that signal). |
 | Code AST index | codebase-memory-mcp | (stdio) | 158 langs, sub-ms, checksum-verified download |
 | Semantic search | grepai | (stdio) | uses Ollama |
-| Graph memory | graphiti | HTTP 8021 | **Opt-in** (`ai-config/mcp/graphiti.yaml`, `enabled: true`) — runs a custom-built `ai-os/graphiti-mcp:minimax-standalone` image (NOT the pinned `zepai/knowledge-graph-mcp` — that image lacks custom-`api_url` support needed for MiniMax), defined in the unified `memory/docker-compose.yml` under the `ia-os` project. LLM provider is MiniMax (not OpenAI), verified end-to-end with real data 2026-07-13: `add_memory` writes an episode + extracts entities/facts into FalkorDB; `search_nodes`/`search_memory_facts`/`get_episodes` all read back correctly. Caveat: `add_memory` fails outright on a meaningful fraction of calls (MiniMax occasionally returns malformed or wrong-shape JSON during extraction) — retry the same call if it doesn't show up. `search` reranking (a separate, hardcoded-OpenAI code path) needs a real `OPENAI_API_KEY` to fully succeed, though `search_nodes`/`search_memory_facts` worked fine without one in testing |
+| Chat UI | open-webui (Docker) | 3301 | `ia-os-open-webui` | Talks to the native Ollama daemon above via `host.docker.internal:11500`, not the embedder-only `nomic-embed-text` — it's for `llm/router.mjs`'s chat model (`qwen3:14b`, see `llm/README.md`). No login wall (`WEBUI_AUTH=False`) — acceptable since it's bound to `127.0.0.1` only. |
+| Graph memory | graphiti | HTTP 8021 | `ia-os-graphiti-mcp` | Custom image `ai-os/graphiti-mcp:minimax-standalone` (custom-`api_url` support). Started by `ai-os memory start`. Extraction LLM = host Ollama (`GRAPHITI_LLM_MODEL`, default gemma) since 2026-11-05 — MiniMax returned `402 insufficient balance`; override the three `GRAPHITI_LLM_*` vars in the compose to use a hosted model. `add_memory` is async (~1–5 min per episode locally; output capped by `GRAPHITI_LLM_MAX_TOKENS`, default 4096); check `docker logs ia-os-graphiti-mcp` for `Successfully processed episode`. Verified end-to-end 2026-11-05 |
 
 **Ports are intentionally OUTSIDE 3000-3050** (Edd's other apps use that range).
 
 ## Files in this skill's surface
 
-- `~/Projects/ai-os/ai-os` — top-level dispatcher (routes `ai-os memory|loop|bootstrap` to the right script). Symlinked at `~/.local/bin/ai-os`.
-- `~/Projects/ai-os/memory/ai-os-memory.sh` — the memory-stack CLI (entry point)
-- `~/Projects/ai-os/memory/docker-compose.yml` — **unified** compose: `name: ia-os` so all services group under one header in the Docker Desktop dashboard (like `builderhunt`). Defines `ia-os-falkordb`, `ia-os-graphiti-mcp`, `ia-os-ollama` (opt-in profile), and the internal `ia-os-net` network.
-- `~/Projects/ai-os/memory/cron-reindex.sh` — 6x/day periodic reindex (called by system crontab)
-- `~/Projects/ai-os/memory/falkordb/data/` — FalkorDB persistence
-- `~/Projects/ai-os/memory/falkordb/ollama-data/` — only exists if the `ollama-docker` profile was ever started
-- `~/Projects/ai-os/memory/graphiti/config.yaml` — Graphiti config (real `MINIMAX_API_KEY` required; see STATUS note for full history)
-- `~/Projects/ai-os/memory/graphiti/Dockerfile.standalone.minimal` — the custom build (rebuilds the local `ai-os/graphiti-mcp:minimax-standalone` image)
-- `~/Projects/ai-os/setup/ai-os-bootstrap.sh` — first-time / on-demand bring-up of the whole stack + auto-indexing
-- `~/Projects/ai-os/setup/README-bootstrap.md` — full user-facing doc for the bootstrap + cron
-- `~/Projects/ai-os/ai-config/mcp/{codebase-memory-mcp,graphiti,grepai}.yaml` — MCPs
-- `~/Projects/ai-os/setup/install-mac.sh` — section 9b installs everything (Mac)
-- `~/Projects/ai-os/setup/install-windows.ps1` — section 7b installs the same stack (Windows)
-- `~/Projects/ai-os/setup/verify.sh` — section 5b verifies everything (Mac)
-- `~/Projects/ai-os/dev-env/.env.example` — port assignments
-- `~/Projects/ai-os/archive/2026-07-03-persistent-memory-phase-1.md` — the original phase 1 plan (completed, archived)
+- `$AI_OS_ROOT/ai-os` — top-level dispatcher (routes `ai-os memory|loop|bootstrap` to the right script). Symlinked at `~/.local/bin/ai-os`.
+- `$AI_OS_ROOT/memory/ai-os-memory.sh` — the memory-stack CLI (entry point)
+- `$AI_OS_ROOT/memory/docker-compose.yml` — **unified** compose: `name: ia-os` so all services group under one header in the Docker Desktop dashboard (like `builderhunt`). Defines `ia-os-falkordb`, `ia-os-graphiti-mcp`, `ia-os-ollama` (opt-in profile), and the internal `ia-os-net` network.
+- `$AI_OS_ROOT/memory/cron-reindex.sh` — 6x/day periodic reindex (launchd agent `ai.os.reindex`)
+- `$AI_OS_ROOT/memory/launchd/install-reindex.sh` — installs/checks that agent
+- `$AI_OS_ROOT/memory/falkordb/data/` — FalkorDB persistence (mounted at `/var/lib/falkordb/data`, RDB + AOF)
+- `$AI_OS_ROOT/memory/falkordb/ollama-data/` — only exists if the `ollama-docker` profile was ever started; `ai-os memory start` ignores it when native Ollama already answers :11500
+- `$AI_OS_ROOT/memory/graphiti/config.yaml` — Graphiti config (LLM via `GRAPHITI_LLM_*`, no key needed for local Ollama)
+- `$AI_OS_ROOT/memory/graphiti/Dockerfile.standalone.minimal` — the custom build (rebuilds the local `ai-os/graphiti-mcp:minimax-standalone` image)
+- `$AI_OS_ROOT/setup/ai-os-bootstrap.sh` — first-time / on-demand bring-up of the whole stack + auto-indexing
+- `$AI_OS_ROOT/setup/README-bootstrap.md` — full user-facing doc for the bootstrap + cron
+- `$AI_OS_ROOT/ai-config/mcp/{codebase-memory-mcp,graphiti,grepai}.yaml` — MCPs
+- `$AI_OS_ROOT/setup/install-mac.sh` — section 9b installs everything (Mac)
+- `$AI_OS_ROOT/setup/install-windows.ps1` — section 7b installs the same stack (Windows)
+- `$AI_OS_ROOT/setup/verify.sh` — section 5b verifies everything (Mac)
+- `$AI_OS_ROOT/dev-env/.env.example` — port assignments
+- `$AI_OS_ROOT/archive/2026-07-03-persistent-memory-phase-1.md` — the original phase 1 plan (completed, archived)
 
 ## Failure modes
 
+Start with `ai-os health` — it exercises every layer (graph query, extraction log,
+LLM structured output, Ollama version, grepai search, cbm index, reindex age, all MCP
+handshakes, API tokens, CI) and names the broken one. It also runs at 09:30/15:30 via
+the launchd agent `ai.os.health` and raises a macOS notification on any FAIL
+(`bash memory/launchd/install-health.sh --status` shows the last report).
+
+
 - **`FalkorDB container not running`** → run `ai-os memory start` (idempotent).
+- **Graph empty after a restart** → check the mount: `docker inspect ia-os-falkordb` must show `/var/lib/falkordb/data` (it was `/data` until 2026-11-05, which lost every write).
+- **`add_memory` never shows up** → `docker logs ia-os-graphiti-mcp | grep -E "Failed to process|402|ERROR"`; a hosted LLM out of credit fails every episode.
 - **`Ollama API :11500 not reachable`** → check if another process grabbed 11434; OLLAMA_HOST env may be needed.
-- **`codebase-memory-mcp not installed`** → run `bash ~/Projects/ai-os/setup/install-mac.sh` (or `install-windows.ps1` on Windows).
+- **`codebase-memory-mcp not installed`** → run `bash "$AI_OS_ROOT/setup/install-mac.sh"` (or `install-windows.ps1` on Windows).
 - **`grepai query fails`** → check `OLLAMA_URL` is reachable; check `ollama list` has `nomic-embed-text`.
 
 ## Acceptance

@@ -99,4 +99,4 @@ Never claim a speed improvement from a bundle-size diff alone. Exercise the runt
 
 ## Related skills
 
-`saas-expensive-ui` · `saas-ui-audit` · `saas-data-trust` · `react-performance` · `benchmark`.
+`saas-expensive-ui` · `saas-review` · `saas-data-trust` · `react-performance` · `benchmark`.

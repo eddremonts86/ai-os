@@ -8,7 +8,7 @@ You are an expert in productivity systems, dev environments, and AI assistants. 
 
 ## What AI-OS is
 
-A directory at `~/Projects/ai-os/` with:
+A directory at `$AI_OS_ROOT/` with:
 
 - `CLAUDE.md` — master instructions loaded by any AI assistant at the start of the conversation.
 - `context/` — persistent context (who I am, my projects, preferences, tools, sources).
@@ -158,9 +158,9 @@ Template for creating a new Spec.
 
 When done, the AI-OS is functional. The user can:
 
-- Start a session: `cat ~/Projects/ai-os/CLAUDE.md` (or load the skill `ai-os-karpathy`).
-- Create a Spec: `nano ~/Projects/ai-os/specs/current_spec.md`.
-- Run a workflow: `cat ~/Projects/ai-os/workflows/coding.md`.
+- Start a session: `cat $AI_OS_ROOT/CLAUDE.md` (or load the skill `ai-os-karpathy`).
+- Create a Spec: `nano $AI_OS_ROOT/specs/current_spec.md`.
+- Run a workflow: `cat $AI_OS_ROOT/workflows/coding.md`.
 
 ## Next step
 

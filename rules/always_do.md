@@ -4,12 +4,24 @@ Actions that you MUST always do when working with me.
 
 ## At session start
 
-1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md`.
-2. Read `$AI_OS_ROOT/context/00_profile.md`, `02_projects.md`, `03_preferences.md`, `04_tools.md`.
+Keep the session-start read small; everything else is read on demand.
+
+1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md` — skip if your CLI already loaded it (Claude Code inside the repo does).
+2. Read `$AI_OS_ROOT/context/00_profile.md` and `03_preferences.md`.
 3. Read `$AI_OS_ROOT/rules/never_do.md` and `ask_before_doing.md`.
 4. Read `$AI_OS_ROOT/specs/current_spec.md`. It must contain only the active Spec; an empty template means there is no active Spec.
 5. Load skill `using-superpowers` (router).
-6. Follow `workflows/daily_start.md` (AI-OS).
+
+Read only when the task needs it:
+
+| File | Read when |
+|---|---|
+| `context/02_projects.md` | the task names or touches one of Edd's projects |
+| `context/04_tools.md` | installing, configuring, or debugging the local toolchain |
+| `context/01_business_or_work.md`, `07_edi_company.md` | work for Employer or EDI |
+| `context/05_sources.md` | looking up official docs or reference repos |
+| `context/06_brand.md` | branded deliverables (diagrams, site, decks) |
+| `workflows/*.md` | the matching kind of task (coding, research, content, new Spec) |
 
 ## ALWAYS: use sub-agents in parallel when possible
 
@@ -54,16 +66,33 @@ Subagent summaries are **self-reports, not verified facts**. Before claiming suc
 
 ### Save the pattern
 
-When you find a useful parallel-dispatch pattern (e.g., "research + verify + implement"), save it as a skill in `~/.claude/skills/<name>/SKILL.md` with frontmatter and example. Future agents (and you) can reuse it.
+When you find a useful parallel-dispatch pattern (e.g., "research + verify + implement"), save it as a skill in `$AI_OS_ROOT/ai-config/skills/<name>/SKILL.md` (the source of truth, symlinked to every CLI — never author it directly in `~/.claude/skills/`) with frontmatter and example. If it is project-specific, put it in `<project>/.agents/skills/<name>/` instead. Future agents (and you) can reuse it.
 
 ## At every task
 
-7. Verify there is a Spec or the task is trivial.
-8. → Load skill `brainstorming` if the user's idea is vague.
-9. → Load skill `writing-plans` if the task is >30 min.
-10. → Load skill `verification-before-completion` before declaring done.
-11. → Load skill `code-review-and-quality` before the final commit.
-12. → Load skill `finishing-a-development-branch` at the end.
+6. Decide whether the task needs a Spec. A Spec (`workflows/project_start.md` → `specs/current_spec.md`) is required only when the work is expected to take more than ~2 hours, touches more than one repo, or the user asks for one. Otherwise plan inline and verify with `verification-before-completion`.
+7. → Load skill `brainstorming` if the user's idea is vague.
+8. → Load skill `writing-plans` for multi-step work (always when there is a Spec).
+9. → Load skill `verification-before-completion` before declaring done. The prompts in `verifiers/` (e.g. `critic_prompt.md`) are optional tools, not a mandatory pass.
+10. → Load skill `code-review-and-quality` before the final commit.
+11. → Load skill `finishing-a-development-branch` at the end.
+
+## Use the memory stack
+
+The memory MCP servers are always running; use them instead of re-discovering.
+`group_id` = the repo directory name (e.g. `ai-os`, `plansmith`); facts that span
+projects or are about Edd go in `main`.
+
+- **Before** work on a project or a past decision: graphiti `search_memory_facts`
+  (and `search_nodes`) with the project and topic.
+- **After** a decision, a root cause, a convention or an environment fact is settled:
+  graphiti `add_memory` — one short, self-contained, dated episode in English. Never
+  secrets, raw logs, or task progress (that goes in `specs/`).
+- **Code questions** in an indexed repo: grepai `grepai_search` for "where/how is X
+  done", codebase-memory `search_graph` / `trace_path` for callers and structure —
+  before a broad Grep.
+- A memory tool that does not answer never blocks the task: note it and continue.
+  Health: `ai-os health` (functional checks; also runs twice a day and notifies on failure).
 
 ## When a task needs an env value or secret
 
@@ -87,32 +116,33 @@ Rules:
 
 ## When writing code
 
-13. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
-14. Run tests (Vitest, pytest, bats, Pester).
-15. Run lint (ESLint, ruff, shellcheck, PSScriptAnalyzer).
-16. Run format (Prettier, black, shfmt).
-17. If a hook or build script exists, run it.
+**Ponytail is always on (`full`).** Before writing any code, climb the ladder and stop at the first rung that holds: does this need to exist at all (YAGNI) → is it already in this codebase → stdlib → native platform feature → already-installed dependency → one line → minimum that works. Shortest working diff wins, but only after you understand the flow the change touches; a bug fix means the root cause in the shared function, not a guard per caller. Never simplify away input validation at trust boundaries, error handling that prevents data loss, security, accessibility, or anything explicitly requested. Non-trivial logic leaves one runnable check behind. Per-session override: `/ponytail lite|full|ultra|off`. Machine default: `~/.config/ponytail/config.json` (Windows: `%APPDATA%\ponytail\config.json`).
+
+12. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
+13. Run tests (Vitest, pytest, bats, Pester).
+14. Run lint (ESLint, ruff, shellcheck, PSScriptAnalyzer).
+15. Run format (Prettier, black, shfmt).
+16. If a hook or build script exists, run it.
 
 ## When you find an error, anywhere
 
-If a check (type-check, lint, test, build, runtime) surfaces an error, **fix it as part of the current task** — do not just report it and move on, and do not gate the fix on whether it is related to what you were asked to do, who introduced it, or how old it is.
+If a check (type-check, lint, test, build, runtime) surfaces an error:
 
-- "Pre-existing" is not a reason to skip it. A baseline error count is not an acceptable steady state to preserve.
-- Reporting an error without fixing it is only acceptable when the fix requires information only the user has (an external credential, a genuine product decision, a destructive/irreversible step) — and even then, propose the concrete fix, don't just list the symptom.
-- The code must always be left in better shape than it was found, not just not-worse.
-- This applies to every language/stack, not just the current task's file.
+- **In what you touch** (files, functions, or flows the current task changes): fix it as part of the current task. "Pre-existing" is not a reason to skip it, and the code you touch must be left in better shape than you found it.
+- **Elsewhere** (unrelated files, other stacks, other repos): do not expand the task to fix it. Report it at the end with the location, the error, and a concrete proposed fix.
+- If a fix needs information only the user has (an external credential, a genuine product decision, a destructive/irreversible step), propose the concrete fix instead of just listing the symptom.
 
 ## When creating artifacts
 
-18. Save active task planning only in `specs/current_spec.md`; save completed Specs in the versioned `archive/` directory.
-19. Use conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
-20. Cite sources for claims.
-21. Add examples for non-trivial code.
-22. Update the related context file (if applicable).
+17. Save active task planning only in `specs/current_spec.md`; save completed Specs in the versioned `archive/` directory.
+18. Use conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
+19. Cite sources for claims.
+20. Add examples for non-trivial code.
+21. Update the related context file (if applicable).
 
 ## When a task needs a diagram
 
-23. Route by **destination artifact**, not by the word "diagram":
+22. Route by **destination artifact**, not by the word "diagram":
 
     | Destination | Use |
     |---|---|
@@ -121,16 +151,32 @@ If a check (type-check, lint, test, build, runtime) surfaces an error, **fix it 
     | The destination is a claude.ai Artifact | `artifact-diagramming` |
     | Throwaway shape inside a chat reply | fenced mermaid, no skill |
 
-24. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
+23. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
     budget, and the accessible-SVG contract; a hand-rolled figure silently drops all three.
-25. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `site/index.html`
+24. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/index.html`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
-26. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and
+25. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and
     `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>`. Report the result.
+
+## When a task is UI or visual design
+
+26. Route by **what the request asks for** to ONE skill; load others only if that skill points to them:
+
+    | Request | Use |
+    |---|---|
+    | Build a new UI, page, or landing | `frontend-design` |
+    | Make it look premium, distinctive, not templated (anti-slop) | `taste-skill` |
+    | Audit an existing app's UI/UX across every route, prioritised findings | `saas-review` |
+    | Polish details: component feel, animation decisions | `emil-design-eng` |
+    | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
+    | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |
+    | The destination is a claude.ai Artifact | harness `artifact-design` skill |
+
+27. Brand tokens come from `context/06_brand.md` (same rule as diagrams).
 
 ## At session end
 
-27. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
-28. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
-29. Report final state with concrete evidence.
+28. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
+29. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
+30. Report final state with concrete evidence.

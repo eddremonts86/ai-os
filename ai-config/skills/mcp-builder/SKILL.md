@@ -193,6 +193,16 @@ Create an XML file with this structure:
 
 ---
 
+## Additional Practices
+
+- **Resources and prompts, not only tools.** Resources are read-only data addressed by URI; prompts are reusable parameterised templates the client can surface. Register them with `registerResource()` / `registerPrompt()` (TypeScript) when the use case calls for them.
+- **Transport-agnostic core.** Keep tool/resource logic independent of transport so the entrypoint can plug in stdio or Streamable HTTP. Support legacy HTTP/SSE only for backward compatibility.
+- **Idempotent tools** where possible so retries are safe; document rate limits and cost in the description of tools that call paid or throttled APIs.
+- **Pin the SDK version** in `package.json` / `pyproject.toml`. Registration APIs have changed across SDK versions (`tool()` vs `registerTool()`), so check current signatures (official docs or Context7) before copying examples, and read release notes when upgrading.
+- **Other official SDKs:** Go (`modelcontextprotocol/go-sdk`) and C# (.NET).
+
+---
+
 # Reference Files
 
 ## 📚 Documentation Library
