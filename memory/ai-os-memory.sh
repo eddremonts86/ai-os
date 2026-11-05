@@ -113,10 +113,8 @@ sub_status() {
       err "FalkorDB container NOT running (run: ai-os memory start)"
     fi
 
-    # Graphiti MCP (P0-3 decision: separate opt-in compose, not started by
-    # `ai-os memory start` — needs a REAL OPENAI_API_KEY; deployment path
-    # smoke-tested 2026-07-12 with a placeholder key, see
-    # memory/docker-compose.yml)
+    # Graphiti MCP — started by `ai-os memory start` with the rest of the compose;
+    # its LLM is the host Ollama by default (memory/graphiti/config.yaml).
     if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-graphiti-mcp$'; then
       ok "Graphiti MCP container running (ia-os-graphiti-mcp)"
       if curl -s -m 3 "http://127.0.0.1:8021/health" -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
@@ -125,7 +123,7 @@ sub_status() {
         warn "  HTTP  http://127.0.0.1:8021/health not reachable"
       fi
     else
-      warn "Graphiti MCP container not running (opt-in — needs MINIMAX_API_KEY; source ~/Projects/configs/env.ts then run: bash ~/Projects/ai-os/setup/ai-os-bootstrap.sh)"
+      err "Graphiti MCP container NOT running (run: ai-os memory start)"
     fi
   else
     warn "Docker not running"
@@ -320,10 +318,20 @@ sub_start() {
   local compose_bin="docker compose"
   docker compose version >/dev/null 2>&1 || compose_bin="docker-compose"
   local profile_args=""
-  if [ -d "$OLLAMA_DATA_DIR" ]; then
+  # Skip the container when something (the native launchd Ollama) already
+  # answers :11500 — the data dir outlives a switch to the native service.
+  if [ -d "$OLLAMA_DATA_DIR" ] && ! curl -sf -m 2 http://127.0.0.1:11500/api/tags >/dev/null 2>&1; then
     profile_args="--profile ollama-docker"
   fi
-  $compose_bin -f "$COMPOSE_FILE" $profile_args up -d
+  local env_args=""
+  [ -f "$AI_OS_ROOT/dev-env/env-config/.env" ] && env_args="--env-file $AI_OS_ROOT/dev-env/env-config/.env"
+  $compose_bin $env_args -f "$COMPOSE_FILE" $profile_args up -d
+  # graphiti-mcp needs a few seconds after "Started"; without the wait the
+  # status below reported it unreachable on every fresh start.
+  for _ in $(seq 1 30); do
+    curl -sf -m 2 http://127.0.0.1:8021/health >/dev/null 2>&1 && break
+    sleep 1
+  done
   ok "AI-OS stack started"
   sub_status
 }

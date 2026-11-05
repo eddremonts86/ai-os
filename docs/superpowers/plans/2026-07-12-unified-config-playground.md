@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- Working directory: `/Users/edd/Projects/eddremonts86/ai-schadcn-chat` (the package root).
+- Working directory: `<projects>/eddremonts86/actives/ai-schadcn-chat` (the package root).
 - Demo dev server must be running for browser smoke tests: `pnpm demo` on `http://127.0.0.1:5173/`. Background PID 11072, session `proc_bb88430ce130`.
 - Source files (`src/**`) are the published npm package — DO NOT modify them. Only `demo/**` is in scope.
 - All file names, comments, commit messages in English. Conversational chat with user is Spanish lowercase.
@@ -884,7 +884,7 @@ drawer; above it lives as a fixed-width sidebar."
 After all tasks are committed and verified, move `specs/current_spec.md` to `archive/2026-07-12-unified-config-playground.md` and reset `current_spec.md` to the no-active-Spec template.
 
 ```bash
-export AI_OS_ROOT=/Users/edd/Projects/ai-os
+: "${AI_OS_ROOT:?set AI_OS_ROOT to the ai-os repo root}"
 mv "$AI_OS_ROOT/specs/current_spec.md" \
    "$AI_OS_ROOT/archive/2026-07-12-unified-config-playground.md"
 echo '# Current Spec\n\n*No active Spec.* Load a new Spec following `specs/spec_template.md` or run `workflows/project_start.md`.' \

@@ -3,13 +3,13 @@
 #
 # What it does (in order, all idempotent):
 #   1. Verify Docker is running
-#   2. Source ~/Projects/configs/env.ts if present (provides MINIMAX_API_KEY, etc.)
+#   2. Hand dev-env/env-config/.env to compose via --env-file (optional GRAPHITI_LLM_* overrides)
 #   3. Start FalkorDB (ia-os-falkordb) via memory/docker-compose.yml (unified)
-#   4. Start Graphiti MCP (ia-os-graphiti-mcp) if MINIMAX_API_KEY is set
+#   4. Start Graphiti MCP (ia-os-graphiti-mcp; LLM = host Ollama by default)
 #   5. Ensure Ollama is running (start brew service on Mac, pull nomic-embed-text)
-#   6. Auto-index every project under ~/Projects/ via codebase-memory-mcp
+#   6. Auto-index every git project next to ai-os via codebase-memory-mcp
 #      - skips dirs without .git/ (not a code project)
-#      - skips ai-os itself (the toolchain)
+#      - skips paths matching AI_OS_REINDEX_SKIP (default /inHold/)
 #      - skips projects already indexed unless --refresh
 #
 # Usage:
@@ -27,7 +27,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 AI_OS_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HOME_DIR="${HOME:-$(dscl . -read /Users/"$(id -un)" NFSHomeDirectory 2>/dev/null | awk '{print $2}')}"
 [ -z "$HOME_DIR" ] && HOME_DIR="/Users/$(id -un)"
-PROJECTS_DIR="$HOME_DIR/Projects"
+# Same discovery root and skip rule as memory/cron-reindex.sh.
+PROJECTS_DIR="${AI_OS_PROJECTS_DIR:-$(dirname "$AI_OS_ROOT")}"
+SKIP_RE="${AI_OS_REINDEX_SKIP:-/inHold/}"
 LOG_DIR="$AI_OS_ROOT/memory/logs"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/bootstrap-$(date +%Y-%m-%d-%H%M%S).log"
@@ -74,17 +76,15 @@ if ! docker info >/dev/null 2>&1; then
 fi
 ok "docker reachable"
 
-if [ -f "$HOME_DIR/Projects/configs/env.ts" ]; then
-  # env.ts is shell-compatible KEY=VALUE syntax despite the .ts extension
-  set -a
-  # shellcheck disable=SC1090,SC1091
-  source "$HOME_DIR/Projects/configs/env.ts" 2>/dev/null || true
-  set +a
-  ok "sourced ~/Projects/configs/env.ts (MINIMAX_API_KEY, OPENAI_API_KEY, etc.)"
-  [ -n "${MINIMAX_API_KEY:-}" ] && ok "  MINIMAX_API_KEY present" || warn "  MINIMAX_API_KEY missing (Graphiti will be skipped)"
-else
-  warn "~/Projects/configs/env.ts not found (Graphiti will be skipped)"
-fi
+# Credentials live in the canonical merged local env file (context/04_tools.md). This used to
+# source ~/Projects/configs/env.ts, which no longer exists, so Graphiti was skipped on every
+# run behind a warning nobody read. Compose reads the file itself via --env-file: nothing is
+# sourced into this shell, so a value holding shell metacharacters cannot execute here.
+# Graphiti's LLM defaults to the host's native Ollama (2026-11-05), so no key is required;
+# the env file only matters when it overrides GRAPHITI_LLM_* to point at a hosted model.
+ENV_FILE="$AI_OS_ROOT/dev-env/env-config/.env"
+GRAPHITI_ENV_ARGS=()
+[ -f "$ENV_FILE" ] && GRAPHITI_ENV_ARGS=(--env-file "$ENV_FILE")
 
 # ─── Stack: FalkorDB ──────────────────────────────────────────────────────────
 COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
@@ -94,7 +94,9 @@ OLLAMA_DATA_DIR="$COMPOSE_DIR/falkordb/ollama-data"
 start_falkordb() {
   hdr "FalkorDB"
   local up_args=""
-  if [ -d "$OLLAMA_DATA_DIR" ]; then
+  # The data dir alone is not enough: it survives on Macs that switched to the
+  # native launchd Ollama, and starting the container there fights it for :11500.
+  if [ -d "$OLLAMA_DATA_DIR" ] && ! curl -sf -m 2 http://127.0.0.1:11500/api/tags >/dev/null 2>&1; then
     up_args="--profile ollama-docker"
   fi
   # `docker compose -f $COMPOSE_FILE up -d` (no service name) brings up every
@@ -122,12 +124,8 @@ start_falkordb() {
 
 # ─── Stack: Graphiti (opt-in) ─────────────────────────────────────────────────
 start_graphiti() {
-  if [ -z "${MINIMAX_API_KEY:-}" ]; then
-    warn "Graphiti skipped (no MINIMAX_API_KEY)"
-    return 0
-  fi
-  hdr "Graphiti MCP (opt-in)"
-  if docker compose -f "$COMPOSE_FILE" up -d graphiti-mcp 2>&1 | sed 's/^/    /'; then
+  hdr "Graphiti MCP"
+  if docker compose ${GRAPHITI_ENV_ARGS[@]+"${GRAPHITI_ENV_ARGS[@]}"} -f "$COMPOSE_FILE" up -d graphiti-mcp 2>&1 | sed 's/^/    /'; then
     : # ok
   else
     err "docker compose up -d failed for graphiti"
@@ -184,29 +182,16 @@ ensure_ollama() {
 }
 
 # ─── Indexing: discover + index ───────────────────────────────────────────────
-# Returns a list of project root paths to attempt. Filters:
-#   - must contain a .git/ directory (we only index code projects)
-#   - must be a direct child of ~/Projects/ OR a grandchild (~/Projects/eddremonts86/builderhunt/)
-#   - skips the AI-OS root itself (no point indexing the indexer)
-#   - skips ~/Projects/configs (secrets, not code)
+# Returns a list of project root paths to attempt: git repos up to 3 levels
+# below PROJECTS_DIR (e.g. eddremonts86/actives/plansmith), minus SKIP_RE.
+# ai-os is included — it is where most of the work happens.
 discover_projects() {
-  local d
-  # Level 1: ~/Projects/<name>/
-  for d in "$PROJECTS_DIR"/*/; do
-    [ -d "$d.git" ] || continue
-    case "$d" in
-      "$PROJECTS_DIR/ai-os/"|"$PROJECTS_DIR/configs/") continue ;;
-    esac
+  local gitdir d
+  while IFS= read -r gitdir; do
+    d="${gitdir%/.git}/"
+    [[ "$d" =~ $SKIP_RE ]] && continue
     echo "$d"
-  done
-  # Level 2: ~/Projects/<group>/<name>/
-  for d in "$PROJECTS_DIR"/*/*/; do
-    [ -d "$d.git" ] || continue
-    case "$d" in
-      "$PROJECTS_DIR/ai-os/"*) continue ;;  # skip everything under ai-os
-    esac
-    echo "$d"
-  done
+  done < <(find "$PROJECTS_DIR" -mindepth 2 -maxdepth 4 -name .git -type d -not -path '*/node_modules/*' 2>/dev/null | sort)
 }
 
 # Returns the indexed project name for a given path, or empty if not indexed.
@@ -232,7 +217,7 @@ sys.exit(0)
 index_all() {
   hdr "Auto-index projects under $PROJECTS_DIR"
   if ! command -v codebase-memory-mcp >/dev/null 2>&1; then
-    err "codebase-memory-mcp not installed (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
+    err "codebase-memory-mcp not installed (run: bash $AI_OS_ROOT/setup/install-mac.sh)"
     return 1
   fi
 

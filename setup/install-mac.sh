@@ -3,8 +3,9 @@
 # Setup AI-OS on Mac from zero. 1-command.
 #
 # Usage:
-#   git clone https://github.com/eddremonts86/ai-os ~/Projects/ai-os
-#   cd ~/Projects/ai-os
+#   git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"
+#   cd "$AI_OS_ROOT"
+#   (AI_OS_ROOT = any checkout path you choose; the script derives it from its own location)
 #   bash setup/install-mac.sh
 #
 # Idempotent: runs multiple times without breaking anything.
@@ -17,6 +18,8 @@
 #   SKIP_VERIFY=1    → skip verification at the end
 #   ASSUME_YES=1     → skip the preflight confirmation prompt
 #   DRY_RUN=1        → simulate without executing (CI mode)
+#   EXTRAS=1         → also install dev-env/packages/Brewfile.extras (optional
+#                      GUI apps, language runtimes, infra CLIs). Default: core only.
 
 set -euo pipefail
 
@@ -51,8 +54,51 @@ preserve_or_replace() {
   return 0
 }
 
+# Claude Code CLI, native build only. A pnpm global of @anthropic-ai/claude-code
+# skips the package's postinstall and leaves a shim that just prints "claude
+# native binary not installed", so a `claude` on PATH is not proof of anything:
+# every candidate has to answer --version. Stable install paths first; the
+# Claude desktop app's bundled CLI (versioned path, moves on every app update)
+# is a last resort, good for one-off calls such as `plugin install`.
+native_claude() {
+  local c
+  for c in "$HOME_DIR/.local/bin/claude" "$HOME_DIR/.claude/local/claude" /opt/homebrew/bin/claude; do
+    [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && { printf '%s\n' "$c"; return 0; }
+  done
+  return 1
+}
+resolve_claude() {
+  local c found=""
+  native_claude && return 0
+  c="$(command -v claude 2>/dev/null || true)"
+  [ -n "$c" ] && "$c" --version >/dev/null 2>&1 && { printf '%s\n' "$c"; return 0; }
+  for c in "$HOME_DIR/Library/Application Support/Claude/claude-code/"*/*/claude.app/Contents/MacOS/claude; do
+    [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && found="$c"
+  done
+  [ -n "$found" ] && { printf '%s\n' "$found"; return 0; }
+  return 1
+}
+
+# ─── Ponytail pin (read by 5b, 7b and 9c) ───
+# 5b (env.sh) and 7b (global bridge) regenerate their files in full on every
+# run, so ponytail has to be part of those renders: an append in 9c was wiped by
+# any later run that skipped or failed before 9c. Enabled when this run wires
+# ponytail, or an earlier run already did (its config exists), so a partial run
+# with SKIP_PONYTAIL=1 renders the same files as a full one.
+PONYTAIL_VERSION="${PONYTAIL_VERSION:-4.9.0}"
+PONYTAIL_CFG="$HOME_DIR/.config/ponytail/config.json"
+if [ -z "${PONYTAIL_DEFAULT_MODE:-}" ] && [ -f "$PONYTAIL_CFG" ]; then
+  PONYTAIL_DEFAULT_MODE="$(sed -n 's/.*"defaultMode"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$PONYTAIL_CFG" | head -1)"
+fi
+PONYTAIL_DEFAULT_MODE="${PONYTAIL_DEFAULT_MODE:-full}"
+PONYTAIL_ENABLED=0
+if [ "${SKIP_PONYTAIL:-0}" != "1" ] || [ -f "$PONYTAIL_CFG" ]; then
+  PONYTAIL_ENABLED=1
+fi
+
 # ─── Install manifest (shown before anything is installed) ───
 BREWFILE="$AI_OS_ROOT/dev-env/packages/Brewfile"
+BREWFILE_EXTRAS="$AI_OS_ROOT/dev-env/packages/Brewfile.extras"
 NPM_GLOBALS="$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
 PIP_PACKAGES="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
 SKILLS_DIR="$AI_OS_ROOT/ai-config/skills"
@@ -77,6 +123,16 @@ show_manifest() {
   echo ""
   echo "  🖥  Homebrew apps & fonts (casks, $n_casks):"
   grep -E '^cask ' "$BREWFILE" 2>/dev/null | sed -E 's/cask "([^"]+)".*/\1/' | join_fold
+  echo ""
+  if [ "${EXTRAS:-0}" = "1" ]; then
+    local n_formulae_x n_casks_x
+    n_formulae_x=$(grep -cE '^brew ' "$BREWFILE_EXTRAS" 2>/dev/null || echo 0)
+    n_casks_x=$(grep -cE '^cask ' "$BREWFILE_EXTRAS" 2>/dev/null || echo 0)
+    echo "  ➕ EXTRAS=1 — also installing ($n_formulae_x CLI + $n_casks_x apps):"
+    { grep -E '^(brew|cask) ' "$BREWFILE_EXTRAS" 2>/dev/null | sed -E 's/(brew|cask) "([^"]+)".*/\2/'; } | join_fold
+  else
+    log "Skipping optional apps/runtimes in Brewfile.extras (set EXTRAS=1 to include them)"
+  fi
   echo ""
   echo "  🟢 Global Node packages via pnpm ($n_node):"
   grep -vE '^[[:space:]]*(#|$)' "$NPM_GLOBALS" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
@@ -148,14 +204,30 @@ echo ""
 
 # ─── 1. Brew packages ───
 if [ "${SKIP_BREW:-0}" != "1" ]; then
-  log "1. Installing Brew packages (may take 5-15 min)..."
+  log "1. Installing missing Brew packages (first run may take 5-15 min)..."
   cd "$AI_OS_ROOT"
   # Homebrew 4.6+ refuses formulae from untrusted third-party taps;
   # `brew trust` doesn't exist on older versions, so ignore failures there.
   brew trust hashicorp/tap >/dev/null 2>&1 || true
   brew trust aws/tap >/dev/null 2>&1 || true
-  brew bundle install --file=dev-env/packages/Brewfile --verbose
-  ok "Brew packages installed"
+  # --no-upgrade: install what is missing, never upgrade what is already there
+  # (a re-run used to upgrade every outdated cask, e.g. docker-desktop mid-use).
+  # A failed package is reported at the end instead of aborting every later step.
+  if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile; then
+    ok "Brew packages installed"
+  else
+    BREW_FAILED=1
+    warn "brew bundle reported failures; continuing (see output above)"
+  fi
+  if [ "${EXTRAS:-0}" = "1" ]; then
+    log "1b. EXTRAS=1 — installing dev-env/packages/Brewfile.extras..."
+    if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile.extras; then
+      ok "Brew extras installed"
+    else
+      BREW_FAILED=1
+      warn "brew bundle (extras) reported failures; continuing"
+    fi
+  fi
 else
   log "1. SKIP_BREW=1, skipping brew"
 fi
@@ -170,18 +242,24 @@ if [ "${SKIP_NPM:-0}" != "1" ]; then
     # pnpm needs PNPM_HOME to place global bins; the AI-OS zshrc adds it to PATH
     export PNPM_HOME="${PNPM_HOME:-$HOME_DIR/Library/pnpm}"
     export PATH="$PNPM_HOME:$PATH"
-    npm_failed=""
+    # Only add what is missing, in ONE `pnpm add -g` call: a per-package loop
+    # re-resolved (and upgraded) every installed global on every run. Upgrades
+    # are deliberate: `pnpm update -g`.
+    installed_globals="$(pnpm ls -g --depth=0 --parseable 2>/dev/null | sed 's|.*/node_modules/||' | sort -u)"
+    npm_missing=()
     while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
       pkg="${raw_pkg%%#*}"
       pkg="$(printf '%s' "$pkg" | xargs)"
       [ -z "$pkg" ] && continue
-      # one bad package must not abort the whole install (set -e)
-      pnpm add -g "$pkg" || npm_failed="$npm_failed $pkg"
+      printf '%s\n' "$installed_globals" | grep -qxF "$pkg" || npm_missing+=("$pkg")
     done < "$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
-    if [ -n "$npm_failed" ]; then
-      warn "global Node packages failed:$npm_failed"
+    if [ "${#npm_missing[@]}" -eq 0 ]; then
+      ok "global Node packages already installed (none missing)"
+    elif pnpm add -g "${npm_missing[@]}"; then
+      ok "global Node packages installed: ${npm_missing[*]}"
     else
-      ok "global Node packages installed"
+      # one bad package must not abort the whole install (set -e)
+      warn "pnpm add -g failed for: ${npm_missing[*]} (one bad name fails the batch; check above)"
     fi
   else
     warn "pnpm not found; skipping global Node packages (install: brew install pnpm)"
@@ -189,6 +267,34 @@ if [ "${SKIP_NPM:-0}" != "1" ]; then
 else
   log "2. SKIP_NPM=1, skipping global Node packages"
 fi
+echo ""
+
+# ─── 2a. Claude Code CLI (native build, not a pnpm global) ───
+# @anthropic-ai/claude-code left npm-globals.txt: pnpm skips its postinstall, so
+# the shim it installs only errors out (see native_claude above). The native
+# build self-updates in ~/.local/bin. SKIP_CLAUDE_NATIVE=1 skips the download.
+log "2a. Claude Code CLI (native)..."
+if CLAUDE_NATIVE="$(native_claude)"; then
+  ok "  native Claude Code: $CLAUDE_NATIVE ($("$CLAUDE_NATIVE" --version 2>/dev/null | head -1))"
+elif [ "${SKIP_CLAUDE_NATIVE:-0}" = "1" ]; then
+  warn "  no native Claude Code (SKIP_CLAUDE_NATIVE=1) — install: curl -fsSL https://claude.ai/install.sh | bash"
+elif curl -fsSL https://claude.ai/install.sh | bash && CLAUDE_NATIVE="$(native_claude)"; then
+  ok "  native Claude Code installed: $CLAUDE_NATIVE"
+else
+  warn "  native Claude Code install failed — retry: curl -fsSL https://claude.ai/install.sh | bash"
+fi
+# A leftover broken pnpm copy shadows the native one on PATH; drop it, but only
+# once a working native build exists (never leave the machine with no claude).
+pnpm_claude="${PNPM_HOME:-$HOME_DIR/Library/pnpm}/claude"
+if [ -n "${CLAUDE_NATIVE:-}" ] && [ -e "$pnpm_claude" ] && ! "$pnpm_claude" --version >/dev/null 2>&1; then
+  if pnpm remove -g @anthropic-ai/claude-code >/dev/null 2>&1; then
+    ok "  removed broken pnpm @anthropic-ai/claude-code shim (native build wins on PATH)"
+  else
+    warn "  broken pnpm claude shim at $pnpm_claude — remove: pnpm remove -g @anthropic-ai/claude-code"
+  fi
+fi
+CLAUDE_BIN="$(resolve_claude || true)"
+[ -n "$CLAUDE_BIN" ] || warn "  no working claude binary found — Claude Code plugin steps will be skipped"
 echo ""
 
 # ─── 3. Python packages (isolated AI-OS venv) ───
@@ -200,21 +306,29 @@ if [ "${SKIP_PIP:-0}" != "1" ]; then
   log "3. Installing Python packages into AI-OS venv (~/.ai-os/venv)..."
   if command -v uv >/dev/null 2>&1; then
     AIOS_VENV="$HOME_DIR/.ai-os/venv"
-    uv venv "$AIOS_VENV" >/dev/null 2>&1 || true
-    pip_failed=""
+    [ -x "$AIOS_VENV/bin/python" ] || uv venv "$AIOS_VENV" >/dev/null 2>&1 || true
+    # Only install what is missing, in ONE `uv pip install -r` call (was one
+    # resolve per package). Names are normalised like verify.sh section 10
+    # (PEP 503: lowercase, _→-; extras and version specifiers stripped).
+    installed_dists="$(uv pip list --python "$AIOS_VENV/bin/python" --format freeze 2>/dev/null \
+      | sed -E 's/==.*//' | tr '[:upper:]' '[:lower:]' | tr '_' '-')"
+    pip_req="$(mktemp -t aios-pip-XXXXXX)"
     while IFS= read -r raw_pkg || [ -n "$raw_pkg" ]; do
       pkg="${raw_pkg%%#*}"
       pkg="$(printf '%s' "$pkg" | xargs)"
       [ -z "$pkg" ] && continue
-      # one bad package must not abort the whole install (set -e)
-      uv pip install --python "$AIOS_VENV/bin/python" "$pkg" >/dev/null 2>&1 \
-        || pip_failed="$pip_failed $pkg"
+      dist="$(printf '%s' "$pkg" | sed -E 's/\[.*//; s/[><=~!].*//' | xargs | tr '[:upper:]' '[:lower:]' | tr '_' '-')"
+      printf '%s\n' "$installed_dists" | grep -qxF "$dist" || printf '%s\n' "$pkg" >> "$pip_req"
     done < "$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
-    if [ -n "$pip_failed" ]; then
-      warn "Python packages failed:$pip_failed"
+    if [ ! -s "$pip_req" ]; then
+      ok "Python packages already installed in $AIOS_VENV (none missing)"
+    elif uv pip install --python "$AIOS_VENV/bin/python" -r "$pip_req"; then
+      ok "Python packages installed into $AIOS_VENV: $(paste -sd' ' "$pip_req")"
     else
-      ok "Python packages installed into $AIOS_VENV"
+      # one bad package must not abort the whole install (set -e)
+      warn "uv pip install failed for: $(paste -sd' ' "$pip_req") (one bad name fails the batch; check above)"
     fi
+    rm -f "$pip_req"
     # Playwright needs a browser binary on top of the wheel; without it the
     # diagram-design skill's PNG export fails at runtime with a launch error.
     # ~120MB download, so only fetch it when chromium is actually missing.
@@ -320,8 +434,17 @@ cat > "$AIOS_ENV_FILE" <<EOF
 # Sourced by dev-env/dotfiles/zsh/.zshrc through a committed guard.
 export AI_OS_ROOT="\${AI_OS_ROOT:-$AI_OS_ROOT}"
 export OLLAMA_URL="\${OLLAMA_URL:-http://localhost:11500}"
+# The \`ollama\` CLI reads OLLAMA_HOST, not OLLAMA_URL; without it every
+# \`ollama list/pull/rm\` dials the default :11434 and finds no server.
+export OLLAMA_HOST="\${OLLAMA_HOST:-127.0.0.1:11500}"
 EOF
-ok "  ~/.ai-os/env.sh: AI_OS_ROOT + OLLAMA_URL (untracked, per-machine)"
+# Part of the same render (see "Ponytail pin" at the top), not a 9c append.
+if [ "$PONYTAIL_ENABLED" = "1" ]; then
+  printf 'export PONYTAIL_DEFAULT_MODE="${PONYTAIL_DEFAULT_MODE:-%s}"\n' "$PONYTAIL_DEFAULT_MODE" >> "$AIOS_ENV_FILE"
+  ok "  ~/.ai-os/env.sh: AI_OS_ROOT + OLLAMA_URL + PONYTAIL_DEFAULT_MODE (untracked, per-machine)"
+else
+  ok "  ~/.ai-os/env.sh: AI_OS_ROOT + OLLAMA_URL (untracked, per-machine)"
+fi
 
 # The AI-OS .zshrc already carries the source guard (committed once). If the
 # user kept their own ~/.zshrc instead, add the guard there — that file is
@@ -339,6 +462,13 @@ if [ -e "$AIOS_ZSHRC" ] || [ -L "$AIOS_ZSHRC" ]; then
         ok "  ~/.zshrc: source guard added (own dotfile, not the AI-OS one)"
       fi ;;
   esac
+fi
+
+# ─── 5c. Git hooks for this clone (pre-push gate, see setup/hooks/pre-push) ───
+# Repo-local config only; never touches the global git config or other repos.
+if [ -d "$AI_OS_ROOT/.git" ] || git -C "$AI_OS_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+  git -C "$AI_OS_ROOT" config core.hooksPath setup/hooks
+  ok "5c. git hooks: pre-push gate enabled (skip once: git push --no-verify)"
 fi
 
 # ─── 6. Oh My Zsh + Powerlevel10k ───
@@ -421,8 +551,8 @@ echo ""
 require_manifest_tool
 log "7. Setting global skills in native client destinations..."
 # Only flat skills (a dir with a top-level SKILL.md) are symlinked here. Plugin
-# bundles in ai-config/skills/ that have a NESTED layout (claude.tools, ECC) are
-# installed by their own scripts (install-claude-tools.sh, install-ecc.sh).
+# bundles in ai-config/skills/ that have a NESTED layout (claude.tools) are
+# installed by their own script (install-claude-tools.sh); ECC is steps 7e/7f.
 #   Claude ~/.claude/skills | Codex ~/.codex/skills | Gemini ~/.gemini/skills
 #   Antigravity ~/.agents/skills | Hermes reads ~/.agents/skills via skills.external_dirs (no copy)
 #   MiniMax Code ~/.minimax/skills (global skills.paths entry in opencode.json)
@@ -485,6 +615,73 @@ if [ -d "$AI_OS_ROOT/vendor/gstack" ]; then
   ok "Vendored gstack skills propagated ($GSTACK_COUNT skills in source)"
 else
   log "7c. vendor/gstack/ absent, skipping"
+fi
+echo ""
+
+# ─── 7e. Selective ECC skills (vendor/ecc/, DAILY subset only) ───
+# vendor/ecc/ holds only the curated ECC subset AI-OS uses (see
+# vendor/ecc/VENDORED_FROM.md). Like vendor/gstack/ (7c) but driven by the
+# named list in vendor/ecc/DAILY_SKILLS.txt, picked by an evidence-backed
+# agent-sort pass against this repo (2026-09-20).
+# That file is the single source of truth for the list — don't duplicate it
+# here or in setup/verify.sh; both read the same file.
+ECC_DAILY_LIST="$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt"
+if [ -d "$AI_OS_ROOT/vendor/ecc/skills" ] && [ -f "$ECC_DAILY_LIST" ]; then
+  log "7e. Setting curated ECC DAILY skills in 5 CLIs..."
+  ECC_DAILY_COUNT=0
+  while IFS=$'\t' read -r client_id client_path client_required; do
+    cli_dir="$HOME_DIR/$client_path"
+    mkdir -p "$cli_dir"
+    # Prune stale ECC symlinks whose target is gone (mirrors 7c's gstack prune).
+    for link in "$cli_dir"/*; do
+      [ -L "$link" ] || continue
+      tgt=$(readlink "$link")
+      case "$tgt" in
+        *"/vendor/ecc/skills/"*) [ -f "${tgt%/}/SKILL.md" ] || rm -f "$link" ;;
+      esac
+    done
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      case "$name" in \#*) continue ;; esac
+      skill_dir="$AI_OS_ROOT/vendor/ecc/skills/$name"
+      [ -f "$skill_dir/SKILL.md" ] || { warn "  ECC skill '$name' listed in DAILY_SKILLS.txt but missing SKILL.md — skipping"; continue; }
+      if [ -e "$cli_dir/$name" ] && [ ! -L "$cli_dir/$name" ]; then
+        preserve_or_replace "$cli_dir/$name" || continue
+      fi
+      ln -sfn "$skill_dir" "$cli_dir/$name"
+    done < "$ECC_DAILY_LIST"
+  done < <(yq -r '.platforms.macos.skills.clients[] | [.id, .path, .required] | @tsv' "$MANIFEST")
+  ECC_DAILY_COUNT=$(grep -vc '^\s*#\|^\s*$' "$ECC_DAILY_LIST")
+  ok "Curated ECC DAILY skills propagated ($ECC_DAILY_COUNT skills, per vendor/ecc/DAILY_SKILLS.txt)"
+else
+  log "7e. vendor/ecc/skills/ or DAILY_SKILLS.txt absent, skipping"
+fi
+echo ""
+
+# ─── 7f. Selective ECC agents (Claude Code only — no multi-CLI agent convention yet) ───
+# ai-os has no existing distribution mechanism for Claude Code subagent
+# definitions (.claude/agents/*.md) — this is the first one, deliberately
+# scoped to Claude Code only, since that's the only CLI ai-os documents
+# subagent support for today. 3 agents, picked by the same 2026-09-20
+# agent-sort pass: real gaps in ai-os's own Node/TS/Vue stack.
+ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
+if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
+  log "7f. Setting curated ECC DAILY agents in Claude Code..."
+  mkdir -p "$HOME_DIR/.claude/agents"
+  ECC_AGENT_COUNT=0
+  for name in "${ECC_DAILY_AGENTS[@]}"; do
+    src="$AI_OS_ROOT/vendor/ecc/agents/$name.md"
+    [ -f "$src" ] || { warn "  ECC agent '$name' missing at $src — skipping"; continue; }
+    dest="$HOME_DIR/.claude/agents/$name.md"
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+      preserve_or_replace "$dest" || continue
+    fi
+    ln -sfn "$src" "$dest"
+    ECC_AGENT_COUNT=$((ECC_AGENT_COUNT + 1))
+  done
+  ok "Curated ECC DAILY agents propagated ($ECC_AGENT_COUNT/${#ECC_DAILY_AGENTS[@]}) to ~/.claude/agents/"
+else
+  log "7f. vendor/ecc/agents/ absent, skipping"
 fi
 echo ""
 
@@ -560,6 +757,20 @@ ADAPTER_DIR="$HOME_DIR/.ai-os/adapters"
 mkdir -p "$ADAPTER_DIR"
 BRIDGE="$ADAPTER_DIR/global-bridge.md"
 sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$ADAPTER_TEMPLATE" > "$BRIDGE"
+# Ponytail pointer, rendered with the bridge so a re-run never strips it (see
+# "Ponytail pin" at the top). A short pointer, not upstream's AGENTS.md: this
+# file is loaded every session by Claude, Codex, Gemini and Antigravity, the
+# host plugins inject the full ruleset per turn, and rules/always_do.md already
+# carries the ladder. Appended here rather than templated so install-windows.ps1,
+# which renders the same template, never sees an unfilled placeholder.
+if [ "$PONYTAIL_ENABLED" = "1" ]; then
+  cat >> "$BRIDGE" <<PONYTAIL_BRIDGE
+
+<!-- PONYTAIL (DietrichGebert/ponytail v${PONYTAIL_VERSION}) — rendered by setup/install-mac.sh 7b -->
+Ponytail (lazy senior dev) is active at \`${PONYTAIL_DEFAULT_MODE}\`. Ladder: does it need to exist? → reuse → stdlib → native platform → installed dep → one line → minimum that works. Never cut validation/security/a11y. Toggle: /ponytail lite|full|ultra|off.
+<!-- /PONYTAIL -->
+PONYTAIL_BRIDGE
+fi
 while IFS=$'\t' read -r adapter_id adapter_path adapter_required; do
   target="$HOME_DIR/$adapter_path"
   mkdir -p "$(dirname "$target")"
@@ -578,7 +789,7 @@ fi
 MM_OVERLAY="$AI_OS_ROOT/ai-config/clis/minimax-overlay.md"
 if [ "${MODIFY_OPTIONAL_INTEGRATIONS:-0}" = "1" ] && [ -d "$HOME_DIR/.minimax/agents" ] && [ -f "$MM_OVERLAY" ]; then
   for agent_dir in "$HOME_DIR/.minimax/agents"/*/; do
-    [ -d "$agent_dir" ] && cp "$MM_OVERLAY" "$agent_dir/agent.md"
+    [ -d "$agent_dir" ] && sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$MM_OVERLAY" > "$agent_dir/agent.md"
   done
 fi
 # VS Code (GitHub Copilot Chat): unlike the CLIs above, Copilot Chat already
@@ -669,8 +880,13 @@ if [ "${SKIP_MCP:-0}" != "1" ]; then
   fi
   mkdir -p "$HOME_DIR/.hermes"
 
-  # Generate mcp_servers block with standalone python script (also works on Windows)
-  if command -v python3 >/dev/null 2>&1; then
+  # Generate mcp_servers block with standalone python script (also works on Windows).
+  # The AI-OS venv first, as in 9a: it carries PyYAML (pip-packages.txt), brew's
+  # python3 does not, and the script refuses to run without it — which aborted
+  # the whole install here under set -e.
+  if [ -x "$HOME_DIR/.ai-os/venv/bin/python" ]; then
+    "$HOME_DIR/.ai-os/venv/bin/python" "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml" "$HOME_DIR/.agents/skills"
+  elif command -v python3 >/dev/null 2>&1; then
     python3 "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml" "$HOME_DIR/.agents/skills"
   elif command -v python >/dev/null 2>&1; then
     python "$SCRIPT_DIR/generate-mcp-config.py" "$AI_OS_ROOT/ai-config/mcp" "$HOME_DIR/.hermes/config.yaml" "$HOME_DIR/.agents/skills"
@@ -741,18 +957,18 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
 
   # 9b.2 — Unified AI-OS memory stack (FalkorDB + Graphiti in one compose project)
   if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-    mkdir -p "$AI_OS_ROOT/memory/falkordb/data"
+    mkdir -p "$AI_OS_ROOT/memory/falkordb/data" "$AI_OS_ROOT/memory/openwebui/data"
     COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
     if docker compose version >/dev/null 2>&1; then
-      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
-        warn "  docker compose up failed (run manually: cd ~/Projects/ai-os/memory && docker compose -f docker-compose.yml up -d)"
+        warn "  docker compose up failed (run manually: cd $AI_OS_ROOT/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
-      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os)"
+      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker-compose up failed"
@@ -814,41 +1030,69 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     ok "  codebase-memory-mcp already installed"
   fi
 
-  # grepai via go install (pinned: bump this tag deliberately, not @latest — P1-4)
-  GREPAI_VERSION="v0.35.0"
-  if command -v go >/dev/null 2>&1; then
-    if go install "github.com/yoanbernabeu/grepai/cmd/grepai@${GREPAI_VERSION}" 2>&1 | tail -2; then
-      [ -x "$HOME_DIR/go/bin/grepai" ] && ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
-      ok "  grepai ${GREPAI_VERSION} installed via go install"
-
-      # grepai's init wizard hard-codes Ollama at :11434, but AI-OS uses :11500
-      # (see OLLAMA_URL above). Auto-init the AI-OS repo with the right URL so
-      # `grepai watch` works without manual config. Re-init is a no-op if .grepai/
-      # already exists with the right URL.
-      if [ ! -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
-        if [ -t 0 ]; then
-          # interactive terminal: full wizard
-          (cd "$AI_OS_ROOT" && "$HOME_DIR/.local/bin/grepai" init) || warn "  grepai init interactive failed; run manually: cd ~/Projects/ai-os && grepai init"
-        else
-          # non-interactive (CI, piped): pipe the answers
-          (cd "$AI_OS_ROOT" && printf "1\n%s\ngob\n\n" "$OLLAMA_URL" | "$HOME_DIR/.local/bin/grepai" init >/dev/null 2>&1) || warn "  grepai init non-interactive failed; run manually: cd ~/Projects/ai-os && grepai init"
-        fi
-      fi
-      # Always reconcile endpoint: if the user (or a previous install) used
-      # 11434, swap to OLLAMA_URL. grepai ignores OLLAMA_URL env, so config
-      # is the only way to fix this.
-      if [ -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
-        "$HOME_DIR/.local/bin/grepai" config get embedder.endpoint >/dev/null 2>&1 || true
-        if grep -q "localhost:11434" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null; then
-          sed -i.bak "s|http://localhost:11434|$OLLAMA_URL|g" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null &&             ok "  grepai config: rewrote Ollama endpoint 11434 -> $OLLAMA_URL" ||             warn "  grepai config: could not rewrite endpoint (run: sed -i '' 's|11434|11500|' ~/Projects/ai-os/.grepai/config.yaml)"
-          rm -f "$AI_OS_ROOT/.grepai/config.yaml.bak"
-        fi
-      fi
+  # grepai built from a shallow clone of a pinned tag (bump deliberately, not
+  # @latest — P1-4). `go install pkg@version` is rejected because upstream's
+  # go.mod carries `exclude` directives, which Go only honours in the main module.
+  GREPAI_VERSION="v1.2.0"
+  # The clone + go build costs minutes; skip it when the pinned version is
+  # already the one on PATH (the build stamps main.version, read back here).
+  GREPAI_READY=0
+  if "$HOME_DIR/.local/bin/grepai" version 2>/dev/null | grep -qF "${GREPAI_VERSION#v}"; then
+    ok "  grepai ${GREPAI_VERSION} already built"
+    GREPAI_READY=1
+  elif command -v go >/dev/null 2>&1; then
+    GREPAI_SRC="$(mktemp -d)"
+    if git clone --quiet --depth 1 --branch "$GREPAI_VERSION" https://github.com/yoanbernabeu/grepai.git "$GREPAI_SRC" 2>&1 | tail -2 &&
+       mkdir -p "$HOME_DIR/go/bin" &&
+       (cd "$GREPAI_SRC" && go build -ldflags "-s -w -X main.version=${GREPAI_VERSION#v}" -o "$HOME_DIR/go/bin/grepai" ./cmd/grepai) 2>&1 | tail -2; then
+      ln -sf "$HOME_DIR/go/bin/grepai" "$HOME_DIR/.local/bin/grepai" 2>/dev/null
+      ok "  grepai ${GREPAI_VERSION} built from source"
+      GREPAI_READY=1
     else
-      warn "  go install grepai failed (will retry on first use)"
+      warn "  grepai build failed (re-run install-mac.sh to retry)"
     fi
+    rm -rf "$GREPAI_SRC"
   else
     warn "  go not installed (grepai skipped; install: brew install go)"
+  fi
+  if [ "$GREPAI_READY" = "1" ]; then
+    # grepai's init wizard hard-codes Ollama at :11434, but AI-OS uses :11500
+    # (see OLLAMA_URL above). Auto-init the AI-OS repo with the right URL so
+    # `grepai watch` works without manual config. Re-init is a no-op if .grepai/
+    # already exists with the right URL.
+    if [ ! -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
+      if [ -t 0 ]; then
+        # interactive terminal: full wizard
+        (cd "$AI_OS_ROOT" && "$HOME_DIR/.local/bin/grepai" init) || warn "  grepai init interactive failed; run manually: cd $AI_OS_ROOT && grepai init"
+      else
+        # non-interactive (CI, piped): pipe the answers
+        (cd "$AI_OS_ROOT" && printf "1\n%s\ngob\n\n" "$OLLAMA_URL" | "$HOME_DIR/.local/bin/grepai" init >/dev/null 2>&1) || warn "  grepai init non-interactive failed; run manually: cd $AI_OS_ROOT && grepai init"
+      fi
+    fi
+    # Always reconcile endpoint: if the user (or a previous install) used
+    # 11434, swap to OLLAMA_URL. grepai ignores OLLAMA_URL env, so config
+    # is the only way to fix this.
+    if [ -f "$AI_OS_ROOT/.grepai/config.yaml" ]; then
+      "$HOME_DIR/.local/bin/grepai" config get embedder.endpoint >/dev/null 2>&1 || true
+      if grep -q "localhost:11434" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null; then
+        sed -i.bak "s|http://localhost:11434|$OLLAMA_URL|g" "$AI_OS_ROOT/.grepai/config.yaml" 2>/dev/null &&             ok "  grepai config: rewrote Ollama endpoint 11434 -> $OLLAMA_URL" ||             warn "  grepai config: could not rewrite endpoint (run: sed -i '' 's|11434|11500|' $AI_OS_ROOT/.grepai/config.yaml)"
+        rm -f "$AI_OS_ROOT/.grepai/config.yaml.bak"
+      fi
+    fi
+  fi
+
+  # 9b.4 — Scheduled reindex (codebase-memory-mcp + grepai), 6x/day via launchd
+  if bash "$AI_OS_ROOT/memory/launchd/install-reindex.sh" 2>&1 | sed 's/^/    /'; then
+    ok "  reindex agent ai.os.reindex installed"
+  else
+    warn "  reindex agent install failed (run: bash memory/launchd/install-reindex.sh)"
+  fi
+
+  # 9b.5 — Functional health check twice a day, macOS notification on failure
+  if bash "$AI_OS_ROOT/memory/launchd/install-health.sh" 2>&1 | sed 's/^/    /'; then
+    ok "  health agent ai.os.health installed (ai-os health)"
+  else
+    warn "  health agent install failed (run: bash memory/launchd/install-health.sh)"
   fi
 else
   log "9b. SKIP_MEMORY=1, skipping memory stack"
@@ -857,19 +1101,18 @@ echo ""
 
 # ─── 9c. Ponytail — lazy senior dev ruleset (portable: mac/linux/win) ───
 # DietrichGebert/ponytail v4.9.0 (MIT). Per-turn injection via host plugin where
-# available; fallback is always-on rules via AGENTS.md symlink append so a bare
-# `AGENTS.md` host still obeys the ladder. Default level is `full` (safe).
+# available; fallback is the always-on pointer block 7b renders into the bridge
+# (CLAUDE.md/AGENTS.md symlinks), so a bare `AGENTS.md` host still obeys the
+# ladder. Default level is `full` (safe).
 # PONYTAIL_VERSION + PONYTAIL_DEFAULT_MODE are the pin + default; override
 # per-machine via $PONYTAIL_DEFAULT_MODE or ~/.config/ponytail/config.json.
 # Mirrors setup/install-windows.ps1 section 5f; bump both together.
 if [ "${SKIP_PONYTAIL:-0}" != "1" ]; then
-  PONYTAIL_VERSION="${PONYTAIL_VERSION:-4.9.0}"
-  PONYTAIL_DEFAULT_MODE="${PONYTAIL_DEFAULT_MODE:-full}"
+  # PONYTAIL_VERSION / PONYTAIL_DEFAULT_MODE / PONYTAIL_CFG: see "Ponytail pin" at the top.
   log "9c. Ponytail ${PONYTAIL_VERSION} (default: ${PONYTAIL_DEFAULT_MODE}) — DietrichGebert/ponytail..."
 
   # 9c.1 — per-machine config (~/.config/ponytail/config.json) — untracked, like ~/.ai-os/env.sh:5b
-  PONYTAIL_CFG_DIR="$HOME_DIR/.config/ponytail"
-  PONYTAIL_CFG="$PONYTAIL_CFG_DIR/config.json"
+  PONYTAIL_CFG_DIR="$(dirname "$PONYTAIL_CFG")"
   mkdir -p "$PONYTAIL_CFG_DIR"
   if [ ! -f "$PONYTAIL_CFG" ]; then
     printf '{\n  "defaultMode": "%s"\n}\n' "$PONYTAIL_DEFAULT_MODE" > "$PONYTAIL_CFG"
@@ -890,13 +1133,8 @@ if [ "${SKIP_PONYTAIL:-0}" != "1" ]; then
     fi
   fi
 
-  # also expose PONYTAIL_DEFAULT_MODE via ~/.ai-os/env.sh so every new shell has it
-  AIOS_ENV_PONYTAIL="$HOME_DIR/.ai-os/env.sh"
-  if [ -f "$AIOS_ENV_PONYTAIL" ] && ! grep -q 'PONYTAIL_DEFAULT_MODE' "$AIOS_ENV_PONYTAIL" 2>/dev/null; then
-    printf '\nexport PONYTAIL_DEFAULT_MODE="${PONYTAIL_DEFAULT_MODE:-%s}"\n' "$PONYTAIL_DEFAULT_MODE" >> "$AIOS_ENV_PONYTAIL"
-    ok "  PONYTAIL_DEFAULT_MODE exported via ~/.ai-os/env.sh"
-  fi
-  # export for this run so hooks/calls below see it
+  # PONYTAIL_DEFAULT_MODE reaches new shells through 5b's env.sh render; export
+  # it for this run so the plugin installs below see it.
   export PONYTAIL_DEFAULT_MODE
 
   # 9c.2 — ponytail checkout for rule files (shallow, idempotent). Reused by AGENTS.md fallback
@@ -929,76 +1167,114 @@ if [ "${SKIP_PONYTAIL:-0}" != "1" ]; then
     fi
   fi
 
-  # 9c.3 — host plugins (best-effort, never abort install — fallback is AGENTS.md)
-  # Claude Code
-  if command -v claude >/dev/null 2>&1; then
-    if claude plugin list 2>/dev/null | grep -q "ponytail"; then
-      ok "  Claude Code: ponytail plugin already installed"
+  # 9c.3 — host plugins (best-effort, never abort install — fallback is the bridge block)
+  # Every attempt is counted and the summary prints N/M, so a failed install is
+  # visible instead of a `| tail` that ate the exit status. Output of a failed
+  # command is shown (last lines) under the warning.
+  PLUGIN_OK=0; PLUGIN_TOTAL=0; PLUGIN_FAILED=""
+  # pony_try <label> <cmd...> — run one install step, count it, show output on failure
+  pony_try() {
+    local label="$1" out; shift
+    PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1))
+    if out="$("$@" 2>&1)"; then
+      PLUGIN_OK=$((PLUGIN_OK + 1))
+      ok "  $label: ponytail installed"
     else
-      if claude plugin marketplace add DietrichGebert/ponytail 2>&1 | tail -1; then
-        ok "  Claude Code: marketplace DietrichGebert/ponytail added"
-      else
-        warn "  Claude Code: marketplace add failed (may already exist)"
-      fi
-      if claude plugin add "ponytail@ponytail" 2>&1 | tail -1; then
-        ok "  Claude Code: ponytail plugin installed (run /hooks and trust lifecycle hooks, then start new thread)"
-      else
-        warn "  Claude Code: ponytail plugin add failed — AGENTS.md fallback will still apply"
-      fi
+      PLUGIN_FAILED="$PLUGIN_FAILED $label"
+      warn "  $label: ponytail install failed — bridge block still applies:"
+      printf '%s\n' "$out" | tail -3 | sed 's/^/      /'
+    fi
+  }
+  # pony_has <cmd...> — true when the listing mentions ponytail. No pipe into
+  # grep -q: an early-closing grep SIGPIPEs the lister and pipefail reports it.
+  pony_has() { local out; out="$("$@" 2>/dev/null || true)"; printf '%s\n' "$out" | grep -qi "ponytail"; }
+  # Marketplaces/extensions come from the pinned checkout when we have one, so
+  # the plugin matches the rules above instead of upstream main.
+  PONYTAIL_MARKET="${PONYTAIL_SRC:-DietrichGebert/ponytail}"
+
+  # Claude Code — `claude plugin install` (there is no `plugin add`), resolved
+  # binary from 2a: the pnpm shim on PATH may be the broken one.
+  if [ -n "${CLAUDE_BIN:-}" ]; then
+    if pony_has "$CLAUDE_BIN" plugin list; then
+      ok "  Claude Code: ponytail plugin already installed"
+      PLUGIN_OK=$((PLUGIN_OK + 1)); PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1))
+    else
+      pony_has "$CLAUDE_BIN" plugin marketplace list \
+        || "$CLAUDE_BIN" plugin marketplace add "$PONYTAIL_MARKET" >/dev/null 2>&1 \
+        || warn "  Claude Code: marketplace add $PONYTAIL_MARKET failed (install below will say why)"
+      pony_try "Claude Code" "$CLAUDE_BIN" plugin install "ponytail@ponytail"
+      log "    Claude Code: run /hooks and trust the ponytail lifecycle hooks, then start a new thread"
     fi
   else
-    log "  Claude Code not detected — skipping claude plugin"
+    log "  Claude Code not detected (no working binary) — skipping claude plugin"
   fi
 
   # Codex (same marketplace)
   if command -v codex >/dev/null 2>&1; then
-    if codex plugin list 2>/dev/null | grep -q "ponytail"; then
+    # `codex plugin list` also lists marketplace entries; only "installed" counts
+    codex_out="$(codex plugin list 2>/dev/null || true)"
+    if printf '%s\n' "$codex_out" | grep -i "ponytail@" | grep -qi "installed"; then
       ok "  Codex: ponytail plugin already installed"
+      PLUGIN_OK=$((PLUGIN_OK + 1)); PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1))
     else
-      (codex plugin marketplace add DietrichGebert/ponytail 2>&1 | tail -1) || true
-      if codex plugin add "ponytail@ponytail" 2>&1 | tail -1; then
-        ok "  Codex: ponytail plugin installed (open /hooks, trust, start new thread)"
-      else
-        warn "  Codex: ponytail plugin add failed — AGENTS.md fallback will still apply"
-      fi
+      codex plugin marketplace add DietrichGebert/ponytail >/dev/null 2>&1 || true
+      pony_try "Codex" codex plugin add "ponytail@ponytail"
     fi
   else
     log "  Codex not detected — skipping codex plugin"
   fi
 
-  # Hermes
+  # Hermes / Gemini: --yes-deps / --consent below answer a security prompt on the user's behalf,
+  # so they are only passed when the user opted in: PONYTAIL_PLUGIN_CONSENT=1.
+  # Interactive terminals get the prompt instead.
   if command -v hermes >/dev/null 2>&1; then
-    if hermes plugins list 2>/dev/null | grep -qi "ponytail"; then
+    if pony_has hermes plugins list; then
       ok "  Hermes: ponytail plugin already installed"
+      PLUGIN_OK=$((PLUGIN_OK + 1)); PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1))
     else
-      if hermes plugins install DietrichGebert/ponytail --enable 2>&1 | tail -2; then
-        ok "  Hermes: ponytail plugin installed (restart Hermes after install)"
+      # From the pinned checkout (file:// git URL), not owner/repo: upstream main
+      # ships a plugin.json Hermes rejects, and `--ref <sha>` trips a Hermes
+      # readability check on git's temp pack files. Hermes' install-time scan
+      # may still block it ("community source + caution verdict"); overriding
+      # that is the user's call (`--force`), never passed from here.
+      if [ -n "$PONYTAIL_SRC" ]; then
+        hermes_args=(plugins install "file://$PONYTAIL_SRC" --enable)
       else
-        warn "  Hermes: ponytail plugin install failed — AGENTS.md + hermes external_dirs still apply"
+        hermes_args=(plugins install DietrichGebert/ponytail --enable)
       fi
+      [ "${PONYTAIL_PLUGIN_CONSENT:-0}" = "1" ] && hermes_args+=(--yes-deps)
+      pony_try "Hermes" hermes "${hermes_args[@]}"
     fi
   else
     log "  Hermes not detected — skipping hermes plugin"
   fi
 
-  # Gemini / Antigravity
+  # Gemini — non-interactive installs are refused without --consent (see above).
   if command -v gemini >/dev/null 2>&1; then
-    if gemini extensions list 2>/dev/null | grep -qi "ponytail"; then
+    if pony_has gemini extensions list; then
       ok "  Gemini: ponytail extension already installed"
+      PLUGIN_OK=$((PLUGIN_OK + 1)); PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1))
+    elif [ ! -t 0 ] && [ "${PONYTAIL_PLUGIN_CONSENT:-0}" != "1" ]; then
+      PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1)); PLUGIN_FAILED="$PLUGIN_FAILED Gemini(consent)"
+      warn "  Gemini: extension install needs consent — re-run in a terminal, or with PONYTAIL_PLUGIN_CONSENT=1"
     else
-      if gemini extensions install https://github.com/DietrichGebert/ponytail 2>&1 | tail -2; then
-        ok "  Gemini: ponytail extension installed"
-      else
-        warn "  Gemini: ponytail extension install failed — AGENTS.md fallback still applies"
-      fi
+      gemini_args=(extensions install https://github.com/DietrichGebert/ponytail --ref "v${PONYTAIL_VERSION}")
+      [ "${PONYTAIL_PLUGIN_CONSENT:-0}" = "1" ] && gemini_args+=(--consent)
+      pony_try "Gemini" gemini "${gemini_args[@]}"
     fi
   fi
   if command -v agy >/dev/null 2>&1; then
-    if agy plugin list 2>/dev/null | grep -qi "ponytail"; then
+    if pony_has agy plugin list; then
       ok "  Antigravity (agy): ponytail plugin already installed"
+      PLUGIN_OK=$((PLUGIN_OK + 1)); PLUGIN_TOTAL=$((PLUGIN_TOTAL + 1))
     else
-      (agy plugin install https://github.com/DietrichGebert/ponytail 2>&1 | tail -2) && ok "  Antigravity (agy): ponytail plugin installed" || warn "  Antigravity (agy): ponytail plugin install failed — .agents/rules fallback still applies"
+      pony_try "Antigravity (agy)" agy plugin install https://github.com/DietrichGebert/ponytail
     fi
+  fi
+  if [ "$PLUGIN_OK" -eq "$PLUGIN_TOTAL" ]; then
+    ok "  ponytail host plugins: $PLUGIN_OK/$PLUGIN_TOTAL installed"
+  else
+    warn "  ponytail host plugins: $PLUGIN_OK/$PLUGIN_TOTAL installed — failed:$PLUGIN_FAILED (bridge block covers them)"
   fi
 
   # OpenCode — opencode.json plugin entry (idempotent)
@@ -1036,6 +1312,12 @@ else:
     PONYTAIL_AGENTS_MARKER="PONYTAIL (DietrichGebert/ponytail v${PONYTAIL_VERSION})"
     # global fallbacks that every host in ai-os reads
     for ag_path in "$HOME_DIR/.agents/AGENTS.md" "$HOME_DIR/.codex/AGENTS.md" "$HOME_DIR/.claude/CLAUDE.md"; do
+      # Symlinks to the bridge carry the block from the 7b render; appending
+      # through them would write into the bridge and be wiped on the next run.
+      if [ "$ag_path" -ef "$BRIDGE" ]; then
+        ok "  $ag_path → bridge (ponytail block rendered by 7b)"
+        continue
+      fi
       if grep -q "PONYTAIL" "$ag_path" 2>/dev/null; then
         ok "  AGENTS fallback already in $ag_path"
         continue
@@ -1085,6 +1367,95 @@ else
 fi
 echo ""
 
+# ─── 9d. llm/router.mjs local model + opencode service (model-less by default) ───
+# Pulls gemma3:12b onto the same native Ollama daemon 9b already started — that's
+# router.mjs's default for plain chat (classification/extraction, no tool use).
+# gemma3, not qwen3: this daemon has a single request slot, and qwen3 is a
+# "thinking" model whose reasoning trace can block every other caller
+# (router.mjs, opencode, open-webui) until it finishes — observed for real
+# 2026-09-19 (see llm/README.md, "Model selection, final state"). gemma3 has no
+# thinking mechanism at all, so it can't hit that failure mode structurally.
+# Also installs opencode-ai globally and persists it as a password-protected
+# launchd service scoped to a disposable sandbox directory, but deliberately
+# WITHOUT a model configured: the 2026-09-19 trial (llm/README.md, "Plan-enrichment
+# trial") found every model 8B-32B unreliable for opencode's actual multi-step
+# tool-use loop, so it isn't wired up by default anymore. See llm/README.md for
+# the full security model and why the sandbox default matters for an unattended
+# service, if you re-enable it deliberately.
+if [ "${SKIP_OPENCODE:-0}" != "1" ]; then
+  log "9d. Setting up llm/router.mjs (Gemma3-12B) + opencode service (model-less)..."
+
+  if command -v ollama >/dev/null 2>&1; then
+    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "gemma3:12b"; then
+      ok "  gemma3:12b already pulled"
+    else
+      log "  pulling gemma3:12b (~8.1GB, one-time)"
+      OLLAMA_HOST=127.0.0.1:11500 ollama pull gemma3:12b \
+        && ok "  gemma3:12b pulled" \
+        || warn "  gemma3:12b pull failed — llm/router.mjs's local provider will have nothing to talk to"
+    fi
+    # Ollama's default num_ctx (4096) truncates real prompts. 131072 is
+    # Gemma 3's full native context and loads 100% GPU on this 24GB Mac (9GB
+    # footprint — see llm/gemma3-12b.Modelfile). Skipped when the model already
+    # carries the Modelfile's num_ctx, so a re-run does not rewrite the manifest.
+    want_ctx="$(sed -n 's/^PARAMETER num_ctx[[:space:]]*//p' "$AI_OS_ROOT/llm/gemma3-12b.Modelfile" | head -1)"
+    have_ctx="$(OLLAMA_HOST=127.0.0.1:11500 ollama show gemma3:12b --parameters 2>/dev/null | awk '$1=="num_ctx"{print $2; exit}' || true)"
+    if [ -n "$want_ctx" ] && [ "$have_ctx" = "$want_ctx" ]; then
+      ok "  gemma3:12b context already $have_ctx"
+    elif OLLAMA_HOST=127.0.0.1:11500 ollama create gemma3:12b -f "$AI_OS_ROOT/llm/gemma3-12b.Modelfile" >/dev/null 2>&1; then
+      ok "  gemma3:12b context set to 131072"
+    else
+      warn "  could not set gemma3:12b's context (non-fatal — default 4096 still works, just truncates more)"
+    fi
+  else
+    warn "  ollama not installed — skipping gemma3:12b pull (see 9b)"
+  fi
+
+  if command -v npm >/dev/null 2>&1; then
+    if command -v opencode >/dev/null 2>&1; then
+      ok "  opencode-ai already installed ($(command -v opencode))"
+    elif npm install -g opencode-ai@latest 2>&1 | tail -3; then
+      ok "  opencode-ai installed globally"
+    else
+      warn "  npm install -g opencode-ai failed"
+    fi
+  else
+    warn "  npm not installed — opencode-ai skipped"
+  fi
+
+  if command -v opencode >/dev/null 2>&1; then
+    if bash "$SCRIPT_DIR/../llm/launchd/install-opencode.sh" 2>&1 | sed 's/^/    /'; then
+      ok "  opencode service on 127.0.0.1:4096 (sandbox: ~/.ai-os/opencode-sandbox, logs: ~/.ai-os/opencode.log)"
+    else
+      warn "  opencode service did not come up — tool-use harness disabled"
+    fi
+  fi
+else
+  log "9d. SKIP_OPENCODE=1, skipping opencode local agent"
+fi
+echo ""
+
+# ─── 9e. Strategic-compact hook (Claude Code PreToolUse) ───
+# Third token layer next to ponytail (code) and caveman (prose): suggests
+# /compact at phase boundaries instead of letting auto-compact fire mid-task.
+# The suggester itself is vendored (vendor/ecc/scripts/hooks/suggest-compact.js);
+# setup/wire-compact-hook.mjs symlinks it into ~/.claude/scripts/hooks/ and
+# merges the PreToolUse entry into ~/.claude/settings.json. Needs node — the
+# hook is a node script, so without it there is nothing to wire.
+if [ "${SKIP_COMPACT_HOOK:-0}" != "1" ]; then
+  log "9e. Strategic-compact hook (Claude Code PreToolUse)..."
+  if ! command -v node >/dev/null 2>&1; then
+    warn "  node not installed — skipping (the hook is a node script)"
+  elif node "$SCRIPT_DIR/wire-compact-hook.mjs"; then
+    ok "  strategic-compact hook wired (threshold: \$COMPACT_THRESHOLD, default 50)"
+  else
+    warn "  strategic-compact hook not wired — see the message above (never blocks the install)"
+  fi
+else
+  log "9e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
+fi
+echo ""
+
 # ─── 10. Warp defaults (Mac only) ───
 if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
   log "10. Configuring Warp defaults..."
@@ -1112,13 +1483,9 @@ fi
 echo ""
 
 # ─── 12. Reload shell ───
-log "12. Reload zsh..."
-# Reload shell only if interactive
-if [ -n "${PS1:-}" ]; then
-  exec zsh
-else
-  ok "zsh (manual reload: exec zsh or open new terminal)"
-fi
+# No `exec zsh` here: it replaced this process, so step 13 and the failure
+# report below never ran in an interactive terminal.
+log "12. Reload zsh manually: exec zsh (or open a new terminal)"
 echo ""
 
 # ─── 13. Final verification ───
@@ -1128,6 +1495,11 @@ if [ "${SKIP_VERIFY:-0}" != "1" ]; then
 fi
 
 echo ""
+if [ "${BREW_FAILED:-0}" = "1" ]; then
+  err "Setup finished, but brew bundle failed for some packages (scroll up for 'brew bundle')."
+  err "Fix them, then re-run: SKIP_NPM=1 SKIP_PIP=1 bash setup/install-mac.sh"
+  exit 1
+fi
 log "═══════════════════════════════════════════════════════════"
 ok "AI-OS setup complete!"
 log ""

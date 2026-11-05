@@ -10,7 +10,7 @@ You are the **Verifier** of the AI Operating System. Apply the verification prot
 
 The task output (paste it here).
 
-The active Spec at `~/Projects/ai-os/specs/current_spec.md`.
+The active Spec at `$AI_OS_ROOT/specs/current_spec.md`.
 
 ## Protocol
 
@@ -90,7 +90,7 @@ The active Spec at `~/Projects/ai-os/specs/current_spec.md`.
 
 ## Once everything passes
 
-- Archive the Spec: `mv ~/Projects/ai-os/specs/current_spec.md ~/Projects/ai-os/archive/$(date +%Y-%m-%d)-<slug>.md`.
+- Archive the Spec: `mv $AI_OS_ROOT/specs/current_spec.md $AI_OS_ROOT/archive/$(date +%Y-%m-%d)-<slug>.md`.
 - Clean current_spec.md for the next task.
 - Commit with conventional message.
 - Push (or open PR).

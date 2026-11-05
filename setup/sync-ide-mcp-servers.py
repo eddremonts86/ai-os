@@ -68,14 +68,17 @@ def expand_home(value, home):
 
 
 def load_definitions(mcp_dir, home):
-    definitions = []
+    """Return (enabled definitions, names of disabled ones). Disabled names are
+    removed from every target, so `enabled: false` actually retires a server."""
+    definitions, disabled = [], []
     for path in sorted(mcp_dir.glob("*.yaml")):
         definition = load_yaml_mapping(path, "MCP definition")
-        if not definition.get("enabled", True):
-            continue
         name = definition.get("name")
         if not isinstance(name, str) or not name:
             raise ValueError(f"MCP definition {path} requires a non-empty string name")
+        if not definition.get("enabled", True):
+            disabled.append(name)
+            continue
         transport = definition.get("transport", "stdio")
         entry = {"name": name, "transport": transport}
         if transport == "stdio":
@@ -99,7 +102,7 @@ def load_definitions(mcp_dir, home):
         else:
             raise ValueError(f"MCP definition {name} has unsupported transport {transport!r}")
         definitions.append(entry)
-    return definitions
+    return definitions, disabled
 
 
 def write_json_atomically(path, data):
@@ -117,10 +120,14 @@ def write_json_atomically(path, data):
         raise
 
 
-def sync_vscode_like(path, definitions, servers_key="servers", url_key="url"):
+def sync_vscode_like(path, definitions, disabled=(), servers_key="servers", url_key="url"):
     """Shared logic for VS Code / Claude Code / Gemini: all use a top-level
     JSON object with a servers map keyed by name. Only the key name differs
-    ("servers" for VS Code's mcp.json, "mcpServers" for Claude Code/Gemini)."""
+    ("servers" for VS Code's mcp.json, "mcpServers" for Claude Code/Gemini).
+
+    ai-config/mcp is the source of truth for the names it defines: an entry
+    that drifted from its YAML (e.g. a bumped version pin) is rewritten, and a
+    disabled one is removed. Servers the YAML does not name are left alone."""
     existing = {}
     if path.exists():
         with path.open(encoding="utf-8") as stream:
@@ -135,12 +142,9 @@ def sync_vscode_like(path, definitions, servers_key="servers", url_key="url"):
     elif not isinstance(servers, dict):
         raise ValueError(f"{path}: {servers_key!r} must be a JSON object")
 
-    added, skipped = [], []
+    added, updated, skipped, removed = [], [], [], []
     for definition in definitions:
         name = definition["name"]
-        if name in servers:
-            skipped.append(name)
-            continue
         if definition["transport"] == "stdio":
             entry = {"type": "stdio", "command": definition["command"], "args": definition["args"]}
             if "env" in definition:
@@ -149,15 +153,21 @@ def sync_vscode_like(path, definitions, servers_key="servers", url_key="url"):
             entry = {"type": "http", url_key: definition["url"]}
             if "headers" in definition:
                 entry["headers"] = definition["headers"]
+        if servers.get(name) == entry:
+            skipped.append(name)
+            continue
+        (updated if name in servers else added).append(name)
         servers[name] = entry
-        added.append(name)
+    for name in disabled:
+        if servers.pop(name, None) is not None:
+            removed.append(name)
 
     existing[servers_key] = servers
     write_json_atomically(path, existing)
-    return added, skipped
+    return added, updated, skipped, removed
 
 
-def sync_codex(path, definitions):
+def sync_codex(path, definitions, disabled=()):
     if tomlkit is None:
         raise RuntimeError("tomlkit is required for Codex config.toml sync (pip install tomlkit)")
     if path.exists():
@@ -172,27 +182,32 @@ def sync_codex(path, definitions):
         mcp_servers = tomlkit.table(is_super_table=True)
         doc["mcp_servers"] = mcp_servers
 
-    added, skipped, unsupported = [], [], []
+    added, updated, skipped, unsupported, removed = [], [], [], [], []
     for definition in definitions:
         name = definition["name"]
-        if name in mcp_servers:
-            skipped.append(name)
-            continue
-        if definition["transport"] != "stdio":
-            # Codex CLI's MCP support is stdio-first; skip remote/http servers
-            # here rather than guess at an unverified schema.
+        if definition["transport"] == "http":
+            # Same shape `codex mcp add <name> --url <url>` writes (codex-cli 0.154).
+            wanted = {"url": definition["url"]}
+        elif definition["transport"] == "stdio":
+            wanted = {"command": definition["command"], "args": definition["args"]}
+            if "env" in definition:
+                wanted["env"] = {key: str(value) for key, value in definition["env"].items()}
+        else:
             unsupported.append(name)
             continue
+        current = mcp_servers.get(name)
+        if current is not None and current.unwrap() == wanted:
+            skipped.append(name)
+            continue
         server = tomlkit.table()
-        server["command"] = definition["command"]
-        server["args"] = definition["args"]
-        if "env" in definition:
-            env_table = tomlkit.table()
-            for key, value in definition["env"].items():
-                env_table[key] = str(value)
-            server["env"] = env_table
+        for key, value in wanted.items():
+            server[key] = value
+        (updated if current is not None else added).append(name)
         mcp_servers[name] = server
-        added.append(name)
+    for name in disabled:
+        if name in mcp_servers:
+            del mcp_servers[name]
+            removed.append(name)
 
     with tempfile.NamedTemporaryFile(
         mode="w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.", delete=False
@@ -204,7 +219,12 @@ def sync_codex(path, definitions):
     except OSError:
         temp_path.unlink(missing_ok=True)
         raise
-    return added, skipped, unsupported
+    return added, updated, skipped, unsupported, removed
+
+
+def report(label, added, updated, skipped, removed, extra=""):
+    print(f"{label}: added {added or 'none'}, updated {updated or 'none'}, "
+          f"unchanged {skipped or 'none'}, removed {removed or 'none'}{extra}")
 
 
 def main():
@@ -224,7 +244,7 @@ def main():
 
     home = os.environ.get("HOME") or os.environ.get("USERPROFILE") or str(Path.home())
     try:
-        definitions = load_definitions(args.mcp_dir, home)
+        definitions, disabled = load_definitions(args.mcp_dir, home)
     except ValueError as error:
         return fail(str(error))
 
@@ -232,24 +252,26 @@ def main():
     try:
         if args.vscode:
             any_target = True
-            added, skipped = sync_vscode_like(args.vscode, definitions, servers_key="servers")
-            print(f"VS Code ({args.vscode}): added {added or 'none'}, already present {skipped or 'none'}")
+            report(f"VS Code ({args.vscode})",
+                   *sync_vscode_like(args.vscode, definitions, disabled, servers_key="servers"))
         if args.vscode_insiders:
             any_target = True
-            added, skipped = sync_vscode_like(args.vscode_insiders, definitions, servers_key="servers")
-            print(f"VS Code Insiders ({args.vscode_insiders}): added {added or 'none'}, already present {skipped or 'none'}")
+            report(f"VS Code Insiders ({args.vscode_insiders})",
+                   *sync_vscode_like(args.vscode_insiders, definitions, disabled, servers_key="servers"))
         if args.claude:
             any_target = True
-            added, skipped = sync_vscode_like(args.claude, definitions, servers_key="mcpServers")
-            print(f"Claude Code ({args.claude}): added {added or 'none'}, already present {skipped or 'none'}")
+            report(f"Claude Code ({args.claude})",
+                   *sync_vscode_like(args.claude, definitions, disabled, servers_key="mcpServers"))
         if args.gemini:
             any_target = True
-            added, skipped = sync_vscode_like(args.gemini, definitions, servers_key="mcpServers", url_key="httpUrl")
-            print(f"Gemini CLI ({args.gemini}): added {added or 'none'}, already present {skipped or 'none'} (best-effort, schema unverified)")
+            report(f"Gemini CLI ({args.gemini})",
+                   *sync_vscode_like(args.gemini, definitions, disabled, servers_key="mcpServers", url_key="httpUrl"),
+                   extra=" (best-effort, schema unverified)")
         if args.codex:
             any_target = True
-            added, skipped, unsupported = sync_codex(args.codex, definitions)
-            print(f"Codex ({args.codex}): added {added or 'none'}, already present {skipped or 'none'}, skipped non-stdio {unsupported or 'none'}")
+            added, updated, skipped, unsupported, removed = sync_codex(args.codex, definitions, disabled)
+            report(f"Codex ({args.codex})", added, updated, skipped, removed,
+                   extra=f", unsupported transport {unsupported or 'none'}")
     except (OSError, ValueError, json.JSONDecodeError) as error:
         return fail(str(error))
 

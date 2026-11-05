@@ -79,5 +79,5 @@ term vs in-product term — and reconcile it. Every mismatch is a support ticket
 
 ## Related skills
 
-`saas-expensive-ui` · `saas-onboarding-activation` · `saas-ui-audit` · `taste-skill` (landing visual
+`saas-expensive-ui` · `saas-onboarding-activation` · `saas-review` · `taste-skill` (landing visual
 craft) · `seo`.

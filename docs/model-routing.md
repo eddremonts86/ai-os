@@ -23,6 +23,47 @@ implementation vs. verification) — the model choice should follow the same log
 | 3    | Exploration, indexing, routine subagents       | Claude Haiku-class, GPT small-tier, Gemini Flash-class | Cheap, fast, parallelizable — used for `dispatching-parallel-agents` fan-out (research, file search, mechanical edits)                                                                                  |
 | 4    | Long local/vendor-flexible runs                | MiniMax-class (or other locally-hosted models)         | For long-running loops (`ai-os-loop`) where cost matters more than peak reasoning; pair with explicit verifier roles and a small fixed prompt so the smaller model isn't asked to hold too much context |
 
+### Tier 4 implementation: `llm/`
+
+Two layers, both documented in full in `llm/README.md`:
+
+- **`llm/router.mjs`** — a provider-swappable OpenAI-compatible *chat* client (no
+  tool use), reused by any app via the `AI_LLM_PROVIDER` / `AI_OLLAMA_NATIVE_*` /
+  `MINIMAX_*` variables in `dev-env/env-config/.env.example` section 6. `local`
+  (default) hits the native Ollama daemon AI-OS already runs for memory-stack
+  embeddings (`ai.os.ollama`, launchd, `:11500`), now also carrying the local chat
+  model named in `llm/router.mjs` alongside `nomic-embed-text`. `minimax` is the explicit opt-in cloud fallback.
+  CLI: `ai-os llm ask "<prompt>" [--provider local|minimax]`, `ai-os llm test`.
+- **`opencode`** (npm `opencode-ai`) — an actual tool-use harness (read/write files,
+  run shell) on top of the same local model, persisted as a password-protected
+  service (`llm/launchd/install-opencode.sh` on macOS, `llm/systemd/` on Linux —
+  see `llm/README.md`'s security model before pointing a session at a real project).
+  Verified working end to end across 3 repeated identical trials: the tool-calling
+  protocol, permission gate, and file I/O all work with `qwen3:8b-q4_K_M` (the local model at the time) — every
+  trial emitted a real tool call (checked via full session/message history, not
+  just terminal output). 2/3 called `read` with the right path and answered
+  correctly; 1/3 called `glob` instead of `read` for a literal path, found 0
+  matches, and gave up instead of retrying. The real, confirmed gap is *precise*
+  tool use (wrong tool or wrong argument, ~1 in 3 in this small sample) — not a
+  failure to act, which an earlier, flawed raw-API-only probe (missing the `tools`
+  schema the CLI actually sends) had wrongly suggested. See `llm/README.md` for
+  the full repro and the correction; it directly informs the risk assessment
+  below.
+
+**What this does not fix — tested directly, not just assumed:** the plans pipeline's
+(now in the plansmith repo: `apps/data/tools/plans-pipeline`) 35-40M-token runs are still
+Task-tool / `delegate_task` subagent dispatch, per plansmith's `apps/data/progress/LOOP_INSTRUCTIONS.md`. Whether a local model could actually do
+the enrichment work was tried for real (2026-09-19): one draft plan, isolated
+sandbox, 4 model/flag combinations (`qwen3:8b`, `llama3-groq-tool-use:8b`,
+`qwen3:14b`, `qwen3:14b --pure`). **All four failed to complete the task** — each
+fix solved the specific derailment the previous attempt hit and the model found a
+new way to avoid finishing. See `llm/README.md`'s "Plan-enrichment trial" section
+for the full matrix and the three untried levers (disable the skill tool, decompose
+the task, try a coder-specialized model) that could still change this. Until one of
+those closes the loop, don't route real enrichment through a local model — the
+cheap triage sub-task (meta-vs-buildable classification, dedup) remains a
+reasonable local-model bet; the multi-file rewrite is what failed four times.
+
 **Do not hardcode specific model version strings here.** Model names and
 capabilities change fast enough that a pinned table goes stale within weeks; point
 at your CLI's own model-selection docs for the current lineup in each tier, and only

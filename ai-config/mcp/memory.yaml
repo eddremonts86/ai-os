@@ -5,4 +5,6 @@ command: npx
 args:
   - -y
   - "@modelcontextprotocol/server-memory@2026.7.4"
-enabled: true
+# Disabled 2026-11-05: graphiti (FalkorDB) is the single knowledge-graph memory; two graph stores split facts between them.
+# setup/sync-ide-mcp-servers.py removes disabled servers from every client config.
+enabled: false

@@ -3,7 +3,7 @@
 <!--
   Keeps the local Coolify replicas level with `dev`.
 
-  Rendered by install-poller.sh, which substitutes __AI_OS_ROOT__ — the path is not
+  Rendered by install-poller.sh, which substitutes __AI_OS_ROOT__ and __HOME__ — the path is not
   committed, so this file is machine-independent.
 
   It lives in the repo because the plans-pipeline scheduler once did not: it existed only
@@ -31,7 +31,7 @@
     <dict>
         <!-- launchd hands a job a bare PATH, so git, node and curl must be named. -->
         <key>PATH</key>
-        <string>/opt/homebrew/bin:/usr/local/bin:/Users/edd/.local/bin:/usr/bin:/bin</string>
+        <string>/opt/homebrew/bin:/usr/local/bin:__HOME__/.local/bin:/usr/bin:/bin</string>
         <key>AI_OS_ROOT</key>
         <string>__AI_OS_ROOT__</string>
     </dict>

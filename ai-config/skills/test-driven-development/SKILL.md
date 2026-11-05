@@ -369,3 +369,22 @@ Otherwise → not TDD
 ```
 
 No exceptions without your human partner's permission.
+
+## Coverage and Test Layers
+
+TDD proves each test can fail; coverage shows what no test touches. Use both, and treat coverage as a floor, not a goal.
+
+- **Threshold:** 80% global minimum for branches, functions, lines and statements, enforced by the runner so CI fails below it:
+  ```ts
+  // vitest.config.ts
+  test: { coverage: { thresholds: { branches: 80, functions: 80, lines: 80, statements: 80 } } }
+  ```
+  ```json
+  // jest config (key is singular)
+  { "coverageThreshold": { "global": { "branches": 80, "functions": 80, "lines": 80, "statements": 80 } } }
+  ```
+- **Layers:** unit (pure functions, component logic), integration (API routes, DB, service boundaries), E2E (critical user flows only, e.g. Playwright). A bug at a boundary gets its failing test at that boundary's layer.
+- **Selectors:** E2E tests target roles, visible text or `data-testid`, never generated CSS classes.
+- **Isolation:** every test builds its own data; no test depends on another having run first.
+- **Speed:** unit tests stay under ~50 ms each; a slow unit test is usually an unmocked boundary.
+- **Review the coverage report** for untested error paths before marking work complete, not just the percentage.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ai-os — top-level dispatcher for the AI-OS CLI.
 #
-# Routes the first argument to the right subcommand script under ~/Projects/ai-os/.
+# Routes the first argument to the right subcommand script under $AI_OS_ROOT/.
 # Without this, `ai-os memory status` would fail because the symlink
 # ~/.local/bin/ai-os historically pointed straight at memory/ai-os-memory.sh
 # (which only knows its own subcommands, not the `memory` keyword).
@@ -10,6 +10,7 @@
 #   memory  →  memory/ai-os-memory.sh          (status, browse, reindex, bootstrap, ...)
 #   loop    →  memory/ai-os-loop.sh            (Spec → Verifier → Environment)
 #   bootstrap [...]   →  setup/ai-os-bootstrap.sh   (on-demand full-stack + auto-index)
+#   health [...]      →  setup/ai-os-health.py      (functional checks of the running system)
 
 set -euo pipefail
 
@@ -32,9 +33,11 @@ Usage:
   ai-os memory <subcommand> [args]    Memory stack (status, browse, reindex, bootstrap, ...)
   ai-os loop   <subcommand> [args]    Loop runner (start, status, ...)
   ai-os plans  <subcommand> [args]     Plan documents (check, format, test, enrich)
+  ai-os llm    <subcommand> [args]    Local/cloud chat router (ask, test)
   ai-os bootstrap [--refresh]         First-time / on-demand full-stack setup + auto-index
+  ai-os health [--json|--notify]      Functional checks of the running system (graph, MCP, tokens, CI…)
 
-Run \`ai-os memory help\`, \`ai-os loop help\` or \`ai-os plans help\` for the subcommand list.
+Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
 }
 
@@ -43,17 +46,31 @@ case "${1:-}" in
     shift
     exec bash "$AI_OS_ROOT/memory/ai-os-memory.sh" "$@"
     ;;
+  llm)
+    shift
+    exec bash "$AI_OS_ROOT/llm/ai-os-llm.sh" "$@"
+    ;;
   loop)
     shift
     exec bash "$AI_OS_ROOT/memory/ai-os-loop.sh" "$@"
     ;;
   plans)
     shift
-    exec bash "$AI_OS_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" "$@"
+    if [ -z "${PLANSMITH_ROOT:-}" ]; then
+      echo "ai-os: plans moved to the plansmith repo. Set PLANSMITH_ROOT=/path/to/plansmith" >&2
+      exit 1
+    fi
+    exec bash "$PLANSMITH_ROOT/apps/data/tools/plan-format/ai-os-plans.sh" "$@"
     ;;
   bootstrap)
     shift
     exec bash "$AI_OS_ROOT/setup/ai-os-bootstrap.sh" "$@"
+    ;;
+  health)
+    shift
+    py="$HOME/.ai-os/venv/bin/python"
+    [ -x "$py" ] || py=python3
+    exec "$py" "$AI_OS_ROOT/setup/ai-os-health.py" "$@"
     ;;
   -h|--help|help|"")
     usage

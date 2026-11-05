@@ -1,6 +1,6 @@
 ---
 name: saas-review
-description: Full-app SaaS design review — enumerate and visit every route, audit each screen against the expensive-UI criteria, report prioritised findings, then apply the approved fixes with verification. Use when asked to "/saas-review", "review the whole app", "audit every page and fix it", "make this app look expensive", "revisa toda la app", or when the scope of a design task is the entire product rather than one screen. Chains `app-route-inventory` → `saas-ui-audit` → `saas-expensive-ui` and the four topical skills.
+description: Whole-app SaaS UI review — visit every route, score a 21-criterion matrix, report evidence-backed P0/P1/P2 findings, then apply approved fixes. Use for "/saas-review", "audit the UI", "score our interface", "prioritised UI backlog", "review the whole app", "revisa toda la app", or any design task scoped to the entire product.
 argument-hint: 'Optional: repo path, base URL, or a route/flow to scope the pass (defaults to the whole app in the current repo)'
 user-invocable: true
 ---
@@ -89,8 +89,9 @@ Update the inventory with `visited: yes/no` per route and the reason for every `
 
 ## Phase 3 — Audit
 
-Load `saas-ui-audit`. Score the 21-criterion matrix per flow, and fill
-`references/screen-worksheet.md` for each critical screen.
+Follow the Audit method below. Score the 21-criterion matrix (`references/audit-matrix.md`) per
+flow, fill `references/screen-worksheet.md` for each critical screen, and run the master checklists
+in `references/checklists.md`.
 
 Pull in the topical skill when the flow touches its area — do not load all four for every route:
 
@@ -112,7 +113,7 @@ Two mechanical checks worth running on every screen:
 
 ## Phase 4 — Report, then stop
 
-Write `docs/ui-audit/findings.md` using `saas-ui-audit/references/report-template.md`:
+Write `docs/ui-audit/findings.md` using `references/report-template.md`:
 
 1. Executive summary — max 15 findings, most severe first
 2. The matrix scores per flow
@@ -127,7 +128,8 @@ expensive after eight phases of edits.
 
 ## Phase 5 — Apply, batch by batch
 
-Work P0 → P1 → P2. Never polish P2 while a P0 is open.
+Work P0 → P1 → P2 (definitions in the Audit method; 30-day order and success metrics in
+`references/rollout-plan.md`). Never polish P2 while a P0 is open.
 
 Per batch:
 
@@ -165,6 +167,61 @@ terminology, pricing copy, or an activation definition. Those are product decisi
 - `--report-only` in `$input`: stop after Phase 4. Use when the user wants the backlog, not the edits.
 - A route or flow in `$input`: run all six phases, scoped to it — but still enumerate the full route
   list in Phase 1, because scope decisions need the whole map.
+
+## Audit method
+
+Used by Phase 3–5. Judgement criteria come from `saas-expensive-ui`; this section measures.
+
+**Pick the flows that matter.** Do not audit 60 routes equally. Score each flow 1–5 on frequency ·
+commercial impact · observed friction · error rate · support volume · activation relevance · trust
+risk · effort to improve. Default order: signup/activation → core value flow → dashboard/inbox →
+errors, permissions, empty states → collaboration/sharing → payment/upgrade → advanced config.
+
+**Inventory four kinds.** Screens (route · role · main job · primary CTA · data · components · states
+· success metric · owner). Components (canonical · duplicate · legitimate variant · temporary
+exception · obsolete · unowned). Styles (count unique colours, type sizes, radii, shadows, spacings,
+button/field/modal/table patterns, icon families — a high count is system debt). Content (synonyms for
+one action, generic errors, promo copy inside tasks, internal labels, inconsistent dates/units,
+ambiguous CTAs like "Continue").
+
+**Score.** Per criterion 0 critical · 1 weak · 2 correct · 3 excellent; multiply the loss
+`(3 − score)` by flow impact (1/2/3) and sort. If no baseline exists, record "no baseline" and list
+measuring it as a task.
+
+**Severity.**
+
+- **P0 — trust and ability to finish the job:** ambiguous primary action · wrong, context-free or
+  stale data · errors that lose work · confusing permissions · slow operations with no feedback ·
+  unsafe destructive actions · serious keyboard/contrast/responsive failures · onboarding blockers.
+- **P1 — coherence and friction:** unify components · reduce colours and variants · remove
+  duplication · better empty states · simpler navigation · shorter onboarding · visible progress ·
+  instrumented funnel.
+- **P2 — identity and polish:** distinctive motion · illustration · brand detail · transitions ·
+  celebration moments.
+
+**Global acceptance criteria** — a screen or flow is done only when:
+
+- *Purpose and hierarchy:* documented main job · one visible primary action · content ordered by
+  decision · hierarchy works without colour.
+- *Visual system:* colours from tokens · spacing from the scale · no unjustified new shadow/radius/size
+  · one icon family · no emoji icons · no unnecessary nested cards.
+- *Data and content:* no repeated data without a new reading · metrics carry unit, period and context ·
+  customer's terms · errors say what happened and how to continue · CTAs name the concrete action.
+- *States and safety:* loading, empty, error, permission, success designed · destructive actions state
+  consequences · undo where appropriate.
+- *Accessibility and responsive:* keyboard navigable · visible focus · contrast · labels · zoom and
+  long content tested · responsive by priority, not by shrinking.
+- *Measurement:* start and outcome events instrumented · errors and abandonment measurable · baseline
+  from before the change.
+
+## Reference files
+
+- `references/audit-matrix.md` — the 21 criteria, audit question, red flag, target, calculation
+- `references/screen-worksheet.md` — per-screen diagnostic sheet
+- `references/checklists.md` — master checklists (slop, clarity, data/trust, onboarding, speed, system)
+- `references/report-template.md` — findings report and per-flow redesign spec templates
+- `references/rollout-plan.md` — P0/P1/P2, 30-day order, first ten actions, success metrics, weekly
+  quality meeting
 
 ## Authentication modes
 

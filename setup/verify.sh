@@ -93,7 +93,7 @@ fi
 # missing 1+ skills (or an absent CLI executable) still counted as a pass. Each
 # client now gets checked against the exact set of expected skill NAMES (not
 # just a count) — a plain count comparison breaks the moment a client also has
-# ECC (271 skills) or claude.tools/gstack installed, since those legitimately
+# ECC DAILY or claude.tools/gstack installed, since those legitimately
 # add more names on top of the baseline and can even net-change the total via
 # symlink name collisions. Checking names catches a real missing skill no
 # matter what optional bundles are also installed. The CLI executable is
@@ -108,10 +108,15 @@ EXPECTED_SKILL_NAMES=$(
       find "$AI_OS_ROOT/vendor/gstack" -maxdepth 2 -name SKILL.md -path "*/vendor/gstack/*/SKILL.md" 2>/dev/null \
         | sed -E 's#.*/([^/]+)/SKILL\.md$#\1#'
     fi
+    # Curated ECC DAILY subset (vendor/ecc/DAILY_SKILLS.txt is the source of
+    # truth for the names — see setup/install-mac.sh section 7e).
+    if [ -f "$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt" ]; then
+      grep -v '^\s*#\|^\s*$' "$AI_OS_ROOT/vendor/ecc/DAILY_SKILLS.txt"
+    fi
   } | sort -u
 )
 EXPECTED_SKILL_COUNT=$(echo "$EXPECTED_SKILL_NAMES" | grep -c .)
-log "  Source of truth: $EXPECTED_SKILL_COUNT expected skill names per client (flat + gstack)"
+log "  Source of truth: $EXPECTED_SKILL_COUNT expected skill names per client (flat + gstack + ECC DAILY)"
 
 # id:relative_path:required:executable
 # Hermes is intentionally absent here: it natively supports skills.external_dirs
@@ -253,7 +258,11 @@ if [ -d "$HOME_DIR/.minimax/agents" ]; then
     mm_total=$((mm_total+1))
     grep -q "AI-OS operating context" "$agent_dir/agent.md" 2>/dev/null && mm_ok=$((mm_ok+1))
   done
-  if [ "$mm_ok" -eq "$mm_total" ] && [ "$mm_total" -gt 0 ]; then
+  # 0 agents = mavis has not seeded any yet (only its hidden .builtin): nothing
+  # to overlay, so it is neither a pass nor a miss.
+  if [ "$mm_total" -eq 0 ]; then
+    log "  ~/.minimax: no agents yet (skip — overlay is applied once mavis seeds agent.md)"
+  elif [ "$mm_ok" -eq "$mm_total" ]; then
     opt_ok "  ~/.minimax: AI-OS overlay in $mm_ok/$mm_total agent.md"
   else
     opt_miss "  ~/.minimax: overlay only in $mm_ok/$mm_total agent.md (run setup/install-mac.sh)"
@@ -331,15 +340,32 @@ fi
 # return 141 even though grep found a match, so `if cmd | grep -q` would take
 # the else branch. Temporarily disable pipefail so the pipeline returns grep's
 # status.
-for pony_check in "claude:claude plugin list:claude" "codex:codex plugin list:codex" "hermes:hermes plugins list:hermes" "gemini:gemini extensions list:gemini"; do
-  IFS=':' read -r p_id p_cmd p_bin <<< "$pony_check"
+# Claude Code: a `claude` on PATH can be a broken pnpm shim ("claude native
+# binary not installed"), so resolve a binary that answers --version — same
+# order as install-mac.sh's resolve_claude — and report the shim on its own.
+claude_bin=""
+for c in "$HOME_DIR/.local/bin/claude" "$HOME_DIR/.claude/local/claude" /opt/homebrew/bin/claude "$(command -v claude 2>/dev/null || true)"; do
+  [ -n "$c" ] && [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && { claude_bin="$c"; break; }
+done
+if [ -n "$claude_bin" ]; then
+  opt_ok "  Claude Code CLI works: $claude_bin"
+else
+  for c in "$HOME_DIR/Library/Application Support/Claude/claude-code/"*/*/claude.app/Contents/MacOS/claude; do
+    [ -x "$c" ] && "$c" --version >/dev/null 2>&1 && claude_bin="$c"
+  done
+  opt_miss "  no working Claude Code CLI on PATH ($(command -v claude 2>/dev/null || echo none) fails --version) — install the native build: curl -fsSL https://claude.ai/install.sh | bash"
+fi
+for pony_check in "claude:plugin list:claude" "codex:plugin list:codex" "hermes:plugins list:hermes" "gemini:extensions list:gemini"; do
+  IFS=':' read -r p_id p_args p_bin <<< "$pony_check"
+  [ "$p_id" = "claude" ] && p_bin="${claude_bin:-claude}"
   if ! command -v "$p_bin" >/dev/null 2>&1; then
     opt_miss "  [$p_id] $p_bin not in PATH — skipping ponytail plugin check"
     continue
   fi
   set +e
   set +o pipefail
-  $p_cmd 2>&1 | grep -qi "ponytail"
+  # shellcheck disable=SC2086 # p_args is a fixed word list
+  "$p_bin" $p_args 2>&1 | grep -qi "ponytail"
   grep_status=$?
   set -e
   set -o pipefail
@@ -376,6 +402,35 @@ if [ -f "$AI_OS_ROOT/intent/2026-09-02-example-ponytail-adoption.md" ]; then
   opt_ok "  example intent present: intent/2026-09-02-example-ponytail-adoption.md"
 else
   opt_miss "  example intent missing"
+fi
+
+# Strategic-compact hook (optional — third token layer, see intent/README.md)
+section "3f. Strategic-compact hook (optional — Claude Code PreToolUse)"
+if ! command -v node >/dev/null 2>&1; then
+  opt_miss "node not in PATH — cannot check the hook (it is a node script)"
+elif [ ! -f "$AI_OS_ROOT/setup/wire-compact-hook.mjs" ]; then
+  opt_miss "setup/wire-compact-hook.mjs missing"
+elif hook_status=$(node "$AI_OS_ROOT/setup/wire-compact-hook.mjs" --check 2>&1); then
+  opt_ok "${hook_status#\[compact-hook\] OK }"
+else
+  opt_miss "${hook_status#\[compact-hook\] }"
+fi
+# A dangling skill symlink is invisible to the loops that create them (the
+# source dir is gone, so the name is never revisited) — count them explicitly.
+broken_links=0
+for cli_path in ".claude/skills" ".codex/skills" ".gemini/skills" ".agents/skills" ".gemini/config/skills"; do
+  [ -d "$HOME_DIR/$cli_path" ] || continue
+  for link in "$HOME_DIR/$cli_path"/*; do
+    if [ -L "$link" ] && [ ! -e "$link" ]; then
+      warn "  BROKEN $cli_path/$(basename "$link") → $(readlink "$link")"
+      broken_links=$((broken_links+1))
+    fi
+  done
+done
+if [ "$broken_links" = "0" ]; then
+  opt_ok "  no dangling skill symlinks in the CLI skill dirs"
+else
+  opt_miss "  $broken_links dangling skill symlink(s) — re-run install-mac.sh to prune"
 fi
 
 # ─── 4. Superpowers (14 required) ───
@@ -444,11 +499,42 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
         warn "  FalkorDB Redis :6390 PING via docker exec failed"
       fi
     fi
+    # Persistence: redis writes to FALKORDB_DATA_PATH; a mount anywhere else means
+    # every write is lost on recreate (the /data mount bug, fixed 2026-11-05).
+    if docker inspect ia-os-falkordb --format '{{range .Mounts}}{{.Destination}} {{end}}' 2>/dev/null | grep -q "/var/lib/falkordb/data"; then
+      opt_ok "  FalkorDB data persisted to memory/falkordb/data"
+    else
+      opt_miss "  FalkorDB data dir not mounted — graph is lost on recreate (run: ai-os memory start)"
+    fi
   else
-    opt_miss "FalkorDB container 'ia-os-falkordb' not running (run: bash ~/Projects/ai-os/setup/install-mac.sh)"
+    opt_miss "FalkorDB container 'ia-os-falkordb' not running (run: ai-os memory start)"
+  fi
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-graphiti-mcp$' \
+     && curl -sf -m 3 http://127.0.0.1:8021/health 2>/dev/null | grep -q healthy; then
+    opt_ok "Graphiti MCP healthy at http://127.0.0.1:8021/mcp/"
+  else
+    opt_miss "Graphiti MCP not healthy (run: ai-os memory start; logs: docker logs ia-os-graphiti-mcp)"
   fi
 else
-  warn "Docker not running (FalkorDB disabled)"
+  warn "Docker not running (FalkorDB + Graphiti disabled)"
+fi
+
+# Scheduled code reindex (codebase-memory-mcp + grepai)
+if launchctl print "gui/$(id -u)/ai.os.reindex" >/dev/null 2>&1; then
+  opt_ok "Reindex agent ai.os.reindex loaded (00/04/08/12/16/20)"
+else
+  opt_miss "Reindex agent ai.os.reindex not loaded (run: bash memory/launchd/install-reindex.sh)"
+fi
+# verify.sh checks what is installed; `ai-os health` checks that it works.
+if launchctl print "gui/$(id -u)/ai.os.health" >/dev/null 2>&1; then
+  opt_ok "Health agent ai.os.health loaded (09:30/15:30; run now: ai-os health)"
+else
+  opt_miss "Health agent ai.os.health not loaded (run: bash memory/launchd/install-health.sh)"
+fi
+if [ "$(git -C "$AI_OS_ROOT" config --get core.hooksPath 2>/dev/null)" = "setup/hooks" ]; then
+  opt_ok "Pre-push gate enabled (core.hooksPath = setup/hooks)"
+else
+  opt_miss "Pre-push gate not enabled (run: git -C \"\$AI_OS_ROOT\" config core.hooksPath setup/hooks)"
 fi
 
 # Ollama (best-effort)
@@ -460,7 +546,14 @@ if command -v ollama >/dev/null 2>&1; then
     else
       warn "  Ollama API :11500 not reachable (default port 11434 may be in use; OLLAMA_HOST env may be needed)"
     fi
-    if OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
+    # Captured first, then grepped via here-string — piping straight into `grep -q`
+    # is fragile under `set -o pipefail`: grep exits the instant it matches, and if
+    # `ollama list` still had more lines queued it gets SIGPIPE'd and this whole `if`
+    # reads as false even though the model IS there (bit us for real on 5c below,
+    # where qwen3 sorts first and nomic-embed-text second — the opposite order
+    # happened to save this check, not correctness).
+    ollama_models="$(OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null)" || true
+    if grep -q "nomic-embed-text" <<< "$ollama_models"; then
       opt_ok "  nomic-embed-text model available"
     else
       warn "  nomic-embed-text not pulled (run: OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text)"
@@ -480,6 +573,57 @@ for bin in codebase-memory-mcp grepai; do
     warn "$bin not installed (run install-mac.sh to retry)"
   fi
 done
+fi
+
+# ─── 5c. llm/router.mjs local model + opencode service (best-effort) ───
+# SKIP_OPENCODE=1 opts out, same convention as SKIP_MEMORY
+if [ "${SKIP_OPENCODE:-0}" = "1" ]; then
+  section "5c. llm/router.mjs + opencode (SKIPPED)"
+  log "SKIP_OPENCODE=1, skipping verification"
+else
+  section "5c. llm/router.mjs + opencode"
+
+  ollama_models="$(OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null)" || true
+  if grep -q "gemma3:12b" <<< "$ollama_models"; then
+    opt_ok "gemma3:12b pulled on the native Ollama daemon (llm/router.mjs's default)"
+  else
+    opt_miss "gemma3:12b not pulled (run: OLLAMA_HOST=127.0.0.1:11500 ollama pull gemma3:12b)"
+  fi
+
+  if command -v opencode >/dev/null 2>&1; then
+    opt_ok "opencode-ai installed ($(command -v opencode))"
+    if bash "$AI_OS_ROOT/llm/launchd/install-opencode.sh" --status 2>&1 | sed 's/^/  /'; then
+      :
+    fi
+  else
+    opt_miss "opencode-ai not installed (run: npm install -g opencode-ai)"
+  fi
+
+  if docker ps --format '{{.Names}}' 2>/dev/null | grep -q '^ia-os-open-webui$'; then
+    opt_ok "open-webui container running"
+    if curl -s -m 3 http://localhost:3301/ -o /dev/null -w "%{http_code}" 2>/dev/null | grep -q "200"; then
+      opt_ok "  open-webui at http://localhost:3301 reachable"
+    else
+      warn "  open-webui :3301 not reachable (give it a few seconds to start)"
+    fi
+  else
+    opt_miss "open-webui container not running (run: cd memory && docker compose up -d open-webui)"
+  fi
+fi
+
+# ─── 5d. Curated ECC DAILY agents (Claude Code only, best-effort) ───
+section "5d. ECC DAILY agents (Claude Code)"
+ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
+ECC_AGENTS_FOUND=0
+for name in "${ECC_DAILY_AGENTS[@]}"; do
+  if [ -f "$HOME_DIR/.claude/agents/$name.md" ]; then
+    ECC_AGENTS_FOUND=$((ECC_AGENTS_FOUND + 1))
+  else
+    opt_miss "agent '$name' missing at ~/.claude/agents/ (run: bash setup/install-mac.sh, section 7f)"
+  fi
+done
+if [ "$ECC_AGENTS_FOUND" -eq "${#ECC_DAILY_AGENTS[@]}" ]; then
+  opt_ok "$ECC_AGENTS_FOUND/${#ECC_DAILY_AGENTS[@]} curated ECC agents present in ~/.claude/agents/"
 fi
 
 # ─── 6. Shell (Oh My Zsh + Powerlevel10k, optional dev-env preference) ───

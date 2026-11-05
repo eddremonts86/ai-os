@@ -70,16 +70,23 @@ jobs:
           DRY_RUN: "1"
         run: pwsh -File ./setup/install-windows.ps1
 
-      - name: Verify ECC integration (--check)
-        # Non-fatal: ECC may not be vendored on every PR. We log a warning instead
-        # of failing the build so that PRs touching unrelated files stay green.
+      - name: Verify curated ECC subset (vendor/ecc/, required)
+        # Same check as reusable-test.yml: every file install-mac.sh 7e/7f and
+        # the compact hook link must exist in the trimmed vendor/ecc/.
+        shell: bash
         run: |
-          if (Test-Path vendor/ecc) {
-            Write-Host "vendor/ecc/ present, running bash setup/install-ecc.sh --check..."
-            bash setup/install-ecc.sh --check
-          } else {
-            Write-Host "::warning::vendor/ecc/ not present; skipping ECC --check (this is OK if the PR doesn't touch ECC integration)."
-          }
+          fail=0
+          while IFS= read -r n; do
+            case "$n" in ''|\#*) continue ;; esac
+            f="vendor/ecc/skills/$n/SKILL.md"
+            if [ -f "$f" ] && head -1 "$f" | grep -q '^---$'; then echo "ok   skill $n"; else echo "::error::missing or malformed $f"; fail=1; fi
+          done < vendor/ecc/DAILY_SKILLS.txt
+          for f in LICENSE agents/typescript-reviewer.md agents/vue-reviewer.md agents/build-error-resolver.md \
+                   commands/vue-review.md commands/build-fix.md scripts/hooks/suggest-compact.js; do
+            if [ -f "vendor/ecc/$f" ]; then echo "ok   $f"; else echo "::error::missing vendor/ecc/$f"; fail=1; fi
+          done
+          node -e "require('./vendor/ecc/scripts/hooks/suggest-compact.js')" </dev/null || { echo "::error::suggest-compact.js require closure broken"; fail=1; }
+          exit $fail
 
       - name: Verify claude.tools / gstack integration (--check)
         # Non-fatal: vendor/codex-plugin-cc/ may not be cloned on every PR.
@@ -113,7 +120,7 @@ jobs:
         run: |
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Test Summary"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Install dry-run: ✅ (required)"
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- ECC --check: ⚠️ (skipped if vendor/ecc/ missing)"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- ECC subset check: ✅ (required)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- claude.tools --check: ⚠️ (non-fatal; always runs against ai-config/skills/)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- setup unit tests: ✅ (required)"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Note: setup/verify-windows.ps1 validates a live installed machine and is not run against the bare CI runner; run it locally after setup/install-windows.ps1."

@@ -2,9 +2,9 @@
 
 Workflow for code tasks: new feature, bug fix, refactor.
 
-> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+> **Prerequisite:** have the 14 superpowers skills installed (see `docs/skills-catalog.md` "Superpowers skills"). Without them, the load skill steps in this workflow will fail.
 >
-> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
+> Run `bash $AI_OS_ROOT/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
 ## When to use
 
@@ -17,15 +17,17 @@ Do not use for: configuration changes, single-line fixes (do them directly), res
 
 ## Steps
 
-### 1. Determine the type of work (read Spec)
+### 1. Determine the type of work (read Spec if there is one)
 
-Read `specs/current_spec.md` to understand:
+If `specs/current_spec.md` holds an active Spec for this task, read it to understand:
 
 - What we are building/fixing/refactoring.
 - What acceptance criteria apply.
 - Which blocks are pending.
 
-If the Spec is empty or doesn't exist, run `workflows/project_start.md` first.
+A Spec is required only for work expected to take more than ~2 hours, touching more than one
+repo, or when the user asks for one — then run `workflows/project_start.md` first. Otherwise
+state the goal and acceptance check inline and continue.
 
 ### 2. Load the right skill (load skill)
 
@@ -33,14 +35,14 @@ Depending on the type of work:
 
 | Type                       | Load skill                                                                        |
 | -------------------------- | --------------------------------------------------------------------------------- |
-| New feature (with Spec)    | `workflows/project_start.md` (AI-OS)                                              |
-| New feature (without Spec) | `workflows/project_start.md` first, then this                                     |
+| New feature (large)        | `workflows/project_start.md` first (Spec), then this                              |
+| New feature (normal)       | → Load skill `writing-plans` for multi-step work, then this                       |
 | Bug                        | → Load skill `systematic-debugging`                                               |
-| Refactor                   | → Load skill `code-simplification` (if available, else `code-review-and-quality`) |
+| Refactor                   | → Load skill `patterns-and-refactoring`                                           |
 | Tests                      | → Load skill `test-driven-development`                                            |
 | New skill                  | → Load skill `writing-skills`                                                     |
 | Architecture change        | → Load skill `diagram-design` for the before/after figure in the Spec             |
-| Hotfix (urgent)            | Skip Spec, do it directly, document later                                         |
+| Hotfix (urgent)            | Do it directly, document later                                                    |
 
 A diagram is worth it when the change moves boundaries — a new service, a new data path, a
 changed trust boundary. For a change inside one file, skip it. See
@@ -147,7 +149,7 @@ either action, the same way any other external-impact action is gated.
 Update the Spec status to "complete" locally; that part does not need
 confirmation.
 
-### 12. Archive the completed Spec (move file)
+### 12. Archive the completed Spec (move file, only if there was one)
 
 Archive only after the active Spec is completed. `specs/current_spec.md` must
 not retain completed work.
@@ -168,7 +170,7 @@ At the end of this workflow, you should have:
 - Tests passing.
 - Lint passing.
 - Type check passing.
-- Spec archived.
+- Spec archived (if the task had one).
 - A clean commit history.
 
 ## Anti-patterns
@@ -177,7 +179,7 @@ At the end of this workflow, you should have:
 - ❌ Skipping tests → regressions.
 - ❌ Mixing refactor with new feature in the same PR.
 - ❌ Not running `verification-before-completion` at the end.
-- ❌ Not archiving the Spec.
+- ❌ Not archiving a completed Spec.
 - ❌ Running lint + type check + tests sequentially → dispatch in parallel (subagents or background shells, see `rules/always_do.md`).
 
 ## Quick reference

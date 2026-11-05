@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+# setup/hooks/pre-push — local gate before anything reaches GitHub (~10s).
+#
+# Enabled per clone by install-mac.sh (`git config core.hooksPath setup/hooks`).
+# Skip once, deliberately: git push --no-verify
+#
+# Runs what CI runs on every OS runner, plus the checks that would have caught
+# today's (2026-11-05) breakages before CI did: invalid YAML in skill
+# frontmatter, a syntax error in a setup script, an invalid compose file.
+# Windows' install-windows.dry-run.ps1 only runs here when pwsh is installed.
+
+set -uo pipefail
+
+PY="$HOME/.ai-os/venv/bin/python"
+[ -x "$PY" ] || PY=python3
+
+failed=0
+step() { printf '[pre-push] %-34s' "$1"; }
+pass() { echo "ok${1:+ ($1)}"; }
+fail() { echo "FAIL"; printf '%s\n' "$1" | sed 's/^/           /' | head -15; failed=$((failed + 1)); }
+
+# Direct pushes to main skip the feature → dev → main flow that guard-main.yml
+# enforces on PRs; say so, but don't block (some fixes need to land on main).
+ZERO=0000000000000000000000000000000000000000
+sha=""
+while read -r _local_ref local_sha remote_ref _remote_sha; do
+  [ "$remote_ref" = "refs/heads/main" ] && \
+    echo "[pre-push] note: pushing straight to main (the repo flow is feature → dev → main)"
+  [ "$local_sha" != "$ZERO" ] && sha="$local_sha"
+done
+[ -z "$sha" ] && { echo "[pre-push] only deletions — nothing to check"; exit 0; }
+
+# Check the commit being pushed, not the working tree: uncommitted edits must
+# neither hide a broken commit nor fail a good one.
+WT="$(mktemp -d -t aios-prepush-XXXX)"
+trap 'git worktree remove --force "$WT" >/dev/null 2>&1; rm -rf "$WT"' EXIT
+git worktree add --detach --quiet "$WT" "$sha" || { echo "[pre-push] could not check out $sha"; exit 1; }
+cd "$WT" || exit 1
+echo "[pre-push] checking ${sha:0:9}"
+
+step "shell syntax"
+out=""
+while IFS= read -r f; do
+  e=$(bash -n "$f" 2>&1) || out+="$f: $e"$'\n'
+done < <(git ls-files '*.sh' 'ai-os' 'setup/hooks/*' | grep -v '^vendor/' | grep -v '\.ps1$')
+[ -z "$out" ] && pass || fail "$out"
+
+step "node syntax (setup/, llm/)"
+out=""
+if command -v node >/dev/null 2>&1; then
+  while IFS= read -r f; do
+    e=$(node --check "$f" 2>&1) || out+="$f: ${e%%$'\n'*}"$'\n'
+  done < <(git ls-files 'setup/*.mjs' 'setup/*.js' 'llm/*.mjs' 'llm/*.js')
+  [ -z "$out" ] && pass || fail "$out"
+else
+  pass "node not installed, skipped"
+fi
+
+step "YAML + skill frontmatter"
+out=$("$PY" - <<'EOF' 2>&1
+import glob, sys
+try:
+    import yaml
+except ImportError:
+    print("PyYAML missing — install it or run setup/install-mac.sh"); sys.exit(1)
+bad = []
+files = (glob.glob("ai-config/mcp/*.yaml") + glob.glob(".github/workflows/*.yml")
+         + ["ai-config/manifest.yaml", "memory/docker-compose.yml", "memory/graphiti/config.yaml"])
+for f in files:
+    try:
+        yaml.safe_load(open(f))
+    except Exception as e:
+        bad.append(f"{f}: {str(e).splitlines()[0]}")
+skills = (glob.glob("ai-config/skills/*/SKILL.md") + glob.glob("vendor/ecc/skills/*/SKILL.md")
+          + glob.glob("vendor/gstack/*/SKILL.md"))
+for f in skills:
+    text = open(f, encoding="utf-8").read()
+    if not text.startswith("---"):
+        bad.append(f"{f}: no frontmatter"); continue
+    try:
+        fm = yaml.safe_load(text.split("---", 2)[1]) or {}
+    except Exception as e:  # strict parsers (Codex, Gemini) reject what Claude tolerates
+        bad.append(f"{f}: {str(e).splitlines()[0]}"); continue
+    for key in ("name", "description"):
+        if not fm.get(key):
+            bad.append(f"{f}: missing {key}")
+print("\n".join(bad)); sys.exit(1 if bad else 0)
+EOF
+) && pass || fail "$out"
+
+step "docker compose config"
+if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+  out=$(docker compose -f memory/docker-compose.yml config --quiet 2>&1) && pass || fail "$out"
+else
+  pass "docker compose not installed, skipped"
+fi
+
+step "setup unit tests"
+out=$("$PY" -m unittest discover -s setup/tests 2>&1) && pass "$(grep -oE 'Ran [0-9]+ tests' <<<"$out")" || fail "$(tail -15 <<<"$out")"
+
+step "install-mac dry-run"
+out=$(bash setup/install-mac.dry-run.sh 2>&1) && pass || fail "$(grep -E '❌|ERROR|error' <<<"$out" | head -10)"
+
+step "install-windows dry-run"
+if command -v pwsh >/dev/null 2>&1; then
+  out=$(pwsh -NoProfile -File setup/install-windows.dry-run.ps1 2>&1) && pass || fail "$(grep -E '❌|ERROR|error' <<<"$out" | head -10)"
+else
+  pass "pwsh not installed, CI covers it"
+fi
+
+if [ "$failed" -gt 0 ]; then
+  echo "[pre-push] $failed check(s) failed — push blocked. Fix them, or skip once with: git push --no-verify"
+  exit 1
+fi
+echo "[pre-push] all checks passed"

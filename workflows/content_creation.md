@@ -2,9 +2,9 @@
 
 Workflow to create content: docs, ADRs, blogs, READMEs, specs, tutorials.
 
-> **Prerequisite:** have the 14 superpowers skills installed (see `~/Projects/ai-os/CLAUDE.md` section 16). Without them, the load skill steps in this workflow will fail.
+> **Prerequisite:** have the 14 superpowers skills installed (see `docs/skills-catalog.md` "Superpowers skills"). Without them, the load skill steps in this workflow will fail.
 >
-> Run `bash ~/Projects/ai-os/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
+> Run `bash $AI_OS_ROOT/setup/verify.sh` to verify. If it reports `14/14 superpowers skills OK`, you're good.
 
 ## When to use
 
@@ -148,7 +148,7 @@ For content that includes code or technical accuracy:
 
 ```bash
 # Save to AI-OS outputs/ if reusable
-mv ~/tmp/<content>.md ~/Projects/ai-os/outputs/$(date +%Y-%m-%d)-<slug>.md
+mv ~/tmp/<content>.md $AI_OS_ROOT/outputs/$(date +%Y-%m-%d)-<slug>.md
 
 # Or commit to the project
 git add docs/
