@@ -464,6 +464,13 @@ if [ -e "$AIOS_ZSHRC" ] || [ -L "$AIOS_ZSHRC" ]; then
   esac
 fi
 
+# ─── 5c. Git hooks for this clone (pre-push gate, see setup/hooks/pre-push) ───
+# Repo-local config only; never touches the global git config or other repos.
+if [ -d "$AI_OS_ROOT/.git" ] || git -C "$AI_OS_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+  git -C "$AI_OS_ROOT" config core.hooksPath setup/hooks
+  ok "5c. git hooks: pre-push gate enabled (skip once: git push --no-verify)"
+fi
+
 # ─── 6. Oh My Zsh + Powerlevel10k ───
 # Pinned refs (P1-4): Oh My Zsh has no version tags, so pin a specific commit
 # SHA instead of the mutable `master` branch. Bump deliberately after review,
