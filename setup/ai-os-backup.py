@@ -26,6 +26,13 @@ Keychain. Save the recovery key once, somewhere that is not this Mac:
   ai-os backup --verify-offsite         # decrypt the newest iCloud copy and compare it
   ai-os backup --restore-offsite DIR    # decrypt + extract it (key: Keychain or $AI_OS_BACKUP_KEY)
 
+The same encrypted file also goes to a PRIVATE GitHub repo (default
+<your login>/ai-os-backups, override with $AI_OS_GITHUB_BACKUP_REPO; disable with
+AI_OS_GITHUB=0), because iCloud Drive can stall silently. The repo's history is
+one commit that is rewritten on every run (force-pushed — it is a backup mirror,
+not a project), so it never grows past the newest 14 files. Only ciphertext is
+published; without the key the files are unreadable.
+
 Runs daily via the launchd agent ai.os.backup.
 """
 
@@ -50,6 +57,7 @@ ICLOUD = HOME / "Library" / "Mobile Documents" / "com~apple~CloudDocs"
 OFFSITE = Path(os.environ.get("AI_OS_OFFSITE_DIR", ICLOUD / "Backups" / "ai-os"))
 KEY_SERVICE, KEY_ACCOUNT = "ai-os-backup-key", "ai-os"
 KEY_CONFIRMED = HOME / ".ai-os" / "backup-key-saved"
+GH_WORK = HOME / ".ai-os" / "offsite-github"  # local working clone of the mirror
 MAGIC = b"AIOSBK1"  # file header; also the GCM associated data
 FALKOR = "ia-os-falkordb"
 FALKOR_DATA = ROOT / "memory" / "falkordb" / "data"
@@ -135,63 +143,166 @@ def pack(snap):
     return buf.getvalue()
 
 
-def push_offsite(snap):
-    if not ICLOUD.exists() and "AI_OS_OFFSITE_DIR" not in os.environ:
-        raise RuntimeError("iCloud Drive is not available on this Mac")
-    OFFSITE.mkdir(parents=True, exist_ok=True)
-    out = OFFSITE / f"ai-os-{snap.name}.tar.gz.enc"
-    tmp = out.with_suffix(".part")
-    tmp.write_bytes(encrypt(pack(snap), get_key(create=True)))
-    os.replace(tmp, out)  # iCloud never sees a half-written file under the final name
-    files = sorted(OFFSITE.glob("ai-os-*.tar.gz.enc"))
+def github_repo():
+    """owner/name of the private mirror, or None when disabled."""
+    if os.environ.get("AI_OS_GITHUB") == "0":
+        return None
+    repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO")
+    if repo:
+        return repo
+    rc, login = sh("gh", "api", "user", "--jq", ".login")
+    return f"{login}/ai-os-backups" if rc == 0 and login else None
+
+
+def git(*args, cwd=GH_WORK, timeout=120):
+    # Auth through gh's own token; never writes the global git config.
+    env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_AUTHOR_NAME": "ai-os backup", "GIT_AUTHOR_EMAIL": "noreply@localhost",
+           "GIT_COMMITTER_NAME": "ai-os backup", "GIT_COMMITTER_EMAIL": "noreply@localhost"}
+    cfg = ["-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential"]
+    p = subprocess.run(["git", *cfg, *args], cwd=cwd, capture_output=True, text=True, timeout=timeout, env=env)
+    if p.returncode != 0:
+        raise RuntimeError(f"git {args[0]} failed: {(p.stderr or p.stdout).strip()[-300:]}")
+    return p.stdout.strip()
+
+
+def push_github(name, blob):
+    repo = github_repo()
+    if not repo:
+        raise RuntimeError("GitHub mirror disabled or `gh` is not logged in")
+    rc, vis = sh("gh", "repo", "view", repo, "--json", "isPrivate", "--jq", ".isPrivate")
+    if vis != "true":  # refuse to publish anything, even ciphertext, to a public or missing repo
+        raise RuntimeError(f"{repo} is not a private repo that exists (isPrivate={vis or 'unknown'})")
+    GH_WORK.mkdir(parents=True, exist_ok=True)
+    if not (GH_WORK / ".git").exists():
+        git("init", "-q", "-b", "main")
+    git("remote", "remove", "origin") if "origin" in git("remote").split() else None
+    git("remote", "add", "origin", f"https://github.com/{repo}.git")
+    (GH_WORK / name).write_bytes(blob)
+    (GH_WORK / "README.md").write_text(
+        "# ai-os-backups\n\nEncrypted AI-OS backups (AES-256-GCM). Unreadable without the key, which is not here.\n"
+        "Restore: `AI_OS_BACKUP_KEY=<key> ai-os backup --restore-offsite <dir>`.\n"
+        "History is a single commit rewritten on every run; only the newest files are kept.\n", encoding="utf-8")
+    files = sorted(GH_WORK.glob("ai-os-*.tar.gz.enc"))
     for old in files[:-KEEP]:
         old.unlink()
-    return out
+    git("add", "-A")
+    tree = git("write-tree")
+    commit = git("commit-tree", tree, "-m", f"encrypted backups up to {name}")  # parentless: history never grows
+    git("update-ref", "refs/heads/main", commit)
+    git("push", "--force", "origin", "main")
+    git("reflog", "expire", "--expire=now", "--all")
+    git("gc", "--prune=now", "--quiet")
+    return f"https://github.com/{repo}"
+
+
+def push_offsite(snap):
+    """Encrypt once, write the same ciphertext to iCloud Drive and the private GitHub mirror.
+    Returns a list of (destination, error-or-None); the local snapshot is already safe."""
+    name = f"ai-os-{snap.name}.tar.gz.enc"
+    blob = encrypt(pack(snap), get_key(create=True))
+    results = []
+    try:
+        if not ICLOUD.exists() and "AI_OS_OFFSITE_DIR" not in os.environ:
+            raise RuntimeError("iCloud Drive is not available on this Mac")
+        OFFSITE.mkdir(parents=True, exist_ok=True)
+        out = OFFSITE / name
+        tmp = out.with_suffix(".part")
+        tmp.write_bytes(blob)
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, out)  # iCloud never sees a half-written file under the final name
+        for old in sorted(OFFSITE.glob("ai-os-*.tar.gz.enc"))[:-KEEP]:
+            old.unlink()
+        results.append((f"iCloud Drive ({out})", None))
+    except Exception as e:
+        results.append(("iCloud Drive", f"{type(e).__name__}: {e}"))
+    try:
+        results.append((f"GitHub {push_github(name, blob)}", None))
+    except Exception as e:
+        results.append(("GitHub", f"{type(e).__name__}: {e}"))
+    return results
 
 
 def offsite_files():
     return sorted(OFFSITE.glob("ai-os-*.tar.gz.enc")) if OFFSITE.exists() else []
 
 
+def github_files():
+    """Names of the encrypted files in the private mirror (via the API; no clone needed)."""
+    repo = github_repo()
+    if not repo:
+        return []
+    rc, out = sh("gh", "api", f"repos/{repo}/contents", "--jq", ".[].name")
+    return sorted(n for n in out.splitlines() if n.startswith("ai-os-") and n.endswith(".tar.gz.enc")) if rc == 0 else []
+
+
+def github_blob(name):
+    p = subprocess.run(["gh", "api", f"repos/{github_repo()}/contents/{name}", "-H", "Accept: application/vnd.github.raw"],
+                       capture_output=True, timeout=120)
+    if p.returncode != 0:
+        raise RuntimeError(p.stderr.decode(errors="replace").strip()[-200:])
+    return p.stdout
+
+
 def open_offsite(blob, key):
     return tarfile.open(fileobj=io.BytesIO(decrypt(blob, key)), mode="r:gz")
 
 
-def verify_offsite():
-    """Decrypt the newest off-site copy and compare it with the local snapshot of the same name."""
-    files = offsite_files()
-    if not files:
-        print("no off-site copy to verify")
-        return 1
-    newest = files[-1]
-    stamp = newest.name[len("ai-os-"):-len(".tar.gz.enc")]
+def verify_one(label, name, blob, key):
+    stamp = name[len("ai-os-"):-len(".tar.gz.enc")]
     try:
-        with open_offsite(newest.read_bytes(), get_key()) as tar:
+        with open_offsite(blob, key) as tar:
             names = tar.getnames()
             manifest = json.load(tar.extractfile(f"{stamp}/manifest.json"))
             rdb = tar.extractfile(f"{stamp}/falkordb-dump.rdb").read()
     except Exception as e:
-        print(f"❌ {newest.name}: cannot decrypt/read ({type(e).__name__}: {e})")
-        return 1
+        print(f"❌ {label} {name}: cannot decrypt/read ({type(e).__name__}: {e})")
+        return False
     local = DEST / stamp
-    if local.exists():
-        if (local / "falkordb-dump.rdb").read_bytes() != rdb:
-            print(f"❌ {newest.name}: RDB differs from the local snapshot")
-            return 1
-    print(f"✅ off-site {newest.name} decrypts: {manifest['graphs']} ({len(names)} entries, {newest.stat().st_size // 1024} KB)")
-    return 0
+    if local.exists() and (local / "falkordb-dump.rdb").read_bytes() != rdb:
+        print(f"❌ {label} {name}: RDB differs from the local snapshot")
+        return False
+    print(f"✅ {label} {name} decrypts: {manifest['graphs']} ({len(names)} entries, {len(blob) // 1024} KB)")
+    return True
 
 
-def restore_offsite(target):
+def verify_offsite():
+    """Decrypt the newest copy at every destination that has one and compare with the local snapshot."""
+    key = get_key()
+    checked = []
     files = offsite_files()
-    if not files:
-        print("no off-site copy found in " + str(OFFSITE))
+    if files:
+        checked.append(verify_one("iCloud", files[-1].name, files[-1].read_bytes(), key))
+    names = github_files()
+    if names:
+        try:
+            checked.append(verify_one("GitHub", names[-1], github_blob(names[-1]), key))
+        except Exception as e:
+            print(f"❌ GitHub {names[-1]}: cannot download ({e})")
+            checked.append(False)
+    if not checked:
+        print("no off-site copy to verify")
         return 1
+    return 0 if all(checked) else 1
+
+
+def restore_offsite(target, source=None):
     target = Path(target)
+    files = offsite_files()
+    names = github_files()
+    if source == "github" or (source is None and not files):
+        if not names:
+            print("no off-site copy found (iCloud folder empty, GitHub mirror empty or unreachable)")
+            return 1
+        label, blob = f"GitHub {names[-1]}", github_blob(names[-1])
+    else:
+        if not files:
+            print("no off-site copy found in " + str(OFFSITE))
+            return 1
+        label, blob = files[-1].name, files[-1].read_bytes()
     target.mkdir(parents=True, exist_ok=True, mode=0o700)
-    with open_offsite(files[-1].read_bytes(), get_key()) as tar:
+    with open_offsite(blob, get_key()) as tar:
         tar.extractall(target, filter="data")
-    print(f"restored {files[-1].name} into {target} (graph: falkordb-dump.rdb → memory/falkordb/data/dump.rdb)")
+    print(f"restored {label} into {target} (graph: falkordb-dump.rdb → memory/falkordb/data/dump.rdb)")
     return 0
 
 
@@ -230,11 +341,16 @@ def take():
         shutil.rmtree(old)
     print(f"backup {out}  graphs={manifest['graphs']}  files={list(manifest['items'])}")
     if os.environ.get("AI_OS_OFFSITE") != "0":
+        failed = False
         try:
-            print(f"off-site {push_offsite(out)}  (AES-256-GCM, key in the Keychain)")
-        except Exception as e:  # the local snapshot is kept; a failed off-site copy fails the run
+            results = push_offsite(out)
+        except Exception as e:  # e.g. no key and the Keychain refused to create one
             print(f"off-site copy failed: {type(e).__name__}: {e}")
             return 1
+        for dest, err in results:  # the local snapshot is kept either way
+            print(f"off-site {dest}  (AES-256-GCM, key in the Keychain)" if not err else f"off-site {dest} FAILED: {err}")
+            failed = failed or bool(err)
+        return 1 if failed else 0
     return 0
 
 
@@ -284,7 +400,7 @@ def main():
     g.add_argument("--list", action="store_true")
     g.add_argument("--verify", action="store_true", help="restore the newest snapshot into a throwaway FalkorDB")
     g.add_argument("--verify-offsite", action="store_true", help="decrypt the newest iCloud copy and compare it")
-    g.add_argument("--restore-offsite", metavar="DIR", help="decrypt + extract the newest iCloud copy into DIR")
+    g.add_argument("--restore-offsite", metavar="DIR", help="decrypt + extract the newest off-site copy into DIR (iCloud, else GitHub)")
     g.add_argument("--show-key", action="store_true", help="print the recovery key (store it OFF this Mac)")
     g.add_argument("--confirm-key-saved", action="store_true", help="record that the recovery key is saved elsewhere")
     a = ap.parse_args()
@@ -299,7 +415,7 @@ def main():
     if a.verify_offsite:
         return verify_offsite()
     if a.restore_offsite:
-        return restore_offsite(a.restore_offsite)
+        return restore_offsite(a.restore_offsite, os.environ.get("AI_OS_RESTORE_FROM"))
     if a.list:
         for p in sorted(DEST.iterdir()) if DEST.exists() else []:
             m = p / "manifest.json"

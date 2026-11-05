@@ -89,5 +89,43 @@ class OffsiteCryptoTests(unittest.TestCase):
                 self.assertIn("2099-01-01-000000/manifest.json", tar.getnames())
 
 
+class GithubMirrorTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("ai_os_backup_gh", SCRIPT)
+        cls.b = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.b)
+
+    def test_disabled_by_env(self):
+        os.environ["AI_OS_GITHUB"] = "0"
+        try:
+            self.assertIsNone(self.b.github_repo())
+            self.assertEqual(self.b.github_files(), [])
+        finally:
+            del os.environ["AI_OS_GITHUB"]
+
+    def test_repo_override_from_env(self):
+        os.environ["AI_OS_GITHUB_BACKUP_REPO"] = "someone/else"
+        try:
+            self.assertEqual(self.b.github_repo(), "someone/else")
+        finally:
+            del os.environ["AI_OS_GITHUB_BACKUP_REPO"]
+
+    def test_refuses_a_repo_that_is_not_private(self):
+        from unittest import mock
+        with mock.patch.object(self.b, "github_repo", return_value="o/r"), \
+             mock.patch.object(self.b, "sh", return_value=(0, "false")):
+            with self.assertRaises(RuntimeError) as ctx:
+                self.b.push_github("ai-os-x.tar.gz.enc", b"ciphertext")
+        self.assertIn("not a private repo", str(ctx.exception))
+
+    def test_refuses_a_missing_repo(self):
+        from unittest import mock
+        with mock.patch.object(self.b, "github_repo", return_value="o/r"), \
+             mock.patch.object(self.b, "sh", return_value=(1, "")):
+            with self.assertRaises(RuntimeError):
+                self.b.push_github("ai-os-x.tar.gz.enc", b"ciphertext")
+
+
 if __name__ == "__main__":
     unittest.main()
