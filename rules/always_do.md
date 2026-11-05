@@ -160,8 +160,24 @@ If a check (type-check, lint, test, build, runtime) surfaces an error, **fix it 
 26. Before shipping a diagram, run the skill's taste gate (`SKILL.md` §9) and
     `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>`. Report the result.
 
+## When a task is UI or visual design
+
+27. Route by **what the request asks for** to ONE skill; load others only if that skill points to them:
+
+    | Request | Use |
+    |---|---|
+    | Build a new UI, page, or landing | `frontend-design` |
+    | Make it look premium, distinctive, not templated (anti-slop) | `taste-skill` |
+    | Audit an existing app's UI/UX across every route, prioritised findings | `saas-review` |
+    | Polish details: component feel, animation decisions | `emil-design-eng` |
+    | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
+    | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |
+    | The destination is a claude.ai Artifact | harness `artifact-design` skill |
+
+28. Brand tokens come from `context/06_brand.md` (same rule as diagrams).
+
 ## At session end
 
-27. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
-28. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
-29. Report final state with concrete evidence.
+29. When an active Spec is completed, archive it as `archive/YYYY-MM-DD-<slug>.md`.
+30. Reset `specs/current_spec.md` to the no-active-Spec template only after the archive succeeds.
+31. Report final state with concrete evidence.

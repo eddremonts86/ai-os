@@ -6,9 +6,9 @@
 #   1. Verifies that vendor/codex-plugin-cc/ exists (the vendored plugin; SOURCE OF TRUTH).
 #   2. Symlinks vendor/codex-plugin-cc/ -> ~/.claude/plugins/codex-plugin-cc
 #      so Claude Code discovers it as a plugin.
-#   3. Symlinks the 4 individual claude.tools skills (humanizer, caveman,
-#      notebooklm-skill, frontend-design-alt) and the 7 gstack skills
-#      (careful, context-restore, context-save, freeze, guard, spec,
+#   3. Symlinks the 3 individual claude.tools skills (humanizer, caveman,
+#      notebooklm-skill) and the 6 gstack skills
+#      (careful, context-restore, context-save, freeze, spec,
 #      unfreeze) from ai-config/skills/ into the 5 CLIs.
 #      (install-mac.sh step 5 already propagates ai-config/skills/ to
 #      ~/.claude/skills, so we only top up the other 4 CLIs here.)
@@ -75,15 +75,14 @@ log "═════════════════════════
 echo ""
 
 # ─── Catalog of new skills ───
-# These are the skills vendored from claude.tools (4) and cherry-picked
-# from gstack (8). They live directly in ai-config/skills/ alongside the
+# These are the skills vendored from claude.tools (3) and cherry-picked
+# from gstack (6). They live directly in ai-config/skills/ alongside the
 # other AI-OS-native skills, so install-mac.sh step 5 already propagates
 # them to ~/.claude/skills. We only top up the other 4 CLIs here.
 CLAUDE_TOOLS_SKILLS=(
   humanizer
   caveman
   notebooklm-skill
-  frontend-design-alt
 )
 
 GSTACK_SKILLS=(
@@ -91,7 +90,6 @@ GSTACK_SKILLS=(
   context-restore
   context-save
   freeze
-  guard
   spec
   unfreeze
 )
@@ -121,9 +119,9 @@ if [ ! -d "$CODEX_PLUGIN_SRC" ]; then
   warn "    git clone --depth=1 https://github.com/openai/codex-plugin-cc.git vendor/codex-plugin-cc"
   warn "    bash setup/install-claude-tools.sh"
   warn ""
-  warn "Continuing — the 11 individual skills (humanizer, caveman, notebooklm-skill,"
-  warn "frontend-design-alt, careful, context-restore, context-save, freeze,"
-  warn "guard, spec, unfreeze) will still be wired into the 4 non-Claude CLIs."
+  warn "Continuing — the 9 individual skills (humanizer, caveman, notebooklm-skill,"
+  warn "careful, context-restore, context-save, freeze,"
+  warn "spec, unfreeze) will still be wired into the 4 non-Claude CLIs."
   HAS_PLUGIN=0
 elif [ ! -d "$CODEX_PLUGIN_INNER_SRC" ]; then
   warn "vendor/codex-plugin-cc/plugins/codex/ not found. Plugin clone may be corrupt."

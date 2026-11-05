@@ -1,6 +1,6 @@
 ---
 name: coolify-deploy
-description: Deploy apps to Coolify (self-hosted PaaS) — multi-service compose, env sync, post-deploy hooks, health checks, and the DEFAULT push-to-deploy setup (a GitHub Actions workflow that triggers Coolify via API). Applies to deploying any docker-compose app to a VPS managed by Coolify.
+description: Deploy apps to Coolify (self-hosted PaaS) — multi-service compose, env sync (sync-env.mjs), post-deploy hooks, DB deploy orchestrator, health checks, TanStack Start SSR deploys, and the DEFAULT push-to-deploy setup (a GitHub Actions workflow that triggers Coolify via API). Applies to any docker-compose or Dockerfile app on a Coolify VPS.
 license: Internal
 ---
 
@@ -16,6 +16,11 @@ Coolify is a self-hosted PaaS (alternative to Vercel/Heroku) that runs on your V
 > whichever was provisioned last. Deploying or writing env vars to the wrong uuid succeeds
 > silently against someone else's production app. Full detail and the resolve snippet:
 > [`env-config-and-secrets`](../env-config-and-secrets/SKILL.md).
+
+## References
+
+- [references/env-sync-and-postdeploy.md](references/env-sync-and-postdeploy.md) — read when running `sync-env.mjs` / `set-post-deploy.mjs`, or wiring an idempotent DB deploy orchestrator (wait, migrate, provision role passwords, seed).
+- [references/tanstack-start.md](references/tanstack-start.md) — read when the app is TanStack Start (Vite SSR): `server.prod.mjs` wrapper, Dockerfile, client-bundle/hydration traps, CSS hash 404s, plus the Coolify `custom_labels` and token-creation fixes.
 
 ## Architecture
 
@@ -173,6 +178,7 @@ node scripts/coolify/sync-env.mjs --app my-app
 ```
 
 API endpoint: `POST /api/v1/applications/<uuid>/envs` with bearer token.
+Flags, deny-list and idempotency rules: [references/env-sync-and-postdeploy.md](references/env-sync-and-postdeploy.md).
 
 ### 5. Deploy
 

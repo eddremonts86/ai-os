@@ -32,7 +32,7 @@ guides plus applied practice" — do not claim any specific sentence is his.
 The source guide also contained a 30-day calendar, a weekly product-quality meeting agenda, a
 product-analytics event taxonomy and a repository documentation layout. Those live in:
 
-- `saas-ui-audit/references/rollout-plan.md` — priorities, 30-day order, success metrics
+- `saas-review/references/rollout-plan.md` — priorities, 30-day order, success metrics
 - `saas-onboarding-activation` — activation funnel and onboarding metrics
 - `saas-perceived-speed` — performance budget surfaces
 

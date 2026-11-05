@@ -5,11 +5,11 @@ Shared slash-command combos, distributed globally the same way as
 note). Two distribution paths, both driven by these Markdown sources:
 
 1. **Skills** (preferred, zero extra plumbing): each command also exists as a
-   proper Agent Skill under `ai-config/skills/<name>/SKILL.md` — e.g. `action`,
-   `full`, `gen-html`. Claude Code, Codex, Antigravity, Hermes, and this VS
+   proper Agent Skill under `ai-config/skills/<name>/SKILL.md` — e.g. `full`,
+   `gen-html` (`action.md` here is a thin alias for `full` in review mode). Claude Code, Codex, Antigravity, Hermes, and this VS
    Code Copilot Chat session all auto-discover skills from `~/.agents/skills/`
    (or their own skills dir), where a skill IS a slash command
-   (`/action`, `/full`, `/gen-html`). No separate wiring needed — it rides the
+   (`/full`, `/gen-html`). No separate wiring needed — it rides the
    existing skill-symlink step in `setup/install-{mac,windows}.*`.
 2. **This directory** (`ai-config/commands/*.md`) exists for the two client
    types that don't consume Skills as literal `/name` commands:

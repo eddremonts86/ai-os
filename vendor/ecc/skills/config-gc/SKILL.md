@@ -1,6 +1,6 @@
 ---
 name: config-gc
-description: Garbage collection for your Claude Code configuration. Periodically scans ~/.claude (skills, memory, hooks, permissions, MCP servers, caches) for redundant, stale, orphaned, or low-value items, then walks the user through a confirm-each-deletion cleanup. Use when the user says "clean up my config", "config GC", "too many skills", "audit my setup", "my .claude is bloated", or asks for a periodic config review.
+description: Audit and clean up Claude Code config (~/.claude skills, memory, hooks, permissions, MCP, caches) with confirm-each-deletion GC, a skill quality stocktake, and a context-token budget. Use for "clean up my config", "config GC", "too many skills", "audit my setup", "skill stocktake", "context budget", "how many tokens do my skills/MCP cost".
 metadata:
   origin: ECC
 ---
@@ -17,6 +17,17 @@ Borrowed from runtime garbage collection: periodically scan for objects that are
 - After installing a large skill pack (e.g. this repo), to reconcile overlaps with existing setup
 
 Do NOT activate for: cleaning project source code (that's refactoring), clearing chat history, or uninstalling Claude Code itself.
+
+## Modes
+
+| Mode | Use when | Procedure |
+|------|----------|-----------|
+| **GC** (default) | Remove redundant, stale, orphaned items | This file |
+| **Stocktake** | Judge skill *quality* (Keep / Improve / Update / Retire / Merge) | `references/skill-stocktake.md` + `scripts/` |
+| **Budget** | Measure context-token overhead of agents, skills, rules, MCP, CLAUDE.md | `references/context-budget.md` |
+
+Typical periodic run: Budget (find the heavy items) → GC (remove the dead ones) → Stocktake (grade what survives).
+Stocktake and Budget were separate ECC skills (`skill-stocktake`, `context-budget`), merged here 2026-11-05.
 
 ## Design Philosophy
 
@@ -113,7 +124,6 @@ jq '.permissions.allow -= ["Bash(git push)"]' ~/.claude/settings.local.json.bak 
 
 ## Related Skills
 
-- `skill-stocktake` — audits skill *quality*; config-gc audits skill *existence*. Run stocktake on what survives GC.
 - `workspace-surface-audit` — the additive counterpart: recommends what to install. config-gc is the subtractive half of the same lifecycle.
 - `configure-ecc` — after installing skills with it, run config-gc to reconcile overlaps with your pre-existing setup.
 - `continuous-learning` — produces the memory files this skill later audits.

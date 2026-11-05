@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # npm-globals.txt — global Node packages (installed with pnpm, not npm)
-# Install: while read pkg; do pnpm add -g "$pkg"; done < npm-globals.txt
+# Install: setup/install-mac.sh step 2 (one `pnpm add -g` with only the missing ones)
 
 # AI / Claude
-@anthropic-ai/claude-code
+# Claude Code is NOT installed from here: pnpm skips @anthropic-ai/claude-code's
+# postinstall and the shim only errors. install-mac.sh step 2a installs the
+# native build (~/.local/bin/claude) instead.
 @openai/codex
 @google/gemini-cli
 

@@ -7,4 +7,6 @@ args:
   - "@modelcontextprotocol/server-filesystem@2026.7.10"
   - "${HOME}/Projects"
   - "${HOME}/Documents"
-enabled: true
+# Disabled 2026-11-05: every supported CLI has native file tools; this duplicated them and only exposed ~/Projects and ~/Documents, not where the repos live.
+# setup/sync-ide-mcp-servers.py removes disabled servers from every client config.
+enabled: false

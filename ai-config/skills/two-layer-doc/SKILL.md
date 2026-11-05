@@ -1,6 +1,6 @@
 ---
 name: two-layer-doc
-description: Use whenever you write a document, artifact, page or .md that other people will read: a proposal, plan, spec, design, report, meeting brief, decision memo, study or write-up. It fixes the shape: a plain-language front part led by diagrams and images, then the open questions, decisions and risks, then a clear divider, then the technical detail for people who want it. Apply it by default to every shared document, in any project.
+description: "Use whenever you write a document, artifact, page or .md that other people will read: a proposal, plan, spec, design, report, meeting brief, decision memo, study or write-up. It fixes the shape: a plain-language front part led by diagrams and images, then the open questions, decisions and risks, then a clear divider, then the technical detail for people who want it. Apply it by default to every shared document, in any project."
 ---
 
 # Two-layer document

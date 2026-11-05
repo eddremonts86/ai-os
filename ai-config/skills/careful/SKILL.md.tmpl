@@ -19,7 +19,7 @@ hooks:
     - matcher: "Bash"
       hooks:
         - type: command
-          command: "bash $HOME/.claude/skills/gstack/careful/bin/check-careful.sh"
+          command: "bash $HOME/.claude/skills/careful/bin/check-careful.sh"
           statusMessage: "Checking for destructive commands..."
 sensitive: true
 ---
@@ -60,3 +60,8 @@ patterns above, and returns `permissionDecision: "ask"` with a warning message
 if a match is found. You can always override the warning and proceed.
 
 To deactivate, end the conversation or start a new one. Hooks are session-scoped.
+
+## Related
+
+- `/freeze` blocks Edit/Write outside one directory; `/unfreeze` clears it.
+- Full safety mode (formerly `/guard`): run `/careful` and `/freeze` together — destructive-command warnings plus directory-scoped edits, for touching prod or debugging live systems.

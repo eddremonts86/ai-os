@@ -103,4 +103,4 @@ server confirms when no safe rollback exists.
 
 ## Related skills
 
-`saas-expensive-ui` · `saas-ui-audit` · `saas-perceived-speed` · `dataviz` (chart craft and palettes).
+`saas-expensive-ui` · `saas-review` · `saas-perceived-speed` · `dataviz` (chart craft and palettes).
