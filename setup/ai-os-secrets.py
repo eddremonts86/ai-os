@@ -10,6 +10,8 @@ read the Keychain too. The real risk is a value ending up in a repository.
   ai-os secrets audit           # + scan git history and tracked files of every local repo
   ai-os secrets audit --repos core|hold|all     # default core = everything outside inHold/
   ai-os secrets audit --json
+  ai-os secrets check-push <rev-range>   # used by setup/hooks/pre-push: does what is about to be
+                                         # pushed contain a .env value? exit 1 if it looks real
 
 It prints key NAMES, repo paths, file paths and a heuristic verdict — never a
 value. The pattern file handed to grep lives in a 0700 temp dir and is removed.
@@ -20,6 +22,7 @@ import json
 import math
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -27,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PROJECTS = Path(os.environ.get("AI_OS_PROJECTS_DIR", ROOT.parent))
-ENV = ROOT / "dev-env" / "env-config" / ".env"
+ENV = Path(os.environ.get("AI_OS_ENV_FILE", ROOT / "dev-env" / "env-config" / ".env"))
 
 PLACEHOLDER = re.compile(r"change|example|placeholder|dev[-_ ]?secret|test|replace|your[-_]|xxx|local|password|secret[-_]?key|todo|dummy", re.I)
 # Credentials that are public by design (they ship in client bundles) or are only identifiers.
@@ -145,12 +148,41 @@ def audit(scope):
     return results
 
 
+def check_push(revs):
+    """Scan only the patch text of `git log -p <revs>` (what a push adds) for .env values."""
+    values = credential_values(read_env())
+    if not values:
+        return 0
+    tmp = tempfile.mkdtemp(prefix="aios-secrets-")
+    os.chmod(tmp, 0o700)
+    pat = Path(tmp) / "patterns"
+    pat.write_text("\n".join(values) + "\n", encoding="utf-8")
+    os.chmod(pat, 0o600)
+    try:
+        hist = grep_lines(f"git log -p --no-color {' '.join(shlex.quote(r) for r in revs)} 2>/dev/null | grep -a -F -f {pat} -o", Path.cwd())
+    finally:
+        subprocess.run(["rm", "-rf", tmp])
+    found = {}
+    for v in hist:
+        for val, names in values.items():
+            if val in v:
+                for n in names:
+                    found[n] = classify(n, val)
+    leaks = sorted(k for k, (sev, _) in found.items() if sev == "leak")
+    for k in leaks:
+        print(f"{k}: {found[k][1]}")
+    return 1 if leaks else 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Where could the values in the .env have leaked? (names only, never values)")
-    ap.add_argument("command", nargs="?", default="check", choices=["check", "audit"])
+    ap.add_argument("command", nargs="?", default="check", choices=["check", "audit", "check-push"])
+    ap.add_argument("revs", nargs="*", help="check-push: arguments for git log, e.g. A..B or B --not --remotes")
     ap.add_argument("--repos", default="core", choices=["core", "hold", "all"])
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
+    if a.command == "check-push":
+        return check_push(a.revs)
 
     checks = quick_checks()
     if a.command == "check":

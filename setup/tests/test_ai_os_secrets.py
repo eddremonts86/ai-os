@@ -2,7 +2,11 @@
 
 import importlib.util
 import io
+import os
 import re
+import subprocess
+import sys
+import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -44,6 +48,36 @@ class SecretsTests(unittest.TestCase):
 
     def test_entropy_orders_random_above_repetitive(self):
         self.assertGreater(sec.entropy(REAL), sec.entropy("aaaaaaaaaaaaaaaaaaaaaaaa"))
+
+
+@unittest.skipIf(sys.platform == "win32", "check-push shells out to grep")
+class CheckPushTests(unittest.TestCase):
+    def test_flags_a_pushed_value_by_name_and_passes_a_clean_range(self):
+        fake = "Zq8Lw3Vn7Xk2Rt9Yb4Mc6Hd1Jf5Ga0Es"
+        git = ["git", "-c", "user.email=t@t", "-c", "user.name=t"]
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d)
+            env = repo / "env"
+            env.write_text(f"FAKE_API_KEY={fake}\n", encoding="utf-8")
+            run = lambda *a: subprocess.run([*git, *a], cwd=repo, check=True, capture_output=True)
+            run("init", "-q")
+            run("commit", "-q", "--allow-empty", "-m", "base")
+            (repo / "leak.txt").write_text(f"token = {fake}\n", encoding="utf-8")
+            run("add", "leak.txt")
+            run("commit", "-q", "-m", "leak")
+            run("commit", "-q", "--allow-empty", "-m", "clean")
+            old = Path.cwd()
+            os.chdir(repo)
+            buf = io.StringIO()
+            try:
+                with mock.patch.object(sec, "ENV", env), redirect_stdout(buf):
+                    leaked = sec.check_push(["HEAD~2..HEAD~1"])
+                    clean = sec.check_push(["HEAD~1..HEAD"])
+            finally:
+                os.chdir(old)
+            self.assertEqual((leaked, clean), (1, 0))
+            self.assertIn("FAKE_API_KEY", buf.getvalue())
+            self.assertNotIn(fake, buf.getvalue())
 
 
 if __name__ == "__main__":
