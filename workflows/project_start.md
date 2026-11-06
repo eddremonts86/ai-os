@@ -73,6 +73,18 @@ This skill converts the Spec's "Plan" section into:
 
 Update the Spec with the detailed plan.
 
+### 3b. Fresh review of the Spec and plan (subagent)
+
+The Spec and the plan were written by this session, which knows what it meant. Before any
+block runs, have one reviewer that starts cold read them: run `verifiers/fresh_reviewer_prompt.md`
+(read its "How to run it" first). One subagent, document path only, no conversation.
+
+- Check every finding against the source yourself. Fix real blockers and majors, decline the
+  rest in a line, and do not let the review grow the scope.
+- If a fix changes what the user approved in step 2 (objective, criteria, non-goals), tell
+  the user and get approval again; otherwise carry on.
+- No subagent tool in this harness: skip the step and say so. Never review in the same context.
+
 ### 4. → Load skill `verification-before-completion` (load skill)
 
 Before executing each block, → Load skill `verification-before-completion`.
@@ -165,6 +177,8 @@ At the end of this workflow, you should have:
 - ❌ Skipping the Spec once a task crosses the threshold (>~2 hours or multi-repo) → re-scope and write one.
 - ❌ Writing a Spec the user did not ask for on a task below the threshold → ceremony, not value.
 - ❌ Not getting user approval before executing → wrong direction wastes time.
+- ❌ Reviewing a Spec in the context that wrote it, or handing the reviewer the conversation → it is no longer a fresh review.
+- ❌ Acting on a reviewer's finding without checking it against the source → reviewers with no context flag decisions already taken elsewhere.
 - ❌ Executing all blocks at once without verifying → cascading failures.
 - ❌ Not archiving the Spec → loses institutional knowledge.
 - ❌ Not resetting current_spec.md → next task starts with garbage.
