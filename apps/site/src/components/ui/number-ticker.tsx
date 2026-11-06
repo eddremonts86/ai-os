@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ComponentPropsWithoutRef } from "react"
-import { useInView, useMotionValue, useSpring } from "motion/react"
+import { useInView, useMotionValue, useReducedMotion, useSpring } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -27,11 +27,14 @@ export function NumberTicker({
     stiffness: 100,
   })
   const isInView = useInView(ref, { once: true, margin: "0px" })
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null
 
-    if (isInView) {
+    // Local change: the final value is in the markup (no-JS, crawlers, screen readers); the count-up is decoration.
+    if (isInView && !reduceMotion) {
+      if (ref.current) ref.current.textContent = String(direction === "down" ? value : startValue)
       timer = setTimeout(() => {
         motionValue.set(direction === "down" ? startValue : value)
       }, delay * 1000)
@@ -42,7 +45,7 @@ export function NumberTicker({
         clearTimeout(timer)
       }
     }
-  }, [motionValue, isInView, delay, value, direction, startValue])
+  }, [motionValue, isInView, reduceMotion, delay, value, direction, startValue])
 
   useEffect(
     () =>
@@ -57,16 +60,21 @@ export function NumberTicker({
     [springValue, decimalPlaces]
   )
 
+  const final = Intl.NumberFormat("en-US", { minimumFractionDigits: decimalPlaces, maximumFractionDigits: decimalPlaces }).format(value)
   return (
+    <>
+    <span className="sr-only">{final}</span>
     <span
       ref={ref}
+      aria-hidden="true"
       className={cn(
         "inline-block tracking-wider text-black tabular-nums dark:text-white",
         className
       )}
       {...props}
     >
-      {startValue}
+      {final}
     </span>
+    </>
   )
 }

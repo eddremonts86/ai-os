@@ -69,7 +69,7 @@ export default function App() {
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <CopyCommand />
-            <a href="#how" className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+            <a href="#install" className="inline-flex min-h-11 items-center text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
               See what it installs
             </a>
           </div>

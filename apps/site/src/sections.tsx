@@ -139,7 +139,7 @@ export function OneRepo() {
 
 function Trace({ children }: { children: string }) {
   return (
-    <div className="absolute right-4 top-4 font-mono text-xs text-muted-foreground/70" aria-hidden="true">
+    <div className="absolute left-20 right-4 top-4 truncate text-right font-mono text-xs text-muted-foreground/70" aria-hidden="true">
       {children}
     </div>
   )
@@ -174,7 +174,7 @@ export function WhatItIs() {
   ]
   return (
     <Section title="Everything AI in your workflow, in one git repo.">
-      <BentoGrid className="auto-rows-[15rem] grid-cols-1 md:grid-cols-3">
+      <BentoGrid className="auto-rows-auto grid-cols-1 md:grid-cols-3 lg:auto-rows-[15rem]">
         {cards.map((c) => (
           <BentoCard key={c.name} {...c} />
         ))}
@@ -310,7 +310,7 @@ export function Install() {
           <TabsContent key={os} value={os}>
             <pre className="mt-4 overflow-x-auto rounded-xl border border-border bg-card p-5 font-mono text-[13px] leading-relaxed" tabIndex={0}>
               {lines.map((l, i) => (
-                <div key={i} className={l.startsWith('#') ? 'text-muted-foreground' : l.startsWith('npx') ? 'text-primary' : ''}>
+                <div key={i} className={l.startsWith('#') ? 'whitespace-pre-wrap text-muted-foreground' : l.startsWith('npx') ? 'text-primary' : ''}>
                   {l || ' '}
                 </div>
               ))}
