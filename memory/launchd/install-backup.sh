@@ -44,6 +44,13 @@ case "${1:-install}" in
   *) echo "unknown flag: $1 (try --status or --uninstall)" >&2; exit 2 ;;
 esac
 
+# The user turned daily backups off (`ai-os backup --disable`): a re-install must not undo that.
+CFG="${AI_OS_BACKUP_CONFIG:-$HOME/.ai-os/backup.json}"
+if [ -f "$CFG" ] && python3 -c 'import json,sys; sys.exit(0 if json.load(open(sys.argv[1])).get("schedule", True) is False else 1)' "$CFG" 2>/dev/null; then
+  log "daily backups are disabled in $CFG — not installing (turn on: ai-os backup --enable)"
+  exit 0
+fi
+
 [ -x "$PYTHON" ] || { echo "missing $PYTHON (PyYAML venv) — run setup/install-mac.sh first" >&2; exit 1; }
 mkdir -p "$LOG_DIR" "$(dirname "$TARGET")"
 sed -e "s|__AI_OS_ROOT__|$AI_OS_ROOT|g" -e "s|__PYTHON__|$PYTHON|g" "$TMPL" > "$TARGET"
