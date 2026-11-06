@@ -223,5 +223,29 @@
     "expect": [
       "pick-ui-library"
     ]
+  },
+  {
+    "prompt": "build a new dashboard screen with a design direction and check it works at mobile widths",
+    "expect": [
+      "aios-ui-design"
+    ]
+  },
+  {
+    "prompt": "have a fresh independent agent review this page for design problems",
+    "expect": [
+      "aios-ui-review"
+    ]
+  },
+  {
+    "prompt": "fix the problems in this existing UI and show before and after screenshots",
+    "expect": [
+      "aios-ui-improve"
+    ]
+  },
+  {
+    "prompt": "check my page for console errors, horizontal overflow and accessibility violations at phone width",
+    "expect": [
+      "aios-ui-verify"
+    ]
   }
 ]
