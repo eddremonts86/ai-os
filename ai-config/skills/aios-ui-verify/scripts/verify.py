@@ -119,7 +119,8 @@ def check(browser, url, width, scheme, out, axe_src, wait_ms, slices):
         bad = [v for v in res["violations"] if v["impact"] in SERIOUS]
         rest = [v for v in res["violations"] if v["impact"] not in SERIOUS]
         axe = f"{len(bad)} serious, {len(rest)} minor"
-        problems += [f"a11y {v['impact']}: {v['id']} ({len(v['nodes'])} nodes)" for v in bad[:4]]
+        problems += [f"a11y {v['impact']}: {v['id']} ({len(v['nodes'])} nodes, first: {' '.join(v['nodes'][0]['target'])[:90]})"
+                     for v in bad[:4]]
         notes += [f"a11y {v['impact']}: {v['id']}" for v in rest[:3]]
 
     ctx.close()
