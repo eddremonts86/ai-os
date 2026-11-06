@@ -16,7 +16,7 @@ Personal AI work system. Local, versioned, replicable.
 - **Master instructions** in `CLAUDE.md` (method, always-follow rules, priorities, prohibitions); reference material in `docs/cli-reference.md` and `docs/skills-catalog.md`.
 - **6 context files** (`context/`): profile, business/work, projects, preferences, tools, sources.
 - **3 rules files** (`rules/`): always_do, ask_before_doing, never_do.
-- **3 optional verifier prompts** (`verifiers/`): quality_checklist, critic_prompt, source_check_prompt — tools for a second look, not a mandatory pass.
+- **4 optional verifier prompts** (`verifiers/`): quality_checklist, critic_prompt, source_check_prompt, fresh_reviewer_prompt (a cold read of a Spec by a fresh subagent) — tools for a second look, not a mandatory pass.
 - **5 workflows** (`workflows/`): daily_start, project_start, coding, research, content_creation.
 - **Global skills** (`ai-config/skills/`, see `docs/skills-catalog.md`) distributed to the supported CLIs.
 - **14 superpowers skills (REQUIRED)** integrated into the workflows.
