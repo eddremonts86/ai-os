@@ -548,6 +548,8 @@ else
 fi
 if launchctl print "gui/$(id -u)/ai.os.backup" >/dev/null 2>&1; then
   opt_ok "Backup agent ai.os.backup loaded (13:00, restore-verified; run now: ai-os backup)"
+elif grep -q '"schedule": false' "${AI_OS_BACKUP_CONFIG:-$HOME_DIR/.ai-os/backup.json}" 2>/dev/null; then
+  opt_ok "Daily backups disabled by choice (turn on: ai-os backup --enable)"
 else
   opt_miss "Backup agent ai.os.backup not loaded (run: bash memory/launchd/install-backup.sh)"
 fi
