@@ -3,8 +3,9 @@
 Canonical brand tokens for AI-OS. Any skill, diagram, slide, or generated asset that needs
 brand colors or typography reads **this file**, not a hardcoded hex value.
 
-Source of truth for the values below: `apps/site/index.html` (the AI-OS landing page), whose CSS
-custom properties are authored in oklch. Extracted and verified 2026-08-13.
+Source of truth for the values below: this file. The AI-OS landing page (`apps/site/`) applies them in
+`apps/site/src/index.css` (the `.dark` overrides). Extracted 2026-08-13; the landing moved to Vite +
+React on 2026-11-06.
 
 ---
 
@@ -100,7 +101,7 @@ blanket face for body text.
 Skills and files that read these tokens. Update them in the same commit when the brand changes:
 
 - `ai-config/skills/diagram-design/references/style-guide.md` — diagram skin (dark-first).
-- `apps/site/index.html` — the origin of the values; changes here start there.
+- `apps/site/src/index.css` — the landing page applies the values here.
 
 ### Per-project override
 
