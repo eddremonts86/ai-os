@@ -278,6 +278,7 @@
 
   /* ---------- Install ---------- */
   .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start; }
+  .install-grid > * { min-width: 0; } /* let long command lines scroll inside the code block instead of widening the page */
   @media (max-width: 880px) { .install-grid { grid-template-columns: 1fr; } }
   .tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
   .tab { font-family: "JetBrains Mono", monospace; font-size: 0.82rem; padding: 0.5rem 0.95rem; border-radius: 100px; border: 1px solid var(--line); color: var(--muted); background: none; cursor: pointer; transition: all 0.3s var(--ease); }
@@ -328,6 +329,7 @@
       <a href="#what">what</a>
       <a href="#plansmith">built with it</a>
       <a href="#method">method</a>
+      <a href="#ops">runs itself</a>
       <a href="#install">install</a>
     </div>
     <a href="#install" class="btn ghost nav-cta">$ install</a>
@@ -476,6 +478,43 @@
   </div>
 </section>
 
+<!-- ============ OPS: WHAT RUNS ON ITS OWN ============ -->
+<section id="ops">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">// runs itself</span>
+      <h2>It looks after itself, so you only hear about it when something breaks.</h2>
+      <p>Health checks, encrypted backups and a secrets guard run on a schedule and on every push. Each one is a single <code>ai-os</code> command you can also run by hand.</p>
+    </div>
+    <div class="manifest-grid">
+      <div class="req reveal">
+        <h3>Health, twice a day</h3>
+        <p>15 functional checks at 09:30 and 15:30: graph memory, MCP servers, CI, secrets, backups. A desktop notification if one fails. <span class="m-src">ai-os health</span></p>
+      </div>
+      <div class="req reveal">
+        <h3>Encrypted backups, your repo</h3>
+        <p>Memory graph, secrets file and Claude memory, daily and restore-checked. AES-256-GCM copies go to iCloud and, only if you name one, your own private GitHub repo. Each machine gets its own branch. Off with one command. <span class="m-src">ai-os backup</span></p>
+      </div>
+      <div class="req reveal">
+        <h3>Secrets never pushed</h3>
+        <p>The pre-push hook refuses any commit that contains a value from your <code>.env</code>. An audit scans every local repo's history and reports key names, never values. <span class="m-src">ai-os secrets</span></p>
+      </div>
+      <div class="req reveal">
+        <h3>A gate on every push</h3>
+        <p>Syntax, skill frontmatter, unit tests, install dry-runs and published numbers, checked on the exact commit being pushed. About ten seconds. <span class="m-src">setup/hooks/pre-push</span></p>
+      </div>
+      <div class="req reveal">
+        <h3>Updates that roll back</h3>
+        <p>Nothing upgrades on its own. When you bump one component, its health checks run and the change is reverted automatically if they fail. <span class="m-src">ai-os update</span></p>
+      </div>
+      <div class="req reveal">
+        <h3>A skill budget</h3>
+        <p>Every skill's description costs tokens in every session. Lint keeps the catalogue near 10K tokens, flags near-duplicates and checks typical requests still reach the right skill. <span class="m-src">ai-os skills</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ INSTALL ============ -->
 <section id="install">
   <div class="wrap">
@@ -500,7 +539,11 @@
 cd ai-os
 
 <span class="c"># 2. verify (20 health-check sections)</span>
-bash setup/verify.sh</pre>
+bash setup/verify.sh
+ai-os health
+
+<span class="c"># 3. off-site backups to your own private repo (optional)</span>
+ai-os backup --github-repo you/ai-os-backups</pre>
         </div>
 
         <div class="codeblock" data-block="win" hidden>
