@@ -14,7 +14,8 @@ The step that makes "done" mean something. UI is not finished until this passes 
 ~/.ai-os/venv/bin/python <this skill's dir>/scripts/verify.py <url-or-file> [...] --out ui-verify
 ```
 
-Serve the app first (a dev server or `vite preview`); pass every route you changed. Options: `--widths`,
+Serve the app first, preferably the production build (`vite preview`): a dev server adds overlays (devtools
+buttons, HMR) that show up in screenshots and are not defects. Pass every route you changed. Options: `--widths`,
 `--schemes`, `--axe <path to axe.min.js>`, `--wait <ms>`, `--slices <n>` (n consecutive screen-sized shots; the
 full-page one of a long page is too small to read). Exit 0 pass, 1 fail, 2 could not run.
 
