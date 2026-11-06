@@ -97,13 +97,11 @@ CLAIMS = [
     ("README.md", r"badge/%2B_ECC-(\d+)-", "skills_ecc", 0),
     ("README.md", r"\[!\[\+ ECC: (\d+)\]", "skills_ecc", 0),
     ("README.md", r"\*\*\+(\d+) curated ECC skills\*\*", "skills_ecc", 0),
-    ("README.md", r"`dev-env/packages/Brewfile` \((\d+) packages\)", "brew_core", 0),
+    ("README.md", r"`dev-env/packages/Brewfile` \((\d+) packages", "brew_core", 0),
     ("README.md", r"`ai-config/mcp/\*\.yaml` \((\d+) servers\)", "mcp_enabled", 0),
-    ("README.md", r"Runs verification \((\d+) sections\)", "verify_sections", 0),
+    ("README.md", r"runs verification \((\d+) sections\)", "verify_sections", 0),
     ("README.md", r"\*\*(\d+) MCP servers \(\d+ enabled\)\*\*", "mcp_total", 0),
     ("README.md", r"\*\*\d+ MCP servers \((\d+) enabled\)\*\*", "mcp_enabled", 0),
-    ("README.md", r"#\s+(\d+) declarative MCP servers \(YAML, \d+ enabled\)", "mcp_total", 0),
-    ("README.md", r"#\s+\d+ declarative MCP servers \(YAML, (\d+) enabled\)", "mcp_enabled", 0),
 ]
 
 
