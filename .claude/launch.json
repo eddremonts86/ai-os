@@ -2,12 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "//": "Pinned to 3021. apps/site/ is plain static HTML with no build step, so it is served as bytes rather than through vite: what you see here is what nginx serves in production (see /Dockerfile). Bound to 127.0.0.1 so the landing is not published on the LAN.",
+      "//": "Pinned to 3021. apps/site/ is a Vite + React app; the Dockerfile builds it and nginx serves dist/ in production. Bound to 127.0.0.1 so the landing is not published on the LAN.",
       "name": "site",
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-lc",
-        "cd \"${AI_OS_ROOT:-.}/apps/site\" && exec python3 -m http.server 3021 --bind 127.0.0.1"
+        "cd \"${AI_OS_ROOT:-.}/apps/site\" && exec pnpm exec vite --port 3021 --strictPort --host 127.0.0.1"
       ],
       "port": 3021
     },

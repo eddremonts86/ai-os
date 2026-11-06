@@ -1,11 +1,22 @@
-# Static build for the AI-OS landing (apps/site/), served by nginx.
+# The AI-OS landing (apps/site/): a Vite + React build, served by nginx.
 # Coolify builds this from the repo root (dockerfile_location=/Dockerfile,
 # base_directory=/). ports_exposes must be 80.
+
+# ---- build: pnpm install from the lockfile, then vite build ----
+FROM node:24-alpine AS build
+RUN corepack enable && corepack prepare pnpm@12.16.1 --activate
+WORKDIR /site
+COPY apps/site/package.json apps/site/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY apps/site/ ./
+RUN pnpm run build
+
+# ---- serve ----
 FROM nginx:1.27-alpine
 
 # Drop the default nginx site and add ours.
 RUN rm -rf /usr/share/nginx/html/*
-COPY apps/site/ /usr/share/nginx/html/
+COPY --from=build /site/dist/ /usr/share/nginx/html/
 
 # SPA-style fallback + long cache on static assets, no-cache on HTML.
 RUN printf '%s\n' \
