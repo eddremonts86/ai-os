@@ -24,6 +24,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "apps" / "site"
+# The React landing imports every number it shows from this file; --write regenerates it.
+SITE_STATS = SITE / "src" / "stats.json"
 
 
 def count_lines(path):
@@ -65,30 +67,6 @@ def compute():
 # offset: published = stat + offset (e.g. "/fix-ui-ux and 3 more" lists 5 by name).
 CLAIMS = [
     ("apps/site/index.html", r"restores (\d+) skills", "skills_linked", 0),
-    ("apps/site/index.html", r"<b>(\d+) skills</b>", "skills_linked", 0),
-    ("apps/site/index.html", r'data-count="(\d+)">\d+</div><div class="l">skills', "skills_linked", 0),
-    ("apps/site/index.html", r'data-count="\d+">(\d+)</div><div class="l">skills', "skills_linked", 0),
-    ("apps/site/index.html", r'data-count="(\d+)">\d+</div><div class="l">MCP', "mcp_enabled", 0),
-    ("apps/site/index.html", r'data-count="\d+">(\d+)</div><div class="l">MCP', "mcp_enabled", 0),
-    ("apps/site/index.html", r"</b> and (\d+) MCP servers", "mcp_enabled", 0),
-    ("apps/site/index.html", r"(\d+) required superpowers", "superpowers", 0),
-    ("apps/site/index.html", r"superpowers \+ (\d+) curated", "skills_curated", 0),
-    ("apps/site/index.html", r"\((\d+) of them hand-picked from ECC\)", "skills_ecc", 0),
-    ("apps/site/index.html", r"including the (\d+) required superpowers", "superpowers", 0),
-    ("apps/site/index.html", r"<p>(\d+) MCP servers as declarative YAML", "mcp_enabled", 0),
-    ("apps/site/index.html", r"generates the config for (\d+) MCP servers", "mcp_enabled", 0),
-    ("apps/site/index.html", r">(\d+)</span> CLI tools", "brew_total", 0),
-    ("apps/site/index.html", r"<p>(\d+) core \(", "brew_core", 0),
-    ("apps/site/index.html", r"\+ (\d+) opt-in with", "brew_extras", 0),
-    ("apps/site/index.html", r">(\d+)</span> Global Node packages", "npm_globals", 0),
-    ("apps/site/index.html", r">(\d+)</span> Python packages", "pip_packages", 0),
-    ("apps/site/index.html", r">(\d+)</span> AI skills", "skills_linked", 0),
-    ("apps/site/index.html", r">(\d+)</span> Global commands", "commands", 0),
-    ("apps/site/index.html", r"/fix-ui-ux</code> and (\d+) more", "commands", -5),
-    ("apps/site/index.html", r"verify \((\d+) health-check sections\)", "verify_sections", 0),
-    ("apps/site/index.html", r"'✓ (\d+) brew packages", "brew_core", 0),
-    ("apps/site/index.html", r"'✓ (\d+) skills →", "skills_linked", 0),
-    ("apps/site/index.html", r"'✓ (\d+) MCP servers generated'", "mcp_enabled", 0),
     ("apps/site/ai-os-system.svg", r"(\d+) skills · \d+ MCP · \d+ cmd", "skills_linked", 0),
     ("apps/site/ai-os-system.svg", r"\d+ skills · (\d+) MCP · \d+ cmd", "mcp_enabled", 0),
     ("apps/site/ai-os-system.svg", r"\d+ skills · \d+ MCP · (\d+) cmd", "commands", 0),
@@ -117,8 +95,18 @@ def scan(stats):
             yield rel, text.count("\n", 0, m.start(1)) + 1, int(m.group(1)), stats[key] + offset, (rel, pattern, key, offset)
 
 
+def site_stats_ok(stats):
+    try:
+        return json.loads(SITE_STATS.read_text(encoding="utf-8")) == stats
+    except (OSError, ValueError):
+        return False
+
+
 def write(stats):
     changed = set()
+    if not site_stats_ok(stats):
+        SITE_STATS.write_text(json.dumps(stats, indent=2) + "\n", encoding="utf-8")
+        changed.add(str(SITE_STATS.relative_to(ROOT)))
     for rel, pattern, key, offset in CLAIMS:
         path = ROOT / rel
         text = path.read_text(encoding="utf-8")
@@ -134,7 +122,7 @@ def render_images(changed):
     """Re-render the PNGs whose source changed (needs Playwright's chromium)."""
     jobs = []
     if "apps/site/og-source.html" in changed:
-        jobs.append(("og-source.html", "og.png", 1200, 630, 1))
+        jobs.append(("og-source.html", "public/og.png", 1200, 630, 1))
     if "apps/site/ai-os-system.svg" in changed:
         jobs.append(("ai-os-system.svg", "ai-os-system.png", 1280, 721, 1.9))
     if not jobs:
@@ -165,6 +153,8 @@ def main():
         return 0
     if a.check:
         bad = [(f, l, got, want, c) for f, l, got, want, c in scan(stats) if got != want]
+        if not site_stats_ok(stats):
+            bad.append((str(SITE_STATS.relative_to(ROOT)), 0, "stale values", "different values", (None, None, "all", 0)))
         for f, l, got, want, c in bad:
             where = f"{f}:{l}" if l else f
             print(f"{where}: says {got if got is not None else '(pattern not found)'}, repo says {want}  [{c[2]}]")
