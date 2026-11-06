@@ -33,6 +33,18 @@ Our projects are shadcn/ui + Tailwind v4 + TanStack, so some picks already arriv
 - **Not on this list, owned by other skills:** server state `tanstack-query`, routing `tanstack-router`,
   tables `tanstack-table`, forms `react-hook-form-zod`. State shared on the client: zustand, below.
 
+## Components and blocks: the ranked registry index
+
+For a component, block or section (not a library), look in `registries.md` here before writing one. It ranks
+the healthy registries of the shadcn directory (ui.shadcn.com/docs/directory) by proof of use (GitHub stars,
+then size, then endpoint health) and groups them by category. Refresh it with
+`python3 scripts/rank-registries.py --out .` (needs `gh`).
+
+- Prefer the top of the matching category, an OSI licence (MIT, Apache-2.0) and a recent push. `NOASSERTION`
+  means read the repo's licence before using it.
+- Install the piece itself, not the whole library: `npx shadcn add @<registry>/<item>`.
+- The detected repo can be wrong (it is read from the homepage); check it before relying on the stars.
+
 ## The list
 
 | Task | Library |
