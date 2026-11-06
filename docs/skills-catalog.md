@@ -60,7 +60,21 @@ globally: `iaworkspace-patterns`, `env-config-iaworkspace`, `prod-fleet-register
   `ai-config/skills/diagram-design/VENDORED_FROM.md`. Routing rule (by destination artifact) is
   in `rules/always_do.md` "When a task needs a diagram"; the gstack `diagram` skill (excalidraw
   triplet) was retired 2026-08-13 because it collided on every trigger with `diagram-design`.
+- **pick-ui-library (third-party MIT, Emil Kowalski)**: a one-library-per-task lookup, invoked
+  explicitly only, with an "Our stack" section that defers to shadcn and the TanStack skills.
 - **custom (Edd)**: tanstack-*, vue-*, react-*, and more.
+
+### UI skills evaluated and not adopted (2026-11-06)
+
+Looked at as a set; only `pick-ui-library` (new) and `frontend-design` (resynced) changed anything.
+Each decision and what would change it:
+
+| Skill | Decision | Why |
+|---|---|---|
+| `web-design-guidelines` (vercel-labs) | Not installed | AI-OS already has its own version that fetches the same MIT-licensed rules. Upstream `vercel-labs/agent-skills` still has no license, so copying it stays unauthorized (`ai-config/skills/web-design-guidelines/NOT_VENDORED.md`). Revisit if it gains one |
+| `frontend-design` plugin (`claude-plugins-official`) | Not installed; the vendored skill was resynced instead | The plugin ships the same skill under the same name, so both would load and compete (`ai-config/skills/frontend-design/VENDORED_FROM.md`) |
+| transitions.dev (3 skills) | Not vendored; use per project if wanted | Three always-loaded descriptions of 983–1730 characters (hard cap here is 500), a custom license that forbids redistributing the library, and Pro/Business tiers (a company needs a paid seat for Pro). It overlaps `emil-design-eng` and `micro-interactions`. For a UI project that wants it: `npx skills add Jakubantalik/transitions.dev` into that project's `.agents/skills/`, which is not propagated |
+| Mobbin (plugin: MCP + 4 skills) | Not integrated | The skills only work through Mobbin's hosted MCP (`api.mobbin.com`, OAuth, paid service), and a redesign sends screenshots or code to a third party, which does not fit employer or client work. `redesign-screen`'s description is 651 characters, over the cap. Overlaps `redesign-skill`, `fix-ui-ux` and `saas-review`. Try it in a throwaway project with a personal account if curious |
 
 ## Superpowers skills (REQUIRED)
 

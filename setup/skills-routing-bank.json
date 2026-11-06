@@ -217,5 +217,11 @@
     "expect": [
       "full-stop"
     ]
+  },
+  {
+    "prompt": "which library should I use for toasts and animated number counters",
+    "expect": [
+      "pick-ui-library"
+    ]
   }
 ]
