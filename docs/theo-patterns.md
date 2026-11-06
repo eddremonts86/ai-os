@@ -57,3 +57,25 @@ His own warning applies here too: do not copy-paste his files. The value is the
 - ✅ Adopted: Labeled variants section in `claude-design`.
 - ⏭️ Skipped: file-pr, html-communication, postplan-read, file-upload, provision-box —
   overlap with existing skills or depend on services we don't run (postplan.dev, tslop.org).
+
+## Official `t3dotgg/tstack` (MIT) — reviewed 2026-11-06
+
+Theo published his skills as `github.com/t3dotgg/tstack` (9 skills). Compared against the
+reconstruction above:
+
+- ✅ `babysit-pr` updated to 1.1.0: no polling (harness wake-ups / one `Monitor` command),
+  REST fallback when GraphQL is rate-limited, an explicit ready check (not BEHIND/DIRTY, no
+  newer base commits touching the PR's files), the `> [!NOTE] 🤖` comment callout with a
+  secrets scan (absorbs `leaving-pr-comments`), and the "keep the PR at the size the goal
+  needs" rule. Its 24 KB `pr-wait` script was not vendored — the harness covers it.
+- ✅ `file-pr` adopted: problem-first title and description with BAD/GOOD pairs, existing-PR
+  check, base per the feature → dev → main flow, secrets scan, REST fallback.
+- ✅ `full-stop` adopted, with the useful parts of `full-send` folded in: the testing grant,
+  the Proof definition, the gate, and "ask only in five cases". It never merges.
+- ⏭️ `full-send`: merges on its own — Edd merges.
+- ⏭️ `council`, `sol-loop`: need models from other providers through T3 Code; costly and prone
+  to scope creep. `verifiers/critic_prompt.md` covers a second look. Revisit with `codex exec`
+  if cross-model review becomes a real need (keep sol-loop's 3-round budget and severity ledger).
+- ⏭️ `takeover`: not a use case we have.
+- ⏸️ `modernize` (MODERNIZE/REWORK/CLOSE before rebasing an old PR): good discipline, parked
+  until stale PRs become a recurring task.
