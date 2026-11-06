@@ -44,7 +44,7 @@ Usage:
   ai-os health [--json|--notify]      Functional checks of the running system (graph, MCP, tokens, CI…)
   ai-os stats [--check|--write]       Published counts (skills, MCP, …) computed from the repo
   ai-os update [--apply COMPONENT]    Pinned vs upstream versions; --apply bumps one, verifies, rolls back
-  ai-os backup [--verify|--show-key]  Snapshot graph + .env + Claude memory, encrypted copy to iCloud Drive
+  ai-os backup [--status|--disable]   Snapshot graph + .env + Claude memory; encrypted off-site copy (iCloud, your private repo)
   ai-os secrets [audit]               Is the .env safe? audit scans repo histories for leaked values (names only)
   ai-os project init [PATH]           Give a project CLAUDE.md, .agents/skills/ and the secret-leak .gitignore lines
   ai-os skills [lint|route|bank]      Catalogue budget, near-duplicate descriptions, routing bank

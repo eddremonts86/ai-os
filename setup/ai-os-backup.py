@@ -26,14 +26,23 @@ Keychain. Save the recovery key once, somewhere that is not this Mac:
   ai-os backup --verify-offsite         # decrypt the newest iCloud copy and compare it
   ai-os backup --restore-offsite DIR    # decrypt + extract it (key: Keychain or $AI_OS_BACKUP_KEY)
 
-The same encrypted file also goes to a PRIVATE GitHub repo (default
-<your login>/ai-os-backups, override with $AI_OS_GITHUB_BACKUP_REPO; disable with
-AI_OS_GITHUB=0), because iCloud Drive can stall silently. The repo's history is
-one commit that is rewritten on every run (force-pushed — it is a backup mirror,
-not a project), so it never grows past the newest 14 files. Only ciphertext is
-published; without the key the files are unreadable.
+Optionally the same encrypted file also goes to a PRIVATE GitHub repo you choose,
+because iCloud Drive can stall silently. Off by default: nobody's backups go to a
+repo they did not name. The repo's history is one commit rewritten on every run
+(force-pushed — it is a backup mirror, not a project), so it never grows past the
+newest 14 files. Only ciphertext is published; without the key it is unreadable.
 
-Runs daily via the launchd agent ai.os.backup.
+Runs daily via the launchd agent ai.os.backup. Settings live in
+~/.ai-os/backup.json (override the path with $AI_OS_BACKUP_CONFIG):
+
+  ai-os backup --status                     # schedule, destinations, newest snapshot
+  ai-os backup --disable / --enable         # stop / resume the daily run (manual runs still work)
+  ai-os backup --github-repo OWNER/NAME     # mirror to this private repo (must exist and be private)
+  ai-os backup --no-github                  # stop mirroring to GitHub
+  ai-os backup --icloud off|on              # stop / resume the iCloud Drive copy
+
+$AI_OS_GITHUB_BACKUP_REPO overrides the repo for one run (e.g. restoring on a new
+Mac); AI_OS_GITHUB=0 and AI_OS_OFFSITE=0 switch the mirror / all off-site copies off.
 """
 
 import argparse
@@ -41,6 +50,7 @@ import base64
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -61,6 +71,9 @@ GH_WORK = HOME / ".ai-os" / "offsite-github"  # local working clone of the mirro
 MAGIC = b"AIOSBK1"  # file header; also the GCM associated data
 FALKOR = "ia-os-falkordb"
 FALKOR_DATA = ROOT / "memory" / "falkordb" / "data"
+CONFIG = Path(os.environ.get("AI_OS_BACKUP_CONFIG", HOME / ".ai-os" / "backup.json"))
+DEFAULTS = {"schedule": True, "icloud": True, "github_repo": ""}
+INSTALLER = ROOT / "memory" / "launchd" / "install-backup.sh"
 # launchd starts jobs with a bare PATH; docker lives in /usr/local/bin.
 os.environ["PATH"] = os.pathsep.join(["/usr/local/bin", "/opt/homebrew/bin", os.environ.get("PATH", "")])
 
@@ -68,6 +81,26 @@ os.environ["PATH"] = os.pathsep.join(["/usr/local/bin", "/opt/homebrew/bin", os.
 def sh(*cmd, timeout=60):
     p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     return p.returncode, p.stdout.strip()
+
+
+def config():
+    """Settings with defaults; an unreadable file counts as defaults (backups stay on)."""
+    try:
+        data = json.loads(CONFIG.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        data = {}
+    return {**DEFAULTS, **{k: v for k, v in data.items() if k in DEFAULTS}}
+
+
+def save_config(**changes):
+    cfg = {**config(), **changes}
+    CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    CONFIG.write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
+    return cfg
+
+
+def icloud_on():
+    return bool(config()["icloud"]) or "AI_OS_OFFSITE_DIR" in os.environ
 
 
 def graph_sizes(container, port_args=()):
@@ -144,14 +177,29 @@ def pack(snap):
 
 
 def github_repo():
-    """owner/name of the private mirror, or None when disabled."""
+    """owner/name of the private mirror, or None when none is configured (the default)."""
     if os.environ.get("AI_OS_GITHUB") == "0":
         return None
-    repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO")
-    if repo:
-        return repo
-    rc, login = sh("gh", "api", "user", "--jq", ".login")
-    return f"{login}/ai-os-backups" if rc == 0 and login else None
+    return os.environ.get("AI_OS_GITHUB_BACKUP_REPO") or config()["github_repo"] or None
+
+
+def check_repo(repo):
+    """Error text if `repo` cannot hold backups, else None. Never publishes to a public repo."""
+    if not re.fullmatch(r"[\w.-]+/[\w.-]+", repo):
+        return f"'{repo}' is not OWNER/NAME"
+    rc, vis = sh("gh", "repo", "view", repo, "--json", "isPrivate", "--jq", ".isPrivate")
+    if rc != 0:
+        return f"{repo} not found or `gh` is not logged in — create it with: gh repo create {repo} --private"
+    if vis != "true":
+        return f"{repo} is public — backups only go to a private repo"
+    # The mirror force-pushes a single parentless commit: on a real project that erases its history.
+    # Only accept an empty repo or one that already holds nothing but AI-OS backups.
+    rc, names = sh("gh", "api", f"repos/{repo}/contents", "--jq", ".[].name")
+    foreign = [n for n in names.splitlines() if n != "README.md" and not re.fullmatch(r"ai-os-.+\.tar\.gz\.enc", n)] if rc == 0 else []
+    if foreign:
+        return (f"{repo} holds other files ({', '.join(foreign[:3])}…) — the mirror force-pushes and would erase them; "
+                f"use a dedicated empty repo: gh repo create OWNER/ai-os-backups --private")
+    return None
 
 
 def git(*args, cwd=GH_WORK, timeout=120):
@@ -168,10 +216,10 @@ def git(*args, cwd=GH_WORK, timeout=120):
 def push_github(name, blob):
     repo = github_repo()
     if not repo:
-        raise RuntimeError("GitHub mirror disabled or `gh` is not logged in")
-    rc, vis = sh("gh", "repo", "view", repo, "--json", "isPrivate", "--jq", ".isPrivate")
-    if vis != "true":  # refuse to publish anything, even ciphertext, to a public or missing repo
-        raise RuntimeError(f"{repo} is not a private repo that exists (isPrivate={vis or 'unknown'})")
+        raise RuntimeError("no GitHub backup repo configured (ai-os backup --github-repo OWNER/NAME)")
+    err = check_repo(repo)  # refuse to publish anything, even ciphertext, to a public or missing repo
+    if err:
+        raise RuntimeError(err)
     GH_WORK.mkdir(parents=True, exist_ok=True)
     if not (GH_WORK / ".git").exists():
         git("init", "-q", "-b", "main")
@@ -201,24 +249,26 @@ def push_offsite(snap):
     name = f"ai-os-{snap.name}.tar.gz.enc"
     blob = encrypt(pack(snap), get_key(create=True))
     results = []
-    try:
-        if not ICLOUD.exists() and "AI_OS_OFFSITE_DIR" not in os.environ:
-            raise RuntimeError("iCloud Drive is not available on this Mac")
-        OFFSITE.mkdir(parents=True, exist_ok=True)
-        out = OFFSITE / name
-        tmp = out.with_suffix(".part")
-        tmp.write_bytes(blob)
-        os.chmod(tmp, 0o600)
-        os.replace(tmp, out)  # iCloud never sees a half-written file under the final name
-        for old in sorted(OFFSITE.glob("ai-os-*.tar.gz.enc"))[:-KEEP]:
-            old.unlink()
-        results.append((f"iCloud Drive ({out})", None))
-    except Exception as e:
-        results.append(("iCloud Drive", f"{type(e).__name__}: {e}"))
-    try:
-        results.append((f"GitHub {push_github(name, blob)}", None))
-    except Exception as e:
-        results.append(("GitHub", f"{type(e).__name__}: {e}"))
+    if icloud_on():
+        try:
+            if not ICLOUD.exists() and "AI_OS_OFFSITE_DIR" not in os.environ:
+                raise RuntimeError("iCloud Drive is not available on this Mac (turn it off: ai-os backup --icloud off)")
+            OFFSITE.mkdir(parents=True, exist_ok=True)
+            out = OFFSITE / name
+            tmp = out.with_suffix(".part")
+            tmp.write_bytes(blob)
+            os.chmod(tmp, 0o600)
+            os.replace(tmp, out)  # iCloud never sees a half-written file under the final name
+            for old in sorted(OFFSITE.glob("ai-os-*.tar.gz.enc"))[:-KEEP]:
+                old.unlink()
+            results.append((f"iCloud Drive ({out})", None))
+        except Exception as e:
+            results.append(("iCloud Drive", f"{type(e).__name__}: {e}"))
+    if github_repo():
+        try:
+            results.append((f"GitHub {push_github(name, blob)}", None))
+        except Exception as e:
+            results.append(("GitHub", f"{type(e).__name__}: {e}"))
     return results
 
 
@@ -267,9 +317,12 @@ def verify_one(label, name, blob, key):
 
 def verify_offsite():
     """Decrypt the newest copy at every destination that has one and compare with the local snapshot."""
+    if not icloud_on() and not github_repo():
+        print("no off-site destination configured (ai-os backup --status)")
+        return 0
     key = get_key()
     checked = []
-    files = offsite_files()
+    files = offsite_files() if icloud_on() else []
     if files:
         checked.append(verify_one("iCloud", files[-1].name, files[-1].read_bytes(), key))
     names = github_files()
@@ -347,6 +400,8 @@ def take():
         except Exception as e:  # e.g. no key and the Keychain refused to create one
             print(f"off-site copy failed: {type(e).__name__}: {e}")
             return 1
+        if not results:
+            print("off-site: none configured — this snapshot only protects against mistakes, not disk loss (ai-os backup --status)")
         for dest, err in results:  # the local snapshot is kept either way
             print(f"off-site {dest}  (AES-256-GCM, key in the Keychain)" if not err else f"off-site {dest} FAILED: {err}")
             failed = failed or bool(err)
@@ -394,9 +449,38 @@ def verify(snap=None):
     return 0
 
 
+def schedule(on):
+    """Record the choice first (install-backup.sh and setup/install-mac.sh honour it), then (un)load the agent."""
+    save_config(schedule=on)
+    if sys.platform != "darwin":
+        print(f"daily backups {'enabled' if on else 'disabled'} in {CONFIG} (the scheduled agent is macOS-only)")
+        return 0
+    rc = subprocess.run(["bash", str(INSTALLER)] + ([] if on else ["--uninstall"])).returncode
+    print(f"daily backups {'enabled (13:00)' if on else 'disabled — manual `ai-os backup` still works; resume with --enable'}")
+    return rc
+
+
+def status():
+    cfg = config()
+    loaded = sys.platform == "darwin" and sh("launchctl", "print", f"gui/{os.getuid()}/ai.os.backup")[0] == 0
+    snap = latest()
+    print(f"schedule:  {'on' if cfg['schedule'] else 'off'} (agent {'loaded' if loaded else 'not loaded'})")
+    print(f"local:     {DEST} (newest: {snap.name if snap else 'none'})")
+    print(f"iCloud:    {('on → ' + str(OFFSITE)) if icloud_on() else 'off'}")
+    print(f"GitHub:    {github_repo() or 'off (set one: ai-os backup --github-repo OWNER/NAME)'}")
+    print(f"settings:  {CONFIG}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Snapshot and verify what AI-OS cannot rebuild.")
     g = ap.add_mutually_exclusive_group()
+    g.add_argument("--status", action="store_true", help="schedule, destinations and newest snapshot")
+    g.add_argument("--enable", action="store_true", help="run daily (installs the launchd agent)")
+    g.add_argument("--disable", action="store_true", help="stop the daily run; manual backups still work")
+    g.add_argument("--github-repo", metavar="OWNER/NAME", help="mirror encrypted copies to this existing private repo")
+    g.add_argument("--no-github", action="store_true", help="stop mirroring to GitHub")
+    g.add_argument("--icloud", choices=["on", "off"], help="keep or stop the iCloud Drive copy")
     g.add_argument("--list", action="store_true")
     g.add_argument("--verify", action="store_true", help="restore the newest snapshot into a throwaway FalkorDB")
     g.add_argument("--verify-offsite", action="store_true", help="decrypt the newest iCloud copy and compare it")
@@ -404,6 +488,26 @@ def main():
     g.add_argument("--show-key", action="store_true", help="print the recovery key (store it OFF this Mac)")
     g.add_argument("--confirm-key-saved", action="store_true", help="record that the recovery key is saved elsewhere")
     a = ap.parse_args()
+    if a.status:
+        return status()
+    if a.enable or a.disable:
+        return schedule(a.enable)
+    if a.github_repo:
+        err = check_repo(a.github_repo)
+        if err:
+            print(f"not saved: {err}")
+            return 1
+        save_config(github_repo=a.github_repo)
+        print(f"encrypted copies will also go to https://github.com/{a.github_repo}")
+        return 0
+    if a.no_github:
+        save_config(github_repo="")
+        print("GitHub mirror off (the repo and its files are left as they are)")
+        return 0
+    if a.icloud:
+        save_config(icloud=a.icloud == "on")
+        print(f"iCloud Drive copy {a.icloud}")
+        return 0
     if a.show_key:
         print(base64.b64encode(get_key(create=True)).decode())
         return 0
