@@ -20,11 +20,16 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    The brief's own words win over any default of the skill.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
-4. **Libraries.** `pick-ui-library` (reads `package.json` first); components from the project's shadcn setup
-   (`shadcn-patterns`). Reuse what is installed.
-5. **Build.** Motion only through `micro-interactions` or `emil-design-eng`, and only for what answers a user action
+4. **Compose from proven pieces, do not invent a visual system.** `pick-ui-library` for libraries and its ranked
+   `registries.md` for components and blocks: take sections from the top registries of the matching category
+   (`npx shadcn add @<registry>/<item>`), then adapt them to the brand. Hand-build only what no top registry has.
+   A from-scratch redesign was rejected on 2026-11-06 as amateur; passing the gate does not make a design good.
+5. **Show one section first.** Build the hero (or the one section that carries the idea), show it to the user
+   with a screenshot, and only continue after they approve the direction. Do not spend a whole page of tokens
+   on an unapproved look.
+6. **Build.** Motion only through `micro-interactions` or `emil-design-eng`, and only for what answers a user action
    plus at most one orchestrated moment. Load `impeccable`'s `craft-floor` before editing.
-6. **Gate.** Run `/aios-ui-verify` on every route you touched, then `/aios-ui-review`. Fix blockers and majors;
+7. **Gate.** Run `/aios-ui-verify` on every route you touched, then `/aios-ui-review`. Fix blockers and majors;
    two rounds at most, then report what is left.
 
 Done means: the verify verdict is PASS (or its gaps are stated), you looked at the screenshots, and the review
