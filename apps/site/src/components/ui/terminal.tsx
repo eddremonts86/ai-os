@@ -12,6 +12,7 @@ import {
 import {
   motion,
   useInView,
+  useReducedMotion,
   type DOMMotionComponents,
   type HTMLMotionProps,
   type MotionProps,
@@ -136,6 +137,7 @@ export const TypingAnimation = ({
 
   const [displayedText, setDisplayedText] = useState<string>("")
   const [started, setStarted] = useState(false)
+  const reduceMotion = useReducedMotion()
   const elementRef = useRef<HTMLElement | null>(null)
   const isInView = useInView(elementRef as React.RefObject<Element>, {
     amount: 0.3,
@@ -188,7 +190,8 @@ export const TypingAnimation = ({
     let typingEffect: ReturnType<typeof setInterval> | null = null
 
     if (started) {
-      let i = 0
+      // Local change: reduced motion gets the whole line at once (MotionConfig cannot reach setInterval).
+      let i = reduceMotion ? children.length - 1 : 0
       typingEffect = setInterval(() => {
         if (i < children.length) {
           setDisplayedText(children.substring(0, i + 1))
@@ -211,7 +214,7 @@ export const TypingAnimation = ({
         clearInterval(typingEffect)
       }
     }
-  }, [children, duration, started])
+  }, [children, duration, started, reduceMotion])
 
   return (
     <MotionComponent
