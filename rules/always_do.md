@@ -161,7 +161,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 
 23. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
     budget, and the accessible-SVG contract; a hand-rolled figure silently drops all three.
-24. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/index.html`
+24. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/src/index.css`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
 25. Before shipping a `diagram-design` diagram, run the skill's taste gate (`SKILL.md` §9) and
@@ -172,7 +172,17 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 
 ## When a task is UI or visual design
 
-26. Route by **what the request asks for** to ONE skill; load others only if that skill points to them:
+26. UI work goes through the `aios-ui-*` commands, which chain the skills below and end with a runtime gate:
+
+    | You want to | Command |
+    |---|---|
+    | Build a new page, screen or component | `/aios-ui-design` |
+    | Have a fresh agent judge an existing screen or flow (read-only) | `/aios-ui-review` |
+    | Fix an existing UI, proven before and after | `/aios-ui-improve` |
+    | Check pages mechanically (screenshots, console, overflow, a11y) | `/aios-ui-verify` |
+
+    UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
+    Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
 
     | Request | Use |
     |---|---|
@@ -182,6 +192,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Polish details: component feel, animation decisions | `emil-design-eng` |
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
     | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |
+    | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
 27. Brand tokens come from `context/06_brand.md` (same rule as diagrams).
