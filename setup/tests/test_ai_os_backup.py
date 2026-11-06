@@ -117,7 +117,36 @@ class GithubMirrorTests(unittest.TestCase):
              mock.patch.object(self.b, "sh", return_value=(0, "false")):
             with self.assertRaises(RuntimeError) as ctx:
                 self.b.push_github("ai-os-x.tar.gz.enc", b"ciphertext")
-        self.assertIn("not a private repo", str(ctx.exception))
+        self.assertIn("private repo", str(ctx.exception))
+
+    def test_no_repo_unless_configured(self):
+        # Nobody's backups go to a repo they did not name — not even <their login>/ai-os-backups.
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(self.b, "CONFIG", Path(d) / "backup.json"), \
+             mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("AI_OS_GITHUB_BACKUP_REPO", None)
+            self.assertIsNone(self.b.github_repo())
+            self.b.save_config(github_repo="me/my-backups")
+            self.assertEqual(self.b.github_repo(), "me/my-backups")
+            self.b.save_config(github_repo="")
+            self.assertIsNone(self.b.github_repo())
+
+    def test_refuses_a_repo_with_other_content(self):
+        # The mirror force-pushes one parentless commit; pointing it at a project would erase it.
+        from unittest import mock
+        replies = {"repo": (0, "true"), "api": (0, "README.md\nsrc\npackage.json")}
+        with mock.patch.object(self.b, "sh", side_effect=lambda *a, **k: replies[a[1]]):
+            self.assertIn("would erase", self.b.check_repo("me/project"))
+        replies["api"] = (0, "README.md\nai-os-2026-01-01-000000.tar.gz.enc")
+        with mock.patch.object(self.b, "sh", side_effect=lambda *a, **k: replies[a[1]]):
+            self.assertIsNone(self.b.check_repo("me/ai-os-backups"))
+        replies["api"] = (1, "")  # an empty repo has no contents endpoint
+        with mock.patch.object(self.b, "sh", side_effect=lambda *a, **k: replies[a[1]]):
+            self.assertIsNone(self.b.check_repo("me/fresh"))
+
+    def test_repo_name_is_validated_before_any_call(self):
+        self.assertIn("OWNER/NAME", self.b.check_repo("not a repo; rm -rf"))
+
 
     def test_refuses_a_missing_repo(self):
         from unittest import mock
@@ -126,6 +155,33 @@ class GithubMirrorTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 self.b.push_github("ai-os-x.tar.gz.enc", b"ciphertext")
 
+
+
+class ScheduleConfigTests(unittest.TestCase):
+    def test_disable_and_icloud_off_are_saved_and_reported(self):
+        with tempfile.TemporaryDirectory() as d:
+            cfg = os.path.join(d, "backup.json")
+            env = {**os.environ, "AI_OS_BACKUP_CONFIG": cfg, "AI_OS_BACKUP_DIR": os.path.join(d, "snaps")}
+            env.pop("AI_OS_GITHUB_BACKUP_REPO", None)
+            env.pop("AI_OS_OFFSITE_DIR", None)
+            run = lambda *a: subprocess.run([sys.executable, str(SCRIPT), *a], capture_output=True, text=True, timeout=60, env=env)
+            self.assertEqual(run("--icloud", "off").returncode, 0)
+            out = run("--status").stdout
+            self.assertIn("iCloud:    off", out)
+            self.assertIn("GitHub:    off", out)
+            self.assertIn('"icloud": false', Path(cfg).read_text())
+            # With nothing off-site, the daily --verify-offsite must not report a failure.
+            self.assertEqual(run("--verify-offsite").returncode, 0)
+
+    def test_installer_skips_when_disabled(self):
+        with tempfile.TemporaryDirectory() as d:
+            cfg = Path(d) / "backup.json"
+            cfg.write_text('{"schedule": false}')
+            installer = SCRIPT.parents[1] / "memory" / "launchd" / "install-backup.sh"
+            p = subprocess.run(["bash", str(installer)], capture_output=True, text=True, timeout=60,
+                               env={**os.environ, "AI_OS_BACKUP_CONFIG": str(cfg)})
+            self.assertEqual(p.returncode, 0)
+            self.assertIn("not installing", p.stdout)
 
 if __name__ == "__main__":
     unittest.main()
