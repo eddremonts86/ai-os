@@ -172,7 +172,17 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 
 ## When a task is UI or visual design
 
-26. Route by **what the request asks for** to ONE skill; load others only if that skill points to them:
+26. UI work goes through the `aios-ui-*` commands, which chain the skills below and end with a runtime gate:
+
+    | You want to | Command |
+    |---|---|
+    | Build a new page, screen or component | `/aios-ui-design` |
+    | Have a fresh agent judge an existing screen or flow (read-only) | `/aios-ui-review` |
+    | Fix an existing UI, proven before and after | `/aios-ui-improve` |
+    | Check pages mechanically (screenshots, console, overflow, a11y) | `/aios-ui-verify` |
+
+    UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
+    Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
 
     | Request | Use |
     |---|---|
