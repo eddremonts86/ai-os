@@ -28,9 +28,11 @@ Keychain. Save the recovery key once, somewhere that is not this Mac:
 
 Optionally the same encrypted file also goes to a PRIVATE GitHub repo you choose,
 because iCloud Drive can stall silently. Off by default: nobody's backups go to a
-repo they did not name. The repo's history is one commit rewritten on every run
-(force-pushed — it is a backup mirror, not a project), so it never grows past the
-newest 14 files. Only ciphertext is published; without the key it is unreadable.
+repo they did not name. Several machines can share one repo: each force-pushes only
+its own branch (named after the machine once, saved as "branch" in the settings),
+a single commit rewritten on every run, so it never grows past the newest 14 files.
+The iCloud copy likewise goes to Backups/ai-os/<branch>/. Only ciphertext is
+published; without the key it is unreadable.
 
 Runs daily via the launchd agent ai.os.backup. Settings live in
 ~/.ai-os/backup.json (override the path with $AI_OS_BACKUP_CONFIG):
@@ -41,8 +43,9 @@ Runs daily via the launchd agent ai.os.backup. Settings live in
   ai-os backup --no-github                  # stop mirroring to GitHub
   ai-os backup --icloud off|on              # stop / resume the iCloud Drive copy
 
-$AI_OS_GITHUB_BACKUP_REPO overrides the repo for one run (e.g. restoring on a new
-Mac); AI_OS_GITHUB=0 and AI_OS_OFFSITE=0 switch the mirror / all off-site copies off.
+For one run, $AI_OS_GITHUB_BACKUP_REPO overrides the repo and $AI_OS_BACKUP_BRANCH
+the machine (restore another machine's copy on a new one); AI_OS_GITHUB=0 and
+AI_OS_OFFSITE=0 switch the mirror / all off-site copies off.
 """
 
 import argparse
@@ -72,7 +75,7 @@ MAGIC = b"AIOSBK1"  # file header; also the GCM associated data
 FALKOR = "ia-os-falkordb"
 FALKOR_DATA = ROOT / "memory" / "falkordb" / "data"
 CONFIG = Path(os.environ.get("AI_OS_BACKUP_CONFIG", HOME / ".ai-os" / "backup.json"))
-DEFAULTS = {"schedule": True, "icloud": True, "github_repo": ""}
+DEFAULTS = {"schedule": True, "icloud": True, "github_repo": "", "branch": ""}
 INSTALLER = ROOT / "memory" / "launchd" / "install-backup.sh"
 # launchd starts jobs with a bare PATH; docker lives in /usr/local/bin.
 os.environ["PATH"] = os.pathsep.join(["/usr/local/bin", "/opt/homebrew/bin", os.environ.get("PATH", "")])
@@ -183,6 +186,24 @@ def github_repo():
     return os.environ.get("AI_OS_GITHUB_BACKUP_REPO") or config()["github_repo"] or None
 
 
+def machine_name():
+    """A stable per-machine name. macOS hostnames change with the network, so prefer LocalHostName."""
+    import platform
+    rc, name = sh("scutil", "--get", "LocalHostName") if sys.platform == "darwin" else (1, "")
+    name = (name if rc == 0 and name else platform.node()).split(".")[0]
+    return re.sub(r"[^a-z0-9-]+", "-", name.lower()).strip("-") or "machine"
+
+
+def machine_branch():
+    """This machine's branch in the mirror: every machine force-pushes only its own branch, so
+    several machines can share one repo. Chosen once and saved, so a hostname change never moves it."""
+    env = os.environ.get("AI_OS_BACKUP_BRANCH")
+    if env:
+        return env
+    cfg = config()
+    return cfg["branch"] or save_config(branch=machine_name())["branch"]
+
+
 def check_repo(repo):
     """Error text if `repo` cannot hold backups, else None. Never publishes to a public repo."""
     if not re.fullmatch(r"[\w.-]+/[\w.-]+", repo):
@@ -229,7 +250,8 @@ def push_github(name, blob):
     (GH_WORK / "README.md").write_text(
         "# ai-os-backups\n\nEncrypted AI-OS backups (AES-256-GCM). Unreadable without the key, which is not here.\n"
         "Restore: `AI_OS_BACKUP_KEY=<key> ai-os backup --restore-offsite <dir>`.\n"
-        "History is a single commit rewritten on every run; only the newest files are kept.\n", encoding="utf-8")
+        "One branch per machine; each branch is a single commit rewritten on every run (newest 14 files).\n"
+        "Restore another machine's copy: `AI_OS_BACKUP_BRANCH=<branch> ai-os backup --restore-offsite <dir>`.\n", encoding="utf-8")
     files = sorted(GH_WORK.glob("ai-os-*.tar.gz.enc"))
     for old in files[:-KEEP]:
         old.unlink()
@@ -237,10 +259,11 @@ def push_github(name, blob):
     tree = git("write-tree")
     commit = git("commit-tree", tree, "-m", f"encrypted backups up to {name}")  # parentless: history never grows
     git("update-ref", "refs/heads/main", commit)
-    git("push", "--force", "origin", "main")
+    branch = machine_branch()
+    git("push", "--force", "origin", f"main:refs/heads/{branch}")  # only this machine's branch is rewritten
     git("reflog", "expire", "--expire=now", "--all")
     git("gc", "--prune=now", "--quiet")
-    return f"https://github.com/{repo}"
+    return f"https://github.com/{repo}/tree/{branch}"
 
 
 def push_offsite(snap):
@@ -253,13 +276,14 @@ def push_offsite(snap):
         try:
             if not ICLOUD.exists() and "AI_OS_OFFSITE_DIR" not in os.environ:
                 raise RuntimeError("iCloud Drive is not available on this Mac (turn it off: ai-os backup --icloud off)")
-            OFFSITE.mkdir(parents=True, exist_ok=True)
-            out = OFFSITE / name
+            folder = offsite_dir()
+            folder.mkdir(parents=True, exist_ok=True)
+            out = folder / name
             tmp = out.with_suffix(".part")
             tmp.write_bytes(blob)
             os.chmod(tmp, 0o600)
             os.replace(tmp, out)  # iCloud never sees a half-written file under the final name
-            for old in sorted(OFFSITE.glob("ai-os-*.tar.gz.enc"))[:-KEEP]:
+            for old in sorted(folder.glob("ai-os-*.tar.gz.enc"))[:-KEEP]:
                 old.unlink()
             results.append((f"iCloud Drive ({out})", None))
         except Exception as e:
@@ -272,8 +296,15 @@ def push_offsite(snap):
     return results
 
 
+def offsite_dir():
+    """One iCloud folder per machine: Macs on the same Apple ID share iCloud Drive, and pruning to
+    the newest 14 in a shared folder would delete the other Macs' copies."""
+    return OFFSITE / machine_branch()
+
+
 def offsite_files():
-    return sorted(OFFSITE.glob("ai-os-*.tar.gz.enc")) if OFFSITE.exists() else []
+    folder = offsite_dir()
+    return sorted(folder.glob("ai-os-*.tar.gz.enc")) if folder.exists() else []
 
 
 def github_files():
@@ -281,12 +312,12 @@ def github_files():
     repo = github_repo()
     if not repo:
         return []
-    rc, out = sh("gh", "api", f"repos/{repo}/contents", "--jq", ".[].name")
+    rc, out = sh("gh", "api", f"repos/{repo}/contents?ref={machine_branch()}", "--jq", ".[].name")
     return sorted(n for n in out.splitlines() if n.startswith("ai-os-") and n.endswith(".tar.gz.enc")) if rc == 0 else []
 
 
 def github_blob(name):
-    p = subprocess.run(["gh", "api", f"repos/{github_repo()}/contents/{name}", "-H", "Accept: application/vnd.github.raw"],
+    p = subprocess.run(["gh", "api", f"repos/{github_repo()}/contents/{name}?ref={machine_branch()}", "-H", "Accept: application/vnd.github.raw"],
                        capture_output=True, timeout=120)
     if p.returncode != 0:
         raise RuntimeError(p.stderr.decode(errors="replace").strip()[-200:])
@@ -349,7 +380,7 @@ def restore_offsite(target, source=None):
         label, blob = f"GitHub {names[-1]}", github_blob(names[-1])
     else:
         if not files:
-            print("no off-site copy found in " + str(OFFSITE))
+            print("no off-site copy found in " + str(offsite_dir()))
             return 1
         label, blob = files[-1].name, files[-1].read_bytes()
     target.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -466,8 +497,9 @@ def status():
     snap = latest()
     print(f"schedule:  {'on' if cfg['schedule'] else 'off'} (agent {'loaded' if loaded else 'not loaded'})")
     print(f"local:     {DEST} (newest: {snap.name if snap else 'none'})")
-    print(f"iCloud:    {('on → ' + str(OFFSITE)) if icloud_on() else 'off'}")
-    print(f"GitHub:    {github_repo() or 'off (set one: ai-os backup --github-repo OWNER/NAME)'}")
+    print(f"iCloud:    {('on → ' + str(offsite_dir())) if icloud_on() else 'off'}")
+    repo = github_repo()
+    print(f"GitHub:    {f'{repo} (branch {machine_branch()})' if repo else 'off (set one: ai-os backup --github-repo OWNER/NAME)'}")
     print(f"settings:  {CONFIG}")
     return 0
 
