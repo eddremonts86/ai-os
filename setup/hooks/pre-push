@@ -118,7 +118,7 @@ step "no .env value in what you push"
 out=""
 for r in ${ranges[@]+"${ranges[@]}"}; do
   # shellcheck disable=SC2086  # $r is "A..B" or "SHA --not --remotes": word splitting is intended
-  e=$(cd "$ORIG" && python3 "$ORIG/setup/ai-os-secrets.py" check-push $r 2>&1) || out+="$e"$'\n'
+  e=$(cd "$ORIG" && python3 "$ORIG/setup/ai-os-secrets.py" check-push -- $r 2>&1) || out+="$e"$'\n'
 done
 [ -z "$out" ] && pass || fail "a value from dev-env/env-config/.env is in the commits being pushed (names only):
 $out"
