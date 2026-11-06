@@ -392,10 +392,12 @@ def check_backup():
         return FAIL, f"last AI-OS backup {age_h:.0f}h ago — the schedule is not firing"
     parts = [f"local {age_h:.0f}h ago ({len(snaps)} kept)"]
     real_offsite = False  # a copy that has demonstrably left this SSD
+    # Each machine writes its own iCloud folder and mirror branch; ai-os-backup.py saves the name on its first run.
+    branch = os.environ.get("AI_OS_BACKUP_BRANCH") or cfg.get("branch") or ""
 
     # Off-site 1: the encrypted copy in iCloud Drive. A file in that folder is not off-site until
     # iCloud uploads it, and iCloud Drive can stall silently (2026-11-05: last sync six days old).
-    offsite = Path(os.environ.get("AI_OS_OFFSITE_DIR", HOME / "Library/Mobile Documents/com~apple~CloudDocs/Backups/ai-os"))
+    offsite = Path(os.environ.get("AI_OS_OFFSITE_DIR", HOME / "Library/Mobile Documents/com~apple~CloudDocs/Backups/ai-os")) / branch
     icloud_on = cfg.get("icloud", True) is not False or "AI_OS_OFFSITE_DIR" in os.environ
     files = sorted(offsite.glob("ai-os-*.tar.gz.enc")) if icloud_on and offsite.exists() else []
     if files:
@@ -420,12 +422,12 @@ def check_backup():
     if os.environ.get("AI_OS_GITHUB") != "0":
         repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO") or cfg.get("github_repo") or None
         if repo:
-            rc, out = run(["gh", "api", f"repos/{repo}/commits/main", "--jq", ".commit.committer.date"], 30)
+            rc, out = run(["gh", "api", f"repos/{repo}/commits/{branch or 'main'}", "--jq", ".commit.committer.date"], 30)
             if rc == 0 and out.strip():
                 gh_h = (time.time() - calendar.timegm(time.strptime(out.strip(), "%Y-%m-%dT%H:%M:%SZ"))) / 3600  # the API date is UTC
                 if gh_h > 36:
                     return FAIL, "; ".join(parts) + f"; GitHub mirror {repo} is {gh_h:.0f}h old — the upload stopped"
-                parts.append(f"GitHub mirror {gh_h:.0f}h ago")
+                parts.append(f"GitHub mirror ({branch or 'main'}) {gh_h:.0f}h ago")
                 real_offsite = True
             else:
                 parts.append(f"GitHub mirror {repo} unreachable or not created")
