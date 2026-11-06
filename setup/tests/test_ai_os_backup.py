@@ -206,6 +206,7 @@ class ScheduleConfigTests(unittest.TestCase):
             # With nothing off-site, the daily --verify-offsite must not report a failure.
             self.assertEqual(run("--verify-offsite").returncode, 0)
 
+    @unittest.skipIf(sys.platform == "win32", "the launchd installer is a macOS bash script")
     def test_installer_skips_when_disabled(self):
         with tempfile.TemporaryDirectory() as d:
             cfg = Path(d) / "backup.json"
