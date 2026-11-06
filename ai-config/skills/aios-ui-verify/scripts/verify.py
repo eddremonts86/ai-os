@@ -116,6 +116,11 @@ def check(browser, url, width, scheme, out, axe_src, wait_ms, slices):
     if axe_src:
         page.add_script_tag(content=axe_src.read_text(encoding="utf-8"))
         res = page.evaluate("axe.run(document, {resultTypes: ['violations']})")
+        if any(v["impact"] in SERIOUS for v in res["violations"]):
+            # An entrance animation caught mid-fade reads as low contrast. Real violations survive a second
+            # look 3 s later; transient ones do not (seen 2026-11-06 on a typing terminal).
+            page.wait_for_timeout(3000)
+            res = page.evaluate("axe.run(document, {resultTypes: ['violations']})")
         bad = [v for v in res["violations"] if v["impact"] in SERIOUS]
         rest = [v for v in res["violations"] if v["impact"] not in SERIOUS]
         axe = f"{len(bad)} serious, {len(rest)} minor"
