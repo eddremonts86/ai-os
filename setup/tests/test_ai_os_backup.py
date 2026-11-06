@@ -131,6 +131,39 @@ class GithubMirrorTests(unittest.TestCase):
             self.b.save_config(github_repo="")
             self.assertIsNone(self.b.github_repo())
 
+    def test_each_machine_keeps_its_own_branch(self):
+        # Machines sharing a repo must never overwrite each other: the branch is named once and saved.
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(self.b, "CONFIG", Path(d) / "backup.json"), \
+             mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("AI_OS_BACKUP_BRANCH", None)
+            with mock.patch.object(self.b, "machine_name", return_value="mac-one"):
+                self.assertEqual(self.b.machine_branch(), "mac-one")
+            with mock.patch.object(self.b, "machine_name", return_value="renamed"):
+                self.assertEqual(self.b.machine_branch(), "mac-one")  # a hostname change does not move it
+            self.assertEqual(self.b.offsite_dir().name, "mac-one")
+            os.environ["AI_OS_BACKUP_BRANCH"] = "pc-two"
+            self.assertEqual(self.b.machine_branch(), "pc-two")  # restore another machine's copy
+
+    def test_machine_name_is_a_safe_branch_name(self):
+        from unittest import mock
+        with mock.patch.object(self.b.sys, "platform", "darwin"), \
+             mock.patch.object(self.b, "sh", return_value=(0, "Edd's MacBook Pro")):
+            self.assertEqual(self.b.machine_name(), "edd-s-macbook-pro")
+
+    def test_push_only_rewrites_this_machines_branch(self):
+        from unittest import mock
+        calls = []
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(self.b, "GH_WORK", Path(d)), \
+             mock.patch.object(self.b, "github_repo", return_value="me/ai-os-backups"), \
+             mock.patch.object(self.b, "check_repo", return_value=None), \
+             mock.patch.object(self.b, "machine_branch", return_value="mac-one"), \
+             mock.patch.object(self.b, "git", side_effect=lambda *a, **k: calls.append(a) or "x"):
+            url = self.b.push_github("ai-os-x.tar.gz.enc", b"ciphertext")
+        pushes = [c for c in calls if c[0] == "push"]
+        self.assertEqual(pushes, [("push", "--force", "origin", "main:refs/heads/mac-one")])
+        self.assertTrue(url.endswith("/tree/mac-one"))
+
     def test_refuses_a_repo_with_other_content(self):
         # The mirror force-pushes one parentless commit; pointing it at a project would erase it.
         from unittest import mock
