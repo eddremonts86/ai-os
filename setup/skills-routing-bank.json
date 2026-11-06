@@ -205,5 +205,17 @@
     "expect": [
       "babysit-pr"
     ]
+  },
+  {
+    "prompt": "open a pull request for this branch",
+    "expect": [
+      "file-pr"
+    ]
+  },
+  {
+    "prompt": "full stop: take this change all the way to a ready PR while I am away",
+    "expect": [
+      "full-stop"
+    ]
   }
 ]

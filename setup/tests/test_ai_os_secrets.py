@@ -80,6 +80,18 @@ class CheckPushTests(unittest.TestCase):
             self.assertIn("FAKE_API_KEY", buf.getvalue())
             self.assertNotIn(fake, buf.getvalue())
 
+    def test_cli_accepts_git_flags_in_the_range_after_double_dash(self):
+        # A new branch is pushed as "<sha> --not --remotes"; the hook passes it after "--".
+        script = Path(sec.__file__)
+        with tempfile.TemporaryDirectory() as d:
+            subprocess.run(["git", "init", "-q"], cwd=d, check=True)
+            subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "--allow-empty", "-m", "x"], cwd=d, check=True)
+            env = Path(d) / "env"
+            env.write_text("FAKE_API_KEY=Zq8Lw3Vn7Xk2Rt9Yb4Mc6Hd1Jf5Ga0Es\n", encoding="utf-8")
+            r = subprocess.run([sys.executable, str(script), "check-push", "--", "HEAD", "--not", "--remotes"],
+                               cwd=d, capture_output=True, text=True, env={**os.environ, "AI_OS_ENV_FILE": str(env)})
+        self.assertEqual(r.returncode, 0, r.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
