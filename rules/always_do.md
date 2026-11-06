@@ -182,6 +182,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Polish details: component feel, animation decisions | `emil-design-eng` |
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
     | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |
+    | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
 27. Brand tokens come from `context/06_brand.md` (same rule as diagrams).
