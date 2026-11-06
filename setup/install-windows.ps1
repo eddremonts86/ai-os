@@ -744,12 +744,17 @@ if ($env:SKIP_MEMORY -ne "1") {
 
     # 7b.2 — FalkorDB graph DB (+ Ollama container if chosen in 7b.1)
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        Push-Location "$AIOSRoot\memory\falkordb"
+        # The compose file was unified into memory\docker-compose.yml; memory\falkordb only holds
+        # its bind-mount data, so composing from there started nothing on Windows. Name the
+        # services: a bare `up` would also pull ai-os/graphiti-mcp, a locally built image
+        # (see the graphiti-mcp comment in the compose file), and abort the whole start.
+        Push-Location "$AIOSRoot\memory"
         try {
-            if (-not (Test-Path "data")) { New-Item -ItemType Directory -Path "data" | Out-Null }
-            if (-not (Test-Path "ollama-data")) { New-Item -ItemType Directory -Path "ollama-data" | Out-Null }
-            $composeArgs = @("up", "-d")
-            if ($useDockerOllama) { $composeArgs = @("--profile", "ollama-docker") + $composeArgs }
+            foreach ($d in "falkordb\data", "falkordb\ollama-data") {
+                if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
+            }
+            $composeArgs = @("up", "-d", "falkordb")
+            if ($useDockerOllama) { $composeArgs = @("--profile", "ollama-docker") + $composeArgs + @("ollama") }
             docker compose @composeArgs 2>&1 | Select-Object -Last 5
             if ($LASTEXITCODE -ne 0) { throw "docker compose up exited with code $LASTEXITCODE" }
             Ok "  FalkorDB launched: redis://localhost:6390 + Web UI http://localhost:3300 (image: falkordb/falkordb:v4.18.11, pinned)"
@@ -766,7 +771,7 @@ if ($env:SKIP_MEMORY -ne "1") {
             }
         }
         catch {
-            Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory\falkordb; docker compose up -d)"
+            Warn "  docker compose up failed (run manually: cd $AIOSRoot\memory; docker compose up -d falkordb)"
         }
         finally {
             Pop-Location
