@@ -90,6 +90,7 @@ services:
     # and Ollama are both reached through the base 'openai' client). Rebuild with:
     #   git clone https://github.com/getzep/graphiti.git /tmp/graphiti-build/graphiti
     #   cp $AI_OS_ROOT/memory/graphiti/Dockerfile.standalone.minimal /tmp/graphiti-build/graphiti/mcp_server/docker/
+    #   cp -r $AI_OS_ROOT/memory/graphiti/patches /tmp/graphiti-build/graphiti/mcp_server/patches   # COPY'd by the Dockerfile; the build fails without it
     #   cd /tmp/graphiti-build/graphiti/mcp_server/docker
     #   docker build -f Dockerfile.standalone.minimal -t ai-os/graphiti-mcp:minimax-standalone ..
     image: ai-os/graphiti-mcp:minimax-standalone
