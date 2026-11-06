@@ -65,6 +65,9 @@ def settle(page, wait_ms):
     for y in range(0, height, max(300, page.viewport_size["height"] // 2)):
         page.evaluate(f"window.scrollTo(0, {y})")
         page.wait_for_timeout(80)
+    # loading="lazy" images only start once scrolled near; wait for them, or a card shows up empty in the shot.
+    page.evaluate("""() => Promise.all([...document.images].map(i => i.complete ? 0 :
+        new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 4000); })))""")
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(wait_ms)
 
