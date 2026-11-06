@@ -377,6 +377,12 @@ def check_ci():
 
 
 def check_backup():
+    try:  # same file and defaults as setup/ai-os-backup.py
+        cfg = json.loads(Path(os.environ.get("AI_OS_BACKUP_CONFIG", HOME / ".ai-os" / "backup.json")).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        cfg = {}
+    if cfg.get("schedule", True) is False:
+        return OK, "daily backups disabled by choice (turn on: ai-os backup --enable)"
     dest = Path(os.environ.get("AI_OS_BACKUP_DIR", HOME / "Backups" / "ai-os"))
     snaps = sorted(p for p in dest.iterdir() if (p / "manifest.json").exists()) if dest.exists() else []
     if not snaps:
@@ -390,7 +396,8 @@ def check_backup():
     # Off-site 1: the encrypted copy in iCloud Drive. A file in that folder is not off-site until
     # iCloud uploads it, and iCloud Drive can stall silently (2026-11-05: last sync six days old).
     offsite = Path(os.environ.get("AI_OS_OFFSITE_DIR", HOME / "Library/Mobile Documents/com~apple~CloudDocs/Backups/ai-os"))
-    files = sorted(offsite.glob("ai-os-*.tar.gz.enc")) if offsite.exists() else []
+    icloud_on = cfg.get("icloud", True) is not False or "AI_OS_OFFSITE_DIR" in os.environ
+    files = sorted(offsite.glob("ai-os-*.tar.gz.enc")) if icloud_on and offsite.exists() else []
     if files:
         off_h = (time.time() - files[-1].stat().st_mtime) / 3600
         if off_h > 36:
@@ -409,12 +416,9 @@ def check_backup():
             real_offsite = True
         parts.append(note)
 
-    # Off-site 2: the private GitHub mirror.
+    # Off-site 2: the private GitHub mirror, only when the user configured one.
     if os.environ.get("AI_OS_GITHUB") != "0":
-        repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO")
-        if not repo:
-            rc, login = run(["gh", "api", "user", "--jq", ".login"], 20)
-            repo = f"{login.strip()}/ai-os-backups" if rc == 0 and login.strip() else None
+        repo = os.environ.get("AI_OS_GITHUB_BACKUP_REPO") or cfg.get("github_repo") or None
         if repo:
             rc, out = run(["gh", "api", f"repos/{repo}/commits/main", "--jq", ".commit.committer.date"], 30)
             if rc == 0 and out.strip():
