@@ -21,8 +21,9 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
    `writing-plans` for multi-step work) and go.
 3. **Execute and verify** with `verification-before-completion` before claiming done. The
    prompts in `verifiers/` (`critic_prompt.md`, `quality_checklist.md`,
-   `source_check_prompt.md`) are optional tools — use them when a second look is worth it,
-   not as a mandatory pass between blocks.
+   `source_check_prompt.md`, `fresh_reviewer_prompt.md`) are optional tools — use them when a
+   second look is worth it, not as a mandatory pass between blocks. A Spec gets one cold read
+   by a fresh subagent (`workflows/project_start.md` step 3b).
 4. **Archive** a completed Spec to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary, then
    reset `specs/current_spec.md` to the no-active-Spec template. `specs/current_spec.md` holds
    at most one active Spec.
