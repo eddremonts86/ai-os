@@ -104,7 +104,9 @@ case "${1:-}" in
     ;;
   stats)
     shift
-    exec python3 "$AI_OS_ROOT/setup/ai-os-stats.py" "$@"
+    py="$HOME/.ai-os/venv/bin/python"   # --write re-renders PNGs with Playwright from the venv
+    [ -x "$py" ] || py=python3
+    exec "$py" "$AI_OS_ROOT/setup/ai-os-stats.py" "$@"
     ;;
   health)
     shift
