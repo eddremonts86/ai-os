@@ -39,13 +39,26 @@ const reply = await chat([{ role: 'user', content: 'hola' }], { provider: 'minim
 | `AI_OLLAMA_NATIVE_MODEL` | `gemma3:12b` | model pulled on that daemon — see "Model selection, final state" below for why gemma3, not qwen3 |
 | `MINIMAX_API_KEY` / `MINIMAX_BASE_URL` / `MINIMAX_MODEL` | — | same vars `dev-env/env-config/.env.example` section 5 already defines |
 
-### Context window: 131072 (Gemma 3's full native context) — confirmed, not a guess
+### Context window: 32768 — sized from real traffic
 
 Ollama's default `num_ctx` (4096) is too small for anything beyond a toy prompt.
-`llm/gemma3-12b.Modelfile` sets it to 131072 (128K), Gemma 3's documented native
-maximum — and unlike `qwen3:14b` (which silently clamped to 40960 no matter how
-high you asked), the full 128K actually loads here: confirmed via `ollama ps`
-showing 100% GPU at a 9.0GB total footprint on this 24GB Mac, no CPU spillover.
+`llm/gemma3-12b.Modelfile` sets 32768. It was 131072 (Gemma 3's full native context, which
+does load 100% on GPU here) until 2026-11-07, when the footprint was measured against what
+the model is actually sent:
+
+| `num_ctx` | `ollama ps` | Prompt read | Generation |
+|---|---|---|---|
+| 131072 | 9.0 GB | ~247 tok/s | ~25 tok/s |
+| 32768 | 8.1 GB | same | same |
+| 16384 | 7.1 GB | same | same |
+
+Ollama reserves memory for the whole window on every load, so the size costs RAM, not speed.
+The Ollama log's 38,607 requests had a p99 of ~3,500 tokens, a maximum of 17,560, and none
+over 32K, so 32768 loses nothing. 16K was rejected: a prompt longer than `num_ctx` is cut
+from its start with no warning (a 21,690-token prompt at 16K was read as its last 8,195
+tokens, and the log still said `truncated = 0`), which in graphiti means facts from the start
+of a long episode are never extracted. graphiti calls through `/v1`, which ignores
+per-request `num_ctx`, so the Modelfile value is the one that applies.
 `setup/install-mac.sh` (section 9d) re-applies this Modelfile after every pull —
 idempotent, no re-download, just a manifest update — so a fresh
 `ollama pull gemma3:12b` alone is not enough; run
@@ -303,7 +316,7 @@ through two picks, not one:
 brew install ollama                                   # if not already
 bash memory/launchd/install-ollama.sh                  # embeddings daemon (:11500)
 OLLAMA_HOST=127.0.0.1:11500 ollama pull gemma3:12b     # router.mjs's default (plain chat)
-OLLAMA_HOST=127.0.0.1:11500 ollama create gemma3:12b -f llm/gemma3-12b.Modelfile   # 131072 ctx
+OLLAMA_HOST=127.0.0.1:11500 ollama create gemma3:12b -f llm/gemma3-12b.Modelfile   # 32768 ctx
 ```
 
 That's the recommended setup: `router.mjs` for plain chat, `opencode`/tool-use
