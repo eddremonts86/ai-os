@@ -968,15 +968,15 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     mkdir -p "$AI_OS_ROOT/memory/falkordb/data" "$AI_OS_ROOT/memory/openwebui/data"
     COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
     if docker compose version >/dev/null 2>&1; then
-      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
+      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os; chat UI is opt-in: --profile chat)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker compose up failed (run manually: cd $AI_OS_ROOT/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
-      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
+      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os; chat UI is opt-in: --profile chat)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker-compose up failed"
@@ -1409,16 +1409,16 @@ if [ "${SKIP_OPENCODE:-0}" != "1" ]; then
         && ok "  gemma3:12b pulled" \
         || warn "  gemma3:12b pull failed — llm/router.mjs's local provider will have nothing to talk to"
     fi
-    # Ollama's default num_ctx (4096) truncates real prompts. 131072 is
-    # Gemma 3's full native context and loads 100% GPU on this 24GB Mac (9GB
-    # footprint — see llm/gemma3-12b.Modelfile). Skipped when the model already
+    # Ollama's default num_ctx (4096) truncates real prompts; the Modelfile sets 32768,
+    # which fits every request seen so far (see llm/gemma3-12b.Modelfile for the numbers).
+    # Skipped when the model already
     # carries the Modelfile's num_ctx, so a re-run does not rewrite the manifest.
     want_ctx="$(sed -n 's/^PARAMETER num_ctx[[:space:]]*//p' "$AI_OS_ROOT/llm/gemma3-12b.Modelfile" | head -1)"
     have_ctx="$(OLLAMA_HOST=127.0.0.1:11500 ollama show gemma3:12b --parameters 2>/dev/null | awk '$1=="num_ctx"{print $2; exit}' || true)"
     if [ -n "$want_ctx" ] && [ "$have_ctx" = "$want_ctx" ]; then
       ok "  gemma3:12b context already $have_ctx"
     elif OLLAMA_HOST=127.0.0.1:11500 ollama create gemma3:12b -f "$AI_OS_ROOT/llm/gemma3-12b.Modelfile" >/dev/null 2>&1; then
-      ok "  gemma3:12b context set to 131072"
+      ok "  gemma3:12b context set to $want_ctx"
     else
       warn "  could not set gemma3:12b's context (non-fatal — default 4096 still works, just truncates more)"
     fi
