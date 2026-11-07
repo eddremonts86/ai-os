@@ -44,6 +44,12 @@
         <string>1</string>
         <key>OLLAMA_KV_CACHE_TYPE</key>
         <string>q8_0</string>
+        <!-- How long a model stays in memory after its last request (Ollama's default is 5m).
+             gemma3:12b holds ~9 GB while loaded; graphiti calls it in short bursts, so 2m frees
+             that memory three minutes sooner after each burst. The next burst pays one reload
+             (a few seconds from the page cache). -->
+        <key>OLLAMA_KEEP_ALIVE</key>
+        <string>2m</string>
     </dict>
 
     <key>RunAtLoad</key>

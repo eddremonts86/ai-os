@@ -65,7 +65,7 @@ a browser instead of only through `ai-os llm ask`.
   separate instance — same model, same `ai-os llm` config.
 - No login wall (`WEBUI_AUTH=False`) — fine bound to `127.0.0.1` only, not fine
   the day this ever binds `0.0.0.0`.
-- Bring up/down: `cd memory && docker compose up -d open-webui` / `down`.
+- Opt-in since 2026-11-07 (it held ~1.5 GB while idle): `cd memory && docker compose --profile chat up -d open-webui`; stop it with `docker compose stop open-webui`.
   `setup/install-mac.sh` starts it automatically with the rest of the `ia-os`
   stack (section 9b); `setup/verify.sh` checks it (section 5c).
 

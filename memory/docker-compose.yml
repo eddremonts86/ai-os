@@ -166,6 +166,11 @@ services:
     # already documents for the iaWorkSpace stack's own open-webui.
     image: ghcr.io/open-webui/open-webui:main
     container_name: ia-os-open-webui
+    # Opt-in: ~1.5 GB resident while idle, and nothing else in AI-OS needs it. A plain
+    # `docker compose up -d` skips it; start it when you want the chat:
+    #   docker compose -f memory/docker-compose.yml --profile chat up -d open-webui
+    # and stop it with `docker compose -f memory/docker-compose.yml stop open-webui`.
+    profiles: ["chat"]
     restart: unless-stopped
     networks:
       - ia-os-net

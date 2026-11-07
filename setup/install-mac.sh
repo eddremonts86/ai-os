@@ -968,15 +968,15 @@ if [ "${SKIP_MEMORY:-0}" != "1" ]; then
     mkdir -p "$AI_OS_ROOT/memory/falkordb/data" "$AI_OS_ROOT/memory/openwebui/data"
     COMPOSE_FILE="$AI_OS_ROOT/memory/docker-compose.yml"
     if docker compose version >/dev/null 2>&1; then
-      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
+      if docker compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os; chat UI is opt-in: --profile chat)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker compose up failed (run manually: cd $AI_OS_ROOT/memory && docker compose -f docker-compose.yml up -d)"
       fi
     else
-      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp open-webui 2>&1 | tail -3; then
-        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 + open-webui :3301 (project: ia-os)"
+      if docker-compose -f "$COMPOSE_FILE" up -d falkordb graphiti-mcp 2>&1 | tail -3; then
+        ok "  AI-OS stack launched: FalkorDB :3300/:6390 + Graphiti :8021 (project: ia-os; chat UI is opt-in: --profile chat)"
         ok "    unified compose: $COMPOSE_FILE (name: ia-os)"
       else
         warn "  docker-compose up failed"
