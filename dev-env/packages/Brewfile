@@ -44,6 +44,13 @@ brew "docker-compose"
 cask "docker-desktop"       # provides the daemon the docker CLI above talks to
 brew "ollama"               # AI-OS memory stack (phase 1) — local embeddings
 
+# ─── Security scanners (aios-security-* skills) ───
+brew "gitleaks"            # secrets in code and git history
+brew "osv-scanner"         # dependency CVEs (OSV database)
+brew "trivy"               # container images, IaC, filesystem CVEs
+brew "hadolint"            # Dockerfile lint
+brew "semgrep"             # SAST rules (OWASP, TypeScript, React)
+
 # ─── Build / Package managers ───
 brew "pnpm"                 # used throughout AI-OS (npm-globals install, apps/)
 

@@ -6,6 +6,11 @@ license: MIT
 
 # OWASP Security
 
+Reference examples per OWASP Top 10 category. The examples below follow the 2021 edition; the current list is
+**Top 10:2025** (Broken Access Control stays first; Software Supply Chain Failures and Mishandling of Exceptional
+Conditions are new categories). For an actual review use `/aios-security-audit` (scanners + a code checklist mapped
+to OWASP ASVS 5.0, in `aios-security-audit/references/checklist.md`) or `/aios-security-review` for a diff.
+
 ## Top 10 (2021) — check by category
 
 ### A01: Broken Access Control
