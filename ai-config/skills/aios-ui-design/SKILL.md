@@ -20,7 +20,9 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    The brief's own words win over any default of the skill.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
-4. **Compose from proven pieces, do not invent a visual system.** `pick-ui-library` for libraries and its ranked
+4. **Compose from proven pieces, do not invent a visual system.** Start in `gallery/INDEX.md`: real sites and
+   registry blocks, captured and measured, grouped by pattern. Compare at least three patterns that fit the brief
+   before picking one, and add new references with `gallery/capture.py`. Then `pick-ui-library` for libraries and its ranked
    `registries.md` for components and blocks: take sections from the top registries of the matching category
    (`npx shadcn add @<registry>/<item>`), then adapt them to the brand. Hand-build only what no top registry has.
    A from-scratch redesign was rejected on 2026-11-06 as amateur; passing the gate does not make a design good.

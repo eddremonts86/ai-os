@@ -44,6 +44,11 @@ then size, then endpoint health) and groups them by category. Refresh it with
   means read the repo's licence before using it.
 - Install the piece itself, not the whole library: `npx shadcn add @<registry>/<item>`.
 - The detected repo can be wrong (it is read from the homepage); check it before relying on the stars.
+- To know what the registries actually contain for a kind of page (every hero, every experience block…), run
+  `scripts/survey-registries.py items | sitemaps | classify --out DIR`. It reads each registry's `registry.json`,
+  its `robots.txt` and sitemaps for preview URLs, and each item's source to tag the layout. That gives thousands
+  of items instead of the few you remember. Then look at the shortlist before choosing; `aios-ui-design/gallery`
+  keeps what was captured.
 
 ## The list
 
