@@ -1,0 +1,5 @@
+name: ui-indexador
+description: Search 100k+ shadcn registry components and blocks (install command included), curated design captures and tweakcn themes. External app (github.com/eddremonts86/ui-indexador), run as a local service by its schedule/install.sh
+transport: http
+url: http://127.0.0.1:3041/mcp
+enabled: true

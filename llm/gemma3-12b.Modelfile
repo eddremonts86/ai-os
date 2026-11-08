@@ -1,7 +1,9 @@
 FROM gemma3:12b
 # gemma3 has no "thinking" mechanism at all (unlike qwen3/gemma4) — the reason
 # it replaced qwen3:14b here, see llm/README.md's "Model selection, final state".
-# 131072 (Gemma 3's full native context) confirmed to load 100% on GPU on this
-# 24GB Mac, 9.0GB total footprint — no CPU spillover, no need to find a lower
-# ceiling the way qwen3 needed (confirmed 2026-09-19).
-PARAMETER num_ctx 131072
+# 32768, not Gemma 3's full 131072 (2026-11-07). Ollama reserves memory for the whole
+# window on every load: 9.0 GB at 128K, 8.1 GB at 32K, 7.1 GB at 16K (measured on this
+# 24 GB Mac). Of 38,607 requests in the Ollama log the largest was 17,560 tokens and none
+# passed 32K, so 32K loses nothing. Speed is the same at any size. A prompt longer than
+# num_ctx is cut from the start without warning, which is why this is not 16K.
+PARAMETER num_ctx 32768

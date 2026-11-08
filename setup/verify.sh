@@ -629,7 +629,7 @@ else
       warn "  open-webui :3301 not reachable (give it a few seconds to start)"
     fi
   else
-    opt_miss "open-webui container not running (run: cd memory && docker compose up -d open-webui)"
+    opt_miss "open-webui not running (opt-in chat UI: cd memory && docker compose --profile chat up -d open-webui)"
   fi
 fi
 
