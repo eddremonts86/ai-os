@@ -3,3 +3,4 @@ description: Search 100k+ shadcn registry components and blocks (install command
 transport: http
 url: http://127.0.0.1:3041/mcp
 enabled: true
+requires_url: http://127.0.0.1:3040/health  # only registered where its service runs (setup/install-mac.sh, UI_INDEXER=1)

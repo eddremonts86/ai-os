@@ -78,6 +78,20 @@ def merge_external_skill_dir(existing, external_dir):
     return existing
 
 
+def service_answers(url, timeout=2):
+    """True when url answers at all (any HTTP status). Used by `requires_url`: an MCP server that is a local
+    service on its own (ui-indexador) is registered only on machines where that service runs."""
+    import urllib.error
+    import urllib.request
+    try:
+        urllib.request.urlopen(url, timeout=timeout).close()
+        return True
+    except urllib.error.HTTPError:
+        return True
+    except Exception:
+        return False
+
+
 def render_server(definition, home):
     name = definition.get("name")
     if not isinstance(name, str) or not name:
@@ -154,6 +168,7 @@ def main():
 
         home = os.environ.get("HOME") or os.environ.get("USERPROFILE") or str(Path.home())
         managed_names = set()
+        kept_names = set()
         generated_servers = {}
         for definition in definitions:
             name = definition.get("name")
@@ -164,13 +179,17 @@ def main():
             managed_names.add(name)
             if definition.get("enabled", True) is False:
                 continue
+            requires = definition.get("requires_url")
+            if requires and not service_answers(requires):
+                kept_names.add(name)  # its service is not running here: leave whatever Hermes already has
+                continue
             name, server = render_server(definition, home)
             generated_servers[name] = server
     except ValueError as error:
         return fail(str(error))
 
     merged_servers = dict(existing_servers)
-    for name in managed_names:
+    for name in managed_names - kept_names:
         merged_servers.pop(name, None)
     merged_servers.update(generated_servers)
     existing["mcp_servers"] = merged_servers
