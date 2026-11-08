@@ -158,7 +158,7 @@ Template for creating a new Spec.
 
 When done, the AI-OS is functional. The user can:
 
-- Start a session: `cat $AI_OS_ROOT/CLAUDE.md` (or load the skill `ai-os-karpathy`).
+- Start a session: `cat $AI_OS_ROOT/CLAUDE.md` (or load the skill `aios-karpathy`).
 - Create a Spec: `nano $AI_OS_ROOT/specs/current_spec.md`.
 - Run a workflow: `cat $AI_OS_ROOT/workflows/coding.md`.
 
