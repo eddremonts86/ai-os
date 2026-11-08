@@ -14,7 +14,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
       <nav aria-label="Main" className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4">
         <a href="#" className="text-sm font-semibold tracking-tight text-foreground">
-          ui<span className="text-primary">-</span>indexador
+          ui<span className="text-brand">-</span>indexador
         </a>
         <ul className="ml-auto hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           {links.map(([label, href]) => (

@@ -23,6 +23,12 @@
   "menuAccent": "subtle",
   "registries": {
     "@uiception": "https://uiception.com/r/{name}.json",
-    "@balick": "https://ui.balick.me/r/{name}.json"
+    "@balick": "https://ui.balick.me/r/{name}.json",
+    "@fancy-ui": "https://fancy-ui.rama.app/r/{name}.json",
+    "@hirael": "https://hirael.com/r/{name}.json",
+    "@karaui": "https://karaui.kamisama-v0.my.id/r/{name}.json",
+    "@velora": "https://velora.colorlib.com/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}",
+    "@navui": "https://ui.navdeepsingh.dev/r/{name}.json"
   }
 }

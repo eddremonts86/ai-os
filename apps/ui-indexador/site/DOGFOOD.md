@@ -30,3 +30,8 @@ Measured on the 16 section queries (`docs/landing-queries-2026-11-08.txt` before
   as `kanban/board`, `@ns-ui/seatmap-ascii-pick` as `pricing`, a booking form as `testimonials`. The page shows
   the item `type` (block / component / ui), which comes from the registry, instead. Kinds are first-match
   regexes on names and descriptions; an embedding-nearest-label classifier would beat them.
+- **More Next.js-only pieces, found at build time.** `@navui/faqs-section-two` imports `next/link` (one line,
+  replaced by `<a>`). Same follow-up as above: tag `next/` imports during the `--deep` crawl.
+- **Undeclared dependencies.** `@magicui/file-tree` (23k-star registry) imports `@radix-ui/react-accordion` and
+  `@/components/ui/scroll-area` but declares neither, so `shadcn add` leaves a build that fails. The deep crawl
+  could compare an item's imports with its declared dependencies and flag the gap.
