@@ -12,6 +12,16 @@
       "port": 3021
     },
     {
+      "//": "apps/ui-indexador: read-only API over the shadcn registry index and the design gallery, used by aios-ui-design and pick-ui-library. Bound to 127.0.0.1.",
+      "name": "ui-indexador",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-lc",
+        "cd \"${AI_OS_ROOT:-.}/apps/ui-indexador\" && exec python3 server.py --port 3040"
+      ],
+      "port": 3040
+    },
+    {
       "//": "Chat UI for the native Ollama daemon (llm/router.mjs's qwen3:14b, :11500) — a Docker container (ia-os-open-webui), not a process this pane starts or stops. Bring it up/down with `docker compose -f memory/docker-compose.yml up -d open-webui` / `down`; see memory/docker-compose.yml and llm/README.md.",
       "name": "open-webui",
       "url": "http://127.0.0.1:3301"

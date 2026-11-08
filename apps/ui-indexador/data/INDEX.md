@@ -6,7 +6,7 @@ layout, and add to it whenever a design task researches new references.
 
 - `sites/` holds real pages, as `<slug>-hero.jpg` (first screen) and `<slug>-full.jpg` (full page at 0.5 scale).
 - `blocks/` holds registry components and templates, one capture each.
-- Add one with `~/.ai-os/venv/bin/python capture.py <url> <slug> [--dir blocks] [--wait ms] [--dark]`. It prints the
+- Add one with `~/.ai-os/venv/bin/python scripts/capture.py <url> <slug> [--dir blocks] [--wait ms] [--dark]`. It prints the
   measured row stub; fill in the pattern and the notes by hand.
 - Captures are references, not assets. Never ship another site's design; take the pattern, not the look.
 - The measurements are from `getBoundingClientRect` at capture time, and sites change. Each section says when it
@@ -91,7 +91,7 @@ templates (paid, pro.reactbits.dev).
 ## Registry survey (2026-11-06, developer profile site)
 
 How it was done:
-- `pick-ui-library/scripts/survey-registries.py` found 14,775 section items across 309 registries. 4,382 of them are hero,
+- `scripts/survey-registries.py` found 14,775 section items across 309 registries. 4,382 of them are hero,
   profile, about, experience or project items in 146 registries, and 4,062 had their source classified.
 - Three reviewers then opened the galleries of those 146 registries, using sitemap URLs where they existed, and
   classified every block they saw: 442 blocks in 94 registries. The rows are in `survey/blocks-2026-11-06.csv`.
@@ -141,4 +141,4 @@ Not covered yet:
 - Hero is done; the other kinds were only partly reached.
 - Testimonials, contact, footer and navigation have barely been started.
 
-To resume, rerun the inventory with `pick-ui-library/scripts/survey-registries.py`, then render the remainder the same way.
+To resume, rerun the inventory with `scripts/survey-registries.py`, then render the remainder the same way.
