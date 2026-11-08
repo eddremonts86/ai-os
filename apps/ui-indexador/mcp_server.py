@@ -22,16 +22,19 @@ mcp = FastMCP("ui-indexador", host=os.environ.get("UI_INDEXER_HOST", "127.0.0.1"
 @mcp.tool()
 def search_items(q: str = "", kind: str = "", type: str = "", registry: str = "", layout: str = "",
                  feature: str = "", dep: str = "", limit: int = 25, offset: int = 0, mode: str = "auto",
-                 include_hidden: bool = False) -> dict:
+                 include_hidden: bool = False, framework: str = "react", osi_only: bool = False) -> dict:
     """Search every indexed shadcn registry component and block (100k+ items, 300 registries).
     q is searched by meaning (semantic, local embeddings): describe the piece in English, one piece per call
     ("airport autocomplete", "passenger count stepper", "flight checkout"), not the whole page.
     mode: auto | semantic | keyword. Icons/logos and examples are hidden unless kind/type or include_hidden asks.
+    framework: react (default) | vue | svelte | solid | react-native | any. osi_only: only verifiable OSI licences.
+    A result with mirror_of was republished by another registry: its licence is unverified, check the source.
     Filters combine. kind: hero, pricing, auth, dashboard, sidebar, table, chart, form, chat/ai... (see list_facets).
     type: block | component | ui | example. layout (blocks): split-text-media, centered-text, bento-grid...
     feature: motion, glass, shader3d, marquee... dep: an npm package (e.g. motion, recharts).
     Results come best match first (similarity, then a literal keyword hit, then registry rank) with the install command."""
-    return indexer.items(q, kind, type, registry, layout, feature, dep, limit, offset, mode, include_hidden)
+    return indexer.items(q, kind, type, registry, layout, feature, dep, limit, offset, mode, include_hidden,
+                         framework, osi_only)
 
 
 @mcp.tool()

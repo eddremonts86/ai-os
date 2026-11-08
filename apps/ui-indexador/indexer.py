@@ -83,7 +83,14 @@ def _expand(row):
                         ("lay", "layout"), ("f", "features")):
         if short in row:
             out[long] = row[short]
-    out.update({"registry_stars": reg.get("stars"), "license": reg.get("license"), "homepage": reg.get("homepage")})
+    out["framework"] = row.get("fw", "react")
+    if "m" in row:  # republished by a mirror: its stars and licence describe the mirror, not the author
+        out.update({"mirror_of": row["m"], "registry_stars": None, "license": None,
+                    "license_note": f"republished by {row['r']}; check {row['m']}'s own licence before use",
+                    "homepage": reg.get("homepage")})
+    else:
+        out.update({"registry_stars": reg.get("stars"), "license": reg.get("license") or None,
+                    "homepage": reg.get("homepage")})
     return out
 
 
@@ -126,15 +133,71 @@ def _similarities(q):
     return {i: float(sims[n]) for i, n in index.items()}, None
 
 
+OSI = {"MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "0BSD", "MPL-2.0", "Unlicense"}
+MIRRORS = {"@registrydirectory"}  # registries that republish other registries' items as "<source>/<item>"
+_FW_DEPS = [("react-native", re.compile(r"^react-native|^expo")), ("solid", re.compile(r"^solid-js|^lucide-solid|^@kobalte")),
+            ("vue", re.compile(r"^vue$|^vue@|^@vueuse|^motion-v|/vue\b|^@hugeicons/vue")), ("svelte", re.compile(r"^svelte")),
+            ("preact", re.compile(r"^preact")), ("lit", re.compile(r"^lit$|^lit@|^@lit/"))]
+_FW_DESC = [("react-native", re.compile(r"react native|\bexpo\b", re.I)), ("vue", re.compile(r"\bvue\b", re.I)),
+            ("svelte", re.compile(r"svelte", re.I)), ("solid", re.compile(r"\bsolid(js)?\b(?! colou?r)", re.I)),
+            ("angular", re.compile(r"angular", re.I)), ("terminal", re.compile(r"opentui|terminal ui|\btui\b", re.I))]
+
+
+def _registry_framework(reg):
+    """react unless the registry says it is for something else (a list that includes React stays react)."""
+    text = f"{reg.get('name', '')} {reg.get('description', '')}"
+    if re.search(r"\breact\b(?! native)", text, re.I):
+        return "react"
+    return next((fw for fw, pat in _FW_DESC if pat.search(text)), "react")
+
+
+@lru_cache(maxsize=2)
+def _catalog(cat_mtime, reg_mtime):
+    """The catalog as served: mirror copies of an indexed source item dropped, remaining mirrors flagged with
+    their source ("m"), and a framework ("fw") from the item's dependencies, else from its registry."""
+    cat = load("catalog.json")
+    facts = _registry_facts(reg_mtime)
+    present = {(r["r"], r["n"]) for r in cat["items"] if r["r"] not in MIRRORS}
+    reg_fw = {name: _registry_framework(reg) for name, reg in facts.items()}
+    rows = []
+    for r in cat["items"]:
+        r = dict(r)
+        if r["r"] in MIRRORS and "/" in r["n"]:
+            source, item = r["n"].split("/", 1)
+            if (f"@{source}", item) in present:
+                continue  # the same item is indexed under its own registry
+            r["m"] = f"@{source}"
+        deps = r.get("dep", [])
+        r["fw"] = next((fw for fw, pat in _FW_DEPS if any(pat.search(d) for d in deps)),
+                       reg_fw.get(r.get("m") or r["r"]) or reg_fw.get(r["r"], "react"))
+        rows.append(r)
+    return {**cat, "items": rows}
+
+
+def catalog():
+    return _catalog(_mtime("catalog.json"), _mtime("registries.json"))
+
+
+def _licence(r, facts):
+    """An OSI licence we can vouch for, or None. A mirror's registry licence is the mirror's, not the source's."""
+    if "m" in r:
+        return None
+    lic = facts.get(r["r"], {}).get("license") or ""
+    return lic if lic in OSI else None
+
+
 def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None, dep=None, limit=50, offset=0,
-          mode="auto", include_hidden=False):
+          mode="auto", include_hidden=False, framework="react", osi_only=False):
     """Search every indexed component and block. All filters are optional and combine (AND).
 
     mode: "auto" (semantic when available, else keyword), "semantic" or "keyword". Semantic search embeds q with
     the local Ollama and finds items by meaning ("buy flight tickets" finds booking, checkout, boarding pass);
     keyword search needs every word of q to start a word in the item's name, title, description or categories.
-    Icons/logos and examples are hidden unless kind/type asks for them or include_hidden is set."""
-    cat = load("catalog.json")
+    Icons/logos and examples are hidden unless kind/type asks for them or include_hidden is set.
+    framework: react (default), vue, svelte, solid, react-native, preact, lit, angular, terminal, or "any".
+    osi_only: only items whose registry has an OSI licence (mirrors are excluded: their licence is unverified).
+    Copies a mirror republishes of an item indexed under its own registry are not returned twice."""
+    cat = catalog()
     facts = _registry_facts(_mtime("registries.json"))
     words = _words(q)
     show_hidden = include_hidden in (True, "1", "true", "yes") or kind == "icon/logo" or type == "example"
@@ -150,6 +213,10 @@ def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None
     keyword_hits, nearest = [], []
     for r in cat["items"]:
         if not show_hidden and HIDDEN(r):
+            continue
+        if framework and framework != "any" and r.get("fw", "react") != framework:
+            continue
+        if osi_only in (True, "1", "true", "yes") and not _licence(r, facts):
             continue
         if not (_eq(r["k"], kind) and _eq(r["t"], type) and _eq(r["r"], registry) and _eq(r.get("lay"), layout)):
             continue
@@ -167,13 +234,15 @@ def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None
             nearest.append(r)
 
     if sims is None:
-        hits = sorted(keyword_hits, key=lambda r: (-relevance(r), -(facts.get(r["r"], {}).get("score") or 0), r["n"]))
+        hits = sorted(keyword_hits, key=lambda r: (-relevance(r), "m" in r, -(facts.get(r["r"], {}).get("score") or 0), r["n"]))
         used = "keyword"
     else:
         sim = lambda r: sims.get(f"{r['r']}/{r['n']}", 0.0)
         nearest = sorted(nearest, key=sim, reverse=True)[:SEMANTIC_TOP]
         # Meaning first; a literal keyword match and a strong registry break near-ties.
-        score = lambda r, kw: sim(r) + (0.06 if kw else 0) + 0.01 * relevance(r) + 0.0002 * (facts.get(r["r"], {}).get("score") or 0)
+        rank = lambda r: 0 if "m" in r else (facts.get(r["r"], {}).get("score") or 0)  # a mirror's rank is not the author's
+        score = lambda r, kw: (sim(r) + (0.06 if kw else 0) + 0.01 * relevance(r) + 0.0002 * rank(r)
+                               - (0.03 if "m" in r else 0))
         ranked = [(score(r, True), r) for r in keyword_hits] + [(score(r, False), r) for r in nearest]
         hits = [r for _, r in sorted(ranked, key=lambda x: -x[0])]
         used = "semantic"
@@ -189,9 +258,10 @@ def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None
 def facets():
     """What the catalog can be filtered by, with counts: kinds, types, layouts, features."""
     from collections import Counter
-    cat = load("catalog.json")["items"]
+    cat = catalog()["items"]
     count = lambda key: dict(Counter(r[key] for r in cat if key in r).most_common())
-    return {"total": len(cat), "registries": len({r["r"] for r in cat}), "kinds": count("k"), "types": count("t"),
+    return {"total": len(cat), "registries": len({r["r"] for r in cat}), "mirrored": sum(1 for r in cat if "m" in r),
+            "frameworks": count("fw"), "kinds": count("k"), "types": count("t"),
             "layouts": count("lay"), "features": dict(Counter(f for r in cat for f in r.get("f", [])).most_common())}
 
 
@@ -277,7 +347,7 @@ def health():
         out["built"] = load("catalog.json").get("built")
     except FileNotFoundError:
         pass
-    for name, fn in (("items", lambda: len(load("catalog.json")["items"])), ("registries", lambda: len(load("registries.json"))),
+    for name, fn in (("items", lambda: len(catalog()["items"])), ("registries", lambda: len(load("registries.json"))),
                      ("themes", lambda: len(load("themes.json")["themes"])), ("captures", lambda: captures()["total"])):
         try:
             out[name] = fn()

@@ -4,7 +4,7 @@
   python3 server.py [--port 3040] [--host 127.0.0.1]      (env: UI_INDEXER_PORT, UI_INDEXER_HOST)
 
   /health                                             data counts, or what is missing
-  /items?q=&kind=&type=&registry=&layout=&feature=&dep=&mode=auto|semantic|keyword&include_hidden=&limit=&offset=
+  /items?q=&kind=&type=&registry=&layout=&feature=&dep=&mode=auto|semantic|keyword&include_hidden=&framework=react&osi_only=&limit=&offset=
                                                       search EVERY indexed component and block (install command included);
                                                       semantic by meaning when embeddings + Ollama are there
   /facets                                             the kinds, types, layouts, features you can filter by
@@ -36,7 +36,8 @@ ROUTES = {
     "/health": lambda q: indexer.health(),
     "/items": lambda q: indexer.items(q.get("q"), q.get("kind"), q.get("type"), q.get("registry"), q.get("layout"),
                                       q.get("feature"), q.get("dep"), q.get("limit"), q.get("offset"),
-                                      q.get("mode", "auto"), q.get("include_hidden", False)),
+                                      q.get("mode", "auto"), q.get("include_hidden", False), q.get("framework", "react"),
+                                      q.get("osi_only", False)),
     "/facets": lambda q: indexer.facets(),
     "/registries": lambda q: indexer.registries(q.get("category"), q.get("q"), q.get("limit")),
     "/blocks": lambda q: indexer.blocks(q.get("kind"), q.get("layout"), q.get("tone"), q.get("registry"),
