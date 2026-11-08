@@ -63,8 +63,12 @@ def load_yaml_mapping(path, label):
     return value
 
 
+AI_OS_ROOT = str(Path(__file__).resolve().parent.parent)
+
+
 def expand_home(value, home):
-    return str(value).replace("${HOME}", home).replace("${USERPROFILE}", home)
+    return (str(value).replace("${HOME}", home).replace("${USERPROFILE}", home)
+            .replace("${AI_OS_ROOT}", AI_OS_ROOT))
 
 
 def load_definitions(mcp_dir, home):
