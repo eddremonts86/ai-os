@@ -1,15 +1,12 @@
-import Comparison03 from "@/components/blocks/comparison-03"
-import Cta06 from "@/components/blocks/cta-06"
-import FAQsTwo from "@/components/blocks/faqs/faqs-section-two"
-import Footer03 from "@/components/blocks/footer-03"
-import { Features01 } from "@/components/features-01"
+import { lazy, Suspense } from "react"
+
 import { Hero01 } from "@/components/hero-01"
 import { Navbar } from "@/components/navbar"
-import { Built } from "@/sections/built"
-import { How } from "@/sections/how"
-import { Integrate } from "@/sections/integrate"
-import { LiveSearch } from "@/sections/live-search"
 import { Numbers } from "@/sections/numbers"
+
+// Below the fold: loaded after the hero so the first screen paints from a small bundle.
+const Rest = lazy(() => import("@/sections/rest"))
+const Footer = lazy(() => import("@/components/blocks/footer-03"))
 
 export default function App() {
   return (
@@ -19,16 +16,13 @@ export default function App() {
       <main id="main" className="bg-background text-foreground">
         <Hero01 />
         <Numbers />
-        <Comparison03 />
-        <How />
-        <LiveSearch />
-        <Features01 />
-        <Integrate />
-        <Built />
-        <FAQsTwo />
-        <Cta06 />
+        <Suspense fallback={<div className="min-h-screen" />}>
+          <Rest />
+        </Suspense>
       </main>
-      <Footer03 />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </>
   )
 }
