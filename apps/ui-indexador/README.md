@@ -1,33 +1,45 @@
 # ui-indexador
 
-The shadcn registry index and the captured design gallery, behind a read-only HTTP API. AI-OS skills
-(`aios-ui-design`, `pick-ui-library`) read it through the API only, never the files, so this can move to its
-own repo and environment without touching them.
+An index of every component and block in the shadcn registry ecosystem (~114k items, ~300 registries), plus a
+curated design gallery and theme presets, behind a read-only API. AI-OS skills (`aios-ui-design`,
+`pick-ui-library`) use it only through the API (MCP tools or HTTP), never the files, so it can move to its own
+repo and environment without touching them.
+
+It does not store or serve component code: every result carries `npx shadcn@latest add @registry/item`, and
+shadcn's own CLI/MCP fetches and installs it.
 
 ```bash
-python3 apps/ui-indexador/server.py          # http://127.0.0.1:3040  (UI_INDEXER_PORT / UI_INDEXER_HOST)
-python3 apps/ui-indexador/test_server.py     # smoke test of every endpoint
+python3 scripts/survey-registries.py catalog --deep --out data   # build data/catalog.json (~15 s, ~10 min with --deep)
+python3 server.py                                                # HTTP on 127.0.0.1:3040
+~/.ai-os/venv/bin/python mcp_server.py                           # MCP over stdio (--http: 127.0.0.1:3041/mcp)
+~/.ai-os/venv/bin/python test_server.py                          # smoke test: every endpoint + the MCP tool list
 ```
 
-## API (GET, JSON)
+AI-OS registers the MCP server in `ai-config/mcp/ui-indexador.yaml`.
 
-| Endpoint | Returns |
-|---|---|
-| `/health` | counts of registries, blocks, captures |
-| `/registries?category=&q=&limit=` | ranked registries, best score first |
-| `/blocks?kind=&layout=&tone=&registry=&min_fit=&q=&limit=` | surveyed blocks, best fit first |
-| `/captures?dir=sites\|blocks&kind=&q=` | screenshots, each with a `/files/...` url |
-| `/index.md`, `/registries.md` | curated pattern notes and ranked tables (markdown) |
-| `/files/<path>` | a file under `data/` |
+## What it answers
 
-## Layout
+| MCP tool | HTTP | Returns |
+|---|---|---|
+| `search_items` | `/items?q=&kind=&type=&registry=&layout=&feature=&dep=&limit=&offset=` | every indexed item, most relevant then best-ranked registry first, with install command |
+| `list_facets` | `/facets` | the kinds, types, layouts and features to filter by, with counts |
+| `list_registries` | `/registries?category=&q=` | ranked registries (stars, size, endpoint health) |
+| `curated_blocks` | `/blocks?kind=&layout=&tone=&min_fit=` | hand-classified blocks with a 1-5 fit score |
+| `list_captures` | `/captures?dir=&kind=` | 1440x900 screenshots of real sites and blocks (`/files/...`) |
+| `design_notes` | `/index.md` | curated layout patterns, measured |
+| `search_themes`, `get_theme` | `/themes?q=&vibe=`, `/themes/<name>` | tweakcn presets; one preset with tokens and CSS variables |
+| | `/health` | counts, or which data file is missing |
 
-- `server.py`: the API, standard library only.
-- `data/`: `registries.json` + `registries.md` (ranked index), `INDEX.md` (patterns and measured captures),
-  `sites/` and `blocks/` (screenshots), `survey/*.csv` (classified blocks).
-- `scripts/`: how the data is made.
-  - `rank-registries.py --out data` refreshes the ranked index (needs `gh`).
-  - `survey-registries.py items | sitemaps | classify --out DIR` inventories what the registries contain.
-  - `~/.ai-os/venv/bin/python scripts/capture.py <url> <slug> [--dir sites|blocks]` adds a capture.
+## How the index is made
 
-Not yet: scheduled re-crawls, a database, auth. Local only for now, bound to 127.0.0.1.
+1. `scripts/rank-registries.py --out data`: the shadcn directory (ui.shadcn.com/r/registries.json), ranked by
+   GitHub stars, size and endpoint health → `registries.json` / `registries.md` (needs `gh`).
+2. `scripts/survey-registries.py catalog --out data`: every item of every ranked registry from its
+   `registry.json` (name, type, categories, dependencies), tagged with a kind by its name and description.
+   `--deep` also fetches each block's source and tags its layout and visual features. Generated, not committed.
+3. `scripts/fetch-themes.py`: tweakcn presets (Apache-2.0) plus vibes/keywords from shadcn-ui-mcp-server (MIT).
+4. Hand work: `scripts/capture.py` screenshots, the survey CSVs and `INDEX.md`.
+
+Kinds and layouts are heuristics from names and code: use them to narrow, then look before choosing.
+
+Not yet: scheduled re-crawls, framework tags (some registries are Vue/Svelte), auth. Local only, bound to 127.0.0.1.

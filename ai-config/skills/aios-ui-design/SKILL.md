@@ -20,12 +20,13 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    The brief's own words win over any default of the skill.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
-4. **Compose from proven pieces, do not invent a visual system.** Start in the ui-indexador API
-   (`${UI_INDEXER_URL:-http://127.0.0.1:3040}`; start it with `python3 $AI_OS_ROOT/apps/ui-indexador/server.py`):
-   `/index.md` has real sites and registry blocks, captured and measured, grouped by pattern; `/captures?kind=hero`
-   and `/blocks?kind=hero&min_fit=4` list screenshots and surveyed blocks. Compare at least three patterns that fit
-   the brief before picking one. Add new references with the app's `scripts/capture.py`. Then `pick-ui-library` for
-   libraries and the API's `/registries` for components and blocks: take sections from the top registries of the matching category
+4. **Compose from proven pieces, do not invent a visual system.** Ask ui-indexador: its MCP tools
+   (`design_notes`, `list_captures`, `curated_blocks`, `search_items`, `search_themes`/`get_theme`) or the same
+   queries over HTTP (`${UI_INDEXER_URL:-http://127.0.0.1:3040}`, e.g. `/items?kind=hero&type=block`). It indexes
+   every block and component of 300 shadcn registries (kind, layout, features, deps, install command), plus real
+   sites captured and measured, and tweakcn themes. Compare at least three patterns that fit the brief before
+   picking one; start the palette from a theme whose vibe fits (`get_theme` returns the CSS variables). Then
+   `pick-ui-library` for libraries. For each section, search the catalog by kind and take the best-ranked match
    (`npx shadcn add @<registry>/<item>`), then adapt them to the brand. Hand-build only what no top registry has.
    A from-scratch redesign was rejected on 2026-11-06 as amateur; passing the gate does not make a design good.
 5. **Show one section first.** Build the hero (or the one section that carries the idea), show it to the user
