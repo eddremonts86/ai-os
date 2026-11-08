@@ -97,7 +97,7 @@ What is backed up is only what cannot be rebuilt: the graphiti graph (a FalkorDB
 | `grepai` | Semantic code search over Ollama embeddings |
 | Ollama | Local LLM and embeddings, `:11500` (`OLLAMA_HOST` in `~/.ai-os/env.sh`) |
 
-`ai-os memory start|status|reindex` operates it; the `ai-os-memory` skill covers repairs. When to read and write memory: `rules/always_do.md` "Use the memory stack".
+`ai-os memory start|status|reindex` operates it; the `aios-memory` skill covers repairs. When to read and write memory: `rules/always_do.md` "Use the memory stack".
 
 There are **11 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem` and `sequential-thinking` are disabled; the reasons are in each YAML.
 

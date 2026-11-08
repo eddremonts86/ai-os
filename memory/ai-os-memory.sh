@@ -212,7 +212,7 @@ sub_visualize() {
     fi
   else
     echo "  2) codebase-memory-mcp graph:  http://localhost:9749  → NOT reachable"
-    echo "     tip: open 'hermes chat --skills ai-os-memory' in another terminal"
+    echo "     tip: open 'hermes chat --skills aios-memory' in another terminal"
     echo "           the cbm daemon runs as a thread of the MCP server, then :9749 binds"
   fi
   echo ""

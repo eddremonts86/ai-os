@@ -19,7 +19,7 @@
 │  - Flat global skills + optional plugin bundles                 │
 │  - 14 superpowers skills (REQUIRED)                             │
 │  - 10 declarative MCP servers (all enabled)                      │
-│  - Prompt: ai-os-quickstart                                      │
+│  - Prompt: aios-quickstart                                      │
 └─────────────────────────────────────────────────────────────────┘
                               ▲
                               │ (symlinks)
