@@ -111,7 +111,10 @@
      "install": "npx shadcn@latest add @grootstudio/github-stars",
      "description": "Displays a GitHub repo star count with auto-fetch, daily revalidation, compact formatting, and a tooltip."
     }
-   ]
+   ],
+   "chosen": null,
+   "composed": true,
+   "why": "The indexed navbars were mega-menus or WebGL pieces; the GitHub star button would link to a repo that is still private. Composed from the installed @shadcn button."
   },
   {
    "section": "hero",
@@ -228,7 +231,7 @@
      "description": "Left-aligned hero with key figures and an animated deploy terminal. No logo strip, so it pairs with logos-01."
     }
    ],
-   "status": "awaiting Edd's pick",
+   "status": "chosen by Edd from screenshots (A)",
    "rejected": {
     "@uiception/hero-section-v1": "Next.js only (next/image, node:fs); the index cannot see this because next is not in its dependencies"
    },
@@ -236,6 +239,15 @@
     "@balick/hero-01",
     "@balick/hero-02",
     "@uiception/hero-section-v3"
+   ],
+   "chosen": "@balick/hero-01",
+   "install": "npx shadcn@latest add @balick/hero-01",
+   "why": "Centred headline over a product window: the window became a live search against /items, the logo marquee shows the top-ranked registries from /registries.",
+   "changes": [
+    "copy",
+    "ProductPreview replaced by SearchPreview (real search)",
+    "logo marquee fed by /registries",
+    "type size reduced for the monospace theme"
    ]
   },
   {
@@ -1447,5 +1459,14 @@
     }
    ]
   }
- ]
+ ],
+ "theme": {
+  "name": "darkmatter",
+  "source": "/themes/darkmatter (tweakcn, Apache-2.0)",
+  "chosen_by": "Edd, from screenshots (option 2)",
+  "fonts": [
+   "Geist Mono (self-hosted)",
+   "JetBrains Mono (self-hosted)"
+  ]
+ }
 }

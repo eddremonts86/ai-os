@@ -26,3 +26,7 @@ Measured on the 16 section queries (`docs/landing-queries-2026-11-08.txt` before
   The `--deep` crawl reads every block's source and could tag `next/` and `node:` imports as `framework: next`.
 - **Items that bring their own styling system.** `@astryx` command palette items need `@astryxdesign/core` and
   StyleX. A `styling` tag (tailwind / stylex / css-modules) from dependencies would let a search exclude them.
+- **The `kind` tag is too noisy to show to people.** In the hero's live search, `@kokonutui/seat-map` came back
+  as `kanban/board`, `@ns-ui/seatmap-ascii-pick` as `pricing`, a booking form as `testimonials`. The page shows
+  the item `type` (block / component / ui), which comes from the registry, instead. Kinds are first-match
+  regexes on names and descriptions; an embedding-nearest-label classifier would beat them.
