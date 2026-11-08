@@ -105,6 +105,29 @@ class GenerateMcpConfigTests(unittest.TestCase):
         self.assertEqual(config["mcp_servers"]["managed"]["command"], "managed-command")
         self.assertTrue(self.config_path.with_suffix(".yaml.pre-aios.bak").exists())
 
+    def test_requires_url_skips_a_server_whose_service_is_down_and_keeps_its_entry(self):
+        self.write_definition("svc.yaml", {"name": "svc", "transport": "http", "url": "http://127.0.0.1:9/mcp",
+                                           "requires_url": "http://127.0.0.1:9/health"})
+        self.config_path.parent.mkdir()
+        self.config_path.write_text(json.dumps({"mcp_servers": {"svc": {"url": "http://old/mcp"}}}), encoding="utf-8")
+        with patch.object(self.generator, "service_answers", return_value=False):
+            exit_code, _ = self.run_generator()
+        self.assertEqual(exit_code, 0)
+        config = json.loads(self.config_path.read_text(encoding="utf-8"))
+        self.assertEqual(config["mcp_servers"]["svc"], {"url": "http://old/mcp"})  # neither added nor removed
+
+    def test_requires_url_registers_the_server_when_its_service_answers(self):
+        self.write_definition("svc.yaml", {"name": "svc", "transport": "http", "url": "http://127.0.0.1:9/mcp",
+                                           "requires_url": "http://127.0.0.1:9/health"})
+        with patch.object(self.generator, "service_answers", return_value=True):
+            exit_code, _ = self.run_generator()
+        self.assertEqual(exit_code, 0)
+        config = json.loads(self.config_path.read_text(encoding="utf-8"))
+        self.assertIn("svc", config["mcp_servers"])
+
+    def test_service_answers_is_false_for_a_closed_port(self):
+        self.assertFalse(self.generator.service_answers("http://127.0.0.1:9/health", timeout=1))
+
     def test_removes_disabled_managed_server_without_removing_personal_server(self):
         self.write_definition("managed.yaml", {"name": "managed", "enabled": False})
         self.config_path.parent.mkdir()
