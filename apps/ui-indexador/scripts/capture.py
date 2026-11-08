@@ -3,8 +3,8 @@
 
   ~/.ai-os/venv/bin/python capture.py <url> <slug> [--dir sites|blocks] [--wait 3000] [--dark]
 
-Writes <dir>/<slug>-hero.jpg (1440x900) and <dir>/<slug>-full.jpg (0.5 scale, height capped),
-then prints one INDEX.md row stub with the measured content width and h1 size. Fill in the
+Writes data/<dir>/<slug>-hero.jpg (1440x900) and <dir>/<slug>-full.jpg (0.5 scale, height capped),
+then prints one data/INDEX.md row stub with the measured content width and h1 size. Fill in the
 pattern and the notes by hand: a measurement is evidence, a description is judgement.
 """
 
@@ -40,7 +40,7 @@ def main():
     ap.add_argument("--wait", type=int, default=3000, help="ms after load, for intro animations")
     ap.add_argument("--dark", action="store_true")
     a = ap.parse_args()
-    out = HERE / a.dir
+    out = HERE.parent / "data" / a.dir
     out.mkdir(exist_ok=True)
     with sync_playwright() as p, tempfile.TemporaryDirectory() as tmp:
         b = p.chromium.launch()

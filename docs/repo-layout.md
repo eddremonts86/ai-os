@@ -67,6 +67,7 @@ ai-os/
     ├── plans-explorer/         # the plans SPA (plans.eduardoinerarte.dk)
     ├── submission-api/         # the submissions write path
     ├── create-ai-os/           # published npm package @edd_remonts/create-ai-os
+    ├── ui-indexador/           # shadcn registry index + design gallery, read-only API on :3040 (to become its own repo)
     └── data/                   # the plans product
         ├── projects/           #   the corpus: 466 machine-written plan dirs
         ├── tools/              #   the machinery

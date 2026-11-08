@@ -6,13 +6,13 @@
   survey-registries.py classify  --out DIR [--kinds hero,about]  # fetch each item's source, tag its layout
 
 Run them in order; each step reads the previous step's JSON from DIR. Inputs: the ranked index in
-../registries.json (rank-registries.py) and the live directory at ui.shadcn.com/r/registries.json.
+../data/registries.json (rank-registries.py) and the live directory at ui.shadcn.com/r/registries.json.
 
 Why three sources: a registry's registry.json says what it exports (name, description, categories);
 its sitemap says where each block's preview page lives; each item's JSON carries the full source, so
 the layout can be read from the code for every item, not only the ones someone screenshotted.
 The code tags are heuristics (an avatar row reads as "person"): use them to narrow a shortlist, then
-look at the blocks (render them, see the gallery in aios-ui-design) before choosing.
+look at the blocks (render them, see apps/ui-indexador) before choosing.
 Standard library only. Surveyed for a developer profile site on 2026-11-06: 14,775 items, 4,062 classified.
 """
 
@@ -66,7 +66,7 @@ def pool(fn, xs, n=24):
 
 
 def items(out, min_score):
-    ranked = {r["name"]: r for r in json.loads((HERE.parent / "registries.json").read_text()) if r["score"] >= min_score}
+    ranked = {r["name"]: r for r in json.loads((HERE.parent / "data" / "registries.json").read_text()) if r["score"] >= min_score}
     src = {r["name"]: r for r in get(DIRECTORY, timeout=30)}
 
     def one(name):
