@@ -72,7 +72,7 @@
     }
 }
 
-/* Theme: tweakcn "darkmatter" (Apache-2.0), fetched from ui-indexador's own /themes/darkmatter. */
+/* Theme: tweakcn "darkmatter" (Apache-2.0), fetched from ui-indexador's own /themes/darkmatter; primary orange #e78a53 -> #ff6a00 at Edd's request. */
 :root {
   --background: #ffffff;
   --foreground: #111827;
@@ -94,7 +94,7 @@
   --input: #e5e7eb;
   --ring: #d87943;
   --chart-1: #5f8787;
-  --chart-2: #e78a53;
+  --chart-2: #ff6a00;
   --chart-3: #fbcb97;
   --chart-4: #888888;
   --chart-5: #999999;
@@ -126,7 +126,7 @@
   --card-foreground: #c1c1c1;
   --popover: #121113;
   --popover-foreground: #c1c1c1;
-  --primary: #e78a53;
+  --primary: #ff6a00;
   --primary-foreground: #121113;
   --secondary: #5f8787;
   --secondary-foreground: #121113;
@@ -138,20 +138,20 @@
   --destructive-foreground: #121113;
   --border: #222222;
   --input: #222222;
-  --ring: #e78a53;
+  --ring: #ff6a00;
   --chart-1: #5f8787;
-  --chart-2: #e78a53;
+  --chart-2: #ff6a00;
   --chart-3: #fbcb97;
   --chart-4: #888888;
   --chart-5: #999999;
   --sidebar: #121212;
   --sidebar-foreground: #c1c1c1;
-  --sidebar-primary: #e78a53;
+  --sidebar-primary: #ff6a00;
   --sidebar-primary-foreground: #121113;
   --sidebar-accent: #333333;
   --sidebar-accent-foreground: #c1c1c1;
   --sidebar-border: #222222;
-  --sidebar-ring: #e78a53;
+  --sidebar-ring: #ff6a00;
   --shadow-color: #000000;
 }
 
