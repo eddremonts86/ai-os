@@ -12,12 +12,12 @@
       "port": 3021
     },
     {
-      "//": "apps/ui-indexador: read-only API over the shadcn registry index and the design gallery, used by aios-ui-design and pick-ui-library. Bound to 127.0.0.1.",
+      "//": "apps/ui-indexador: read-only API over every shadcn registry item, the design gallery and themes (semantic search needs the venv's numpy + Ollama). Bound to 127.0.0.1.",
       "name": "ui-indexador",
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-lc",
-        "cd \"${AI_OS_ROOT:-.}/apps/ui-indexador\" && exec python3 server.py --port 3040"
+        "cd \"${AI_OS_ROOT:-.}/apps/ui-indexador\" && exec \"$HOME/.ai-os/venv/bin/python\" server.py --port 3040"
       ],
       "port": 3040
     },

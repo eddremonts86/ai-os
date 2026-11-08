@@ -10,7 +10,9 @@ Data files (see README for how each is made):
 
 import csv
 import json
+import os
 import re
+import urllib.request
 from functools import lru_cache
 from pathlib import Path
 
@@ -85,32 +87,103 @@ def _expand(row):
     return out
 
 
-def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None, dep=None, limit=50, offset=0):
+HIDDEN = lambda r: r["k"] == "icon/logo" or r["t"] == "example"  # noise unless asked for by kind/type/include_hidden
+SEMANTIC_TOP = 300  # how many nearest items join the keyword hits in a semantic search
+OLLAMA = os.environ.get("UI_INDEXER_OLLAMA", "http://localhost:11500")
+EMBED_MODEL = os.environ.get("UI_INDEXER_EMBED_MODEL", "nomic-embed-text")
+
+
+@lru_cache(maxsize=2)
+def _vectors(mtime):
+    import numpy as np
+    meta = json.loads((DATA / "embeddings.json").read_text())
+    return np.load(DATA / "embeddings.npy").astype("float32"), {i: n for n, i in enumerate(meta["ids"])}, meta
+
+
+@lru_cache(maxsize=256)
+def _query_vector(q):
+    import numpy as np
+    body = json.dumps({"model": EMBED_MODEL, "input": ["search_query: " + q], "truncate": True}).encode()
+    req = urllib.request.Request(f"{OLLAMA}/api/embed", data=body, headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        v = np.asarray(json.load(r)["embeddings"][0], dtype="float32")
+    dims = _vectors(_mtime("embeddings.npy"))[0].shape[1]
+    v = v[:dims]
+    return v / np.linalg.norm(v)
+
+
+def _similarities(q):
+    """{item id: cosine similarity} for every embedded item, or (None, why) when semantic search is unavailable."""
+    if not (DATA / "embeddings.npy").exists():
+        return None, "no data/embeddings.npy (run scripts/embed-catalog.py)"
+    try:
+        mat, index, _ = _vectors(_mtime("embeddings.npy"))
+        sims = mat @ _query_vector(q.strip().lower())
+    except ImportError:
+        return None, "numpy is not installed for this Python (use ~/.ai-os/venv/bin/python)"
+    except Exception as e:  # Ollama down, model missing: keyword search still works
+        return None, f"embedding the query failed ({type(e).__name__}); is Ollama up at {OLLAMA}?"
+    return {i: float(sims[n]) for i, n in index.items()}, None
+
+
+def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None, dep=None, limit=50, offset=0,
+          mode="auto", include_hidden=False):
     """Search every indexed component and block. All filters are optional and combine (AND).
-    q matches every word against name, title, description and categories. Best-ranked registry first."""
+
+    mode: "auto" (semantic when available, else keyword), "semantic" or "keyword". Semantic search embeds q with
+    the local Ollama and finds items by meaning ("buy flight tickets" finds booking, checkout, boarding pass);
+    keyword search needs every word of q to start a word in the item's name, title, description or categories.
+    Icons/logos and examples are hidden unless kind/type asks for them or include_hidden is set."""
     cat = load("catalog.json")
     facts = _registry_facts(_mtime("registries.json"))
     words = _words(q)
-    hits = []
+    show_hidden = include_hidden in (True, "1", "true", "yes") or kind == "icon/logo" or type == "example"
+    sims, note = (None, None)
+    if words and mode != "keyword":
+        sims, note = _similarities(q)
+        if sims is None and mode == "semantic":
+            raise ValueError(f"semantic search unavailable: {note}")
+
+    def relevance(r):  # a word in the name or kind counts more than one in the description
+        return sum(3 * (w in r["n"].lower()) + 3 * (w in r["k"]) + 2 * (w in r.get("ti", "").lower()) for w in words)
+
+    keyword_hits, nearest = [], []
     for r in cat["items"]:
+        if not show_hidden and HIDDEN(r):
+            continue
         if not (_eq(r["k"], kind) and _eq(r["t"], type) and _eq(r["r"], registry) and _eq(r.get("lay"), layout)):
             continue
         if feature and feature.lower() not in r.get("f", []):
             continue
         if dep and not any(dep.lower() in d.lower() for d in r.get("dep", [])):
             continue
-        if words:
-            hay = f"{r['n']} {r.get('ti', '')} {r.get('d', '')} {' '.join(r.get('c', []))} {r['k']}".lower()
-            if not _has_words(hay, words):
-                continue
-        hits.append(r)
+        if not words:
+            keyword_hits.append(r)
+            continue
+        hay = f"{r['n']} {r.get('ti', '')} {r.get('d', '')} {' '.join(r.get('c', []))} {r['k']}".lower()
+        if _has_words(hay, words):
+            keyword_hits.append(r)
+        elif sims is not None:
+            nearest.append(r)
 
-    def relevance(r):  # a word in the name or kind counts more than one in the description
-        return sum(3 * (w in r["n"].lower()) + 3 * (w in r["k"]) + 2 * (w in r.get("ti", "").lower()) for w in words)
-
-    hits.sort(key=lambda r: (-relevance(r), -(facts.get(r["r"], {}).get("score") or 0), r["n"]))
+    if sims is None:
+        hits = sorted(keyword_hits, key=lambda r: (-relevance(r), -(facts.get(r["r"], {}).get("score") or 0), r["n"]))
+        used = "keyword"
+    else:
+        sim = lambda r: sims.get(f"{r['r']}/{r['n']}", 0.0)
+        nearest = sorted(nearest, key=sim, reverse=True)[:SEMANTIC_TOP]
+        # Meaning first; a literal keyword match and a strong registry break near-ties.
+        score = lambda r, kw: sim(r) + (0.06 if kw else 0) + 0.01 * relevance(r) + 0.0002 * (facts.get(r["r"], {}).get("score") or 0)
+        ranked = [(score(r, True), r) for r in keyword_hits] + [(score(r, False), r) for r in nearest]
+        hits = [r for _, r in sorted(ranked, key=lambda x: -x[0])]
+        used = "semantic"
     start = max(0, int(offset or 0))
-    return {"total": len(hits), "built": cat.get("built"), "items": [_expand(r) for r in hits[start:start + clamp(limit)]]}
+    out = {"total": len(hits), "mode": used, "built": cat.get("built"),
+           "items": [_expand(r) | ({"similarity": round(sims.get(f"{r['r']}/{r['n']}", 0.0), 3)} if sims else {})
+                     for r in hits[start:start + clamp(limit)]]}
+    if note and words:
+        out["note"] = note
+    return out
 
 
 def facets():

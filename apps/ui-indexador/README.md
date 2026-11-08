@@ -10,7 +10,8 @@ shadcn's own CLI/MCP fetches and installs it.
 
 ```bash
 python3 scripts/survey-registries.py catalog --deep --out data   # build data/catalog.json (~15 s, ~10 min with --deep)
-python3 server.py                                                # HTTP on 127.0.0.1:3040
+~/.ai-os/venv/bin/python scripts/embed-catalog.py                # embeddings for semantic search (~7 min first run, then only changes)
+~/.ai-os/venv/bin/python server.py                               # HTTP on 127.0.0.1:3040
 ~/.ai-os/venv/bin/python mcp_server.py                           # MCP over stdio (--http: 127.0.0.1:3041/mcp)
 ~/.ai-os/venv/bin/python test_server.py                          # smoke test: every endpoint + the MCP tool list
 ```
@@ -21,7 +22,7 @@ AI-OS registers the MCP server in `ai-config/mcp/ui-indexador.yaml`.
 
 | MCP tool | HTTP | Returns |
 |---|---|---|
-| `search_items` | `/items?q=&kind=&type=&registry=&layout=&feature=&dep=&limit=&offset=` | every indexed item, most relevant then best-ranked registry first, with install command |
+| `search_items` | `/items?q=&kind=&type=&registry=&layout=&feature=&dep=&mode=&include_hidden=&limit=&offset=` | every indexed item, best match first, with install command |
 | `list_facets` | `/facets` | the kinds, types, layouts and features to filter by, with counts |
 | `list_registries` | `/registries?category=&q=` | ranked registries (stars, size, endpoint health) |
 | `curated_blocks` | `/blocks?kind=&layout=&tone=&min_fit=` | hand-classified blocks with a 1-5 fit score |
@@ -42,4 +43,15 @@ AI-OS registers the MCP server in `ai-config/mcp/ui-indexador.yaml`.
 
 Kinds and layouts are heuristics from names and code: use them to narrow, then look before choosing.
 
-Not yet: scheduled re-crawls, framework tags (some registries are Vue/Svelte), auth. Local only, bound to 127.0.0.1.
+## Search
+
+- **Semantic** (default when available): `q` is embedded with the local Ollama (`nomic-embed-text`, first 256
+  Matryoshka dimensions) and compared with every item's name, title, description, kind and categories, so
+  "buy flight tickets" finds booking, checkout and boarding-pass pieces that never say "flight". The 300 nearest
+  items join the literal keyword hits; a keyword hit and a strong registry break near-ties. English queries work
+  best. Needs `data/embeddings.npy`, numpy (AI-OS venv) and Ollama (`UI_INDEXER_OLLAMA`, default :11500).
+- **Keyword** (`mode=keyword`, or the fallback when semantic is unavailable; the response says why in `note`):
+  every word of `q` must start a word in the item's text.
+- Icons/logos (~39k) and examples are hidden unless `kind=icon/logo`, `type=example` or `include_hidden=1`.
+
+Not yet: scheduled re-crawls and re-embeds, framework tags (some registries are Vue/Svelte), auth. Local only, bound to 127.0.0.1.

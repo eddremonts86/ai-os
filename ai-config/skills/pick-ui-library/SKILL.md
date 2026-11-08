@@ -38,7 +38,8 @@ Our projects are shadcn/ui + Tailwind v4 + TanStack, so some picks already arriv
 For a component, block or section (not a library), search ui-indexador before writing one: the MCP tool
 `search_items` (or `${UI_INDEXER_URL:-http://127.0.0.1:3040}/items?q=&kind=&type=block`). It indexes every item of
 the ~300 healthy registries of the shadcn directory, ranked by proof of use (GitHub stars, then size, then endpoint
-health), and returns the install command. `list_registries` / `/registries?category=` ranks the registries themselves.
+health), and returns the install command. The search is semantic: describe one piece at a time in English
+("airport autocomplete", "passenger count stepper"), not the whole page; icons and demos are hidden by default. `list_registries` / `/registries?category=` ranks the registries themselves.
 
 - Prefer the top of the matching category, an OSI licence (MIT, Apache-2.0) and a recent push. `NOASSERTION`
   means read the repo's licence before using it.
