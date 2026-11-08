@@ -71,6 +71,20 @@ def expand_home(value, home):
             .replace("${AI_OS_ROOT}", AI_OS_ROOT))
 
 
+def service_answers(url, timeout=2):
+    """True when url answers at all (any HTTP status). Used by `requires_url`: an MCP server that is a local
+    service on its own (ui-indexador) is registered only on machines where that service runs."""
+    import urllib.error
+    import urllib.request
+    try:
+        urllib.request.urlopen(url, timeout=timeout).close()
+        return True
+    except urllib.error.HTTPError:
+        return True
+    except Exception:
+        return False
+
+
 def load_definitions(mcp_dir, home):
     """Return (enabled definitions, names of disabled ones). Disabled names are
     removed from every target, so `enabled: false` actually retires a server."""
@@ -82,6 +96,11 @@ def load_definitions(mcp_dir, home):
             raise ValueError(f"MCP definition {path} requires a non-empty string name")
         if not definition.get("enabled", True):
             disabled.append(name)
+            continue
+        requires = definition.get("requires_url")
+        if requires and not service_answers(requires):
+            # Not running here: neither add nor remove it, so a briefly stopped service keeps its entry.
+            print(f"  {name}: skipped, {requires} does not answer (its service is not running here)")
             continue
         transport = definition.get("transport", "stdio")
         entry = {"name": name, "transport": transport}
