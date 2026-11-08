@@ -156,9 +156,12 @@ if ($pythonCmd) {
         $content = Get-Content $tempConfig -Raw
         if ($content -match "mcp_servers:") {
             # Expected = every ai-config/mcp/*.yaml not marked `enabled: false` (a fixed
-            # name list here broke when memory/filesystem/sequential-thinking were disabled).
+            # name list here broke when memory/filesystem/sequential-thinking were disabled),
+            # minus `requires_url` servers: the generator registers those only where their
+            # service runs, and a CI runner has none.
             $expected = @(Get-ChildItem (Join-Path $AIOSRoot "ai-config\mcp") -Filter *.yaml |
                 Where-Object { (Get-Content $_.FullName -Raw) -notmatch "(?m)^enabled:\s*false\s*$" } |
+                Where-Object { (Get-Content $_.FullName -Raw) -notmatch "(?m)^requires_url:" } |
                 ForEach-Object { if ((Get-Content $_.FullName -Raw) -match "(?m)^name:\s*(\S+)") { $Matches[1] } })
             $generated = @([regex]::Matches($content, "(?m)^  ([A-Za-z0-9_-]+):\s*$") | ForEach-Object { $_.Groups[1].Value })
             $mcpCount = @($expected | Where-Object { $_ -in $generated }).Count
