@@ -1,2 +1,4 @@
 data/catalog.json
+data/embeddings.npy
+data/embeddings.json
 __pycache__/

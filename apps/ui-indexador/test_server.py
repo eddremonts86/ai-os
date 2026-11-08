@@ -38,6 +38,17 @@ assert js("/items?dep=recharts&limit=3")["items"], "dep filter"
 page2 = js("/items?kind=hero&limit=5&offset=5")["items"]
 assert page2 and page2[0]["name"] != heroes["items"][0]["name"]
 
+assert not any(i["kind"] == "icon/logo" or i["type"] == "example" for i in js("/items?q=seat&limit=50")["items"])
+assert js("/items?kind=icon/logo&limit=1")["total"] > 1000, "icons reachable when asked"
+assert js("/items?q=seat&include_hidden=1")["total"] > js("/items?q=seat")["total"]
+kw = js("/items?q=pricing&mode=keyword&limit=3")
+assert kw["mode"] == "keyword"
+sem = js("/items?q=buy+flight+tickets&limit=10")
+if sem["mode"] == "semantic":  # needs data/embeddings.npy, numpy and Ollama; otherwise it says why
+    assert sem["items"] and all("similarity" in i for i in sem["items"]), sem
+else:
+    print(f"semantic not checked: {sem.get('note')}")
+
 f = js("/facets")
 assert f["kinds"] and f["types"], f.keys()
 

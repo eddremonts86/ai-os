@@ -191,6 +191,7 @@ CATALOG_KINDS = [
     ("background/effects", r"background|particle|aurora|grid[-_ ]?(?:pattern|background)|beam|spotlight|shader|gradient|noise|meteor|glow|ripple|\bdots?\b"),
 ]
 CATALOG_KINDS = [(k, re.compile(p, re.I)) for k, p in CATALOG_KINDS]
+ICON_ITEM = re.compile(r"\bicons?\b|\blogos?\b|.*-icon", re.I)
 CATALOG_SKIP = SKIP_TYPES | {"registry:style", "registry:item", "registry:file", "registry:page", "registry:base", "registry:internal"}
 
 
@@ -225,14 +226,17 @@ def catalog(out, min_score, deep):
             d = get(src[name]["url"].replace("{name}", "registry"), timeout=30)
         except Exception:
             return []
-        rows = []
+        rows, icon_registry = [], ranked[name].get("category") == "icons & logos"
         for it in d.get("items", []):
             typ = it.get("type") or ""
             if typ in CATALOG_SKIP or not it.get("name"):
                 continue
             cats = it.get("categories") or []
             txt = " ".join([it["name"], it.get("title") or "", it.get("description") or "", " ".join(cats)])
-            kind = next((k for k, pat in CATALOG_KINDS if pat.search(txt)), "block" if typ == "registry:block" else "component")
+            if icon_registry or ICON_ITEM.search(" ".join(cats)) or ICON_ITEM.fullmatch(it["name"]):
+                kind = "icon/logo"  # hidden from searches unless asked for: icon sets would drown every query
+            else:
+                kind = next((k for k, pat in CATALOG_KINDS if pat.search(txt)), "block" if typ == "registry:block" else "component")
             # Compact on purpose (100k+ rows): registry facts (stars, licence, homepage, item URL) are joined from
             # registries.json at query time, and empty fields are left out.
             row = {"r": name, "n": it["name"], "t": typ.removeprefix("registry:"), "k": kind}

@@ -4,8 +4,9 @@
   python3 server.py [--port 3040] [--host 127.0.0.1]      (env: UI_INDEXER_PORT, UI_INDEXER_HOST)
 
   /health                                             data counts, or what is missing
-  /items?q=&kind=&type=&registry=&layout=&feature=&dep=&limit=&offset=
-                                                      search EVERY indexed component and block (install command included)
+  /items?q=&kind=&type=&registry=&layout=&feature=&dep=&mode=auto|semantic|keyword&include_hidden=&limit=&offset=
+                                                      search EVERY indexed component and block (install command included);
+                                                      semantic by meaning when embeddings + Ollama are there
   /facets                                             the kinds, types, layouts, features you can filter by
   /registries?category=&q=&limit=                     ranked registries
   /blocks?kind=&layout=&tone=&registry=&min_fit=&q=   hand-scored blocks from the surveys
@@ -14,7 +15,7 @@
   /index.md, /registries.md                           curated notes (markdown)
   /files/<path>                                       a file under data/
 
-Standard library only.
+Standard library only; semantic search also needs numpy (run it with ~/.ai-os/venv/bin/python).
 """
 
 import argparse
@@ -30,7 +31,8 @@ from indexer import DATA
 ROUTES = {
     "/health": lambda q: indexer.health(),
     "/items": lambda q: indexer.items(q.get("q"), q.get("kind"), q.get("type"), q.get("registry"), q.get("layout"),
-                                      q.get("feature"), q.get("dep"), q.get("limit"), q.get("offset")),
+                                      q.get("feature"), q.get("dep"), q.get("limit"), q.get("offset"),
+                                      q.get("mode", "auto"), q.get("include_hidden", False)),
     "/facets": lambda q: indexer.facets(),
     "/registries": lambda q: indexer.registries(q.get("category"), q.get("q"), q.get("limit")),
     "/blocks": lambda q: indexer.blocks(q.get("kind"), q.get("layout"), q.get("tone"), q.get("registry"),
