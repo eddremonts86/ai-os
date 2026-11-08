@@ -53,6 +53,7 @@ export function Marquee({
         <div
           key={i}
           aria-hidden={i > 0 || undefined}
+          inert={i > 0 || undefined}
           className={cn(
             "flex shrink-0 justify-around gap-(--gap) motion-reduce:animate-none",
             vertical

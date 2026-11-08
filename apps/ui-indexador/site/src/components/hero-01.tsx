@@ -41,11 +41,10 @@ export function Hero01({ id = "hero" }: { id?: string }) {
             <ArrowRight className="size-3 text-muted-foreground" />
           </a>
         </BlurFade>
-        <BlurFade delay={0.1}>
-          <h1 className="mt-8 max-w-5xl text-4xl font-semibold tracking-tighter text-balance sm:text-5xl md:text-6xl">
+        {/* Not faded in: the headline is the largest paint, an entrance animation would delay it. */}
+        <h1 className="mt-8 max-w-5xl text-4xl font-semibold tracking-tighter text-balance sm:text-5xl md:text-6xl">
             Your AI builds UI from memory. Give it the whole shadcn ecosystem.
           </h1>
-        </BlurFade>
         <BlurFade delay={0.2}>
           <p className="mx-auto mt-6 max-w-xl text-lg text-balance text-muted-foreground">
             ui-indexador indexes every component and block of 300+ shadcn registries, ranks them by proof of

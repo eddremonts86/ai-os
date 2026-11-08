@@ -20,9 +20,11 @@ Standard library only; semantic search also needs numpy (run it with ~/.ai-os/ve
 """
 
 import argparse
+import gzip
 import json
 import mimetypes
 import os
+from functools import lru_cache
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, unquote, urlparse
@@ -31,6 +33,13 @@ import indexer
 from indexer import DATA
 
 SITE = (Path(__file__).resolve().parent / "site" / "dist").resolve()
+COMPRESSIBLE = {"application/json", "text/html", "text/javascript", "application/javascript", "text/css",
+                "text/markdown", "image/svg+xml"}
+
+
+@lru_cache(maxsize=64)
+def _gzip(body):
+    return gzip.compress(body, 6)
 
 ROUTES = {
     "/health": lambda q: indexer.health(),
@@ -50,15 +59,24 @@ ROUTES = {
 class Handler(BaseHTTPRequestHandler):
     server_version = "ui-indexador/2"
 
-    def send(self, code, body, ctype="application/json; charset=utf-8"):
+    def send(self, code, body, ctype="application/json; charset=utf-8", cache=None):
         if isinstance(body, str):
             body = body.encode()
         elif not isinstance(body, bytes):
             body = json.dumps(body, ensure_ascii=False, indent=1).encode()
+        gz = (len(body) > 1024 and "gzip" in self.headers.get("Accept-Encoding", "")
+              and ctype.split(";")[0] in COMPRESSIBLE)
+        if gz:
+            body = _gzip(body)
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Vary", "Accept-Encoding")
+        if gz:
+            self.send_header("Content-Encoding", "gzip")
+        if cache:
+            self.send_header("Cache-Control", cache)
         self.end_headers()
         self.wfile.write(body)
 
@@ -76,7 +94,7 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/":  # the landing page when it is built (site/dist), the health JSON otherwise
                 index = SITE / "index.html"
                 if index.is_file():
-                    self.send(200, index.read_bytes(), "text/html; charset=utf-8")
+                    self.send(200, index.read_bytes(), "text/html; charset=utf-8", cache="no-cache")
                 else:
                     self.send(200, indexer.health())
             elif path in ROUTES:
@@ -90,8 +108,10 @@ class Handler(BaseHTTPRequestHandler):
                 if not target.is_relative_to(DATA) or not target.is_file():
                     raise FileNotFoundError(path)
                 self.send(200, target.read_bytes(), mimetypes.guess_type(target.name)[0] or "application/octet-stream")
-            elif (asset := self.site_file(path)) is not None:
-                self.send(200, asset.read_bytes(), mimetypes.guess_type(asset.name)[0] or "application/octet-stream")
+            elif (asset := self.site_file(path)) is not None:  # Vite puts a content hash in every /assets/ name
+                immutable = path.startswith("/assets/")
+                self.send(200, asset.read_bytes(), mimetypes.guess_type(asset.name)[0] or "application/octet-stream",
+                          cache="public, max-age=31536000, immutable" if immutable else "no-cache")
             else:
                 self.send(404, {"error": "not found", "see": "/health"})
         except FileNotFoundError as e:
