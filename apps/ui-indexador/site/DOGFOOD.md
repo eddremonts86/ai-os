@@ -21,3 +21,8 @@ Measured on the 16 section queries (`docs/landing-queries-2026-11-08.txt` before
   `NOASSERTION`. A per-item licence (from the item JSON or the repo file) would make `osi_only` keep more.
 - The weakest section query was the closing call to action ("with background beams"): the matches are plain
   CTA panels, the description words that matter ("beams") are rarely in item descriptions.
+- **Next.js-only items look like plain React.** `@uiception/hero-section-v1` imports `next/image` and reads the
+  disk with `node:fs`; `next` is a peer, not a dependency, so the framework tag says react and it fails in Vite.
+  The `--deep` crawl reads every block's source and could tag `next/` and `node:` imports as `framework: next`.
+- **Items that bring their own styling system.** `@astryx` command palette items need `@astryxdesign/core` and
+  StyleX. A `styling` tag (tailwind / stylex / css-modules) from dependencies would let a search exclude them.
