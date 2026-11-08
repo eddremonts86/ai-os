@@ -1,8 +1,0 @@
-data/catalog.json
-data/embeddings.npy
-data/embeddings.json
-data/registries.json
-data/registries.md
-logs/
-__pycache__/
-.venv/

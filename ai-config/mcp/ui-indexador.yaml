@@ -1,7 +1,5 @@
 name: ui-indexador
-description: Search 100k+ shadcn registry components and blocks (install command included), curated design captures and tweakcn themes
-transport: stdio
-command: ${HOME}/.ai-os/venv/bin/python
-args:
-  - ${AI_OS_ROOT}/apps/ui-indexador/mcp_server.py  # when the app moves to its own host: transport http, url <host>/mcp
+description: Search 100k+ shadcn registry components and blocks (install command included), curated design captures and tweakcn themes. External app (github.com/eddremonts86/ui-indexador), run as a local service by its schedule/install.sh
+transport: http
+url: http://127.0.0.1:3041/mcp
 enabled: true
