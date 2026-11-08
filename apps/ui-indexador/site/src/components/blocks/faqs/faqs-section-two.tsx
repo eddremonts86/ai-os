@@ -59,7 +59,7 @@ export default function FAQsTwo() {
         </div>
 
         <p className="mx-auto mt-8 max-w-xl text-center text-sm text-muted-foreground">
-          The app&apos;s README covers every endpoint, filter and data file in detail.
+          The README in apps/ui-indexador covers every endpoint, filter and data file; the repository is private for now.
         </p>
       </div>
     </section>

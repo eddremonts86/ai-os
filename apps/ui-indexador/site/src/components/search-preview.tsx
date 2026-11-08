@@ -29,12 +29,12 @@ function Row({ item }: { item: Item }) {
         <p className="truncate text-sm text-foreground">
           <span className="text-muted-foreground">{item.registry}/</span>{item.name}
         </p>
-        <p className="mt-0.5 truncate text-xs text-muted-foreground">{item.description || item.type}</p>
+        {item.description && <p className="mt-0.5 truncate text-xs text-muted-foreground">{item.description}</p>}
       </div>
       <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
         <span>{item.type}</span>
         <span>{item.license ?? (item.mirror_of ? "mirror" : "licence ?")}</span>
-        {item.similarity != null && <span className="tabular-nums text-brand">{item.similarity.toFixed(2)}</span>}
+        {item.similarity != null && <span className="tabular-nums text-brand" title="Semantic similarity to your description">match {item.similarity.toFixed(2)}</span>}
         <CopyCommand text={item.install} />
       </div>
     </li>
@@ -131,7 +131,11 @@ export function SearchPreview({ limit = 4, autoType = true, initial = "", filter
           ))}
         </ul>
       )}
-      {result?.note && <p className="border-t px-4 py-2 text-[11px] text-muted-foreground">{result.note}</p>}
+      {result && result.items.length > 0 && (
+        <p className="border-t px-4 py-2 text-[11px] text-muted-foreground">
+          {result.note ?? "Ranked by match plus a bonus for a literal keyword hit and the registry's rank, so the order is not the match alone."}
+        </p>
+      )}
     </div>
   )
 }

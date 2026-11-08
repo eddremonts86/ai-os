@@ -32,6 +32,21 @@ AI-OS registers the MCP server in `ai-config/mcp/ui-indexador.yaml`.
 | `search_themes`, `get_theme` | `/themes?q=&vibe=`, `/themes/<name>` | tweakcn presets; one preset with tokens and CSS variables |
 | | `/health` | counts, or which data file is missing |
 
+## The landing page (`site/`)
+
+Vite + React 19 + Tailwind 4 + shadcn (Radix), built from registry components found with this app through its
+MCP server: `site/build-log.json` records every query, candidate and choice and the page renders it ("Built with
+itself"); `site/THIRD_PARTY.md` lists the installed items and licences; `site/DOGFOOD.md` what building it taught
+about the indexer.
+
+```bash
+cd site && pnpm install && pnpm build    # site/dist (not committed); server.py then serves it at /
+pnpm dev                                 # 127.0.0.1:3042, API paths proxied to :3040
+```
+
+`server.py` serves `site/dist` at `/` (gzip, immutable cache for hashed `/assets/`), and the health JSON at `/`
+when the site is not built. The page reads live numbers from `/health` and `/facets` and searches `/items`.
+
 ## Which registries are indexed, and adding more
 
 - `GET /registries` (MCP `list_registries`) lists every indexed registry with homepage, stars, licence, score and

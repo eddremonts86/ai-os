@@ -11,7 +11,7 @@ const steps = [
   { id: "embed", icon: <Network className="size-4" />, title: "Embed",
     description: "A local model turns each item into a vector, so a description finds it by meaning. Only new or changed items are embedded again." },
   { id: "serve", icon: <Server className="size-4" />, title: "Serve",
-    description: "An MCP server and an HTTP API answer your agent with ranked candidates and their install commands. Every day, at 11:30." },
+    description: "An MCP server and an HTTP API answer your agent with ranked candidates and their install commands. A job on your machine refreshes it every day." },
 ]
 
 export function How() {

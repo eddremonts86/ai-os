@@ -31,8 +31,8 @@ export function Built() {
       <p className="text-xs tracking-wider text-muted-foreground uppercase">Built with itself</p>
       <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">This page is the demo</h2>
       <p className="mt-4 max-w-2xl text-muted-foreground">
-        Every section was found by asking ui-indexador through its MCP server, then installed with the command it
-        returned. Results as of the crawl of {log.catalog_built}, indexer commit <code>{log.indexer_commit}</code>.
+        Every section was searched for through ui-indexador&apos;s MCP server; all but two were installed from the result
+        with the command it returned, and those two say why. Results as of the crawl of {log.catalog_built}, indexer commit <code>{log.indexer_commit}</code>.
       </p>
       <div className="mt-10 grid gap-8 lg:grid-cols-[1.6fr_1fr]">
         <ol className="divide-y rounded-xl border">
@@ -52,7 +52,7 @@ export function Built() {
             </li>
           ))}
         </ol>
-        <div className="rounded-xl border p-2">
+        <div className="self-start rounded-xl border p-2 lg:sticky lg:top-20">
           <p className="px-2 pt-2 text-xs tracking-wider text-muted-foreground uppercase">What got installed</p>
           <Tree className="mt-2 h-[28rem]" initialExpandedItems={["/components", "/components/blocks", "/components/ui"]}>
             {render(tree)}

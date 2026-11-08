@@ -61,7 +61,14 @@ export function Integrate() {
         answers over HTTP.
       </p>
       <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
-        <CodeBlock tabs={tabs} lineNumbers={false} className="min-w-0" />
+        <div className="min-w-0 self-start">
+          <p className="mb-3 rounded-lg border bg-card px-4 py-3 text-sm text-muted-foreground">
+            <span className="text-foreground">Getting it:</span> ui-indexador lives in <code>apps/ui-indexador</code> of the
+            AI-OS repository, which is private while it moves to its own repo. Ask the author for access; the snippets
+            below assume you have the folder.
+          </p>
+          <CodeBlock tabs={tabs} lineNumbers={false} />
+        </div>
         <div>
           <h3 className="text-sm font-medium text-foreground">The eight tools your agent gets</h3>
           <ul className="mt-4 divide-y border-y text-sm">
