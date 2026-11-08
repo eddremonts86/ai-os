@@ -20,17 +20,28 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    The brief's own words win over any default of the skill.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
-4. **Compose from proven pieces, do not invent a visual system.** Ask ui-indexador (an external app,
-   github.com/eddremonts86/ui-indexador, run locally by its `schedule/install.sh`; MCP at
-   `http://127.0.0.1:3041/mcp`): its MCP tools
-   (`design_notes`, `list_captures`, `curated_blocks`, `search_items`, `search_themes`/`get_theme`) or the same
-   queries over HTTP (`${UI_INDEXER_URL:-http://127.0.0.1:3040}`, e.g. `/items?kind=hero&type=block`). It indexes
-   every block and component of 300 shadcn registries (kind, layout, features, deps, install command), plus real
-   sites captured and measured, and tweakcn themes. Compare at least three patterns that fit the brief before
-   picking one; start the palette from a theme whose vibe fits (`get_theme` returns the CSS variables). Then
-   `pick-ui-library` for libraries. For each section, search the catalog by kind and take the best-ranked match
-   (`npx shadcn add @<registry>/<item>`), then adapt them to the brand. Hand-build only what no top registry has.
-   A from-scratch redesign was rejected on 2026-11-06 as amateur; passing the gate does not make a design good.
+4. **Compose from proven pieces, do not invent a visual system.** A from-scratch redesign was rejected on
+   2026-11-06 as amateur; passing the gate does not make a design good. Find the pieces with ui-indexador
+   (github.com/eddremonts86/ui-indexador, a local service: MCP `http://127.0.0.1:3041/mcp`, HTTP
+   `${UI_INDEXER_URL:-http://127.0.0.1:3040}`; see "ui-indexador" below).
+   - **Direction:** `design_notes`, `list_captures` and `curated_blocks` show measured patterns from proven sites.
+     Compare at least three that fit the brief before picking one.
+   - **Palette:** start from `search_themes` (by vibe) and `get_theme`, which returns the CSS variables. Adjust it
+     to the brand; check contrast for every text-on-colour pair you change.
+   - **Each section:** `search_items` with one English description per piece ("pricing table with a monthly/yearly
+     toggle", not the whole page), `osi_only=true` and the project's `framework` (react by default). Take the best
+     of the top results, not blindly the first.
+   - **Before installing, read the item:** `npx shadcn@latest view @<registry>/<item>`. Reject an item that imports
+     `next/*` or `node:*` in a non-Next project, brings its own styling system (StyleX, CSS-in-JS), or pulls npm
+     packages beyond the usual (react, motion, lucide-react, radix, cva, clsx, tailwind-merge, cmdk, sonner,
+     recharts) without a reason. A result with `mirror_of` has an unverified licence: check the source or skip it.
+     The index cannot see these; the code can.
+   - **Install** with the command the result returned (`npx shadcn@latest add @<registry>/<item>`), then adapt
+     content, tokens and accessibility; keep its structure unless a reason is recorded. Run the build after each
+     install: undeclared dependencies show up there.
+   - **Record** each section's queries, top candidates, the choice and why (and every rejection) in a build log
+     (e.g. `build-log.json`) next to the code. Hand-build only what no indexed piece covers, and say so in the log.
+   Then `pick-ui-library` for libraries (toasts, charts, forms) the pieces do not bring.
 5. **Show one section first.** Build the hero (or the one section that carries the idea), show it to the user
    with a screenshot, and only continue after they approve the direction. Do not spend a whole page of tokens
    on an unapproved look.
@@ -43,3 +54,12 @@ Done means: the verify verdict is PASS (or its gaps are stated), you looked at t
 has no blockers. Report those three things, not "it looks good".
 
 For a whole existing app use `/aios-ui-improve` or `saas-review`, not this.
+
+## ui-indexador
+
+Read-only index of ~105k items from 320+ shadcn registries, searchable by meaning. Tools: `search_items`,
+`list_facets`, `list_registries`, `curated_blocks`, `list_captures`, `design_notes`, `search_themes`, `get_theme`.
+If it does not answer (the service is stopped, another machine), say so once and fall back to
+`npx shadcn@latest search @<registry> -q "<words>"` over the registries in the project's `components.json`;
+never invent component names or install commands. Semantic search needs its local Ollama; without it the
+response says `mode: keyword` and English keywords work best.
