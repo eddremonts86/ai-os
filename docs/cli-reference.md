@@ -11,7 +11,7 @@ stay in `CLAUDE.md` and `rules/`; this file is lookup only.
 export AI_OS_ROOT="${AI_OS_ROOT:-$HOME/Projects/ai-os}"
 
 # Start session with AI-OS
-hermes chat --skills ai-os-quickstart
+hermes chat --skills aios-quickstart
 
 # Or in any CLI
 cat "$AI_OS_ROOT/CLAUDE.md"
@@ -42,8 +42,8 @@ mv "$AI_OS_ROOT/specs/current_spec.md" "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-sl
 ### Hermes
 
 ```bash
-hermes chat --skills ai-os-karpathy
-hermes chat --skills ai-os-quickstart
+hermes chat --skills aios-karpathy
+hermes chat --skills aios-quickstart
 # or
 hermes chat   # skills already loaded from imported:
 ```

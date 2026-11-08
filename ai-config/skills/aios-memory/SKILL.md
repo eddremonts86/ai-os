@@ -1,10 +1,10 @@
 ---
-name: ai-os-memory
+name: aios-memory
 description: Operate, repair and inspect the AI-OS memory stack — graphiti temporal memory on FalkorDB, Ollama (local LLM + embeddings), codebase-memory-mcp AST index, grepai semantic search, and the scheduled reindex. Use when the user asks about memory status, indexing a project, semantic code search, the knowledge graph, or a memory tool that is down.
 version: 0.2.0
 ---
 
-# ai-os-memory
+# aios-memory
 
 Operate the AI-OS persistent memory stack. One CLI, no daemon, no API keys, all
 local-first. Designed for a single developer with many local projects under
