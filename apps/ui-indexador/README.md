@@ -1,6 +1,6 @@
 # ui-indexador
 
-An index of every component and block in the shadcn registry ecosystem (~114k items, ~300 registries), plus a
+An index of every component and block in the shadcn registry ecosystem (~105k items after de-duplication, 323 registries), plus a
 curated design gallery and theme presets, behind a read-only API. AI-OS skills (`aios-ui-design`,
 `pick-ui-library`) use it only through the API (MCP tools or HTTP), never the files, so it can move to its own
 repo and environment without touching them.
@@ -79,6 +79,11 @@ Kinds and layouts are heuristics from names and code: use them to narrow, then l
   best. Needs `data/embeddings.npy`, numpy (AI-OS venv) and Ollama (`UI_INDEXER_OLLAMA`, default :11500).
 - **Keyword** (`mode=keyword`, or the fallback when semantic is unavailable; the response says why in `note`):
   every word of `q` must start a word in the item's text.
-- Icons/logos (~39k) and examples are hidden unless `kind=icon/logo`, `type=example` or `include_hidden=1`.
+- Icons/logos (~43k) and examples are hidden unless `kind=icon/logo`, `type=example` or `include_hidden=1`.
+- `framework=react` by default (from each item's dependencies, else its registry's description); `vue`, `svelte`,
+  `solid`, `react-native`, … or `any`.
+- `osi_only=1` keeps items whose registry has an OSI licence. Licences are per registry.
+- Mirrors: `@registrydirectory` republishes other registries' items. A copy of an item indexed under its own
+  registry is not served; the rest carry `mirror_of` and no licence or stars (those would be the mirror's).
 
 Not yet: framework tags (some registries are Vue/Svelte), auth. Local only, bound to 127.0.0.1.

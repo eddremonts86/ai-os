@@ -52,6 +52,17 @@ if sem["mode"] == "semantic":  # needs data/embeddings.npy, numpy and Ollama; ot
 else:
     print(f"semantic not checked: {sem.get('note')}")
 
+vue = js("/items?q=gradient+text&framework=vue&limit=5")["items"]
+assert vue and all(i["framework"] == "vue" for i in vue)
+assert all(i["framework"] == "react" for i in js("/items?q=gradient+text&limit=20")["items"]), "react by default"
+osi = js("/items?q=faq&osi_only=1&limit=30")["items"]
+assert osi and all(i["license"] in ("MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "0BSD", "MPL-2.0", "Unlicense")
+                   and "mirror_of" not in i for i in osi)
+mirrors = [i for i in js("/items?q=hero&limit=100")["items"] if "mirror_of" in i]
+assert all(i["license"] is None and i["registry_stars"] is None for i in mirrors), "a mirror never shows its own licence"
+seen = [(i["registry"], i["name"]) for i in js("/items?q=navbar&limit=200")["items"]]
+assert not any(r == "@registrydirectory" and ("@" + n.split("/")[0], n.split("/", 1)[1]) in seen for r, n in seen), "no mirror copies"
+
 f = js("/facets")
 assert f["kinds"] and f["types"], f.keys()
 
