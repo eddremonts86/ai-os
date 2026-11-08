@@ -99,7 +99,7 @@ What is backed up is only what cannot be rebuilt: the graphiti graph (a FalkorDB
 
 `ai-os memory start|status|reindex` operates it; the `ai-os-memory` skill covers repairs. When to read and write memory: `rules/always_do.md` "Use the memory stack".
 
-There are **10 MCP servers (7 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem` and `sequential-thinking` are disabled; the reasons are in each YAML.
+There are **11 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem` and `sequential-thinking` are disabled; the reasons are in each YAML.
 
 ## 4. Platforms
 
@@ -120,7 +120,7 @@ Details: [`docs/cross-platform.md`](docs/cross-platform.md).
 
 `npx @edd_remonts/create-ai-os [DIR]` clones the repo and runs `setup/install-mac.sh` (Mac/Linux) or `setup/install-windows.ps1`. `--clone-only` skips the installer. The installer is idempotent, prints what it will install and asks first, and never upgrades pinned versions. `DRY_RUN=1 bash setup/install-mac.sh` simulates everything (this is what CI runs).
 
-It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plus extras with `EXTRAS=1`), npm and Python globals, Oh My Zsh + p10k, and dotfile symlinks. It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (7 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (20 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
+It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plus extras with `EXTRAS=1`), npm and Python globals, Oh My Zsh + p10k, and dotfile symlinks. It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (8 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (20 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
 
 ### The `ai-os` command
 
