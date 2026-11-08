@@ -24,6 +24,10 @@ A cold read of a UI. The agent that built it reviews it with everything it knows
    - Hierarchy, spacing and type against `refactoring-ui`; interface correctness against `web-design-guidelines`.
    - The generic traits `frontend-design` lists as AI defaults, only where the brief did not choose them.
    - States the happy path hides: empty, error, loading, long text, one item, many items.
+   - Hand-built or weak sections where a proven piece exists: the reviewer may query ui-indexador read-only
+     (`search_items` with one English description, `osi_only=true`; `curated_blocks` and `design_notes` for
+     measured patterns) and name up to three candidates with their install commands as the suggested change.
+     If ui-indexador does not answer, skip this check and say it was skipped.
 4. **Check each finding yourself** against the screenshot or the code before relaying it. Drop what you cannot confirm and
    say it was dropped. Reviewers with no context flag decisions taken elsewhere; search the repo's docs first.
 5. **Report** blockers and majors, ranked, with evidence. Fix nothing here: this skill is read-only.

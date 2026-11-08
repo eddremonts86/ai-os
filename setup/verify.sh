@@ -633,6 +633,25 @@ else
   fi
 fi
 
+# ─── 5e. ui-indexador (optional: UI_INDEXER=1 in install-mac.sh) ───
+section "5e. ui-indexador (optional, the index behind the aios-ui-* skills)"
+UI_INDEXER_DIR="${UI_INDEXER_DIR:-$HOME/.ai-os/apps/ui-indexador}"
+if health=$(curl -sf -m 3 http://127.0.0.1:3040/health 2>/dev/null); then
+  summary=$(python3 -c "import json,sys; h=json.load(sys.stdin); print(str(h.get('items'))+' items, crawled '+str(h.get('built')) if h.get('ok') else 'index not built yet')" <<<"$health" 2>/dev/null || echo "health unreadable")
+  opt_ok "  API on :3040 — $summary"
+  if curl -sf -m 3 -o /dev/null -X POST http://127.0.0.1:3041/mcp -H 'Content-Type: application/json' \
+       -H 'Accept: application/json, text/event-stream' \
+       -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"verify","version":"1"}}}'; then
+    opt_ok "  MCP on :3041/mcp answers"
+  else
+    opt_miss "  MCP on :3041/mcp does not answer — bash \"$UI_INDEXER_DIR/schedule/install.sh\" --status"
+  fi
+elif [ -d "$UI_INDEXER_DIR/.git" ]; then
+  opt_miss "  cloned at $UI_INDEXER_DIR but the API does not answer — bash \"$UI_INDEXER_DIR/schedule/install.sh\""
+else
+  opt_miss "  not installed (UI_INDEXER=1 bash setup/install-mac.sh); aios-ui-* skills fall back to npx shadcn search"
+fi
+
 # ─── 5d. Curated ECC DAILY agents (Claude Code only, best-effort) ───
 section "5d. ECC DAILY agents (Claude Code)"
 ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)

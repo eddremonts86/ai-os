@@ -18,6 +18,10 @@
 #   SKIP_VERIFY=1    → skip verification at the end
 #   ASSUME_YES=1     → skip the preflight confirmation prompt
 #   DRY_RUN=1        → simulate without executing (CI mode)
+#   UI_INDEXER=1     → also install ui-indexador (github.com/eddremonts86/ui-indexador): the shadcn
+#                      registry index the aios-ui-* skills query over MCP. Clones it to
+#                      UI_INDEXER_DIR (default ~/.ai-os/apps/ui-indexador), runs it as launchd
+#                      services and builds its index in the background. Re-runs update an existing clone.
 #   EXTRAS=1         → also install dev-env/packages/Brewfile.extras (optional
 #                      GUI apps, language runtimes, infra CLIs). Default: core only.
 
@@ -445,6 +449,10 @@ if [ "$PONYTAIL_ENABLED" = "1" ]; then
 else
   ok "  ~/.ai-os/env.sh: AI_OS_ROOT + OLLAMA_URL (untracked, per-machine)"
 fi
+# Where ui-indexador lives on this machine (step 8b), so a re-run finds a clone outside the default path.
+if [ -n "${UI_INDEXER_DIR:-}" ]; then
+  printf 'export UI_INDEXER_DIR="${UI_INDEXER_DIR:-%s}"\n' "$UI_INDEXER_DIR" >> "$AIOS_ENV_FILE"
+fi
 
 # The AI-OS .zshrc already carries the source guard (committed once). If the
 # user kept their own ~/.zshrc instead, add the guard there — that file is
@@ -868,6 +876,47 @@ if [ "$ACTUAL" -ne "$EXPECTED" ]; then
   ok "Superpowers linked ($EXPECTED/$EXPECTED)"
 else
   ok "Superpowers OK ($ACTUAL/$EXPECTED)"
+fi
+echo ""
+
+# ─── 8b. ui-indexador (optional: UI_INDEXER=1, or an existing clone) ───
+# The shadcn registry index behind aios-ui-design / -improve / -review, as its own app and repo. Opt-in because
+# it is heavy for what it gives someone who builds no UI: gh for star counts, Ollama's nomic-embed-text for
+# semantic search, a ~15 min first crawl, ~100 MB of data. It runs before step 9 so the MCP generators find its
+# service answering: ai-config/mcp/ui-indexador.yaml has `requires_url`, so machines without it never get a
+# broken MCP entry.
+UI_INDEXER_DIR="${UI_INDEXER_DIR:-$HOME_DIR/.ai-os/apps/ui-indexador}"
+if [ "${UI_INDEXER:-0}" = "1" ] || [ -d "$UI_INDEXER_DIR/.git" ]; then
+  log "8b. ui-indexador ($UI_INDEXER_DIR)..."
+  if [ -d "$UI_INDEXER_DIR/.git" ]; then
+    git -C "$UI_INDEXER_DIR" pull --ff-only --quiet && ok "  updated" || warn "  git pull failed — keeping the current checkout"
+  else
+    mkdir -p "$(dirname "$UI_INDEXER_DIR")"
+    git clone --quiet https://github.com/eddremonts86/ui-indexador "$UI_INDEXER_DIR" && ok "  cloned" \
+      || { warn "  clone failed — skipping ui-indexador"; UI_INDEXER_FAILED=1; }
+  fi
+  if [ "${UI_INDEXER_FAILED:-0}" != "1" ]; then
+    ( cd "$UI_INDEXER_DIR" \
+      && { [ -x .venv/bin/python ] || python3 -m venv .venv; } \
+      && .venv/bin/pip install --quiet -r requirements.txt ) \
+      && ok "  Python environment ready" || warn "  pip install failed — see $UI_INDEXER_DIR/requirements.txt"
+    if command -v ollama >/dev/null 2>&1; then
+      OLLAMA_HOST=127.0.0.1:11500 ollama list 2>/dev/null | grep -q "nomic-embed-text" \
+        || OLLAMA_HOST=127.0.0.1:11500 ollama pull nomic-embed-text >/dev/null 2>&1 \
+        || warn "  nomic-embed-text pull failed — ui-indexador will search by keyword only"
+    fi
+    if [ -f "$UI_INDEXER_DIR/data/catalog.json" ]; then
+      UI_INDEXER_OLLAMA=http://localhost:11500 bash "$UI_INDEXER_DIR/schedule/install.sh" >/dev/null \
+        && ok "  services loaded (API :3040, MCP :3041/mcp, refresh daily 11:30)" || warn "  launchd install failed"
+    else
+      UI_INDEXER_OLLAMA=http://localhost:11500 bash "$UI_INDEXER_DIR/schedule/install.sh" --run-now >/dev/null \
+        && ok "  services loaded; first index build started in the background (~15 min, logs in $UI_INDEXER_DIR/logs)" \
+        || warn "  launchd install failed"
+    fi
+    for _ in $(seq 1 15); do curl -sf -m 2 http://127.0.0.1:3040/health >/dev/null && break; sleep 1; done
+  fi
+else
+  log "8b. ui-indexador not installed (opt in with UI_INDEXER=1); the aios-ui-* skills fall back to npx shadcn search"
 fi
 echo ""
 
