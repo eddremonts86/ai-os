@@ -35,20 +35,17 @@ Our projects are shadcn/ui + Tailwind v4 + TanStack, so some picks already arriv
 
 ## Components and blocks: the ranked registry index
 
-For a component, block or section (not a library), ask the ui-indexador API before writing one
-(`${UI_INDEXER_URL:-http://127.0.0.1:3040}`; start it with `python3 $AI_OS_ROOT/apps/ui-indexador/server.py`).
-`/registries?category=<cat>` (or `/registries.md` for the tables) ranks the healthy registries of the shadcn
-directory (ui.shadcn.com/docs/directory) by proof of use (GitHub stars, then size, then endpoint health). The app
-owns the data and its refresh (`scripts/rank-registries.py`, see its README).
+For a component, block or section (not a library), search ui-indexador before writing one: the MCP tool
+`search_items` (or `${UI_INDEXER_URL:-http://127.0.0.1:3040}/items?q=&kind=&type=block`). It indexes every item of
+the ~300 healthy registries of the shadcn directory, ranked by proof of use (GitHub stars, then size, then endpoint
+health), and returns the install command. `list_registries` / `/registries?category=` ranks the registries themselves.
 
 - Prefer the top of the matching category, an OSI licence (MIT, Apache-2.0) and a recent push. `NOASSERTION`
   means read the repo's licence before using it.
 - Install the piece itself, not the whole library: `npx shadcn add @<registry>/<item>`.
 - The detected repo can be wrong (it is read from the homepage); check it before relying on the stars.
-- To know what the registries actually contain for a kind of page (every hero, every experience block…), query
-  `/blocks?kind=hero&min_fit=4` and `/captures?kind=hero`. For a kind not surveyed yet, the app's
-  `scripts/survey-registries.py items | sitemaps | classify --out DIR` reads each registry's `registry.json`, its
-  sitemaps and each item's source to tag the layout. Look at the shortlist before choosing.
+- `list_facets` shows what the catalog can be filtered by (kind, type, layout, feature). Look at the shortlist
+  (homepage, `list_captures`) before choosing; the index tags are heuristics read from names and code.
 
 ## The list
 

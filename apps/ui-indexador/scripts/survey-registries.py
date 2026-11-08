@@ -4,6 +4,7 @@
   survey-registries.py items     --out DIR [--min-score 0]   # every item, tagged by section kind
   survey-registries.py sitemaps  --out DIR                   # robots.txt -> sitemaps -> preview URLs
   survey-registries.py classify  --out DIR [--kinds hero,about]  # fetch each item's source, tag its layout
+  survey-registries.py catalog   --out ../data [--deep]           # EVERY item -> catalog.json (what the API serves)
 
 Run them in order; each step reads the previous step's JSON from DIR. Inputs: the ranked index in
 ../data/registries.json (rank-registries.py) and the live directory at ui.shadcn.com/r/registries.json.
@@ -20,6 +21,7 @@ import argparse
 import concurrent.futures as cf
 import json
 import re
+import sys
 import urllib.parse
 import urllib.request
 from collections import Counter
@@ -158,17 +160,129 @@ def classify(out, kinds):
         print(f"  {k}:", Counter(x["layout"] for x in res if x["kind"] == k).most_common())
 
 
+# Every item, not only page sections: the taxonomy for the catalog. First match on name/title/description/categories.
+CATALOG_KINDS = [
+    ("hero", r"\bhero"), ("pricing", r"pricing|\bplans?\b"), ("testimonials", r"testimonial|review|quote"),
+    ("faq", r"\bfaq"), ("features", r"\bfeatures?\b|benefit"), ("logos/marquee", r"logo|marquee|brand[-_ ]?cloud"),
+    ("stats", r"\bstats?\b|metric|counter|kpi"), ("team", r"\bteam\b|member"), ("blog", r"\bblog|article|\bpost\b"),
+    ("contact/cta", r"contact|\bcta\b|call[-_ ]?to[-_ ]?action|newsletter|waitlist|subscribe"),
+    ("footer", r"footer"), ("nav/header", r"navbar|header|nav[-_ ]?bar|navigation|\bmenu|breadcrumb|\bdock\b"),
+    ("auth", r"login|sign[-_ ]?in|sign[-_ ]?up|register|\bauth|\botp\b|password|forgot"),
+    ("dashboard", r"dashboard|admin|analytics"), ("sidebar", r"sidebar"),
+    ("table", r"\btable|data[-_ ]?grid|datatable"), ("chart", r"chart|graph|sparkline|heatmap"),
+    ("calendar", r"calendar|scheduler|date[-_ ]?picker|\bevent"),
+    ("ecommerce", r"product|\bcart\b|checkout|\bshop|\bstore\b|\border"),
+    ("chat/ai", r"\bchat|message|\bai\b|prompt|assistant|conversation|\bllm"),
+    ("editor", r"editor|markdown|rich[-_ ]?text|code[-_ ]?block|\bcode\b"),
+    ("file/upload", r"upload|dropzone|\bfile"), ("kanban/board", r"kanban|\bboard\b|sortable|drag"),
+    ("settings/account", r"settings|account|billing|preferences"),
+    ("error/empty", r"\b404\b|\berror|not[-_ ]?found|maintenance|empty[-_ ]?state|coming[-_ ]?soon"),
+    ("onboarding/steps", r"onboarding|stepper|wizard|\bsteps?\b"),
+    ("portfolio/profile", r"portfolio|profile|personal|resume|\bcv\b|\bbio\b|developer"),
+    ("about", r"\babout"), ("projects/showcase", r"project|showcase|case[-_ ]?stud|bento"),
+    ("timeline/experience", r"timeline|experience|career|journey|changelog"),
+    ("notification", r"toast|notification|\balert|banner|sonner"),
+    ("overlay", r"dialog|modal|drawer|\bsheet|popover|tooltip|dropdown|command|context[-_ ]?menu|hover[-_ ]?card"),
+    ("form", r"\bform|input|select|checkbox|radio|switch|slider|textarea|combobox|\bfield|\btag"),
+    ("media", r"image|video|gallery|carousel|avatar|\baudio|player"), ("map", r"\bmap\b|globe|geo"),
+    ("button", r"button|\bbtn"), ("card", r"\bcard"), ("navigation/tabs", r"\btabs?\b|pagination|accordion|collapsible|tree"),
+    ("loader/skeleton", r"loader|loading|spinner|skeleton|progress"),
+    ("text-effects", r"\btext|typing|typewriter|\bword|letter|heading|number|ticker"),
+    ("background/effects", r"background|particle|aurora|grid[-_ ]?(?:pattern|background)|beam|spotlight|shader|gradient|noise|meteor|glow|ripple|\bdots?\b"),
+]
+CATALOG_KINDS = [(k, re.compile(p, re.I)) for k, p in CATALOG_KINDS]
+CATALOG_SKIP = SKIP_TYPES | {"registry:style", "registry:item", "registry:file", "registry:page", "registry:base", "registry:internal"}
+
+
+def layout_of(kind, f):
+    if kind == "timeline/experience":
+        return "timeline" if f["timeline"] else "card-grid" if f["cards"] else "list-rows"
+    if kind == "projects/showcase":
+        return "bento-grid" if f["bento"] else "card-grid" if f["cards"] else "horizontal-strip" if f["marquee"] else "list-rows"
+    if f["shader3d"]:
+        return "shader-or-3d-background"
+    if f["video"]:
+        return "video"
+    if f["split"]:
+        return "split-text-portrait" if f["person"] else "split-text-media" if f["image"] else "split-text-only"
+    if f["centered"]:
+        return "centered-text" + ("+media" if f["image"] else "")
+    if f["bento"]:
+        return "bento-grid"
+    if f["cards"]:
+        return "card-grid"
+    return "text-only-left" if not f["image"] else "media-other"
+
+
+def catalog(out, min_score, deep):
+    """Every installable item of every ranked registry -> out/catalog.json (metadata, no source code).
+    --deep also fetches each block's source to tag its layout and visual features."""
+    ranked = {r["name"]: r for r in json.loads((HERE.parent / "data" / "registries.json").read_text()) if r["score"] >= min_score}
+    src = {r["name"]: r for r in get(DIRECTORY, timeout=30)}
+
+    def one(name):
+        try:
+            d = get(src[name]["url"].replace("{name}", "registry"), timeout=30)
+        except Exception:
+            return []
+        rows = []
+        for it in d.get("items", []):
+            typ = it.get("type") or ""
+            if typ in CATALOG_SKIP or not it.get("name"):
+                continue
+            cats = it.get("categories") or []
+            txt = " ".join([it["name"], it.get("title") or "", it.get("description") or "", " ".join(cats)])
+            kind = next((k for k, pat in CATALOG_KINDS if pat.search(txt)), "block" if typ == "registry:block" else "component")
+            # Compact on purpose (100k+ rows): registry facts (stars, licence, homepage, item URL) are joined from
+            # registries.json at query time, and empty fields are left out.
+            row = {"r": name, "n": it["name"], "t": typ.removeprefix("registry:"), "k": kind}
+            title, desc = it.get("title") or "", (it.get("description") or "")[:140]
+            if title and title.lower().replace(" ", "-") != it["name"]:
+                row["ti"] = title
+            if desc:
+                row["d"] = desc
+            if cats:
+                row["c"] = cats[:5]
+            if it.get("dependencies"):
+                row["dep"] = it["dependencies"][:8]
+            rows.append(row)
+        return rows
+
+    rows = [r for rs in pool(one, [n for n in ranked if n in src]) for r in rs]
+    print(f"{len(rows)} items in {len({r['r'] for r in rows})} registries", file=sys.stderr)
+    if deep:
+        def classify_one(r):
+            if r["t"] != "block":
+                return r
+            try:
+                d = get(src[r["r"]]["url"].replace("{name}", r["n"]))
+                code = "\n".join(f.get("content") or "" for f in d.get("files", []))
+            except Exception:
+                return r
+            if code:
+                f = {k: bool(p.search(code)) for k, p in FEATURES.items()}
+                r["lay"], r["f"] = layout_of(r["k"], f), [k for k, v in f.items() if v]
+            return r
+        rows = pool(classify_one, rows, 32)
+        print(f"layout tagged for {sum(1 for r in rows if 'lay' in r)}", file=sys.stderr)
+    (out / "catalog.json").write_text(json.dumps({"built": __import__("datetime").date.today().isoformat(),
+                                                  "items": rows}, ensure_ascii=False, separators=(",", ":")))
+    print(Counter(r["k"] for r in rows).most_common(), file=sys.stderr)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("step", choices=["items", "sitemaps", "classify"])
+    ap.add_argument("step", choices=["items", "sitemaps", "classify", "catalog"])
     ap.add_argument("--out", required=True)
     ap.add_argument("--min-score", type=float, default=0)
+    ap.add_argument("--deep", action="store_true", help="catalog: also fetch block sources to tag layouts")
     ap.add_argument("--kinds", default="", help="comma list of section kinds for classify (default: all)")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     {"items": lambda: items(out, a.min_score), "sitemaps": lambda: sitemaps(out),
-     "classify": lambda: classify(out, set(filter(None, a.kinds.split(","))))}[a.step]()
+     "classify": lambda: classify(out, set(filter(None, a.kinds.split(",")))),
+     "catalog": lambda: catalog(out, a.min_score, a.deep)}[a.step]()
 
 
 if __name__ == "__main__":
