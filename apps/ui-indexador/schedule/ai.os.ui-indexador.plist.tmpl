@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Daily refresh of the ui-indexador index (refresh.sh): rank the shadcn registries, crawl every item,
+  embed what changed. Runs at 11:30 (the Mac is likely awake); launchd catches up on a run missed while
+  it slept. On failure it raises a macOS notification; logs are kept 14 days in logs/.
+
+  Rendered by install.sh, which substitutes __APP__ and __HOME__.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.os.ui-indexador</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>log="__APP__/logs/refresh-$(date +%Y-%m-%d-%H%M%S).log"; bash "__APP__/refresh.sh" &gt; "$log" 2&gt;&amp;1 || osascript -e 'display notification "ui-indexador refresh failed — see apps/ui-indexador/logs" with title "ui-indexador" sound name "Basso"'; find "__APP__/logs" -name 'refresh-*.log' -mtime +14 -delete</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>__HOME__</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>30</integer></dict>
+    </array>
+
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>__APP__/logs/launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>__APP__/logs/launchd.log</string>
+</dict>
+</plist>

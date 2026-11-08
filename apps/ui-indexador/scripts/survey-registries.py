@@ -67,9 +67,18 @@ def pool(fn, xs, n=24):
         return list(ex.map(fn, xs))
 
 
+def sources():
+    """name -> {url, ...}: the shadcn directory plus the hand-added registries (data/extra-registries.json)."""
+    src = {r["name"]: r for r in get(DIRECTORY, timeout=30)}
+    extra = HERE.parent / "data" / "extra-registries.json"
+    for e in (json.loads(extra.read_text()) if extra.exists() else []):
+        src.setdefault(e["name"], e)
+    return src
+
+
 def items(out, min_score):
     ranked = {r["name"]: r for r in json.loads((HERE.parent / "data" / "registries.json").read_text()) if r["score"] >= min_score}
-    src = {r["name"]: r for r in get(DIRECTORY, timeout=30)}
+    src = sources()
 
     def one(name):
         try:
@@ -215,11 +224,11 @@ def layout_of(kind, f):
     return "text-only-left" if not f["image"] else "media-other"
 
 
-def catalog(out, min_score, deep):
+def catalog(out, min_score, deep, force=False):
     """Every installable item of every ranked registry -> out/catalog.json (metadata, no source code).
     --deep also fetches each block's source to tag its layout and visual features."""
     ranked = {r["name"]: r for r in json.loads((HERE.parent / "data" / "registries.json").read_text()) if r["score"] >= min_score}
-    src = {r["name"]: r for r in get(DIRECTORY, timeout=30)}
+    src = sources()
 
     def one(name):
         try:
@@ -269,6 +278,12 @@ def catalog(out, min_score, deep):
             return r
         rows = pool(classify_one, rows, 32)
         print(f"layout tagged for {sum(1 for r in rows if 'lay' in r)}", file=sys.stderr)
+    prev = out / "catalog.json"
+    if prev.exists() and not force:
+        before = len(json.loads(prev.read_text()).get("items", []))
+        if len(rows) < 0.8 * before:  # a network blip or a dead directory must not wipe a good index overnight
+            raise SystemExit(f"crawl found {len(rows)} items, fewer than 80% of the current {before}; "
+                             "kept the old catalog (rerun with --force if the drop is real)")
     (out / "catalog.json").write_text(json.dumps({"built": __import__("datetime").date.today().isoformat(),
                                                   "items": rows}, ensure_ascii=False, separators=(",", ":")))
     print(Counter(r["k"] for r in rows).most_common(), file=sys.stderr)
@@ -279,6 +294,7 @@ def main():
     ap.add_argument("step", choices=["items", "sitemaps", "classify", "catalog"])
     ap.add_argument("--out", required=True)
     ap.add_argument("--min-score", type=float, default=0)
+    ap.add_argument("--force", action="store_true", help="catalog: write even if far fewer items were found")
     ap.add_argument("--deep", action="store_true", help="catalog: also fetch block sources to tag layouts")
     ap.add_argument("--kinds", default="", help="comma list of section kinds for classify (default: all)")
     a = ap.parse_args()
@@ -286,7 +302,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     {"items": lambda: items(out, a.min_score), "sitemaps": lambda: sitemaps(out),
      "classify": lambda: classify(out, set(filter(None, a.kinds.split(",")))),
-     "catalog": lambda: catalog(out, a.min_score, a.deep)}[a.step]()
+     "catalog": lambda: catalog(out, a.min_score, a.deep, a.force)}[a.step]()
 
 
 if __name__ == "__main__":

@@ -31,10 +31,37 @@ AI-OS registers the MCP server in `ai-config/mcp/ui-indexador.yaml`.
 | `search_themes`, `get_theme` | `/themes?q=&vibe=`, `/themes/<name>` | tweakcn presets; one preset with tokens and CSS variables |
 | | `/health` | counts, or which data file is missing |
 
+## Which registries are indexed, and adding more
+
+- `GET /registries` (MCP `list_registries`) lists every indexed registry with homepage, stars, licence, score and
+  `source` (`directory` = the official shadcn directory, `manual` = added by hand). `/registries.md` groups them.
+  `/items?registry=@name` lists one registry's items; `/facets` counts everything.
+- Add one the directory does not list (yours, a small one, or the official `@shadcn` set, already added):
+
+  ```bash
+  python3 scripts/add-registry.py @name "https://site.com/r/{name}.json" [--homepage URL] [--description TEXT]
+  python3 scripts/add-registry.py --list
+  python3 scripts/add-registry.py --remove @name
+  ```
+
+  The URL is the item template from the registry's `components.json` entry. It is checked (the index must answer
+  with items) and saved in `data/extra-registries.json` (committed); it joins the index on the next refresh.
+
+## Refresh
+
+`bash refresh.sh` ranks the registries (directory + extras; needs `gh` logged in for stars, otherwise keeps the
+current ranking), crawls every item with layout tags, and embeds only what changed (skipped if Ollama is down).
+`--quick` skips the layout crawl. The servers see the new files on the next request.
+
+Daily at 11:30 through launchd: `bash schedule/install.sh` (`--run-now` to test it through launchd,
+`--status`, `--uninstall`). Logs in `logs/` for 14 days; a failure raises a macOS notification. The crawl
+refuses to shrink the catalog by more than 20% in one run, so a network blip keeps yesterday's index.
+
 ## How the index is made
 
-1. `scripts/rank-registries.py --out data`: the shadcn directory (ui.shadcn.com/r/registries.json), ranked by
-   GitHub stars, size and endpoint health → `registries.json` / `registries.md` (needs `gh`).
+1. `scripts/rank-registries.py --out data`: the shadcn directory (ui.shadcn.com/r/registries.json) plus
+   `extra-registries.json`, ranked by GitHub stars, size and endpoint health → `registries.json` / `.md`
+   (generated, needs `gh`).
 2. `scripts/survey-registries.py catalog --out data`: every item of every ranked registry from its
    `registry.json` (name, type, categories, dependencies), tagged with a kind by its name and description.
    `--deep` also fetches each block's source and tags its layout and visual features. Generated, not committed.
@@ -54,4 +81,4 @@ Kinds and layouts are heuristics from names and code: use them to narrow, then l
   every word of `q` must start a word in the item's text.
 - Icons/logos (~39k) and examples are hidden unless `kind=icon/logo`, `type=example` or `include_hidden=1`.
 
-Not yet: scheduled re-crawls and re-embeds, framework tags (some registries are Vue/Svelte), auth. Local only, bound to 127.0.0.1.
+Not yet: framework tags (some registries are Vue/Svelte), auth. Local only, bound to 127.0.0.1.

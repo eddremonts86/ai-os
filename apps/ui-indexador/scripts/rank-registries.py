@@ -89,11 +89,31 @@ def repo_facts(slug):
     return {"repo": full, "stars": stars, "pushed": pushed[:10], "license": lic, "archived": archived}
 
 
+def extra_registries(known):
+    """Registries added by hand (data/extra-registries.json, see add-registry.py) that the directory does not list.
+    No directory health check exists for them, so health is what we measure now: 100 if the index answers."""
+    path = Path(__file__).resolve().parent.parent / "data" / "extra-registries.json"
+    rows = []
+    for e in (json.loads(path.read_text()) if path.exists() else []):
+        if e["name"] in known:
+            continue
+        try:
+            n = len(json.loads(get(e["url"].replace("{name}", "registry"), timeout=20)).get("items", []))
+        except Exception as err:
+            print(f"extra registry {e['name']} did not answer ({err}); skipped this run", file=sys.stderr)
+            continue
+        rows.append({**e, "ranking": {"itemCount": n, "score": 0}, "health": {"score": 100}, "source": "manual"})
+    if rows:
+        print(f"{len(rows)} hand-added registries", file=sys.stderr)
+    return rows
+
+
 def enrich(r):
     out = {"name": r["name"], "homepage": r.get("homepage", ""), "description": r.get("description", ""),
            "items": r["ranking"]["itemCount"], "shadcn_rank": round(r["ranking"]["score"], 1),
            "health": round(r["health"]["score"], 1),
-           "category": OVERRIDES.get(r["name"]) or category(r.get("description", ""))}
+           "category": OVERRIDES.get(r["name"]) or category(r.get("description", "")),
+           "source": r.get("source", "directory")}
     slug = find_repo(out["homepage"]) if out["homepage"] else None
     facts = repo_facts(slug) if slug else None
     out.update(facts or {"repo": "", "stars": 0, "pushed": "", "license": "", "archived": False})
@@ -113,6 +133,7 @@ def main():
             and r["health"].get("status") == "healthy" and not r["health"].get("hidden")
             and r["ranking"]["itemCount"] >= a.min_items]
     print(f"{len(reg)} registries in the directory, {len(keep)} healthy, visible, >= {a.min_items} items", file=sys.stderr)
+    keep += extra_registries({r["name"] for r in reg})
     with cf.ThreadPoolExecutor(a.workers) as ex:
         rows = list(ex.map(enrich, keep))
     rows.sort(key=lambda x: -x["score"])
