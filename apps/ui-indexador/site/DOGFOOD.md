@@ -35,3 +35,6 @@ Measured on the 16 section queries (`docs/landing-queries-2026-11-08.txt` before
 - **Undeclared dependencies.** `@magicui/file-tree` (23k-star registry) imports `@radix-ui/react-accordion` and
   `@/components/ui/scroll-area` but declares neither, so `shadcn add` leaves a build that fails. The deep crawl
   could compare an item's imports with its declared dependencies and flag the gap.
+- **Fixed: the MCP server broke on a fresh install.** `pip install mcp` now pulls mcp 2.x, where `FastMCP` is
+  `MCPServer` and host/port moved to `run()`. Found by running the page's own Claude Code snippet in a clean
+  venv; `mcp_server.py` supports both, `requirements.txt` added, stdio and HTTP checked on 1.30.0 and 2.3.0.

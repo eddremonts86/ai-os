@@ -30,6 +30,7 @@ export const api = {
     get<Search>(`/items?${new URLSearchParams({ q, limit: "4", ...params })}`, signal),
   health: () => get<Health>("/health"),
   registries: (limit = 24) => get<{ items: Registry[] }>(`/registries?limit=${limit}`),
+  facets: () => get<{ total: number; registries: number; kinds: Record<string, number>; types: Record<string, number> }>("/facets"),
 }
 
 export const fmt = (n?: number) => (n == null ? "…" : n.toLocaleString("en-US"))

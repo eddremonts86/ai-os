@@ -12,7 +12,8 @@ shadcn's own CLI/MCP fetches and installs it.
 python3 scripts/survey-registries.py catalog --deep --out data   # build data/catalog.json (~15 s, ~10 min with --deep)
 ~/.ai-os/venv/bin/python scripts/embed-catalog.py                # embeddings for semantic search (~7 min first run, then only changes)
 ~/.ai-os/venv/bin/python server.py                               # HTTP on 127.0.0.1:3040
-~/.ai-os/venv/bin/python mcp_server.py                           # MCP over stdio (--http: 127.0.0.1:3041/mcp)
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt   # mcp (1.x or 2.x) + numpy
+.venv/bin/python mcp_server.py                                   # MCP over stdio (--http: 127.0.0.1:3041/mcp)
 ~/.ai-os/venv/bin/python test_server.py                          # smoke test: every endpoint + the MCP tool list
 ```
 

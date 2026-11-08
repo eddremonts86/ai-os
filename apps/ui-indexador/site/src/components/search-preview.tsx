@@ -41,9 +41,13 @@ function Row({ item }: { item: Item }) {
   )
 }
 
-export function SearchPreview() {
-  const [query, setQuery] = useState("")
-  const [typed, setTyped] = useState(false)
+type Props = { limit?: number; autoType?: boolean; initial?: string; filters?: boolean }
+const TYPES = ["any", "block", "component", "ui"] as const
+
+export function SearchPreview({ limit = 4, autoType = true, initial = "", filters = false }: Props) {
+  const [query, setQuery] = useState(initial)
+  const [typed, setTyped] = useState(!autoType)
+  const [type, setType] = useState<(typeof TYPES)[number]>("any")
   const [result, setResult] = useState<Result | null>(null)
   const [state, setState] = useState<"idle" | "loading" | "error">("idle")
   const example = useRef(0)
@@ -72,12 +76,12 @@ export function SearchPreview() {
     const ctrl = new AbortController()
     const t = setTimeout(() => {
       setState("loading")
-      api.search(q, { osi_only: "1" }, ctrl.signal)
+      api.search(q, { osi_only: "1", limit: String(limit), ...(type !== "any" ? { type } : {}) }, ctrl.signal)
         .then((r) => { setResult(r); setState("idle") })
         .catch((e) => { if (e.name !== "AbortError") setState("error") })
     }, typed ? 300 : 0)
     return () => { clearTimeout(t); ctrl.abort() }
-  }, [query, typed])
+  }, [query, typed, type, limit])
 
   return (
     <div className="overflow-hidden rounded-xl border bg-card text-left shadow-[0_24px_64px_-24px_rgb(0_0_0/0.5)]">
@@ -95,6 +99,22 @@ export function SearchPreview() {
           {state === "loading" ? "searching…" : result ? `${result.mode} · ${result.total.toLocaleString("en-US")} candidates` : "semantic search"}
         </span>
       </label>
+      {filters && (
+        <div role="radiogroup" aria-label="Item type" className="flex gap-1 border-b px-3 py-2">
+          {TYPES.map((t) => (
+            <button
+              key={t}
+              type="button"
+              role="radio"
+              aria-checked={type === t}
+              onClick={() => setType(t)}
+              className={`rounded-md px-2.5 py-1 text-xs transition-colors ${type === t ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      )}
       {state === "error" ? (
         <p className="px-4 py-8 text-sm text-muted-foreground">
           The index is not answering. Start it with <code className="text-foreground">python3 server.py</code>.
@@ -103,7 +123,7 @@ export function SearchPreview() {
         <ul aria-live="polite">{result.items.map((i) => <Row key={`${i.registry}/${i.name}`} item={i} />)}</ul>
       ) : (
         <ul aria-hidden className="divide-y">
-          {[0, 1, 2, 3].map((i) => (
+          {Array.from({ length: limit }, (_, i) => i).map((i) => (
             <li key={i} className="flex items-center gap-4 px-4 py-4">
               <span className="h-2.5 w-2/5 rounded-full bg-muted" />
               <span className="ml-auto h-2.5 w-16 rounded-full bg-muted" />

@@ -22,23 +22,23 @@ type View = (typeof VIEW_VALUES)[number];
 const isView = (value: unknown): value is View => VIEW_VALUES.some((option) => option === value);
 
 const BEFORE = [
-  'A combobox lives in three components, each with its own keyboard handling',
-  'Right-to-left is a ticket nobody wants to pick up',
-  'Dark mode was added late, so half of it is grey on grey',
-  'Every design tweak means reading someone else’s node_modules',
+  'The agent writes a pricing table from what it half-remembers',
+  'No keyboard handling, no right-to-left, dark mode bolted on late',
+  'You review 300 lines that a registry already had, better',
+  'Next week it writes a slightly different one for the next page',
 ] as const;
 
 const AFTER = [
-  'One compound API, the same shape as the primitives you already use',
-  'Logical properties throughout, so right-to-left needs no configuration',
-  'Light is a faithful inverse of dark, and both are checked before release',
-  'The file is in your repo, so a tweak is an edit',
+  'The agent asks the index for "pricing table with a monthly/yearly toggle"',
+  'It gets ranked candidates, each with its licence and install command',
+  'One npx shadcn add puts a proven component in your repo',
+  'You review content and tokens, not structure somebody invented'
 ] as const;
 
 const OUTCOMES = [
-  { value: 'One command', label: 'from decision to working component' },
-  { value: '2 bases', label: 'Radix and Base UI, kept in step' },
-  { value: '0 packages', label: 'added to your dependency tree' },
+  { value: '1 query', label: 'from a description to ranked candidates' },
+  { value: '1 command', label: 'to install the one you choose' },
+  { value: '0 lines', label: 'of component code stored by the index' },
 ] as const;
 
 const Comparison03 = () => {
@@ -48,13 +48,13 @@ const Comparison03 = () => {
     <section data-slot="comparison" className="bg-background py-20 sm:py-28" aria-labelledby="comparison-03-heading">
       <div className="mx-auto w-full max-w-5xl px-4">
         <div data-slot="comparison-header" className="max-w-2xl">
-          <p className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Before and after</p>
+          <p className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Why it exists</p>
           <h2
             id="comparison-03-heading"
             style={stagger(1)}
-            className={cn(ENTER, 'mt-3 font-serif text-3xl font-medium tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'mt-3 text-3xl font-semibold tracking-tight sm:text-4xl')}
           >
-            The same afternoon, spent two ways
+            The same pricing table, built two ways
           </h2>
         </div>
 
@@ -93,7 +93,7 @@ const Comparison03 = () => {
             <div className={SWAP}>
               <div className="flex items-center gap-2">
                 <CircleAlert aria-hidden className="size-4 text-muted-foreground" />
-                <h3 className="text-xs text-muted-foreground uppercase">Writing it yourself</h3>
+                <h3 className="text-xs text-muted-foreground uppercase">From memory</h3>
               </div>
               <ul className="mt-6 flex flex-col gap-4">
                 {BEFORE.map((item) => (
@@ -113,7 +113,7 @@ const Comparison03 = () => {
             <div className={SWAP}>
               <div className="flex items-center gap-2">
                 <CircleCheck aria-hidden className="size-4" />
-                <h3 className="text-xs uppercase">Installing it from Hirael</h3>
+                <h3 className="text-xs uppercase">From the index</h3>
               </div>
               <ul className="mt-6 flex flex-col gap-4">
                 {AFTER.map((item) => (
@@ -141,8 +141,8 @@ const Comparison03 = () => {
             ))}
           </dl>
           <Button asChild variant="outline" className="group">
-            <a href="#">
-              See what ships
+            <a href="#built-with-itself">
+              See how this page was built
               <ArrowRight className="size-3.5 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </a>
           </Button>
