@@ -19,13 +19,13 @@ Workflow to start any work session with me.
 
 ```bash
 # In Hermes:
-hermes chat --skills ai-os-karpathy
+hermes chat --skills aios-karpathy
 
 # Or, in any CLI, read the master instructions at the start of the conversation:
 cat "$AI_OS_ROOT/CLAUDE.md"
 ```
 
-The skill `ai-os-karpathy` (or reading CLAUDE.md) provides:
+The skill `aios-karpathy` (or reading CLAUDE.md) provides:
 
 - The master instructions (method, always-follow rules, priorities, prohibitions).
 - Links to `rules/`, `context/`, `specs/`, `verifiers/`, `workflows/`, and the reference docs (`docs/skills-catalog.md`, `docs/cli-reference.md`).

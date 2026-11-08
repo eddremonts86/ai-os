@@ -1,5 +1,5 @@
 ---
-name: ai-os-quickstart
+name: aios-quickstart
 description: 1-line bootstrap of Edd's AI Operating System in any CLI (Claude Code, Hermes, Codex, Gemini, Antigravity). Verifies the 14 superpowers skills are installed, runs the setup, and confirms the environment is ready. Use when onboarding a new dev or Mac, or when verifying AI-OS is functional.
 license: MIT
 metadata:
@@ -40,13 +40,13 @@ metadata:
 ### In Hermes
 
 ```bash
-hermes chat --skills ai-os-quickstart
+hermes chat --skills aios-quickstart
 ```
 
 ### In Claude Code
 
 ```bash
-/skill ai-os-quickstart
+/skill aios-quickstart
 ```
 
 ### In any CLI
@@ -86,7 +86,7 @@ Read (do not execute, only read for context):
 - `$AI_OS_ROOT/context/` (who I am, my projects, my preferences).
 - `$AI_OS_ROOT/rules/never_do.md` (absolute prohibitions).
 
-### 4. Load skill `ai-os-karpathy` (mandatory after quickstart)
+### 4. Load skill `aios-karpathy` (mandatory after quickstart)
 
 This skill loads the daily workflow. Without it, AI-OS is not active.
 
@@ -164,9 +164,9 @@ All should show 99 skills.
 
 ## Anti-patterns
 
-- Loading `ai-os-quickstart` on a Mac without `$AI_OS_ROOT/` (path missing).
+- Loading `aios-quickstart` on a Mac without `$AI_OS_ROOT/` (path missing).
 - assuming the user wants to install when they only want to verify.
-- loading `ai-os-karpathy` without first verifying with `ai-os-quickstart`.
+- loading `aios-karpathy` without first verifying with `aios-quickstart`.
 
 ## Output
 
@@ -174,7 +174,7 @@ After running this skill, the agent should have:
 
 - verified the AI-OS state.
 - loaded the context.
-- loaded `ai-os-karpathy` for daily work.
+- loaded `aios-karpathy` for daily work.
 - ready to execute the next step (new task or active Spec).
 
 **If any step is missing** → bootstrap is incomplete. Run again.
@@ -187,7 +187,7 @@ After running this skill, the agent should have:
 
 ## Related
 
-- **Skill:** `ai-os-karpathy` (loaded after this skill).
+- **Skill:** `aios-karpathy` (loaded after this skill).
 - **Workflow:** `$AI_OS_ROOT/workflows/project_start.md` — Spec + execution, only for work >~2 hours, multi-repo, or when the user asks for a Spec.
 - **Verify:** `bash "$AI_OS_ROOT/setup/verify.sh"` — 14 health checks.
 - **Setup:** `prompts/setup/03-required-skills.md` — install missing superpowers.
@@ -196,5 +196,5 @@ After running this skill, the agent should have:
 
 - ❌ Starting work without executing this skill first.
 - ❌ Claiming AI-OS works without verifying.
-- ❌ Loading `ai-os-karpathy` directly (skip the verification).
-- ❌ Modifying `ai-os-quickstart` to bypass checks (defeats the purpose).
+- ❌ Loading `aios-karpathy` directly (skip the verification).
+- ❌ Modifying `aios-quickstart` to bypass checks (defeats the purpose).
