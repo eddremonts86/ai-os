@@ -1,5 +1,5 @@
 ---
-name: ai-os-karpathy
+name: aios-karpathy
 description: AI Operating System local of Edd based on the "Spec + Verifier + Environment" method from Andrej Karpathy. Loads persistent context (profile, projects, preferences, tools, sources), the global skills in ai-config/skills/, MCP servers, and rules for daily work with any AI CLI. Use when starting any AI session in Claude Code, Hermes, Codex, Gemini, or Antigravity.
 license: MIT
 metadata:
@@ -33,7 +33,7 @@ Personal AI work system. Local, versioned, replicable.
 ### In Hermes (recommended)
 
 ```bash
-hermes chat --skills ai-os-karpathy
+hermes chat --skills aios-karpathy
 ```
 
 Or paste at the start of the conversation:
@@ -43,9 +43,9 @@ Or paste at the start of the conversation:
 ### In Claude Code
 
 ```bash
-# Auto-loads from ~/.claude/skills/ai-os-karpathy/
+# Auto-loads from ~/.claude/skills/aios-karpathy/
 # Or explicit:
-/skill ai-os-karpathy
+/skill aios-karpathy
 ```
 
 ### In Codex / Gemini / Antigravity
@@ -65,7 +65,7 @@ Auto-loads from `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`.
 
 - ❌ On a Mac without the 14 superpowers skills installed. The workflows will fail silently.
 - ❌ Without running `bash setup/verify.sh` first. If you don't know the state, don't assume.
-- ❌ As a replacement for `ai-os-quickstart`. `ai-os-quickstart` is for bootstrapping, `ai-os-karpathy` is for daily work.
+- ❌ As a replacement for `aios-quickstart`. `aios-quickstart` is for bootstrapping, `aios-karpathy` is for daily work.
 
 ## Dependencies (REQUIRED)
 
@@ -136,13 +136,13 @@ If it shows "Pasados: 14, Fallados: 0", AI-OS is functional.
 
 ## Pitfalls
 
-- ❌ Don't load `ai-os-karpathy` without the 14 superpowers installed. The workflows will silently degrade.
+- ❌ Don't load `aios-karpathy` without the 14 superpowers installed. The workflows will silently degrade.
 - ❌ Don't skip the context load. Forgetting preferences = generic AI behavior.
 - ❌ Don't run this in a project that doesn't have AI-OS. The paths won't exist.
 
 ## Related
 
-- `ai-os-quickstart` (bootstrap, 1-line) — for initial setup.
+- `aios-quickstart` (bootstrap, 1-line) — for initial setup.
 - `using-superpowers` (router) — loaded automatically after this skill.
 - `workflows/daily_start.md` — the actual workflow loaded after this skill.
 - `setup/verify.sh` — to validate the AI-OS state.

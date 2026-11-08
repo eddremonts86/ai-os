@@ -1,6 +1,6 @@
 ---
-name: ai-os-loop
-description: implement and run reusable Claude loops — 4-file system (TASK/INSTRUCTIONS/PROGRESS/outputs) with 6 blast-radius safety levels. invoke when user asks "create a loop", "automate this daily", "schedule this review", "make a recurring workflow", "loop the daily review", "set up a cron loop", or mentions "my-loop" / "PROGRESS.md" / "LOOP_INSTRUCTIONS.md". load on AI-OS projects for the loop convention; pairs with ai-os-memory skill when the loop needs persistent state.
+name: aios-loop
+description: implement and run reusable Claude loops — 4-file system (TASK/INSTRUCTIONS/PROGRESS/outputs) with 6 blast-radius safety levels. invoke when user asks "create a loop", "automate this daily", "schedule this review", "make a recurring workflow", "loop the daily review", "set up a cron loop", or mentions "my-loop" / "PROGRESS.md" / "LOOP_INSTRUCTIONS.md". load on AI-OS projects for the loop convention; pairs with aios-memory skill when the loop needs persistent state.
 ---
 
 # AI-OS Loop Skill
@@ -76,10 +76,10 @@ This skill is vendor-neutral. The same loop directory works under:
 The only Hermes-specific surface is `ai-os loop` (CLI wrapper). The
 loop files themselves are pure markdown.
 
-## Pair With ai-os-memory
+## Pair With aios-memory
 
 When a loop needs persistent state across Hermes restarts, use
-`ai-os-memory` to sync Hermes sessions into the FalkorDB graph. The
+`aios-memory` to sync Hermes sessions into the FalkorDB graph. The
 loop's `PROGRESS.md` is the human-readable cross-session state;
 FalkorDB is the structured-queryable store. Both can coexist —
 loop runs update `PROGRESS.md`, optionally ingest a structured summary
