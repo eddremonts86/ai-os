@@ -128,7 +128,7 @@ export function CodeBlock({
     >
       <div className="flex min-h-11 items-center gap-2 border-b bg-muted/50 pr-2 pl-4">
         {tabs ? (
-          <div role="tablist" aria-label="Files" onKeyDown={onKeyDown} className="-ml-2 flex min-w-0 gap-1 self-stretch overflow-x-auto">
+          <div role="tablist" aria-label="Files" onKeyDown={onKeyDown} className="-ml-2 flex min-w-0 flex-wrap gap-1 self-stretch">
             {tabs.map((t, i) => (
               <button
                 key={i}
