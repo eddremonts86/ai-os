@@ -3,7 +3,7 @@
 ## Metadata
 
 - **Date:** 2026-11-08
-- **Status:** draft
+- **Status:** approved (2026-11-08), in progress
 - **Blocks:** 11 (Block 2, fixing the indexer, runs before the pieces are chosen)
 - **Author:** Edd (written with Claude)
 - **Reviewer:** Edd

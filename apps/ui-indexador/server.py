@@ -14,6 +14,7 @@
   /themes?q=&vibe=   /themes/<name>                   tweakcn presets; one preset with tokens and CSS
   /index.md, /registries.md                           curated notes (markdown)
   /files/<path>                                       a file under data/
+  /, /assets/...                                      the landing page (site/dist), when built
 
 Standard library only; semantic search also needs numpy (run it with ~/.ai-os/venv/bin/python).
 """
@@ -22,11 +23,14 @@ import argparse
 import json
 import mimetypes
 import os
+from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, unquote, urlparse
 
 import indexer
 from indexer import DATA
+
+SITE = (Path(__file__).resolve().parent / "site" / "dist").resolve()
 
 ROUTES = {
     "/health": lambda q: indexer.health(),
@@ -57,12 +61,24 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    @staticmethod
+    def site_file(path):
+        """A file of the built landing (site/dist), never outside it."""
+        target = (SITE / unquote(path).lstrip("/")).resolve()
+        return target if target.is_relative_to(SITE) and target.is_file() else None
+
     def do_GET(self):
         u = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
-        path = u.path.rstrip("/") or "/health"
+        path = u.path.rstrip("/") or "/"
         try:
-            if path in ROUTES:
+            if path == "/":  # the landing page when it is built (site/dist), the health JSON otherwise
+                index = SITE / "index.html"
+                if index.is_file():
+                    self.send(200, index.read_bytes(), "text/html; charset=utf-8")
+                else:
+                    self.send(200, indexer.health())
+            elif path in ROUTES:
                 self.send(200, ROUTES[path](q))
             elif path.startswith("/themes/"):
                 self.send(200, indexer.theme(unquote(path.removeprefix("/themes/"))))
@@ -73,6 +89,8 @@ class Handler(BaseHTTPRequestHandler):
                 if not target.is_relative_to(DATA) or not target.is_file():
                     raise FileNotFoundError(path)
                 self.send(200, target.read_bytes(), mimetypes.guess_type(target.name)[0] or "application/octet-stream")
+            elif (asset := self.site_file(path)) is not None:
+                self.send(200, asset.read_bytes(), mimetypes.guess_type(asset.name)[0] or "application/octet-stream")
             else:
                 self.send(404, {"error": "not found", "see": "/health"})
         except FileNotFoundError as e:

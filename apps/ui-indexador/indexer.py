@@ -273,6 +273,10 @@ def theme(name):
 
 def health():
     out = {"ok": True}
+    try:
+        out["built"] = load("catalog.json").get("built")
+    except FileNotFoundError:
+        pass
     for name, fn in (("items", lambda: len(load("catalog.json")["items"])), ("registries", lambda: len(load("registries.json"))),
                      ("themes", lambda: len(load("themes.json")["themes"])), ("captures", lambda: captures()["total"])):
         try:

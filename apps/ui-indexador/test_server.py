@@ -27,6 +27,9 @@ def js(path):
 
 
 h = js("/health")
+assert h.get("built"), "health carries the crawl date"
+status, ctype, _ = get("/")
+assert status == 200 and (ctype.startswith("text/html") or ctype.startswith("application/json")), ctype
 assert h["ok"] and h["items"] > 10000 and h["registries"] > 0 and h["themes"] > 0 and h["captures"] > 0, h
 
 heroes = js("/items?kind=hero&limit=5")
@@ -68,7 +71,8 @@ assert t["css"].startswith(":root {") and ".dark {" in t["css"] and "--primary:"
 
 assert get("/index.md")[1].startswith("text/markdown")
 
-for bad in ("/files/../server.py", "/files/%2e%2e/server.py", "/files/..%2Fserver.py", "/themes/nope", "/nope"):
+for bad in ("/files/../server.py", "/files/%2e%2e/server.py", "/files/..%2Fserver.py", "/themes/nope", "/nope",
+            "/../server.py", "/..%2Fserver.py", "/%2e%2e/indexer.py", "/assets/../../server.py", "/assets/..%2F..%2Fserver.py"):
     try:
         get(bad)
         raise AssertionError(f"{bad} should be 404")
