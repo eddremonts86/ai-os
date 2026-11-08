@@ -81,20 +81,20 @@ bash setup/verify.sh
 ### In Hermes (recommended)
 
 ```bash
-hermes chat --skills ai-os-quickstart
+hermes chat --skills aios-quickstart
 ```
 
 ### In any CLI
 
-The `ai-os-quickstart` skill auto-loads from:
+The `aios-quickstart` skill auto-loads from:
 
-- **Claude Code:** `/skill ai-os-quickstart` or auto-load if it's in `~/.claude/skills/`.
+- **Claude Code:** `/skill aios-quickstart` or auto-load if it's in `~/.claude/skills/`.
 - **Codex / Gemini / Antigravity:** auto-load from `~/.codex/skills/`, `~/.gemini/skills/`, `~/.agents/skills/`.
 
 ## Next steps
 
 1. **Create your first Spec:** set `AI_OS_ROOT` to the repository root, then run `nano "$AI_OS_ROOT/specs/current_spec.md"` and follow the template.
-2. **Load context:** the `ai-os-quickstart` skill guides you step by step.
+2. **Load context:** the `aios-quickstart` skill guides you step by step.
 3. **Personalize:** edit files in `ai-config/`, `dev-env/dotfiles/`, `context/` according to your preferences.
 4. **Sync to the repo:** `git add . && git commit -m "personalize" && git push`.
 

@@ -38,8 +38,8 @@ globally: `iaworkspace-patterns`, `env-config-iaworkspace`, `prod-fleet-register
   systematic-debugging, finishing-a-development-branch, requesting-code-review,
   receiving-code-review, dispatching-parallel-agents, subagent-driven-development,
   using-git-worktrees. Plus `code-review-and-quality` (required, but separate from the 14).
-- **AI-OS workflow skills (native)**: ai-os-karpathy, ai-os-quickstart, ai-os-loop,
-  ai-os-memory.
+- **AI-OS workflow skills (native)**: aios-karpathy, aios-quickstart, aios-loop,
+  aios-memory.
 - **Vendored from gstack (optional, third-party)**: spec, context-save, context-restore — see
   `vendor/gstack/`. The native Spec/Plan workflow remains `workflows/project_start.md`.
 - **Vendored from ECC (curated subset)**: only the skills, commands and Claude-Code-only agents
