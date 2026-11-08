@@ -10,6 +10,7 @@ Data files (see README for how each is made):
 
 import csv
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 
@@ -49,6 +50,11 @@ def _eq(value, wanted):
 
 def _words(q):
     return [w for w in str(q or "").lower().split() if w]
+
+
+def _has_words(text, words):
+    """Every query word starts a word in text ("air" finds "airline", "airline" does not find "hairline")."""
+    return all(re.search(r"(?<![a-z0-9])" + re.escape(w), text) for w in words)
 
 
 # ── registries ────────────────────────────────────────────────────────────────
@@ -95,7 +101,7 @@ def items(q=None, kind=None, type=None, registry=None, layout=None, feature=None
             continue
         if words:
             hay = f"{r['n']} {r.get('ti', '')} {r.get('d', '')} {' '.join(r.get('c', []))} {r['k']}".lower()
-            if not all(w in hay for w in words):
+            if not _has_words(hay, words):
                 continue
         hits.append(r)
 
