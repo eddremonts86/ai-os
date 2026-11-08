@@ -7,6 +7,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --color-brand: var(--brand);
     --font-heading: var(--font-sans);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -72,8 +73,9 @@
     }
 }
 
-/* Theme: tweakcn "darkmatter" (Apache-2.0), fetched from ui-indexador's own /themes/darkmatter; primary orange #e78a53 -> #ff6a00 at Edd's request. */
+/* Theme: tweakcn "darkmatter" (Apache-2.0), fetched from ui-indexador's own /themes/darkmatter; orange at Edd's request: --brand #ff6a00 for accents on the dark background, --primary #d14900 behind white button text (4.5:1). */
 :root {
+  --brand: var(--primary);
   --background: #ffffff;
   --foreground: #111827;
   --card: #ffffff;
@@ -126,8 +128,9 @@
   --card-foreground: #c1c1c1;
   --popover: #121113;
   --popover-foreground: #c1c1c1;
-  --primary: #ff6a00;
-  --primary-foreground: #121113;
+  --primary: #d14900;
+  --brand: #ff6a00;
+  --primary-foreground: #ffffff;
   --secondary: #5f8787;
   --secondary-foreground: #121113;
   --muted: #222222;
@@ -146,7 +149,7 @@
   --chart-5: #999999;
   --sidebar: #121212;
   --sidebar-foreground: #c1c1c1;
-  --sidebar-primary: #ff6a00;
+  --sidebar-primary: #d14900;
   --sidebar-primary-foreground: #121113;
   --sidebar-accent: #333333;
   --sidebar-accent-foreground: #c1c1c1;

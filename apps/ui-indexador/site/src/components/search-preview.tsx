@@ -34,7 +34,7 @@ function Row({ item }: { item: Item }) {
       <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
         <span>{item.type}</span>
         <span>{item.license ?? (item.mirror_of ? "mirror" : "licence ?")}</span>
-        {item.similarity != null && <span className="tabular-nums text-primary">{item.similarity.toFixed(2)}</span>}
+        {item.similarity != null && <span className="tabular-nums text-brand">{item.similarity.toFixed(2)}</span>}
         <CopyCommand text={item.install} />
       </div>
     </li>
