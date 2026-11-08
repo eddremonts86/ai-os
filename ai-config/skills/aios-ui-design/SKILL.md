@@ -20,7 +20,9 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    The brief's own words win over any default of the skill.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
-4. **Compose from proven pieces, do not invent a visual system.** Ask ui-indexador: its MCP tools
+4. **Compose from proven pieces, do not invent a visual system.** Ask ui-indexador (an external app,
+   github.com/eddremonts86/ui-indexador, run locally by its `schedule/install.sh`; MCP at
+   `http://127.0.0.1:3041/mcp`): its MCP tools
    (`design_notes`, `list_captures`, `curated_blocks`, `search_items`, `search_themes`/`get_theme`) or the same
    queries over HTTP (`${UI_INDEXER_URL:-http://127.0.0.1:3040}`, e.g. `/items?kind=hero&type=block`). It indexes
    every block and component of 300 shadcn registries (kind, layout, features, deps, install command), plus real

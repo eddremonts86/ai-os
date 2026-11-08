@@ -35,7 +35,8 @@ Our projects are shadcn/ui + Tailwind v4 + TanStack, so some picks already arriv
 
 ## Components and blocks: the ranked registry index
 
-For a component, block or section (not a library), search ui-indexador before writing one: the MCP tool
+For a component, block or section (not a library), search ui-indexador (github.com/eddremonts86/ui-indexador,
+a local service) before writing one, with `osi_only` for shippable licences: the MCP tool
 `search_items` (or `${UI_INDEXER_URL:-http://127.0.0.1:3040}/items?q=&kind=&type=block`). It indexes every item of
 the ~300 healthy registries of the shadcn directory, ranked by proof of use (GitHub stars, then size, then endpoint
 health), and returns the install command. The search is semantic: describe one piece at a time in English
