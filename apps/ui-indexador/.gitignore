@@ -5,3 +5,4 @@ data/registries.json
 data/registries.md
 logs/
 __pycache__/
+.venv/

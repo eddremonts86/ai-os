@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GitBranch } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -38,17 +38,17 @@ const Cta06 = () => {
               style={stagger(2)}
               className={cn(
                 ENTER,
-                'mt-3 max-w-lg text-start font-serif text-3xl leading-[1.05] font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl',
+                'mt-3 max-w-lg text-start text-3xl leading-[1.05] font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl',
               )}
             >
-              Connect a repo and <span className="italic">watch it run.</span>
+              Stop describing components. <span className="text-brand">Start finding them.</span>
             </h2>
             <p
               style={stagger(3)}
               className={cn(ENTER, 'mt-3 max-w-xl text-start text-sm text-muted-foreground sm:text-base')}
             >
-              Pick a branch and your build, test, and deploy steps show up as a live graph. Most first runs finish in
-              under three minutes.
+              Add one MCP server to your agent and its next UI starts from the best of 300+ registries instead of from
+              memory.
             </p>
           </div>
 
@@ -61,12 +61,12 @@ const Cta06 = () => {
             )}
           >
             <Button asChild size="lg" className="w-full sm:w-auto">
-              <a href="#">
-                <GitBranch className="size-4" />
-                Connect a repository
+              <a href="#integrate">
+                Add it to your agent
+                <ArrowRight className="size-4" />
               </a>
             </Button>
-            <p className="text-xs text-muted-foreground uppercase">Free for public repos</p>
+            <p className="text-xs text-muted-foreground uppercase">Local · no account</p>
           </div>
         </div>
       </div>

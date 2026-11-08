@@ -1,18 +1,17 @@
 import {
-  BarChart3,
-  Cloud,
-  CreditCard,
-  Database,
-  GitBranch,
-  Globe,
-  KeyRound,
-  Lock,
-  Mail,
-  MessageSquare,
+  Bot,
+  Braces,
+  Code,
+  Cpu,
+  FolderPlus,
+    Palette,
   Plug,
   RefreshCw,
-  Timer,
-  Webhook,
+  ScanSearch,
+  Server,
+  ShieldCheck,
+  Terminal,
+  Trophy,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -21,12 +20,12 @@ import { Section, SectionHeader } from "@/components/ui/section"
 import { StatusDot } from "@/components/ui/status-dot"
 
 const bars = [38, 52, 44, 68, 58, 76, 62, 88, 72, 96]
-const integrations = [Database, Cloud, Mail, CreditCard, MessageSquare, Webhook, GitBranch]
+const integrations = [Terminal, Bot, Code, Braces, Cpu, Server, Plug]
 
 const secondaryFeatures = [
-  { icon: Timer, title: "Instant rollbacks", body: "Revert any deploy in one click, without rebuilding." },
-  { icon: RefreshCw, title: "Preview environments", body: "Every pull request gets its own live URL." },
-  { icon: GitBranch, title: "Git-based workflow", body: "Push to deploy. Branches, reviews and history included." },
+  { icon: RefreshCw, title: "Re-indexed every day", body: "A launchd job re-crawls at 11:30 and refuses to shrink the index by more than 20% in one run." },
+  { icon: FolderPlus, title: "Add your own registry", body: "One command adds a registry the directory does not list; it is checked before it is saved." },
+  { icon: Palette, title: "Themes included", body: "42 tweakcn presets with their vibes, each returned as CSS variables ready to paste." },
 ]
 
 function Cell({
@@ -62,16 +61,16 @@ export function Features01({ id = "features" }: { id?: string }) {
   return (
     <Section id={id}>
       <SectionHeader
-        eyebrow="Features"
-        title="Everything you need. Nothing you don't."
-        description="A focused set of tools that work together, so your team can spend time on the product instead of the plumbing."
+        eyebrow="What it does"
+        title="An index, not another component library."
+        description="It hosts no code and competes with no registry. It makes all of them searchable for the agent that writes your UI."
       />
 
       <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border bg-border md:grid-cols-3">
         <Cell
-          icon={BarChart3}
-          title="Real-time analytics"
-          description="Understand how people use your product with live dashboards and zero sampling."
+          icon={ScanSearch}
+          title="Search by meaning"
+          description="Local embeddings match &quot;buy flight tickets&quot; to booking forms, checkouts and boarding passes that never say &quot;flight&quot;. Keyword search when Ollama is off."
           className="md:col-span-2"
         >
           <div className="flex h-32 w-full max-w-md items-end gap-2 px-8">
@@ -86,9 +85,9 @@ export function Features01({ id = "features" }: { id?: string }) {
         </Cell>
 
         <Cell
-          icon={Globe}
-          title="Global edge network"
-          description="Served from 300+ locations, milliseconds away from every user."
+          icon={Trophy}
+          title="Ranked by proof of use"
+          description="GitHub stars, size and endpoint health order the registries, so the established piece comes first."
         >
           <div className="relative flex size-40 items-center justify-center">
             {[100, 72, 44].map((size) => (
@@ -111,23 +110,23 @@ export function Features01({ id = "features" }: { id?: string }) {
         </Cell>
 
         <Cell
-          icon={Lock}
-          title="Secure by default"
-          description="Encryption at rest and in transit, SSO and audit logs on every plan."
+          icon={ShieldCheck}
+          title="Licences you can check"
+          description="Every result names its licence; osi_only keeps what you can ship, and mirrors never borrow another site&apos;s MIT."
         >
           <div className="relative flex items-center justify-center">
             <span className="absolute size-36 rounded-3xl border bg-muted/40 transition-transform duration-500 group-hover:rotate-6" />
             <span className="absolute size-24 rounded-2xl border bg-card transition-transform duration-500 group-hover:-rotate-6" />
             <span className="relative flex size-12 items-center justify-center rounded-xl bg-foreground text-background">
-              <KeyRound className="size-5" />
+              <ShieldCheck className="size-5" />
             </span>
           </div>
         </Cell>
 
         <Cell
           icon={Plug}
-          title="Integrates with your stack"
-          description="Connect databases, payments, email and messaging in a few clicks, or build your own with webhooks."
+          title="Speaks MCP and HTTP"
+          description="Eight MCP tools for Claude Code, Codex, Cursor or VS Code, and the same queries over plain HTTP for anything else."
           className="md:col-span-2"
         >
           <div className="flex w-full flex-col gap-3">

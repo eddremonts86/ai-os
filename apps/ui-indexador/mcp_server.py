@@ -4,19 +4,27 @@
   ~/.ai-os/venv/bin/python mcp_server.py            # stdio (how AI-OS registers it)
   ~/.ai-os/venv/bin/python mcp_server.py --http     # streamable HTTP on 127.0.0.1:3041/mcp (for a remote host later)
 
-Needs the `mcp` package (in the AI-OS venv). It installs nothing: every result carries the
+Needs the `mcp` package, 1.x or 2.x (requirements.txt). It installs nothing: every result carries the
 `npx shadcn@latest add @registry/item` command, and shadcn's own CLI/MCP fetches the code.
 """
 
 import argparse
 import os
 
-from mcp.server.fastmcp import FastMCP
-
 import indexer
 
-mcp = FastMCP("ui-indexador", host=os.environ.get("UI_INDEXER_HOST", "127.0.0.1"),
-              port=int(os.environ.get("UI_INDEXER_MCP_PORT", 3041)))
+HOST = os.environ.get("UI_INDEXER_HOST", "127.0.0.1")
+PORT = int(os.environ.get("UI_INDEXER_MCP_PORT", 3041))
+try:  # mcp 1.x
+    from mcp.server.fastmcp import FastMCP
+
+    mcp = FastMCP("ui-indexador", host=HOST, port=PORT)
+    HTTP_KW = {}
+except ModuleNotFoundError:  # mcp 2.x renamed FastMCP to MCPServer and moved host/port to run()
+    from mcp.server.mcpserver import MCPServer
+
+    mcp = MCPServer("ui-indexador")
+    HTTP_KW = {"host": HOST, "port": PORT}
 
 
 @mcp.tool()
@@ -83,4 +91,7 @@ def get_theme(name: str) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--http", action="store_true", help="streamable HTTP instead of stdio")
-    mcp.run(transport="streamable-http" if ap.parse_args().http else "stdio")
+    if ap.parse_args().http:
+        mcp.run(transport="streamable-http", **HTTP_KW)
+    else:
+        mcp.run(transport="stdio")

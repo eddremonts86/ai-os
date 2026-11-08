@@ -6,41 +6,25 @@ import {
 } from '@/components/ui/accordion'
 
 const faqItems = [
-  {
-    id: 'item-1',
-    question: 'Can I use this template for a commercial project?',
-    answer:
-      'Yes, you can use this template for personal and commercial projects. You can customize the layout, styling, and content to match your product or brand.',
-  },
-  {
-    id: 'item-2',
-    question: 'Is this section responsive on mobile devices?',
-    answer:
-      'Yes, the layout is designed to work across desktop, tablet, and mobile screens. On smaller screens, the content stacks vertically so the FAQ remains easy to read.',
-  },
-  {
-    id: 'item-3',
-    question: 'Do I need to install any extra dependencies?',
-    answer:
-      'This section uses the shadcn Accordion component. As long as Accordion is already installed in your project, you do not need anything extra for the basic version.',
-  },
-  {
-    id: 'item-4',
-    question: 'Can I customize the questions and answers?',
-    answer:
-      'Absolutely. The FAQ content is stored in a simple array, so you can update the questions, answers, IDs, and order without changing the layout logic.',
-  },
-  {
-    id: 'item-5',
-    question: 'Can this be used on a pricing or landing page?',
-    answer:
-      'Yes, this type of FAQ section works well on pricing pages, landing pages, documentation pages, and product pages where users need quick answers before taking action.',
-  },
+  { id: 'code', question: 'Does it store or serve component code?',
+    answer: 'No. It stores what each registry says about its items: name, type, description, categories, dependencies, and for blocks a layout read from the source. Every result points at the original with its npx shadcn@latest add command, and the shadcn CLI fetches the code from the registry itself.' },
+  { id: 'licence', question: 'Can I use what it finds commercially?',
+    answer: 'It depends on the item, which is why each result names its licence. Licences are read per registry from its GitHub repository; osi_only=1 keeps MIT, Apache-2.0, BSD and similar. Items a mirror republishes carry no licence until you check the original.' },
+  { id: 'shadcn', question: 'Is this a shadcn product?',
+    answer: 'No. It is an independent index that reads the public shadcn registry directory and the registries it lists, plus any you add yourself.' },
+  { id: 'cloud', question: 'Does it need a cloud service or an API key?',
+    answer: 'No. The index, the HTTP API and the MCP server run on your machine. Semantic search uses a local Ollama model (nomic-embed-text); without it, search falls back to keywords and says so.' },
+  { id: 'language', question: 'Which languages can I search in?',
+    answer: 'English works best: the embedding model and almost every registry description are English. Describe one piece at a time ("airport autocomplete"), not the whole page.' },
+  { id: 'fresh', question: 'How fresh is it?',
+    answer: 'It re-crawls every registry once a day and only re-embeds what changed. The date of the last crawl is at the top of this page, read from the API.' },
+  { id: 'add', question: 'Can I add my own registry?',
+    answer: 'Yes: scripts/add-registry.py @name "https://site.com/r/{name}.json". The registry is checked before it is saved and joins the index on the next refresh.' },
 ]
 
 export default function FAQsTwo() {
   return (
-    <section className="relative overflow-hidden py-16 md:py-24">
+    <section id="faq" className="relative overflow-hidden py-16 md:py-24">
       <div className="relative mx-auto max-w-5xl px-6">
         <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-foreground">
@@ -48,7 +32,7 @@ export default function FAQsTwo() {
           </h2>
 
           <p className="mt-4 text-lg text-balance text-muted-foreground">
-            Everything you need to know before using this section in your project.
+            What it does, what it does not, and where its limits are.
           </p>
         </div>
 
@@ -75,11 +59,7 @@ export default function FAQsTwo() {
         </div>
 
         <p className="mx-auto mt-8 max-w-xl text-center text-sm text-muted-foreground">
-          Still have questions? Reach out to our{' '}
-          <a href="#" className="font-medium text-foreground underline underline-offset-2">
-            support team
-          </a>
-          .
+          The app&apos;s README covers every endpoint, filter and data file in detail.
         </p>
       </div>
     </section>

@@ -242,7 +242,7 @@
    ],
    "chosen": "@balick/hero-01",
    "install": "npx shadcn@latest add @balick/hero-01",
-   "why": "Centred headline over a product window: the window became a live search against /items, the logo marquee shows the top-ranked registries from /registries.",
+   "why": "Edd picked it from screenshots of three. @uiception/hero-section-v1, the top match, is Next.js-only. The product window became a live search against /items; the logo marquee shows the top-ranked registries.",
    "changes": [
     "copy",
     "ProductPreview replaced by SearchPreview (real search)",
@@ -356,7 +356,10 @@
      "install": "npx shadcn@latest add @karaui/number-ticker",
      "description": "Every digit spins into place on its own reel, each starting a beat after the last; supports zero padding, prefix, suffix, comma grouping and"
     }
-   ]
+   ],
+   "chosen": "@fancy-ui/number-ticker",
+   "why": "No dependencies; counts up on viewport entry. Fed by /health and /facets.",
+   "install": "npx shadcn@latest add @fancy-ui/number-ticker"
   },
   {
    "section": "registries-strip",
@@ -458,7 +461,10 @@
      "install": "npx shadcn@latest add @reactframe/logo-marquee",
      "description": "An infinite scrolling row of client/partner logos with edge fade masks, grayscale-to-color hover reveal, pause-on-hover, and a constant spee"
     }
-   ]
+   ],
+   "chosen": "@balick/hero-01",
+   "why": "The hero already ships a Marquee; it shows the top-ranked registries from /registries instead of a separate strip.",
+   "install": "npx shadcn@latest add @balick/hero-01"
   },
   {
    "section": "problem",
@@ -567,7 +573,10 @@
      "install": "npx shadcn@latest add @ballmac/comparison-1",
      "description": "A product-versus-alternatives table where your column is lifted into its own card, with yes, partly, no and text values and a row of headlin"
     }
-   ]
+   ],
+   "chosen": "@hirael/comparison-03",
+   "why": "Before/after panels with the old way muted, plus three outcomes: exactly the argument. Serif heading switched to the theme font.",
+   "install": "npx shadcn@latest add @hirael/comparison-03"
   },
   {
    "section": "how-it-works",
@@ -679,7 +688,10 @@
      "install": "npx shadcn@latest add @hirael/process-02",
      "description": "Four-step install section. Picking a step fills the connector up to it and swaps in a detail panel with a short checklist, and the section c"
     }
-   ]
+   ],
+   "chosen": "@karaui/how-it-works",
+   "why": "Numbered steps whose connector draws as you scroll; motion is the only dependency.",
+   "install": "npx shadcn@latest add @karaui/how-it-works"
   },
   {
    "section": "live-search",
@@ -794,7 +806,10 @@
    "rejected": {
     "@astryx/*": "needs @astryxdesign/core and StyleX, a second styling system"
    },
-   "plan": "compose from the official @shadcn command + input items (cmdk), also in the index"
+   "plan": "compose from the official @shadcn command + input items (cmdk), also in the index",
+   "chosen": null,
+   "why": "The @astryx palettes need StyleX; composed from the hero's own search box, with type filters and 8 results.",
+   "composed": true
   },
   {
    "section": "features",
@@ -910,7 +925,10 @@
      "install": "npx shadcn@latest add @ballmac/features-1",
      "description": "Bento feature grid of spotlight cards in two sizes, with an animated stat and keyboard-shortcut hints mixed in for texture."
     }
-   ]
+   ],
+   "chosen": "@balick/features-01",
+   "why": "Bento of four illustrated features plus a secondary row; lucide only.",
+   "install": "npx shadcn@latest add @balick/features-01"
   },
   {
    "section": "integrate",
@@ -1022,7 +1040,10 @@
      "install": "npx shadcn@latest add @eased/code-tabs",
      "description": "Code tabs for React and shadcn: several files or one install command per package manager, with the pnpm or npm choice synced across the page"
     }
-   ]
+   ],
+   "chosen": "@velora/code-block",
+   "why": "Tabs, copy button, built-in tokenizer, no dependency.",
+   "install": "npx shadcn@latest add @velora/code-block"
   },
   {
    "section": "built-with-itself",
@@ -1126,7 +1147,10 @@
      "install": "npx shadcn@latest add @assistant-ui/elements-file-tree",
      "description": "Everything a run touched, as a tree, with the churn spelled out per file."
     }
-   ]
+   ],
+   "chosen": "@magicui/file-tree",
+   "why": "Most-starred registry of the shortlist (23k). Needed two undeclared dependencies (DOGFOOD.md).",
+   "install": "npx shadcn@latest add @magicui/file-tree"
   },
   {
    "section": "faq",
@@ -1233,7 +1257,10 @@
      "install": "npx shadcn@latest add @uiception/faq-section-v2",
      "description": "Minimal centered FAQ with a simple headline and clean divider accordion."
     }
-   ]
+   ],
+   "chosen": "@navui/faqs-section-two",
+   "why": "Accessible shadcn accordion; one next/link import replaced by <a>.",
+   "install": "npx shadcn@latest add @navui/faqs-section-two"
   },
   {
    "section": "cta",
@@ -1356,7 +1383,10 @@
      "install": "npx shadcn@latest add @corsair-ui/cta",
      "description": "A closing band with a title, a description and one or two actions."
     }
-   ]
+   ],
+   "chosen": "@hirael/cta-06",
+   "why": "Plain gradient panel with one button. The first dogfooding query (\"…with background beams\") found only boxed CMS blocks; the three rephrased queries recorded here found it.",
+   "install": "npx shadcn@latest add @hirael/cta-06"
   },
   {
    "section": "footer",
@@ -1457,7 +1487,10 @@
      "install": "npx shadcn@latest add @velora/footer-wordmark",
      "description": "Minimal footer that ends in an oversized outlined wordmark lighting up in brand colours under the pointer."
     }
-   ]
+   ],
+   "chosen": "@hirael/footer-03",
+   "why": "Brand blurb and link columns; socials removed (no public accounts yet).",
+   "install": "npx shadcn@latest add @hirael/footer-03"
   }
  ],
  "theme": {
@@ -1468,5 +1501,14 @@
    "Geist Mono (self-hosted)",
    "JetBrains Mono (self-hosted)"
   ]
+ },
+ "integration_checks": {
+  "date": "2026-11-08",
+  "claude_code": "claude mcp add --scope project in a temp dir, then claude mcp list: '✔ Connected' (real ~/.claude.json untouched)",
+  "codex": "config.toml in a temp CODEX_HOME, codex mcp list: 'enabled'",
+  "fresh_install": "python3 -m venv + pip install mcp numpy pulled mcp 2.3.0, where FastMCP is renamed MCPServer: mcp_server.py failed, now supports both; stdio search_items and --http initialize (200) checked on mcp 1.30.0 and 2.3.0",
+  "system_pip": "pip install into Homebrew python3 refused (externally-managed-environment), so the snippets use a venv",
+  "http": "curl /items?q=airport+autocomplete&osi_only=1 -> semantic, @coss/autocomplete first; /facets answers",
+  "vscode_cursor": "not run: marked unverified on the page"
  }
 }
