@@ -8,7 +8,7 @@ license: Internal
 
 Derived from two prior published packages: `@edd_remonts/create-hermes-workspace`
 (`~/Projects/eddremonts86/create-hermes-workspace-pkg/`) and
-`schilling-widgets-system` (`~/Projects/eddremonts86/npmPakage/`). Use this
+a React widget library (`~/Projects/eddremonts86/npmPakage/`). Use this
 pattern instead of inventing a new one.
 
 ## Naming

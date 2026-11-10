@@ -36,7 +36,7 @@ import { join, relative, sep } from 'node:path'
  */
 const PROFILES = [
   {
-    name: 'wave-schilling',
+    name: 'wave-formcontainer',
     detect: (root) => existsSync(join(root, 'src/components/globals/form/types/index.ts')),
     types: 'src/components/globals/form/types/index.ts',
     typesEnum: 'InputsTypes',
