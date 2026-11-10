@@ -18,7 +18,7 @@ Read only when the task needs it:
 |---|---|
 | `context/02_projects.md` | the task names or touches one of Edd's projects |
 | `context/04_tools.md` | installing, configuring, or debugging the local toolchain |
-| `context/01_business_or_work.md`, `07_edi_company.md` | work for Employer or EDI |
+| `context/01_business_or_work.md`, `07_edi_company.md` | work for the employer or EDI |
 | `context/05_sources.md` | looking up official docs or reference repos |
 | `context/06_brand.md` | branded deliverables (diagrams, site, decks) |
 | `workflows/*.md` | the matching kind of task (coding, research, content, new Spec) |
