@@ -32,4 +32,9 @@ A cold read of a UI. The agent that built it reviews it with everything it knows
    say it was dropped. Reviewers with no context flag decisions taken elsewhere; search the repo's docs first.
 5. **Report** blockers and majors, ranked, with evidence. Fix nothing here: this skill is read-only.
 
+**Scored mode.** When there is a bar to reach (references to match, a 3D scene, a video, "until it is a 9"),
+score instead of listing blockers: one number per dimension from at least two fresh critics, median, calibrated
+by the user's own estimate, numbers labelled measured or eyeballed. Rubrics, critic prompts and calibration:
+`references/scored-critics.md`.
+
 Scope: one screen or flow. Every route of a whole app is `saas-review`. To fix what the review found, `/aios-ui-improve`.

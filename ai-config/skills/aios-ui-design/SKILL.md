@@ -42,6 +42,13 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    - **Record** each section's queries, top candidates, the choice and why (and every rejection) in a build log
      (e.g. `build-log.json`) next to the code. Hand-build only what no indexed piece covers, and say so in the log.
    Then `pick-ui-library` for libraries (toasts, charts, forms) the pieces do not bring.
+   **Match references** (optional, when the user gives target screens or images, or a bar like "make it look like
+   this"). References are the minimum bar, not inspiration. Write a shot list (one row per reference: the screen
+   state, a fixed viewport, what to take from it), capture each shot at the reference's viewport, compare with
+   `aios-ui-verify/scripts/compare.py`, and score with `aios-ui-review` scored mode on layout and spacing,
+   typography, color, components, density and motion. Iterate until the bar is met; for a run longer than one
+   session use `aios-loop` long-run mode. Take from many references, never copy one element 1:1, and never name
+   or publish third-party references.
 5. **Show one section first.** Build the hero (or the one section that carries the idea), show it to the user
    with a screenshot, and only continue after they approve the direction. Do not spend a whole page of tokens
    on an unapproved look.

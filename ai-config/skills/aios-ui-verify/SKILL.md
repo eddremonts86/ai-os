@@ -26,6 +26,18 @@ It only reports a CSS animation that keeps running under `prefers-reduced-motion
 axe-core is taken from the nearest `node_modules/axe-core` or `--axe`. Without it the verdict says
 **a11y NOT CHECKED**; say so in your report, never call that a full pass.
 
+## Compare against a reference
+
+```bash
+~/.ai-os/venv/bin/python <this skill's dir>/scripts/compare.py --out compare.png ref1.png shot1.png [ref2 shot2 ...]
+```
+
+One image per pair (reference left, render right, letterboxed, never stretched) and a **measured** color check per
+pair: mean and worst-region saturation and brightness delta, render minus reference. A negative saturation delta
+means the render is greyer than the reference. Capture the render at the reference's viewport and aspect first
+(`verify.py --widths <reference width>`). Used by `/aios-ui-design` "Match references", `/aios-ui-3d` and
+`/aios-ui-video`; the numbers feed `aios-ui-review`'s scored mode.
+
 ## What to do with the result
 
 1. **FAIL:** fix the cause, not the symptom, and rerun. Two rounds at most; then report what is left.
