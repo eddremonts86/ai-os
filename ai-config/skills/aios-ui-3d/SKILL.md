@@ -25,7 +25,9 @@ them. The reference loop is adapted from cook by Leon Lin (MIT, see NOTICE-cook.
    - **Deterministic:** drive every animation from a time parameter, never the wall clock, and expose
      `?shot=S01&t=2.5` so a still is the same every time.
    - **Stills:** capture each shot at its preset with Playwright (`preserveDrawingBuffer` on the renderer), then
-     `aios-ui-verify/scripts/compare.py` for the side by side and the measured color deltas.
+     `aios-ui-verify/scripts/compare.py` for the side by side and the measured color deltas. On macOS launch
+     Chromium with `--use-angle=metal --enable-gpu --ignore-gpu-blocklist`, or headless WebGL renders black
+     (`verify.py` does this already). For scroll-driven scenes, drive the scroll to fixed progress points.
    - **Too grey is the most common failure.** Check the pipeline before repainting materials: renderer output
      color space (sRGB), tone mapping (ACES or AgX), exposure, fog and haze color.
 6. **Quality.** Depth over breadth: one shot exceptional before the next. Detail near and far: render to the
@@ -49,6 +51,14 @@ them. The reference loop is adapted from cook by Leon Lin (MIT, see NOTICE-cook.
 9. **Score and gate.** `aios-ui-review` scored mode on composition, light, color, materials, detail near and far,
    motion; at least two fresh critics, median, calibrated by the user's estimate. Send stills every round; no final
    render or export before the user approves the stills. Then `/aios-ui-verify` on every page the scene is on.
+
+## Known traps (from real builds)
+
+- `cobe` 0.6 (used by several indexed globes): markers updated from `onRender` only draw the first half (its shader
+  loops by 2 up to the marker count). Pad the list with as many invisible markers; 32 real ones fit.
+- Registry pieces can bring helpers that break the project's lint (Fast Refresh, import order). Remove what the
+  page does not use rather than disabling the rule, and record it.
+- A lazy chunk is not free: check the build output for the 3D chunk's gzip size and that it is not in the entry.
 
 ## Never
 
