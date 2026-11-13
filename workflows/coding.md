@@ -112,7 +112,16 @@ Apply the loaded skill's instructions. Common patterns:
 - Bash: `shellcheck` for linting, `bats` for tests.
 - PowerShell: `PSScriptAnalyzer` for linting, `Pester` for tests.
 
-Run tests after each significant change, not just at the end.
+For each new or changed behavior, add or strengthen meaningful tests where possible,
+following the layer selection in `rules/always_do.md` "When writing code". For updates
+and refactors, include regression or characterization tests and run existing tests for
+affected code and dependent paths. Run tests after each significant change, not just at
+the end.
+
+When a suitable mutation tool is already available and execution is safe and practical,
+mutate a bounded, relevant scope to find weak tests. Review meaningful survivors, add
+behavioral assertions where justified, and rerun the same scope. Do not equate a score
+with correctness or bypass approval for dependencies or external systems.
 
 ### 9. Verify with → Load skill `verification-before-completion` (load skill)
 
@@ -125,7 +134,8 @@ Run tests after each significant change, not just at the end.
 5. Did the test pass? (type check, lint, unit, integration)
 6. Is the user-facing flow verified? (URL, smoke test)
 
-If any gate fails, the work is NOT complete. Fix and re-verify.
+If any gate fails, the work is NOT complete. Fix and re-verify. Report the actual checks
+and results, including untested behavior and any blocked checks.
 
 ### 10. Self-review with → Load skill `code-review-and-quality` (load skill)
 
