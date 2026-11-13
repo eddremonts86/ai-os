@@ -29,6 +29,9 @@ brew "hcloud"                # Hetzner Cloud CLI
 brew "yarn"                  # redundant with pnpm
 brew "composer"              # PHP
 
+# ─── Media (aios-ui-video: frames, contact sheets, encoding, ffprobe checks) ───
+brew "ffmpeg"
+
 # ─── Network / API ───
 brew "httpie"
 brew "mkcert"                # local TLS certs
