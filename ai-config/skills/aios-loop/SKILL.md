@@ -54,6 +54,14 @@ loop files are owned by the loop itself, never generic.
 7. **Promote** blast-radius levels only after 3-5 successful runs at
    the prior level, recorded in `PROGRESS.md`.
 
+## Long-run mode (one task that iterates for hours)
+
+Not a recurring loop: one task that builds, checks, critiques and fixes on its own until a bar is met (matching
+references, a 3D scene, a video). Read `references/long-run.md`: state in `run/` (BRIEF, SHOTS, ROUNDS from
+`templates/ROUNDS.md`) so any agent can resume, one intake then no questions, fresh scored critics each round,
+stills sent every round without waiting, no final export before the user approves, and a stop check instead of
+"it works".
+
 ## CLI Companion
 
 `ai-os loop` is the management entry-point. Sub-commands:

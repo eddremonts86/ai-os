@@ -165,7 +165,9 @@ def main():
     axe_src = axe_path
     results = []
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        # Headless Chromium on macOS draws WebGL canvases black without the GPU (seen 2026-11-13 on a cobe globe).
+        gpu = ["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"] if sys.platform == "darwin" else []
+        browser = p.chromium.launch(args=gpu)
         for url in urls:
             for w in widths:
                 for s in schemes:
