@@ -119,6 +119,24 @@ Rules:
 
 **Ponytail is always on (`full`).** Before writing any code, climb the ladder and stop at the first rung that holds: does this need to exist at all (YAGNI) → is it already in this codebase → stdlib → native platform feature → already-installed dependency → one line → minimum that works. Shortest working diff wins, but only after you understand the flow the change touches; a bug fix means the root cause in the shared function, not a guard per caller. Never simplify away input validation at trust boundaries, error handling that prevents data loss, security, accessibility, or anything explicitly requested. Non-trivial logic leaves one runnable check behind. Per-session override: `/ponytail lite|full|ultra|off`. Machine default: `~/.config/ponytail/config.json` (Windows: `%APPDATA%\ponytail\config.json`).
 
+**Tests are the default for new and changed behavior.** For features and non-trivial
+functions or classes, add or strengthen behavioral tests where possible. Choose the
+applicable layers: unit tests for logic and boundaries, integration tests for component
+interactions, E2E tests for critical user flows, and migration tests for schema or data
+migrations. A layer that does not apply is not required; do not add tests just to count
+accessors or implementation details.
+
+For updates, fixes and refactors, preserve existing coverage, add regression or
+characterization tests for changed behavior, and run the relevant existing tests for the
+affected code and dependent paths. Use mutation testing on relevant logic when an
+appropriate tool is available and the run is safe and practical; investigate meaningful
+survivors rather than chasing a score. Follow existing project policies and approval
+boundaries for dependencies, external systems and costly runs.
+
+Report the tests and runtime checks run, failures, and any untested behavior or blocked
+checks with their reasons. Tests reduce risk; no coverage or mutation score guarantees
+error-free software. See `workflows/coding.md` for the coding workflow.
+
 12. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
 13. Run tests (Vitest, pytest, bats, Pester).
 14. Run lint (ESLint, ruff, shellcheck, PSScriptAnalyzer).

@@ -54,6 +54,9 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
 - For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime
   (browser nav, smoke test) and report concrete evidence. Always finish on URL + status for any
   started service.
+- For new or changed code, add and run meaningful tests at the applicable layers by default,
+  including regression checks for updates. Follow `rules/always_do.md` "When writing code";
+  report untested behavior and blockers instead of claiming error-free code.
 - Report final state with concrete evidence (what worked, what failed, next step).
 
 ## 3. Priority order

@@ -31,6 +31,8 @@
 
 - Max autonomy: do not ask "should I continue?" mid-task.
 - Run-time evidence > build/lint/tests alone.
+- New and changed code: test behavior at applicable layers by default, including regression
+  checks for updates; report gaps and blockers. See `rules/always_do.md` "When writing code".
 - For services started → always end with URL + 1-line status.
 - "no pares hasta el final" / "haslo todo hasta el final" = execute the complete plan without pausing.
 - Apply only to reversible operations (do NOT apply to `rm -rf`, force pushes, etc.).
