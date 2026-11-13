@@ -180,9 +180,12 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Have a fresh agent judge an existing screen or flow (read-only) | `/aios-ui-review` |
     | Fix an existing UI, proven before and after | `/aios-ui-improve` |
     | Check pages mechanically (screenshots, console, overflow, a11y) | `/aios-ui-verify` |
+    | Match reference screens or images, scored until a bar is met | `/aios-ui-design` (Match references) |
+    | Build a 3D scene or WebGL/shader piece for the web | `/aios-ui-3d` |
+    | Make a video in code (launch, motion, hero loop) | `/aios-ui-video` |
 
     UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
-    Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
+    Work that iterates for hours toward a bar uses `aios-loop` long-run mode. Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
 
     | Request | Use |
     |---|---|
