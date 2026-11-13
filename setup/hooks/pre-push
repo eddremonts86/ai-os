@@ -126,6 +126,15 @@ $out"
 step "setup unit tests"
 out=$("$PY" -m unittest discover -s setup/tests 2>&1) && pass "$(grep -oE 'Ran [0-9]+ tests' <<<"$out")" || fail "$(tail -15 <<<"$out")"
 
+step "create-ai-os tests"
+# Zero dependencies and a stand-in git/installer, so it runs in the bare worktree. The site's
+# tests need its node_modules and run in CI (test-apps.yml). `node --test <glob>` needs Node 22+.
+if command -v node >/dev/null 2>&1 && [ "$(node -p 'process.versions.node.split(".")[0]')" -ge 22 ]; then
+  out=$(cd apps/create-ai-os && node --test 'test/**/*.test.js' 2>&1) && pass "$(grep -oE 'pass [0-9]+' <<<"$out" | head -1)" || fail "$(grep -E '^\s*(✖|not ok)|failing tests' <<<"$out" | head -10)"
+else
+  pass "Node 22+ not installed, skipped"
+fi
+
 step "install-mac dry-run"
 out=$(bash setup/install-mac.dry-run.sh 2>&1) && pass || fail "$(grep -E '❌|ERROR|error' <<<"$out" | head -10)"
 

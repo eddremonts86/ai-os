@@ -44,6 +44,14 @@ npx @edd_remonts/create-ai-os --version
 
 The installer itself is idempotent and owns its own confirmation prompts and `DRY_RUN` mode — this CLI never duplicates that logic, it only clones and delegates.
 
+## Tests
+
+```bash
+npm test
+```
+
+No dependencies and no network. The tests run the real CLI as a child process against a stand-in `git` and installer, simulate Windows and old Node versions, and cover every exit code.
+
 ## Full project docs
 
 This package ships the CLI only. For the full AI-OS docs (architecture, skills, MCP servers, dev-env), see the [ai-os README](https://github.com/eddremonts86/ai-os#readme).

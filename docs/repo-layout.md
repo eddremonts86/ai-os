@@ -244,3 +244,23 @@ is why `--dry-run` is now actually dry.
   `git check-ignore -v <path>` **before** committing. `apps/data/outputs/` alone is 3.7 MB.
 - A new `intent/` → `intent/YYYY-MM-DD-<slug>.md` from `intent/intent-template.md`; promote via `ai-config/skills/intent-to-spec/` into `specs/current_spec.md`.
 - Anything that needs the repo root → resolve it by walking up to `CLAUDE.md`.
+- A new app → tests for its behavior at the layers that apply (see "Testing the apps"), wired into
+  `.github/workflows/test-apps.yml`.
+
+## Testing the apps
+
+New and changed behavior in `apps/*` ships with tests, following `rules/always_do.md` "When
+writing code". CI runs them in `.github/workflows/test-apps.yml`.
+
+| App | Layers | Run |
+| --- | --- | --- |
+| `apps/create-ai-os` | unit and integration with `node:test`: the real CLI runs as a child process against a stand-in `git` and installer (no network, no real installer), including a simulated Windows hand-off and Node-version guard. Also checked in the pre-push hook | `cd apps/create-ai-os && npm test` |
+| `apps/site` | unit and integration with Vitest + jsdom (components, sections, the page, and what the page claims about the rest of the repo); types for app and tests; end-to-end in Chromium against the built page | `cd apps/site && pnpm test`, `pnpm run typecheck:test`, `pnpm run test:e2e` (needs Playwright; `PYTHON=~/.ai-os/venv/bin/python`) |
+
+Migration tests do not apply: neither app has a database or a schema.
+
+Mutation testing (StrykerJS) found the gaps these suites now cover, but it is not a dependency of
+either app: it is run on an isolated copy when tests change. Two traps for the next run: Stryker
+10 cannot read `tsconfig` through TypeScript 7, so the copy needs TypeScript 5 installed; and with
+pnpm it needs `"appendPlugins": ["@stryker-mutator/vitest-runner"]`. Survivors that remain are
+animation timings and defensive guards with no observable effect.
