@@ -79,6 +79,13 @@ class GuardTests(unittest.TestCase):
         code, out = sc.check_push(CFG, repo, ["HEAD"])
         self.assertEqual(code, 1)
 
+    def test_cli_accepts_a_new_branch_range_as_one_argument(self):
+        # pre-push passes "SHA --not --remotes" for a branch the remote does not have yet.
+        import sys
+        r = subprocess.run([sys.executable, str(SCRIPT), "check-push", "HEAD --not --remotes"],
+                           capture_output=True, text=True)
+        self.assertNotEqual(r.returncode, 2, r.stderr)
+
 
 class GitConfigTests(unittest.TestCase):
     def test_block_has_one_include_per_folder_and_apply_is_idempotent(self):
