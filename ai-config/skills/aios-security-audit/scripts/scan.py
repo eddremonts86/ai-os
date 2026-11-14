@@ -25,6 +25,7 @@ Raw reports can contain secret values: gitleaks runs with --redact, but keep DIR
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -307,7 +308,12 @@ def main():
             # These scan whole files with no baseline of their own: keep only files this branch touches, so an
             # untouched Dockerfile's old finding is not reported as new. ponytail: an old finding inside a changed
             # file still shows; diff against a baseline run if that gets noisy.
-            res = [f for f in res if not f["file"] or f["file"] in changed]
+            # Only file findings: trivy-image targets are image names, never in the diff. Paths are compared from
+            # the git top, so a scan of a subfolder still matches.
+            top = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=repo, capture_output=True,
+                                      text=True).stdout.strip() or repo)
+            res = [f for f in res if f["tool"] == "trivy-image" or not f["file"]
+                   or os.path.relpath(repo / f["file"], top) in changed]
         findings += res
         status[name] = f"ran ({st}), {len(res)} finding(s)"
 

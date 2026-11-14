@@ -432,6 +432,10 @@ aios_block() {
   local file="$1" body="$2" where="${3:-append}" tmp
   local begin="# >>> ai-os >>>" end="# <<< ai-os <<<"
   touch "$file"
+  # An opening marker with no closing one would make the awk below drop the rest of the file: keep a copy first.
+  if grep -qxF "$begin" "$file" && ! grep -qxF "$end" "$file"; then
+    cp "$file" "$file.pre-aios.bak"; warn "$file had an unclosed ai-os block; copy kept at $file.pre-aios.bak"
+  fi
   tmp="$(mktemp)"
   awk -v b="$begin" -v e="$end" '$0==b{skip=1;next} $0==e{skip=0;next} !skip' "$file" > "$tmp"
   if [ "$where" = "prepend" ]; then
