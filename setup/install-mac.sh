@@ -781,12 +781,10 @@ else
 fi
 echo ""
 
-# ─── 7f. Selective ECC agents (Claude Code only — no multi-CLI agent convention yet) ───
-# ai-os has no existing distribution mechanism for Claude Code subagent
-# definitions (.claude/agents/*.md) — this is the first one, deliberately
-# scoped to Claude Code only, since that's the only CLI ai-os documents
-# subagent support for today. 3 agents, picked by the same 2026-09-20
-# agent-sort pass: real gaps in ai-os's own Node/TS/Vue stack.
+# ─── 7f. Selective ECC agents (Claude Code only: vendored, Claude-format files) ───
+# AI-OS's own agents go to every CLI in step 7g. These 3 vendored ones stay
+# Claude-only symlinks, picked by the 2026-09-20 agent-sort pass: real gaps in
+# ai-os's own Node/TS/Vue stack.
 ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
 if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
   log "7f. Setting curated ECC DAILY agents in Claude Code..."
@@ -805,6 +803,16 @@ if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
   ok "Curated ECC DAILY agents propagated ($ECC_AGENT_COUNT/${#ECC_DAILY_AGENTS[@]}) to ~/.claude/agents/"
 else
   log "7f. vendor/ecc/agents/ absent, skipping"
+fi
+echo ""
+
+# ─── 7g. Cross-CLI agents (ai-config/agents + context/personal/agents → each CLI's own format) ───
+log "7g. Distributing agents to Claude Code, Codex, Gemini and opencode..."
+agents_py="$HOME_DIR/.ai-os/venv/bin/python"; [ -x "$agents_py" ] || agents_py=python3
+if "$agents_py" "$SCRIPT_DIR/render-agents.py" --home "$HOME_DIR"; then
+  ok "Agents distributed (edit ai-config/agents, then: ai-os agents)"
+else
+  warn "render-agents.py failed; agents not distributed (needs PyYAML: the AI-OS venv has it)"
 fi
 echo ""
 

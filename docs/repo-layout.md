@@ -38,7 +38,7 @@ unanswerable at a glance.
 ai-os/
 ├── CLAUDE.md                   # master instructions
 ├── AGENTS.md                   # SYMLINK → CLAUDE.md. Do not delete. See "Traps".
-├── Dockerfile{,.plans-explorer,.submission-api}   # deploy descriptors. Root by necessity.
+├── Dockerfile                  # builds apps/site; Coolify addresses it at /Dockerfile. Root by necessity.
 ├── ai-os                       # the CLI entry point
 │
 │   # ── the framework ────────────────────────────────────────────────
@@ -49,7 +49,7 @@ ai-os/
 ├── workflows/                  # recurring processes
 ├── skills/                     # the skill template + README (see "Traps")
 ├── prompts/                    # original Karpathy prompts
-├── ai-config/                  # skills, MCP, commands — source of truth, symlinked to CLIs
+├── ai-config/                  # skills, agents, MCP, commands — source of truth, symlinked to CLIs
 ├── dev-env/                    # dotfiles, Brewfile, env-config
 ├── setup/                      # install + verify scripts
 ├── docs/                       # this file and its siblings
@@ -59,7 +59,7 @@ ai-os/
 ├── .github/                    # CI workflows (test-mac/linux/windows) + deploys
 ├── archive/                    # completed Specs
 ├── outputs/                    # the FRAMEWORK's artifacts: research, audits, diagrams
-├── vendor/                     # third-party vendored skills (193 MB, read-only) — plus ponytail cache at ~/.cache/ai-os/ponytail
+├── vendor/                     # third-party vendored skills and agents (read-only) — plus ponytail cache at ~/.cache/ai-os/ponytail
 │
 │   # ── the products ─────────────────────────────────────────────────
 └── apps/
@@ -92,13 +92,12 @@ Byte-identical by construction. It is not duplication — it is how CLIs that lo
 Deleting it, or replacing it with a real file, breaks those clients **silently**: they simply
 start with no instructions and behave like a stock model.
 
-### The `Dockerfile*` trio stays at the root
+### The root `Dockerfile` stays at the root
 
-They are deploy descriptors for the repository, not for a directory. Coolify addresses them by
-absolute path (`dockerfile_location=/Dockerfile`, `base_directory=/`), and each app's build
-context is the repo root because the explorer's indexer reads `apps/data/projects/` at build
-time. Moving them into their apps would mean **editing live production configuration to land a
-directory rename** — the rename is not worth a deploy outage. See
+It builds `apps/site`, and Coolify addresses it by absolute path (`dockerfile_location=/Dockerfile`,
+`base_directory=/`). Moving it would mean **editing live production configuration to land a directory
+rename** — not worth a deploy outage. (The plans-explorer and submission-api Dockerfiles left with the
+plans product for plansmith on 2026-09-25.) See
 [`setup/deploy/README.md`](../setup/deploy/README.md).
 
 ### `outputs/` exists in two places, on purpose

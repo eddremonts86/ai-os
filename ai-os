@@ -18,6 +18,7 @@
 #   project [...]     →  setup/ai-os-project.py     (project init: CLAUDE.md, .agents/skills, gitignore)
 #   skills [...]      →  setup/ai-os-skills.py      (catalogue budget, duplicates, routing bank)
 #   scope [...]       →  setup/ai-os-scope.py       (personal / employer / company: design, identity, guard)
+#   agents [--check]  →  setup/render-agents.py     (ai-config/agents → Claude, Codex, Gemini, opencode)
 
 set -euo pipefail
 
@@ -46,9 +47,12 @@ Usage:
   ai-os stats [--check|--write]       Published counts (skills, MCP, …) computed from the repo
   ai-os update [--apply COMPONENT]    Pinned vs upstream versions; --apply bumps one, verifies, rolls back
   ai-os backup [--status|--disable]   Snapshot graph + .env + Claude memory; encrypted off-site copy (iCloud, your private repo)
-  ai-os secrets [audit]               Is the .env safe? audit scans repo histories for leaked values (names only)
+  ai-os secrets [audit|check-push]    Is the .env safe? audit scans repo histories for leaked values (names only);
+                                      check-push scans the commits being pushed
   ai-os project init [PATH]           Give a project CLAUDE.md, .agents/skills/ and the secret-leak .gitignore lines
   ai-os skills [lint|route|bank]      Catalogue budget, near-duplicate descriptions, routing bank
+  ai-os agents [--check]              Write ai-config/agents (+ yours) into Claude Code, Codex, Gemini, opencode
+  ai-os scope [which|git-config|check-push]  Folder scope: design system, git identity, confidentiality guard
 
 Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
@@ -84,6 +88,12 @@ case "${1:-}" in
     py="$HOME/.ai-os/venv/bin/python"
     [ -x "$py" ] || py=python3
     exec "$py" "$AI_OS_ROOT/setup/ai-os-skills.py" "$@"
+    ;;
+  agents)
+    shift
+    py="$HOME/.ai-os/venv/bin/python"
+    [ -x "$py" ] || py=python3
+    exec "$py" "$AI_OS_ROOT/setup/render-agents.py" "$@"
     ;;
   scope)
     shift
