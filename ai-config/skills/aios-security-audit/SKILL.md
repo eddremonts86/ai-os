@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # aios-security-audit
 
+In AI-OS it also runs before the `dev` → `main` PR (`rules/always_do.md`, "Clean before `dev` or `main`").
+
 Your own application only: a repo you own and a URL you run (local, staging or your production). Every check here
 is read-only or passive. Active attacks (ZAP full scan, nuclei, sqlmap, exploit agents) are out of scope unless the
 user asks for them by name, against a local or disposable instance.
@@ -21,6 +23,24 @@ user asks for them by name, against a local or disposable instance.
    It merges their output into `findings.json` and `summary.md`. A scanner that is not installed is reported as
    NOT RUN, never as clean. Install the missing ones (`brew install gitleaks osv-scanner trivy hadolint semgrep`;
    all are in the AI-OS Brewfile) or name them as gaps.
+2b. **What ships.** Scanners read the repo; this reads the build a visitor actually downloads. Skip it for a repo
+   with no web or desktop build. Build as production does (`pnpm build`), then run it from a trusted directory
+   outside the repo, with an absolute path to the output folder (`dist/`, `.output/`, `.vercel/output`):
+
+       npx -y rea-agents@6.9.0 audit-release-exposure <abs path to build output> --fail_on high --json > <dir>/release-exposure.json
+
+   Static only: nothing in the build runs. It reports, per check id, `exposed`, `not_observed`, `unknown` or
+   `not_assessed`:
+   - `javascript.source_map_sources` (high): a shipped source map embeds the original source.
+   - `text.credential_markers` (high): a private-key header or vendor token prefix in shipped text. The report
+     gives the rule and location, never the matched bytes.
+   - `native.debug_companions`, `packaging.extractable_payload` and the rest are lower severity.
+
+   Exit 3 means something is exposed at `--fail_on` or above; exit 1 is a tool failure, which is NOT RUN, never
+   clean. The `electron.*` checks read `unknown` on a plain web build: ignore them. Confirm each `exposed` against
+   the deployed app (`curl -sI <origin>/assets/<file>.js.map`) before it enters the report, and list `unknown`
+   under Coverage. Your own builds only: REA can also reverse-engineer third-party software, which is out of
+   scope here (see its DISCLAIMER.md). The optional `rea` MCP (`ai-config/mcp/rea.yaml`) is not needed for this.
 3. **Triage the scan.** Scanners are noisy; the report carries only what survives this step.
    - **Dependencies.** Find out whether it is runtime or dev-only, and whether the vulnerable function is reachable.
      Use `pnpm why <pkg>` and grep for its imports.

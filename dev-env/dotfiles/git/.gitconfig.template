@@ -81,10 +81,6 @@
     co-author = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
     # Proyectos
     projects = !cd ~/Projects
-    personal = !cd ~/Projects/eddremonts86
-    work = !cd ~/Projects/ei-schilling
-    hermes = !cd ~/Projects/eddremonts86/hermes-agent
-    iaw = !cd ~/Projects/eddremonts86/iaWorkSpace
 
 [credential]
     # Usar keychain en Mac

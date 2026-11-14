@@ -17,7 +17,7 @@ Takes about 60 seconds.
 > semantic role names as `style-guide.md`. Everywhere below that says "rewrite
 > `style-guide.md`", read it as "write `.ai-os/brand-tokens.md`".
 >
-> To change the AI-OS brand itself, edit `context/06_brand.md` in the AI-OS repo and propagate
+> To change the AI-OS brand itself, edit `context/global/06_brand.md` in the AI-OS repo and propagate
 > to `style-guide.md` in the same commit — do not run this flow.
 
 Three source methods are supported. Jump to the relevant section:

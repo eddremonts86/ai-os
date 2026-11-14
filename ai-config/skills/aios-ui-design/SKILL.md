@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 New UI, start to verified. Reuse the skills below; do not restate them.
 
-1. **Context.** AI-OS surfaces use `context/06_brand.md`. Any other project uses its `PRODUCT.md` / `DESIGN.md`;
+1. **Context.** AI-OS surfaces use `context/global/06_brand.md`. Any other project uses its `PRODUCT.md` / `DESIGN.md`;
    if missing and the work is bigger than one component, run `impeccable init` (and `document` for an existing code base).
 2. **Mode and direction. Load ONE.**
 

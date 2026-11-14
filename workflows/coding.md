@@ -148,6 +148,13 @@ This skill has:
 - Size limits for PRs.
 - Anti-patterns to look for.
 
+### 10b. Security review before anything reaches `dev` or `main`
+
+Read `ai-config/skills/aios-security-review/SKILL.md` and follow it (base `origin/dev`; for the `dev` → `main`
+PR, base `origin/main` and also `aios-security-audit`). Blockers stop the push. The branch must be clean of
+errors of every kind first: types, tests, lint, format, build and security (`rules/always_do.md`, "Clean before
+`dev` or `main`").
+
 ### 11. Commit locally, then stop for authorization (load skill)
 
 → Load skill `finishing-a-development-branch` to commit with a conventional

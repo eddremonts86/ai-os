@@ -98,7 +98,7 @@ Users have been asking for dark mode. The app is light-only now.
 ## References
 
 - https://web.dev/articles/building/a-dark-mode-mode-toggle/
-- https://github.com/eddremonts86/wave-template (similar pattern)
+- <a repo of yours with a similar pattern>
 ```
 
 ## After the Spec

@@ -884,7 +884,7 @@ different project is not possible through the API at all** — see the auditing 
 
 ### Wildcard DNS is already in place
 
-`*.eduardoinerarte.dk` resolves to the Coolify host, so a new subdomain needs **no DNS record** — set
+a wildcard record such as `*.your-domain.example` (yours is in `context/personal/04_machine.md`) resolves to the Coolify host, so a new subdomain needs **no DNS record** — set
 `domains` and Let's Encrypt issues within about a minute. Two consequences worth knowing:
 
 - A brand-new app is reachable immediately; do not wait on DNS.

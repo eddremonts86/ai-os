@@ -43,7 +43,7 @@ Create the master instructions that any AI assistant should follow:
 - Project structure.
 - Skill loading order (using-superpowers as router).
 
-### 2. Fill `context/00_profile.md`
+### 2. Fill `context/personal/00_profile.md`
 
 Ask the user 5-10 questions to learn:
 
@@ -54,7 +54,7 @@ Ask the user 5-10 questions to learn:
 
 Write the answers in English.
 
-### 3. Fill `context/01_business_or_work.md`
+### 3. Fill `context/personal/01_business_or_work.md`
 
 Ask the user about their work:
 
@@ -63,28 +63,28 @@ Ask the user about their work:
 - Personal projects.
 - Archived projects.
 
-### 4. Fill `context/02_projects.md`
+### 4. Fill `context/personal/02_projects.md`
 
 Inventory of projects:
 
 - Active projects with stack, path, relevant skills.
 - Archived projects with reason and date.
 
-### 5. Fill `context/03_preferences.md`
+### 5. Fill `context/personal/03_preferences.md`
 
 User preferences:
 
-- Language (chat in Spanish, code in English).
+- Language (your chat language per `context/personal/03_preferences.md`, code in English).
 - Format (terse, no ceremony).
 - Triggers.
 
-### 6. Fill `context/04_tools.md`
+### 6. Fill `context/global/04_tools.md`
 
 Inventory of installed tools:
 
 - OS, terminal, CLIs, languages, key packages.
 
-### 7. Fill `context/05_sources.md`
+### 7. Fill `context/global/05_sources.md`
 
 Sources the AI can trust:
 
@@ -149,7 +149,7 @@ Template for creating a new Spec.
 
 ## Style
 
-- ALL files in English (the chat can be in Spanish).
+- ALL files in English (the chat can be in your own language).
 - Terse, no ceremony.
 - Concrete, not pedagogical.
 - Cite sources.

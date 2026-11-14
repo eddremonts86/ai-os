@@ -42,7 +42,7 @@ ai-os/
 ├── ai-os                       # the CLI entry point
 │
 │   # ── the framework ────────────────────────────────────────────────
-├── context/                    # persistent identity (profile, prefs, projects, tools)
+├── context/                    # global/ (shared: tools, sources, brand) · personal/ (yours, git-ignored) · personal.example/
 ├── rules/                      # hard rules (always/ask/never)
 ├── specs/                      # the one active Spec
 ├── verifiers/                  # quality gates

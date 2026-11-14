@@ -76,7 +76,7 @@ if ! docker info >/dev/null 2>&1; then
 fi
 ok "docker reachable"
 
-# Credentials live in the canonical merged local env file (context/04_tools.md). This used to
+# Credentials live in the canonical merged local env file (context/global/04_tools.md). This used to
 # source ~/Projects/configs/env.ts, which no longer exists, so Graphiti was skipped on every
 # run behind a warning nobody read. Compose reads the file itself via --env-file: nothing is
 # sourced into this shell, so a value holding shell metacharacters cannot execute here.

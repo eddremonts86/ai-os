@@ -237,7 +237,7 @@ describe('clone and install', { skip: !POSIX && 'needs a POSIX shell for the git
     assert.match(r.stdout, /^ {2}Next steps:$/m);
     assert.match(r.stdout, new RegExp(`^ {4}1\\. cd ${esc(target)}$`, 'm'));
     assert.match(r.stdout, /^ {4}2\. bash setup\/verify\.sh/m);
-    assert.match(r.stdout, /^ {4}3\. Read CLAUDE\.md and context\/00_profile\.md/m);
+    assert.match(r.stdout, /^ {4}3\. Read CLAUDE\.md, then describe yourself in context\/personal\//m);
     assert.match(r.stdout, /^ {2}Docs: {3}https:\/\/github\.com\/eddremonts86\/ai-os$/m);
   });
 

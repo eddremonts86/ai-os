@@ -41,5 +41,5 @@ Set-Alias -Name hcq -Value "hermes chat -q" -Option AllScope -Force
 
 # Project shortcuts
 function projects { Set-Location "$HOME\Projects" }
-function personal { Set-Location "$HOME\Projects\eddremonts86" }
-function work { Set-Location "$HOME\Projects\ei-schilling" }
+# Personal functions: context/personal/shell.ps1 is git-ignored, so nothing about you is committed here.
+if ($env:AI_OS_ROOT -and (Test-Path (Join-Path $env:AI_OS_ROOT 'context\personal\shell.ps1'))) { . (Join-Path $env:AI_OS_ROOT 'context\personal\shell.ps1') }
