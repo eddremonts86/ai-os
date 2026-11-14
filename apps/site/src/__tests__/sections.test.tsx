@@ -78,7 +78,7 @@ describe('WhatItIs', () => {
     render(<WhatItIs />)
     expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual([
       'Spec → Verifier → Environment',
-      'One source of truth, every CLI',
+      'Skills and agents, every CLI',
       'MCP and dotfiles as code',
       'Framework above, products below',
     ])
