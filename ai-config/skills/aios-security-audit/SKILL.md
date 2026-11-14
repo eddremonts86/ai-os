@@ -27,7 +27,12 @@ user asks for them by name, against a local or disposable instance.
    with no web or desktop build. Build as production does (`pnpm build`), then run it from a trusted directory
    outside the repo, with an absolute path to the output folder (`dist/`, `.output/`, `.vercel/output`):
 
-       npx -y rea-agents@6.9.0 audit-release-exposure <abs path to build output> --fail_on high --json > <dir>/release-exposure.json
+       NPM_CONFIG_IGNORE_SCRIPTS=true NPM_CONFIG_OMIT=optional NO_UPDATE_NOTIFIER=1 \
+         npx -y rea-agents@6.9.0 audit-release-exposure <abs path to build output> --fail_on high --json > <dir>/release-exposure.json
+
+   The env vars keep install scripts and the optional `frida` dependency (a native binary downloaded at install,
+   not needed for this check) out, and the update check off (vetted 2026-11-14 by the `supply-chain-vetter` agent).
+   Re-vet before bumping the pin.
 
    Static only: nothing in the build runs. It reports, per check id, `exposed`, `not_observed`, `unknown` or
    `not_assessed`:
