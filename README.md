@@ -14,7 +14,7 @@
 
 ## What you get
 
-- **The same assistant on every machine.** One set of skills, 15 agents, rules and slash commands reaches all six AI CLIs, so they behave alike.
+- **The same assistant on every machine.** One set of skills, 19 agents, rules and slash commands reaches all six AI CLIs, so they behave alike.
 - **A memory that survives sessions.** A local knowledge graph remembers decisions, and every project's code is indexed for search. It runs on your machine, with no API key.
 - **A setup that looks after itself.** Health checks, encrypted backups and a guard against pushing secrets run on their own (see the schedule below).
 - **A way of working.** Big tasks get a written spec, plans run in small checked steps, and nothing counts as "done" until it has been shown to work.
@@ -149,7 +149,7 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 
 ### Agents
 
-**15 shared agents** live in `ai-config/agents/` (one Markdown file each; yours go in `context/personal/agents/`, git-ignored, and replace a shared one of the same name). `ai-os agents`, also run by the installer, writes each one in the CLI's own format: Claude Code, Gemini CLI and opencode get Markdown, Codex gets TOML. A file you wrote yourself in those folders is never overwritten. Ask for one by name ("use the security-reviewer agent", `@ui-reviewer` in Gemini), or let the CLI pick it from its description.
+**19 shared agents** live in `ai-config/agents/` (one Markdown file each; yours go in `context/personal/agents/`, git-ignored, and replace a shared one of the same name). `ai-os agents`, also run by the installer, writes each one in the CLI's own format: Claude Code, Gemini CLI and opencode get Markdown, Codex gets TOML. A file you wrote yourself in those folders is never overwritten. Ask for one by name ("use the security-reviewer agent", `@ui-reviewer` in Gemini), or let the CLI pick it from its description.
 
 | Area | Agents |
 |---|---|
@@ -158,6 +158,7 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 | Code | `root-cause-debugger`, `test-writer`, `windows-porter`, `installer-tester` |
 | Security | `security-reviewer`, `threat-modeler`, `supply-chain-vetter` |
 | Design | `ui-reviewer`, `a11y-auditor`, `design-system-keeper` |
+| Performance and stability | `perf-auditor`, `bundle-optimizer`, `rerender-hunter`, `stability-tester` |
 
 The reviewers are read-only (enforced in Claude Code and opencode; on Codex and Gemini only by their instructions). `/aios-security-review` and `/aios-ui-review` hand their fresh review to `security-reviewer` and `ui-reviewer`. What each one does: [`ai-config/agents/README.md`](ai-config/agents/README.md).
 
