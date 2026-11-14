@@ -1,4 +1,4 @@
-# AI-OS PowerShell profile (Edd)
+# AI-OS PowerShell profile
 # Load Oh-My-Posh or Starship if installed (theme + git info)
 
 # Prompt
