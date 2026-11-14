@@ -110,6 +110,12 @@ def render(cli, agent):
     return _yaml_front(fields) + "\n" + agent["body"]
 
 
+def generated(path):
+    """True for a file this script wrote: the marker is on its first or second line, where render() puts it."""
+    head = path.read_text(encoding="utf-8").splitlines()[:2]
+    return any(line.startswith(f"# {MARKER}") for line in head)
+
+
 def sync(home, agents, check=False):
     """Return a list of (action, path, cli) where action is write, remove, skip-user-file or ok."""
     report = []
@@ -120,7 +126,7 @@ def sync(home, agents, check=False):
         wanted = {f"{n}{suffix}": render(cli, a) for n, a in agents.items()}
         for fname, content in wanted.items():
             path = out / fname
-            if path.is_symlink() or (path.exists() and MARKER not in path.read_text(encoding="utf-8")):
+            if path.is_symlink() or (path.exists() and not generated(path)):
                 report.append(("skip-user-file", path, cli))
                 continue
             if path.exists() and path.read_text(encoding="utf-8") == content:
@@ -131,7 +137,7 @@ def sync(home, agents, check=False):
                 out.mkdir(parents=True, exist_ok=True)
                 path.write_text(content, encoding="utf-8")
         for path in sorted(out.glob(f"*{suffix}")) if out.is_dir() else []:
-            if path.name not in wanted and not path.is_symlink() and MARKER in path.read_text(encoding="utf-8"):
+            if path.name not in wanted and not path.is_symlink() and generated(path):
                 report.append(("remove", path, cli))
                 if not check:
                     path.unlink()

@@ -29,6 +29,11 @@ rsync_tolerant() {
   [ "$rc" -eq 0 ] || [ "$rc" -eq 24 ] || exit "$rc"
 }
 
+# A checkout directly in $HOME would make the projects folder the whole home folder.
+if [ "$PROJECTS_DIR" = "$HOME" ] || [ "$PROJECTS_DIR" = "/" ]; then
+  echo "[backup] the projects folder resolved to $PROJECTS_DIR; set AI_OS_PROJECTS_DIR to the folder that holds your projects" >&2; exit 1
+fi
+case "$DEST/" in "$PROJECTS_DIR"/*) echo "[backup] destination $DEST is inside $PROJECTS_DIR; pick another" >&2; exit 1 ;; esac
 [ -d "$(dirname "$DEST")" ] || { echo "[backup] destination volume not mounted: $DEST" >&2; exit 1; }
 case "$DEST" in "$HOME"/*) log "warning: $DEST is on this Mac's own disk; copy it off before reinstalling" ;; esac
 mkdir -p "$PROJECTS_DEST" "$CONFIGS_DEST"
