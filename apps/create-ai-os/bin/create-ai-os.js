@@ -120,7 +120,7 @@ process.stdout.write(`\n✅  AI-OS ready in ${target}\n\n`);
 process.stdout.write(`  Next steps:\n`);
 process.stdout.write(`    1. cd ${target}\n`);
 process.stdout.write(`    2. bash setup/verify.sh   # or verify-windows.ps1 on Windows\n`);
-process.stdout.write(`    3. Read CLAUDE.md, then describe yourself in context/personal/ (copied from personal.example).\n\n`);
+process.stdout.write(`    3. Read CLAUDE.md, then describe yourself in context/personal/ (the installer wrote the stubs; context/README.md says what goes where).\n\n`);
 process.stdout.write(`  Docs:   https://github.com/eddremonts86/ai-os\n`);
 process.stdout.write(`  Issues: https://github.com/eddremonts86/ai-os/issues\n\n`);
 process.exit(0);

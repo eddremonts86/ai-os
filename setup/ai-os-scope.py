@@ -5,7 +5,7 @@
   ai-os scope check-push RANGE...      guard for pre-push: terms of other scopes in the commits being pushed
   ai-os scope git-config [--apply]     the includeIf block that gives each scope its own git identity
 
-Config: context/personal/work/scopes.yaml (git-ignored; template in context/personal.example/work/scopes.yaml).
+Config: context/personal/work/scopes.yaml (git-ignored; format in context/README.md).
 Paths are folders relative to the projects folder (the folder that contains this repo); a folder covers
 everything inside it, and the first scope that matches wins. A scope may hold brands (one company, several
 products): the brand's design wins over the scope's.
@@ -168,7 +168,7 @@ def main(argv=None):
         if a.json:
             print(json.dumps(info))
         elif not cfg:
-            print(f"no scopes configured ({CONFIG.relative_to(ROOT)} missing; template in context/personal.example/)")
+            print(f"no scopes configured ({CONFIG.relative_to(ROOT)} missing; run setup/seed-personal-context.py)")
         else:
             print(f"scope: {info['scope'] or 'none'}" + (f" · brand: {info['brand']}" if info.get("brand") else ""))
             for k, v in (info.get("design") or {}).items():

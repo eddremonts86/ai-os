@@ -14,7 +14,7 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
 ## 1. Method
 
 1. **Read** `context/personal/me/profile.md` and `me/preferences.md` (yours; if `context/personal/` is missing,
-   copy `context/personal.example/` there first); other `context/` files only when the task needs them
+   run `setup/seed-personal-context.py` first); other `context/` files only when the task needs them
    (on-demand table in `rules/always_do.md`, layout in `context/README.md`).
 2. **Decide whether the task needs a Spec.** A Spec (`workflows/project_start.md` →
    `specs/current_spec.md`) is required only when the work is expected to take more than ~2

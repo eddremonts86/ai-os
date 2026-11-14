@@ -492,11 +492,11 @@ if [ -d "$AI_OS_ROOT/.git" ] || git -C "$AI_OS_ROOT" rev-parse --git-dir >/dev/n
   ok "5c. git hooks: pre-push gate enabled (skip once: git push --no-verify)"
 fi
 
-# ─── 5d. Personal context (context/personal/ is git-ignored: copy the templates once, never overwrite) ───
+# ─── 5d. Personal context (context/personal/ is git-ignored: write the stubs once, never overwrite) ───
 if seeded="$(python3 "$SCRIPT_DIR/seed-personal-context.py" "$AI_OS_ROOT" 2>&1)"; then
   ok "5d. personal context: $seeded (edit context/personal/ to describe yourself)"
 else
-  warn "5d. could not seed context/personal/ ($seeded); copy context/personal.example/ there by hand"
+  warn "5d. could not seed context/personal/ ($seeded); run setup/seed-personal-context.py by hand"
 fi
 
 # ─── 6. Oh My Zsh + Powerlevel10k ───

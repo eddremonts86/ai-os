@@ -1,8 +1,0 @@
-# ~/.gitconfig-personal: identity for your personal projects.
-# Include it from ~/.gitconfig, for example:
-#   [includeIf "gitdir:~/Projects/personal/"]
-#       path = ~/.gitconfig-personal
-
-[user]
-    name = <Your Name>
-    email = <you@example.com>

@@ -259,8 +259,8 @@ code { font-family: var(--font-mono); font-size: .82em; background: var(--surfac
     <section aria-labelledby="n3">
       <h3 id="n3">3 · Questions on first run</h3>
       <ul>
-        <li><b>Today.</b> <code>setup/seed-personal-context.py</code> copies <code>context/personal.example/</code> to <code>context/personal/</code> and never overwrites. <code>apps/create-ai-os/bin/create-ai-os.js</code> then prints "describe yourself in <code>context/personal/</code>". <code>install-mac.sh</code> already skips its prompts when <code>ASSUME_YES=1</code> or there is no TTY.</li>
-        <li><b>Design.</b> After seeding, on a TTY and without <code>ASSUME_YES</code>, ask the name and the chat language. Write the identity lines of <code>00_profile.md</code> and a one-line <code>bridge.md</code>, only when the file still equals its template. Windows asks the same through <code>Read-Host</code>.</li>
+        <li><b>Today.</b> <code>setup/seed-personal-context.py</code> writes the stubs of <code>context/personal/</code> and never overwrites. <code>apps/create-ai-os/bin/create-ai-os.js</code> then prints "describe yourself in <code>context/personal/</code>". <code>install-mac.sh</code> already skips its prompts when <code>ASSUME_YES=1</code> or there is no TTY.</li>
+        <li><b>Design.</b> After seeding, on a TTY and without <code>ASSUME_YES</code>, ask the name and the chat language. Write the identity lines of <code>me/profile.md</code> and a one-line <code>bridge.md</code>, only when the file still equals its template. Windows asks the same through <code>Read-Host</code>.</li>
         <li><b>Does not change.</b> Non-interactive installs and CI; a file the user already edited is never touched.</li>
         <li><b>Tests.</b> A unit test on the writer function with a temporary root: fills a template, skips an edited file, skips with no answer.</li>
         <li><b>Not known.</b> <span class="assume">Windows path:</span> cannot be run here (no <code>pwsh</code>); CI covers the dry run only. Free text for the language, or a short list: open.</li>
