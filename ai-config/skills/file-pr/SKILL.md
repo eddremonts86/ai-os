@@ -2,7 +2,7 @@
 name: file-pr
 description: File a concise pull request that leads with the problem, not a change inventory. Use when the user asks to file, open, or create a PR.
 version: 1.0.0
-author: Edd
+author: AI-OS
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

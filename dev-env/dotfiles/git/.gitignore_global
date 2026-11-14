@@ -1,5 +1,5 @@
 # ~/.gitignore_global — excludes global de Git
-# Edd's global ignore list. Aplica a todos los repos.
+# AI-OS global ignore list. Applies to every repo.
 
 # OS
 .DS_Store

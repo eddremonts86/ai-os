@@ -2,7 +2,7 @@
 name: full-stop
 description: Take a change end to end without supervision — prove it, file the PR, babysit it — and stop when it is ready to merge. Use when the user says "full stop", "take it all the way", or wants a ready PR while away.
 version: 1.0.0
-author: Edd
+author: AI-OS
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
@@ -17,7 +17,7 @@ metadata:
 
 Adapted from Theo Browne's `t3dotgg/tstack` (`full-send` + `full-stop`, MIT). The user is not
 watching: updates and the final message are read long after you stop. You own the work from
-its current state to a PR that is ready to merge. **You never merge** — Edd does.
+its current state to a PR that is ready to merge. **You never merge** — the user does.
 
 Only apply this when the user asked for it clearly. Otherwise do not assume this autonomy.
 

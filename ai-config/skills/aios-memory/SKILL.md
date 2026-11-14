@@ -53,20 +53,20 @@ reference it.
 
 | Layer | Tool | Port | Container | Notes |
 |---|---|---|---|---|
-| Graph DB | FalkorDB (Docker) | redis 6390, web 3300 | `ia-os-falkordb` | OpenCypher, Web UI at 3300, pinned image `v4.18.11`. All AI-OS containers are prefixed `ia-os-*` and live under a single `ia-os` Docker Compose project (`memory/docker-compose.yml` with `name: ia-os`) so they group together in the Docker dashboard — same pattern as the `builderhunt` project. |
+| Graph DB | FalkorDB (Docker) | redis 6390, web 3300 | `ia-os-falkordb` | OpenCypher, Web UI at 3300, pinned image `v4.18.11`. All AI-OS containers are prefixed `ia-os-*` and live under a single `ia-os` Docker Compose project (`memory/docker-compose.yml` with `name: ia-os`) so they group together in the Docker dashboard. |
 | Embeddings | Ollama + nomic-embed-text | 11500 | **Mac**: native `brew install ollama` by default (Apple Silicon Metal GPU accel, which containers can't reach). **Windows**: Docker by default (`ia-os-ollama` container, opt-in Compose profile `ollama-docker` in `memory/docker-compose.yml`) — `choco install ollama` needs admin and was unreliable without it. Set `$env:OLLAMA_NATIVE = "1"` before `install-windows.ps1` to force native instead. Either way it's the same port (11500), so grepai/codebase-memory-mcp never know or care which backend is running. `ai-os memory start/stop` auto-detect the Docker path via `memory/falkordb/ollama-data/` (a bind-mount dir that only exists if that profile was ever started — `docker ps` alone doesn't work here since `compose down` removes containers, losing that signal). |
 | Code AST index | codebase-memory-mcp | (stdio) | 158 langs, sub-ms, checksum-verified download |
 | Semantic search | grepai | (stdio) | uses Ollama |
 | Chat UI | open-webui (Docker) | 3301 | `ia-os-open-webui` | **Opt-in** (`docker compose --profile chat up -d open-webui`; ~1.5 GB idle, so off by default). Talks to the native Ollama daemon above via `host.docker.internal:11500`, not the embedder-only `nomic-embed-text` — it's for `llm/router.mjs`'s chat model (`qwen3:14b`, see `llm/README.md`). No login wall (`WEBUI_AUTH=False`) — acceptable since it's bound to `127.0.0.1` only. |
 | Graph memory | graphiti | HTTP 8021 | `ia-os-graphiti-mcp` | Custom image `ai-os/graphiti-mcp:minimax-standalone` (custom-`api_url` support). Started by `ai-os memory start`. Extraction LLM = host Ollama (`GRAPHITI_LLM_MODEL`, default gemma) since 2026-11-05 — MiniMax returned `402 insufficient balance`; override the three `GRAPHITI_LLM_*` vars in the compose to use a hosted model. `add_memory` is async (~1–5 min per episode locally; output capped by `GRAPHITI_LLM_MAX_TOKENS`, default 4096); check `docker logs ia-os-graphiti-mcp` for `Successfully processed episode`. Verified end-to-end 2026-11-05 |
 
-**Ports are intentionally OUTSIDE 3000-3050** (Edd's other apps use that range).
+**Ports are intentionally OUTSIDE 3000-3050** (app dev servers commonly use that range).
 
 ## Files in this skill's surface
 
 - `$AI_OS_ROOT/ai-os` — top-level dispatcher (routes `ai-os memory|loop|bootstrap` to the right script). Symlinked at `~/.local/bin/ai-os`.
 - `$AI_OS_ROOT/memory/ai-os-memory.sh` — the memory-stack CLI (entry point)
-- `$AI_OS_ROOT/memory/docker-compose.yml` — **unified** compose: `name: ia-os` so all services group under one header in the Docker Desktop dashboard (like `builderhunt`). Defines `ia-os-falkordb`, `ia-os-graphiti-mcp`, `ia-os-ollama` (opt-in profile), and the internal `ia-os-net` network.
+- `$AI_OS_ROOT/memory/docker-compose.yml` — **unified** compose: `name: ia-os` so all services group under one header in the Docker Desktop dashboard (like any compose project). Defines `ia-os-falkordb`, `ia-os-graphiti-mcp`, `ia-os-ollama` (opt-in profile), and the internal `ia-os-net` network.
 - `$AI_OS_ROOT/memory/cron-reindex.sh` — 6x/day periodic reindex (launchd agent `ai.os.reindex`)
 - `$AI_OS_ROOT/memory/launchd/install-reindex.sh` — installs/checks that agent
 - `$AI_OS_ROOT/memory/falkordb/data/` — FalkorDB persistence (mounted at `/var/lib/falkordb/data`, RDB + AOF)

@@ -43,7 +43,7 @@ Use `skill_template.md` as the base. Include:
 
 ## Conventions
 
-- Skill names in kebab-case (`brainstorming`, `wave-template-conventions`).
+- Skill names in kebab-case (`brainstorming`, `acme-conventions`).
 - Frontmatter in YAML.
 - Sections in H2 (`##`).
 - Code examples in fenced blocks with language (`bash`, `python`, etc.).

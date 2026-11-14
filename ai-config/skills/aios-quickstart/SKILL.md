@@ -1,6 +1,6 @@
 ---
 name: aios-quickstart
-description: 1-line bootstrap of Edd's AI Operating System in any CLI (Claude Code, Hermes, Codex, Gemini, Antigravity). Verifies the 14 superpowers skills are installed, runs the setup, and confirms the environment is ready. Use when onboarding a new dev or Mac, or when verifying AI-OS is functional.
+description: 1-line bootstrap of the AI Operating System in any CLI (Claude Code, Hermes, Codex, Gemini, Antigravity). Verifies the 14 superpowers skills are installed, runs the setup, and confirms the environment is ready. Use when onboarding a new dev or Mac, or when verifying AI-OS is functional.
 license: MIT
 metadata:
   hermes:
@@ -151,7 +151,7 @@ All should show 99 skills.
 
 ### Example 3: Quickstart in existing project
 
-**Context:** User starts a session in `~/Projects/wave-template`.
+**Context:** User starts a session in `~/Projects/my-app`.
 
 **Output:** Loads the AI-OS context, but does NOT modify the project. The AI is now ready to apply the AI-OS method to work on the project.
 

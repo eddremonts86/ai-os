@@ -28,7 +28,7 @@ None. `SKILL.md` and `references/` (`expo-router-loaders.md`,
 Web data-fetching patterns (SWR/React Query on a reliable connection) don't hold on
 mobile: offline caching, background refresh, and cancellation on unmount are
 correctness requirements, not nice-to-haves, on a native app. Directly relevant to
-porting whichever of enForma/builderhunt/novelaudio's data layer moves to native.
+porting whichever of the user's React web apps' data layer moves to native.
 
 ## Refreshing from upstream
 

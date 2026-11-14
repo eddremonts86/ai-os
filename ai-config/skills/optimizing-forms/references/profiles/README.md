@@ -12,13 +12,13 @@ only. A profile turns that discovery into something reusable.
 
 | Profile | Detected by | Enables |
 | ------- | ----------- | ------- |
-| [`wave-formcontainer.md`](wave-formcontainer.md) | `src/components/globals/form/types/index.ts` exists | A4, A6, A7, A9 |
+| [`formcontainer.md`](formcontainer.md) | `src/components/globals/form/types/index.ts` exists | A4, A6, A7, A9 |
 
 ## Writing a new one
 
 Answer the four Step 0 questions, then verify each answer **against the code** rather
 than against the project's own documentation. Documentation drift is the single
-biggest source of wrong prescriptions here — see trap 2 in the wave profile for a
+biggest source of wrong prescriptions here — see trap 2 in the FormContainer profile for a
 case where a skill documented six field types that did not exist.
 
 Record:

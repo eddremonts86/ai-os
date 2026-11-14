@@ -21,7 +21,7 @@ API token: Hetzner Cloud Console → Security → API Tokens. Scope: Read & Writ
 
 - **Server lifecycle states:** `CREATED` → `STARTING` → `RUNNING` → `OFF` → `DELETING`. In `OFF` you are charged for storage but not CPU.
 - **Server types:** CX (shared), CCX (dedicated), CPX (shared AMD), CAX (Arm).
-- **Server naming:** kebab-case, project prefix (`edd-prod-01`, `wave-staging-01`).
+- **Server naming:** kebab-case, project prefix (`acme-prod-01`, `acme-staging-01`).
 - **Labels:** k=v for filtering. iaWorkSpace convention: `project=`, `env=`, `role=`, `managed-by=`.
 
 ## Essential commands
@@ -32,7 +32,7 @@ hcloud server list -o columns=id,name,status,public_ipv4,datacenter,labels
 
 # Create
 hcloud server create \
-  --name edd-prod-01 \
+  --name acme-prod-01 \
   --type cpx31 \
   --image ubuntu-24.04 \
   --location nbg1 \
@@ -144,9 +144,9 @@ hcloud server list -o json | jq -r '.[] | .name' | parallel -j 5 'hcloud ssh {} 
 
 ```bash
 # Rebuild from snapshot
-SNAP_ID=$(hcloud image list -o json | jq -r '.[] | select(.name | startswith("edd-prod-01-snap")) | .id' | head -1)
+SNAP_ID=$(hcloud image list -o json | jq -r '.[] | select(.name | startswith("acme-prod-01-snap")) | .id' | head -1)
 hcloud server create \
-  --name edd-prod-01-restored \
+  --name acme-prod-01-restored \
   --type cpx31 \
   --image $SNAP_ID \
   --location nbg1 \
@@ -229,7 +229,7 @@ account password:
 
 ## iaWorkSpace patterns
 
-- **Naming:** `<project>-<env>-<num>`, e.g. `edd-prod-01`, `wave-staging-01`.
+- **Naming:** `<project>-<env>-<num>`, e.g. `acme-prod-01`, `acme-staging-01`.
 - **Default location:** `nbg1` (Nuremberg) for EU.
 - **Base image:** `ubuntu-24.04` LTS.
 - **Backups:** enabled in prod, disabled in staging/dev.
