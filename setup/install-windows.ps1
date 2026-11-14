@@ -37,6 +37,18 @@ $Manifest = Join-Path $AIOSRoot "ai-config\manifest.yaml"
 $AdapterTemplate = Join-Path $AIOSRoot "ai-config\templates\global-bridge.md.tmpl"
 $LogPrefix = "[ai-os install]"
 
+# Per-person install profile (git-ignored): `shell_theme: true` / `fonts: true` turn the opt-ins on unless the
+# AIOS_* env var is already set. Needs yq, like the manifest; without it the defaults (off) stay.
+$InstallProfile = if ($env:AIOS_INSTALL_PROFILE) { $env:AIOS_INSTALL_PROFILE } else { Join-Path $AIOSRoot "context\personal\machine\install.yaml" }
+if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
+    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"))) {
+        if (-not [Environment]::GetEnvironmentVariable($pair[0])) {
+            $value = (yq -r ".$($pair[1]) // false" $InstallProfile 2>$null)
+            if ($value -eq "true") { [Environment]::SetEnvironmentVariable($pair[0], "1") }
+        }
+    }
+}
+
 function Log($msg) { Write-Host "$LogPrefix $msg" }
 function Ok($msg) { Write-Host "$LogPrefix ✅ $msg" }
 function Warn($msg) { Write-Host "$LogPrefix ⚠️  $msg" -ForegroundColor Yellow }

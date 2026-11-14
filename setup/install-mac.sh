@@ -29,6 +29,10 @@
 #   AIOS_TERMINAL_THEME=1 → restyle Terminal.app (Pro) and Warp (font, size, opacity)
 #   EXTRAS=1         → also install dev-env/packages/Brewfile.extras (optional
 #                      GUI apps, language runtimes, infra CLIs). Default: core only.
+#
+# Per-person profile: context/personal/machine/install.yaml (git-ignored, created by
+# setup/seed-personal-context.py). It sets the AIOS_* opt-ins above (an env var wins), the
+# optional CLIs (clis: codex, gemini), extra packages (brew, casks, npm) and MCP overrides.
 
 set -euo pipefail
 
@@ -45,6 +49,38 @@ log() { echo "$LOG_PREFIX $*"; }
 err() { echo "$LOG_PREFIX ❌ $*" >&2; }
 ok() { echo "$LOG_PREFIX ✅ $*"; }
 warn() { echo "$LOG_PREFIX ⚠️  $*"; }
+
+# ─── Per-person install profile (context/personal/machine/install.yaml) ───
+INSTALL_PROFILE="${AIOS_INSTALL_PROFILE:-$AI_OS_ROOT/context/personal/machine/install.yaml}"
+# One value per line for a list, the value for a scalar, nothing when unset or yq is missing.
+profile_get() {
+  [ -f "$INSTALL_PROFILE" ] && command -v yq >/dev/null 2>&1 || return 0
+  case "$(yq -r ".$1 | tag" "$INSTALL_PROFILE" 2>/dev/null)" in
+    '!!seq') yq -r ".$1[]" "$INSTALL_PROFILE" 2>/dev/null ;;
+    '!!null' | '') ;;
+    *) yq -r ".$1" "$INSTALL_PROFILE" 2>/dev/null ;;
+  esac
+}
+# An env var wins; otherwise `key: true` in the profile turns the opt-in on.
+profile_flag() { [ "$(profile_get "$1")" = "true" ] && echo 1 || echo 0; }
+load_profile_flags() {
+  AIOS_SHELL_THEME="${AIOS_SHELL_THEME:-$(profile_flag shell_theme)}"
+  AIOS_FONTS="${AIOS_FONTS:-$(profile_flag fonts)}"
+  AIOS_TERMINAL_THEME="${AIOS_TERMINAL_THEME:-$(profile_flag terminal_theme)}"
+}
+load_profile_flags
+# Global Node packages to have: the shared list, the profile's npm:, and the optional CLIs that ship on npm.
+npm_wanted() {
+  { grep -vE '^[[:space:]]*(#|$)' "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" 2>/dev/null || true; } | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//'
+  profile_get npm
+  for cli in $(profile_get clis); do
+    case "$cli" in
+      (codex) echo "@openai/codex" ;;
+      (gemini) echo "@google/gemini-cli" ;;
+      (*) ;;  # Hermes, opencode, Antigravity: their own installers
+    esac
+  done
+}
 
 require_manifest_tool() {
   command -v yq >/dev/null 2>&1 || { err "yq is required to read $MANIFEST"; exit 1; }
@@ -113,7 +149,7 @@ PIP_PACKAGES="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
 SKILLS_DIR="$AI_OS_ROOT/ai-config/skills"
 
 # count non-comment, non-blank lines in a package file (0 if missing)
-count_pkgs() { [ -f "$1" ] && grep -cvE '^[[:space:]]*(#|$)' "$1" || echo 0; }
+count_pkgs() { [ -f "$1" ] && { grep -cvE '^[[:space:]]*(#|$)' "$1" || true; } || echo 0; }
 # comma-join names on stdin, wrap to terminal-ish width, indent
 join_fold() { paste -sd' ' - | sed 's/ /, /g' | fold -s -w 66 | sed 's/^/        /'; }
 
@@ -121,7 +157,7 @@ show_manifest() {
   local n_formulae n_casks n_node n_pip n_skills
   n_formulae=$(grep -cE '^brew ' "$BREWFILE" 2>/dev/null || echo 0)
   n_casks=$(grep -cE '^cask ' "$BREWFILE" 2>/dev/null || echo 0)
-  n_node=$(count_pkgs "$NPM_GLOBALS")
+  n_node=$(npm_wanted | grep -c . || true)
   n_pip=$(count_pkgs "$PIP_PACKAGES")
   n_skills=$([ -d "$SKILLS_DIR" ] && find "$SKILLS_DIR" -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ' || echo 0)
 
@@ -144,7 +180,7 @@ show_manifest() {
   fi
   echo ""
   echo "  🟢 Global Node packages via pnpm ($n_node):"
-  grep -vE '^[[:space:]]*(#|$)' "$NPM_GLOBALS" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
+  npm_wanted | join_fold
   echo ""
   echo "  🐍 Python packages in ~/.ai-os/venv ($n_pip):"
   grep -vE '^[[:space:]]*(#|$)' "$PIP_PACKAGES" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
@@ -210,7 +246,7 @@ command -v brew >/dev/null || {
   exit 1
 }
 command -v gh >/dev/null || { err "gh (GitHub CLI) not installed. brew install gh"; exit 1; }
-command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; }
+command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; load_profile_flags; }
 
 ok "Prerequisites OK"
 echo ""
@@ -232,6 +268,19 @@ if [ "${SKIP_BREW:-0}" != "1" ]; then
     BREW_FAILED=1
     warn "brew bundle reported failures; continuing (see output above)"
   fi
+  # Extras from the personal profile (brew: / casks:), as a throwaway Brewfile.
+  profile_brewfile="$(mktemp -t aios-profile-brewfile)"
+  { profile_get brew | sed 's/.*/brew "&"/'; profile_get casks | sed 's/.*/cask "&"/'; } > "$profile_brewfile"
+  if [ -s "$profile_brewfile" ]; then
+    log "1a. Personal brew packages (install.yaml)..."
+    if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file="$profile_brewfile"; then
+      ok "Personal brew packages installed"
+    else
+      BREW_FAILED=1
+      warn "brew bundle (personal) reported failures; continuing"
+    fi
+  fi
+  rm -f "$profile_brewfile"
   if [ "${EXTRAS:-0}" = "1" ]; then
     log "1b. EXTRAS=1 — installing dev-env/packages/Brewfile.extras..."
     if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile.extras; then
@@ -254,7 +303,7 @@ if [ "${SKIP_NPM:-0}" != "1" ]; then
   if command -v pnpm >/dev/null 2>&1; then
     # pnpm needs PNPM_HOME to place global bins; the AI-OS zshrc adds it to PATH
     export PNPM_HOME="${PNPM_HOME:-$HOME_DIR/Library/pnpm}"
-    export PATH="$PNPM_HOME:$PATH"
+    export PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"  # pnpm 10 puts global bins in $PNPM_HOME/bin
     # Only add what is missing, in ONE `pnpm add -g` call: a per-package loop
     # re-resolved (and upgraded) every installed global on every run. Upgrades
     # are deliberate: `pnpm update -g`.
@@ -265,7 +314,7 @@ if [ "${SKIP_NPM:-0}" != "1" ]; then
       pkg="$(printf '%s' "$pkg" | xargs)"
       [ -z "$pkg" ] && continue
       printf '%s\n' "$installed_globals" | grep -qxF "$pkg" || npm_missing+=("$pkg")
-    done < "$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
+    done < <(npm_wanted)
     if [ "${#npm_missing[@]}" -eq 0 ]; then
       ok "global Node packages already installed (none missing)"
     elif pnpm add -g "${npm_missing[@]}"; then
@@ -552,7 +601,8 @@ ZSH_SYNTAX_HIGHLIGHTING_TAG="0.8.0"
 ZSH_COMPLETIONS_TAG="0.36.0"
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
   log "6. Installing Oh My Zsh (pinned to commit ${OHMYZSH_REF:0:12})..."
-  RUNZSH=no CHSH=no sh -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/${OHMYZSH_REF}/tools/install.sh")" 2>&1 | tail -3
+  # KEEP_ZSHRC: step 5 already linked the AI-OS .zshrc; the OMZ installer would swap in its template.
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/${OHMYZSH_REF}/tools/install.sh")" 2>&1 | tail -3
   ok "Oh My Zsh installed"
 else
   ok "Oh My Zsh already installed"

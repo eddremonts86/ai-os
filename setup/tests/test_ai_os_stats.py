@@ -18,7 +18,8 @@ class StatsTests(unittest.TestCase):
         s = self.stats
         for key, value in s.items():
             self.assertIsInstance(value, int, key)
-            self.assertGreater(value, 0, key)
+            # npm_globals may be 0: AI-OS needs no global Node packages (MCP servers run through npx).
+            (self.assertGreaterEqual if key == "npm_globals" else self.assertGreater)(value, 0, key)
         self.assertEqual(s["skills_linked"], s["skills_flat"] + s["skills_gstack"] + s["skills_ecc"])
         self.assertEqual(s["skills_curated"], s["skills_linked"] - s["superpowers"])
         self.assertLessEqual(s["mcp_enabled"], s["mcp_total"])

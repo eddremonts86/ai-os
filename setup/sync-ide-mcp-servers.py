@@ -48,6 +48,10 @@ except ImportError:
     tomlkit = None
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import aios_profile  # noqa: E402  (per-person MCP overrides)
+
+
 def fail(message):
     print(f"Error: {message}", file=sys.stderr)
     return 1
@@ -89,11 +93,13 @@ def load_definitions(mcp_dir, home):
     """Return (enabled definitions, names of disabled ones). Disabled names are
     removed from every target, so `enabled: false` actually retires a server."""
     definitions, disabled = [], []
-    for path in sorted(mcp_dir.glob("*.yaml")):
-        definition = load_yaml_mapping(path, "MCP definition")
+    raw = [load_yaml_mapping(path, "MCP definition") for path in sorted(mcp_dir.glob("*.yaml"))]
+    if aios_profile.applies_to(mcp_dir):
+        raw = aios_profile.apply_mcp(raw, aios_profile.load())
+    for definition in raw:
         name = definition.get("name")
         if not isinstance(name, str) or not name:
-            raise ValueError(f"MCP definition {path} requires a non-empty string name")
+            raise ValueError(f"MCP definition {definition!r} requires a non-empty string name")
         if not definition.get("enabled", True):
             disabled.append(name)
             continue
