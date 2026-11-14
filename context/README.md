@@ -83,6 +83,7 @@ folder `work/<scope>/` with its notes.
 | `me/bridge.md` | stub | the few lines every CLI must always see (your chat language, tone, triggers) | appended to the global instructions by the installer |
 | `work/scopes.yaml` | stub | which folder is personal, employer or own company (format below) | `ai-os scope`, the session hook, the pre-push guard |
 | `work/<scope>/README.md` | | your role in that scope, its conventions, design system and projects | agents working in that scope |
+| `work/README.md` | stub | what the work folder holds: one folder per scope, mapped by `scopes.yaml` | you, and agents new to your work |
 | `work/projects.md` | stub | every project: purpose, stack, last commit, remote | agents looking for a project |
 | `work/publishing.md` | | npm scope, author identity, packages already out | the `npm-package-publishing` skill |
 | `machine/facts.md` | stub | OS and versions, ports already taken, local traps | agents debugging the toolchain |

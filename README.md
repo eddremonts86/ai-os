@@ -99,7 +99,7 @@ What is backed up is only what cannot be rebuilt: the graphiti graph (a FalkorDB
 
 `ai-os memory start|status|reindex` operates it; the `aios-memory` skill covers repairs. When to read and write memory: `rules/always_do.md` "Use the memory stack".
 
-There are **12 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem`, `sequential-thinking` and `rea` are disabled; the reasons are in each YAML. `rea` (reverse engineering of shipped artifacts) is an opt-in: the security audit calls its CLI without it.
+There are **12 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`, and `ui-indexador`, registered only where its local service answers). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem`, `sequential-thinking` and `rea` are disabled; the reasons are in each YAML. `rea` (reverse engineering of shipped artifacts) is an opt-in: the security audit calls its CLI without it.
 
 ## 4. Platforms
 
@@ -133,6 +133,7 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 | `ai-os update [--apply COMPONENT]` | Pinned vs upstream versions; `--apply` bumps one, runs its health checks, rolls back on failure |
 | `ai-os stats [--check\|--write]` | Counts the site and this README publish, computed from the repo; `--write` fixes them and re-renders the images |
 | `ai-os agents [--check]` | Write `ai-config/agents` (and your `context/personal/agents`) into Claude Code, Codex, Gemini CLI and opencode |
+| `ai-os scope [which\|git-config --apply\|check-push]` | Which scope a folder is in (personal, employer, own company): its design system, git identity and confidentiality guard |
 | `ai-os skills [lint\|route\|bank]` | Skill catalogue budget, near-duplicate descriptions, routing regression bank |
 | `ai-os project init [PATH]` | Give a project a short `CLAUDE.md`, `.agents/skills/` and the secret-leak `.gitignore` lines |
 | `ai-os loop`, `ai-os llm`, `ai-os plans`, `ai-os bootstrap` | Loop runner, local/cloud chat router, plan documents (needs `PLANSMITH_ROOT`), full-stack bootstrap |
@@ -161,7 +162,7 @@ context/      global/ (toolchain, sources, brand: shared) · personal/ (you and 
 rules/        always do / ask before doing / never do
 workflows/    recurring processes      specs/  one active spec + template
 verifiers/    optional review prompts  archive/ completed specs
-ai-config/    skills/, commands/, mcp/*.yaml, templates/
+ai-config/    skills/, agents/, commands/, mcp/*.yaml, templates/
 dev-env/      dotfiles, packages (Brewfile, npm, pip), env-config/.env (git-ignored)
 memory/       docker-compose for the memory stack, launchd agents, logs
 setup/        installers, verify, the ai-os CLIs (health, backup, secrets, …), hooks/, tests/

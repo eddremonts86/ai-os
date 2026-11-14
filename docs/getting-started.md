@@ -35,15 +35,18 @@ powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
 
 The script:
 
-1. Installs Homebrew packages (Mac) or Chocolatey packages (Windows).
-2. Installs Oh My Zsh + Powerlevel10k + plugins (Mac).
-3. Creates dotfile symlinks (zsh, git, ssh).
-4. Configures global flat skills via symlinks.
-5. Installs the 14 required superpowers skills.
-6. Generates `~/.hermes/config.yaml` from the MCP YAMLs.
-7. Configures Warp (Mac).
-8. Configures Terminal.app (Mac).
-9. Reloads zsh.
+In short (the full list and every opt-in are in the README's "Install" section):
+
+1. Installs Homebrew packages (Mac) or Chocolatey packages (Windows), and the Python packages into `~/.ai-os/venv`.
+2. Adds one marked block to your own `~/.zshrc` and `~/.ssh/config` (or links them when you have none), and seeds
+   `~/.gitconfig` from a template only if you have none; Oh My Zsh + Powerlevel10k
+   (`AIOS_SHELL_THEME=1`), the Nerd Font (`AIOS_FONTS=1`) and the Warp/Terminal.app restyle
+   (`AIOS_TERMINAL_THEME=1`) are opt-in.
+3. Links the skills into every CLI and checks the 14 required superpowers skills (links any that are missing).
+4. Writes the agents from `ai-config/agents/` into Claude Code, Codex, Gemini CLI and opencode.
+5. Generates the MCP config for Hermes, Claude Code, Codex, Gemini and VS Code from `ai-config/mcp/*.yaml`.
+6. Starts the memory stack and runs `setup/verify.sh` (Windows: `setup/verify-windows.ps1`). On a Mac it also
+   installs the launchd agents and the pre-push hook.
 
 ## Step 3: Personalize git (if you used the template)
 
@@ -62,12 +65,12 @@ bash setup/verify.sh
 
 ```
 [ai-os verify] ✅ AI-OS at <your AI_OS_ROOT>
-[ai-os verify] ✅   .zshrc → <your AI_OS_ROOT>/dev-env/dotfiles/zsh/.zshrc
-[ai-os verify]   Source of truth: <N> flat skills + <N> gstack skills = <N> expected per client
-[ai-os verify] ✅   [claude] ~/.claude/skills: <N>/<N> skills (exact match)
-[ai-os verify] ✅   [codex] ~/.codex/skills: <N>/<N> skills (exact match)
-[ai-os verify] ✅   [gemini] ~/.gemini/skills: <N>/<N> skills (exact match)
-[ai-os verify] ✅   [antigravity] ~/.agents/skills: <N>/<N> skills (exact match)
+[ai-os verify] ✅   .zshrc → <your AI_OS_ROOT>/dev-env/dotfiles/zsh/.zshrc   (AIOS_SHELL_THEME=1; without it: ⚠️ .zshrc is not a symlink, which is fine)
+[ai-os verify]   Source of truth: <N> expected skill names per client (flat + gstack + ECC DAILY)
+[ai-os verify] ✅   [claude] ~/.claude/skills: <N>/<N>+ skills (all expected names present)
+[ai-os verify] ✅   [codex] ~/.codex/skills: <N>/<N>+ skills (all expected names present)
+[ai-os verify] ✅   [gemini] ~/.gemini/skills: <N>/<N>+ skills (all expected names present)
+[ai-os verify] ✅   [antigravity] ~/.agents/skills: <N>/<N>+ skills (all expected names present)
 [ai-os verify] ✅   [hermes] ~/.hermes/config.yaml declares ~/.agents/skills under skills.external_dirs
 [ai-os verify] ✅ 14/14 superpowers skills OK
 [ai-os verify] ✅ MCP servers configured: <N>
@@ -122,12 +125,12 @@ hermes gateway restart
 
 ### PyYAML is unavailable
 
-```bash
-pip3 install pyyaml --user
-```
+PyYAML is required: `setup/generate-mcp-config.py` and `setup/render-agents.py` stop without it. The installer
+puts it in the AI-OS venv; re-run the installer, or install it there:
 
-`setup/generate-mcp-config.py` has a built-in fallback for the simple MCP YAML
-files in this repo, so PyYAML is preferred but no longer required for dry-runs.
+```bash
+"$HOME/.ai-os/venv/bin/pip" install pyyaml
+```
 
 ### Fonts don't show in Warp/Terminal
 
