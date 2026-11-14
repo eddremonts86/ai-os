@@ -1,12 +1,12 @@
 ---
 name: npm-package-publishing
-description: Convention for publishing npm packages (bootstrap CLIs and libraries), always under one scope of yours, plus package.json shape, bin script style, and the ask-before-publish rule. Your scope and author identity live in context/personal/05_publishing.md. Applies whenever creating a new npm package or preparing one to be published.
+description: Convention for publishing npm packages (bootstrap CLIs and libraries), always under one scope of yours, plus package.json shape, bin script style, and the ask-before-publish rule. Your scope and author identity live in context/personal/work/publishing.md. Applies whenever creating a new npm package or preparing one to be published.
 license: Internal
 ---
 
 # npm Package Publishing Convention
 
-Derived from prior published packages (yours are listed in `context/personal/05_publishing.md`: your npm
+Derived from prior published packages (yours are listed in `context/personal/work/publishing.md`: your npm
 scope, your author identity and the packages already out). Use this pattern instead of inventing a new one.
 Below, `<scope>` is the scope from that file.
 
@@ -34,8 +34,8 @@ unscoped name with a message pointing at the new one. Update the display/brand
 name, repo, domain, and localStorage keys only if the task calls for it — the
 scope change is about the npm package identity, not the project's branding.
 
-Default author identity: the one in `context/personal/05_publishing.md`, matching your GitHub identity
-(see `context/personal/02_projects.md`).
+Default author identity: the one in `context/personal/work/publishing.md`, matching your GitHub identity
+(see `context/personal/work/projects.md`).
 
 ## package.json shape (bootstrap CLI)
 
@@ -70,7 +70,7 @@ Key points:
 
 ## bin script style (Node, ESM)
 
-Mirror the shape of your existing bootstrap CLI (see `context/personal/05_publishing.md`) for any new bootstrap CLI:
+Mirror the shape of your existing bootstrap CLI (see `context/personal/work/publishing.md`) for any new bootstrap CLI:
 
 1. Shebang `#!/usr/bin/env node`, `"type": "module"`, read own `package.json`
    via `fileURLToPath(new URL('.', import.meta.url))` to avoid a hardcoded

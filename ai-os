@@ -17,6 +17,7 @@
 #   secrets [...]     →  setup/ai-os-secrets.py     (.env hygiene + leak audit of repo histories)
 #   project [...]     →  setup/ai-os-project.py     (project init: CLAUDE.md, .agents/skills, gitignore)
 #   skills [...]      →  setup/ai-os-skills.py      (catalogue budget, duplicates, routing bank)
+#   scope [...]       →  setup/ai-os-scope.py       (personal / employer / company: design, identity, guard)
 
 set -euo pipefail
 
@@ -83,6 +84,12 @@ case "${1:-}" in
     py="$HOME/.ai-os/venv/bin/python"
     [ -x "$py" ] || py=python3
     exec "$py" "$AI_OS_ROOT/setup/ai-os-skills.py" "$@"
+    ;;
+  scope)
+    shift
+    py="$HOME/.ai-os/venv/bin/python"
+    [ -x "$py" ] || py=python3
+    exec "$py" "$AI_OS_ROOT/setup/ai-os-scope.py" "$@"
     ;;
   project)
     shift

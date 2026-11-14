@@ -1,7 +1,7 @@
 # 04 — Tools
 
 The AI-OS toolchain: the CLIs it wires, the skills, diagrams, env config, setup and the traps that
-were learned the hard way. Facts about one specific computer live in `context/personal/04_machine.md`.
+were learned the hard way. Facts about one specific computer live in `context/personal/machine/facts.md`.
 
 ## CLI tools
 

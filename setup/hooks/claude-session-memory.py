@@ -68,6 +68,26 @@ def search(groups, query):
     return [f for f in payload.get("facts", []) if not f.get("invalid_at") and not f.get("expired_at")]
 
 
+def scope_lines(cwd):
+    """Which scope this folder belongs to (personal / employer / company), from ai-os scope. Silent on any failure."""
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    py = os.path.expanduser("~/.ai-os/venv/bin/python")
+    try:
+        out = subprocess.run([py if os.path.exists(py) else "python3", os.path.join(root, "setup", "ai-os-scope.py"),
+                              "which", cwd, "--json"], capture_output=True, text=True, timeout=3).stdout
+        info = json.loads(out)
+    except Exception:
+        return []
+    if not info.get("scope") or "label" not in info:
+        return []
+    head = f"AI-OS scope: {info['label']}" + (f", brand {info['brand']}" if info.get("brand") else "")
+    lines = [head + ". Work by this scope's rules, design system and git identity; keep other scopes' material out."]
+    lines += [f"- design {k}: {v}" for k, v in (info.get("design") or {}).items()]
+    if info.get("notes"):
+        lines.append(f"- notes: {info['notes']}")
+    return lines
+
+
 def main():
     try:
         event = json.load(sys.stdin)
@@ -94,6 +114,7 @@ def main():
         lines = [f"AI-OS memory: graphiti has no facts yet for group `{repo}`."]
     lines.append(f"Search more with graphiti search_memory_facts (group_ids [\"{repo}\"]); record settled "
                  f"decisions, root causes and conventions with add_memory, group_id \"{repo}\".")
+    lines = scope_lines(cwd) + lines
     print(json.dumps({"hookSpecificOutput": {"hookEventName": "SessionStart",
                                              "additionalContext": "\n".join(lines)}}))
 

@@ -1,8 +1,0 @@
-# ~/.gitconfig-work: identity for your employer's projects.
-# Include it from ~/.gitconfig, for example:
-#   [includeIf "gitdir:~/Projects/work/"]
-#       path = ~/.gitconfig-work
-
-[user]
-    name = <Your Name>
-    email = <you@your-employer.example>

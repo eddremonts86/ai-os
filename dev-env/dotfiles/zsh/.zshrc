@@ -213,8 +213,8 @@ esac
 # setup/install-mac.sh generates ~/.ai-os/env.sh instead; this guard loads it.
 [ -f "$HOME/.ai-os/env.sh" ] && source "$HOME/.ai-os/env.sh"
 
-# Personal aliases and functions: context/personal/shell.zsh is git-ignored, so nothing about you is committed here.
-[ -n "$AI_OS_ROOT" ] && [ -f "$AI_OS_ROOT/context/personal/shell.zsh" ] && source "$AI_OS_ROOT/context/personal/shell.zsh"
+# Personal aliases and functions: context/personal/machine/shell.zsh is git-ignored, so nothing about you is committed here.
+[ -n "$AI_OS_ROOT" ] && [ -f "$AI_OS_ROOT/context/personal/machine/shell.zsh" ] && source "$AI_OS_ROOT/context/personal/machine/shell.zsh"
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=($HOME/.docker/completions $fpath)

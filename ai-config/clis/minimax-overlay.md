@@ -4,10 +4,10 @@
 
 Single source of truth: `{{AI_OS_ROOT}}`. At the start of meaningful work, read:
 
-- `{{AI_OS_ROOT}}/context/personal/00_profile.md` and `03_preferences.md` (who the user is, how they want you to work)
+- `{{AI_OS_ROOT}}/context/personal/me/profile.md` and `me/preferences.md` (who the user is, how they want you to work)
 - `{{AI_OS_ROOT}}/CLAUDE.md` (the Spec → Verifier → Environment method)
 
-Non-negotiables: chat language and tone per `context/personal/03_preferences.md`; ALL files (code,
+Non-negotiables: chat language and tone per `context/personal/me/preferences.md`; ALL files (code,
 commits, docs, comments, logs, error messages, YAML frontmatter) in English, no
 exceptions; verify with runtime evidence before claiming done; confirm before
 irreversible/destructive actions. Durable facts → `~/.minimax/memory/`; keep

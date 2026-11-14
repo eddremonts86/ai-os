@@ -125,6 +125,18 @@ done
 [ -z "$out" ] && pass || fail "a value from dev-env/env-config/.env is in the commits being pushed (names only):
 $out"
 
+step "scope guard (by severity)"
+# Terms of other scopes (an employer's internal names, your private data) in what this push adds.
+# block stops the push, warn is reported. Config lives in the real checkout: context/personal/work/scopes.yaml.
+out=""; code=0
+for r in ${ranges[@]+"${ranges[@]}"}; do
+  # shellcheck disable=SC2086  # $r is "A..B" or "SHA --not --remotes": word splitting is intended
+  e=$(cd "$ORIG" && "$PY" "$ORIG/setup/ai-os-scope.py" check-push $r 2>&1) || code=1
+  out+="$e"$'\n'
+done
+if [ "$code" = 1 ]; then fail "$(grep -E '^(BLOCK|WARN)' <<<"$out")"
+else pass "$(grep -c '^WARN' <<<"$out" | sed 's/^0$/clean/; s/^[1-9][0-9]*$/& warning(s)/')"; grep '^WARN' <<<"$out" | sed 's/^/           /' || true; fi
+
 step "security scan (new findings)"
 # aios-security-audit's scanners, baseline mode: only what this push adds. A new critical or high finding blocks.
 # A scanner that is not installed is NOT RUN, and nothing running at all blocks too: that is not "clean".

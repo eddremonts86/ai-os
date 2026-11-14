@@ -38,7 +38,7 @@ Host github.com
     # UseKeychain yes
 
 # ─── Your own hosts ───
-# Hosts that name you, your employer or your servers live in context/personal/dotfiles/ssh/config (git-ignored).
+# Hosts that name you, your employer or your servers live in context/personal/machine/dotfiles/ssh/config (git-ignored).
 # The installer links it to ~/.ssh/config.personal; a missing file is silently ignored.
 # `Match all` closes the Host block above: an Include inside it would only apply to github.com.
 Match all
