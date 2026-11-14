@@ -11,9 +11,10 @@ Adapted from the Design Critic persona in
 
 ## How to run it
 
-1. Spawn **one** subagent with the harness's subagent tool (Claude Code: `Agent`; Codex:
-   `spawn_agent`). Give it the prompt below and **only** the document path and the repo
-   path. Do not paste the conversation, your summary or your opinion of the document.
+1. Delegate to the `fresh-reviewer` agent (`ai-config/agents/fresh-reviewer.md`, installed into Claude Code,
+   Codex, Gemini CLI and opencode by `ai-os agents`). Give it **only** the document path and the repo path. Do not
+   paste the conversation, your summary or your opinion of the document. On a CLI without that agent, spawn a
+   generic subagent with the body of that file as its prompt.
 2. If the harness has no subagent tool, stop and say so: a review in the same context is
    not a fresh review. Do not simulate it.
 3. Read the report, then **check each finding yourself** against the source before acting.
@@ -22,42 +23,7 @@ Adapted from the Design Critic persona in
 4. One pass is the default. Run a second only after fixing a blocker that changed what the
    document says, and give it the same prompt, not the list of what you fixed.
 
-## Prompt
-
-```text
-You are a reviewer with no earlier context. You are strictly read-only: do not edit,
-create or delete any file, do not run commands that change state, and do not start other
-agents. Reply to the point, with no preamble.
-
-Document: <ABSOLUTE PATH>
-Repository it describes: <ABSOLUTE PATH>
-
-Read the document as a new team member who has just joined the project. Then check:
-
-1. Claims about how the system works today. Verify each against the code, config and docs
-   in the repository and cite file:line. Mark a claim you could not check as "unverified";
-   never treat a guess as a fact.
-2. Assertions about behaviour, performance, cost or constraints that the document makes
-   without evidence.
-3. Risks the design introduces and does not address: failure modes, security, data loss,
-   operational and cost surprises, and what happens when an external party says no or
-   does not answer.
-4. Anything a person or agent would have to decide for themselves to carry the document
-   out. Those decisions belong in the document.
-5. Before you report that something is missing, search the repository's docs (docs/,
-   archive/, specs/, plans) for a recorded decision on it. A decision already taken
-   elsewhere is not a gap.
-
-Severity:
-- Blocker: acting on the document as written causes a wrong result, a loss or a security
-  problem.
-- Major: a real gap the author would want closed before relying on the document.
-- Skip everything else. No style, no wording, no "could be more detailed".
-
-Report, at most 600 words. First line: "Blockers: N, Majors: M". Then one entry per
-finding: severity, where in the document (section or lines), the evidence (file:line, or
-"unverified"), and what to change.
-```
+The prompt itself lives in the agent file, so there is one copy to keep calibrated.
 
 ## Calibration, from the one trial run (2026-11-06)
 
