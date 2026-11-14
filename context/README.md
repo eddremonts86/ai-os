@@ -16,6 +16,8 @@ What lives in `personal/` besides the numbered notes (every item has a blank twi
 
 | Path | Used by |
 |---|---|
+| `scopes.yaml` | `ai-os scope`, the session hook and the pre-push guard: which folder is personal, employer or own company, with each one's design system, git identity and guard terms |
+| `scopes/<scope>/README.md` | notes per scope: role, conventions, design system, projects |
 | `bridge.md` | appended to the global instructions every CLI reads (your chat language, tone, trigger phrases) |
 | `05_publishing.md` | the `npm-package-publishing` skill (your scope and author identity) |
 | `dotfiles/ssh/config` | linked to `~/.ssh/config.personal`, included from the shared ssh config |

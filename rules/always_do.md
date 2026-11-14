@@ -18,7 +18,7 @@ Read only when the task needs it:
 |---|---|
 | `context/personal/02_projects.md` | the task names or touches one of the user's projects |
 | `context/global/04_tools.md` | installing, configuring, or debugging the local toolchain |
-| `context/personal/01_business_or_work.md` and any company file beside it | work for the user's employer or business |
+| `context/personal/scopes/<scope>/README.md` (`ai-os scope which` names the scope) | any work inside a scope: its role, conventions, design system and projects |
 | `context/global/05_sources.md` | looking up official docs or reference repos |
 | `context/global/06_brand.md` | branded deliverables (diagrams, site, decks) |
 | `workflows/*.md` | the matching kind of task (coding, research, content, new Spec) |
@@ -115,6 +115,19 @@ Rules:
 - Use values in place. NEVER echo, print, paste into chat, log, or commit the real
   values (see `rules/never_do.md`).
 
+## Work inside the folder's scope
+
+Every project belongs to one scope: personal, an employer, or the user's own company (one brand per product).
+`ai-os scope which` names it from `context/personal/scopes.yaml`; in Claude Code the session start hook says it.
+
+- **Design:** UI for a scope uses that scope's design system or the product's own `DESIGN.md`, never another
+  scope's tokens and never the AI-OS brand by default.
+- **Identity:** commits carry the scope's git identity (`ai-os scope git-config --apply` wires it by folder).
+- **Confidentiality:** material from one scope never goes into another scope's repo. The pre-push guard checks
+  the terms listed per scope by severity: `block` stops the push (internal names, ids, private data), `warn`
+  reports it (a public company name).
+- **Notes:** read `context/personal/scopes/<scope>/README.md` before non-trivial work in that scope.
+
 ## When writing code
 
 **Ponytail is always on (`full`).** Before writing any code, climb the ladder and stop at the first rung that holds: does this need to exist at all (YAGNI) → is it already in this codebase → stdlib → native platform feature → already-installed dependency → one line → minimum that works. Shortest working diff wins, but only after you understand the flow the change touches; a bug fix means the root cause in the shared function, not a guard per caller. Never simplify away input validation at trust boundaries, error handling that prevents data loss, security, accessibility, or anything explicitly requested. Non-trivial logic leaves one runnable check behind. Per-session override: `/ponytail lite|full|ultra|off`. Machine default: `~/.config/ponytail/config.json` (Windows: `%APPDATA%\ponytail\config.json`).
@@ -188,7 +201,8 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 
 23. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
     budget, and the accessible-SVG contract; a hand-rolled figure silently drops all three.
-24. Brand tokens come from `context/global/06_brand.md`. Do not read hex values out of `apps/site/src/index.css`
+24. Brand tokens come from the folder's scope first (`ai-os scope which`: an employer's design system, a product's
+    `DESIGN.md`), and only for AI-OS itself or a project without one from `context/global/06_brand.md`. Do not read hex values out of `apps/site/src/index.css`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
 25. Before shipping a `diagram-design` diagram, run the skill's taste gate (`SKILL.md` §9) and
@@ -225,7 +239,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
-27. Brand tokens come from `context/global/06_brand.md` (same rule as diagrams).
+27. Brand tokens come from the folder's scope first, then `context/global/06_brand.md` (same rule as diagrams).
 
 ## At session end
 
