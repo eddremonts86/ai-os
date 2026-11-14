@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 # setup/backup-before-reinstall.sh
 # One-shot rsync of everything needed to survive a clean macOS reinstall:
-# ~/Projects (source excl. regenerable build junk) + dev/cloud credentials & CLI configs.
+# your projects folder (source excl. regenerable build junk) + dev/cloud credentials & CLI configs.
+# Projects folder: AI_OS_PROJECTS_DIR, else the folder that holds this checkout.
 #
 # Usage:
 #   bash setup/backup-before-reinstall.sh [DEST]
-#   DEST defaults to /Volumes/Stuff/Development
+#   DEST defaults to ~/Backups/ai-os. Point it at an external disk: a backup on the disk
+#   you are about to wipe does not survive the reinstall.
 #
 # Idempotent: rsync -a, safe to re-run to pick up new changes before the reinstall.
 
 set -euo pipefail
 
-DEST="${1:-/Volumes/Stuff/Development}"
+DEST="${1:-$HOME/Backups/ai-os}"
+AI_OS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROJECTS_DIR="${AI_OS_PROJECTS_DIR:-$(dirname "$AI_OS_ROOT")}"
 PROJECTS_DEST="$DEST/Projects"
 CONFIGS_DEST="$DEST/home-configs"
 
@@ -26,14 +30,15 @@ rsync_tolerant() {
 }
 
 [ -d "$(dirname "$DEST")" ] || { echo "[backup] destination volume not mounted: $DEST" >&2; exit 1; }
+case "$DEST" in "$HOME"/*) log "warning: $DEST is on this Mac's own disk; copy it off before reinstalling" ;; esac
 mkdir -p "$PROJECTS_DEST" "$CONFIGS_DEST"
 
-log "1/2 ~/Projects → $PROJECTS_DEST (excluding node_modules/.venv/dist/build/.next/target/__pycache__/.turbo)"
+log "1/2 $PROJECTS_DIR → $PROJECTS_DEST (excluding node_modules/.venv/dist/build/.next/target/__pycache__/.turbo)"
 rsync_tolerant -a --info=progress2 \
   --exclude 'node_modules' --exclude '.venv' --exclude 'venv' \
   --exclude 'dist' --exclude 'build' --exclude '.next' \
   --exclude 'target' --exclude '__pycache__' --exclude '.turbo' \
-  "$HOME/Projects/" "$PROJECTS_DEST/"
+  "$PROJECTS_DIR/" "$PROJECTS_DEST/"
 
 log "2/2 credentials & CLI configs → $CONFIGS_DEST"
 # Each entry: source path relative to $HOME (only copied if it exists).

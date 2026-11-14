@@ -175,7 +175,7 @@ alias zshconfig="\${EDITOR:-nano} ~/.zshrc"
 alias p10k="p10k configure"
 
 # Mis comandos frecuentes
-alias projects="cd ~/Projects"
+alias projects='cd "${AI_OS_PROJECTS_DIR:-${AI_OS_ROOT:+$(dirname "$AI_OS_ROOT")}}"'
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
