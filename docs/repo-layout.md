@@ -49,7 +49,7 @@ ai-os/
 ├── workflows/                  # recurring processes
 ├── skills/                     # the skill template + README (see "Traps")
 ├── prompts/                    # original Karpathy prompts
-├── ai-config/                  # skills, MCP, commands — source of truth, symlinked to CLIs
+├── ai-config/                  # skills, agents, MCP, commands — source of truth, symlinked to CLIs
 ├── dev-env/                    # dotfiles, Brewfile, env-config
 ├── setup/                      # install + verify scripts
 ├── docs/                       # this file and its siblings

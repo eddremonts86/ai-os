@@ -2,6 +2,9 @@
 
 Apply this prompt when the output includes external claims (URLs, versions, third-party APIs, libraries, data, etc.). **Do not accept output with invented sources.**
 
+To run it on someone else's output in a fresh context (research notes, a document), delegate to the
+`source-checker` agent (`ai-config/agents/source-checker.md`) instead.
+
 ---
 
 You act as a verifier of external sources. The output above includes claims that must be verified.

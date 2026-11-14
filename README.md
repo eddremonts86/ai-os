@@ -132,6 +132,7 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 | `ai-os memory …` | Memory stack: start, status, browse, reindex |
 | `ai-os update [--apply COMPONENT]` | Pinned vs upstream versions; `--apply` bumps one, runs its health checks, rolls back on failure |
 | `ai-os stats [--check\|--write]` | Counts the site and this README publish, computed from the repo; `--write` fixes them and re-renders the images |
+| `ai-os agents [--check]` | Write `ai-config/agents` (and your `context/personal/agents`) into Claude Code, Codex, Gemini CLI and opencode |
 | `ai-os skills [lint\|route\|bank]` | Skill catalogue budget, near-duplicate descriptions, routing regression bank |
 | `ai-os project init [PATH]` | Give a project a short `CLAUDE.md`, `.agents/skills/` and the secret-leak `.gitignore` lines |
 | `ai-os loop`, `ai-os llm`, `ai-os plans`, `ai-os bootstrap` | Loop runner, local/cloud chat router, plan documents (needs `PLANSMITH_ROOT`), full-stack bootstrap |
