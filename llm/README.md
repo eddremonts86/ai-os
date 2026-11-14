@@ -37,7 +37,7 @@ const reply = await chat([{ role: 'user', content: 'hola' }], { provider: 'minim
 | `AI_LLM_PROVIDER` | `local` | `local` \| `minimax` |
 | `AI_OLLAMA_NATIVE_BASE_URL` | `http://localhost:11500/v1` | the native Ollama daemon |
 | `AI_OLLAMA_NATIVE_MODEL` | `gemma3:12b` | model pulled on that daemon — see "Model selection, final state" below for why gemma3, not qwen3 |
-| `MINIMAX_API_KEY` / `MINIMAX_BASE_URL` / `MINIMAX_MODEL` | — | same vars `dev-env/env-config/.env.example` section 5 already defines |
+| `MINIMAX_API_KEY` / `MINIMAX_BASE_URL` / `MINIMAX_MODEL` | — | same vars `dev-env/env-config/.env.example` section 1 already defines |
 
 ### Context window: 32768 — sized from real traffic
 

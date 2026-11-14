@@ -29,7 +29,7 @@ Two layers, both documented in full in `llm/README.md`:
 
 - **`llm/router.mjs`** — a provider-swappable OpenAI-compatible *chat* client (no
   tool use), reused by any app via the `AI_LLM_PROVIDER` / `AI_OLLAMA_NATIVE_*` /
-  `MINIMAX_*` variables in `dev-env/env-config/.env.example` section 6. `local`
+  `MINIMAX_*` variables in `dev-env/env-config/.env.example` section 1. `local`
   (default) hits the native Ollama daemon AI-OS already runs for memory-stack
   embeddings (`ai.os.ollama`, launchd, `:11500`), now also carrying the local chat
   model named in `llm/router.mjs` alongside `nomic-embed-text`. `minimax` is the explicit opt-in cloud fallback.
