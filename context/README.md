@@ -10,23 +10,18 @@ What agents should know, split by who it is true for.
 
 A fresh clone has no `personal/`. The installer copies `personal.example/` there once
 (`setup/seed-personal-context.py`) and never overwrites what you wrote. Fill it in; every agent reads
-`personal/00_profile.md` and `personal/03_preferences.md` at the start of meaningful work.
+`personal/me/profile.md` and `personal/me/preferences.md` at the start of meaningful work.
 
-What lives in `personal/` besides the numbered notes (every item has a blank twin in `personal.example/`):
+`personal/` is grouped by what each file is about (every file has a blank twin in `personal.example/`):
 
-| Path | Used by |
-|---|---|
-| `scopes.yaml` | `ai-os scope`, the session hook and the pre-push guard: which folder is personal, employer or own company, with each one's design system, git identity and guard terms |
-| `scopes/<scope>/README.md` | notes per scope: role, conventions, design system, projects |
-| `bridge.md` | appended to the global instructions every CLI reads (your chat language, tone, trigger phrases) |
-| `05_publishing.md` | the `npm-package-publishing` skill (your scope and author identity) |
-| `dotfiles/ssh/config` | linked to `~/.ssh/config.personal`, included from the shared ssh config |
-| `dotfiles/git/.gitconfig-*` | your git identities, to include from `~/.gitconfig` |
-| `shell.zsh`, `shell.ps1` | sourced by the shared zsh and PowerShell profiles |
-| `deploy/apps.conf` | `setup/deploy/local-replica/poll.sh` (which Coolify apps track which branch) |
+| Folder | Files | Used by |
+|---|---|---|
+| `me/` | `profile.md`, `preferences.md`, `bridge.md` | every agent at session start; `bridge.md` is appended to the global instructions of every CLI (chat language, tone, trigger phrases) |
+| `work/` | `scopes.yaml`, one folder per scope (`<scope>/README.md`), `projects.md`, `publishing.md` | `ai-os scope`, the session hook and the pre-push guard; the project inventory; the `npm-package-publishing` skill |
+| `machine/` | `facts.md`, `shell.zsh`, `shell.ps1`, `dotfiles/git/`, `dotfiles/ssh/config`, `deploy/apps.conf` | this computer: versions and traps, shell additions sourced by the shared profiles, git identities, ssh hosts (linked to `~/.ssh/config.personal`), the local Coolify replica |
+| `inbox/` | `pending.md` | what is waiting on you |
 
-Files keep their original numbers, so `04_tools.md` (global) and `04_machine.md` (personal) sit on either side
-of the same topic. When a fact is true for every user, it goes in `global/`; when it names you, your employer or
+When a fact is true for every user, it goes in `global/`; when it names you, your employer or
 your computer, it goes in `personal/`. Never put either one in a skill or a rule.
 
 On-demand table (what to read when): `rules/always_do.md` "Read only when the task needs it".

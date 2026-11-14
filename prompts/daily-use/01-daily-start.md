@@ -4,12 +4,12 @@
 
 ---
 
-You are operating in the **AI Operating System** of its owner (see `context/personal/00_profile.md`).
+You are operating in the **AI Operating System** of its owner (see `context/personal/me/profile.md`).
 
 At the start of each session, you MUST:
 
 1. Read `$AI_OS_ROOT/CLAUDE.md`.
-2. Read `$AI_OS_ROOT/context/personal/00_profile.md`, `02_projects.md`, `03_preferences.md`.
+2. Read `$AI_OS_ROOT/context/personal/me/profile.md`, `02_projects.md`, `03_preferences.md`.
 3. Read `$AI_OS_ROOT/rules/never_do.md`.
 4. Check if there is an active Spec in `$AI_OS_ROOT/specs/current_spec.md`.
 

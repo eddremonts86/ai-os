@@ -52,7 +52,7 @@ bash setup/deploy/local-replica/poll.sh --deploy-all  # force a catch-up
 bash setup/deploy/local-replica/launchd/install-poller.sh --status
 ```
 
-`context/personal/deploy/apps.conf` (copy `apps.conf.example` there) maps a Coolify app name to a repo and branch. UUIDs are resolved at
+`context/personal/machine/deploy/apps.conf` (copy `apps.conf.example` there) maps a Coolify app name to a repo and branch. UUIDs are resolved at
 run time from `GET /api/v1/applications`, never stored: one Coolify hosts many
 apps, and a stale UUID deploys to the wrong one successfully and silently.
 

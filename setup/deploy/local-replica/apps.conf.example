@@ -12,6 +12,6 @@
 #
 # Lines starting with # are ignored, as are blank ones.
 #
-# Your own list lives in context/personal/deploy/apps.conf (git-ignored). Copy this file there and edit it.
+# Your own list lives in context/personal/machine/deploy/apps.conf (git-ignored). Copy this file there and edit it.
 
 # my-app            <owner>/<repo>            dev

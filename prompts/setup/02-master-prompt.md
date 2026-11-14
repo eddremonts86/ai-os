@@ -43,7 +43,7 @@ Create the master instructions that any AI assistant should follow:
 - Project structure.
 - Skill loading order (using-superpowers as router).
 
-### 2. Fill `context/personal/00_profile.md`
+### 2. Fill `context/personal/me/profile.md`
 
 Ask the user 5-10 questions to learn:
 
@@ -54,7 +54,7 @@ Ask the user 5-10 questions to learn:
 
 Write the answers in English.
 
-### 3. Fill `context/personal/01_business_or_work.md`
+### 3. Fill `context/personal/work/README.md`
 
 Ask the user about their work:
 
@@ -63,18 +63,18 @@ Ask the user about their work:
 - Personal projects.
 - Archived projects.
 
-### 4. Fill `context/personal/02_projects.md`
+### 4. Fill `context/personal/work/projects.md`
 
 Inventory of projects:
 
 - Active projects with stack, path, relevant skills.
 - Archived projects with reason and date.
 
-### 5. Fill `context/personal/03_preferences.md`
+### 5. Fill `context/personal/me/preferences.md`
 
 User preferences:
 
-- Language (your chat language per `context/personal/03_preferences.md`, code in English).
+- Language (your chat language per `context/personal/me/preferences.md`, code in English).
 - Format (terse, no ceremony).
 - Triggers.
 

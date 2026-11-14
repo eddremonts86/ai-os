@@ -15,7 +15,7 @@ Turn `intent/*.md` into a `spec.md` that `specs/current_spec.md` can adopt.
 ## Inputs
 
 - Attached `intent/YYYY-MM-DD-<slug>.md` (or `intent/intent-template.md` + description).
-- Repo context: `CLAUDE.md`, `context/personal/03_preferences.md`, `ai-config/skills/*` (brand/security/compliance/UX), and `specs/spec_template.md`.
+- Repo context: `CLAUDE.md`, `context/personal/me/preferences.md`, `ai-config/skills/*` (brand/security/compliance/UX), and `specs/spec_template.md`.
 - Project context: the codebase the intent will change.
 
 ## Steps

@@ -14,4 +14,4 @@ Who you are. Agents read this first. Replace every line, and delete what does no
 
 ## Autonomy, triggers, output format
 
-Canonical source: `context/personal/03_preferences.md`. Do not duplicate those rules here.
+Canonical source: `context/personal/me/preferences.md`. Do not duplicate those rules here.

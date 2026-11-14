@@ -127,7 +127,7 @@ $out"
 
 step "scope guard (by severity)"
 # Terms of other scopes (an employer's internal names, your private data) in what this push adds.
-# block stops the push, warn is reported. Config lives in the real checkout: context/personal/scopes.yaml.
+# block stops the push, warn is reported. Config lives in the real checkout: context/personal/work/scopes.yaml.
 out=""; code=0
 for r in ${ranges[@]+"${ranges[@]}"}; do
   # shellcheck disable=SC2086  # $r is "A..B" or "SHA --not --remotes": word splitting is intended

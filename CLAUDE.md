@@ -13,7 +13,7 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
 
 ## 1. Method
 
-1. **Read** `context/personal/00_profile.md` and `03_preferences.md` (yours; if `context/personal/` is missing,
+1. **Read** `context/personal/me/profile.md` and `me/preferences.md` (yours; if `context/personal/` is missing,
    copy `context/personal.example/` there first); other `context/` files only when the task needs them
    (on-demand table in `rules/always_do.md`, layout in `context/README.md`).
 2. **Decide whether the task needs a Spec.** A Spec (`workflows/project_start.md` →
@@ -49,11 +49,11 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
   "ALWAYS: use sub-agents in parallel when possible".
 - Work inside the folder's scope (personal, employer, own company): its design system, git identity and
   confidentiality. `ai-os scope which`; details in `rules/always_do.md` "Work inside the folder's scope".
-- Language and tone: the chat language and tone are the user's (`context/personal/03_preferences.md`);
+- Language and tone: the chat language and tone are the user's (`context/personal/me/preferences.md`);
   code, commits, docs, logs, comments, error messages and every AI-OS file stay in English. Terse, no
   ceremony, formatting only when it adds clarity.
 - When the user accepts a partial result and says to keep going (their trigger phrases are in
-  `context/personal/03_preferences.md`), carry on; do not ask "should I continue?".
+  `context/personal/me/preferences.md`), carry on; do not ask "should I continue?".
 - For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime
   (browser nav, smoke test) and report concrete evidence. Always finish on URL + status for any
   started service.
@@ -130,7 +130,7 @@ hops (see `docs/repo-layout.md`).
 If you're not sure what to do:
 
 1. Re-read this file.
-2. Re-read `context/personal/03_preferences.md`.
+2. Re-read `context/personal/me/preferences.md`.
 3. Run `workflows/daily_start.md`.
 4. If the doubt persists, ask the user (with options).
 5. If the user says "go", execute approved reversible work without further questions; keep

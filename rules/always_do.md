@@ -7,7 +7,7 @@ Actions that you MUST always do when working with me.
 Keep the session-start read small; everything else is read on demand.
 
 1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md` — skip if your CLI already loaded it (Claude Code inside the repo does).
-2. Read `$AI_OS_ROOT/context/personal/00_profile.md` and `03_preferences.md`. If `context/personal/` does not exist, copy `context/personal.example/` there and ask the user to fill it in.
+2. Read `$AI_OS_ROOT/context/personal/me/profile.md` and `me/preferences.md`. If `context/personal/` does not exist, copy `context/personal.example/` there and ask the user to fill it in.
 3. Read `$AI_OS_ROOT/rules/never_do.md` and `ask_before_doing.md`.
 4. Read `$AI_OS_ROOT/specs/current_spec.md`. It must contain only the active Spec; an empty template means there is no active Spec.
 5. Load skill `using-superpowers` (router).
@@ -16,9 +16,9 @@ Read only when the task needs it:
 
 | File | Read when |
 |---|---|
-| `context/personal/02_projects.md` | the task names or touches one of the user's projects |
+| `context/personal/work/projects.md` | the task names or touches one of the user's projects |
 | `context/global/04_tools.md` | installing, configuring, or debugging the local toolchain |
-| `context/personal/scopes/<scope>/README.md` (`ai-os scope which` names the scope) | any work inside a scope: its role, conventions, design system and projects |
+| `context/personal/work/<scope>/README.md` (`ai-os scope which` names the scope) | any work inside a scope: its role, conventions, design system and projects |
 | `context/global/05_sources.md` | looking up official docs or reference repos |
 | `context/global/06_brand.md` | branded deliverables (diagrams, site, decks) |
 | `workflows/*.md` | the matching kind of task (coding, research, content, new Spec) |
@@ -118,7 +118,7 @@ Rules:
 ## Work inside the folder's scope
 
 Every project belongs to one scope: personal, an employer, or the user's own company (one brand per product).
-`ai-os scope which` names it from `context/personal/scopes.yaml`; in Claude Code the session start hook says it.
+`ai-os scope which` names it from `context/personal/work/scopes.yaml`; in Claude Code the session start hook says it.
 
 - **Design:** UI for a scope uses that scope's design system or the product's own `DESIGN.md`, never another
   scope's tokens and never the AI-OS brand by default.
@@ -126,7 +126,7 @@ Every project belongs to one scope: personal, an employer, or the user's own com
 - **Confidentiality:** material from one scope never goes into another scope's repo. The pre-push guard checks
   the terms listed per scope by severity: `block` stops the push (internal names, ids, private data), `warn`
   reports it (a public company name).
-- **Notes:** read `context/personal/scopes/<scope>/README.md` before non-trivial work in that scope.
+- **Notes:** read `context/personal/work/<scope>/README.md` before non-trivial work in that scope.
 
 ## When writing code
 

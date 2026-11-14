@@ -48,15 +48,15 @@ class PersonalContextBackupTests(unittest.TestCase):
         self.addCleanup(os.environ.pop, "AI_OS_OFFSITE", None)
         with tempfile.TemporaryDirectory() as d:
             root, dest = Path(d) / "root", Path(d) / "dest"
-            (root / "context" / "personal").mkdir(parents=True)
-            (root / "context" / "personal" / "00_profile.md").write_text("# me\n", encoding="utf-8")
+            (root / "context" / "personal" / "me").mkdir(parents=True)
+            (root / "context" / "personal" / "me" / "profile.md").write_text("# me\n", encoding="utf-8")
             b.ROOT, b.DEST = root, dest
             b.snapshot_graph = lambda out: (out / "falkordb-dump.rdb").write_bytes(b"x") or {}
             b.HOME = Path(d) / "home"
             b.take()
             snap = sorted(p for p in dest.iterdir() if p.is_dir())[-1]
             with tarfile.open(snap / "personal-context.tar.gz") as tar:
-                self.assertIn("personal/00_profile.md", tar.getnames())
+                self.assertIn("personal/me/profile.md", tar.getnames())
 
 
 @unittest.skipUnless(HAVE_CRYPTO, "cryptography is only in the AI-OS venv")
