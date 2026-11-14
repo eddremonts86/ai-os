@@ -702,6 +702,17 @@ if (Test-Path $oldHermesImported) {
 }
 Write-Host ""
 
+# ─── 7g. Cross-CLI agents (ai-config/agents + context/personal/agents → each CLI's own format) ───
+# Needs PyYAML, installed in step 7 above.
+$agentsPy = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
+if ($agentsPy) {
+    & $agentsPy.Source (Join-Path $AIOSRoot "setup\render-agents.py") --home $HomeDir
+    if ($LASTEXITCODE -eq 0) { Ok "7g. Agents distributed (edit ai-config\agents, then re-run this step)" }
+    else { Warn "7g. render-agents.py exited with code $LASTEXITCODE; agents not distributed" }
+}
+else { Warn "7g. Python not found; agents not distributed" }
+Write-Host ""
+
 # ─── 7c. IDE/CLI MCP servers (VS Code, Codex, Claude Code, Gemini) ───
 # generate-mcp-config.py above only wires Hermes (~/.hermes/config.yaml).
 # Every other AI client reads its OWN MCP config format/location -- without

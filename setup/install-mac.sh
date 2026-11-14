@@ -808,6 +808,16 @@ else
 fi
 echo ""
 
+# ─── 7g. Cross-CLI agents (ai-config/agents + context/personal/agents → each CLI's own format) ───
+log "7g. Distributing agents to Claude Code, Codex, Gemini and opencode..."
+if "$HOME_DIR/.ai-os/venv/bin/python" "$SCRIPT_DIR/render-agents.py" --home "$HOME_DIR" 2>/dev/null \
+   || python3 "$SCRIPT_DIR/render-agents.py" --home "$HOME_DIR"; then
+  ok "Agents distributed (edit ai-config/agents, then: ai-os agents)"
+else
+  warn "render-agents.py failed; agents not distributed (needs PyYAML: the AI-OS venv has it)"
+fi
+echo ""
+
 # ─── 7d. Global commands (source of truth: ai-config/commands) ───
 # Mirrors the skills flow (step 7) for slash-command-style combos (/action,
 # /full, /gen-html, ...) that don't fit the Agent Skills model as a distinct

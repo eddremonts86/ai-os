@@ -40,6 +40,7 @@ context/personal/
 │   ├── dotfiles/git/      one .gitconfig-<scope> per git identity (optional)
 │   ├── dotfiles/ssh/      hosts that name your servers or work accounts (optional)
 │   └── deploy/apps.conf   local Coolify replica (optional)
+├── agents/                your own subagents, one <name>.md each (optional, see ai-config/agents/README.md)
 └── inbox/pending.md       what is waiting on you
 ```
 
@@ -85,6 +86,7 @@ folder `work/<scope>/` with its notes.
 | `work/projects.md` | stub | every project: purpose, stack, last commit, remote | agents looking for a project |
 | `work/publishing.md` | | npm scope, author identity, packages already out | the `npm-package-publishing` skill |
 | `machine/facts.md` | stub | OS and versions, ports already taken, local traps | agents debugging the toolchain |
+| `agents/<name>.md` | | a subagent of your own, same format as `ai-config/agents/` (same name replaces the shared one) | `ai-os agents` writes it into Claude Code, Codex, Gemini and opencode |
 | `machine/install.yaml` | stub | opt-ins (shell theme, fonts, terminal restyle), optional CLIs, MCP servers on/off or your own, extra brew/npm packages | `setup/install-mac.sh`, `install-windows.ps1`, the MCP generators (an `AIOS_*` env var wins) |
 | `machine/shell.zsh`, `shell.ps1` | stub | aliases and functions that name your projects | sourced by the shared zsh and PowerShell profiles |
 | `machine/dotfiles/git/.gitconfig-<scope>` | | `[user] name`, `email` for one scope | `ai-os scope git-config --apply` (one `includeIf` per scope folder) |
