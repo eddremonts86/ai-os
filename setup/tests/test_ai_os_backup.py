@@ -171,8 +171,8 @@ class GithubMirrorTests(unittest.TestCase):
     def test_machine_name_is_a_safe_branch_name(self):
         from unittest import mock
         with mock.patch.object(self.b.sys, "platform", "darwin"), \
-             mock.patch.object(self.b, "sh", return_value=(0, "Edd's MacBook Pro")):
-            self.assertEqual(self.b.machine_name(), "edd-s-macbook-pro")
+             mock.patch.object(self.b, "sh", return_value=(0, "Jo's MacBook Pro")):
+            self.assertEqual(self.b.machine_name(), "jo-s-macbook-pro")
 
     def test_push_only_rewrites_this_machines_branch(self):
         from unittest import mock

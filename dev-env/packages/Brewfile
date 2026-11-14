@@ -1,4 +1,4 @@
-# Brewfile — AI-OS / Edd's dev environment (CORE, always installed)
+# Brewfile — AI-OS dev environment (CORE, always installed)
 # Mac only. To install: brew bundle install --file=Brewfile
 # Everything optional (GUI apps you rarely open, language runtimes you don't
 # use daily, infra CLIs) lives in Brewfile.extras — install-mac.sh only pulls

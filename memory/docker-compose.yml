@@ -1,8 +1,7 @@
 # AI-OS memory stack — unified compose.
 #
 # One compose project (`ia-os`) so all services show up grouped under a single
-# header in the Docker Desktop dashboard, exactly like `builderhunt` (see
-# <projects>/eddremonts86/actives/builderhunt/docker-compose.yml). All
+# header in the Docker Desktop dashboard, the usual one-name-per-compose-project pattern. All
 # containers are named `ia-os-*` for the same reason.
 #
 # Services:

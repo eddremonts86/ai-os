@@ -52,8 +52,7 @@ None. `SKILL.md` is byte-identical to the vendored commit.
 
 ## Why this one
 
-The user asked for this specifically: enForma, builderhunt and novelaudio (all React
-web apps) may need a native mobile version. This skill is Expo's own end-to-end guide
+The user asked for this specifically: the user's React web apps may need a native mobile version. This skill is Expo's own end-to-end guide
 for exactly that — migrating an existing Next.js/Vite/CRA React codebase to iOS/Android
 with Expo, including how web idioms (the DOM, CSS, React Router, `localStorage`,
 `window`) do and don't map to native. The natural starting point of the whole batch.

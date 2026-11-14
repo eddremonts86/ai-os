@@ -36,7 +36,7 @@ import { join, relative, sep } from 'node:path'
  */
 const PROFILES = [
   {
-    name: 'wave-formcontainer',
+    name: 'formcontainer',
     detect: (root) => existsSync(join(root, 'src/components/globals/form/types/index.ts')),
     types: 'src/components/globals/form/types/index.ts',
     typesEnum: 'InputsTypes',
@@ -50,7 +50,7 @@ const PROFILES = [
        CheckboxPlusSelect, CombinedInputs, DateInputPlusSelect.
        Deliberately excluded, because their renderers really do read `options`:
        selectPlusImage / languageCode (SelectPlusImage) and clientType
-       (ClientsType). Flagging those was a false positive in wave. */
+       (ClientsType). Flagging those was a false positive in the template. */
     itemsFamily: [
       'select',
       'radio',
