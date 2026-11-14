@@ -52,6 +52,10 @@ if [ -z "${AI_OS_ROOT:-}" ]; then
 fi
 # The folder that holds your projects: AI_OS_PROJECTS_DIR, else the one that holds this checkout.
 PROJECTS_DIR="${AI_OS_PROJECTS_DIR:-$(dirname "$AI_OS_ROOT")}"
+# A checkout directly in $HOME must not make reindex/search walk the whole home folder.
+if [ "$PROJECTS_DIR" = "$HOME" ] || [ "$PROJECTS_DIR" = "/" ]; then
+  PROJECTS_DIR="$AI_OS_ROOT"
+fi
 export AI_OS_ROOT
 MEMORY_DIR="$AI_OS_ROOT/memory"
 OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}"
