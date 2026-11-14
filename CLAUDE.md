@@ -47,6 +47,8 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
 - Parallel sub-agents are the default for 2+ independent workstreams (max 3 concurrent, this
   CLI's native mechanism); always verify their output yourself. Details: `rules/always_do.md`
   "ALWAYS: use sub-agents in parallel when possible".
+- Work inside the folder's scope (personal, employer, own company): its design system, git identity and
+  confidentiality. `ai-os scope which`; details in `rules/always_do.md` "Work inside the folder's scope".
 - Language and tone: the chat language and tone are the user's (`context/personal/03_preferences.md`);
   code, commits, docs, logs, comments, error messages and every AI-OS file stay in English. Terse, no
   ceremony, formatting only when it adds clarity.

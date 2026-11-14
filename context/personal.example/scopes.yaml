@@ -1,0 +1,33 @@
+# Which part of your work a folder belongs to. Read by `ai-os scope` (which, check-push, git-config),
+# the session start hook and the pre-push guard. Copy to context/personal/scopes.yaml and edit.
+# Paths are folders relative to the projects folder (the one that contains ai-os); first match wins.
+default: personal
+
+guard:
+  # Never in any repo: your private contact data (street, phone, private email). Never printed by value.
+  always_block: []
+
+scopes:
+  work:
+    label: Employer
+    paths: [Clients/employer]
+    notes: context/personal/scopes/work/README.md
+    git: context/personal/dotfiles/git/.gitconfig-work
+    design:
+      system: <link to the employer's design system>
+      tokens: Clients/employer/<template repo>/<tokens file>
+    guard:
+      block: [<internal repo name>, "re:\\bTICKET-[0-9]+\\b"]   # stop the push
+      warn: [<employer name>]                                   # report only: often public
+
+  company:
+    label: Own company
+    paths: [me/products]
+    brands:                     # one company, one brand per product: tokens never mix
+      product-a:
+        paths: [me/products/product-a]
+        design: {doc: me/products/product-a/DESIGN.md}
+
+  personal:
+    label: Personal
+    paths: [me]
