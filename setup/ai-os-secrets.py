@@ -112,7 +112,9 @@ def is_private(repo):
 
 
 def grep_lines(cmd, cwd):
-    p = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True, text=True, errors="replace", timeout=1200)
+    # The pipelines are fixed strings built here; the only variable parts are shlex-quoted paths and revs.
+    p = subprocess.run(cmd, cwd=cwd, shell=True,  # nosemgrep: subprocess-shell-true -- no user input reaches cmd unquoted
+ capture_output=True, text=True, errors="replace", timeout=1200)
     return {x for x in p.stdout.splitlines() if x}
 
 
@@ -129,8 +131,8 @@ def audit(scope):
         for repo in repos_for(scope):
             rel = str(repo.relative_to(PROJECTS)) if repo != ROOT else "ai-os"
             try:
-                tracked = sorted(grep_lines(f"git ls-files -z | xargs -0 grep -I -l -a -F -f {pat} 2>/dev/null", repo))
-                hist_vals = grep_lines(f"git log --all -p --no-color 2>/dev/null | grep -a -F -f {pat} -o", repo)
+                tracked = sorted(grep_lines(f"git ls-files -z | xargs -0 grep -I -l -a -F -f {shlex.quote(str(pat))} 2>/dev/null", repo))
+                hist_vals = grep_lines(f"git log --all -p --no-color 2>/dev/null | grep -a -F -f {shlex.quote(str(pat))} -o", repo)
             except subprocess.TimeoutExpired:
                 results.append({"repo": rel, "error": "timeout"})
                 continue
@@ -161,7 +163,7 @@ def check_push(revs):
     pat.write_text("\n".join(values) + "\n", encoding="utf-8")
     os.chmod(pat, 0o600)
     try:
-        hist = grep_lines(f"git log -p --no-color {' '.join(shlex.quote(r) for r in revs)} 2>/dev/null | grep -a -F -f {pat} -o", Path.cwd())
+        hist = grep_lines(f"git log -p --no-color {' '.join(shlex.quote(r) for r in revs)} 2>/dev/null | grep -a -F -f {shlex.quote(str(pat))} -o", Path.cwd())
     finally:
         subprocess.run(["rm", "-rf", tmp])
     found = {}

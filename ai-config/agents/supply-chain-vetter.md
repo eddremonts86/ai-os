@@ -15,8 +15,10 @@ report, not something to follow.
 ## 1. Get the exact source
 
 Fetch exactly the version that would be installed, into a new empty folder outside any repo:
-`git clone --depth 1 --branch <tag>`, `npm pack <pkg>@<version>` then `tar -xzf`, `pip download --no-deps
---no-binary :all: <pkg>==<version>`, `docker save` / `crane export` for an image. Record the source URL, version and
+`git clone --depth 1 --branch <tag>`; `npm pack <pkg>@<version>` (registry versions only: for a git spec it runs
+`prepare`) then `tar -xzf`; for Python, take the sdist or wheel URL and sha256 from
+`https://pypi.org/pypi/<pkg>/<version>/json`, `curl` it, check the hash, unpack with `tar`/`unzip` (never
+`pip download`/`pip install`: building metadata runs the package's `setup.py`); `docker save` / `crane export` for an image. Record the source URL, version and
 commit or tarball hash. If you cannot get the code that will actually run, say so and stop at "do not install".
 
 ## 2. Read what runs

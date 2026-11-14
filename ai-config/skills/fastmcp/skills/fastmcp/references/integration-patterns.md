@@ -42,7 +42,7 @@ Best for well-documented APIs with OpenAPI specs.
 
 ```python
 from fastmcp import FastMCP
-from fastmcp.server.openapi import RouteMap, MCPType
+from fastmcp.server.providers.openapi import RouteMap, MCPType  # fastmcp >= 3
 import httpx
 
 # Load spec

@@ -70,6 +70,13 @@ class RenderTests(unittest.TestCase):
         self.assertFalse((self.home / ".codex/agents/helper.toml").exists())
         self.assertTrue(mine.exists())
 
+    def test_user_file_quoting_the_marker_is_kept(self):
+        mine = self.home / ".claude/agents/notes.md"
+        mine.parent.mkdir(parents=True, exist_ok=True)
+        mine.write_text(f"---\nname: notes\n---\nI read about the '{ra.MARKER}' line.\n")
+        ra.sync(self.home, self.agents)
+        self.assertTrue(mine.exists())
+
     def test_missing_cli_is_skipped(self):
         home = self.tmp / "bare"
         (home / ".claude").mkdir(parents=True)

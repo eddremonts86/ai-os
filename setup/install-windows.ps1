@@ -71,6 +71,10 @@ function Add-AiosBlock([string]$File, [string]$Body) {
     # Add or refresh a marked block at the end of a file the user owns; their content is never replaced.
     $begin = "# >>> ai-os >>>"; $end = "# <<< ai-os <<<"
     $lines = @(); if (Test-Path $File) { $lines = @(Get-Content $File) }
+    # An opening marker with no closing one would drop the rest of the file: keep a copy first.
+    if (($lines -contains $begin) -and -not ($lines -contains $end)) {
+        Copy-Item $File "$File.pre-aios.bak" -Force; Warn "$File had an unclosed ai-os block; copy kept at $File.pre-aios.bak"
+    }
     $kept = @(); $skip = $false
     foreach ($l in $lines) {
         if ($l -eq $begin) { $skip = $true; continue }

@@ -104,14 +104,15 @@ jobs:
         env:
           APP_UUID: ${{ secrets.app_uuid }}
           REQUIRE: ${{ inputs.require_secrets }}
+          APP: ${{ inputs.app }}
         run: |
           if [ -n "$APP_UUID" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
           elif [ "$REQUIRE" = "true" ]; then
-            echo "::error title=Deploy not configured::No app uuid secret for ${{ inputs.app }}. This repo asked to be told rather than skipped."
+            echo "::error title=Deploy not configured::No app uuid secret for $APP. This repo asked to be told rather than skipped."
             exit 1
           else
-            echo "::notice title=Deploy skipped::No app uuid secret for ${{ inputs.app }} — pipeline wired but not activated. See setup/deploy/README.md."
+            echo "::notice title=Deploy skipped::No app uuid secret for $APP — pipeline wired but not activated. See setup/deploy/README.md."
             echo "configured=false" >> "$GITHUB_OUTPUT"
           fi
 
