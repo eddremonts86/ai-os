@@ -1,8 +1,7 @@
-# Profile: wave / Employer (`FormContainer` + `IData[]`)
+# Profile: wave (`FormContainer` + `IData[]`)
 
 Applies to repos containing `src/components/globals/form/types/index.ts` — the wave
-template and everything built from it (wave / `employer-new`, kontrakt-manager, and
-other wave-template descendants).
+template and everything built from it (wave and the apps derived from wave-template).
 
 Detected automatically by `audit-forms.mjs`, which then enables rules A4, A6, A7, A9.
 
@@ -68,7 +67,7 @@ member yields `undefined`, falls through, and renders nothing — no error, no c
 warning, no type error at the call site.
 
 Do not trust hand-copied enum listings in documentation. As of writing, the
-`wave-form-builder` skill in kontrakt-manager documents six members that do not
+`wave-form-builder` skill in one descendant app documents six members that do not
 exist (`number`, `date`, `separator`, `roleManager`, `radioGroup`, `dateSelect`) and
 two wrong file paths. Audit rule A9 reads the real enum from source at runtime.
 
@@ -77,20 +76,20 @@ two wrong file paths. Audit rule A9 reads the real enum from source at runtime.
 Some descendants inherit the full `InputsTypes` enum but not every renderer, because
 the missing ones depend on features that repo does not have (`isbnInput`,
 `clientType`, `manageRoles`, `contactCirculation`, `combinedPhone`,
-`checkboxPlusDate`, `SelectPlusInfoText`, `warningDateInput` in kontrakt-manager).
+`checkboxPlusDate`, `SelectPlusInfoText`, `warningDateInput` in one descendant app).
 Those members type-check and render `null`. A9 catches unknown members; it cannot
 catch a known member with no case in the local `useInputsFields`. Check the switch.
 
 ### 4. `FormContainer` behaviour may be forked per repo
 
-kontrakt-manager's `FormContainer` propagates every `form.watch()` change
+One descendant's `FormContainer` propagates every `form.watch()` change
 immediately, bypassing the `handleSubmit` gate, to drive debounced autosave. wave's
 only seeds `initialValues`. Read the local file before assuming when
 `updateFormValues` fires.
 
 ## Known divergence: hand-composed forms
 
-`kontrakt-manager/src/features/contracts` does not use `FormContainer` at all — it
+One descendant app's contracts feature does not use `FormContainer` at all — it
 hand-composes shadcn controls inside local `Panel`/`Field`/`SectionTitle` primitives
 where `Field` renders a `<span>`, not an associated `<label>`.
 
@@ -99,10 +98,9 @@ The measured contrast, same script, same profile:
 | Repo / scope | Files | Violations | A10 (unassociated labels) | A5 (3-col field grids) |
 | ------------ | ----- | ---------- | ------------------------- | ---------------------- |
 | wave `src/features` | 655 | 63 | **0** | **0** |
-| kontrakt-manager `src/features` | 275 | 213 | 36 | 9 |
+| descendant app `src/features` | 275 | 213 | 36 | 9 |
 
 This is the skill's thesis as data: routing fields through the abstraction removes
 whole rule classes rather than fixing them field by field.
 
-Migration plan for that repo:
-`kontrakt-manager/docs/superpowers/plans/2026-08-19-wave-design-parity.md`, phase 2.
+That repo has its own migration plan (wave design parity, phase 2).

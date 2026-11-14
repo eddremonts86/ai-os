@@ -230,7 +230,7 @@ function processInput(input: any) {
 
 // ✅ GOOD
 // No TODO, or with ticket reference:
-// TODO(SCH-12345): add proper validation
+// TODO(PROJ-12345): add proper validation
 function processInput(input: unknown) {
   if (!validateSchema(input)) throw new ValidationError();
   return doStuff(input);

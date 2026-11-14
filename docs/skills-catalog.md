@@ -39,7 +39,8 @@ globally: `iaworkspace-patterns`, `env-config-iaworkspace`, `prod-fleet-register
   receiving-code-review, dispatching-parallel-agents, subagent-driven-development,
   using-git-worktrees. Plus `code-review-and-quality` (required, but separate from the 14).
 - **AI-OS workflow skills (native)**: aios-karpathy, aios-quickstart, aios-loop,
-  aios-memory, aios-research, aios-code, aios-content, aios-project-start.
+  aios-memory, aios-pr-learnings (learn a repo's review rules from its PRs, Bitbucket DC),
+  aios-research, aios-code, aios-content, aios-project-start.
   The last four are explicit-invocation entry points for the corresponding
   workflows in `workflows/`.
 - **Vendored from gstack (optional, third-party)**: spec, context-save, context-restore — see
