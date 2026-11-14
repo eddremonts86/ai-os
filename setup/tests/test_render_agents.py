@@ -116,7 +116,7 @@ class RenderTests(unittest.TestCase):
         ra.sync(self.home, agents)
         codex = tomllib.loads((self.home / ".codex/agents/helper.toml").read_text())
         self.assertEqual((codex["flag"], codex["disabled"], codex["tags"]), (True, False, ["a", "b"]))
-        self.assertIn("description: Revisión de things.", (self.home / ".claude/agents/helper.md").read_text())
+        self.assertIn("description: Revisión de things.", (self.home / ".claude/agents/helper.md").read_text(encoding="utf-8"))
 
     def test_name_must_match_the_pattern_even_when_it_equals_the_file_name(self):
         for stem, name in (("Bad_Name", "Bad_Name"), ("123", "123")):
