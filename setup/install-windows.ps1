@@ -15,6 +15,9 @@
 #   $env:SKIP_MCP = "1"        → skip MCP config regeneration
 #   $env:SKIP_MEMORY = "1"     → skip memory stack (FalkorDB, Ollama, code indexers)
 #   $env:SKIP_VERIFY = "1"     → skip verification tests at the end
+#   $env:AIOS_SHELL_THEME = "1" → replace your PowerShell profile with AI-OS's (yours kept as *.pre-aios.bak).
+#                                 Default: keep your profile and add a marked block that dot-sources AI-OS's.
+#   $env:AIOS_FONTS = "1"      → show the Nerd Font install hint
 #   $env:ASSUME_YES = "1"      → skip the preflight confirmation prompt
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 
@@ -51,6 +54,18 @@ function Preserve-OrReplace([string]$Target) {
         Move-Item $Target "$Target.pre-aios.bak"
     }
     return $true
+}
+function Add-AiosBlock([string]$File, [string]$Body) {
+    # Add or refresh a marked block at the end of a file the user owns; their content is never replaced.
+    $begin = "# >>> ai-os >>>"; $end = "# <<< ai-os <<<"
+    $lines = @(); if (Test-Path $File) { $lines = @(Get-Content $File) }
+    $kept = @(); $skip = $false
+    foreach ($l in $lines) {
+        if ($l -eq $begin) { $skip = $true; continue }
+        if ($l -eq $end) { $skip = $false; continue }
+        if (-not $skip) { $kept += $l }
+    }
+    Set-Content -Path $File -Value ($kept + @($begin, $Body, $end))
 }
 function New-DirLink([string]$LinkPath, [string]$TargetPath) {
     # Directory symlinks need Developer Mode or admin elevation on Windows.
@@ -183,13 +198,14 @@ else {
 Write-Host ""
 
 # ─── 2. Fonts ───
-Log "2. Verifying Nerd Fonts..."
-# PowerShell does not handle fonts directly; user must install manually
-# CaskaydiaCove Nerd Font: download from https://www.nerdfonts.com/font-downloads
-# Or via chocolatey: choco install nerd-fonts-caskaydia-cove
-Warn "  Install CaskaydiaCove Nerd Font manually from:"
-Log "    https://github.com/ryanoasis/nerd-fonts/releases/latest"
-Log "    Or: choco install nerd-fonts-caskaydia-cove"
+if ($env:AIOS_FONTS -eq "1") {
+    Log "2. Verifying Nerd Fonts..."
+    # PowerShell does not handle fonts directly; user must install manually
+    Warn "  Install CaskaydiaCove Nerd Font manually from:"
+    Log "    https://github.com/ryanoasis/nerd-fonts/releases/latest"
+    Log "    Or: choco install nerd-fonts-caskaydia-cove"
+}
+else { Log "2. Fonts: not requested (AIOS_FONTS=1)" }
 Write-Host ""
 
 # ─── 3. Symlinks for dotfiles ───
@@ -215,12 +231,17 @@ if (-not $env:SKIP_DOTFILES) {
             if (-not (Test-Path $profileDir)) {
                 New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
             }
-            if ((Test-Path $profilePath) -and -not (Get-Item $profilePath -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
-                Move-Item $profilePath "$profilePath.pre-aios.bak" -Force
+            $aiosProfile = "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
+            $own = (Test-Path $profilePath) -and -not (Get-Item $profilePath -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)
+            if ($own -and $env:AIOS_SHELL_THEME -ne "1") {
+                Add-AiosBlock -File $profilePath -Body "if (Test-Path '$aiosProfile') { . '$aiosProfile' }"
+                Ok "  $profilePath`: kept yours, AI-OS block dot-sources the AI-OS profile"
+                continue
             }
-            New-FileLink -LinkPath $profilePath -TargetPath "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
+            if ($own) { Move-Item $profilePath "$profilePath.pre-aios.bak" -Force }
+            New-FileLink -LinkPath $profilePath -TargetPath $aiosProfile
+            Ok "  $profilePath → ai-os"
         }
-        Ok "  PowerShell profile → ai-os (pwsh + Windows PowerShell 5.1)"
     }
 
     # Git config
@@ -317,7 +338,7 @@ if (-not (Test-Path $customProfileDir)) {
     New-Item -ItemType Directory -Path $customProfileDir -Force | Out-Null
 }
 $customProfileContent = @'
-# AI-OS PowerShell profile (Edd)
+# AI-OS PowerShell profile
 # Load Oh-My-Posh or Starship if installed (theme + git info)
 
 # Prompt

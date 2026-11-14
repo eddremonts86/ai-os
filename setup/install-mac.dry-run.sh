@@ -131,13 +131,15 @@ done
 # deliberately does NOT run verify.sh (it needs a fully-installed machine).
 log "4b. Checking the tracked .zshrc is machine-agnostic..."
 TRACKED_ZSHRC="$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc"
-if ! grep -qF '$HOME/.ai-os/env.sh' "$TRACKED_ZSHRC"; then
-  err "  $TRACKED_ZSHRC is missing the ~/.ai-os/env.sh source guard"
+AIOS_ZSH="$AI_OS_ROOT/dev-env/dotfiles/zsh/aios.zsh"
+# The essentials live in aios.zsh: sourced by a user's own ~/.zshrc and by the themed one.
+if ! grep -qF '$HOME/.ai-os/env.sh' "$AIOS_ZSH" || ! grep -qF 'aios.zsh' "$TRACKED_ZSHRC"; then
+  err "  aios.zsh must source ~/.ai-os/env.sh and the themed .zshrc must source aios.zsh"
   err "  Without it, AI_OS_ROOT and OLLAMA_URL never reach the shell."
   exit 1
 fi
 ok "  source guard for ~/.ai-os/env.sh present"
-LEAKED_PATHS=$(grep -nE '^[^#]*(/Users/|/home/)[a-zA-Z0-9._-]+/' "$TRACKED_ZSHRC" || true)
+LEAKED_PATHS=$(grep -nE '^[^#]*(/Users/|/home/)[a-zA-Z0-9._-]+/' "$TRACKED_ZSHRC" "$AIOS_ZSH" || true)
 if [ -n "$LEAKED_PATHS" ]; then
   err "  Hardcoded home paths in the tracked .zshrc (use \$HOME instead):"
   echo "$LEAKED_PATHS" | while IFS= read -r leak; do err "    $leak"; done
