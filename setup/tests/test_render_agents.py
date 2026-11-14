@@ -30,7 +30,7 @@ def make(tmp, files):
     for rel, text in files.items():
         p = Path(tmp) / rel
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(text)
+        p.write_text(text, encoding="utf-8")
 
 
 class RenderTests(unittest.TestCase):

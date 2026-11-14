@@ -18,6 +18,7 @@ def load(path, name):
     return mod
 
 
+@unittest.skipIf(os.name == "nt", "macOS/Linux shell script")
 class BackupPathTests(unittest.TestCase):
     """A checkout directly in HOME must not make the backup copy the whole home folder into itself."""
 
@@ -45,6 +46,7 @@ class BackupPathTests(unittest.TestCase):
         self.assertFalse(dest.exists())
 
 
+@unittest.skipIf(os.name == "nt", "macOS/Linux shell script; install-windows.ps1 has its own Add-AiosBlock")
 class MarkedBlockTests(unittest.TestCase):
     """install-mac.sh's aios_block: refresh in place, never lose the user's lines without a copy."""
 
