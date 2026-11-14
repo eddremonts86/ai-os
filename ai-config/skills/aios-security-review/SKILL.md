@@ -21,9 +21,9 @@ For a change, not a whole app. A whole app is `/aios-security-audit`. In AI-OS t
 3. **Review the diff.**
    - **In Claude Code:** run `/security-review` (built in) on the branch. For a large or sensitive change (auth,
      payments, data access), also run `/claude-security` with diff scope if the plugin is installed.
-   - **Elsewhere:** dispatch one fresh subagent with the diff and `../aios-security-audit/references/checklist.md`.
-     It checks every new or changed entry point against §2–§5, and also checks for removed guards: a deleted auth
-     check or validation is a finding.
+   - **Elsewhere, or as a second read:** delegate to the `security-reviewer` agent (`ai-config/agents/`) with the
+     base ref; it uses `../aios-security-audit/references/checklist.md`, checks every new or changed entry point
+     and removed guards. Without that agent, spawn one fresh subagent with the agent file's body as its prompt.
 4. **Verify** each candidate against the code, the same way as in the audit, step 4.
 5. **Report** in the PR description or as a comment. List blockers first: anything critical or high, a new
    secret, a new unauthenticated entry point. After that, majors, then what was not checked. A clean result names
