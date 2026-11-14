@@ -133,18 +133,8 @@ source $ZSH/oh-my-zsh.sh
 
 # ─── Custom aliases & PATH ───
 
-# Added by MiniMax Code (preservado)
-export PATH="$HOME/.mavis/bin:$PATH"
-
-# Hermes Agent — ensure ~/.local/bin is on PATH (preservado)
-export PATH="$HOME/.local/bin:$PATH"
-
-# Homebrew (Apple Silicon)
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-
-# AI-OS Python venv — CLI tools (ruff, black, ipython, …) on PATH.
-# Appended so brew's python3 stays the default interpreter.
-[ -d "$HOME/.ai-os/venv/bin" ] && export PATH="$PATH:$HOME/.ai-os/venv/bin"
+# AI-OS essentials: PATH, ~/.ai-os/env.sh, context/personal/machine/shell.zsh.
+source "${${(%):-%x}:A:h}/aios.zsh"
 
 # Navegación rápida
 alias ..="cd .."
@@ -189,32 +179,8 @@ alias projects="cd ~/Projects"
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
-
-# AI-OS memory stack (phase 1) — quick access CLI
-if [ -x "$HOME/.local/bin/ai-os" ]; then
-  alias ai-os="$HOME/.local/bin/ai-os"
-fi
 
 
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
-
-# AI-OS per-machine env (AI_OS_ROOT, OLLAMA_URL, …)
-# This file is tracked in the ai-os repo and ~/.zshrc is a symlink to it, so
-# machine-specific values must never be written here — they would be committed.
-# setup/install-mac.sh generates ~/.ai-os/env.sh instead; this guard loads it.
-[ -f "$HOME/.ai-os/env.sh" ] && source "$HOME/.ai-os/env.sh"
-
-# Personal aliases and functions: context/personal/machine/shell.zsh is git-ignored, so nothing about you is committed here.
-[ -n "$AI_OS_ROOT" ] && [ -f "$AI_OS_ROOT/context/personal/machine/shell.zsh" ] && source "$AI_OS_ROOT/context/personal/machine/shell.zsh"
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=($HOME/.docker/completions $fpath)

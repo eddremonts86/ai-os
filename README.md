@@ -120,7 +120,7 @@ Details: [`docs/cross-platform.md`](docs/cross-platform.md).
 
 `npx @edd_remonts/create-ai-os [DIR]` clones the repo and runs `setup/install-mac.sh` (Mac/Linux) or `setup/install-windows.ps1`. `--clone-only` skips the installer. The installer is idempotent, prints what it will install and asks first, and never upgrades pinned versions. `DRY_RUN=1 bash setup/install-mac.sh` simulates everything (this is what CI runs).
 
-It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plus extras with `EXTRAS=1`), npm and Python globals, Oh My Zsh + p10k, and dotfile symlinks. It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (8 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (21 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
+It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plus extras with `EXTRAS=1`), npm and Python globals, and the dotfiles. Your own `~/.zshrc`, `~/.ssh/config` and PowerShell profile are kept: AI-OS adds one marked block to each. Oh My Zsh + p10k (`AIOS_SHELL_THEME=1`), the Nerd Font (`AIOS_FONTS=1`) and the Terminal/Warp restyle (`AIOS_TERMINAL_THEME=1`) are opt-in. It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (8 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (21 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
 
 ### The `ai-os` command
 
