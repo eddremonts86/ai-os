@@ -26,10 +26,7 @@ put it in `ai-config/skills/`. If workspace → put it in `<project>/.agents/ski
 ### Project skills moved out of the global set (2026-11-05)
 
 These now live in their project repos' `.agents/skills/` and are no longer distributed
-globally: `iaworkspace-patterns`, `env-config-iaworkspace`, `prod-fleet-register`,
-`prod-deploy-verification`, `containers-architecture`, `open-design-integration`,
-`wave-template-conventions`, `drupal8-pattern`, `hermes-mcp-pattern`, `plan-authoring`,
-`plans-explorer`.
+globally: iaWorkSpace, plansmith and other project-specific skills.
 
 ## Categories
 

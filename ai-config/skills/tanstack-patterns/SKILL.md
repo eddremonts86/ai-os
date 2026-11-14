@@ -1,6 +1,6 @@
 ---
 name: tanstack-patterns
-description: TanStack ecosystem patterns — Query, Router, Table, Start. Unified guide for projects using the full TanStack stack (like wave-template).
+description: TanStack ecosystem patterns — Query, Router, Table, Start. Unified guide for projects using the full TanStack stack.
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 ## When to use
 
-Projects using the TanStack ecosystem: Query (data), Router (file-based routing), Table (headless tables), Form (forms), Start (SSR/SSG). Particularly projects based on `wave-template`.
+Projects using the TanStack ecosystem: Query (data), Router (file-based routing), Table (headless tables), Form (forms), Start (SSR/SSG).
 
 ## TanStack Query — Data fetching
 

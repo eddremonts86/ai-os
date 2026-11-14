@@ -30,7 +30,7 @@ The alternative migration shape to `expo-web-to-native`'s full rewrite: embeddin
 Native incrementally into an existing native iOS/Android app (a React Native screen
 inside SwiftUI/UIKit or Kotlin) instead of porting the whole app at once. Worth having
 alongside the full-migration skill since "rewrite everything" vs. "adopt incrementally"
-is a real fork in the road for enForma/builderhunt/novelaudio, not a foregone
+is a real fork in the road for the user's React web apps, not a foregone
 conclusion.
 
 ## Refreshing from upstream

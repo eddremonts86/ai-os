@@ -132,9 +132,9 @@ gh release create v0.2.0 --title "v0.2.0: ai-os-quickstart" --notes "..."
 
 ## Roles
 
-For now, the repo is Edd's personal. If it grows:
+For now, the repo has a single maintainer (its author). If it grows:
 
-- **Maintainer:** Edd (final decisions).
+- **Maintainer:** the repository owner (final decisions).
 - **Contributors:** anyone with a merged PR.
 - **Users:** anyone who adopts AI-OS.
 

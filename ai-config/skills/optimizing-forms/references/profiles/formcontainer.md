@@ -1,7 +1,7 @@
-# Profile: wave (`FormContainer` + `IData[]`)
+# Profile: FormContainer (`FormContainer` + `IData[]`)
 
-Applies to repos containing `src/components/globals/form/types/index.ts` — the wave
-template and everything built from it (wave and the apps derived from wave-template).
+Applies to repos containing `src/components/globals/form/types/index.ts` — a
+template that ships a `FormContainer` + `IData[]` form layer, and every app derived from it.
 
 Detected automatically by `audit-forms.mjs`, which then enables rules A4, A6, A7, A9.
 
@@ -49,14 +49,14 @@ by grepping the components:
 (`combinedInputs`), `DateInputPlusSelect` (`dateInputPlusSelect`).
 
 **Reads `item.options`** — `options:` is CORRECT here:
-`SelectPlusImage` (`languageCode` / `selectPlusImage`), and in wave
+`SelectPlusImage` (`languageCode` / `selectPlusImage`), and in the template
 `ClientsType` (`clientType`).
 
 A blanket "never use `options`" rule is wrong and produces false positives on the
 second group. Audit rule A7 reads the field's declared `type` from its own object
 literal before deciding.
 
-*Real instance found by A7:* `wave/src/features/titles/const/titleDetail.const.ts`
+*Real instance found by A7:* `src/features/titles/const/titleDetail.const.ts` (template)
 declares `FormatCode` as `InputsTypes.select` with `options: []`, while the adjacent
 field correctly uses `items: []`.
 
@@ -67,7 +67,7 @@ member yields `undefined`, falls through, and renders nothing — no error, no c
 warning, no type error at the call site.
 
 Do not trust hand-copied enum listings in documentation. As of writing, the
-`wave-form-builder` skill in one descendant app documents six members that do not
+form-builder skill in one descendant app documents six members that do not
 exist (`number`, `date`, `separator`, `roleManager`, `radioGroup`, `dateSelect`) and
 two wrong file paths. Audit rule A9 reads the real enum from source at runtime.
 
@@ -83,7 +83,7 @@ catch a known member with no case in the local `useInputsFields`. Check the swit
 ### 4. `FormContainer` behaviour may be forked per repo
 
 One descendant's `FormContainer` propagates every `form.watch()` change
-immediately, bypassing the `handleSubmit` gate, to drive debounced autosave. wave's
+immediately, bypassing the `handleSubmit` gate, to drive debounced autosave. The template's
 only seeds `initialValues`. Read the local file before assuming when
 `updateFormValues` fires.
 
@@ -97,10 +97,8 @@ The measured contrast, same script, same profile:
 
 | Repo / scope | Files | Violations | A10 (unassociated labels) | A5 (3-col field grids) |
 | ------------ | ----- | ---------- | ------------------------- | ---------------------- |
-| wave `src/features` | 655 | 63 | **0** | **0** |
+| template `src/features` | 655 | 63 | **0** | **0** |
 | descendant app `src/features` | 275 | 213 | 36 | 9 |
 
 This is the skill's thesis as data: routing fields through the abstraction removes
 whole rule classes rather than fixing them field by field.
-
-That repo has its own migration plan (wave design parity, phase 2).

@@ -455,7 +455,7 @@ paint), but be careful with two things:
 
 ## Gotcha: an eagerly-constructed Postgres client kills hydration silently
 
-Learned in `builderhunt` and worth more than any other item in this reference, because the symptom points
+Learned in a production TanStack Start app and worth more than any other item in this reference, because the symptom points
 nowhere near the cause.
 
 Constructing the DB client at **module scope**…
@@ -493,24 +493,24 @@ function lazyPostgresDb(role: PoolRole, resolveUrl: () => string): PostgresJsDat
 }
 ```
 
-See `builderhunt/src/shared/lib/db/client.ts`, which carries the full account in a comment. Related:
+See the app's `src/shared/lib/db/client.ts`, which carries the full account in a comment. Related:
 the "Server-only imports" section above — the explicit-subpath rule addresses the same underlying
 problem from the import side, and both are needed.
 
 ## Database roles: created without passwords, provisioned out of band
 
-`builderhunt/drizzle/0002_database_roles.sql` creates every runtime role with **no credentials**:
+A `drizzle/0002_database_roles.sql` migration creates every runtime role with **no credentials**:
 
 ```sql
-CREATE ROLE builderhunt_owner NOLOGIN;
-CREATE ROLE builderhunt_app   LOGIN;   -- no password
+CREATE ROLE app_owner NOLOGIN;
+CREATE ROLE app_runtime LOGIN;   -- no password
 ```
 
 Deployment automation provisions and rotates the LOGIN passwords afterwards, so a migration file in
 git never contains one and the web service never holds the owner identity. The consequence to
 remember: **`drizzle-kit migrate` alone leaves the app unable to authenticate.** Run the orchestrator
 (`pnpm deploy:db`, see [env-sync-and-postdeploy.md](env-sync-and-postdeploy.md)) from the
-container entrypoint, never bare `drizzle-kit migrate` — builderhunt's
+container entrypoint, never bare `drizzle-kit migrate` — that app's
 runbook records four failed deploys learning that.
 
 ## Coolify server-side fixes (found while deploying TanStack Start, not specific to it)

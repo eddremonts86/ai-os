@@ -8,7 +8,7 @@ collection of processes. It is started on demand and re-indexed periodically.
 
 The unified `memory/docker-compose.yml` sets `name: ia-os` at the top level, so
 every service below appears under a single **`ia-os`** header in the Docker
-Desktop dashboard — same pattern as the `builderhunt` project. All containers
+Desktop dashboard — the usual one-name-per-compose-project pattern. All containers
 are also named `ia-os-*` to keep them grouped.
 
 | Container              | Port            | Role                                      |

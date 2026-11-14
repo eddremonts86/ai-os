@@ -25,7 +25,7 @@ toolbar-and-headers, zoom-transitions) are byte-identical to the vendored commit
 
 ## Why this one
 
-File-based navigation for the migrated app. `enForma`/`builderhunt`/`novelaudio` are
+File-based navigation for the migrated app. The user's React web apps are
 web apps with their own routing (framework routers, not React Native navigators) — this
 is the direct native counterpart their route structures would need to map onto.
 
