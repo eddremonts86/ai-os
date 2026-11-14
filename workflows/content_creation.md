@@ -96,7 +96,7 @@ Rules that apply here:
 
 - Route by destination per `rules/always_do.md` — this workflow produces repo files, so
   `diagram-design` is the right tool, not FigJam and not an Artifact.
-- Brand tokens come from `context/06_brand.md`. Never ask the user to onboard a brand.
+- Brand tokens come from `context/global/06_brand.md`. Never ask the user to onboard a brand.
 - Output is a self-contained `.html`; commit it next to the doc and link it. Export PNG/SVG
   only when the destination cannot render HTML (GitHub README → export SVG).
 - One diagram per idea. Above 9 nodes it is two diagrams.

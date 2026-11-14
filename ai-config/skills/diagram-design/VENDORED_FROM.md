@@ -32,7 +32,7 @@ Upstream is a full plugin repo; we take only the skill directory. Deliberately e
 
 `references/style-guide.md` is **rewritten**, not patched:
 
-1. Skin replaced with the AI-OS brand palette from `context/06_brand.md` (dark-first;
+1. Skin replaced with the AI-OS brand palette from `context/global/06_brand.md` (dark-first;
    upstream ships light-first white-smoke + atomic-tangerine).
 2. Typography swapped to the brand faces: Space Grotesk (sans) + JetBrains Mono (mono),
    Instrument Serif retained for `title`/`callout`. This **deliberately overrides** upstream's
@@ -55,7 +55,7 @@ whether to onboard your brand, then writes the answer into `references/style-gui
 
 In AI-OS the skill is a symlink to this repo, shared by every project and all six CLIs. That
 write would (a) change the skin globally, and (b) show up as a dirty diff in the AI-OS repo.
-The gate is replaced by: brand is already onboarded, read `context/06_brand.md`; a project
+The gate is replaced by: brand is already onboarded, read `context/global/06_brand.md`; a project
 needing a different brand drops `.ai-os/brand-tokens.md` in its own root.
 
 ## Refreshing from upstream

@@ -186,8 +186,6 @@ alias p10k="p10k configure"
 
 # Mis comandos frecuentes
 alias projects="cd ~/Projects"
-alias hermes-agent="cd ~/Projects/eddremonts86/hermes-agent"
-alias iaworkspace="cd ~/Projects/eddremonts86/iaWorkSpace"
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -214,6 +212,9 @@ esac
 # machine-specific values must never be written here — they would be committed.
 # setup/install-mac.sh generates ~/.ai-os/env.sh instead; this guard loads it.
 [ -f "$HOME/.ai-os/env.sh" ] && source "$HOME/.ai-os/env.sh"
+
+# Personal aliases and functions: context/personal/shell.zsh is git-ignored, so nothing about you is committed here.
+[ -n "$AI_OS_ROOT" ] && [ -f "$AI_OS_ROOT/context/personal/shell.zsh" ] && source "$AI_OS_ROOT/context/personal/shell.zsh"
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=($HOME/.docker/completions $fpath)

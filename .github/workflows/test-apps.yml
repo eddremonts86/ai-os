@@ -1,0 +1,90 @@
+# -----------------------------------------------------------------------------
+# Test the apps under apps/: unit, integration and end-to-end checks.
+#
+#   create-ai-os  zero-dependency CLI; node:test with a stand-in git and installer.
+#   site          unit/integration (Vitest + jsdom), types, lint, build, then a
+#                 real-Chromium end-to-end run against the built page.
+#
+# The Dockerfile builds apps/site on every deploy, so the same pnpm version and
+# lockfile install are used here.
+# -----------------------------------------------------------------------------
+name: Test apps
+
+on:
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - "apps/**"
+      - ".github/workflows/test-apps.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - ".github/workflows/test-apps.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  create-ai-os:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Tests
+        working-directory: apps/create-ai-os
+        run: npm test
+
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install pnpm (same version as the Dockerfile)
+        run: corepack enable && corepack prepare pnpm@12.16.1 --activate
+      - name: Install from the lockfile
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm run lint
+      - name: Types (app and tests)
+        run: pnpm exec tsc -b && pnpm run typecheck:test
+      - name: Unit and integration tests
+        run: pnpm test
+      - name: Build
+        run: pnpm run build
+      - name: Keep the build for the end-to-end job
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: apps/site/dist
+          retention-days: 1
+
+  site-e2e:
+    needs: site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: apps/site/dist
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: End-to-end tests against the built page
+        run: python apps/site/e2e/test_site.py -v

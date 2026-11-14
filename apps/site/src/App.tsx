@@ -1,7 +1,7 @@
 /**
  * AI-OS landing: header and hero, built from proven pieces (aios-ui-design step 4/5):
  * shadcn Button + Badge, Magic UI Terminal (MIT, magicuidesign/magicui). Copy is the current
- * site's; brand tokens from context/06_brand.md (index.css).
+ * site's; brand tokens from context/global/06_brand.md (index.css).
  */
 import { Check, Copy } from 'lucide-react'
 import { useState } from 'react'

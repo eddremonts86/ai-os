@@ -1,8 +1,8 @@
-<title>Contract Rights Alignment</title>
+<title>AI-OS Ready To Share</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Public+Sans:wght@400;600;700&display=swap">
 <style>
-/* Layout: one narrow reading column; each topic = today -> picture -> proposal -> decision. */
+/* Layout: one narrow reading column; each point = today -> picture -> proposal -> decision, then a divider and the build notes. */
 :root {
   --bg: #f5f6f8;
   --surface: #ffffff;
@@ -40,24 +40,23 @@ h2 { font-size: 1.2rem; margin: 0; text-wrap: balance; }
 p { margin: 0; }
 .eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .lead { color: var(--muted); max-width: 62ch; }
-.agenda { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.agenda { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
 .agenda div { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .agenda div + div { border-left: 1px solid var(--line); }
 .agenda b { font-size: .95rem; }
 .agenda span { font-size: .8rem; color: var(--muted); }
-.agenda .min { font-family: var(--font-mono); color: var(--accent); }
 @media (max-width: 560px) {
   .agenda { grid-template-columns: 1fr; }
   .agenda div + div { border-left: 0; border-top: 1px solid var(--line); }
 }
 section { display: flex; flex-direction: column; gap: 14px; }
 .head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.min { font-family: var(--font-mono); font-size: .8rem; color: var(--accent); }
+.who { font-family: var(--font-mono); font-size: .8rem; color: var(--accent); }
 .today { color: var(--muted); max-width: 66ch; }
 figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; overflow-x: auto; }
 figure svg { display: block; width: 100%; min-width: 560px; height: auto; color: var(--muted); }
 figcaption { font-size: .82rem; color: var(--muted); margin-top: 8px; max-width: 70ch; }
-.cols { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
 .box { padding: 14px 16px; border-radius: 6px; min-width: 0; }
 .box h3 { margin: 0 0 6px; font-size: .75rem; font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
@@ -65,24 +64,19 @@ figcaption { font-size: .82rem; color: var(--muted); margin-top: 8px; max-width:
 .propose h3 { color: var(--accent); }
 .decide { background: var(--surface); border: 1px solid var(--line); }
 .decide h3 { color: var(--warn); }
-.box ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; }
+.decide p + p { margin-top: 6px; }
+.next { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 12px 16px; }
 /* SVG parts */
 .s-box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
 .s-new { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
 .s-warn { fill: var(--warn-soft); stroke: var(--warn); stroke-width: 1.5; }
-.s-gap { fill: none; stroke: var(--warn); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .s-gap-new { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .s-ln { stroke: currentColor; stroke-width: 1.4; fill: none; }
 .s-t { fill: var(--fg); font: 13px var(--font-body); }
 .s-b { fill: var(--fg); font: 600 13px var(--font-body); }
 .s-m { fill: var(--muted); font: 11.5px var(--font-body); }
-.s-a { fill: var(--accent); font: 600 13px var(--font-body); }
-.s-w { fill: var(--warn); font: 600 13px var(--font-body); }
 .s-h { fill: var(--muted); font: 500 11px var(--font-mono); letter-spacing: .06em; }
-.s-on { fill: var(--accent); }
-.s-off { fill: var(--line); }
-.s-knob { fill: var(--surface); }
-/* Technical appendix: quieter than the meeting part, set off by a rule and a banner. */
+/* Technical layer: quieter, set off by a rule and a banner. */
 .tech { border-top: 2px solid var(--line); padding-top: 28px; display: flex; flex-direction: column; gap: 28px; }
 .banner { background: var(--warn-soft); border: 1px solid var(--warn); border-radius: 6px; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; }
 .banner b { color: var(--warn); }
@@ -91,225 +85,185 @@ figcaption { font-size: .82rem; color: var(--muted); margin-top: 8px; max-width:
 .tech ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; max-width: 74ch; }
 .tech li b { font-weight: 600; }
 code { font-family: var(--font-mono); font-size: .82em; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; overflow-wrap: anywhere; }
+.assume { color: var(--warn); font-weight: 600; }
 </style>
 
 <main>
   <header>
-    <p class="eyebrow">Contract app · rights step</p>
-    <h1>Three points to settle in one meeting</h1>
-    <p class="lead">Each point shows how the contract app works today, what we propose, and the one thing we need decided. 30 minutes.</p>
+    <p class="eyebrow">AI-OS · opening the project to other people</p>
+    <h1>Three decisions before AI-OS can be shared</h1>
+    <p class="lead">Each point shows how it works today, what we propose and the one choice we need. For the project owner, about 15 minutes.</p>
   </header>
 
   <div class="agenda" role="list">
-    <div role="listitem"><span class="min">10 min</span><b>1 · The split</b><span>Co-authors and heirs</span></div>
-    <div role="listitem"><span class="min">10 min</span><b>2 · Left to distribute</b><span>The 100 % rule</span></div>
-    <div role="listitem"><span class="min">10 min</span><b>3 · AI rights</b><span>Small or large</span></div>
+    <div role="listitem"><b>1 · Skills of one person</b><span>Where they live</span></div>
+    <div role="listitem"><b>2 · A check GitHub runs</b><span>Security on pull requests</span></div>
+    <div role="listitem"><b>3 · First run</b><span>What a new user is asked</span></div>
   </div>
 
   <section aria-labelledby="t1">
-    <div class="head"><h2 id="t1">1 · The split: co-authors and heirs</h2><span class="min">Thomas, Elaine</span></div>
-    <p class="today"><b>Today:</b> step 4 handles two different things together, before signing: splitting a share between co-authors, and a deceased author whose share goes to heirs.</p>
+    <div class="head"><h2 id="t1">1 · Skills that belong to one person</h2><span class="who">Owner decides</span></div>
+    <p class="today"><b>Today:</b> every skill folder in the project (174 now) is linked into each AI tool on every machine that installs AI-OS. A skill that only makes sense for one person, for example one about their own servers or employer, would reach everyone.</p>
     <figure>
-      <svg viewBox="0 0 760 230" role="img" aria-label="Today the deceased and heirs step sits before signing; in the proposal it moves to after signing">
+      <svg viewBox="0 0 760 292" role="img" aria-label="Today one set of shared skills feeds every AI tool; in the proposal a second, private set of your own skills feeds the same tools">
         <defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
         <text class="s-h" x="0" y="14">TODAY</text>
         <rect class="s-box" x="0" y="26" width="220" height="60" rx="6"/>
-        <text class="s-t" x="110" y="52" text-anchor="middle">Create</text>
-        <text class="s-m" x="110" y="70" text-anchor="middle">co-authors + shares</text>
-        <line class="s-ln" x1="220" y1="56" x2="270" y2="56" marker-end="url(#ar1)"/>
-        <rect class="s-warn" x="272" y="26" width="220" height="60" rx="6"/>
-        <text class="s-t" x="382" y="52" text-anchor="middle">Mark deceased</text>
-        <text class="s-m" x="382" y="70" text-anchor="middle">add heirs, shares must match</text>
-        <line class="s-ln" x1="492" y1="56" x2="542" y2="56" marker-end="url(#ar1)"/>
-        <rect class="s-box" x="544" y="26" width="216" height="60" rx="6"/>
-        <text class="s-t" x="652" y="61" text-anchor="middle">Sign</text>
+        <text class="s-t" x="110" y="52" text-anchor="middle">Shared skills</text>
+        <text class="s-m" x="110" y="70" text-anchor="middle">174, published with the project</text>
+        <line class="s-ln" x1="220" y1="56" x2="318" y2="56" marker-end="url(#ar1)"/>
+        <text class="s-m" x="269" y="46" text-anchor="middle">linked into</text>
+        <rect class="s-box" x="320" y="26" width="240" height="60" rx="6"/>
+        <text class="s-t" x="440" y="52" text-anchor="middle">Every AI tool</text>
+        <text class="s-m" x="440" y="70" text-anchor="middle">Claude, Codex, Gemini and others</text>
 
-        <text class="s-h" x="0" y="134">PROPOSAL</text>
-        <rect class="s-new" x="0" y="146" width="220" height="60" rx="6"/>
-        <text class="s-b" x="110" y="172" text-anchor="middle">Create</text>
-        <text class="s-m" x="110" y="190" text-anchor="middle">co-authors, "Split share"</text>
-        <line class="s-ln" x1="220" y1="176" x2="270" y2="176" marker-end="url(#ar1)"/>
-        <rect class="s-box" x="272" y="146" width="220" height="60" rx="6"/>
-        <text class="s-t" x="382" y="181" text-anchor="middle">Sign</text>
-        <line class="s-ln" x1="492" y1="176" x2="542" y2="176" marker-end="url(#ar1)"/>
-        <rect class="s-new" x="544" y="146" width="216" height="60" rx="6"/>
-        <text class="s-b" x="652" y="172" text-anchor="middle">After signing</text>
-        <text class="s-m" x="652" y="190" text-anchor="middle">heirs take a deceased share</text>
+        <text class="s-h" x="0" y="130">PROPOSAL</text>
+        <rect class="s-box" x="0" y="142" width="220" height="56" rx="6"/>
+        <text class="s-t" x="110" y="176" text-anchor="middle">Shared skills</text>
+        <rect class="s-gap-new" x="0" y="208" width="220" height="56" rx="6"/>
+        <text class="s-b" x="110" y="232" text-anchor="middle">Your own skills</text>
+        <text class="s-m" x="110" y="250" text-anchor="middle">stay on your machine</text>
+        <line class="s-ln" x1="220" y1="170" x2="318" y2="196" marker-end="url(#ar1)"/>
+        <line class="s-ln" x1="220" y1="236" x2="318" y2="212" marker-end="url(#ar1)"/>
+        <rect class="s-new" x="320" y="176" width="240" height="56" rx="6"/>
+        <text class="s-b" x="440" y="209" text-anchor="middle">Every AI tool</text>
       </svg>
-      <figcaption>The deceased and heirs step moves from the wizard to after signing. The wizard keeps only the split between co-authors.</figcaption>
+      <figcaption>A second place for skills that belong to one person, never published, linked next to the shared ones.</figcaption>
     </figure>
     <div class="cols">
-      <div class="box propose"><h3>We propose</h3><ul>
-        <li>Offer "Split share" for co-authors at creation.</li>
-        <li>Remove "Deceased" and "Add heir" from the wizard. Heirs are set on the signed contract, when a share has to go to them.</li>
-      </ul></div>
-      <div class="box decide"><h3>Decide</h3><ul>
-        <li>Is the split between co-authors all the wizard needs?</li>
-        <li>After signing, who records the heirs: the ERP or the contract app?</li>
-      </ul></div>
+      <div class="box propose"><h3>Proposal</h3><p>Add a second, private place for personal skills and let the installer link it with the shared ones.</p></div>
+      <div class="box decide"><h3>Decision</h3><p><b>Choice:</b> add the private place now, or keep every skill generic and move personal facts into notes.</p><p><b>Our recommendation:</b> not yet. One skill (form audits) still carries a company profile; make that one generic first, and build the private place when a second case shows up.</p></div>
     </div>
   </section>
 
   <section aria-labelledby="t2">
-    <div class="head"><h2 id="t2">2 · Left to distribute</h2><span class="min">Elaine, Thomas</span></div>
-    <p class="today"><b>Today:</b> each person's share is typed in, and the total is only checked afterwards. Approval needs each group at exactly 100 %.</p>
+    <div class="head"><h2 id="t2">2 · A security check that GitHub runs</h2><span class="who">Owner decides</span></div>
+    <p class="today"><b>Today:</b> before a push, a check on the developer's machine scans the new code for secrets and serious flaws, and blocks the push if it finds one. Anyone can skip it. GitHub's own tests do not run that scan.</p>
     <figure>
-      <svg viewBox="0 0 760 250" role="img" aria-label="Today the total is checked after typing; in the proposal a left-to-distribute counter counts down to zero while typing">
-        <text class="s-h" x="0" y="14">TODAY</text>
-        <rect class="s-box" x="0" y="26" width="160" height="44" rx="4"/>
-        <text class="s-t" x="80" y="53" text-anchor="middle">Author A · 50 %</text>
-        <rect class="s-box" x="160" y="26" width="112" height="44" rx="4"/>
-        <text class="s-t" x="216" y="53" text-anchor="middle">B · 35 %</text>
-        <rect class="s-gap" x="272" y="26" width="48" height="44" rx="4"/>
-        <text class="s-w" x="296" y="53" text-anchor="middle">?</text>
-        <text class="s-w" x="0" y="96">Total 85 %. Approval waits for exactly 100 %.</text>
-        <text class="s-m" x="0" y="114">The gap is only visible after the shares are typed.</text>
-
-        <text class="s-h" x="400" y="14">PROPOSAL</text>
-        <rect class="s-new" x="400" y="26" width="160" height="44" rx="4"/>
-        <text class="s-b" x="480" y="53" text-anchor="middle">Author A · 50 %</text>
-        <rect class="s-new" x="560" y="26" width="112" height="44" rx="4"/>
-        <text class="s-b" x="616" y="53" text-anchor="middle">B · 35 %</text>
-        <rect class="s-gap-new" x="672" y="26" width="48" height="44" rx="4"/>
-        <text class="s-a" x="696" y="53" text-anchor="middle">15 %</text>
-        <text class="s-a" x="400" y="96">Left to distribute: 15 %</text>
-        <text class="s-m" x="400" y="114">Counts down while you type. At 0 % the group is ready.</text>
-
-        <text class="s-h" x="400" y="156">THE COUNTER</text>
-        <rect class="s-box" x="400" y="168" width="64" height="34" rx="4"/><text class="s-t" x="432" y="190" text-anchor="middle">100 %</text>
-        <line class="s-ln" x1="464" y1="185" x2="494" y2="185" marker-end="url(#ar2)"/>
-        <rect class="s-box" x="496" y="168" width="64" height="34" rx="4"/><text class="s-t" x="528" y="190" text-anchor="middle">50 %</text>
-        <line class="s-ln" x1="560" y1="185" x2="590" y2="185" marker-end="url(#ar2)"/>
-        <rect class="s-box" x="592" y="168" width="64" height="34" rx="4"/><text class="s-t" x="624" y="190" text-anchor="middle">15 %</text>
-        <line class="s-ln" x1="656" y1="185" x2="686" y2="185" marker-end="url(#ar2)"/>
-        <rect class="s-new" x="688" y="168" width="64" height="34" rx="4"/><text class="s-b" x="720" y="190" text-anchor="middle">0 %</text>
+      <svg viewBox="0 0 760 232" role="img" aria-label="Today the security scan runs only on the developer's machine; in the proposal GitHub runs it on every pull request next to the tests">
         <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
-        <text class="s-m" x="0" y="190">Rule unchanged: shares still add up to 100 %.</text>
-        <text class="s-m" x="0" y="208">Only the way the gap is shown changes.</text>
+        <text class="s-h" x="0" y="14">TODAY</text>
+        <rect class="s-box" x="0" y="26" width="150" height="60" rx="6"/>
+        <text class="s-t" x="75" y="61" text-anchor="middle">Push</text>
+        <line class="s-ln" x1="150" y1="56" x2="198" y2="56" marker-end="url(#ar2)"/>
+        <rect class="s-warn" x="200" y="26" width="170" height="60" rx="6"/>
+        <text class="s-t" x="285" y="52" text-anchor="middle">Local check</text>
+        <text class="s-m" x="285" y="70" text-anchor="middle">can be skipped</text>
+        <line class="s-ln" x1="370" y1="56" x2="418" y2="56" marker-end="url(#ar2)"/>
+        <rect class="s-box" x="420" y="26" width="170" height="60" rx="6"/>
+        <text class="s-t" x="505" y="52" text-anchor="middle">GitHub tests</text>
+        <text class="s-m" x="505" y="70" text-anchor="middle">no security scan</text>
+        <line class="s-ln" x1="590" y1="56" x2="618" y2="56" marker-end="url(#ar2)"/>
+        <rect class="s-box" x="620" y="26" width="140" height="60" rx="6"/>
+        <text class="s-t" x="690" y="61" text-anchor="middle">Merge</text>
+
+        <text class="s-h" x="0" y="130">PROPOSAL</text>
+        <rect class="s-box" x="0" y="142" width="150" height="60" rx="6"/>
+        <text class="s-t" x="75" y="177" text-anchor="middle">Push</text>
+        <line class="s-ln" x1="150" y1="172" x2="198" y2="172" marker-end="url(#ar2)"/>
+        <rect class="s-box" x="200" y="142" width="170" height="60" rx="6"/>
+        <text class="s-t" x="285" y="168" text-anchor="middle">Local check</text>
+        <text class="s-m" x="285" y="186" text-anchor="middle">stays as it is</text>
+        <line class="s-ln" x1="370" y1="172" x2="418" y2="172" marker-end="url(#ar2)"/>
+        <rect class="s-new" x="420" y="142" width="170" height="60" rx="6"/>
+        <text class="s-b" x="505" y="168" text-anchor="middle">GitHub tests</text>
+        <text class="s-m" x="505" y="186" text-anchor="middle">plus the security scan</text>
+        <line class="s-ln" x1="590" y1="172" x2="618" y2="172" marker-end="url(#ar2)"/>
+        <rect class="s-box" x="620" y="142" width="140" height="60" rx="6"/>
+        <text class="s-t" x="690" y="177" text-anchor="middle">Merge</text>
       </svg>
-      <figcaption>Same rule, different feedback: the gap is visible while typing, and the group is done at 0.</figcaption>
+      <figcaption>The same scan runs on GitHub for every pull request, so a skipped local check no longer hides a problem.</figcaption>
     </figure>
     <div class="cols">
-      <div class="box propose"><h3>We propose</h3><ul>
-        <li>Show "Left to distribute" counting down to 0 as shares are entered.</li>
-        <li>Keep the stored shares as they are. They still add up to 100 %.</li>
-      </ul></div>
-      <div class="box decide"><h3>Decide</h3><ul>
-        <li>Thomas: how does the DB hold the original author's share today?</li>
-        <li>Elaine: is the original author the balance (100 minus the others), or a share like any other?</li>
-      </ul></div>
+      <div class="box propose"><h3>Proposal</h3><p>Run the same scan on GitHub for every pull request. A failure shows red on the pull request; it does not stop the merge by itself.</p></div>
+      <div class="box decide"><h3>Decision</h3><p><b>Choice:</b> add the scan on GitHub, or keep it on the developer's machine only.</p><p><b>Our recommendation:</b> add it. It is the same scan we already trust, and the red mark no longer depends on one person's machine.</p></div>
     </div>
   </section>
 
   <section aria-labelledby="t3">
-    <div class="head"><h2 id="t3">3 · AI rights</h2><span class="min">Thomas</span></div>
-    <p class="today"><b>Today:</b> step 3 has two yes/no switches, both off by default. The ERP's AI Rights &amp; Royalties plan proposes up to eight uses, each with its own royalty rate.</p>
+    <div class="head"><h2 id="t3">3 · The first run for a new user</h2><span class="who">Owner decides</span></div>
+    <p class="today"><b>Today:</b> after installing, a new user gets blank templates and has to find and fill in several files to tell AI-OS who they are. Until then the tools read placeholders and answer in the default language.</p>
     <figure>
-      <svg viewBox="0 0 760 240" role="img" aria-label="Small option: two yes/no switches. Large option: eight AI uses, each with a royalty rate">
-        <text class="s-h" x="0" y="14">SMALL · LIKE THE FORMATS</text>
-        <rect class="s-new" x="0" y="26" width="320" height="44" rx="6"/>
-        <text class="s-t" x="14" y="53">AI training allowed</text>
-        <rect class="s-off" x="262" y="38" width="40" height="20" rx="10"/><circle class="s-knob" cx="272" cy="48" r="8"/>
-        <rect class="s-new" x="0" y="78" width="320" height="44" rx="6"/>
-        <text class="s-t" x="14" y="105">Generative AI derivation</text>
-        <rect class="s-on" x="262" y="90" width="40" height="20" rx="10"/><circle class="s-knob" cx="292" cy="100" r="8"/>
-        <text class="s-m" x="0" y="150">Two choices, no rates. Matches the ERP's first step:</text>
-        <text class="s-m" x="0" y="167">one yes/no AI rights format.</text>
+      <svg viewBox="0 0 760 232" role="img" aria-label="Today a new user fills in blank templates by hand; in the proposal the installer asks two questions and fills the files in">
+        <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+        <text class="s-h" x="0" y="14">TODAY</text>
+        <rect class="s-box" x="0" y="26" width="150" height="60" rx="6"/>
+        <text class="s-t" x="75" y="61" text-anchor="middle">Install</text>
+        <line class="s-ln" x1="150" y1="56" x2="198" y2="56" marker-end="url(#ar3)"/>
+        <rect class="s-warn" x="200" y="26" width="170" height="60" rx="6"/>
+        <text class="s-t" x="285" y="52" text-anchor="middle">Blank templates</text>
+        <text class="s-m" x="285" y="70" text-anchor="middle">full of placeholders</text>
+        <line class="s-ln" x1="370" y1="56" x2="418" y2="56" marker-end="url(#ar3)"/>
+        <rect class="s-warn" x="420" y="26" width="170" height="60" rx="6"/>
+        <text class="s-t" x="505" y="52" text-anchor="middle">You edit by hand</text>
+        <text class="s-m" x="505" y="70" text-anchor="middle">if you find the files</text>
+        <line class="s-ln" x1="590" y1="56" x2="618" y2="56" marker-end="url(#ar3)"/>
+        <rect class="s-box" x="620" y="26" width="140" height="60" rx="6"/>
+        <text class="s-t" x="690" y="52" text-anchor="middle">Tools know you</text>
+        <text class="s-m" x="690" y="70" text-anchor="middle">eventually</text>
 
-        <text class="s-h" x="400" y="14">LARGE · EIGHT USES WITH RATES</text>
-        <g>
-          <rect class="s-box" x="400" y="26" width="172" height="30" rx="5"/><text class="s-t" x="410" y="46">Training</text><text class="s-m" x="562" y="46" text-anchor="end">rate %</text>
-          <rect class="s-box" x="588" y="26" width="172" height="30" rx="5"/><text class="s-t" x="598" y="46">Fine-tuning</text><text class="s-m" x="750" y="46" text-anchor="end">rate %</text>
-          <rect class="s-box" x="400" y="64" width="172" height="30" rx="5"/><text class="s-t" x="410" y="84">Retrieval (RAG)</text><text class="s-m" x="562" y="84" text-anchor="end">rate %</text>
-          <rect class="s-box" x="588" y="64" width="172" height="30" rx="5"/><text class="s-t" x="598" y="84">Excerpt display</text><text class="s-m" x="750" y="84" text-anchor="end">rate %</text>
-          <rect class="s-box" x="400" y="102" width="172" height="30" rx="5"/><text class="s-t" x="410" y="122">Summarization</text><text class="s-m" x="562" y="122" text-anchor="end">rate %</text>
-          <rect class="s-box" x="588" y="102" width="172" height="30" rx="5"/><text class="s-t" x="598" y="122">Synthetic data</text><text class="s-m" x="750" y="122" text-anchor="end">rate %</text>
-          <rect class="s-box" x="400" y="140" width="172" height="30" rx="5"/><text class="s-t" x="410" y="160">Derivative output</text><text class="s-m" x="562" y="160" text-anchor="end">rate %</text>
-          <rect class="s-box" x="588" y="140" width="172" height="30" rx="5"/><text class="s-t" x="598" y="160">Internal workflow</text><text class="s-m" x="750" y="160" text-anchor="end">rate %</text>
-        </g>
-        <text class="s-m" x="400" y="194">Needs sales channels and rate lines per use in step 5,</text>
-        <text class="s-m" x="400" y="211">and the ERP to ship the eight uses first.</text>
+        <text class="s-h" x="0" y="130">PROPOSAL</text>
+        <rect class="s-box" x="0" y="142" width="150" height="60" rx="6"/>
+        <text class="s-t" x="75" y="177" text-anchor="middle">Install</text>
+        <line class="s-ln" x1="150" y1="172" x2="198" y2="172" marker-end="url(#ar3)"/>
+        <rect class="s-new" x="200" y="142" width="170" height="60" rx="6"/>
+        <text class="s-b" x="285" y="168" text-anchor="middle">Two questions</text>
+        <text class="s-m" x="285" y="186" text-anchor="middle">your name, your language</text>
+        <line class="s-ln" x1="370" y1="172" x2="418" y2="172" marker-end="url(#ar3)"/>
+        <rect class="s-new" x="420" y="142" width="170" height="60" rx="6"/>
+        <text class="s-b" x="505" y="168" text-anchor="middle">Files filled in</text>
+        <text class="s-m" x="505" y="186" text-anchor="middle">the rest stays optional</text>
+        <line class="s-ln" x1="590" y1="172" x2="618" y2="172" marker-end="url(#ar3)"/>
+        <rect class="s-box" x="620" y="142" width="140" height="60" rx="6"/>
+        <text class="s-t" x="690" y="168" text-anchor="middle">Tools know you</text>
+        <text class="s-m" x="690" y="186" text-anchor="middle">from message one</text>
       </svg>
-      <figcaption>Small: the two choices the app has now. Large: eight uses, each paying its own rate.</figcaption>
+      <figcaption>The installer asks the two things every tool needs on day one, and leaves everything else to the user.</figcaption>
     </figure>
     <div class="cols">
-      <div class="box propose"><h3>We propose</h3><ul>
-        <li>Start small: the two yes/no choices, shown like the formats.</li>
-        <li>Show them as a list of uses, so more uses are added later without changing the screen.</li>
-      </ul></div>
-      <div class="box decide"><h3>Decide</h3><ul>
-        <li>Do contracts need AI royalty rates now, or is yes/no enough until the ERP ships the eight uses?</li>
-      </ul></div>
+      <div class="box propose"><h3>Proposal</h3><p>Ask for the name and the chat language during install, write them in the right places, and skip the questions on automated installs.</p></div>
+      <div class="box decide"><h3>Decision</h3><p><b>Choice:</b> ask two questions, or ship the templates only.</p><p><b>Our recommendation:</b> ask. The chat language is what makes every tool answer in the user's language from the first message.</p></div>
     </div>
   </section>
 
+  <p class="next"><b>Next:</b> reply with one choice per point. Nothing else waits on this page.</p>
+
   <div class="tech">
     <div class="banner">
-      <b>Technical notes: not needed for the meeting</b>
-      <p>For people who want to know how each change would be built. Nothing below needs a decision today.</p>
+      <b>Technical notes: not needed to decide.</b>
+      <span>For whoever builds the changes. Same numbering as above.</span>
     </div>
 
-    <section aria-labelledby="x1">
-      <h3 id="x1">1 · The split: how we would build it</h3>
-      <figure>
-        <svg viewBox="0 0 760 230" role="img" aria-label="The heirs check moves from the approval gate to the payout gate">
-          <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
-          <text class="s-h" x="0" y="14">TODAY</text>
-          <rect class="s-box" x="0" y="26" width="360" height="64" rx="6"/>
-          <text class="s-b" x="12" y="46">Approval gate</text>
-          <text class="s-t" x="12" y="64">shares = 100 %</text>
-          <text class="s-w" x="12" y="81">heirs = deceased share</text>
-          <line class="s-ln" x1="360" y1="58" x2="410" y2="58" marker-end="url(#ar3)"/>
-          <rect class="s-box" x="412" y="26" width="120" height="64" rx="6"/>
-          <text class="s-t" x="472" y="63" text-anchor="middle">Sign</text>
-          <line class="s-ln" x1="532" y1="58" x2="582" y2="58" marker-end="url(#ar3)"/>
-          <rect class="s-box" x="584" y="26" width="176" height="64" rx="6"/>
-          <text class="s-t" x="672" y="63" text-anchor="middle">Pay</text>
-
-          <text class="s-h" x="0" y="134">PROPOSAL</text>
-          <rect class="s-box" x="0" y="146" width="250" height="64" rx="6"/>
-          <text class="s-b" x="12" y="166">Approval gate</text>
-          <text class="s-t" x="12" y="186">shares = 100 %</text>
-          <line class="s-ln" x1="250" y1="178" x2="290" y2="178" marker-end="url(#ar3)"/>
-          <rect class="s-box" x="292" y="146" width="100" height="64" rx="6"/>
-          <text class="s-t" x="342" y="183" text-anchor="middle">Sign</text>
-          <line class="s-ln" x1="392" y1="178" x2="432" y2="178" marker-end="url(#ar3)"/>
-          <rect class="s-new" x="434" y="146" width="326" height="64" rx="6"/>
-          <text class="s-b" x="446" y="166">Payout gate</text>
-          <text class="s-t" x="446" y="184">heirs = deceased share</text>
-          <text class="s-t" x="446" y="201">payee is not deceased (already there)</text>
-        </svg>
-        <figcaption>The heirs check moves later: a contract can be approved and signed first, and money for a deceased author waits until the heirs add up.</figcaption>
-      </figure>
+    <section aria-labelledby="n1">
+      <h3 id="n1">1 · A private place for skills</h3>
       <ul>
-        <li><b>Data does not change.</b> Recipients keep <code>sharePct</code>, <code>deceased</code> and <code>inheritedFromId</code> (heir points to the parent). No migration.</li>
-        <li><b>Wizard.</b> Step 4 hides "Mark deceased" and "Add heir". "Split share" is a row action: it divides one author's share between co-authors and keeps the group at 100 %.</li>
-        <li><b>Rule.</b> <code>heirsBalanced</code> in <code>server/src/domain/approvalValidation.ts</code> leaves the approval gate (code <code>heirs_sum_mismatch</code>) and joins the payout checks next to <code>payment_recipient_deceased</code> in <code>domain/shared/payments.ts</code>, which already blocks paying a deceased person.</li>
-        <li><b>After signing.</b> Heirs are entered in the locked contract's payout section, the one part that stays editable. Each save is a history event. The ERP's deceased date pre-fills the row, as the step 4 hint already does.</li>
-        <li><b>Our assumption, to confirm.</b> Heirs change who is paid, not the signed text: the document keeps the original author.</li>
-        <li><b>Tests.</b> The heirs unit test in <code>approvalValidation.test.ts</code> moves to the payout rule; one browser test covers split at creation, then heirs after signing.</li>
+        <li><b>Today.</b> Step 7 of <code>setup/install-mac.sh</code> loops over <code>ai-config/skills/*/</code> and links every folder with a top-level <code>SKILL.md</code> into each client path of <code>ai-config/manifest.yaml</code> (<code>.claude/skills</code>, <code>.codex/skills</code>, <code>.gemini/skills</code>, <code>.agents/skills</code>, optional <code>.minimax/skills</code>). <code>install-windows.ps1</code> does the same from its own loop. Verified in the code today: 174 folders.</li>
+        <li><b>Design.</b> Add <code>context/personal/skills/</code> (git-ignored) as a second source in the same loop. <code>setup/ai-os-skills.py</code> and the frontmatter check in <code>setup/hooks/pre-push</code> glob only <code>ai-config/skills/</code>, so both must read the new folder or personal skills escape the description budget.</li>
+        <li><b>Does not change.</b> The shared skills, the client list, and the backup, which already archives <code>context/personal/</code>.</li>
+        <li><b>Tests.</b> One in <code>setup/tests</code>: a skill in the private folder is linked, and a stale link to a removed one is pruned.</li>
+        <li><b>Effort and waits.</b> <span class="assume">Our assumption, not measured:</span> small, one loop plus one glob. First real case: the company profile under <code>optimizing-forms/references/profiles/</code>.</li>
       </ul>
     </section>
 
-    <section aria-labelledby="x2">
-      <h3 id="x2">2 · Left to distribute: how we would build it</h3>
+    <section aria-labelledby="n2">
+      <h3 id="n2">2 · The scan on GitHub</h3>
       <ul>
-        <li><b>Frontend only.</b> Per group: left = 100 − the sum of <code>sharePct</code> of active royalty recipients, with heirs counted in their parent's group. It is the same sum <code>royaltyGroupsBalanced</code> already uses, rounded to two decimals with the server's 0.005 tolerance.</li>
-        <li><b>Where.</b> The group total row in step 4 shows the counter and replaces the "must sum to 100 %" error while typing. The server rule <code>share_sum_not_100</code> stays as the safety net, so nothing can be approved off by a cent.</li>
-        <li><b>Share ladders.</b> The counter reads the share at volume zero. Every other print run still goes through <code>shareBalanceIssues</code> (<code>share_ladder_unbalanced</code>).</li>
-        <li><b>If the original author is the balance.</b> Their <code>sharePct</code> is computed as 100 minus the others, shown read-only, and still stored. The ERP's write and the documents see the same numbers as today. This is the case that depends on how the DB holds the share.</li>
-        <li><b>Test.</b> One unit test on the counter: 50 + 35 leaves 15; a full group leaves 0; three shares of 33.33 leave 0.01.</li>
+        <li><b>Today.</b> <code>setup/hooks/pre-push</code> runs <code>ai-config/skills/aios-security-audit/scripts/scan.py . --baseline &lt;ref&gt;</code>: gitleaks, semgrep, osv-scanner, trivy and hadolint on what the push adds, exit 1 on a critical or high finding. Measured on this repo: about 6 seconds. The workflows in <code>.github/workflows/</code> (Linux, macOS and Windows tests, apps, image, guard-main, deploy-site) never call <code>scan.py</code>.</li>
+        <li><b>Design.</b> A <code>security.yml</code> on <code>pull_request</code> to <code>dev</code> and <code>main</code>: checkout with full history, install the five scanners on the runner, run <code>scan.py</code> against the base branch, publish <code>summary.md</code> as the job summary.</li>
+        <li><b>Does not change.</b> The local hook stays. A scanner that is not installed is reported as NOT RUN, never as clean, on both sides.</li>
+        <li><b>Not known.</b> <span class="assume">Runner install time:</span> probably minutes, to measure. <span class="assume">Branch protection:</span> the note in the pre-push hook says it needs a paid plan, so a red check is a signal and not a block; not re-checked today.</li>
+        <li><b>Tests.</b> Open a pull request on a scratch branch with a planted fake private key; the job must fail and name the file.</li>
       </ul>
     </section>
 
-    <section aria-labelledby="x3">
-      <h3 id="x3">3 · AI rights: how we would build it</h3>
+    <section aria-labelledby="n3">
+      <h3 id="n3">3 · Questions on first run</h3>
       <ul>
-        <li><b>Today.</b> <code>coverage.aiRights</code> holds two booleans, <code>trainingAllowed</code> and <code>generativeDerivation</code>. They show in step 3, the summary, the history labels, the terms-template defaults and the document preview. They are not sent to the ERP: no write in <code>server/src/domain/erpWrites/</code> reads them.</li>
-        <li><b>Small.</b> No data change. Step 3 draws the switches from one short list of uses instead of two hand-written rows, so a third use is one new entry and one field.</li>
-        <li><b>Large.</b> The eight uses become rights formats, the way the ERP's plan models them. The app's format checklist (<code>coverage.formatCodes</code>) and rate table (<code>royaltyRates</code>, step 5) already carry formats with rates, so no new field is needed. It waits for the eight formats to exist in the ERP's catalogue.</li>
-        <li><b>Moving from small to large.</b> One migration maps the two booleans to two format codes. Then <code>fieldLabels</code>, <code>fieldDiff</code> and the template defaults change with it.</li>
-        <li><b>Effort.</b> Small touches a few frontend files. Large is mostly the ERP team's work first, then catalogue entries and templates on our side.</li>
+        <li><b>Today.</b> <code>setup/seed-personal-context.py</code> copies <code>context/personal.example/</code> to <code>context/personal/</code> and never overwrites. <code>apps/create-ai-os/bin/create-ai-os.js</code> then prints "describe yourself in <code>context/personal/</code>". <code>install-mac.sh</code> already skips its prompts when <code>ASSUME_YES=1</code> or there is no TTY.</li>
+        <li><b>Design.</b> After seeding, on a TTY and without <code>ASSUME_YES</code>, ask the name and the chat language. Write the identity lines of <code>00_profile.md</code> and a one-line <code>bridge.md</code>, only when the file still equals its template. Windows asks the same through <code>Read-Host</code>.</li>
+        <li><b>Does not change.</b> Non-interactive installs and CI; a file the user already edited is never touched.</li>
+        <li><b>Tests.</b> A unit test on the writer function with a temporary root: fills a template, skips an edited file, skips with no answer.</li>
+        <li><b>Not known.</b> <span class="assume">Windows path:</span> cannot be run here (no <code>pwsh</code>); CI covers the dry run only. Free text for the language, or a short list: open.</li>
       </ul>
     </section>
   </div>

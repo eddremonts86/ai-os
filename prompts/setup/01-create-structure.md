@@ -20,7 +20,7 @@ cd $AI_OS_ROOT/specs && touch {spec_template,current_spec}.md
 
 # Initialize git
 cd $AI_OS_ROOT && git init -b main
-git config user.name "Edd Schilling"
+git config user.name "<Your Name>"
 git config user.email "tu@email.com"
 
 # Done. Next: run 02-master-prompt.md to fill CLAUDE.md, context/, rules/, etc.
