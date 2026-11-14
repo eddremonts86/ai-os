@@ -255,7 +255,7 @@ audited app owns which users it exposes; the skill just consumes the contract.
    `SAAS_REVIEW_OWNER_EMAIL`/`_PASSWORD`, `SAAS_REVIEW_ADMIN_EMAIL`/`_PASSWORD`,
    `SAAS_REVIEW_MEMBER_EMAIL`/`_PASSWORD`, `SAAS_REVIEW_PLATFORM_ADMIN_EMAIL`/`_PASSWORD`.
 3. App-convention fallbacks for the platform-admin role only, since most apps already seed one:
-   `DEFAULT_ADMIN_EMAIL` / `DEFAULT_ADMIN_PASSWORD` (builderhunt), `ADMIN_EMAIL` / `ADMIN_PASSWORD`
+   `DEFAULT_ADMIN_EMAIL` / `DEFAULT_ADMIN_PASSWORD` `ADMIN_EMAIL` / `ADMIN_PASSWORD`
    (rails/devise), `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (custom). Use this only for the
    platform-admin role; for owner/admin/member, require the explicit `SAAS_REVIEW_*` keys.
 
@@ -263,7 +263,7 @@ audited app owns which users it exposes; the skill just consumes the contract.
 
 - **Test/dev only.** The email must contain a non-production marker (`test`, `dev`, `local`,
   `staging`, `example`, `.local`, `.test`, `@localhost`). If the only email present looks like a
-  real account (`@builderhunt.com`, `@gmail.com`, etc., no test marker) **stop and ask the user**;
+  real account (`@<product-domain>`, `@gmail.com`, etc., no test marker) **stop and ask the user**;
   do not auto-log-in. Same rule if the password is loaded from a secret manager rather than `.env`.
 - **Never log the password.** When reporting progress, log the role and the email's local-part
   (`owner@test.local` → `owner`), never the secret.

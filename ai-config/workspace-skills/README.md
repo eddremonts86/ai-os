@@ -12,8 +12,4 @@ To use one, copy (or symlink) it into that project's `.agents/skills/`.
 | `hermes-mcp-pattern` | contributing to NousResearch/hermes-agent | `~/.hermes/hermes-agent` is an upstream clone, not a repo we own |
 
 Moved out of the global set on 2026-11-05 straight into their projects'
-`.agents/skills/`: iaworkspace-patterns, env-config-iaworkspace,
-prod-fleet-register, prod-deploy-verification, containers-architecture,
-open-design-integration (iaWorkSpace); wave-template-conventions
-(wave-template); drupal8-pattern (Drupal8-* repos); plan-authoring,
-plans-explorer (plansmith).
+`.agents/skills/` (iaWorkSpace, plansmith and others).

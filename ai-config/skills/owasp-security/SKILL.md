@@ -479,7 +479,7 @@ import DOMPurify from 'dompurify';
 
 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userInput) }} />
 
-// Helper in wave-template:
+// Or a project-level wrapper component:
 import { SafeHtml } from '@/components/globals/html/SafeHtml';
 <SafeHtml html={userInput} />
 ```

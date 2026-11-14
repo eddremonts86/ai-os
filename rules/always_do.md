@@ -81,7 +81,7 @@ When you find a useful parallel-dispatch pattern (e.g., "research + verify + imp
 
 The memory MCP servers are always running; use them instead of re-discovering.
 `group_id` = the repo directory name (e.g. `ai-os`, `plansmith`); facts that span
-projects or are about Edd go in `main`.
+projects or are about the user go in `main`.
 
 - **Before** work on a project or a past decision: graphiti `search_memory_facts`
   (and `search_nodes`) with the project and topic. In Claude Code a SessionStart hook

@@ -27,11 +27,10 @@ When the user says a task:
 
 ## Style
 
-- Spanish for chat.
+- Chat language and tone from `context/personal/me/preferences.md`.
 - English for code, commits, docs, errors.
 - Terse, no ceremony.
-- "go" = execute without asking.
-- "dame la url" = URL only.
+- Trigger phrases (e.g. "go" = execute the agreed plan): `context/personal/me/preferences.md`.
 
 ## Tools available
 

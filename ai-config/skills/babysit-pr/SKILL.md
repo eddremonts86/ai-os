@@ -2,7 +2,7 @@
 name: babysit-pr
 description: Watch a PR through review bots and CI until green and approved. Use when the user asks to monitor, watch, or babysit a PR.
 version: 1.1.0
-author: Edd
+author: AI-OS
 license: MIT
 platforms: [linux, macos]
 metadata:
@@ -16,8 +16,8 @@ metadata:
 # Babysit PR
 
 Watch a pull request through review bots and CI until it is green and approved.
-Adapted from Theo Browne's `t3dotgg/tstack` (MIT) with Edd's branch model: never push to
-`main`/`master`, never merge. Edd merges. Babysitting means keeping the PR fresh and
+Adapted from Theo Browne's `t3dotgg/tstack` (MIT) with the AI-OS branch model: never push to
+`main`/`master`, never merge. The user merges. Babysitting means keeping the PR fresh and
 answering feedback, not landing it.
 
 ## Waiting — never poll
@@ -58,7 +58,7 @@ needs no action, end the turn without a message.
    head: required checks green, every finding fixed or dismissed, no human review requesting
    changes, the PR is neither BEHIND nor DIRTY, and no base commit that landed after the last
    green run touches this PR's files.
-7. **Stop**: ready → report it and leave the merge to Edd. An overlapping PR made this one
+7. **Stop**: ready → report it and leave the merge to the user. An overlapping PR made this one
    obsolete → stop, report, ask before closing.
 
 ## Comments posted on the user's behalf

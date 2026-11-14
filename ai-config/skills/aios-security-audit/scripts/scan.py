@@ -275,6 +275,7 @@ def main():
     raw.mkdir(parents=True, exist_ok=True)
     skip = set(filter(None, a.skip.split(",")))
 
+    changed = None
     if a.baseline:
         changed = subprocess.run(["git", "diff", "--name-only", f"{a.baseline}...HEAD"], cwd=repo, capture_output=True, text=True).stdout.split()
         if not any(re.search(r"(package\.json|lock\.ya?ml|-lock\.json|\.lock)$", f) for f in changed):
@@ -302,6 +303,11 @@ def main():
         if res is None:
             status[name] = f"NOT RUN: {st}"
             continue
+        if changed is not None and name in ("trivy", "hadolint"):
+            # These scan whole files with no baseline of their own: keep only files this branch touches, so an
+            # untouched Dockerfile's old finding is not reported as new. ponytail: an old finding inside a changed
+            # file still shows; diff against a baseline run if that gets noisy.
+            res = [f for f in res if not f["file"] or f["file"] in changed]
         findings += res
         status[name] = f"ran ({st}), {len(res)} finding(s)"
 
