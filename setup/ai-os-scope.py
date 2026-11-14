@@ -5,7 +5,7 @@
   ai-os scope check-push RANGE...      guard for pre-push: terms of other scopes in the commits being pushed
   ai-os scope git-config [--apply]     the includeIf block that gives each scope its own git identity
 
-Config: context/personal/scopes.yaml (git-ignored; template in context/personal.example/scopes.yaml).
+Config: context/personal/work/scopes.yaml (git-ignored; template in context/personal.example/work/scopes.yaml).
 Paths are folders relative to the projects folder (the folder that contains this repo); a folder covers
 everything inside it, and the first scope that matches wins. A scope may hold brands (one company, several
 products): the brand's design wins over the scope's.
@@ -24,7 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PROJECTS = ROOT.parent
-CONFIG = ROOT / "context" / "personal" / "scopes.yaml"
+CONFIG = ROOT / "context" / "personal" / "work" / "scopes.yaml"
 MARK_BEGIN, MARK_END = "# >>> ai-os scopes >>>", "# <<< ai-os scopes <<<"
 
 
@@ -180,7 +180,7 @@ def main(argv=None):
 
     if a.cmd == "check-push":
         if not cfg:
-            print("skipped (no context/personal/scopes.yaml)")
+            print("skipped (no context/personal/work/scopes.yaml)")
             return 0
         top = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True).stdout.strip() or "."
         code, out = check_push(cfg, top, a.ranges or ["HEAD --not --remotes"])

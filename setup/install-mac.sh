@@ -411,9 +411,9 @@ if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
     ln -sf "$AI_OS_ROOT/dev-env/dotfiles/ssh/config" "$HOME_DIR/.ssh/config"
     chmod 600 "$HOME_DIR/.ssh/config"
     ok "  .ssh/config → ai-os"
-    if [ -f "$AI_OS_ROOT/context/personal/dotfiles/ssh/config" ]; then
-      ln -sf "$AI_OS_ROOT/context/personal/dotfiles/ssh/config" "$HOME_DIR/.ssh/config.personal"
-      chmod 600 "$AI_OS_ROOT/context/personal/dotfiles/ssh/config"
+    if [ -f "$AI_OS_ROOT/context/personal/machine/dotfiles/ssh/config" ]; then
+      ln -sf "$AI_OS_ROOT/context/personal/machine/dotfiles/ssh/config" "$HOME_DIR/.ssh/config.personal"
+      chmod 600 "$AI_OS_ROOT/context/personal/machine/dotfiles/ssh/config"
       ok "  .ssh/config.personal → context/personal"
     fi
   fi
@@ -785,10 +785,10 @@ ADAPTER_DIR="$HOME_DIR/.ai-os/adapters"
 mkdir -p "$ADAPTER_DIR"
 BRIDGE="$ADAPTER_DIR/global-bridge.md"
 sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$ADAPTER_TEMPLATE" > "$BRIDGE"
-# Personal addendum (chat language, tone, trigger phrases): context/personal/bridge.md is git-ignored,
+# Personal addendum (chat language, tone, trigger phrases): context/personal/me/bridge.md is git-ignored,
 # so the shared template names nobody and your own rules still reach every CLI.
-if [ -f "$AI_OS_ROOT/context/personal/bridge.md" ]; then
-  { echo; cat "$AI_OS_ROOT/context/personal/bridge.md"; } >> "$BRIDGE"
+if [ -f "$AI_OS_ROOT/context/personal/me/bridge.md" ]; then
+  { echo; cat "$AI_OS_ROOT/context/personal/me/bridge.md"; } >> "$BRIDGE"
 fi
 # Ponytail pointer, rendered with the bridge so a re-run never strips it (see
 # "Ponytail pin" at the top). A short pointer, not upstream's AGENTS.md: this
@@ -852,9 +852,9 @@ for f in "${VSCODE_INSTR_GLOBS[@]}"; do
     cat >> "$f" <<AIOS_VSCODE
 
 <!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
-- AI-OS (operating context): single source of truth is \`$AI_OS_ROOT\`. For non-trivial work, read \`context/personal/00_profile.md\` and \`context/personal/03_preferences.md\` (if present) and \`CLAUDE.md\` from that repo before proceeding.
+- AI-OS (operating context): single source of truth is \`$AI_OS_ROOT\`. For non-trivial work, read \`context/personal/me/profile.md\` and \`context/personal/me/preferences.md\` (if present) and \`CLAUDE.md\` from that repo before proceeding.
 - Method: Spec → Verifier → Environment (Karpathy loop). Use the \`using-superpowers\` skill as the router for EVERY task, even simple ones — check whether a skill applies before responding, not just for domain-specific work.
-- Chat language and tone: see \`context/personal/03_preferences.md\`. Code, commits, docs, comments, and logs stay in English always.
+- Chat language and tone: see \`context/personal/me/preferences.md\`. Code, commits, docs, comments, and logs stay in English always.
 - Verify before claiming something is done: run the actual checks (tests/build/typecheck/browser) and report concrete evidence, never "looks fine" without proof.
 - Confirm before irreversible or outward-facing actions (force-push, prod changes, sending messages, spending money) unless already explicitly authorized.
 - Durable, cross-session facts go in this environment's own memory tool (\`/memories/\`); sync notable, cross-CLI-relevant facts back into \`context/personal/\` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.

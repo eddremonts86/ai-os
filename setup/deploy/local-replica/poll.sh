@@ -28,8 +28,8 @@ AI_OS_ROOT="${AI_OS_ROOT:-$(find_ai_os_root)}" || {
   echo "cannot locate the AI-OS root (no CLAUDE.md above this script)" >&2; exit 1; }
 
 HERE="$AI_OS_ROOT/setup/deploy/local-replica"
-# Your apps live in context/personal/deploy/apps.conf (git-ignored); the example is the fallback.
-CONF="$AI_OS_ROOT/context/personal/deploy/apps.conf"
+# Your apps live in context/personal/machine/deploy/apps.conf (git-ignored); the example is the fallback.
+CONF="$AI_OS_ROOT/context/personal/machine/deploy/apps.conf"
 [ -f "$CONF" ] || CONF="$HERE/apps.conf.example"
 STATE="$HERE/state.json"
 ENV_FILE="$AI_OS_ROOT/dev-env/env-config/.env"

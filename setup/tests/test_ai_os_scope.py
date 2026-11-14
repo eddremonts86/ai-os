@@ -17,7 +17,7 @@ CFG = {
     "scopes": {
         "work": {
             "paths": ["Clients/acme"],
-            "git": "context/personal/dotfiles/git/.gitconfig-work",
+            "git": "context/personal/machine/dotfiles/git/.gitconfig-work",
             "design": {"system": "https://example.com/acme-ds"},
             "guard": {"block": ["re:ACME-[0-9]+", "acme-internal"], "warn": ["Acme"]},
         },
@@ -84,7 +84,7 @@ class GitConfigTests(unittest.TestCase):
     def test_block_has_one_include_per_folder_and_apply_is_idempotent(self):
         block = sc.git_block(CFG, projects="/p", root="/r")
         self.assertIn('[includeIf "gitdir/i:/p/Clients/acme/"]', block)
-        self.assertIn("path = /r/context/personal/dotfiles/git/.gitconfig-work", block)
+        self.assertIn("path = /r/context/personal/machine/dotfiles/git/.gitconfig-work", block)
         home = Path(tempfile.mkdtemp()) / ".gitconfig"
         home.write_text("[user]\n    name = Me\n")
         sc.apply_git(block, home)

@@ -1,5 +1,5 @@
 # Which part of your work a folder belongs to. Read by `ai-os scope` (which, check-push, git-config),
-# the session start hook and the pre-push guard. Copy to context/personal/scopes.yaml and edit.
+# the session start hook and the pre-push guard. Copy to context/personal/work/scopes.yaml and edit.
 # Paths are folders relative to the projects folder (the one that contains ai-os); first match wins.
 default: personal
 
@@ -8,11 +8,11 @@ guard:
   always_block: []
 
 scopes:
-  work:
+  employer:
     label: Employer
     paths: [Clients/employer]
-    notes: context/personal/scopes/work/README.md
-    git: context/personal/dotfiles/git/.gitconfig-work
+    notes: context/personal/work/employer/README.md
+    git: context/personal/machine/dotfiles/git/.gitconfig-work
     design:
       system: <link to the employer's design system>
       tokens: Clients/employer/<template repo>/<tokens file>
