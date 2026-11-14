@@ -1,22 +1,7 @@
 # 04 — Tools
 
-Inventory of installed tools. Update when something changes.
-
-## System
-
-- **macOS:** 26.5.1 (Build 25F80), Apple Silicon (arm64).
-- **Homebrew:** `/opt/homebrew/bin/brew` (v6.0.5).
-- **Shell:** zsh 5.9 (system, `/bin/zsh`).
-- **Git:** via Xcode CLI Tools (not brew).
-
-## Terminal
-
-- **Warp:** `Oz v0.2026.06.24.09.19.stable_02` (installed via brew cask).
-  - Font: CaskaydiaCove Nerd Font (size 14).
-  - Theme: dark.
-  - Opacity: 0.95.
-- **Terminal.app (Mac native):** theme "Pro" (true black), shell `/bin/zsh`.
-- **Oh My Zsh + Powerlevel10k** (preset lean).
+The AI-OS toolchain: the CLIs it wires, the skills, diagrams, env config, setup and the traps that
+were learned the hard way. Facts about one specific computer live in `context/personal/04_machine.md`.
 
 ## CLI tools
 
@@ -28,18 +13,6 @@ Inventory of installed tools. Update when something changes.
 | **Antigravity**  | `~/.agents/`  | VSCode fork              |
 | **Hermes Agent** | `~/.hermes/`  | Nous Research            |
 | **MiniMax Code** | `~/.minimax/` | Mac-only overlay support |
-
-## Languages
-
-- **Python:** 3.11.15 (system).
-- **Node.js:** v22 (via brew or nvm).
-- **TypeScript:** 5.x via npm.
-
-## Key packages
-
-- **git, gh:** via Xcode CLI / brew.
-- **uv, yq, warp:** via brew.
-- **fzf, ripgrep, fd, hcloud, mkcert:** in Brewfile.
 
 ## Global skills
 
@@ -54,7 +27,7 @@ Inventory of installed tools. Update when something changes.
 - **`diagram-design`** — 27 editorial diagram types → self-contained HTML + inline SVG.
   Third-party (MIT, `cathrynlavery/diagram-design`), vendored with local brand deltas; see
   `ai-config/skills/diagram-design/VENDORED_FROM.md`.
-- Skinned with the AI-OS brand, dark-first. Tokens live in `context/06_brand.md` — the skill's
+- Skinned with the AI-OS brand, dark-first. Tokens live in `context/global/06_brand.md` — the skill's
   brand onboarding is **disabled on purpose** (it would rewrite the shared skill for every
   project). Per-project override: `.ai-os/brand-tokens.md` in that project's root.
 - PNG export needs `playwright` + chromium in the AI-OS venv (`~/.ai-os/venv`). HTML and SVG
@@ -110,10 +83,6 @@ Hermes also refuses to run any **unpinned** job after the global inference confi
 `hermes cron edit <id> --provider <p> --model <m>`; the pin is visible in
 `~/.hermes/cron/jobs.json` (`{"jobs": [...]}`) but not in `hermes cron list`.
 
-All three of these were live at once on 2026-08-25 and the visible symptom was only that the
-plans corpus stopped gaining published plans. See `apps/data/tools/plans-pipeline/README.md` in
-the **plansmith** repo (moved there 2026-09-25).
-
 ## The preview pane reads `launch.json` from the session root, not the project
 
 `preview_start` looks for `.claude/launch.json` relative to the **session's working directory**. When
@@ -132,17 +101,6 @@ Fix: put the config at the session root and have each entry cd into its own proj
 }
 ```
 
-Three standing constraints on this machine:
-
-- **Port 3000 is taken** by the Hermes WhatsApp bridge (`hermes-agent/scripts/whatsapp-bridge/bridge.js`).
-  Port 5173 is also usually in use. Pick 3007+ for a new dev server, and record *why* in the config's
-  `//` key so nobody moves it back and kills the bridge.
-- **Two front-ends pin their ports across two repos:** the landing (`apps/site/`, this repo) is
-  **3021**, declared in this repo's `.claude/launch.json`. The plans explorer is **3020**, declared
-  in **plansmith**'s own `.claude/launch.json` since the 2026-09-25 split; its `vite.config.ts` sets
-  `strictPort: true` so a stale server fails the boot instead of drifting onto 3021 and serving the
-  explorer where the landing should be. Ports in use when they were chosen: 3000 (bridge), 3010,
-  3011, 3013, 3015, 5173.
-- **Invoke `./node_modules/.bin/vite` directly**, not `pnpm dev`: going through pnpm makes the dev
-  server depend on which pnpm is on PATH, and a pnpm of a different major refuses to run any script
-  until it has purged `node_modules` — which it cannot confirm without a TTY.
+Invoke `./node_modules/.bin/vite` directly, not `pnpm dev`: going through pnpm makes the dev server
+depend on which pnpm is on PATH, and a pnpm of a different major refuses to run any script until it
+has purged `node_modules`, which it cannot confirm without a TTY.

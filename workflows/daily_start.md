@@ -65,7 +65,7 @@ The `daily_start` workflow of AI-OS has 7 steps:
 1. Load AI-OS (step 1 of this workflow).
 2. → Load `using-superpowers` (step 2 of this workflow).
 3. → Load `brainstorming` if the idea is vague (step 3 of this workflow).
-4. Read `context/00_profile.md` and `03_preferences.md`; the rest of `context/` on demand.
+4. Read `context/personal/00_profile.md` and `03_preferences.md`; the rest of `context/` on demand.
 5. Read `rules/` (always_do, ask_before_doing, never_do).
 6. Read `specs/current_spec.md`. If it contains the no-active-Spec template → there is no active Spec. Otherwise, continue the one active task.
 7. Start the task. Follow `workflows/project_start.md` only if the task needs a Spec (>~2 hours, more than one repo, or the user asks for one).

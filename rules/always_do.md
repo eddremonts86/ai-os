@@ -7,7 +7,7 @@ Actions that you MUST always do when working with me.
 Keep the session-start read small; everything else is read on demand.
 
 1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md` — skip if your CLI already loaded it (Claude Code inside the repo does).
-2. Read `$AI_OS_ROOT/context/00_profile.md` and `03_preferences.md`.
+2. Read `$AI_OS_ROOT/context/personal/00_profile.md` and `03_preferences.md`. If `context/personal/` does not exist, copy `context/personal.example/` there and ask the user to fill it in.
 3. Read `$AI_OS_ROOT/rules/never_do.md` and `ask_before_doing.md`.
 4. Read `$AI_OS_ROOT/specs/current_spec.md`. It must contain only the active Spec; an empty template means there is no active Spec.
 5. Load skill `using-superpowers` (router).
@@ -16,11 +16,11 @@ Read only when the task needs it:
 
 | File | Read when |
 |---|---|
-| `context/02_projects.md` | the task names or touches one of Edd's projects |
-| `context/04_tools.md` | installing, configuring, or debugging the local toolchain |
-| `context/01_business_or_work.md`, `07_edi_company.md` | work for Employer or EDI |
-| `context/05_sources.md` | looking up official docs or reference repos |
-| `context/06_brand.md` | branded deliverables (diagrams, site, decks) |
+| `context/personal/02_projects.md` | the task names or touches one of the user's projects |
+| `context/global/04_tools.md` | installing, configuring, or debugging the local toolchain |
+| `context/personal/01_business_or_work.md` and any company file beside it | work for the user's employer or business |
+| `context/global/05_sources.md` | looking up official docs or reference repos |
+| `context/global/06_brand.md` | branded deliverables (diagrams, site, decks) |
 | `workflows/*.md` | the matching kind of task (coding, research, content, new Spec) |
 
 ## ALWAYS: use sub-agents in parallel when possible
@@ -119,6 +119,24 @@ Rules:
 
 **Ponytail is always on (`full`).** Before writing any code, climb the ladder and stop at the first rung that holds: does this need to exist at all (YAGNI) → is it already in this codebase → stdlib → native platform feature → already-installed dependency → one line → minimum that works. Shortest working diff wins, but only after you understand the flow the change touches; a bug fix means the root cause in the shared function, not a guard per caller. Never simplify away input validation at trust boundaries, error handling that prevents data loss, security, accessibility, or anything explicitly requested. Non-trivial logic leaves one runnable check behind. Per-session override: `/ponytail lite|full|ultra|off`. Machine default: `~/.config/ponytail/config.json` (Windows: `%APPDATA%\ponytail\config.json`).
 
+**Tests are the default for new and changed behavior.** For features and non-trivial
+functions or classes, add or strengthen behavioral tests where possible. Choose the
+applicable layers: unit tests for logic and boundaries, integration tests for component
+interactions, E2E tests for critical user flows, and migration tests for schema or data
+migrations. A layer that does not apply is not required; do not add tests just to count
+accessors or implementation details.
+
+For updates, fixes and refactors, preserve existing coverage, add regression or
+characterization tests for changed behavior, and run the relevant existing tests for the
+affected code and dependent paths. Use mutation testing on relevant logic when an
+appropriate tool is available and the run is safe and practical; investigate meaningful
+survivors rather than chasing a score. Follow existing project policies and approval
+boundaries for dependencies, external systems and costly runs.
+
+Report the tests and runtime checks run, failures, and any untested behavior or blocked
+checks with their reasons. Tests reduce risk; no coverage or mutation score guarantees
+error-free software. See `workflows/coding.md` for the coding workflow.
+
 12. Run type check (TypeScript: `tsc --noEmit`, Python: `mypy`).
 13. Run tests (Vitest, pytest, bats, Pester).
 14. Run lint (ESLint, ruff, shellcheck, PSScriptAnalyzer).
@@ -131,10 +149,19 @@ into `dev`); `main` changes only through a `dev` → `main` PR (`gh pr create --
 pre-push hook (`setup/hooks/pre-push`) blocks direct pushes to `main` — hotfix only with
 `AIOS_ALLOW_MAIN_PUSH=1`. Pushing still needs the user's OK (`ask_before_doing.md`).
 
+**Clean before `dev` or `main`.** Nothing lands on `dev` or `main` with a known error of any kind: type, lint,
+test, build, format or security. Before asking to push to `dev` (a feature branch merged into it included), run
+steps 12-16 and `aios-security-review`: read `ai-config/skills/aios-security-review/SKILL.md` and follow it, base
+`origin/dev`. Before the `dev` → `main` PR, run it again against `origin/main`, then `aios-security-audit` on the
+repo. Fix every blocker and every error the checks show, including ones that were already there, or stop and say
+what is left and why; never push around a red check. The pre-push hook enforces the deterministic part (a new
+critical or high finding blocks, and a scanner that did not run is not clean); the review and the audit are yours.
+
 ## When you find an error, anywhere
 
 If a check (type-check, lint, test, build, runtime) surfaces an error:
 
+- **Before a push to `dev` or `main`:** the whole branch must be clean (see "Clean before `dev` or `main`" above).
 - **In what you touch** (files, functions, or flows the current task changes): fix it as part of the current task. "Pre-existing" is not a reason to skip it, and the code you touch must be left in better shape than you found it.
 - **Elsewhere** (unrelated files, other stacks, other repos): do not expand the task to fix it. Report it at the end with the location, the error, and a concrete proposed fix.
 - If a fix needs information only the user has (an external credential, a genuine product decision, a destructive/irreversible step), propose the concrete fix instead of just listing the symptom.
@@ -161,7 +188,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 
 23. Never hand-roll SVG for a branded diagram. `diagram-design` owns the skin, the complexity
     budget, and the accessible-SVG contract; a hand-rolled figure silently drops all three.
-24. Brand tokens come from `context/06_brand.md`. Do not read hex values out of `apps/site/src/index.css`
+24. Brand tokens come from `context/global/06_brand.md`. Do not read hex values out of `apps/site/src/index.css`
     or invent them, and do not rewrite a skill's style guide for a single project — use
     `.ai-os/brand-tokens.md` in that project's root.
 25. Before shipping a `diagram-design` diagram, run the skill's taste gate (`SKILL.md` §9) and
@@ -180,9 +207,12 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Have a fresh agent judge an existing screen or flow (read-only) | `/aios-ui-review` |
     | Fix an existing UI, proven before and after | `/aios-ui-improve` |
     | Check pages mechanically (screenshots, console, overflow, a11y) | `/aios-ui-verify` |
+    | Match reference screens or images, scored until a bar is met | `/aios-ui-design` (Match references) |
+    | Build a 3D scene or WebGL/shader piece for the web | `/aios-ui-3d` |
+    | Make a video in code (launch, motion, hero loop) | `/aios-ui-video` |
 
     UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
-    Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
+    Work that iterates for hours toward a bar uses `aios-loop` long-run mode. Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
 
     | Request | Use |
     |---|---|
@@ -195,7 +225,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
-27. Brand tokens come from `context/06_brand.md` (same rule as diagrams).
+27. Brand tokens come from `context/global/06_brand.md` (same rule as diagrams).
 
 ## At session end
 

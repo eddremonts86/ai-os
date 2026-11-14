@@ -1,49 +1,47 @@
 ---
 name: npm-package-publishing
-description: Edd's established convention for publishing npm packages (bootstrap CLIs and libraries) — always under the @edd_remonts scope, plus package.json shape, bin script style, and the ask-before-publish rule. Applies whenever creating a new npm package or preparing one to be published.
+description: Convention for publishing npm packages (bootstrap CLIs and libraries), always under one scope of yours, plus package.json shape, bin script style, and the ask-before-publish rule. Your scope and author identity live in context/personal/05_publishing.md. Applies whenever creating a new npm package or preparing one to be published.
 license: Internal
 ---
 
 # npm Package Publishing Convention
 
-Derived from two prior published packages: `@edd_remonts/create-hermes-workspace`
-(`~/Projects/eddremonts86/create-hermes-workspace-pkg/`) and
-`employer-widgets-system` (`~/Projects/eddremonts86/npmPakage/`). Use this
-pattern instead of inventing a new one.
+Derived from prior published packages (yours are listed in `context/personal/05_publishing.md`: your npm
+scope, your author identity and the packages already out). Use this pattern instead of inventing a new one.
+Below, `<scope>` is the scope from that file.
 
 ## Naming
 
-**Always publish under the `@edd_remonts` scope.** Every package — CLI or
-library — is `@edd_remonts/<name>`. A single scope keeps everything under one
+**Always publish under your one scope (`<scope>`).** Every package — CLI or
+library — is `<scope>/<name>`. A single scope keeps everything under one
 npm namespace, avoids top-level name squatting, and makes ownership obvious.
 Do not publish new unscoped packages.
 
 - **Bootstrap/scaffold CLI** ("run one command to set something up"):
-  `@edd_remonts/create-<thing>` — keep the `create-*` prefix so `npx create-*`
+  `<scope>/create-<thing>` — keep the `create-*` prefix so `npx create-*`
   still reads naturally.
 - **Library** (importable code, e.g. a component library):
-  `@edd_remonts/<descriptive-name>` — e.g. `@edd_remonts/ai-schadcn-chat`.
+  `<scope>/<descriptive-name>` — e.g. `<scope>/my-library`.
 
 Scoped packages default to **private** on npm, so `publishConfig.access` MUST be
 `"public"` (see the package.json shape below) or the first `npm publish` fails
 with `402 Payment Required`.
 
-Migrating an existing unscoped package (e.g. `ai-schadcn-chat` →
-`@edd_remonts/ai-schadcn-chat`): npm can't rename in place — change the
+Migrating an existing unscoped package (e.g. `my-library` →
+`<scope>/my-library`): npm can't rename in place — change the
 `name` field, publish the scoped package fresh, then `npm deprecate` the old
 unscoped name with a message pointing at the new one. Update the display/brand
 name, repo, domain, and localStorage keys only if the task calls for it — the
 scope change is about the npm package identity, not the project's branding.
 
-Default author identity: `Eduardo Inerarte <eddremonts86@gmail.com>` for
-personal/open-source packages (matches the `eddremonts86` GitHub identity in
-`context/02_projects.md`).
+Default author identity: the one in `context/personal/05_publishing.md`, matching your GitHub identity
+(see `context/personal/02_projects.md`).
 
 ## package.json shape (bootstrap CLI)
 
 ```json
 {
-  "name": "@edd_remonts/create-<thing>",
+  "name": "<scope>/create-<thing>",
   "version": "0.1.0",
   "description": "...",
   "type": "module",
@@ -55,7 +53,7 @@ personal/open-source packages (matches the `eddremonts86` GitHub identity in
   "bugs": { "url": "https://github.com/<owner>/<repo>/issues" },
   "homepage": "https://github.com/<owner>/<repo>#readme",
   "keywords": ["..."],
-  "author": "Eduardo Inerarte <eddremonts86@gmail.com>",
+  "author": "<Your Name> <you@example.com>",
   "license": "MIT",
   "publishConfig": { "registry": "https://registry.npmjs.org/", "access": "public" }
 }
@@ -68,11 +66,11 @@ Key points:
 - Plain npmjs.org public registry, not GitHub Packages or a private registry,
   unless a task explicitly says otherwise.
 - MIT license, matching the `LICENSE` file convention already used across
-  Edd's public repos.
+  your public repos.
 
 ## bin script style (Node, ESM)
 
-Mirror `create-hermes-workspace.js`'s shape for any new bootstrap CLI:
+Mirror the shape of your existing bootstrap CLI (see `context/personal/05_publishing.md`) for any new bootstrap CLI:
 
 1. Shebang `#!/usr/bin/env node`, `"type": "module"`, read own `package.json`
    via `fileURLToPath(new URL('.', import.meta.url))` to avoid a hardcoded

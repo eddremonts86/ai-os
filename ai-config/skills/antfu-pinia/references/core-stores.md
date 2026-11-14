@@ -19,7 +19,7 @@ import { defineStore } from 'pinia'
 export const useCounterStore = defineStore('counter', {
   state: () => ({
     count: 0,
-    name: 'Eduardo',
+    name: 'Alice',
   }),
   getters: {
     doubleCount: (state) => state.count * 2,
@@ -44,7 +44,7 @@ import { defineStore } from 'pinia'
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
-  const name = ref('Eduardo')
+  const name = ref('Alice')
   const doubleCount = computed(() => count.value * 2)
 
   function increment() {

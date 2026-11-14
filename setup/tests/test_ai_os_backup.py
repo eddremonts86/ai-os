@@ -37,6 +37,29 @@ except ImportError:
 
 
 @unittest.skipUnless(HAVE_CRYPTO, "cryptography is only in the AI-OS venv")
+class PersonalContextBackupTests(unittest.TestCase):
+    def test_snapshot_carries_the_git_ignored_personal_context(self):
+        import tarfile
+        spec = importlib.util.spec_from_file_location("ai_os_backup_ctx", SCRIPT)
+        b = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(b)
+        # take() pushes off-site unless this is set: without it a test would write to the real iCloud/GitHub copies.
+        os.environ["AI_OS_OFFSITE"] = "0"
+        self.addCleanup(os.environ.pop, "AI_OS_OFFSITE", None)
+        with tempfile.TemporaryDirectory() as d:
+            root, dest = Path(d) / "root", Path(d) / "dest"
+            (root / "context" / "personal").mkdir(parents=True)
+            (root / "context" / "personal" / "00_profile.md").write_text("# me\n", encoding="utf-8")
+            b.ROOT, b.DEST = root, dest
+            b.snapshot_graph = lambda out: (out / "falkordb-dump.rdb").write_bytes(b"x") or {}
+            b.HOME = Path(d) / "home"
+            b.take()
+            snap = sorted(p for p in dest.iterdir() if p.is_dir())[-1]
+            with tarfile.open(snap / "personal-context.tar.gz") as tar:
+                self.assertIn("personal/00_profile.md", tar.getnames())
+
+
+@unittest.skipUnless(HAVE_CRYPTO, "cryptography is only in the AI-OS venv")
 class OffsiteCryptoTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
