@@ -154,8 +154,8 @@ export function WhatItIs() {
       background: <Trace>spec → plan → execute → verify</Trace>,
     },
     {
-      name: 'One source of truth, every CLI',
-      description: `${stats.superpowers} required superpowers plus curated and vendored skills, symlinked into six CLIs. Project skills stay in their own repos.`,
+      name: 'Skills and agents, every CLI',
+      description: `${stats.superpowers} required superpowers plus curated and vendored skills, symlinked into six CLIs, plus ${stats.agents} agents in each CLI's own format. Project skills stay in their own repos.`,
       Icon: Layers, href: `${REPO}/tree/main/ai-config/skills`, cta: 'Browse the skills', className: 'md:col-span-1',
       background: <Trace>ai-config/skills</Trace>,
     },
