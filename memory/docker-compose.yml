@@ -119,6 +119,9 @@ services:
       GRAPHITI_LLM_MODEL: ${GRAPHITI_LLM_MODEL:-gemma3:12b}
       GRAPHITI_LLM_API_KEY: ${GRAPHITI_LLM_API_KEY:-ollama}
       GRAPHITI_LLM_MAX_TOKENS: ${GRAPHITI_LLM_MAX_TOKENS:-4096} # 16384 for MiniMax-M3
+      # Embeddings: same Ollama by default. Change both together if Ollama is not on the host's :11500.
+      EMBEDDER_BASE_URL: ${EMBEDDER_BASE_URL:-http://host.docker.internal:11500/v1}
+      EMBEDDER_MODEL: ${EMBEDDER_MODEL:-nomic-embed-text}
       # The openai SDK's client constructor validates api_key is a non-empty string at
       # *instantiation* time (not just when actually calling the API) — graphiti-core's
       # hardcoded reranker (see config.yaml's STATUS note) crashes the whole server on boot

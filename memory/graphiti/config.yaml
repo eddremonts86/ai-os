@@ -158,7 +158,7 @@ embedder:
   providers:
     openai:
       api_key: "ollama" # dummy — Ollama's OpenAI-compatible endpoint doesn't check it
-      api_url: "http://host.docker.internal:11500/v1"
+      api_url: ${EMBEDDER_BASE_URL:http://host.docker.internal:11500/v1}
 
 database:
   provider: "falkordb"
