@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useId, useState, type RefObject } from "react"
-import { motion, useReducedMotion } from "motion/react"
+import { m as motion, useReducedMotion } from "motion/react" // Local change: lightweight `m`, see main.tsx
 
 import { cn } from "@/lib/utils"
 
@@ -80,7 +80,9 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
 
         const svgWidth = containerRect.width
         const svgHeight = containerRect.height
-        setSvgDimensions({ width: svgWidth, height: svgHeight })
+        // Local change: keep the same object when nothing changed, so the ResizeObserver's first call does not re-render.
+        setSvgDimensions((prev) =>
+          prev.width === svgWidth && prev.height === svgHeight ? prev : { width: svgWidth, height: svgHeight })
 
         const startX =
           rectA.left - containerRect.left + rectA.width / 2 + startXOffset
