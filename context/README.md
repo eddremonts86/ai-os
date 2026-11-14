@@ -18,6 +18,62 @@ A fresh clone has none. The installer runs `setup/seed-personal-context.py`, whi
 **stub** below and never overwrites one that exists; run it again any time. The other files are optional: create
 them when you need them. Every agent reads `me/profile.md` and `me/preferences.md` at the start of meaningful work.
 
+### Layout
+
+```
+context/personal/
+├── me/                    who you are and how you want agents to work
+│   ├── profile.md
+│   ├── preferences.md
+│   └── bridge.md          appended to the global instructions of every CLI
+├── work/                  everything you work on, split by scope
+│   ├── scopes.yaml        which folder belongs to which scope (the map)
+│   ├── projects.md        inventory of every project
+│   ├── publishing.md      npm identity (optional)
+│   ├── <scope>/           one folder per scope, as many as you need:
+│   │   └── README.md      your role there, its conventions, its design system, its projects
+│   └── …                  e.g. employer/, client-x/, my-company/, personal/
+├── machine/               this computer
+│   ├── facts.md
+│   ├── shell.zsh, shell.ps1
+│   ├── dotfiles/git/      one .gitconfig-<scope> per git identity (optional)
+│   ├── dotfiles/ssh/      hosts that name your servers or work accounts (optional)
+│   └── deploy/apps.conf   local Coolify replica (optional)
+└── inbox/pending.md       what is waiting on you
+```
+
+### How scopes work
+
+A **scope** is one part of your working life with its own rules: an employer, a client, your own company,
+your personal projects. You can have as many as you like; each one is an entry in `work/scopes.yaml` plus a
+folder `work/<scope>/` with its notes.
+
+1. **Folder → scope.** `ai-os scope which` takes the current folder, finds the first scope whose `paths` contain
+   it (paths are relative to the projects folder) and falls back to `default`. Inside a scope, `brands` narrow it
+   further: one company, one brand per product.
+2. **The scope decides four things:**
+   - **design:** the design system or `DESIGN.md` that UI work in that folder must use (a brand's design wins
+     over its scope's);
+   - **git identity:** `ai-os scope git-config --apply` writes one `includeIf` per scope folder into
+     `~/.gitconfig`, so commits there carry the scope's name and email;
+   - **confidentiality:** the pre-push guard looks for each scope's `guard` terms in the commits of every repo of
+     another scope, by severity (`block` stops the push, `warn` reports it); `guard.always_block` applies
+     everywhere;
+   - **notes:** `work/<scope>/README.md`, which agents read before non-trivial work there.
+3. **Agents see it without asking.** In Claude Code the session start hook names the scope, its design system and
+   its notes; in any CLI the rules say to run `ai-os scope which` first.
+
+**Add a scope** (a new employer, a client):
+
+1. Create `work/<scope>/README.md`: your role, the conventions, where the design system lives, the projects.
+2. Add the scope to `work/scopes.yaml`: `label`, `paths`, and whichever of `design`, `git`, `notes`, `guard`,
+   `brands` apply (format below).
+3. If it has its own git identity: write `machine/dotfiles/git/.gitconfig-<scope>` (`[user] name`, `email`), point
+   `git:` at it, and run `ai-os scope git-config --apply`.
+4. Check it: `ai-os scope which <a folder of that scope>`.
+
+### Files
+
 | File | | What goes in it | Read by |
 |---|---|---|---|
 | `me/profile.md` | stub | name, role, languages | every agent at session start |
