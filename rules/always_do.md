@@ -7,7 +7,7 @@ Actions that you MUST always do when working with me.
 Keep the session-start read small; everything else is read on demand.
 
 1. Set `AI_OS_ROOT` to the repository root (default: `$HOME/Projects/ai-os`) and read `$AI_OS_ROOT/CLAUDE.md` — skip if your CLI already loaded it (Claude Code inside the repo does).
-2. Read `$AI_OS_ROOT/context/personal/me/profile.md` and `me/preferences.md`. If `context/personal/` does not exist, copy `context/personal.example/` there and ask the user to fill it in.
+2. Read `$AI_OS_ROOT/context/personal/me/profile.md` and `me/preferences.md`. If `context/personal/` does not exist, run `setup/seed-personal-context.py` and ask the user to fill it in.
 3. Read `$AI_OS_ROOT/rules/never_do.md` and `ask_before_doing.md`.
 4. Read `$AI_OS_ROOT/specs/current_spec.md`. It must contain only the active Spec; an empty template means there is no active Spec.
 5. Load skill `using-superpowers` (router).

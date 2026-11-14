@@ -362,14 +362,14 @@ else {
 }
 Write-Host ""
 
-# ─── 4b. Personal context (context/personal/ is git-ignored: copy the templates once, never overwrite) ───
+# ─── 4b. Personal context (context/personal/ is git-ignored: write the stubs once, never overwrite) ───
 $seedPython = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
 if ($seedPython) {
     $seeded = & $seedPython.Source (Join-Path $AIOSRoot "setup\seed-personal-context.py") $AIOSRoot 2>&1
     if ($LASTEXITCODE -eq 0) { Ok "4b. personal context: $seeded (edit context/personal/ to describe yourself)" }
-    else { Warn "4b. could not seed context/personal/ ($seeded); copy context/personal.example/ there by hand" }
+    else { Warn "4b. could not seed context/personal/ ($seeded); run setup/seed-personal-context.py by hand" }
 } else {
-    Warn "4b. python not found; copy context/personal.example/ to context/personal/ by hand"
+    Warn "4b. python not found; create context/personal/ as context/README.md describes"
 }
 
 # ─── 5. Global skills (native destinations from manifest) ───

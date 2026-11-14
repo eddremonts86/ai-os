@@ -73,7 +73,7 @@ dev-env/env-config.zip
 !.claude/launch.json
 
 # Personal context: about you and your machine, never published. Templates for new users live in
-# context/personal.example/, and the installer copies them here once.
+# context/README.md; setup/seed-personal-context.py creates the stubs on install.
 context/personal/
 
 # AI-OS: completed Specs in archive/ are versioned. Only generated outputs are ignored.
