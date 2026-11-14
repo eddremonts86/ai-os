@@ -59,6 +59,7 @@ class PersonalContextBackupTests(unittest.TestCase):
                 self.assertIn("personal/00_profile.md", tar.getnames())
 
 
+@unittest.skipUnless(HAVE_CRYPTO, "cryptography is only in the AI-OS venv")
 class OffsiteCryptoTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
