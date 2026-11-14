@@ -7,7 +7,7 @@
 # Runs what CI runs on every OS runner, plus the checks that would have caught
 # today's (2026-11-05) breakages before CI did: invalid YAML in skill
 # frontmatter, a syntax error in a setup script, an invalid compose file,
-# and a direct push to main.
+# a direct push to main, and a new critical/high security finding (aios-security-audit scan, baseline mode).
 # Windows' install-windows.dry-run.ps1 only runs here when pwsh is installed.
 
 set -uo pipefail
@@ -26,6 +26,7 @@ fail() { echo "FAIL"; printf '%s\n' "$1" | sed 's/^/           /' | head -15; fa
 ZERO=0000000000000000000000000000000000000000
 ORIG="$(git rev-parse --show-toplevel)"   # the real checkout: only it has the untracked .env
 sha=""
+base=""
 ranges=()
 while read -r _local_ref local_sha remote_ref remote_sha; do
   if [ "$local_sha" != "$ZERO" ]; then
@@ -38,6 +39,7 @@ while read -r _local_ref local_sha remote_ref remote_sha; do
     exit 1
   fi
   [ "$local_sha" != "$ZERO" ] && sha="$local_sha"
+  [ "$remote_sha" != "$ZERO" ] && base="$remote_sha"
 done
 [ -z "$sha" ] && { echo "[pre-push] only deletions — nothing to check"; exit 0; }
 
@@ -122,6 +124,22 @@ for r in ${ranges[@]+"${ranges[@]}"}; do
 done
 [ -z "$out" ] && pass || fail "a value from dev-env/env-config/.env is in the commits being pushed (names only):
 $out"
+
+step "security scan (new findings)"
+# aios-security-audit's scanners, baseline mode: only what this push adds. A new critical or high finding blocks.
+# A scanner that is not installed is NOT RUN, and nothing running at all blocks too: that is not "clean".
+[ -n "$base" ] || base=$(git rev-parse --verify -q origin/dev || git rev-parse --verify -q origin/main || true)
+secargs=(); [ -n "$base" ] && secargs=(--baseline "$base")
+SECOUT="$(mktemp -d -t aios-prepush-sec-XXXX)"
+out=$("$PY" ai-config/skills/aios-security-audit/scripts/scan.py . ${secargs[@]+"${secargs[@]}"} --out "$SECOUT" 2>&1); rc=$?
+case "$rc" in
+  0) pass "$(grep -oE '^[0-9]+ findings' <<<"$out" | head -1)" ;;
+  1) fail "this push adds a critical or high finding:
+$(grep -E '^\| (critical|high) ' "$SECOUT/summary.md" | head -8)
+Run /aios-security-review for the detail, fix it, then push again." ;;
+  *) fail "no scanner could run, which is not clean. Install them: brew bundle --file dev-env/packages/Brewfile" ;;
+esac
+rm -rf "${SECOUT:?}"
 
 step "setup unit tests"
 out=$("$PY" -m unittest discover -s setup/tests 2>&1) && pass "$(grep -oE 'Ran [0-9]+ tests' <<<"$out")" || fail "$(tail -15 <<<"$out")"

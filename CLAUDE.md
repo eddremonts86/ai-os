@@ -13,8 +13,9 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
 
 ## 1. Method
 
-1. **Read** `context/00_profile.md` and `03_preferences.md`; other `context/` files only when the
-   task needs them (on-demand table in `rules/always_do.md`).
+1. **Read** `context/personal/00_profile.md` and `03_preferences.md` (yours; if `context/personal/` is missing,
+   copy `context/personal.example/` there first); other `context/` files only when the task needs them
+   (on-demand table in `rules/always_do.md`, layout in `context/README.md`).
 2. **Decide whether the task needs a Spec.** A Spec (`workflows/project_start.md` →
    `specs/current_spec.md`) is required only when the work is expected to take more than ~2
    hours, touches more than one repo, or the user asks for one. Otherwise plan inline (use
@@ -41,16 +42,16 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
   "When writing code").
 - When a task needs an env value/secret (DB URL, API key, port, LLM endpoint, token), read
   `dev-env/env-config/.env` first (canonical merged local source) before inventing,
-  hardcoding, or asking; never echo or commit the real values. See `context/04_tools.md` and
+  hardcoding, or asking; never echo or commit the real values. See `context/global/04_tools.md` and
   `rules/always_do.md`.
 - Parallel sub-agents are the default for 2+ independent workstreams (max 3 concurrent, this
   CLI's native mechanism); always verify their output yourself. Details: `rules/always_do.md`
   "ALWAYS: use sub-agents in parallel when possible".
-- Language and tone: chat in Spanish; code, commits, docs, logs, comments, error messages and
-  every AI-OS file in English. Terse, no ceremony, formatting only when it adds clarity. Owner:
-  `context/03_preferences.md`.
-- "luce como funciona, continua con la otra" = accept partial, keep going (do not ask "should I
-  continue?").
+- Language and tone: the chat language and tone are the user's (`context/personal/03_preferences.md`);
+  code, commits, docs, logs, comments, error messages and every AI-OS file stay in English. Terse, no
+  ceremony, formatting only when it adds clarity.
+- When the user accepts a partial result and says to keep going (their trigger phrases are in
+  `context/personal/03_preferences.md`), carry on; do not ask "should I continue?".
 - For bugfixes/features: do not declare done on build/lint/tests alone. Exercise the runtime
   (browser nav, smoke test) and report concrete evidence. Always finish on URL + status for any
   started service.
@@ -70,13 +71,14 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
 
 ## 4. Memory
 
-Canonical identity/preferences live in `context/` (this repo) — that is the source of truth.
+Canonical identity and preferences live in `context/personal/` (yours, git-ignored, never published);
+what holds for every user lives in `context/global/`. See `context/README.md`.
 Per-CLI global instruction files are symlinks to a rendered bridge (see
 `docs/cli-reference.md` "Per-machine bridge").
 
 Save durable per-CLI facts to that CLI's own memory store — Claude Code: the project memory dir
 (`MEMORY.md` index + one file per fact); Hermes: `~/.hermes/memories/` (`MEMORY.md` +
-`USER.md`); Codex: its built-in store. Sync notable cross-CLI facts back into `context/`. The
+`USER.md`); Codex: its built-in store. Sync notable cross-CLI facts back into `context/personal/`. The
 graphiti/grepai memory stack is covered in `rules/always_do.md` "Use the memory stack".
 
 Save when the user states a preference or correction, an environment fact is discovered (OS
@@ -126,7 +128,7 @@ hops (see `docs/repo-layout.md`).
 If you're not sure what to do:
 
 1. Re-read this file.
-2. Re-read `context/03_preferences.md`.
+2. Re-read `context/personal/03_preferences.md`.
 3. Run `workflows/daily_start.md`.
 4. If the doubt persists, ask the user (with options).
 5. If the user says "go", execute approved reversible work without further questions; keep

@@ -40,7 +40,7 @@ npx @edd_remonts/create-ai-os --version
 3. Runs the platform installer with the target folder as its working directory:
    - macOS/Linux → `setup/install-mac.sh`
    - Windows → `setup/install-windows.ps1`
-4. Prints next steps (`setup/verify.sh`, `CLAUDE.md`, `context/00_profile.md`).
+4. Prints next steps (`setup/verify.sh`, `CLAUDE.md`, `context/personal/`).
 
 The installer itself is idempotent and owns its own confirmation prompts and `DRY_RUN` mode — this CLI never duplicates that logic, it only clones and delegates.
 
