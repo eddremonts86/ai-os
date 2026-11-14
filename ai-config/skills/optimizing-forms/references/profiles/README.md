@@ -12,7 +12,7 @@ only. A profile turns that discovery into something reusable.
 
 | Profile | Detected by | Enables |
 | ------- | ----------- | ------- |
-| [`wave-schilling.md`](wave-schilling.md) | `src/components/globals/form/types/index.ts` exists | A4, A6, A7, A9 |
+| [`wave-formcontainer.md`](wave-formcontainer.md) | `src/components/globals/form/types/index.ts` exists | A4, A6, A7, A9 |
 
 ## Writing a new one
 
