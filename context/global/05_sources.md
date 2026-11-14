@@ -26,8 +26,8 @@
 ### Reference repositories
 
 - **obra/superpowers:** https://github.com/obra/superpowers (14 skills required for AI-OS).
-- **antfu/skill:** https://github.com/antfu/skill (skill collection).
-- **NousResearch/hermes:** https://github.com/NousResearch/hermes (Hermes Agent).
+- **antfu/skills:** https://github.com/antfu/skills (skill collection).
+- **NousResearch/hermes-agent:** https://github.com/NousResearch/hermes-agent (Hermes Agent).
 - **ai-os:** https://github.com/eddremonts86/ai-os (this repo).
 
 ## Skills as sources of truth
