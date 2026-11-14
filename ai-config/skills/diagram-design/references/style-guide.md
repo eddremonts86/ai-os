@@ -12,7 +12,7 @@ The skin is **dark-first**, matching the AI-OS site. `template-dark.html` is the
 variant for AI-OS diagrams; the light variant is the secondary register for print and
 light-background docs.
 
-Canonical brand source: [`context/06_brand.md`](../../../../context/06_brand.md) in the AI-OS
+Canonical brand source: [`context/global/06_brand.md`](../../../../context/global/06_brand.md) in the AI-OS
 repo. If the brand changes, change that file first, then propagate here.
 
 ---
@@ -177,7 +177,7 @@ a symlink into the AI-OS repo, shared by every project and every CLI — rewriti
 above changes the skin globally and shows up as a dirty diff in the AI-OS repo. See
 [`SKILL.md` §0](../SKILL.md) for the AI-OS-specific gate.
 
-- **Changing the AI-OS brand** → edit [`context/06_brand.md`](../../../../context/06_brand.md)
+- **Changing the AI-OS brand** → edit [`context/global/06_brand.md`](../../../../context/global/06_brand.md)
   first, then propagate the semantic roles here in the same commit.
 - **One project needs a different brand** (client work) → create
   `.ai-os/brand-tokens.md` in that project's root, mapping the same semantic roles. The skill

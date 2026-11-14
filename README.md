@@ -99,7 +99,7 @@ What is backed up is only what cannot be rebuilt: the graphiti graph (a FalkorDB
 
 `ai-os memory start|status|reindex` operates it; the `aios-memory` skill covers repairs. When to read and write memory: `rules/always_do.md` "Use the memory stack".
 
-There are **11 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem` and `sequential-thinking` are disabled; the reasons are in each YAML.
+There are **12 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem`, `sequential-thinking` and `rea` are disabled; the reasons are in each YAML. `rea` (reverse engineering of shipped artifacts) is an opt-in: the security audit calls its CLI without it.
 
 ## 4. Platforms
 
@@ -156,7 +156,7 @@ The rules are in `rules/always_do.md`, `rules/ask_before_doing.md` and `rules/ne
 Everything above `apps/` is the operating system; everything from `apps/` down is what it produced.
 
 ```
-context/      who I am, projects, preferences, tools, sources
+context/      global/ (toolchain, sources, brand: shared) · personal/ (you and your machine: git-ignored)
 rules/        always do / ask before doing / never do
 workflows/    recurring processes      specs/  one active spec + template
 verifiers/    optional review prompts  archive/ completed specs

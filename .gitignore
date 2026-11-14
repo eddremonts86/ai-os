@@ -69,8 +69,12 @@ dev-env/env-config.zip
 .claude/*
 # launch.json is the exception: it is the dev-server contract (which app, which port),
 # it holds no secrets, and pinning ports only on the machine that wrote them is not
-# pinning them at all. See context/04_tools.md.
+# pinning them at all. See context/global/04_tools.md.
 !.claude/launch.json
+
+# Personal context: about you and your machine, never published. Templates for new users live in
+# context/personal.example/, and the installer copies them here once.
+context/personal/
 
 # AI-OS: completed Specs in archive/ are versioned. Only generated outputs are ignored.
 # Add any repo-specific exclusions here.

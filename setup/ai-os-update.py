@@ -72,6 +72,10 @@ COMPONENTS = [
      "health": ["falkordb", "graphiti", "memory-usage"]},
     mcp_component("chrome", "npm", "chrome-devtools-mcp"),
     mcp_component("agent-browser", "npm", "agent-browser-mcp-server"),
+    # opt-in MCP (disabled in its yaml); the audit skill pins the same version for its CLI call
+    {**mcp_component("rea", "npm", "rea-agents"),
+     "pins": [(f, r"rea-agents@([0-9][\w.\-]*)") for f in
+              ("ai-config/mcp/rea.yaml", "ai-config/skills/aios-security-audit/SKILL.md")]},
     mcp_component("pdf", "pypi", "mcp-pdf"),
     mcp_component("time", "pypi", "mcp-server-time"),
     {"id": "ollama", "source": ("brew", "ollama"), "pins": [],

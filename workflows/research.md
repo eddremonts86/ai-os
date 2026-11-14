@@ -46,7 +46,7 @@ Show criteria to the user. They must approve.
 
 ### 3. Search (execute)
 
-Use `context/05_sources.md` as starting point (it has official docs URLs).
+Use `context/global/05_sources.md` as starting point (it has official docs URLs).
 
 Search patterns:
 

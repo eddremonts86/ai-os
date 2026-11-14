@@ -416,6 +416,13 @@ def take():
                 tar.add(d, arcname=f"{d.parent.name}/memory")
         manifest["items"]["claude-memory.tar.gz"] = (out / "claude-memory.tar.gz").stat().st_size
 
+    # context/personal/ is git-ignored (never published), so this snapshot is its only copy.
+    personal = ROOT / "context" / "personal"
+    if personal.is_dir():
+        with tarfile.open(out / "personal-context.tar.gz", "w:gz") as tar:
+            tar.add(personal, arcname="personal")
+        manifest["items"]["personal-context.tar.gz"] = (out / "personal-context.tar.gz").stat().st_size
+
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     for f in out.iterdir():
         os.chmod(f, 0o600)

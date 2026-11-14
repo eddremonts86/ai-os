@@ -350,8 +350,8 @@ Set-Alias -Name hcq -Value "hermes chat -q" -Option AllScope -Force
 
 # Project shortcuts
 function projects { Set-Location "$HOME\Projects" }
-function personal { Set-Location "$HOME\Projects\eddremonts86" }
-function work { Set-Location "$HOME\Projects\ei-employer" }
+# Personal functions: context/personal/shell.ps1 is git-ignored, so nothing about you is committed here.
+if ($env:AI_OS_ROOT -and (Test-Path (Join-Path $env:AI_OS_ROOT 'context\personal\shell.ps1'))) { . (Join-Path $env:AI_OS_ROOT 'context\personal\shell.ps1') }
 '@
 if (-not (Test-Path $customProfile)) {
     Set-Content -Path $customProfile -Value $customProfileContent
@@ -361,6 +361,16 @@ else {
     Ok "PowerShell custom profile already exists"
 }
 Write-Host ""
+
+# ─── 4b. Personal context (context/personal/ is git-ignored: copy the templates once, never overwrite) ───
+$seedPython = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
+if ($seedPython) {
+    $seeded = & $seedPython.Source (Join-Path $AIOSRoot "setup\seed-personal-context.py") $AIOSRoot 2>&1
+    if ($LASTEXITCODE -eq 0) { Ok "4b. personal context: $seeded (edit context/personal/ to describe yourself)" }
+    else { Warn "4b. could not seed context/personal/ ($seeded); copy context/personal.example/ there by hand" }
+} else {
+    Warn "4b. python not found; copy context/personal.example/ to context/personal/ by hand"
+}
 
 # ─── 5. Global skills (native destinations from manifest) ───
 Require-ManifestTool
@@ -495,6 +505,9 @@ $adapterDir = Join-Path $HomeDir ".ai-os\adapters"
 New-Item -ItemType Directory -Path $adapterDir -Force | Out-Null
 $bridge = Join-Path $adapterDir "global-bridge.md"
 (Get-Content $AdapterTemplate -Raw).Replace("{{AI_OS_ROOT}}", $AIOSRoot) | Set-Content -Path $bridge -NoNewline
+# Personal addendum (chat language, tone, trigger phrases): context/personal/bridge.md is git-ignored.
+$bridgeAddendum = Join-Path $AIOSRoot "context\personal\bridge.md"
+if (Test-Path $bridgeAddendum) { Add-Content -Path $bridge -Value ("`n`n" + (Get-Content $bridgeAddendum -Raw)) -NoNewline }
 $adapters = (& yq -o=json '.platforms.windows.adapters' $Manifest | ConvertFrom-Json)
 foreach ($adapter in $adapters) {
     $target = Join-Path $HomeDir $adapter.path
@@ -527,12 +540,12 @@ $vscodeGlobs = @(
 $vscodeBridgeBlock = @"
 
 <!-- AI-OS BRIDGE -- managed by $AIOSRoot; remove this block to unlink -->
-- AI-OS (operating context): single source of truth is ``$AIOSRoot``. For non-trivial work, read ``context/00_profile.md``, ``context/03_preferences.md``, and ``CLAUDE.md`` from that repo before proceeding.
+- AI-OS (operating context): single source of truth is ``$AIOSRoot``. For non-trivial work, read ``context/personal/00_profile.md`` and ``context/personal/03_preferences.md`` (if present) and ``CLAUDE.md`` from that repo before proceeding.
 - Method: Spec -> Verifier -> Environment (Karpathy loop). Use the ``using-superpowers`` skill as the router for EVERY task, even simple ones -- check whether a skill applies before responding, not just for domain-specific work.
-- Chat in Spanish (lowercase, terse, no ceremony, no "espero que esto ayude"). Code, commits, docs, comments, and logs stay in English always.
+- Chat language and tone: see ``context/personal/03_preferences.md``. Code, commits, docs, comments, and logs stay in English always.
 - Verify before claiming something is done: run the actual checks (tests/build/typecheck/browser) and report concrete evidence, never "looks fine" without proof.
 - Confirm before irreversible or outward-facing actions (force-push, prod changes, sending messages, spending money) unless already explicitly authorized.
-- Durable, cross-session facts go in this environment's own memory tool (``/memories/``); sync notable, cross-CLI-relevant facts back into ``context/`` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.
+- Durable, cross-session facts go in this environment's own memory tool (``/memories/``); sync notable, cross-CLI-relevant facts back into ``context/personal/`` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.
 <!-- /AI-OS BRIDGE -->
 "@
 $vscodeWired = 0

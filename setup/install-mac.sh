@@ -411,6 +411,11 @@ if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
     ln -sf "$AI_OS_ROOT/dev-env/dotfiles/ssh/config" "$HOME_DIR/.ssh/config"
     chmod 600 "$HOME_DIR/.ssh/config"
     ok "  .ssh/config → ai-os"
+    if [ -f "$AI_OS_ROOT/context/personal/dotfiles/ssh/config" ]; then
+      ln -sf "$AI_OS_ROOT/context/personal/dotfiles/ssh/config" "$HOME_DIR/.ssh/config.personal"
+      chmod 600 "$AI_OS_ROOT/context/personal/dotfiles/ssh/config"
+      ok "  .ssh/config.personal → context/personal"
+    fi
   fi
 else
   log "5. SKIP_DOTFILES=1, skipping dotfiles"
@@ -485,6 +490,13 @@ ok "5b2. ai-os command: ~/.local/bin/ai-os → $AI_OS_ROOT/ai-os"
 if [ -d "$AI_OS_ROOT/.git" ] || git -C "$AI_OS_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
   git -C "$AI_OS_ROOT" config core.hooksPath setup/hooks
   ok "5c. git hooks: pre-push gate enabled (skip once: git push --no-verify)"
+fi
+
+# ─── 5d. Personal context (context/personal/ is git-ignored: copy the templates once, never overwrite) ───
+if seeded="$(python3 "$SCRIPT_DIR/seed-personal-context.py" "$AI_OS_ROOT" 2>&1)"; then
+  ok "5d. personal context: $seeded (edit context/personal/ to describe yourself)"
+else
+  warn "5d. could not seed context/personal/ ($seeded); copy context/personal.example/ there by hand"
 fi
 
 # ─── 6. Oh My Zsh + Powerlevel10k ───
@@ -773,6 +785,11 @@ ADAPTER_DIR="$HOME_DIR/.ai-os/adapters"
 mkdir -p "$ADAPTER_DIR"
 BRIDGE="$ADAPTER_DIR/global-bridge.md"
 sed "s|{{AI_OS_ROOT}}|$AI_OS_ROOT|g" "$ADAPTER_TEMPLATE" > "$BRIDGE"
+# Personal addendum (chat language, tone, trigger phrases): context/personal/bridge.md is git-ignored,
+# so the shared template names nobody and your own rules still reach every CLI.
+if [ -f "$AI_OS_ROOT/context/personal/bridge.md" ]; then
+  { echo; cat "$AI_OS_ROOT/context/personal/bridge.md"; } >> "$BRIDGE"
+fi
 # Ponytail pointer, rendered with the bridge so a re-run never strips it (see
 # "Ponytail pin" at the top). A short pointer, not upstream's AGENTS.md: this
 # file is loaded every session by Claude, Codex, Gemini and Antigravity, the
@@ -835,12 +852,12 @@ for f in "${VSCODE_INSTR_GLOBS[@]}"; do
     cat >> "$f" <<AIOS_VSCODE
 
 <!-- AI-OS BRIDGE — managed by $AI_OS_ROOT; remove this block to unlink -->
-- AI-OS (operating context): single source of truth is \`$AI_OS_ROOT\`. For non-trivial work, read \`context/00_profile.md\`, \`context/03_preferences.md\`, and \`CLAUDE.md\` from that repo before proceeding.
+- AI-OS (operating context): single source of truth is \`$AI_OS_ROOT\`. For non-trivial work, read \`context/personal/00_profile.md\` and \`context/personal/03_preferences.md\` (if present) and \`CLAUDE.md\` from that repo before proceeding.
 - Method: Spec → Verifier → Environment (Karpathy loop). Use the \`using-superpowers\` skill as the router for EVERY task, even simple ones — check whether a skill applies before responding, not just for domain-specific work.
-- Chat in Spanish (lowercase, terse, no ceremony, no "espero que esto ayude"). Code, commits, docs, comments, and logs stay in English always.
+- Chat language and tone: see \`context/personal/03_preferences.md\`. Code, commits, docs, comments, and logs stay in English always.
 - Verify before claiming something is done: run the actual checks (tests/build/typecheck/browser) and report concrete evidence, never "looks fine" without proof.
 - Confirm before irreversible or outward-facing actions (force-push, prod changes, sending messages, spending money) unless already explicitly authorized.
-- Durable, cross-session facts go in this environment's own memory tool (\`/memories/\`); sync notable, cross-CLI-relevant facts back into \`context/\` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.
+- Durable, cross-session facts go in this environment's own memory tool (\`/memories/\`); sync notable, cross-CLI-relevant facts back into \`context/personal/\` in the ai-os repo so Claude Code/Hermes/Codex/Gemini benefit too.
 <!-- /AI-OS BRIDGE -->
 AIOS_VSCODE
   fi

@@ -130,7 +130,7 @@
     @apply font-sans;
     }
 }
-/* AI-OS brand (context/06_brand.md): dark-first, hue-275 neutrals, one accent (acid). */
+/* AI-OS brand (context/global/06_brand.md): dark-first, hue-275 neutrals, one accent (acid). */
 .dark {
     --background: #08090e;
     --foreground: #f4f5f9;

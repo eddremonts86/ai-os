@@ -7,7 +7,7 @@ description: "Use whenever you write a document, artifact, page or .md that othe
 
 Every document someone else will read has two layers. Non-technical readers stop at the divider and still know what is wanted and what they must decide. Technical readers continue past it.
 
-Model to copy: `reference-example.html` in this folder (a published page: three open points, each with a today/proposal diagram, then the technical notes). Reuse its tokens, banner and figure style.
+Model to copy: `reference-example.html` in this folder, a page about AI-OS itself: three open decisions, each with a today/proposal diagram, a recommendation, then the technical notes. Reuse its tokens, banner and figure style.
 
 ## The order, always
 

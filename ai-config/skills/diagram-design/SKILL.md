@@ -34,7 +34,7 @@ Resolve tokens in this order, first hit wins:
    atomic-tangerine default — shipping a generic-skinned diagram into a branded repo is the
    exact failure this section exists to prevent.
 
-Canonical brand source is `context/06_brand.md` in the AI-OS repo. To change the brand, edit
+Canonical brand source is `context/global/06_brand.md` in the AI-OS repo. To change the brand, edit
 that file and propagate to `references/style-guide.md` in the same commit — never edit only
 the style guide.
 
@@ -166,7 +166,7 @@ Type-specific anti-patterns live in each `references/type-*.md`.
 
 ## 5. Design System
 
-**The design system is skinnable.** All colors, typography, and tokens live in a single source of truth — [`references/style-guide.md`](references/style-guide.md). This file describes semantic roles (`paper`, `ink`, `muted`, `accent`, `link`, …). The active skin is the **AI-OS brand** (dark-first: `void` paper, `ink-white` text, `acid` accent, `cyan` links, blue-violet neutrals), sourced from `context/06_brand.md`. See §0 for brand resolution — do not run onboarding against `style-guide.md`.
+**The design system is skinnable.** All colors, typography, and tokens live in a single source of truth — [`references/style-guide.md`](references/style-guide.md). This file describes semantic roles (`paper`, `ink`, `muted`, `accent`, `link`, …). The active skin is the **AI-OS brand** (dark-first: `void` paper, `ink-white` text, `acid` accent, `cyan` links, blue-violet neutrals), sourced from `context/global/06_brand.md`. See §0 for brand resolution — do not run onboarding against `style-guide.md`.
 
 > When specs below or in type references mention "ink", "accent", "muted", etc., look up the current hex value in `style-guide.md`.
 
