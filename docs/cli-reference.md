@@ -45,7 +45,7 @@ mv "$AI_OS_ROOT/specs/current_spec.md" "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-sl
 hermes chat --skills aios-karpathy
 hermes chat --skills aios-quickstart
 # or
-hermes chat   # skills already loaded from imported:
+hermes chat   # skills already loaded via skills.external_dirs (~/.agents/skills)
 ```
 
 ### Codex / Gemini / Antigravity
@@ -62,7 +62,8 @@ Codex and Antigravity read `AGENTS.md`, which is a symlink to `CLAUDE.md` (see
 AI-OS is the single source of truth for the AI setup:
 
 - **Skills** → `ai-config/skills/` (source of truth) → symlinks to supported CLIs.
-- **MCP servers** → `ai-config/mcp/*.yaml` → generated to `~/.hermes/config.yaml`.
+- **MCP servers** → `ai-config/mcp/*.yaml` → generated to `~/.hermes/config.yaml`, and to Claude Code, Codex, Gemini and VS Code by
+  `setup/sync-ide-mcp-servers.py`.
 - **Dotfiles** → `dev-env/dotfiles/` → symlinks to `~/`.
 - **Setup scripts** → `setup/install-{mac,windows}.sh/ps1` (1-command per OS).
 - **CI** → `.github/workflows/test-{mac,linux,windows}.yml` validates that setup scripts work.
