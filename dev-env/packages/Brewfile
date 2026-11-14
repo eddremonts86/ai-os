@@ -12,26 +12,12 @@ tap "aws/tap"        # for awscli (extras)
 brew "git"
 brew "gh"                  # GitHub CLI
 brew "curl"
-brew "wget"
 brew "jq"
 brew "yq"                  # YAML processor — hard dependency of install-mac.sh itself
 brew "rsync"
-brew "tmux"
-brew "htop"
-brew "tree"
-brew "eza"                 # modern ls replacement
-brew "bat"                 # modern cat replacement
-brew "fzf"
-brew "fd"
 brew "ripgrep"
-brew "git-delta"
-brew "lazygit"
-brew "tig"
 
 # ─── Shells ───
-brew "zsh"
-brew "zsh-completions"
-brew "starship"
 
 # ─── Languages / Runtimes (only what AI-OS itself needs) ───
 brew "node"                # Node.js 22+
@@ -55,13 +41,10 @@ brew "semgrep"             # SAST rules (OWASP, TypeScript, React)
 brew "pnpm"                 # used throughout AI-OS (npm-globals install, apps/)
 
 # ─── Fonts ───
-cask "font-jetbrains-mono-nerd-font"
 
 # ─── Terminal (AI-OS default) ───
-cask "warp"
 
 # ─── Editor ───
-cask "visual-studio-code"
 
 # Browser and system-utility GUI apps live in Brewfile.extras: AI-OS does not
 # need them, and keeping them here made every install touch unrelated apps.

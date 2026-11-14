@@ -25,6 +25,10 @@ except ImportError:
     yaml = None
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import aios_profile  # noqa: E402  (per-person MCP overrides)
+
+
 def fail(message):
     print(f"Error: {message}", file=sys.stderr)
     return 1
@@ -161,6 +165,8 @@ def main():
 
     try:
         definitions = [load_yaml_mapping(path, "MCP definition") for path in sorted(mcp_dir.glob("*.yaml"))]
+        if aios_profile.applies_to(mcp_dir):
+            definitions = aios_profile.apply_mcp(definitions, aios_profile.load())
         existing = load_yaml_mapping(config_path, "existing config") if config_path.exists() else {}
         existing_servers = existing.get("mcp_servers", {})
         if not isinstance(existing_servers, dict):

@@ -56,6 +56,24 @@ Facts about this computer: OS and versions, shell, ports already taken, traps th
 """,
     "machine/shell.zsh": "# Personal zsh aliases and functions, sourced by the shared ~/.zshrc.\n",
     "machine/shell.ps1": "# Personal PowerShell functions, dot-sourced by the shared profile.\n",
+    "machine/install.yaml": """# Your install profile: what AI-OS adds on top of the shared base on THIS machine.
+# Read by setup/install-mac.sh and setup/install-windows.ps1; an AIOS_* env var wins over a value here.
+
+shell_theme: false       # Oh My Zsh + Powerlevel10k and AI-OS's themed ~/.zshrc (yours kept as *.pre-aios.bak)
+fonts: false             # CaskaydiaCove Nerd Font
+terminal_theme: false    # Terminal.app (Pro) and Warp restyle
+
+clis: []                 # optional CLIs from npm: codex, gemini
+
+mcp:                     # shared servers live in ai-config/mcp/*.yaml
+  enable: []             # names to turn on (e.g. rea)
+  disable: []            # names to turn off
+  servers: []            # your own, same shape as ai-config/mcp/*.yaml
+
+brew: []                 # extra Homebrew formulae
+casks: []                # extra Homebrew casks
+npm: []                  # extra global Node packages (pnpm)
+""",
     "inbox/pending.md": "# Pending\n\nWhat is waiting on you. Delete an item when it is done.\n",
 }
 
@@ -73,5 +91,7 @@ def seed(root):
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] and sys.argv[1].startswith("-"):
+        sys.exit(__doc__)
     done = seed(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent)
     print(", ".join(done) if done else "nothing to create")
