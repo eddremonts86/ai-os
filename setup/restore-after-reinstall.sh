@@ -5,11 +5,13 @@
 #
 # Usage:
 #   bash restore-after-reinstall.sh [SRC]
-#   SRC defaults to /Volumes/Stuff/Development
+#   SRC defaults to ~/Backups/ai-os (the backup script's default).
+#   Projects land in AI_OS_PROJECTS_DIR, default ~/Projects.
 
 set -euo pipefail
 
-SRC="${1:-/Volumes/Stuff/Development}"
+SRC="${1:-$HOME/Backups/ai-os}"
+PROJECTS_DIR="${AI_OS_PROJECTS_DIR:-$HOME/Projects}"
 PROJECTS_SRC="$SRC/Projects"
 CONFIGS_SRC="$SRC/home-configs"
 
@@ -17,9 +19,9 @@ log() { echo "[restore] $*"; }
 
 [ -d "$SRC" ] || { echo "[restore] not found: $SRC (plug in the backup volume first)" >&2; exit 1; }
 
-log "1/2 $PROJECTS_SRC → ~/Projects"
-mkdir -p "$HOME/Projects"
-rsync -a --info=progress2 "$PROJECTS_SRC/" "$HOME/Projects/"
+log "1/2 $PROJECTS_SRC → $PROJECTS_DIR"
+mkdir -p "$PROJECTS_DIR"
+rsync -a --info=progress2 "$PROJECTS_SRC/" "$PROJECTS_DIR/"
 
 log "2/2 $CONFIGS_SRC → \$HOME (preserving relative paths)"
 rsync -a --info=progress2 "$CONFIGS_SRC/" "$HOME/"
