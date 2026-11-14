@@ -267,7 +267,7 @@ def only_changed(res, repo, changed):
     top = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=repo, capture_output=True,
                               text=True).stdout.strip() or repo).resolve()
     return [f for f in res if f["tool"] == "trivy-image" or not f["file"]
-            or os.path.relpath(repo / f["file"], top) in changed]
+            or Path(os.path.relpath(repo / f["file"], top)).as_posix() in changed]
 
 
 def main():
