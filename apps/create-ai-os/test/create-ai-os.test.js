@@ -414,9 +414,10 @@ describe('package contract', () => {
     assert.match(readFileSync(bin, 'utf8'), /^#!\/usr\/bin\/env node\n/);
   });
 
-  test('ships only bin, lib, README and LICENSE, and all of them exist', () => {
-    assert.deepEqual(PKG.files, ['bin/', 'lib/', 'README.md', 'LICENSE']);
-    for (const f of ['bin', 'lib', 'README.md', 'LICENSE']) {
+  test('ships bin, lib, the shrinkwrap, README and LICENSE, and all of them exist', () => {
+    // npm-shrinkwrap.json pins the whole dependency tree for npx users (a package-lock is never published)
+    assert.deepEqual(PKG.files, ['bin/', 'lib/', 'npm-shrinkwrap.json', 'README.md', 'LICENSE']);
+    for (const f of ['bin', 'lib', 'npm-shrinkwrap.json', 'README.md', 'LICENSE']) {
       assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), f);
     }
   });
