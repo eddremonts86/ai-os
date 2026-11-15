@@ -10,7 +10,7 @@ import {
   type RefAttributes,
 } from "react"
 import {
-  motion,
+  m as motion, // Local change: the lightweight component; main.tsx provides the features through LazyMotion
   useInView,
   useReducedMotion,
   type DOMMotionComponents,

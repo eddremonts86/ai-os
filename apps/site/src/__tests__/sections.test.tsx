@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@/test/render'
 import { describe, expect, it } from 'vitest'
 import { showAllInView } from '@/test/browser-mocks'
 import { createAiOsPackage, readRepoFile, repoFileExists, sitePublicFileExists } from '@/test/repo'

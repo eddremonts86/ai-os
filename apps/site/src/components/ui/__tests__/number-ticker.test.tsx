@@ -1,4 +1,4 @@
-import { act, render, waitFor } from '@testing-library/react'
+import { act, render, waitFor } from '@/test/render'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { setReducedMotion, showAllInView } from '@/test/browser-mocks'
 import { NumberTicker } from '../number-ticker'
