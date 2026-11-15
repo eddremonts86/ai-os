@@ -6,7 +6,11 @@
 #   git clone https://github.com/eddremonts86/ai-os "$AI_OS_ROOT"
 #   cd "$AI_OS_ROOT"
 #   (AI_OS_ROOT = any checkout path you choose; the script derives it from its own location)
-#   bash setup/install-mac.sh
+#   bash setup/install-mac.sh            # what install.yaml says, else the defaults
+#   bash setup/install-mac.sh --full     # every CLI, component and package, no exclusions (the shell and
+#                                        # terminal look stay opt-in: shell_theme, fonts, terminal_theme)
+#   bash setup/install-mac.sh --yes      # no confirmation prompt (same as ASSUME_YES=1)
+# To choose CLIs, components and packages one by one: `npx @edd_remonts/create-ai-os` or `ai-os install`.
 #
 # Idempotent: runs multiple times without breaking anything.
 # Options (env vars):
@@ -32,9 +36,22 @@
 #
 # Per-person profile: context/personal/machine/install.yaml (git-ignored, created by
 # setup/seed-personal-context.py). It sets the AIOS_* opt-ins above (an env var wins), the
-# optional CLIs (clis: codex, gemini), extra packages (brew, casks, npm) and MCP overrides.
+# optional CLIs (clis: codex, gemini), extra packages (brew, casks, npm) and MCP overrides, and what the
+# selector (create-ai-os / ai-os install) chose: skip: (claude, opencode, memory, mcp, ponytail, hooks),
+# exclude: (package names from the shared lists), extras: and ui_indexer:. --full / AIOS_FULL=1 ignores
+# skip: and exclude: and turns every opt-in on.
 
 set -euo pipefail
+
+for arg in "$@"; do
+  case "$arg" in
+    --full) export AIOS_FULL=1 ;;
+    -y | --yes) export ASSUME_YES=1 ;;
+    --dry-run) export DRY_RUN=1 ;;
+    -h | --help) sed -n '2,/^$/p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) echo "install-mac.sh: unknown option $arg (try --help)" >&2; exit 2 ;;
+  esac
+done
 
 # ─── Paths ───
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -63,17 +80,60 @@ profile_get() {
 }
 # An env var wins; otherwise `key: true` in the profile turns the opt-in on.
 profile_flag() { [ "$(profile_get "$1")" = "true" ] && echo 1 || echo 0; }
+# What the environment said before any profile read: a second read (once yq is installed) must start from these,
+# not from the 0s the first read wrote while yq was missing.
+_ENV_SHELL_THEME="${AIOS_SHELL_THEME-}" _ENV_FONTS="${AIOS_FONTS-}" _ENV_TERMINAL_THEME="${AIOS_TERMINAL_THEME-}"
+_ENV_EXTRAS="${EXTRAS-}" _ENV_UI_INDEXER="${UI_INDEXER-}"
 load_profile_flags() {
-  AIOS_SHELL_THEME="${AIOS_SHELL_THEME:-$(profile_flag shell_theme)}"
-  AIOS_FONTS="${AIOS_FONTS:-$(profile_flag fonts)}"
-  AIOS_TERMINAL_THEME="${AIOS_TERMINAL_THEME:-$(profile_flag terminal_theme)}"
+  # The look of your shell and terminal stays opt-in, --full included: it replaces your own ~/.zshrc.
+  AIOS_SHELL_THEME="${_ENV_SHELL_THEME:-$(profile_flag shell_theme)}"
+  AIOS_FONTS="${_ENV_FONTS:-$(profile_flag fonts)}"
+  AIOS_TERMINAL_THEME="${_ENV_TERMINAL_THEME:-$(profile_flag terminal_theme)}"
+  if [ "${AIOS_FULL:-0}" = "1" ]; then
+    EXTRAS=1 UI_INDEXER=1
+    return 0
+  fi
+  EXTRAS="${_ENV_EXTRAS:-$(profile_flag extras)}"
+  UI_INDEXER="${_ENV_UI_INDEXER:-$(profile_flag ui_indexer)}"
+  # skip: turns default-on parts off; an env var already set wins.
+  local s
+  for s in $(profile_get skip); do
+    case "$s" in
+      (claude) SKIP_CLAUDE_NATIVE="${SKIP_CLAUDE_NATIVE:-1}" ;;
+      (opencode) SKIP_OPENCODE="${SKIP_OPENCODE:-1}" ;;
+      (memory) SKIP_MEMORY="${SKIP_MEMORY:-1}" ;;
+      (mcp) SKIP_MCP="${SKIP_MCP:-1}" ;;
+      (ponytail) SKIP_PONYTAIL="${SKIP_PONYTAIL:-1}" ;;
+      (hooks) SKIP_MEMORY_HOOK="${SKIP_MEMORY_HOOK:-1}" SKIP_COMPACT_HOOK="${SKIP_COMPACT_HOOK:-1}" ;;
+      (*) warn "install.yaml skip: unknown entry '$s' (claude, opencode, memory, mcp, ponytail, hooks)" ;;
+    esac
+  done
+}
+# A shared package list without the names in install.yaml exclude: (all of it under --full).
+# Brewfile lines match on the quoted name, plain lists (pip, npm) on the entry without its comment.
+without_excluded() {
+  local ex=""
+  [ "${AIOS_FULL:-0}" = "1" ] || ex="$(profile_get exclude)"
+  [ -f "$1" ] || return 0
+  # The list goes in through the environment: BSD awk rejects a newline inside -v.
+  AIOS_EXCLUDE="$ex" awk '
+    BEGIN { n = split(ENVIRON["AIOS_EXCLUDE"], a, "\n"); for (i = 1; i <= n; i++) if (a[i] != "") x[a[i]] = 1 }
+    {
+      name = $0
+      if (match($0, /^(brew|cask) "[^"]+"/)) { name = substr($0, RSTART, RLENGTH); sub(/^(brew|cask) "/, "", name); sub(/"$/, "", name) }
+      else { sub(/#.*/, "", name); gsub(/[ \t]/, "", name) }
+      if (!(name in x)) print
+    }' "$1"
 }
 load_profile_flags
 # Global Node packages to have: the shared list, the profile's npm:, and the optional CLIs that ship on npm.
 npm_wanted() {
-  { grep -vE '^[[:space:]]*(#|$)' "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" 2>/dev/null || true; } | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//'
+  { without_excluded "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" | grep -vE '^[[:space:]]*(#|$)' || true; } | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//'
   profile_get npm
-  for cli in $(profile_get clis); do
+  local clis
+  clis="$(profile_get clis)"
+  [ "${AIOS_FULL:-0}" = "1" ] && clis="codex gemini"
+  for cli in $clis; do
     case "$cli" in
       (codex) echo "@openai/codex" ;;
       (gemini) echo "@google/gemini-cli" ;;
@@ -148,6 +208,16 @@ NPM_GLOBALS="$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
 PIP_PACKAGES="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
 SKILLS_DIR="$AI_OS_ROOT/ai-config/skills"
 
+# The lists as this install uses them: install.yaml exclude: removed (refreshed once yq is there).
+BREWFILE_USE="$(mktemp -t aios-brewfile.XXXXXX)"; BREWFILE_EXTRAS_USE="$(mktemp -t aios-brewfile-extras.XXXXXX)"; PIP_USE="$(mktemp -t aios-pip-list.XXXXXX)"
+trap 'rm -f "$BREWFILE_USE" "$BREWFILE_EXTRAS_USE" "$PIP_USE"' EXIT
+use_lists() {
+  without_excluded "$BREWFILE" > "$BREWFILE_USE"
+  without_excluded "$BREWFILE_EXTRAS" > "$BREWFILE_EXTRAS_USE"
+  without_excluded "$PIP_PACKAGES" > "$PIP_USE"
+}
+use_lists
+
 # count non-comment, non-blank lines in a package file (0 if missing)
 count_pkgs() { [ -f "$1" ] && { grep -cvE '^[[:space:]]*(#|$)' "$1" || true; } || echo 0; }
 # comma-join names on stdin, wrap to terminal-ish width, indent
@@ -155,26 +225,27 @@ join_fold() { paste -sd' ' - | sed 's/ /, /g' | fold -s -w 66 | sed 's/^/       
 
 show_manifest() {
   local n_formulae n_casks n_node n_pip n_skills
-  n_formulae=$(grep -cE '^brew ' "$BREWFILE" 2>/dev/null || echo 0)
-  n_casks=$(grep -cE '^cask ' "$BREWFILE" 2>/dev/null || echo 0)
+  n_formulae=$(grep -cE '^brew ' "$BREWFILE_USE" 2>/dev/null || echo 0)
+  n_casks=$(grep -cE '^cask ' "$BREWFILE_USE" 2>/dev/null || echo 0)
   n_node=$(npm_wanted | grep -c . || true)
-  n_pip=$(count_pkgs "$PIP_PACKAGES")
+  n_pip=$(count_pkgs "$PIP_USE")
   n_skills=$([ -d "$SKILLS_DIR" ] && find "$SKILLS_DIR" -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ' || echo 0)
 
+  [ "${AIOS_FULL:-0}" = "1" ] && log "--full: every CLI, component and package (install.yaml skip: and exclude: ignored; shell/terminal look stays opt-in)"
   log "This will install / configure the following on your machine:"
   echo ""
   echo "  📦 Homebrew CLI tools & runtimes ($n_formulae):"
-  grep -E '^brew ' "$BREWFILE" 2>/dev/null | sed -E 's/brew "([^"]+)".*/\1/' | join_fold
+  grep -E '^brew ' "$BREWFILE_USE" 2>/dev/null | sed -E 's/brew "([^"]+)".*/\1/' | join_fold
   echo ""
   echo "  🖥  Homebrew apps & fonts (casks, $n_casks):"
-  grep -E '^cask ' "$BREWFILE" 2>/dev/null | sed -E 's/cask "([^"]+)".*/\1/' | join_fold
+  grep -E '^cask ' "$BREWFILE_USE" 2>/dev/null | sed -E 's/cask "([^"]+)".*/\1/' | join_fold
   echo ""
   if [ "${EXTRAS:-0}" = "1" ]; then
     local n_formulae_x n_casks_x
-    n_formulae_x=$(grep -cE '^brew ' "$BREWFILE_EXTRAS" 2>/dev/null || echo 0)
-    n_casks_x=$(grep -cE '^cask ' "$BREWFILE_EXTRAS" 2>/dev/null || echo 0)
+    n_formulae_x=$(grep -cE '^brew ' "$BREWFILE_EXTRAS_USE" 2>/dev/null || echo 0)
+    n_casks_x=$(grep -cE '^cask ' "$BREWFILE_EXTRAS_USE" 2>/dev/null || echo 0)
     echo "  ➕ EXTRAS=1 — also installing ($n_formulae_x CLI + $n_casks_x apps):"
-    { grep -E '^(brew|cask) ' "$BREWFILE_EXTRAS" 2>/dev/null | sed -E 's/(brew|cask) "([^"]+)".*/\2/'; } | join_fold
+    { grep -E '^(brew|cask) ' "$BREWFILE_EXTRAS_USE" 2>/dev/null | sed -E 's/(brew|cask) "([^"]+)".*/\2/'; } | join_fold
   else
     log "Skipping optional apps/runtimes in Brewfile.extras (set EXTRAS=1 to include them)"
   fi
@@ -183,11 +254,20 @@ show_manifest() {
   npm_wanted | join_fold
   echo ""
   echo "  🐍 Python packages in ~/.ai-os/venv ($n_pip):"
-  grep -vE '^[[:space:]]*(#|$)' "$PIP_PACKAGES" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
+  grep -vE '^[[:space:]]*(#|$)' "$PIP_USE" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
   echo ""
   echo "  🧠 AI skills symlinked into every CLI (~$n_skills)"
-  echo "  🔌 MCP servers → ~/.hermes/config.yaml"
-  echo "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+  [ "${SKIP_MCP:-0}" = "1" ] || echo "  🔌 MCP servers → ~/.hermes/config.yaml"
+  [ "${SKIP_MEMORY:-0}" = "1" ] || echo "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+  [ "${UI_INDEXER:-0}" = "1" ] && echo "  🧩 ui-indexador (shadcn registry index, launchd services)"
+  local skipped=""
+  [ "${SKIP_CLAUDE_NATIVE:-0}" = "1" ] && skipped+=" Claude Code"
+  [ "${SKIP_OPENCODE:-0}" = "1" ] && skipped+=" opencode"
+  [ "${SKIP_MEMORY:-0}" = "1" ] && skipped+=" memory-stack"
+  [ "${SKIP_MCP:-0}" = "1" ] && skipped+=" MCP"
+  [ "${SKIP_PONYTAIL:-0}" = "1" ] && skipped+=" ponytail"
+  [ "${SKIP_MEMORY_HOOK:-0}" = "1" ] && skipped+=" hooks"
+  [ -n "$skipped" ] && echo "  ⏭  Skipped:$skipped"
   if [ "${AIOS_SHELL_THEME:-0}" = "1" ]; then
     echo "  🐚 Shell: Oh My Zsh, Powerlevel10k, AI-OS ~/.zshrc and ~/.p10k.zsh (yours kept as *.pre-aios.bak)"
   else
@@ -232,6 +312,12 @@ log "═════════════════════════
 echo ""
 
 # ─── Preflight: show everything, then confirm ───
+# install.yaml (skip:, exclude:, opt-ins) needs yq. When there is one, get yq first so the list below is
+# the one that gets installed; without one there is nothing to read and yq comes in step 0 as before.
+if [ -f "$INSTALL_PROFILE" ] && ! command -v yq >/dev/null 2>&1 && command -v brew >/dev/null 2>&1; then
+  log "Installing yq first, to read $INSTALL_PROFILE..."
+  brew install yq && { load_profile_flags; use_lists; } || warn "yq install failed: install.yaml not applied to the list below"
+fi
 show_manifest
 confirm_or_exit
 
@@ -246,7 +332,7 @@ command -v brew >/dev/null || {
   exit 1
 }
 command -v gh >/dev/null || { err "gh (GitHub CLI) not installed. brew install gh"; exit 1; }
-command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; load_profile_flags; }
+command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; load_profile_flags; use_lists; }
 
 ok "Prerequisites OK"
 echo ""
@@ -262,7 +348,7 @@ if [ "${SKIP_BREW:-0}" != "1" ]; then
   # --no-upgrade: install what is missing, never upgrade what is already there
   # (a re-run used to upgrade every outdated cask, e.g. docker-desktop mid-use).
   # A failed package is reported at the end instead of aborting every later step.
-  if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile; then
+  if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file="$BREWFILE_USE"; then
     ok "Brew packages installed"
   else
     BREW_FAILED=1
@@ -283,7 +369,7 @@ if [ "${SKIP_BREW:-0}" != "1" ]; then
   rm -f "$profile_brewfile"
   if [ "${EXTRAS:-0}" = "1" ]; then
     log "1b. EXTRAS=1 — installing dev-env/packages/Brewfile.extras..."
-    if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile.extras; then
+    if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file="$BREWFILE_EXTRAS_USE"; then
       ok "Brew extras installed"
     else
       BREW_FAILED=1
@@ -381,7 +467,7 @@ if [ "${SKIP_PIP:-0}" != "1" ]; then
       [ -z "$pkg" ] && continue
       dist="$(printf '%s' "$pkg" | sed -E 's/\[.*//; s/[><=~!].*//' | xargs | tr '[:upper:]' '[:lower:]' | tr '_' '-')"
       printf '%s\n' "$installed_dists" | grep -qxF "$dist" || printf '%s\n' "$pkg" >> "$pip_req"
-    done < "$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
+    done < "$PIP_USE"
     if [ ! -s "$pip_req" ]; then
       ok "Python packages already installed in $AIOS_VENV (none missing)"
     elif uv pip install --python "$AIOS_VENV/bin/python" -r "$pip_req"; then

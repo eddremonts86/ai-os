@@ -1,7 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -61,7 +61,7 @@ describe('--help / --version', () => {
       const r = run([flag]);
       assert.equal(r.status, 0);
       assert.match(r.stdout, /Usage: create-ai-os \[folder\] \[options\]/);
-      assert.match(r.stdout, /--clone-only/);
+      for (const opt of ['--clone-only', '--here', '--full', '-y, --yes', '--dry-run']) assert.ok(r.stdout.includes(opt), opt);
       assert.match(r.stdout, /-h, --help/);
       assert.match(r.stdout, /-V, --version/);
       assert.match(r.stdout, new RegExp(`create-ai-os v${PKG.version.replaceAll('.', '\\.')}`));
@@ -354,6 +354,58 @@ describe('Windows installer', { skip: !POSIX && 'needs a POSIX shell for the pow
   });
 });
 
+// ---- --full / --yes / --dry-run / --here --------------------------------------------------
+describe('install options', { skip: !POSIX && 'needs a POSIX shell for the installer double' }, () => {
+  // The installer double records the variables create-ai-os hands it.
+  const report = (out) => `echo "FULL=\${AIOS_FULL:-} YES=\${ASSUME_YES:-} DRY=\${DRY_RUN:-}" > '${out}'`;
+
+  for (const [flags, expected] of [
+    [['--full'], 'FULL=1 YES=1 DRY='],
+    [['--yes'], 'FULL= YES=1 DRY='],
+    [['-y', '--dry-run'], 'FULL= YES=1 DRY=1'],
+    [[], 'FULL= YES= DRY='],
+  ]) {
+    test(`${flags.join(' ') || 'no flags (no terminal)'} -> ${expected}`, (t) => {
+      const dir = sandbox(t);
+      const out = join(dir, 'env');
+      const git = fakeGit(dir, { installer: report(out) });
+      const r = run([join(dir, 'ai-os'), ...flags], { env: { AIOS_GIT_BIN: git.bin, AIOS_FULL: '', ASSUME_YES: '', DRY_RUN: '' } });
+      assert.equal(r.status, 0, r.stderr);
+      assert.equal(readFileSync(out, 'utf8').trim(), expected);
+      if (flags.includes('--full')) assert.match(r.stdout, /Running setup\/install-mac\.sh --full/);
+    });
+  }
+
+  test('an unknown option is refused before anything is cloned', (t) => {
+    const dir = sandbox(t);
+    const git = fakeGit(dir);
+    const r = run([join(dir, 'ai-os'), '--ful'], { env: { AIOS_GIT_BIN: git.bin } });
+    assert.equal(r.status, 2);
+    assert.match(r.stderr, /Unknown option: --ful/);
+    assert.deepEqual(git.calls(), []);
+  });
+
+  test('--here runs the installer of an existing checkout without cloning', (t) => {
+    const dir = sandbox(t);
+    const git = fakeGit(dir);
+    const repo = join(dir, 'My Projects', 'ai-os é'); // an existing checkout may live anywhere
+    mkdirSync(join(repo, 'setup'), { recursive: true });
+    writeFileSync(join(repo, 'CLAUDE.md'), '# x\n');
+    writeFileSync(join(repo, 'setup', 'install-mac.sh'), `pwd > '${join(dir, 'ran')}'\n`);
+    const r = run(['--here', repo, '--yes'], { env: { AIOS_GIT_BIN: git.bin } });
+    assert.equal(r.status, 0, r.stderr);
+    assert.deepEqual(git.calls(), [], 'git was called');
+    assert.equal(realpathSync(readFileSync(join(dir, 'ran'), 'utf8').trim()), realpathSync(repo));
+  });
+
+  test('--here refuses a folder that is not an ai-os checkout', (t) => {
+    const dir = sandbox(t);
+    const r = run(['--here', dir]);
+    assert.equal(r.status, 2);
+    assert.match(r.stderr, /not an ai-os checkout/);
+  });
+});
+
 // ---- the published package ---------------------------------------------------------------
 describe('package contract', () => {
   test('bin entry exists, is a node script and is the file the tests run', () => {
@@ -362,9 +414,9 @@ describe('package contract', () => {
     assert.match(readFileSync(bin, 'utf8'), /^#!\/usr\/bin\/env node\n/);
   });
 
-  test('ships only bin, README and LICENSE, and all of them exist', () => {
-    assert.deepEqual(PKG.files, ['bin/', 'README.md', 'LICENSE']);
-    for (const f of ['bin', 'README.md', 'LICENSE']) {
+  test('ships only bin, lib, README and LICENSE, and all of them exist', () => {
+    assert.deepEqual(PKG.files, ['bin/', 'lib/', 'README.md', 'LICENSE']);
+    for (const f of ['bin', 'lib', 'README.md', 'LICENSE']) {
       assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), f);
     }
   });

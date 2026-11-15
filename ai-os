@@ -19,6 +19,7 @@
 #   skills [...]      →  setup/ai-os-skills.py      (catalogue budget, duplicates, routing bank)
 #   scope [...]       →  setup/ai-os-scope.py       (personal / employer / company: design, identity, guard)
 #   agents [--check]  →  setup/render-agents.py     (ai-config/agents → Claude, Codex, Gemini, opencode)
+#   install [...]     →  apps/create-ai-os --here     (choose CLIs, components, packages; --full for all)
 
 set -euo pipefail
 
@@ -51,6 +52,7 @@ Usage:
                                       check-push scans the commits being pushed
   ai-os project init [PATH]           Give a project CLAUDE.md, .agents/skills/ and the secret-leak .gitignore lines
   ai-os skills [lint|route|bank]      Catalogue budget, near-duplicate descriptions, routing bank
+  ai-os install [--full|--yes]        Choose the CLIs, components and every package, then run the installer
   ai-os agents [--check]              Write ai-config/agents (+ yours) into Claude Code, Codex, Gemini, opencode
   ai-os scope [which|git-config|check-push]  Folder scope: design system, git identity, confidentiality guard
 
@@ -124,6 +126,13 @@ case "${1:-}" in
     py="$HOME/.ai-os/venv/bin/python"   # --write re-renders PNGs with Playwright from the venv
     [ -x "$py" ] || py=python3
     exec "$py" "$AI_OS_ROOT/setup/ai-os-stats.py" "$@"
+    ;;
+  install)
+    shift
+    app="$AI_OS_ROOT/apps/create-ai-os"
+    command -v node >/dev/null 2>&1 || { echo "ai-os install: needs Node 18+ (or run: bash setup/install-mac.sh [--full])" >&2; exit 1; }
+    [ -d "$app/node_modules/@clack/prompts" ] || npm ci --prefix "$app" --ignore-scripts --no-audit --no-fund --silent
+    exec node "$app/bin/create-ai-os.js" --here "$AI_OS_ROOT" "$@"
     ;;
   health)
     shift
