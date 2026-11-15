@@ -7,6 +7,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --shadow-bento: 0 0 0 1px rgb(0 0 0 / 0.03), 0 2px 4px rgb(0 0 0 / 0.05), 0 12px 24px rgb(0 0 0 / 0.05);
+    --shadow-bento-dark: inset 0 -20px 80px -20px rgb(255 255 255 / 0.12);
     --font-heading: var(--font-sans);
     --font-sans: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
@@ -151,3 +153,7 @@
     --ring: #b3ee55;
     --radius: 0.5rem;
 }
+
+/* Browser surfaces in the brand: selection and scrollbars follow the theme tokens. */
+::selection { background: color-mix(in oklch, var(--primary) 35%, transparent); color: var(--foreground); }
+html { scrollbar-color: var(--border) transparent; }

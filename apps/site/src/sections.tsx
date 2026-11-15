@@ -67,7 +67,7 @@ function Group({ label, note, children, className = '' }: { label: string; note:
   return (
     <div className={`relative rounded-xl border border-border bg-background p-4 ${className}`}>
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 font-mono text-[11px]">
-        <span className="uppercase tracking-wider text-foreground">{label}</span>
+        <span className="text-foreground">{label}</span>
         <span className="text-muted-foreground">{note}</span>
       </div>
       {children}
