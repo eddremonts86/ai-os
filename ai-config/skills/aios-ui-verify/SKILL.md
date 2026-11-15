@@ -26,6 +26,23 @@ It only reports a CSS animation that keeps running under `prefers-reduced-motion
 axe-core is taken from the nearest `node_modules/axe-core` or `--axe`. Without it the verdict says
 **a11y NOT CHECKED**; say so in your report, never call that a full pass.
 
+## Anti-slop check (static, advisory)
+
+```bash
+~/.ai-os/venv/bin/python <this skill's dir>/scripts/antislop.py <src dir or files> [--genre modern-minimal] [--json]
+~/.ai-os/venv/bin/python <this skill's dir>/scripts/antislop.py <files> --render [--url <served route> ...] --shots ui-verify/antislop
+```
+
+Hallmark's sloplint (`ai-config/skills/hallmark`, vendored) over the source (`.html .css .jsx .tsx .vue .svelte
+.astro`, Tailwind class strings included): `transition: all`, animated width/height, motion with no reduced-motion
+fallback, SVGs without a name or `aria-hidden`, colour literals outside the token block, tracked-capital labels,
+middle-dot meta strings, invented metrics and the other tells. The Hallmark-only gates (its CSS stamp, a project's own
+`:root`/`.dark` token definitions, focus styled through Tailwind's `focus-visible:`) are taken out. Needs Node.
+Static, it writes nothing. `--render` adds the browser tier (layout, contrast, fold and overflow at 375 to 1920 px) through
+`scripts/hallmark.sh`, which installs a pinned puppeteer-core into `~/.ai-os/hallmark` once; its screenshots go to
+`--shots`, never into the project. Run it with verify.py on what you touched and treat each Floor FAIL as a finding to confirm or dismiss
+in the report; it never changes the verify verdict. Exit 0 none, 1 Floor FAIL, 2 could not run.
+
 ## Compare against a reference
 
 ```bash
