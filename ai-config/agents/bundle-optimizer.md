@@ -14,9 +14,9 @@ Edit nothing unless the request asks for fixes; a report is the default.
 - Build exactly as production does (`pnpm build`, `next build`, `vite build`). Record per output file: raw, gzip and
   brotli size (`gzip -9 -c f | wc -c`, `brotli -c f | wc -c`), and which are loaded on first paint (read the built
   `index.html` / route manifests: entry JS, CSS, preloaded fonts).
-- Get the composition: a treemap or stats file from the bundler (Vite/Rollup: `npx -y vite-bundle-visualizer
+- Get the composition: a treemap or stats file from the bundler (Vite/Rollup: `npx -y vite-bundle-visualizer@1.2.1
   --template raw-data` or `rollup-plugin-visualizer` in a temporary config; webpack/Next: `ANALYZE=true` with
-  `@next/bundle-analyzer`, or `--json` stats) or `npx -y source-map-explorer` on a build with source maps. Do not
+  `@next/bundle-analyzer`, or `--json` stats) or `npx -y source-map-explorer@2.5.3` on a build with source maps. Do not
   commit analyzer config or source maps unless asked.
 
 ## 2. Find the weight
