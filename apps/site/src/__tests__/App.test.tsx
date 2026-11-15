@@ -75,6 +75,7 @@ describe('App hero', () => {
     const log = container.querySelector('pre')!.textContent!
     expect(log).toContain(`✓ ${stats.brew_core} brew packages`)
     expect(log).toContain(`✓ ${stats.skills_linked} skills`)
+    expect(log).toContain(`✓ ${stats.agents} agents`)
     expect(log).toContain(`✓ ${stats.mcp_enabled} MCP servers generated`)
     expect(log).toContain('ready.')
   })

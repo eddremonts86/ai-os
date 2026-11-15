@@ -260,6 +260,16 @@ def zap_baseline(url, raw):
 
 # ---------- main ----------
 
+def only_changed(res, repo, changed):
+    """Keep findings in files the branch touched. trivy-image targets are image names, never in the diff, so they
+    are always kept; paths are compared from the git top, so a scan of a subfolder still matches."""
+    repo = Path(repo).resolve()
+    top = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=repo, capture_output=True,
+                              text=True).stdout.strip() or repo).resolve()
+    return [f for f in res if f["tool"] == "trivy-image" or not f["file"]
+            or Path(os.path.relpath(repo / f["file"], top)).as_posix() in changed]
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("repo")
@@ -308,12 +318,7 @@ def main():
             # These scan whole files with no baseline of their own: keep only files this branch touches, so an
             # untouched Dockerfile's old finding is not reported as new. ponytail: an old finding inside a changed
             # file still shows; diff against a baseline run if that gets noisy.
-            # Only file findings: trivy-image targets are image names, never in the diff. Paths are compared from
-            # the git top, so a scan of a subfolder still matches.
-            top = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=repo, capture_output=True,
-                                      text=True).stdout.strip() or repo)
-            res = [f for f in res if f["tool"] == "trivy-image" or not f["file"]
-                   or os.path.relpath(repo / f["file"], top) in changed]
+            res = only_changed(res, repo, changed)
         findings += res
         status[name] = f"ran ({st}), {len(res)} finding(s)"
 
