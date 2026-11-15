@@ -131,6 +131,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
 
   return (
     <svg
+      aria-hidden="true"
       fill="none"
       width={svgDimensions.width}
       height={svgDimensions.height}
