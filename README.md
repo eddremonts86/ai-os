@@ -14,7 +14,7 @@
 
 ## What you get
 
-- **The same assistant on every machine.** One set of skills, rules and slash commands is linked into all six AI CLIs, so they behave alike.
+- **The same assistant on every machine.** One set of skills, 15 agents, rules and slash commands reaches all six AI CLIs, so they behave alike.
 - **A memory that survives sessions.** A local knowledge graph remembers decisions, and every project's code is indexed for search. It runs on your machine, with no API key.
 - **A setup that looks after itself.** Health checks, encrypted backups and a guard against pushing secrets run on their own (see the schedule below).
 - **A way of working.** Big tasks get a written spec, plans run in small checked steps, and nothing counts as "done" until it has been shown to work.
@@ -27,7 +27,7 @@ flowchart LR
     B["Encrypted backup<br/>13:00, restore-checked"]
   end
   subgraph push["Every git push"]
-    G["Gate: tests, syntax, skill budget,<br/>no secret values in the commits"]
+    G["Gate: tests, syntax, skill budget,<br/>security scan, no secret values"]
   end
 ```
 
@@ -146,6 +146,20 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 - **PR workflow:** `file-pr` (problem-first PR descriptions), `babysit-pr` (watch CI and review bots without polling) and `full-stop` (take a change to a ready PR unattended, never merge), adapted from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack). Notes: [`docs/theo-patterns.md`](docs/theo-patterns.md).
 - **Documents:** `two-layer-doc`: anything others will read gets a plain front layer, a divider, then the technical layer (this README).
 - **Slash commands** (`/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux`, …) are skills plus Markdown sources in `ai-config/commands/` for VS Code prompts and Gemini TOML.
+
+### Agents
+
+**15 shared agents** live in `ai-config/agents/` (one Markdown file each; yours go in `context/personal/agents/`, git-ignored, and replace a shared one of the same name). `ai-os agents`, also run by the installer, writes each one in the CLI's own format: Claude Code, Gemini CLI and opencode get Markdown, Codex gets TOML. A file you wrote yourself in those folders is never overwritten. Ask for one by name ("use the security-reviewer agent", `@ui-reviewer` in Gemini), or let the CLI pick it from its description.
+
+| Area | Agents |
+|---|---|
+| Writing and docs | `docs-writer`, `docs-drift-checker`, `source-checker` |
+| Review | `aios-reviewer`, `fresh-reviewer` (cold review of a Spec or plan) |
+| Code | `root-cause-debugger`, `test-writer`, `windows-porter`, `installer-tester` |
+| Security | `security-reviewer`, `threat-modeler`, `supply-chain-vetter` |
+| Design | `ui-reviewer`, `a11y-auditor`, `design-system-keeper` |
+
+The reviewers are read-only (enforced in Claude Code and opencode; on Codex and Gemini only by their instructions). `/aios-security-review` and `/aios-ui-review` hand their fresh review to `security-reviewer` and `ui-reviewer`. What each one does: [`ai-config/agents/README.md`](ai-config/agents/README.md).
 
 ### The method
 
