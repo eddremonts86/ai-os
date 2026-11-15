@@ -79,6 +79,23 @@ class GuardTests(unittest.TestCase):
         code, out = sc.check_push(CFG, repo, ["HEAD"])
         self.assertEqual(code, 1)
 
+    def test_check_tree_scans_every_tracked_file_but_personal_and_fails_on_warn_too(self):
+        # 2026-11-15: an employer's name sat in LICENSE and a skill description from before the push guard.
+        repo = Path(tempfile.mkdtemp())
+        git = lambda *a: subprocess.run(["git", "-C", str(repo), *a], check=True, capture_output=True)
+        git("init", "-q"); git("config", "user.email", "t@example.com"); git("config", "user.name", "t")
+        (repo / "context/personal/work").mkdir(parents=True)
+        (repo / "context/personal/work/acme.md").write_text("Acme notes, ACME-12\n")
+        (repo / "README.md").write_text("clean\n")
+        (repo / "logo.png").write_bytes(b"\x89PNG\0Acme")
+        git("add", "-f", "."); git("commit", "-qm", "base")
+        code, out = sc.check_tree(CFG, repo)
+        self.assertEqual((code, out), (0, []), "personal files and binaries are not scanned")
+        (repo / "LICENSE").write_text("Copyright (c) 2026 Someone at Acme\n"); git("add", "."); git("commit", "-qm", "w")
+        code, out = sc.check_tree(CFG, repo)
+        self.assertEqual(code, 1, "a warn term fails the whole-tree check")
+        self.assertEqual(out, ["WARN  'Acme' (work) in LICENSE"])
+
     def test_cli_accepts_a_new_branch_range_as_one_argument(self):
         # pre-push passes "SHA --not --remotes" for a branch the remote does not have yet.
         import sys
