@@ -17,9 +17,8 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    | Landing, portfolio, campaign, showcase (persuade, experience) | `taste-skill` |
    | App UI, dashboard, form, settings, component, docs (operate, read) | `frontend-design` |
 
-   The brief's own words win over any default of the skill. When the user names **Hallmark** (a standalone page in
-   one of its 50 dealt themes, or `/hallmark redesign|audit <path>`), run `hallmark` instead of steps 2 to 6; its
-   floor and sweep replace them, and step 7 still applies.
+   The brief's own words win over any default of the skill. A standalone page with its own look (a dealt, named or
+   custom theme) is `/aios-ui-page` (Hallmark) instead; a new look for an existing page is `/aios-ui-redesign`.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
 4. **Compose from proven pieces, do not invent a visual system.** A from-scratch redesign was rejected on
