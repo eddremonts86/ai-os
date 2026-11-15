@@ -31,7 +31,7 @@ fault-inject a shared or production system.
 
 ## 3. Server under sustained load (when there is one)
 
-`npx -y autocannon -d 300 -c <n>` (or `k6`) against a local instance at a steady realistic rate for minutes, not
+`npx -y autocannon@8.0.0 -d 300 -c <n>` (or `k6`) against a local instance at a steady realistic rate for minutes, not
 seconds. Watch p95/p99 latency drift, error rate, and the process RSS / file descriptors / DB connections
 (`ps`, `lsof -p`, `docker stats`). Drift upward at a constant rate is the finding.
 

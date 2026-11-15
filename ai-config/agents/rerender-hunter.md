@@ -17,7 +17,7 @@ logs). Measure with one of, in this order:
 - **react-scan** without installing it into the project: inject a pinned version
   (`https://unpkg.com/react-scan@<version>/dist/auto.global.js`, version from `npm view react-scan version`)
   into the page with Playwright (`page.add_init_script` / a `<script>` before the app) and read its per-component
-  render counts after an interaction script; or `npx -y react-scan@latest <url>`.
+  render counts after an interaction script; or `npx -y react-scan@<same version> <url>`.
 - **React Profiler API** in a scratch harness: wrap the root in `<Profiler onRender>` in a test or a temporary entry
   file outside `src/`, and record `id`, `phase`, `actualDuration` per commit.
 - **Vue:** Vue Devtools performance timeline, or `app.config.performance = true` and the browser's Performance panel.
