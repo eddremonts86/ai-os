@@ -64,6 +64,17 @@ class AntislopTests(unittest.TestCase):
 
 
 class AntislopFilterTests(unittest.TestCase):
+    def test_a_path_on_another_drive_stays_absolute(self):
+        real = antislop.os.path.relpath
+        def other_drive(p, *a):
+            raise ValueError("path is on mount 'C:', start on mount 'D:'")
+        antislop.os.path.relpath = other_drive
+        try:
+            self.assertEqual(antislop.shorten("/abs/x.tsx"), "/abs/x.tsx")
+        finally:
+            antislop.os.path.relpath = real
+        self.assertEqual(antislop.shorten("src/x.tsx"), "src/x.tsx")
+
     def test_token_definitions_only(self):
         keep = antislop.keep
         self.assertFalse(keep({"gate": "48", "evidence": "colour literal #fff outside tokens (--card on .dark)"}))
