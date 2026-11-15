@@ -1,7 +1,10 @@
 """aios-ui-verify's antislop.py: Hallmark's sloplint on a non-Hallmark project, without the Hallmark-only gates."""
 
 import importlib.util
+import os
+import re
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -82,6 +85,66 @@ class AntislopFilterTests(unittest.TestCase):
         self.assertFalse(keep({"gate": "20", "evidence": "no Hallmark stamp"}))
         self.assertTrue(keep({"gate": "26a", "evidence": "no :focus-visible styling anywhere"}, tw_focus=False))
         self.assertFalse(keep({"gate": "26a", "evidence": "no :focus-visible styling anywhere"}, tw_focus=True))
+
+
+@unittest.skipIf(os.name == "nt" or not shutil.which("node"), "bash launcher; needs node")
+class RenderTests(unittest.TestCase):
+    def test_render_screenshots_leave_the_project(self):
+        # a stand-in launcher that does what sloplint --render does: screenshots in a .hallmark/ beside the file
+        root = Path(tempfile.mkdtemp())
+        page = root / "site" / "index.html"
+        page.parent.mkdir()
+        page.write_text("<p>x</p>", encoding="utf-8")
+        fake = root / "fake.sh"
+        fake.write_text('#!/usr/bin/env bash\nfor a; do case "$a" in /*.html) mkdir -p "$(dirname "$a")/.hallmark/shots"; '
+                        'touch "$(dirname "$a")/.hallmark/shots/x.png";; esac; done\necho \'{"findings": []}\'\n', encoding="utf-8")
+        real = antislop.LAUNCHER
+        antislop.LAUNCHER = fake
+        try:
+            antislop.run([page], render=True, shots=root / "shots")
+        finally:
+            antislop.LAUNCHER = real
+        self.assertFalse((page.parent / ".hallmark").exists(), "screenshots left in the project")
+        self.assertTrue(list((root / "shots").rglob("x.png")))
+
+
+@unittest.skipIf(os.name == "nt" or not shutil.which("node"), "bash launcher; needs node")
+class LauncherTests(unittest.TestCase):
+    LAUNCHER = ROOT / "ai-config/skills/aios-ui-verify/scripts/hallmark.sh"
+
+    def run_launcher(self, *args):
+        return subprocess.run(["bash", str(self.LAUNCHER), *args], capture_output=True, text=True, timeout=120,
+                              env={**os.environ, "HALLMARK_NO_INSTALL": "1"})
+
+    def test_only_the_skill_scripts_it_names(self):
+        for bad in ("install", "install-hook", "picture", "../../x", ""):
+            self.assertEqual(self.run_launcher(bad).returncode, 2, bad)
+
+    def test_runs_a_hallmark_script(self):
+        p = self.run_launcher("theme", "list")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertIn("Kiln", p.stdout)
+
+
+class CommandDriftTests(unittest.TestCase):
+    """The aios-ui-* commands built on Hallmark only call scripts and theme.mjs subcommands that exist."""
+
+    def test_every_launcher_call_exists(self):
+        theme_usage = (ROOT / "ai-config/skills/hallmark/scripts/theme.mjs").read_text(encoding="utf-8")
+        subs = set(re.findall(r"node theme\.mjs (\w+)", theme_usage))
+        launcher = (ROOT / "ai-config/skills/aios-ui-verify/scripts/hallmark.sh").read_text(encoding="utf-8")
+        allowed = set(re.search(r"^\s*(sloplint \| [^)]*)\)", launcher, re.M).group(1).replace(" ", "").split("|"))
+        calls = 0
+        for name in ("aios-ui-page", "aios-ui-redesign", "aios-ui-audit", "aios-ui-themes", "aios-ui-photos"):
+            text = (ROOT / f"ai-config/skills/{name}/SKILL.md").read_text(encoding="utf-8")
+            self.assertIn("disable-model-invocation: true", text, name)
+            for script, sub in re.findall(r"\$H (\w+)(?: (\w+))?", text):
+                calls += 1
+                self.assertIn(script, allowed, f"{name}: $H {script}")
+                if script == "theme" and sub:
+                    self.assertIn(sub, subs, f"{name}: $H theme {sub}")
+            self.assertNotIn("theme index", text, name)
+        self.assertGreater(calls, 8, "the regex stopped finding the commands' launcher calls")
 
 
 if __name__ == "__main__":

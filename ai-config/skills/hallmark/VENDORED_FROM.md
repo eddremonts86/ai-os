@@ -31,14 +31,18 @@ remote code. Scripts use only `node:*` builtins. Network: `api.together.xyz` (im
 1. `SKILL.md` `description`: explicit invocation only (the user names Hallmark). Upstream also triggered on any
    "build or design something new", which collides with `/aios-ui-design` and the rule to compose from proven
    pieces (`rules/always_do.md` § UI).
-2. `SKILL.md`: an "AI-OS limits" block under the title (no installer or hook, never `theme.mjs index`, image
+2. `SKILL.md`: an "AI-OS limits" block (it also points the scripts at `hallmark.sh`) under the title (no installer or hook, never `theme.mjs index`, image
    generation only on request even when `TOGETHER_API_KEY` is set, never install or start a project outside the
    current one without asking, say when the page loads third-party fonts or photos).
 3. `agents/openai.yaml`: `allow_implicit_invocation: false` (Codex).
 
 ## How AI-OS uses it
 
-- `/hallmark <prompt>`, `/hallmark redesign <path>`, `/hallmark audit <path>` when the user names it.
+- `/hallmark <prompt>`, `/hallmark redesign <path>`, `/hallmark audit <path>` when the user names it, and the
+  AI-OS commands built on it: `/aios-ui-page`, `/aios-ui-redesign`, `/aios-ui-audit`, `/aios-ui-themes`,
+  `/aios-ui-photos`.
+- `ai-config/skills/aios-ui-verify/scripts/hallmark.sh` runs its scripts with the browser tier (puppeteer-core
+  pinned in `~/.ai-os/hallmark`, installed once with `--ignore-scripts`).
 - `ai-config/skills/aios-ui-verify/scripts/antislop.py` runs its `sloplint.mjs` statically on any project, without
   the Hallmark-only gates, as an advisory check of `/aios-ui-verify`.
 

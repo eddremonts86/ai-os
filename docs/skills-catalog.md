@@ -65,7 +65,9 @@ globally: iaWorkSpace, plansmith and other project-specific skills.
 - **hallmark (third-party MIT, Together AI)**: a standalone page in one of 50 dealt themes under a hard
   anti-slop floor, plus `redesign` and `audit` verbs. Explicit invocation only (the user names Hallmark), with
   AI-OS limits on top (no installer or hook, no Together image calls unless asked, no starting outside projects).
-  Its `sloplint` also runs inside `/aios-ui-verify` as an advisory static check (`scripts/antislop.py`). See
+  Its `sloplint` also runs inside `/aios-ui-verify` as an advisory check (`scripts/antislop.py`, `--render` for
+  the browser tier), and five commands expose the rest: `/aios-ui-page` (build), `/aios-ui-redesign`,
+  `/aios-ui-audit`, `/aios-ui-themes` (list, deal, apply, lock into DESIGN.md) and `/aios-ui-photos`. See
   `ai-config/skills/hallmark/VENDORED_FROM.md`.
 - **custom (Edd)**: tanstack-*, vue-*, react-*, and more.
 

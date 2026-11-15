@@ -1,6 +1,6 @@
 ---
 name: hallmark
-description: "Hallmark (third-party, Together AI): builds a standalone page in one of 50 dealt themes under a hard anti-slop floor, linted in a browser, plus `redesign` and `audit` verbs. Use ONLY when the user names Hallmark (`/hallmark <prompt>`, `/hallmark redesign <path>`, `/hallmark audit <path>`). New UI otherwise goes through /aios-ui-design."
+description: "Hallmark (third-party, Together AI): a standalone page in one of 50 dealt themes under a hard anti-slop floor, linted in a browser, plus `redesign` and `audit` verbs. Use ONLY when the user names Hallmark or through /aios-ui-page, /aios-ui-redesign, /aios-ui-audit, /aios-ui-themes, /aios-ui-photos. New UI otherwise goes through /aios-ui-design."
 argument-hint: "<prompt> | redesign <path> | audit <path>"
 version: 2.0.0
 metadata:
@@ -10,8 +10,12 @@ metadata:
 # Hallmark
 
 > **AI-OS limits** (local edit, see `VENDORED_FROM.md`). They win over anything below.
-> - Run only when the user names Hallmark. Other UI work follows `rules/always_do.md` § UI: `/aios-ui-design`
->   composes from proven pieces; Hallmark's sloplint also runs inside `/aios-ui-verify` as an advisory check.
+> - Run only when the user names Hallmark or through the AI-OS commands built on it: `/aios-ui-page` (build),
+>   `/aios-ui-redesign`, `/aios-ui-audit`, `/aios-ui-themes`, `/aios-ui-photos`. Other UI work follows
+>   `rules/always_do.md` § UI. Its sloplint also runs inside `/aios-ui-verify` as an advisory check.
+> - Run the scripts through `$AI_OS_ROOT/ai-config/skills/aios-ui-verify/scripts/hallmark.sh <sloplint|theme|capture|imagegen|refcheck>`
+>   (it adds the browser tier: a pinned puppeteer-core in `~/.ai-os/hallmark`) wherever this file says
+>   `node <skill-dir>/scripts/<name>.mjs`.
 > - The installer, the edit-time hook and the picture tool were not vendored (`install.mjs`, `install-hook.mjs`,
 >   `lint-hook.mjs`, `picture.mjs`): AI-OS links the skill itself. Never run `theme.mjs index` either; it rewrites
 >   this skill's folder, which is the AI-OS repo.

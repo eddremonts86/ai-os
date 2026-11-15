@@ -247,5 +247,32 @@
     "expect": [
       "aios-ui-verify"
     ]
+  },
+  {
+    "prompt": "deal me three design themes for a pottery school site and apply one",
+    "expect": [
+      "aios-ui-themes"
+    ]
+  },
+  {
+    "prompt": "find openly licensed photos with credits for the hero",
+    "expect": [
+      "aios-ui-photos"
+    ]
+  },
+  {
+    "prompt": "redesign this existing page with a new look but keep its content and wiring",
+    "expect": [
+      "aios-ui-redesign",
+      "redesign-skill",
+      "aios-ui-improve"
+    ]
+  },
+  {
+    "prompt": "audit this page for AI slop tells in a real browser, read only",
+    "expect": [
+      "aios-ui-audit",
+      "saas-review"
+    ]
   }
 ]
