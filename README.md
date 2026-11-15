@@ -39,6 +39,8 @@ flowchart LR
 npx @edd_remonts/create-ai-os
 ```
 
+Every command you can type is listed in [The `ai-os` command](#the-ai-os-command) and [Slash commands](#slash-commands).
+
 It clones the repo, lets you choose the AI CLIs, the components and every package one by one, and runs the installer for your system. `--full` installs every CLI, component and package without asking (your shell and terminal look are only changed if you opt in). The first run takes 30–60 minutes, mostly downloads. When it finishes, `ai-os health` should be green.
 
 ## Decisions to make after installing
@@ -126,6 +128,7 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 
 | Command | Does |
 | --- | --- |
+| `ai-os install [--full\|--yes]` | Choose the AI CLIs, components and every package, then run the installer (`--full`: all of it) |
 | `ai-os health [--json\|--notify]` | 15 functional checks: graph, MCP, memory, tokens, CI, secrets, backups. Runs at 09:30 and 15:30 |
 | `ai-os backup …` | See [§1](#1-backups--ai-os-backup) |
 | `ai-os secrets [audit\|check-push]` | See [§2](#2-recovery-key-and-secrets) |
@@ -138,6 +141,65 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 | `ai-os project init [PATH]` | Give a project a short `CLAUDE.md`, `.agents/skills/` and the secret-leak `.gitignore` lines |
 | `ai-os loop`, `ai-os llm`, `ai-os plans`, `ai-os bootstrap` | Loop runner, local/cloud chat router, plan documents (needs `PLANSMITH_ROOT`), full-stack bootstrap |
 
+### Slash commands
+
+Type these in any CLI (Claude Code, Codex, Gemini CLI, opencode, Antigravity). Each is a skill in `ai-config/skills/` (VS Code prompts and Gemini TOML come from `ai-config/commands/`). Every `aios-*` command runs only when you call it.
+
+**Work**
+
+| Command | Does |
+|---|---|
+| `/aios-project-start` | Write a Spec for a task over ~2 hours or across repos (`specs/current_spec.md`) |
+| `/aios-code` | Implement, fix, refactor or add tests with the AI-OS coding workflow |
+| `/aios-research` | Investigate a question, compare options, evaluate a tool |
+| `/aios-content` | Docs, ADRs, tutorials, release notes |
+| `/aios-loop` | A reusable loop (TASK, INSTRUCTIONS, PROGRESS) with blast-radius levels, for recurring work |
+| `/aios-memory` | Inspect or repair the memory stack (graphiti, Ollama, code indexers) |
+| `/aios-pr-learnings` | Learn a repo's unwritten review rules from its PR comments, pre-review a diff against them |
+| `/aios-quickstart`, `/aios-karpathy` | Bootstrap or load AI-OS in a CLI |
+
+**Ship**
+
+| Command | Does |
+|---|---|
+| `/full` (`/action`) | Spec, plan, build, review, simplify, ship in one run (`/action` stops at reviewed code) |
+| `/full-stop` | Take a change to a ready PR unattended; never merges |
+| `/file-pr` | A PR description that leads with the problem |
+| `/babysit-pr` | Watch a PR through CI and review bots until green |
+| `/build-fix` | Fix a failing build or typecheck with the smallest diff |
+| `/improve-codebase-architecture` | Find deepening opportunities, as a visual report |
+| `/gen-html` | A self-contained HTML document (spec, plan, report, UI mock) |
+| `/vue-review` | Vue code review (Composition API, reactivity, security) |
+
+**UI and design**
+
+| Command | Does |
+|---|---|
+| `/aios-ui-design` | Build a new page, screen or component from proven pieces (ui-indexador), one section shown first |
+| `/aios-ui-page` | A standalone page, component or app screen with its own look, in a dealt, named or custom theme (Hallmark) |
+| `/aios-ui-themes` | Browse, deal and apply Hallmark's 50 themes, or lock a system into `DESIGN.md` |
+| `/aios-ui-photos` | Openly licensed photos for a page, with credits |
+| `/aios-ui-improve` | Fix an existing UI, proven with before and after screenshots |
+| `/aios-ui-redesign` | A new look for an existing page or app, content and wiring kept |
+| `/aios-ui-review` | A cold, read-only design review by a fresh agent |
+| `/aios-ui-audit` | Read-only anti-slop and craft audit in a real browser |
+| `/aios-ui-verify` | The runtime gate: 375/768/1280 px, light and dark, console, overflow, accessibility, anti-slop lint |
+| `/aios-ui-3d` | A 3D scene or WebGL/shader piece |
+| `/aios-ui-video` | A video in code (Remotion or rendered frames) |
+| `/saas-review` | Every route of an app scored on 21 criteria, prioritised findings |
+| `/fix-ui-ux` | Find and fix every UI/UX defect of a product (Impeccable end to end) |
+| `/optimize-mobile` | Every route at 320 to 768 px, verified in iOS Safari, fixed |
+| `/pick-ui-library` | The one library for a frontend task (toasts, charts, drag and drop…) |
+| `/hallmark` | Hallmark itself, when you name it (`/hallmark redesign <path>`, `/hallmark audit <path>`) |
+
+**Security**
+
+| Command | Does |
+|---|---|
+| `/aios-security-review` | A branch or PR before merge: scanners on what it adds, then a code review |
+| `/aios-security-audit` | The whole app: every scanner, then what scanners miss |
+| `/aios-security-fix` | Fix confirmed findings one at a time, each with a test |
+
 ### Skills
 
 - **Global skills** live in `ai-config/skills/<name>/` and are symlinked into every CLI. They include **14 required [superpowers](https://github.com/obra/superpowers)**, **+14 curated ECC skills** (`vendor/ecc/`) and a few vendored ones (claude.tools, gstack, diagram-design, archify). Inventory: [`docs/skills-catalog.md`](docs/skills-catalog.md).
@@ -145,7 +207,7 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plu
 - **Budget:** every skill's description is loaded into every session. `ai-os skills lint` keeps the always-loaded text near 10K tokens (hard cap 500 characters per description, target 350) and flags near-duplicates. `ai-os skills bank` routes typical requests as a regression alarm. Both run in the pre-push hook.
 - **PR workflow:** `file-pr` (problem-first PR descriptions), `babysit-pr` (watch CI and review bots without polling) and `full-stop` (take a change to a ready PR unattended, never merge), adapted from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack). Notes: [`docs/theo-patterns.md`](docs/theo-patterns.md).
 - **Documents:** `two-layer-doc`: anything others will read gets a plain front layer, a divider, then the technical layer (this README).
-- **Slash commands** (`/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux`, …) are skills plus Markdown sources in `ai-config/commands/` for VS Code prompts and Gemini TOML.
+- **Slash commands:** the full list is in [Slash commands](#slash-commands) above.
 
 ### Agents
 
