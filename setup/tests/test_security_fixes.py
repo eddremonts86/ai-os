@@ -110,5 +110,18 @@ class AgentCountTests(unittest.TestCase):
         self.assertEqual(stats["agents"], len(files))
 
 
+class AgentNpxPinTests(unittest.TestCase):
+    """Agents with Bash must not run whatever version of an npm package is current (2026-11-15 review)."""
+
+    def test_every_npx_package_is_pinned(self):
+        import re
+        unpinned = []
+        for f in (ROOT / "ai-config/agents").glob("*.md"):
+            for pkg in re.findall(r"npx (?:-y|--yes) (\S+)", f.read_text(encoding="utf-8")):
+                if "@" not in pkg.lstrip("@") or pkg.endswith("@latest"):
+                    unpinned.append(f"{f.name}: {pkg}")
+        self.assertEqual(unpinned, [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -57,7 +57,7 @@ finish with a file that has been checked, not a draft.
 Run what the project has, in this order, and fix what fails:
 
 1. The project's own docs lint/build script (`package.json` scripts such as `docs:build`, `lint:md`, `build`).
-2. Otherwise markdownlint on the changed files: `npx --yes markdownlint-cli2 <files>`. Follow the project's
+2. Otherwise markdownlint on the changed files: `npx --yes markdownlint-cli2@0.24.0 <files>`. Follow the project's
    markdownlint config when it has one. Without one, ignore MD013 (line length: do not reflow prose to 80 columns)
    and, in `.mdx`, MD033 (inline HTML: JSX components trip it).
 3. For `.mdx` with no build script, compile it (`@mdx-js/mdx` has no CLI). In a scratch folder outside the repo,
