@@ -39,7 +39,7 @@ flowchart LR
 npx @edd_remonts/create-ai-os
 ```
 
-It clones the repo and runs the installer for your system. The first run takes 30–60 minutes, mostly downloads. When it finishes, `ai-os health` should be green.
+It clones the repo, lets you choose the AI CLIs, the components and every package one by one, and runs the installer for your system. `--full` installs every CLI, component and package without asking (your shell and terminal look are only changed if you opt in). The first run takes 30–60 minutes, mostly downloads. When it finishes, `ai-os health` should be green.
 
 ## Decisions to make after installing
 
@@ -118,7 +118,7 @@ Details: [`docs/cross-platform.md`](docs/cross-platform.md).
 
 ### Install
 
-`npx @edd_remonts/create-ai-os [DIR]` clones the repo and runs `setup/install-mac.sh` (Mac/Linux) or `setup/install-windows.ps1`. `--clone-only` skips the installer. The installer is idempotent, prints what it will install and asks first, and never upgrades pinned versions. `DRY_RUN=1 bash setup/install-mac.sh` simulates everything (this is what CI runs).
+`npx @edd_remonts/create-ai-os [DIR]` clones the repo, opens a selector (install mode, AI CLIs, components, then every package grouped as in the Brewfile, with the ones AI-OS needs marked required) and runs `setup/install-mac.sh` (Mac/Linux) or `setup/install-windows.ps1`. The choices are saved to `context/personal/machine/install.yaml`, so the next run starts from them; `ai-os install` reopens the selector in an existing checkout. `--full` installs every CLI, component and package without asking, leaving the shell and terminal look opt-in (`bash setup/install-mac.sh --full` does the same), `--yes` uses the saved choices without asking, `--clone-only` skips the installer. The installer is idempotent, prints what it will install and asks first, and never upgrades pinned versions. `DRY_RUN=1 bash setup/install-mac.sh` simulates everything (this is what CI runs).
 
 It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plus extras with `EXTRAS=1`), npm and Python globals, and the dotfiles. Your own `~/.zshrc`, `~/.ssh/config` and PowerShell profile are kept: AI-OS adds one marked block to each. Oh My Zsh + p10k (`AIOS_SHELL_THEME=1`), the Nerd Font (`AIOS_FONTS=1`) and the Terminal/Warp restyle (`AIOS_TERMINAL_THEME=1`) are opt-in. Each person sets these, plus optional CLIs (Codex, Gemini), MCP servers on or off, and extra brew/npm packages, once in `context/personal/machine/install.yaml` (see `context/README.md`). It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (8 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (21 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
 
