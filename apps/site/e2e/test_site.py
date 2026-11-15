@@ -5,8 +5,10 @@ Serves dist/ on a free local port and drives it with Playwright. Build first (`p
 """
 
 import functools
+import gzip
 import http.server
 import json
+import re
 import threading
 import unittest
 from contextlib import contextmanager
@@ -24,6 +26,7 @@ PACKAGE = json.loads((SITE.parent / "create-ai-os" / "package.json").read_text(e
 COMMAND = f"npx {PACKAGE}"
 DESKTOP = {"width": 1280, "height": 800}
 PHONE = {"width": 375, "height": 812}
+FIRST_LOAD_GZIP_BUDGET = 150_000  # bytes, entry JS + CSS from dist/index.html
 
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
@@ -164,6 +167,49 @@ class SiteE2E(unittest.TestCase):
             levels = page.eval_on_selector_all("h1, h2, h3", "els => els.map(e => Number(e.tagName[1]))")
             self.assertEqual(levels[0], 1)
             self.assertTrue(all(b - a <= 1 for a, b in zip(levels, levels[1:])), f"heading levels skip a step: {levels}")
+
+    def test_first_load_js_and_css_stay_within_the_gzip_budget(self):
+        # From the bundle-optimizer audit (2026-11-14): 158.7 kB before LazyMotion, about 145 kB after. Lower the
+        # budget when the page gets lighter; raise it only with a reason in the commit.
+        html = (DIST / "index.html").read_text(encoding="utf-8")
+        files = re.findall(r'(?:src|href)="/?(assets/[^"]+\.(?:js|css))"', html)
+        self.assertTrue(files, "no entry JS/CSS found in dist/index.html")
+        total = sum(len(gzip.compress((DIST / f).read_bytes(), 9)) for f in files)
+        self.assertLessEqual(total, FIRST_LOAD_GZIP_BUDGET, f"first-load JS+CSS is {total} bytes gzip: {files}")
+
+    def test_core_web_vitals_and_no_long_tasks_after_load(self):
+        # Lab numbers on a local unthrottled build: a regression alarm, not field data (perf-auditor does that).
+        context = self.browser.new_context(viewport=DESKTOP)
+        page = context.new_page()
+        page.add_init_script("""
+            window.__v = {lcp: 0, cls: 0, long: []};
+            new PerformanceObserver(l => l.getEntries().forEach(e => window.__v.lcp = e.startTime))
+                .observe({type: 'largest-contentful-paint', buffered: true});
+            new PerformanceObserver(l => l.getEntries().forEach(e => { if (!e.hadRecentInput) window.__v.cls += e.value }))
+                .observe({type: 'layout-shift', buffered: true});
+            new PerformanceObserver(l => l.getEntries().forEach(e => window.__v.long.push([e.startTime, e.duration])))
+                .observe({type: 'longtask', buffered: true});
+        """)
+        try:
+            page.goto(self.url, wait_until="networkidle")
+            page.mouse.wheel(0, 4000)
+            page.wait_for_timeout(1500)
+            v = page.evaluate("window.__v")
+            self.assertLess(v["lcp"], 2500, f"LCP {v['lcp']:.0f} ms")
+            self.assertLess(v["cls"], 0.1, f"CLS {v['cls']:.3f}")
+            after_load = [d for start, d in v["long"] if start > v["lcp"] and d > 200]
+            self.assertEqual(after_load, [], f"main-thread tasks over 200 ms after LCP: {after_load}")
+        finally:
+            context.close()
+
+    def test_repeated_reloads_do_not_grow_the_dom_or_log_errors(self):
+        # A small stability check (stability-tester goes further): ten reloads, same DOM size, no errors.
+        with self.visit() as page:
+            sizes = []
+            for _ in range(10):
+                page.reload(wait_until="networkidle")
+                sizes.append(page.evaluate("document.getElementsByTagName('*').length"))
+            self.assertLessEqual(max(sizes) - min(sizes), 5, f"DOM size drifts across reloads: {sizes}")
 
 
 if __name__ == "__main__":
