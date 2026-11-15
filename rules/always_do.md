@@ -224,6 +224,11 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Match reference screens or images, scored until a bar is met | `/aios-ui-design` (Match references) |
     | Build a 3D scene or WebGL/shader piece for the web | `/aios-ui-3d` |
     | Make a video in code (launch, motion, hero loop) | `/aios-ui-video` |
+    | A standalone page with its own look in a dealt/named/custom theme (Hallmark) | `/aios-ui-page` |
+    | A new look for an existing page or app, content and wiring kept | `/aios-ui-redesign` |
+    | Read-only anti-slop and craft audit in a real browser | `/aios-ui-audit` |
+    | Browse, deal, apply a design theme, or lock a system into DESIGN.md | `/aios-ui-themes` |
+    | Openly licensed photos for a page, credited | `/aios-ui-photos` |
 
     UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
     Work that iterates for hours toward a bar uses `aios-loop` long-run mode. Whole app, every route: `saas-review`. Outside those commands, route by what the request asks for to ONE skill:
@@ -232,6 +237,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     |---|---|
     | Build a new UI, page, or landing | `frontend-design` |
     | Make it look premium, distinctive, not templated (anti-slop) | `taste-skill` |
+    | The user names Hallmark (or one of the commands above built on it) | `hallmark` (explicit only) |
     | Audit an existing app's UI/UX across every route, prioritised findings | `saas-review` |
     | Polish details: component feel, animation decisions | `emil-design-eng` |
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
