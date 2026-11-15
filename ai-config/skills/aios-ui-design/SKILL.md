@@ -17,7 +17,9 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    | Landing, portfolio, campaign, showcase (persuade, experience) | `taste-skill` |
    | App UI, dashboard, form, settings, component, docs (operate, read) | `frontend-design` |
 
-   The brief's own words win over any default of the skill.
+   The brief's own words win over any default of the skill. When the user names **Hallmark** (a standalone page in
+   one of its 50 dealt themes, or `/hallmark redesign|audit <path>`), run `hallmark` instead of steps 2 to 6; its
+   floor and sweep replace them, and step 7 still applies.
 3. **Plan before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
    against the brief and change what reads as a default. Go on without asking unless the brief is ambiguous.
 4. **Compose from proven pieces, do not invent a visual system.** A from-scratch redesign was rejected on
@@ -54,7 +56,8 @@ New UI, start to verified. Reuse the skills below; do not restate them.
    on an unapproved look.
 6. **Build.** Motion only through `micro-interactions` or `emil-design-eng`, and only for what answers a user action
    plus at most one orchestrated moment. Load `impeccable`'s `craft-floor` before editing.
-7. **Gate.** Run `/aios-ui-verify` on every route you touched, then `/aios-ui-review`. Fix blockers and majors;
+7. **Gate.** Run `/aios-ui-verify` on every route you touched (its anti-slop check on the source too), then
+   `/aios-ui-review`. Fix blockers and majors;
    two rounds at most, then report what is left.
 
 Done means: the verify verdict is PASS (or its gaps are stated), you looked at the screenshots, and the review
