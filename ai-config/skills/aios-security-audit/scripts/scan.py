@@ -89,6 +89,15 @@ def gitleaks(repo, raw, baseline=None):
     return out, st
 
 
+def rel_to(path, repo):
+    """osv-scanner reports absolute paths; findings use the path from the scanned folder, like the other tools."""
+    p = Path(path)
+    try:
+        return p.resolve().relative_to(Path(repo).resolve()).as_posix()
+    except ValueError:
+        return p.name
+
+
 def osv(repo, raw):
     data, st = run(["osv-scanner", "scan", "source", "-r", "--format", "json", "."], repo, raw / "osv.json")
     out = []
@@ -103,7 +112,7 @@ def osv(repo, raw):
                 level = "critical" if score >= 9 else "high" if score >= 7 else "medium" if score >= 4 else "low"
                 ghsa = next((i for i in [v.get("id", ""), *v.get("aliases", [])] if i.startswith("GHSA-")), v.get("id", ""))
                 out.append(finding("osv-scanner", ghsa, level, f"{p.get('name')}@{p.get('version')}: {v.get('summary', v.get('id'))}",
-                                   Path(src).name, 0, cwe_of(v.get("database_specific", {}).get("cwe_ids")), ", ".join(v.get("aliases", [])[:3]),
+                                   rel_to(src, repo), 0, cwe_of(v.get("database_specific", {}).get("cwe_ids")), ", ".join(v.get("aliases", [])[:3]),
                                    key=f"dep|{ghsa}|{p.get('name')}"))
     return out, st
 
@@ -314,9 +323,9 @@ def main():
         if res is None:
             status[name] = f"NOT RUN: {st}"
             continue
-        if changed is not None and name in ("trivy", "hadolint"):
+        if changed is not None and name in ("trivy", "hadolint", "osv-scanner"):
             # These scan whole files with no baseline of their own: keep only files this branch touches, so an
-            # untouched Dockerfile's old finding is not reported as new. ponytail: an old finding inside a changed
+            # untouched Dockerfile's (or lockfile's) old finding is not reported as new. ponytail: an old finding inside a changed
             # file still shows; diff against a baseline run if that gets noisy.
             res = only_changed(res, repo, changed)
         findings += res
