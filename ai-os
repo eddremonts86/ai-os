@@ -54,7 +54,7 @@ Usage:
   ai-os skills [lint|route|bank]      Catalogue budget, near-duplicate descriptions, routing bank
   ai-os install [--full|--yes]        Choose the CLIs, components and every package, then run the installer
   ai-os agents [--check]              Write ai-config/agents (+ yours) into Claude Code, Codex, Gemini, opencode
-  ai-os scope [which|git-config|check-push]  Folder scope: design system, git identity, confidentiality guard
+  ai-os scope [which|git-config|check-push|check-tree]  Folder scope: design system, git identity, confidentiality guard
 
 Run \`ai-os memory help\`, \`ai-os loop help\`, \`ai-os plans help\` or \`ai-os llm\` (no args) for the subcommand list.
 EOF
