@@ -58,7 +58,7 @@ export default function App() {
         <div className="flex flex-wrap gap-2">
             <Badge variant="outline">Karpathy method</Badge>
             <Badge variant="outline">6 AI CLIs</Badge>
-            <Badge variant="outline">Mac · Win · Linux</Badge>
+            <Badge variant="outline">Mac, Win, Linux</Badge>
         </div>
         <h1 className="mt-6 max-w-[18ch] text-balance text-4xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:max-w-none lg:text-7xl">
           Your AI setup, booted like an <span className="text-primary">operating system</span>.
