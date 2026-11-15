@@ -1,6 +1,6 @@
 ---
 name: shadcn-patterns
-description: shadcn/ui patterns — component families (Base UI / React Aria / Radix) + Tailwind, cva, theming, customization, the CLI and MCP server. Applies to any project using shadcn/ui (including wave-template).
+description: shadcn/ui patterns — component families (Base UI / React Aria / Radix) + Tailwind, cva, theming, customization, the CLI and MCP server. Applies to any project using shadcn/ui.
 license: MIT
 ---
 

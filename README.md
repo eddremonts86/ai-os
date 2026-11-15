@@ -110,7 +110,7 @@ flowchart TD
 | `ai-os update [--apply COMPONENT]` | Pinned vs upstream versions; `--apply` bumps one, runs its health checks, rolls back on failure |
 | `ai-os stats [--check\|--write]` | Counts the site and this README publish, computed from the repo; `--write` fixes them and re-renders the images |
 | `ai-os agents [--check]` | Write `ai-config/agents` (and your `context/personal/agents`) into Claude Code, Codex, Gemini CLI and opencode |
-| `ai-os scope [which\|git-config --apply\|check-push]` | Which scope a folder is in (personal, employer, own company): its design system, git identity and confidentiality guard |
+| `ai-os scope [which\|git-config --apply\|check-push\|check-tree]` | Which scope a folder is in (personal, employer, own company): its design system, git identity and confidentiality guard |
 | `ai-os skills [lint\|route\|bank]` | Skill catalogue budget, near-duplicate descriptions, routing regression bank |
 | `ai-os project init [PATH]` | Give a project a short `CLAUDE.md`, `.agents/skills/` and the secret-leak `.gitignore` lines |
 | `ai-os loop`, `ai-os llm`, `ai-os plans`, `ai-os bootstrap` | Loop runner, local/cloud chat router, plan documents (needs `PLANSMITH_ROOT`), full-stack bootstrap |
@@ -385,4 +385,4 @@ Add a global skill as `ai-config/skills/<name>/SKILL.md`, an MCP server as `ai-c
 
 ## License
 
-[MIT](LICENSE) — Eduardo Schilling, 2026.
+[MIT](LICENSE)

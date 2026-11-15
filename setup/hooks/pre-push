@@ -137,6 +137,10 @@ done
 if [ "$code" = 1 ]; then fail "$(grep -E '^(BLOCK|WARN)' <<<"$out")"
 else pass "$(grep -c '^WARN' <<<"$out" | sed 's/^0$/clean/; s/^[1-9][0-9]*$/& warning(s)/')"; grep '^WARN' <<<"$out" | sed 's/^/           /' || true; fi
 
+step "no work references (whole tree)"
+# AI-OS is global: no tracked file outside context/personal/ may carry another scope's terms, warn terms included.
+if out=$("$PY" "$ORIG/setup/ai-os-scope.py" check-tree 2>&1); then pass "$out"; else fail "$(grep -E '^(BLOCK|WARN)' <<<"$out" | head -10)"; fi
+
 step "security scan (new findings)"
 # aios-security-audit's scanners, baseline mode: only what this push adds. A new critical or high finding blocks.
 # A scanner that is not installed is NOT RUN, and nothing running at all blocks too: that is not "clean".
