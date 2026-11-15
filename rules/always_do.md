@@ -232,6 +232,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     |---|---|
     | Build a new UI, page, or landing | `frontend-design` |
     | Make it look premium, distinctive, not templated (anti-slop) | `taste-skill` |
+    | The user names Hallmark: a page in a dealt theme, `/hallmark redesign` or `/hallmark audit` | `hallmark` (explicit only) |
     | Audit an existing app's UI/UX across every route, prioritised findings | `saas-review` |
     | Polish details: component feel, animation decisions | `emil-design-eng` |
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |

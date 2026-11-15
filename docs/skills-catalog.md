@@ -62,6 +62,11 @@ globally: iaWorkSpace, plansmith and other project-specific skills.
   triplet) was retired 2026-08-13 because it collided on every trigger with `diagram-design`.
 - **pick-ui-library (third-party MIT, Emil Kowalski)**: a one-library-per-task lookup, invoked
   explicitly only, with an "Our stack" section that defers to shadcn and the TanStack skills.
+- **hallmark (third-party MIT, Together AI)**: a standalone page in one of 50 dealt themes under a hard
+  anti-slop floor, plus `redesign` and `audit` verbs. Explicit invocation only (the user names Hallmark), with
+  AI-OS limits on top (no installer or hook, no Together image calls unless asked, no starting outside projects).
+  Its `sloplint` also runs inside `/aios-ui-verify` as an advisory static check (`scripts/antislop.py`). See
+  `ai-config/skills/hallmark/VENDORED_FROM.md`.
 - **custom (Edd)**: tanstack-*, vue-*, react-*, and more.
 
 ### UI skills evaluated and not adopted (2026-11-06)
