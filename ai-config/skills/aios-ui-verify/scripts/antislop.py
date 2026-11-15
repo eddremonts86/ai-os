@@ -73,8 +73,18 @@ def run(paths, genre=None, scope=None):
     tw = tailwind_focus(paths)
     out = [f for f in data.get("findings", []) if keep(f, tw)]
     for f in out:
-        f["file"] = os.path.relpath(f["file"]) if os.path.isabs(f.get("file", "")) else f.get("file", "")
+        f["file"] = shorten(f.get("file", ""))
     return out
+
+
+def shorten(path):
+    """Relative to the cwd when it can be; Windows has no relative path across drives (C: vs D:)."""
+    if not os.path.isabs(path):
+        return path
+    try:
+        return os.path.relpath(path)
+    except ValueError:
+        return path
 
 
 def main(argv=None):
