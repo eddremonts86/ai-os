@@ -1,6 +1,6 @@
 ---
 name: aios-karpathy
-description: AI Operating System local of Edd based on the "Spec + Verifier + Environment" method from Andrej Karpathy. Loads persistent context (profile, projects, preferences, tools, sources), the global skills in ai-config/skills/, MCP servers, and rules for daily work with any AI CLI. Use when starting any AI session in Claude Code, Hermes, Codex, Gemini, or Antigravity.
+description: Local AI Operating System based on the "Spec + Verifier + Environment" method from Andrej Karpathy. Loads persistent context (profile, projects, preferences, tools, sources), the global skills in ai-config/skills/, MCP servers, and rules for daily work with any AI CLI. Use when starting any AI session in Claude Code, Hermes, Codex, Gemini, or Antigravity.
 license: MIT
 metadata:
   hermes:

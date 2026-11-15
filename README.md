@@ -14,7 +14,7 @@
 
 ## What you get
 
-- **The same assistant on every machine.** One set of skills, rules and slash commands is linked into all six AI CLIs, so they behave alike.
+- **The same assistant on every machine.** One set of skills, 19 agents, rules and slash commands reaches all six AI CLIs, so they behave alike.
 - **A memory that survives sessions.** A local knowledge graph remembers decisions, and every project's code is indexed for search. It runs on your machine, with no API key.
 - **A setup that looks after itself.** Health checks, encrypted backups and a guard against pushing secrets run on their own (see the schedule below).
 - **A way of working.** Big tasks get a written spec, plans run in small checked steps, and nothing counts as "done" until it has been shown to work.
@@ -27,7 +27,7 @@ flowchart LR
     B["Encrypted backup<br/>13:00, restore-checked"]
   end
   subgraph push["Every git push"]
-    G["Gate: tests, syntax, skill budget,<br/>no secret values in the commits"]
+    G["Gate: tests, syntax, skill budget,<br/>security scan, no secret values"]
   end
 ```
 
@@ -99,7 +99,7 @@ What is backed up is only what cannot be rebuilt: the graphiti graph (a FalkorDB
 
 `ai-os memory start|status|reindex` operates it; the `aios-memory` skill covers repairs. When to read and write memory: `rules/always_do.md` "Use the memory stack".
 
-There are **12 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem`, `sequential-thinking` and `rea` are disabled; the reasons are in each YAML. `rea` (reverse engineering of shipped artifacts) is an opt-in: the security audit calls its CLI without it.
+There are **12 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.yaml` (`time`, `pdf`, `chrome`, `agent-browser`, `codebase-memory-mcp`, `grepai`, `graphiti`, and `ui-indexador`, registered only where its local service answers). `setup/generate-mcp-config.py` and `setup/sync-ide-mcp-servers.py` write them into Hermes, Claude Code, Codex, Gemini and VS Code, removing disabled ones. `memory`, `filesystem`, `sequential-thinking` and `rea` are disabled; the reasons are in each YAML. `rea` (reverse engineering of shipped artifacts) is an opt-in: the security audit calls its CLI without it.
 
 ## 4. Platforms
 
@@ -120,7 +120,7 @@ Details: [`docs/cross-platform.md`](docs/cross-platform.md).
 
 `npx @edd_remonts/create-ai-os [DIR]` clones the repo and runs `setup/install-mac.sh` (Mac/Linux) or `setup/install-windows.ps1`. `--clone-only` skips the installer. The installer is idempotent, prints what it will install and asks first, and never upgrades pinned versions. `DRY_RUN=1 bash setup/install-mac.sh` simulates everything (this is what CI runs).
 
-It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plus extras with `EXTRAS=1`), npm and Python globals, Oh My Zsh + p10k, and dotfile symlinks. It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (8 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (21 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
+It installs Homebrew packages from `dev-env/packages/Brewfile` (20 packages, plus extras with `EXTRAS=1`), npm and Python globals, and the dotfiles. Your own `~/.zshrc`, `~/.ssh/config` and PowerShell profile are kept: AI-OS adds one marked block to each. Oh My Zsh + p10k (`AIOS_SHELL_THEME=1`), the Nerd Font (`AIOS_FONTS=1`) and the Terminal/Warp restyle (`AIOS_TERMINAL_THEME=1`) are opt-in. Each person sets these, plus optional CLIs (Codex, Gemini), MCP servers on or off, and extra brew/npm packages, once in `context/personal/machine/install.yaml` (see `context/README.md`). It also links the skills into every CLI and generates the MCP config from `ai-config/mcp/*.yaml` (8 servers). Finally it installs the launchd agents and the pre-push hook, and runs verification (21 sections). Check the result with `bash setup/verify.sh` (what is installed) and `ai-os health` (what works).
 
 ### The `ai-os` command
 
@@ -132,6 +132,8 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plu
 | `ai-os memory …` | Memory stack: start, status, browse, reindex |
 | `ai-os update [--apply COMPONENT]` | Pinned vs upstream versions; `--apply` bumps one, runs its health checks, rolls back on failure |
 | `ai-os stats [--check\|--write]` | Counts the site and this README publish, computed from the repo; `--write` fixes them and re-renders the images |
+| `ai-os agents [--check]` | Write `ai-config/agents` (and your `context/personal/agents`) into Claude Code, Codex, Gemini CLI and opencode |
+| `ai-os scope [which\|git-config --apply\|check-push]` | Which scope a folder is in (personal, employer, own company): its design system, git identity and confidentiality guard |
 | `ai-os skills [lint\|route\|bank]` | Skill catalogue budget, near-duplicate descriptions, routing regression bank |
 | `ai-os project init [PATH]` | Give a project a short `CLAUDE.md`, `.agents/skills/` and the secret-leak `.gitignore` lines |
 | `ai-os loop`, `ai-os llm`, `ai-os plans`, `ai-os bootstrap` | Loop runner, local/cloud chat router, plan documents (needs `PLANSMITH_ROOT`), full-stack bootstrap |
@@ -144,6 +146,21 @@ It installs Homebrew packages from `dev-env/packages/Brewfile` (37 packages, plu
 - **PR workflow:** `file-pr` (problem-first PR descriptions), `babysit-pr` (watch CI and review bots without polling) and `full-stop` (take a change to a ready PR unattended, never merge), adapted from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack). Notes: [`docs/theo-patterns.md`](docs/theo-patterns.md).
 - **Documents:** `two-layer-doc`: anything others will read gets a plain front layer, a divider, then the technical layer (this README).
 - **Slash commands** (`/action`, `/full`, `/gen-html`, `/saas-review`, `/fix-ui-ux`, …) are skills plus Markdown sources in `ai-config/commands/` for VS Code prompts and Gemini TOML.
+
+### Agents
+
+**19 shared agents** live in `ai-config/agents/` (one Markdown file each; yours go in `context/personal/agents/`, git-ignored, and replace a shared one of the same name). `ai-os agents`, also run by the installer, writes each one in the CLI's own format: Claude Code, Gemini CLI and opencode get Markdown, Codex gets TOML. A file you wrote yourself in those folders is never overwritten. Ask for one by name ("use the security-reviewer agent", `@ui-reviewer` in Gemini), or let the CLI pick it from its description.
+
+| Area | Agents |
+|---|---|
+| Writing and docs | `docs-writer`, `docs-drift-checker`, `source-checker` |
+| Review | `aios-reviewer`, `fresh-reviewer` (cold review of a Spec or plan) |
+| Code | `root-cause-debugger`, `test-writer`, `windows-porter`, `installer-tester` |
+| Security | `security-reviewer`, `threat-modeler`, `supply-chain-vetter` |
+| Design | `ui-reviewer`, `a11y-auditor`, `design-system-keeper` |
+| Performance and stability | `perf-auditor`, `bundle-optimizer`, `rerender-hunter`, `stability-tester` |
+
+The reviewers are read-only (enforced in Claude Code and opencode; on Codex and Gemini only by their instructions). `/aios-security-review` and `/aios-ui-review` hand their fresh review to `security-reviewer` and `ui-reviewer`. What each one does: [`ai-config/agents/README.md`](ai-config/agents/README.md).
 
 ### The method
 
@@ -160,7 +177,7 @@ context/      global/ (toolchain, sources, brand: shared) · personal/ (you and 
 rules/        always do / ask before doing / never do
 workflows/    recurring processes      specs/  one active spec + template
 verifiers/    optional review prompts  archive/ completed specs
-ai-config/    skills/, commands/, mcp/*.yaml, templates/
+ai-config/    skills/, agents/, commands/, mcp/*.yaml, templates/
 dev-env/      dotfiles, packages (Brewfile, npm, pip), env-config/.env (git-ignored)
 memory/       docker-compose for the memory stack, launchd agents, logs
 setup/        installers, verify, the ai-os CLIs (health, backup, secrets, …), hooks/, tests/

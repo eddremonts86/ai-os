@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@/test/render'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAiOsPackage } from '@/test/repo'
 import App from '../App'
@@ -75,6 +75,7 @@ describe('App hero', () => {
     const log = container.querySelector('pre')!.textContent!
     expect(log).toContain(`✓ ${stats.brew_core} brew packages`)
     expect(log).toContain(`✓ ${stats.skills_linked} skills`)
+    expect(log).toContain(`✓ ${stats.agents} agents`)
     expect(log).toContain(`✓ ${stats.mcp_enabled} MCP servers generated`)
     expect(log).toContain('ready.')
   })

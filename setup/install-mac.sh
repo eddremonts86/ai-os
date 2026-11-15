@@ -22,8 +22,17 @@
 #                      registry index the aios-ui-* skills query over MCP. Clones it to
 #                      UI_INDEXER_DIR (default ~/.ai-os/apps/ui-indexador), runs it as launchd
 #                      services and builds its index in the background. Re-runs update an existing clone.
+#   AIOS_SHELL_THEME=1    → Oh My Zsh + Powerlevel10k and AI-OS's full ~/.zshrc / ~/.p10k.zsh
+#                           (an existing file is moved to *.pre-aios.bak). Default: keep your
+#                           ~/.zshrc and add one line that sources dev-env/dotfiles/zsh/aios.zsh.
+#   AIOS_FONTS=1          → install the CaskaydiaCove Nerd Font
+#   AIOS_TERMINAL_THEME=1 → restyle Terminal.app (Pro) and Warp (font, size, opacity)
 #   EXTRAS=1         → also install dev-env/packages/Brewfile.extras (optional
 #                      GUI apps, language runtimes, infra CLIs). Default: core only.
+#
+# Per-person profile: context/personal/machine/install.yaml (git-ignored, created by
+# setup/seed-personal-context.py). It sets the AIOS_* opt-ins above (an env var wins), the
+# optional CLIs (clis: codex, gemini), extra packages (brew, casks, npm) and MCP overrides.
 
 set -euo pipefail
 
@@ -40,6 +49,38 @@ log() { echo "$LOG_PREFIX $*"; }
 err() { echo "$LOG_PREFIX ❌ $*" >&2; }
 ok() { echo "$LOG_PREFIX ✅ $*"; }
 warn() { echo "$LOG_PREFIX ⚠️  $*"; }
+
+# ─── Per-person install profile (context/personal/machine/install.yaml) ───
+INSTALL_PROFILE="${AIOS_INSTALL_PROFILE:-$AI_OS_ROOT/context/personal/machine/install.yaml}"
+# One value per line for a list, the value for a scalar, nothing when unset or yq is missing.
+profile_get() {
+  [ -f "$INSTALL_PROFILE" ] && command -v yq >/dev/null 2>&1 || return 0
+  case "$(yq -r ".$1 | tag" "$INSTALL_PROFILE" 2>/dev/null)" in
+    '!!seq') yq -r ".$1[]" "$INSTALL_PROFILE" 2>/dev/null ;;
+    '!!null' | '') ;;
+    *) yq -r ".$1" "$INSTALL_PROFILE" 2>/dev/null ;;
+  esac
+}
+# An env var wins; otherwise `key: true` in the profile turns the opt-in on.
+profile_flag() { [ "$(profile_get "$1")" = "true" ] && echo 1 || echo 0; }
+load_profile_flags() {
+  AIOS_SHELL_THEME="${AIOS_SHELL_THEME:-$(profile_flag shell_theme)}"
+  AIOS_FONTS="${AIOS_FONTS:-$(profile_flag fonts)}"
+  AIOS_TERMINAL_THEME="${AIOS_TERMINAL_THEME:-$(profile_flag terminal_theme)}"
+}
+load_profile_flags
+# Global Node packages to have: the shared list, the profile's npm:, and the optional CLIs that ship on npm.
+npm_wanted() {
+  { grep -vE '^[[:space:]]*(#|$)' "$AI_OS_ROOT/dev-env/packages/npm-globals.txt" 2>/dev/null || true; } | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//'
+  profile_get npm
+  for cli in $(profile_get clis); do
+    case "$cli" in
+      (codex) echo "@openai/codex" ;;
+      (gemini) echo "@google/gemini-cli" ;;
+      (*) ;;  # Hermes, opencode, Antigravity: their own installers
+    esac
+  done
+}
 
 require_manifest_tool() {
   command -v yq >/dev/null 2>&1 || { err "yq is required to read $MANIFEST"; exit 1; }
@@ -108,7 +149,7 @@ PIP_PACKAGES="$AI_OS_ROOT/dev-env/packages/pip-packages.txt"
 SKILLS_DIR="$AI_OS_ROOT/ai-config/skills"
 
 # count non-comment, non-blank lines in a package file (0 if missing)
-count_pkgs() { [ -f "$1" ] && grep -cvE '^[[:space:]]*(#|$)' "$1" || echo 0; }
+count_pkgs() { [ -f "$1" ] && { grep -cvE '^[[:space:]]*(#|$)' "$1" || true; } || echo 0; }
 # comma-join names on stdin, wrap to terminal-ish width, indent
 join_fold() { paste -sd' ' - | sed 's/ /, /g' | fold -s -w 66 | sed 's/^/        /'; }
 
@@ -116,7 +157,7 @@ show_manifest() {
   local n_formulae n_casks n_node n_pip n_skills
   n_formulae=$(grep -cE '^brew ' "$BREWFILE" 2>/dev/null || echo 0)
   n_casks=$(grep -cE '^cask ' "$BREWFILE" 2>/dev/null || echo 0)
-  n_node=$(count_pkgs "$NPM_GLOBALS")
+  n_node=$(npm_wanted | grep -c . || true)
   n_pip=$(count_pkgs "$PIP_PACKAGES")
   n_skills=$([ -d "$SKILLS_DIR" ] && find "$SKILLS_DIR" -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ' || echo 0)
 
@@ -139,7 +180,7 @@ show_manifest() {
   fi
   echo ""
   echo "  🟢 Global Node packages via pnpm ($n_node):"
-  grep -vE '^[[:space:]]*(#|$)' "$NPM_GLOBALS" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
+  npm_wanted | join_fold
   echo ""
   echo "  🐍 Python packages in ~/.ai-os/venv ($n_pip):"
   grep -vE '^[[:space:]]*(#|$)' "$PIP_PACKAGES" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
@@ -147,7 +188,11 @@ show_manifest() {
   echo "  🧠 AI skills symlinked into every CLI (~$n_skills)"
   echo "  🔌 MCP servers → ~/.hermes/config.yaml"
   echo "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
-  echo "  🐚 Shell: Oh My Zsh, Powerlevel10k, dotfile symlinks (~/.zshrc, …)"
+  if [ "${AIOS_SHELL_THEME:-0}" = "1" ]; then
+    echo "  🐚 Shell: Oh My Zsh, Powerlevel10k, AI-OS ~/.zshrc and ~/.p10k.zsh (yours kept as *.pre-aios.bak)"
+  else
+    echo "  🐚 Shell: one line added to your ~/.zshrc (AIOS_SHELL_THEME=1 for Oh My Zsh + p10k)"
+  fi
   echo "  📁 Instruction adapters for Claude, Codex, Gemini, Hermes, Antigravity"
   echo ""
   log "Locations touched: /opt/homebrew, ~/.ai-os, ~/.local/bin, ~/Library/pnpm,"
@@ -201,7 +246,7 @@ command -v brew >/dev/null || {
   exit 1
 }
 command -v gh >/dev/null || { err "gh (GitHub CLI) not installed. brew install gh"; exit 1; }
-command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; }
+command -v yq >/dev/null || { warn "yq not installed, installing with brew..."; brew install yq; load_profile_flags; }
 
 ok "Prerequisites OK"
 echo ""
@@ -223,6 +268,19 @@ if [ "${SKIP_BREW:-0}" != "1" ]; then
     BREW_FAILED=1
     warn "brew bundle reported failures; continuing (see output above)"
   fi
+  # Extras from the personal profile (brew: / casks:), as a throwaway Brewfile.
+  profile_brewfile="$(mktemp -t aios-profile-brewfile)"
+  { profile_get brew | sed 's/.*/brew "&"/'; profile_get casks | sed 's/.*/cask "&"/'; } > "$profile_brewfile"
+  if [ -s "$profile_brewfile" ]; then
+    log "1a. Personal brew packages (install.yaml)..."
+    if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file="$profile_brewfile"; then
+      ok "Personal brew packages installed"
+    else
+      BREW_FAILED=1
+      warn "brew bundle (personal) reported failures; continuing"
+    fi
+  fi
+  rm -f "$profile_brewfile"
   if [ "${EXTRAS:-0}" = "1" ]; then
     log "1b. EXTRAS=1 — installing dev-env/packages/Brewfile.extras..."
     if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle install --no-upgrade --file=dev-env/packages/Brewfile.extras; then
@@ -245,7 +303,7 @@ if [ "${SKIP_NPM:-0}" != "1" ]; then
   if command -v pnpm >/dev/null 2>&1; then
     # pnpm needs PNPM_HOME to place global bins; the AI-OS zshrc adds it to PATH
     export PNPM_HOME="${PNPM_HOME:-$HOME_DIR/Library/pnpm}"
-    export PATH="$PNPM_HOME:$PATH"
+    export PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"  # pnpm 10 puts global bins in $PNPM_HOME/bin
     # Only add what is missing, in ONE `pnpm add -g` call: a per-package loop
     # re-resolved (and upgraded) every installed global on every run. Upgrades
     # are deliberate: `pnpm update -g`.
@@ -256,7 +314,7 @@ if [ "${SKIP_NPM:-0}" != "1" ]; then
       pkg="$(printf '%s' "$pkg" | xargs)"
       [ -z "$pkg" ] && continue
       printf '%s\n' "$installed_globals" | grep -qxF "$pkg" || npm_missing+=("$pkg")
-    done < "$AI_OS_ROOT/dev-env/packages/npm-globals.txt"
+    done < <(npm_wanted)
     if [ "${#npm_missing[@]}" -eq 0 ]; then
       ok "global Node packages already installed (none missing)"
     elif pnpm add -g "${npm_missing[@]}"; then
@@ -353,31 +411,60 @@ else
 fi
 echo ""
 
-# ─── 4. Fonts ───
-log "4. Verifying Nerd Fonts..."
-CASKE_FONT="$HOME/Library/Fonts/CaskaydiaCoveNerdFont-Regular.ttf"
-if [ ! -f "$CASKE_FONT" ]; then
-  warn "CaskaydiaCove Nerd Font not installed. Installing..."
-  brew install --cask font-caskaydia-cove-nerd-font
+# ─── 4. Fonts (opt-in: AIOS_FONTS=1) ───
+if [ "${AIOS_FONTS:-0}" = "1" ]; then
+  log "4. Verifying Nerd Fonts..."
+  CASKE_FONT="$HOME/Library/Fonts/CaskaydiaCoveNerdFont-Regular.ttf"
+  if [ ! -f "$CASKE_FONT" ]; then
+    warn "CaskaydiaCove Nerd Font not installed. Installing..."
+    brew install --cask font-caskaydia-cove-nerd-font
+  else
+    ok "CaskaydiaCove Nerd Font already installed"
+  fi
 else
-  ok "CaskaydiaCove Nerd Font already installed"
+  log "4. Fonts: not requested (AIOS_FONTS=1 installs CaskaydiaCove Nerd Font)"
 fi
 echo ""
+
+# Add or refresh a marked block in a file the user owns, never replacing their content.
+# $1 file, $2 block body, $3 "prepend" or "append". Idempotent: the block between the markers is rewritten.
+aios_block() {
+  local file="$1" body="$2" where="${3:-append}" tmp
+  local begin="# >>> ai-os >>>" end="# <<< ai-os <<<"
+  touch "$file"
+  # An opening marker with no closing one would make the awk below drop the rest of the file: keep a copy first.
+  if grep -qxF "$begin" "$file" && ! grep -qxF "$end" "$file"; then
+    cp "$file" "$file.pre-aios.bak"; warn "$file had an unclosed ai-os block; copy kept at $file.pre-aios.bak"
+  fi
+  tmp="$(mktemp)"
+  awk -v b="$begin" -v e="$end" '$0==b{skip=1;next} $0==e{skip=0;next} !skip' "$file" > "$tmp"
+  if [ "$where" = "prepend" ]; then
+    { printf '%s\n%s\n%s\n' "$begin" "$body" "$end"; cat "$tmp"; } > "$file"
+  else
+    { cat "$tmp"; printf '%s\n%s\n%s\n' "$begin" "$body" "$end"; } > "$file"
+  fi
+  rm -f "$tmp"
+}
+# True when $1 is a symlink into this checkout (an earlier install linked it: leave it alone).
+aios_linked() { [ -L "$1" ] && case "$(readlink "$1")" in "$AI_OS_ROOT"/*) true ;; *) false ;; esac; }
 
 # ─── 5. Symlinks for dotfiles ───
 if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
   log "5. Creating dotfiles symlinks..."
 
-  # zsh
-  if [ -f "$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc" ]; then
+  # zsh: the full themed .zshrc only on request; otherwise one sourced line in the user's own file.
+  if [ "${AIOS_SHELL_THEME:-0}" = "1" ]; then
     [ -e "$HOME_DIR/.zshrc" ] && [ ! -L "$HOME_DIR/.zshrc" ] && mv "$HOME_DIR/.zshrc" "$HOME_DIR/.zshrc.pre-aios.bak"
     ln -sf "$AI_OS_ROOT/dev-env/dotfiles/zsh/.zshrc" "$HOME_DIR/.zshrc"
-    ok "  .zshrc → ai-os"
-  fi
-  if [ -f "$AI_OS_ROOT/dev-env/dotfiles/zsh/.p10k.zsh" ]; then
+    ok "  .zshrc → ai-os (themed)"
     [ -e "$HOME_DIR/.p10k.zsh" ] && [ ! -L "$HOME_DIR/.p10k.zsh" ] && mv "$HOME_DIR/.p10k.zsh" "$HOME_DIR/.p10k.zsh.pre-aios.bak"
     ln -sf "$AI_OS_ROOT/dev-env/dotfiles/zsh/.p10k.zsh" "$HOME_DIR/.p10k.zsh"
     ok "  .p10k.zsh → ai-os"
+  elif aios_linked "$HOME_DIR/.zshrc"; then
+    ok "  .zshrc already links to ai-os, left as is"
+  else
+    aios_block "$HOME_DIR/.zshrc" "[ -f \"$AI_OS_ROOT/dev-env/dotfiles/zsh/aios.zsh\" ] && source \"$AI_OS_ROOT/dev-env/dotfiles/zsh/aios.zsh\""
+    ok "  .zshrc: kept yours, AI-OS block sources dev-env/dotfiles/zsh/aios.zsh"
   fi
 
   # git (template + work/personal)
@@ -407,10 +494,17 @@ if [ "${SKIP_DOTFILES:-0}" != "1" ]; then
   if [ -f "$AI_OS_ROOT/dev-env/dotfiles/ssh/config" ]; then
     mkdir -p "$HOME_DIR/.ssh"
     chmod 700 "$HOME_DIR/.ssh"
-    [ -e "$HOME_DIR/.ssh/config" ] && [ ! -L "$HOME_DIR/.ssh/config" ] && mv "$HOME_DIR/.ssh/config" "$HOME_DIR/.ssh/config.pre-aios.bak"
-    ln -sf "$AI_OS_ROOT/dev-env/dotfiles/ssh/config" "$HOME_DIR/.ssh/config"
-    chmod 600 "$HOME_DIR/.ssh/config"
-    ok "  .ssh/config → ai-os"
+    if [ -e "$HOME_DIR/.ssh/config" ] && ! aios_linked "$HOME_DIR/.ssh/config"; then
+      # Theirs stays first, so every value they set wins; AI-OS defaults (and the personal hosts) fill the gaps.
+      aios_block "$HOME_DIR/.ssh/config" "Match all
+Include $AI_OS_ROOT/dev-env/dotfiles/ssh/config" append
+      chmod 600 "$HOME_DIR/.ssh/config"
+      ok "  .ssh/config: kept yours, AI-OS block includes dev-env/dotfiles/ssh/config"
+    else
+      ln -sf "$AI_OS_ROOT/dev-env/dotfiles/ssh/config" "$HOME_DIR/.ssh/config"
+      chmod 600 "$HOME_DIR/.ssh/config"
+      ok "  .ssh/config → ai-os"
+    fi
     if [ -f "$AI_OS_ROOT/context/personal/machine/dotfiles/ssh/config" ]; then
       ln -sf "$AI_OS_ROOT/context/personal/machine/dotfiles/ssh/config" "$HOME_DIR/.ssh/config.personal"
       chmod 600 "$AI_OS_ROOT/context/personal/machine/dotfiles/ssh/config"
@@ -468,7 +562,7 @@ if [ -e "$AIOS_ZSHRC" ] || [ -L "$AIOS_ZSHRC" ]; then
     "$AI_OS_ROOT"/dev-env/dotfiles/*)
       ok "  ~/.zshrc is the AI-OS dotfile (guard already committed)" ;;
     *)
-      if grep -q '\.ai-os/env\.sh' "$AIOS_ZSHRC" 2>/dev/null; then
+      if grep -qE '\.ai-os/env\.sh|dotfiles/zsh/aios\.zsh' "$AIOS_ZSHRC" 2>/dev/null; then
         ok "  ~/.zshrc already sources ~/.ai-os/env.sh"
       else
         printf '\n# AI-OS per-machine env (added by setup/install-mac.sh)\n[ -f "$HOME/.ai-os/env.sh" ] && source "$HOME/.ai-os/env.sh"\n' >> "$AIOS_ZSHRC"
@@ -499,7 +593,8 @@ else
   warn "5d. could not seed context/personal/ ($seeded); run setup/seed-personal-context.py by hand"
 fi
 
-# ─── 6. Oh My Zsh + Powerlevel10k ───
+# ─── 6. Oh My Zsh + Powerlevel10k (opt-in: AIOS_SHELL_THEME=1) ───
+if [ "${AIOS_SHELL_THEME:-0}" = "1" ]; then
 # Pinned refs (P1-4): Oh My Zsh has no version tags, so pin a specific commit
 # SHA instead of the mutable `master` branch. Bump deliberately after review,
 # e.g.: curl -s https://api.github.com/repos/ohmyzsh/ohmyzsh/commits/master
@@ -510,7 +605,8 @@ ZSH_SYNTAX_HIGHLIGHTING_TAG="0.8.0"
 ZSH_COMPLETIONS_TAG="0.36.0"
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
   log "6. Installing Oh My Zsh (pinned to commit ${OHMYZSH_REF:0:12})..."
-  RUNZSH=no CHSH=no sh -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/${OHMYZSH_REF}/tools/install.sh")" 2>&1 | tail -3
+  # KEEP_ZSHRC: step 5 already linked the AI-OS .zshrc; the OMZ installer would swap in its template.
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/${OHMYZSH_REF}/tools/install.sh")" 2>&1 | tail -3
   ok "Oh My Zsh installed"
 else
   ok "Oh My Zsh already installed"
@@ -544,6 +640,9 @@ for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-completions; do
   fi
 done
 ok "Oh My Zsh + plugins OK"
+else
+  log "6. Shell theme: not requested (AIOS_SHELL_THEME=1 installs Oh My Zsh + Powerlevel10k)"
+fi
 echo ""
 
 # ─── 6b. Clean up the superseded Hermes symlink tree (P1-2) ───
@@ -686,12 +785,10 @@ else
 fi
 echo ""
 
-# ─── 7f. Selective ECC agents (Claude Code only — no multi-CLI agent convention yet) ───
-# ai-os has no existing distribution mechanism for Claude Code subagent
-# definitions (.claude/agents/*.md) — this is the first one, deliberately
-# scoped to Claude Code only, since that's the only CLI ai-os documents
-# subagent support for today. 3 agents, picked by the same 2026-09-20
-# agent-sort pass: real gaps in ai-os's own Node/TS/Vue stack.
+# ─── 7f. Selective ECC agents (Claude Code only: vendored, Claude-format files) ───
+# AI-OS's own agents go to every CLI in step 7g. These 3 vendored ones stay
+# Claude-only symlinks, picked by the 2026-09-20 agent-sort pass: real gaps in
+# ai-os's own Node/TS/Vue stack.
 ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)
 if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
   log "7f. Setting curated ECC DAILY agents in Claude Code..."
@@ -710,6 +807,16 @@ if [ -d "$AI_OS_ROOT/vendor/ecc/agents" ]; then
   ok "Curated ECC DAILY agents propagated ($ECC_AGENT_COUNT/${#ECC_DAILY_AGENTS[@]}) to ~/.claude/agents/"
 else
   log "7f. vendor/ecc/agents/ absent, skipping"
+fi
+echo ""
+
+# ─── 7g. Cross-CLI agents (ai-config/agents + context/personal/agents → each CLI's own format) ───
+log "7g. Distributing agents to Claude Code, Codex, Gemini and opencode..."
+agents_py="$HOME_DIR/.ai-os/venv/bin/python"; [ -x "$agents_py" ] || agents_py=python3
+if "$agents_py" "$SCRIPT_DIR/render-agents.py" --home "$HOME_DIR"; then
+  ok "Agents distributed (edit ai-config/agents, then: ai-os agents)"
+else
+  warn "render-agents.py failed; agents not distributed (needs PyYAML: the AI-OS venv has it)"
 fi
 echo ""
 
@@ -1548,7 +1655,7 @@ fi
 echo ""
 
 # ─── 10. Warp defaults (Mac only) ───
-if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
+if [ "${AIOS_TERMINAL_THEME:-0}" = "1" ] && [ -d "/Applications/Warp.app" ]; then
   log "10. Configuring Warp defaults..."
   defaults write dev.warp.Warp-Stable font_family -string "CaskaydiaCove Nerd Font"
   defaults write dev.warp.Warp-Stable font_size -int 14
@@ -1559,12 +1666,12 @@ if [ "${SKIP_WARP:-0}" != "1" ] && [ -d "/Applications/Warp.app" ]; then
   defaults write dev.warp.Warp-Stable cursor_shape -string "beam"
   ok "Warp configured (theme dark, font CaskaydiaCove Nerd 14)"
 else
-  log "10. SKIP_WARP=1 or Warp not installed, skipping"
+  log "10. Warp: not requested (AIOS_TERMINAL_THEME=1) or not installed, skipping"
 fi
 echo ""
 
 # ─── 11. Terminal.app defaults (Mac only) ───
-if [ -d "/Applications/Utilities/Terminal.app" ]; then
+if [ "${AIOS_TERMINAL_THEME:-0}" = "1" ] && [ -d "/Applications/Utilities/Terminal.app" ]; then
   log "11. Configuring Terminal.app defaults..."
   plutil -replace "Default Window Settings" -string "Pro" "$HOME_DIR/Library/Preferences/com.apple.Terminal.plist" 2>/dev/null || true
   plutil -replace "Startup Window Settings" -string "Pro" "$HOME_DIR/Library/Preferences/com.apple.Terminal.plist" 2>/dev/null || true

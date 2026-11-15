@@ -15,6 +15,9 @@
 #   $env:SKIP_MCP = "1"        → skip MCP config regeneration
 #   $env:SKIP_MEMORY = "1"     → skip memory stack (FalkorDB, Ollama, code indexers)
 #   $env:SKIP_VERIFY = "1"     → skip verification tests at the end
+#   $env:AIOS_SHELL_THEME = "1" → replace your PowerShell profile with AI-OS's (yours kept as *.pre-aios.bak).
+#                                 Default: keep your profile and add a marked block that dot-sources AI-OS's.
+#   $env:AIOS_FONTS = "1"      → show the Nerd Font install hint
 #   $env:ASSUME_YES = "1"      → skip the preflight confirmation prompt
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 
@@ -34,6 +37,18 @@ $Manifest = Join-Path $AIOSRoot "ai-config\manifest.yaml"
 $AdapterTemplate = Join-Path $AIOSRoot "ai-config\templates\global-bridge.md.tmpl"
 $LogPrefix = "[ai-os install]"
 
+# Per-person install profile (git-ignored): `shell_theme: true` / `fonts: true` turn the opt-ins on unless the
+# AIOS_* env var is already set. Needs yq, like the manifest; without it the defaults (off) stay.
+$InstallProfile = if ($env:AIOS_INSTALL_PROFILE) { $env:AIOS_INSTALL_PROFILE } else { Join-Path $AIOSRoot "context\personal\machine\install.yaml" }
+if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
+    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"))) {
+        if (-not [Environment]::GetEnvironmentVariable($pair[0])) {
+            $value = (yq -r ".$($pair[1]) // false" $InstallProfile 2>$null)
+            if ($value -eq "true") { [Environment]::SetEnvironmentVariable($pair[0], "1") }
+        }
+    }
+}
+
 function Log($msg) { Write-Host "$LogPrefix $msg" }
 function Ok($msg) { Write-Host "$LogPrefix ✅ $msg" }
 function Warn($msg) { Write-Host "$LogPrefix ⚠️  $msg" -ForegroundColor Yellow }
@@ -51,6 +66,22 @@ function Preserve-OrReplace([string]$Target) {
         Move-Item $Target "$Target.pre-aios.bak"
     }
     return $true
+}
+function Add-AiosBlock([string]$File, [string]$Body) {
+    # Add or refresh a marked block at the end of a file the user owns; their content is never replaced.
+    $begin = "# >>> ai-os >>>"; $end = "# <<< ai-os <<<"
+    $lines = @(); if (Test-Path $File) { $lines = @(Get-Content $File) }
+    # An opening marker with no closing one would drop the rest of the file: keep a copy first.
+    if (($lines -contains $begin) -and -not ($lines -contains $end)) {
+        Copy-Item $File "$File.pre-aios.bak" -Force; Warn "$File had an unclosed ai-os block; copy kept at $File.pre-aios.bak"
+    }
+    $kept = @(); $skip = $false
+    foreach ($l in $lines) {
+        if ($l -eq $begin) { $skip = $true; continue }
+        if ($l -eq $end) { $skip = $false; continue }
+        if (-not $skip) { $kept += $l }
+    }
+    Set-Content -Path $File -Value ($kept + @($begin, $Body, $end))
 }
 function New-DirLink([string]$LinkPath, [string]$TargetPath) {
     # Directory symlinks need Developer Mode or admin elevation on Windows.
@@ -183,13 +214,14 @@ else {
 Write-Host ""
 
 # ─── 2. Fonts ───
-Log "2. Verifying Nerd Fonts..."
-# PowerShell does not handle fonts directly; user must install manually
-# CaskaydiaCove Nerd Font: download from https://www.nerdfonts.com/font-downloads
-# Or via chocolatey: choco install nerd-fonts-caskaydia-cove
-Warn "  Install CaskaydiaCove Nerd Font manually from:"
-Log "    https://github.com/ryanoasis/nerd-fonts/releases/latest"
-Log "    Or: choco install nerd-fonts-caskaydia-cove"
+if ($env:AIOS_FONTS -eq "1") {
+    Log "2. Verifying Nerd Fonts..."
+    # PowerShell does not handle fonts directly; user must install manually
+    Warn "  Install CaskaydiaCove Nerd Font manually from:"
+    Log "    https://github.com/ryanoasis/nerd-fonts/releases/latest"
+    Log "    Or: choco install nerd-fonts-caskaydia-cove"
+}
+else { Log "2. Fonts: not requested (AIOS_FONTS=1)" }
 Write-Host ""
 
 # ─── 3. Symlinks for dotfiles ───
@@ -215,12 +247,17 @@ if (-not $env:SKIP_DOTFILES) {
             if (-not (Test-Path $profileDir)) {
                 New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
             }
-            if ((Test-Path $profilePath) -and -not (Get-Item $profilePath -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
-                Move-Item $profilePath "$profilePath.pre-aios.bak" -Force
+            $aiosProfile = "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
+            $own = (Test-Path $profilePath) -and -not (Get-Item $profilePath -Force).Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)
+            if ($own -and $env:AIOS_SHELL_THEME -ne "1") {
+                Add-AiosBlock -File $profilePath -Body "if (Test-Path '$aiosProfile') { . '$aiosProfile' }"
+                Ok "  $profilePath`: kept yours, AI-OS block dot-sources the AI-OS profile"
+                continue
             }
-            New-FileLink -LinkPath $profilePath -TargetPath "$AIOSRoot\dev-env\dotfiles\powershell\Microsoft.PowerShell_profile.ps1"
+            if ($own) { Move-Item $profilePath "$profilePath.pre-aios.bak" -Force }
+            New-FileLink -LinkPath $profilePath -TargetPath $aiosProfile
+            Ok "  $profilePath → ai-os"
         }
-        Ok "  PowerShell profile → ai-os (pwsh + Windows PowerShell 5.1)"
     }
 
     # Git config
@@ -317,7 +354,7 @@ if (-not (Test-Path $customProfileDir)) {
     New-Item -ItemType Directory -Path $customProfileDir -Force | Out-Null
 }
 $customProfileContent = @'
-# AI-OS PowerShell profile (Edd)
+# AI-OS PowerShell profile
 # Load Oh-My-Posh or Starship if installed (theme + git info)
 
 # Prompt
@@ -667,6 +704,18 @@ if (Test-Path $oldHermesImported) {
         Warn "~/.hermes/skills/imported/ contains non-AI-OS content; leaving it in place (Hermes also reads ~/.agents/skills now, so skills may appear twice)"
     }
 }
+Write-Host ""
+
+# ─── 7g. Cross-CLI agents (ai-config/agents + context/personal/agents → each CLI's own format) ───
+# Needs PyYAML; step 7 installs it only when MCP setup runs, so make sure here too (no-op if present).
+$agentsPy = (Get-Command python -ErrorAction SilentlyContinue) ?? (Get-Command python3 -ErrorAction SilentlyContinue) ?? (Get-Command py -ErrorAction SilentlyContinue)
+if ($agentsPy) {
+    & $agentsPy.Source -m pip install --quiet --disable-pip-version-check pyyaml 2>&1 | Out-Null
+    & $agentsPy.Source (Join-Path $AIOSRoot "setup\render-agents.py") --home $HomeDir
+    if ($LASTEXITCODE -eq 0) { Ok "7g. Agents distributed (edit ai-config\agents, then re-run this step)" }
+    else { Warn "7g. render-agents.py exited with code $LASTEXITCODE; agents not distributed" }
+}
+else { Warn "7g. Python not found; agents not distributed" }
 Write-Host ""
 
 # ─── 7c. IDE/CLI MCP servers (VS Code, Codex, Claude Code, Gemini) ───

@@ -54,6 +54,7 @@ def compute():
         "mcp_enabled": mcp_enabled,
         "mcp_total": len(mcp),
         "commands": sum(1 for f in (ROOT / "ai-config" / "commands").glob("*.md") if f.name != "README.md"),
+        "agents": sum(1 for f in (ROOT / "ai-config" / "agents").glob("*.md") if f.name != "README.md"),
         "brew_core": brew("Brewfile"),
         "brew_extras": brew("Brewfile.extras"),
         "brew_total": brew("Brewfile") + brew("Brewfile.extras"),
@@ -79,6 +80,8 @@ CLAIMS = [
     ("README.md", r"`ai-config/mcp/\*\.yaml` \((\d+) servers\)", "mcp_enabled", 0),
     ("README.md", r"runs verification \((\d+) sections\)", "verify_sections", 0),
     ("README.md", r"\*\*(\d+) MCP servers \(\d+ enabled\)\*\*", "mcp_total", 0),
+    ("README.md", r"\*\*(\d+) shared agents\*\*", "agents", 0),
+    ("README.md", r"skills, (\d+) agents, rules", "agents", 0),
     ("README.md", r"\*\*\d+ MCP servers \((\d+) enabled\)\*\*", "mcp_enabled", 0),
 ]
 

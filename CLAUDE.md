@@ -103,8 +103,9 @@ See `rules/never_do.md`. In short:
 - Global skills: `ai-config/skills/<name>/` is the source of truth, symlinked to every CLI.
   Never author a global skill directly in `~/.claude/skills/`.
 - Project-specific skills: `<project>/.agents/skills/<name>/`, not propagated. Several former
-  globals (iaworkspace, prod-fleet/deploy, containers, open-design, wave-template, drupal8,
-  hermes-mcp, plans) now live there — see `docs/skills-catalog.md`.
+  globals now live in their own project repos — see `docs/skills-catalog.md`.
+- Agents (custom subagents): `ai-config/agents/<name>.md` (shared) or `context/personal/agents/` (yours), written
+  into Claude Code, Codex, Gemini and opencode by `ai-os agents` (also run by the installers).
 - The 14 obra/superpowers skills plus `code-review-and-quality` are required; `setup/verify.sh`
   checks them. Install and update notes: `docs/skills-catalog.md`.
 

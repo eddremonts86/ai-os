@@ -15,6 +15,7 @@ const COMMAND = 'npx @edd_remonts/create-ai-os'
 const INSTALL_LOG = [
   `✓ ${stats.brew_core} brew packages · zsh · p10k`,
   `✓ ${stats.skills_linked} skills → claude · codex · gemini · hermes`,
+  `✓ ${stats.agents} agents → claude · codex · gemini · opencode`,
   `✓ ${stats.mcp_enabled} MCP servers generated`,
   '✓ 19/19 required checks passed, ready.',
 ]

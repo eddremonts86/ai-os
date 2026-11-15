@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@/test/render'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { setReducedMotion, showAllInView } from '@/test/browser-mocks'
 import { AnimatedSpan, Terminal, TypingAnimation } from '../terminal'

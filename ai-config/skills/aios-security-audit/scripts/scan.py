@@ -25,6 +25,7 @@ Raw reports can contain secret values: gitleaks runs with --redact, but keep DIR
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -259,6 +260,16 @@ def zap_baseline(url, raw):
 
 # ---------- main ----------
 
+def only_changed(res, repo, changed):
+    """Keep findings in files the branch touched. trivy-image targets are image names, never in the diff, so they
+    are always kept; paths are compared from the git top, so a scan of a subfolder still matches."""
+    repo = Path(repo).resolve()
+    top = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=repo, capture_output=True,
+                              text=True).stdout.strip() or repo).resolve()
+    return [f for f in res if f["tool"] == "trivy-image" or not f["file"]
+            or Path(os.path.relpath(repo / f["file"], top)).as_posix() in changed]
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("repo")
@@ -275,6 +286,7 @@ def main():
     raw.mkdir(parents=True, exist_ok=True)
     skip = set(filter(None, a.skip.split(",")))
 
+    changed = None
     if a.baseline:
         changed = subprocess.run(["git", "diff", "--name-only", f"{a.baseline}...HEAD"], cwd=repo, capture_output=True, text=True).stdout.split()
         if not any(re.search(r"(package\.json|lock\.ya?ml|-lock\.json|\.lock)$", f) for f in changed):
@@ -302,6 +314,11 @@ def main():
         if res is None:
             status[name] = f"NOT RUN: {st}"
             continue
+        if changed is not None and name in ("trivy", "hadolint"):
+            # These scan whole files with no baseline of their own: keep only files this branch touches, so an
+            # untouched Dockerfile's old finding is not reported as new. ponytail: an old finding inside a changed
+            # file still shows; diff against a baseline run if that gets noisy.
+            res = only_changed(res, repo, changed)
         findings += res
         status[name] = f"ran ({st}), {len(res)} finding(s)"
 

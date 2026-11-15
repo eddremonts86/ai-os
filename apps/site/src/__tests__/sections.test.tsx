@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@/test/render'
 import { describe, expect, it } from 'vitest'
 import { showAllInView } from '@/test/browser-mocks'
 import { createAiOsPackage, readRepoFile, repoFileExists, sitePublicFileExists } from '@/test/repo'
@@ -78,7 +78,7 @@ describe('WhatItIs', () => {
     render(<WhatItIs />)
     expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual([
       'Spec → Verifier → Environment',
-      'One source of truth, every CLI',
+      'Skills and agents, every CLI',
       'MCP and dotfiles as code',
       'Framework above, products below',
     ])

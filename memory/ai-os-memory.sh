@@ -50,6 +50,12 @@ if [ -z "${AI_OS_ROOT:-}" ]; then
     AI_OS_ROOT="$HOME/Projects/ai-os"  # fallback
   fi
 fi
+# The folder that holds your projects: AI_OS_PROJECTS_DIR, else the one that holds this checkout.
+PROJECTS_DIR="${AI_OS_PROJECTS_DIR:-$(dirname "$AI_OS_ROOT")}"
+# A checkout directly in $HOME must not make reindex/search walk the whole home folder.
+if [ "$PROJECTS_DIR" = "$HOME" ] || [ "$PROJECTS_DIR" = "/" ]; then
+  PROJECTS_DIR="$AI_OS_ROOT"
+fi
 export AI_OS_ROOT
 MEMORY_DIR="$AI_OS_ROOT/memory"
 OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}"
@@ -236,7 +242,7 @@ sub_search() {
     return 1
   fi
   local q="$1"
-  local target="${2:-$HOME/Projects}"
+  local target="${2:-$PROJECTS_DIR}"
   hdr "Semantic search: \"$q\""
   echo "  target: $target"
   echo ""
@@ -369,7 +375,7 @@ sub_query() {
     err "grepai not installed (run: bash $AI_OS_ROOT/setup/install-mac.sh)"
     exit 1
   fi
-  cd "${2:-$HOME/Projects}"
+  cd "${2:-$PROJECTS_DIR}"
   export OLLAMA_URL="${OLLAMA_URL:-http://localhost:11500}"
   if ! grepai search "$q" 2>&1; then
     err "grepai search failed"
@@ -384,7 +390,7 @@ sub_bootstrap() {
 }
 
 sub_reindex() {
-  local target="${1:-$HOME/Projects}"
+  local target="${1:-$PROJECTS_DIR}"
   hdr "Indexing via codebase-memory-mcp (tool: index_repository)"
   echo "  target: $target"
 
