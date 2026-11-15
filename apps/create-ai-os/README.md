@@ -19,8 +19,11 @@ There's nothing to add to your `package.json` and nothing to remove — this is 
 ## Usage
 
 ```bash
-# Default — clones + installs into ./ai-os
+# Default: clones into ./ai-os, lets you choose, installs
 npx @edd_remonts/create-ai-os
+
+# Every CLI, component and package, no questions
+npx @edd_remonts/create-ai-os --full
 
 # Custom folder
 npx @edd_remonts/create-ai-os ~/Projects/ai-os
@@ -37,12 +40,21 @@ npx @edd_remonts/create-ai-os --version
 
 1. Validates Node ≥ 18 and that `git` is on `PATH`.
 2. Clones `https://github.com/eddremonts86/ai-os.git` (shallow) into the target folder.
-3. Runs the platform installer with the target folder as its working directory:
+3. Lets you choose what to install (when it has a terminal and you did not pass `--full` or `--yes`): the install mode, the AI CLIs, the components, then every package, grouped as in the repo's Brewfile, with the ones AI-OS needs marked required. The choice is saved to `context/personal/machine/install.yaml`, which the installers read, so the next run starts from it.
+4. Runs the platform installer with the target folder as its working directory:
    - macOS/Linux → `setup/install-mac.sh`
    - Windows → `setup/install-windows.ps1`
-4. Prints next steps (`setup/verify.sh`, `CLAUDE.md`, `context/personal/`).
+5. Prints next steps (`setup/verify.sh`, `CLAUDE.md`, `context/personal/`).
 
-The installer itself is idempotent and owns its own confirmation prompts and `DRY_RUN` mode — this CLI never duplicates that logic, it only clones and delegates.
+The installer itself is idempotent and owns its own `DRY_RUN` mode; this CLI chooses, saves and delegates.
+
+| Option | What it does |
+|---|---|
+| `--full` | Every CLI, component and package, no questions (the installer ignores `skip:` / `exclude:`). The shell and terminal look stay opt-in. |
+| `-y`, `--yes` | No questions: the saved `install.yaml`, else the installer defaults. |
+| `--here [DIR]` | Use an existing ai-os checkout instead of cloning (`ai-os install` runs this). |
+| `--dry-run` | Run the installer in `DRY_RUN` mode. |
+| `--clone-only` | Clone, do not install. |
 
 ## Tests
 
@@ -50,7 +62,7 @@ The installer itself is idempotent and owns its own confirmation prompts and `DR
 npm test
 ```
 
-No dependencies and no network. The tests run the real CLI as a child process against a stand-in `git` and installer, simulate Windows and old Node versions, and cover every exit code.
+No network. The selector's data side (the catalog read from the repo, the `install.yaml` round trip) is tested directly; the tests also run the real CLI as a child process against a stand-in `git` and installer, simulate Windows and old Node versions, and cover every exit code.
 
 ## Full project docs
 

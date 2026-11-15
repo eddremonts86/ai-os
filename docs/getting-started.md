@@ -24,7 +24,9 @@ cd "$AI_OS_ROOT"
 ### Mac
 
 ```bash
-bash setup/install-mac.sh
+ai-os install                  # choose CLIs, components and packages one by one (needs Node 18+)
+bash setup/install-mac.sh      # or: install what install.yaml says, else the defaults
+bash setup/install-mac.sh --full   # or: everything
 ```
 
 ### Windows (PowerShell as Admin)
