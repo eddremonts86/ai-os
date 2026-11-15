@@ -20,8 +20,21 @@
 #   $env:AIOS_FONTS = "1"      → show the Nerd Font install hint
 #   $env:ASSUME_YES = "1"      → skip the preflight confirmation prompt
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
+#
+# Flags: --full (or -Full) installs every CLI, component and package, ignoring install.yaml skip: and
+# exclude:; --yes (or -Yes) is ASSUME_YES; --dry-run is DRY_RUN. To choose them one by one:
+# `npx @edd_remonts/create-ai-os` or `ai-os install`.
 
 $ErrorActionPreference = "Stop"
+
+foreach ($arg in $args) {
+    switch -Regex ($arg) {
+        '^(--full|-Full)$' { $env:AIOS_FULL = "1" }
+        '^(--yes|-y|-Yes)$' { $env:ASSUME_YES = "1" }
+        '^(--dry-run|-DryRun)$' { $env:DRY_RUN = "1" }
+        default { Write-Host "install-windows.ps1: unknown option $arg (--full, --yes, --dry-run)"; exit 2 }
+    }
+}
 
 # ─── DRY_RUN mode (CI) ───
 if ($env:DRY_RUN -eq "1") {
@@ -40,6 +53,21 @@ $LogPrefix = "[ai-os install]"
 # Per-person install profile (git-ignored): `shell_theme: true` / `fonts: true` turn the opt-ins on unless the
 # AIOS_* env var is already set. Needs yq, like the manifest; without it the defaults (off) stay.
 $InstallProfile = if ($env:AIOS_INSTALL_PROFILE) { $env:AIOS_INSTALL_PROFILE } else { Join-Path $AIOSRoot "context\personal\machine\install.yaml" }
+# skip: (memory, mcp, ponytail, hooks) turns default-on parts off and exclude: drops packages from the shared
+# Chocolatey list; --full / AIOS_FULL=1 ignores both and turns every opt-in on.
+# The shell profile and font stay opt-in under --full too (the theme replaces your own profile).
+$ExcludedPackages = @()
+if ((Test-Path $InstallProfile) -and -not (Get-Command yq -ErrorAction SilentlyContinue)) {
+    # yq normally arrives with the Chocolatey packages in step 1, too late to read install.yaml.
+    if (Get-Command choco -ErrorAction SilentlyContinue) {
+        Write-Host "[ai-os install] Installing yq first, to read $InstallProfile..."
+        choco install -y yq --no-progress 2>&1 | Out-Null
+        $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
+    }
+    if (-not (Get-Command yq -ErrorAction SilentlyContinue)) {
+        Write-Host "[ai-os install] ⚠️  yq not available: $InstallProfile (skip:, exclude:, opt-ins) is NOT applied" -ForegroundColor Yellow
+    }
+}
 if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
     foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"))) {
         if (-not [Environment]::GetEnvironmentVariable($pair[0])) {
@@ -47,6 +75,15 @@ if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContin
             if ($value -eq "true") { [Environment]::SetEnvironmentVariable($pair[0], "1") }
         }
     }
+}
+if ($env:AIOS_FULL -ne "1" -and (Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
+    $skipVars = @{ memory = @("SKIP_MEMORY"); mcp = @("SKIP_MCP"); ponytail = @("SKIP_PONYTAIL"); hooks = @("SKIP_COMPACT_HOOK", "SKIP_MEMORY_HOOK") }
+    foreach ($s in @(yq -r '.skip // [] | .[]' $InstallProfile 2>$null)) {
+        foreach ($v in @($skipVars[$s])) {
+            if ($v -and -not [Environment]::GetEnvironmentVariable($v)) { [Environment]::SetEnvironmentVariable($v, "1") }
+        }
+    }
+    $ExcludedPackages = @(yq -r '.exclude // [] | .[]' $InstallProfile 2>$null)
 }
 
 function Log($msg) { Write-Host "$LogPrefix $msg" }
@@ -117,9 +154,10 @@ $ChocoPackages = @(
     "vscode", "windsurf", "googlechrome", "firefox", "slack", "discord",
     "7zip", "notepadplusplus", "keepassxc", "postman", "tableplus",
     "warp"  # Warp has a Windows version
-)
+) | Where-Object { $ExcludedPackages -notcontains $_ }
 
 function Show-Manifest {
+    if ($env:AIOS_FULL -eq "1") { Log "--full: every CLI, component and package (install.yaml skip: and exclude: ignored)" }
     Log "This will install / configure the following on your machine:"
     Write-Host ""
     Write-Host "  📦 Chocolatey packages ($($ChocoPackages.Count)):"

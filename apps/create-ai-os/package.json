@@ -1,13 +1,14 @@
 {
   "name": "@edd_remonts/create-ai-os",
-  "version": "0.1.1",
-  "description": "Bootstrap Edd's AI Operating System (skills, workflows, MCP servers, dev-env) with one command.",
+  "version": "0.2.0",
+  "description": "Bootstrap AI-OS (skills, agents, MCP servers, dev-env) with one command: choose the CLIs, components and packages, or --full.",
   "type": "module",
   "bin": {
     "create-ai-os": "bin/create-ai-os.js"
   },
   "files": [
     "bin/",
+    "lib/",
     "README.md",
     "LICENSE"
   ],
@@ -16,6 +17,10 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@clack/prompts": "1.8.1",
+    "yaml": "2.9.1"
   },
   "repository": {
     "type": "git",

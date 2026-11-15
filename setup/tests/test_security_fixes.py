@@ -103,6 +103,20 @@ class ScanBaselineFilterTests(unittest.TestCase):
         self.assertEqual(len(self.scan.only_changed(res, self.repo / "app", ["Dockerfile"])), 0)
 
 
+class OsvPathTests(unittest.TestCase):
+    """osv findings carry the lockfile's path from the repo, so --baseline can drop untouched lockfiles (2026-11-15:
+    adding one lockfile used to report every old advisory in the repo as new)."""
+
+    def test_path_is_relative_to_the_scanned_repo(self):
+        scan = load(ROOT / "ai-config/skills/aios-security-audit/scripts/scan.py", "scan")
+        repo = Path(tempfile.mkdtemp())
+        self.assertEqual(scan.rel_to(repo / "a/b/requirements.txt", repo), "a/b/requirements.txt")
+        self.assertEqual(scan.rel_to("/elsewhere/package-lock.json", repo), "package-lock.json")
+        res = [{"tool": "osv-scanner", "file": "skills/x/requirements.txt"}, {"tool": "osv-scanner", "file": "apps/y/package-lock.json"}]
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        self.assertEqual([f["file"] for f in scan.only_changed(res, repo, ["apps/y/package-lock.json"])], ["apps/y/package-lock.json"])
+
+
 class AgentCountTests(unittest.TestCase):
     def test_stats_counts_every_shared_agent_but_the_readme(self):
         stats = load(ROOT / "setup/ai-os-stats.py", "stats").compute()

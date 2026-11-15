@@ -65,6 +65,12 @@ terminal_theme: false    # Terminal.app (Pro) and Warp restyle
 
 clis: []                 # optional CLIs from npm: codex, gemini
 
+# Written by the selector (`ai-os install` / create-ai-os); --full ignores skip: and exclude:
+skip: []                 # default-on parts to leave out: claude, opencode, memory, mcp, ponytail, hooks
+exclude: []              # packages from the shared Brewfile / pip / npm / Chocolatey lists to leave out
+extras: false            # also install dev-env/packages/Brewfile.extras
+ui_indexer: false        # ui-indexador (shadcn registry index), Mac
+
 mcp:                     # shared servers live in ai-config/mcp/*.yaml
   enable: []             # names to turn on (e.g. rea)
   disable: []            # names to turn off
