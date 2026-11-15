@@ -21,7 +21,7 @@ go in a folder outside the repository.
 
 ## 2. Measure
 
-- **Lab vitals:** Lighthouse (`npx -y lighthouse <url> --output=json --quiet --chrome-flags="--headless=new"`, with
+- **Lab vitals:** Lighthouse (`npx -y lighthouse@13.6.0 <url> --output=json --quiet --chrome-flags="--headless=new"`, with
   `--preset=desktop` for desktop) for LCP, CLS, TBT, Speed Index, and its opportunities.
 - **Interaction:** a Playwright script with the `web-vitals` library injected (`onLCP`, `onINP`, `onCLS`) that loads
   the page, scrolls, and uses each main control; report INP per interaction and the LCP element.
@@ -29,7 +29,7 @@ go in a folder outside the repository.
   50 ms: which script and function, during load or interaction.
 - **Network:** waterfall from the trace or HAR: render-blocking requests, request chains, uncompressed or uncached
   responses (`cache-control`, `content-encoding`), fonts and images on the critical path, third-party cost.
-- **Server**, when there is one: TTFB per route, and with `npx -y autocannon` (or `k6` if installed) a short load
+- **Server**, when there is one: TTFB per route, and with `npx -y autocannon@8.0.0` (or `k6` if installed) a short load
   test against a local or disposable instance only: p50/p95/p99 latency and errors at rising concurrency.
 
 ## 3. Explain
