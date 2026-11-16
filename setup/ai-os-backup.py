@@ -143,6 +143,9 @@ def get_key(create=False):
     env = os.environ.get("AI_OS_BACKUP_KEY")
     if env:
         return base64.b64decode(env)
+    if sys.platform != "darwin":
+        raise RuntimeError("no Keychain on this system: set $AI_OS_BACKUP_KEY (base64 of 32 random bytes) "
+                           "and keep a copy off this machine")
     rc, out = sh("security", "find-generic-password", "-s", KEY_SERVICE, "-a", KEY_ACCOUNT, "-w")
     if rc == 0 and out:
         return base64.b64decode(out)
@@ -269,6 +272,8 @@ def push_github(name, blob):
 def push_offsite(snap):
     """Encrypt once, write the same ciphertext to iCloud Drive and the private GitHub mirror.
     Returns a list of (destination, error-or-None); the local snapshot is already safe."""
+    if not icloud_on() and not github_repo():
+        return []  # nothing to send: do not create or ask for a key
     name = f"ai-os-{snap.name}.tar.gz.enc"
     blob = encrypt(pack(snap), get_key(create=True))
     results = []
