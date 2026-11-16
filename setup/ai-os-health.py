@@ -25,10 +25,11 @@ import concurrent.futures as cf
 import json
 import os
 import re
-import select
+import queue
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -57,7 +58,7 @@ ICON = {OK: "✅", WARN: "⚠️ ", FAIL: "❌"}
 
 def run(cmd, timeout=30, **kw):
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, **kw)
+        p = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout, **kw)
         return p.returncode, (p.stdout or "") + (p.stderr or "")
     except FileNotFoundError:
         return 127, f"{cmd[0]}: not found"
@@ -145,17 +146,29 @@ def mcp_stdio_handshake(command, args, env_extra=None, timeout=90):
         # cwd=ROOT: grepai's server refuses to start outside a repo with a .grepai/ index,
         # and launchd starts this script in /.
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             env=env, text=True, cwd=ROOT)
+                             env=env, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     except FileNotFoundError:
         return False, f"{cmd[0]}: not found"
     try:
         p.stdin.write(json.dumps(INIT) + "\n")
         p.stdin.flush()
+        # A reader thread, not select(): on Windows select() only takes sockets, never pipes.
+        lines = queue.Queue()
+
+        def pump():
+            for l in p.stdout:
+                lines.put(l)
+            lines.put("")  # EOF
+
+        threading.Thread(target=pump, daemon=True).start()
         deadline = time.time() + timeout
+        line = None
         while time.time() < deadline:
-            r, _, _ = select.select([p.stdout], [], [], 1)
-            if r:
-                line = p.stdout.readline()
+            try:
+                line = lines.get(timeout=1)
+            except queue.Empty:
+                line = None
+            if line is not None:
                 if not line:
                     break
                 try:
@@ -168,8 +181,16 @@ def mcp_stdio_handshake(command, args, env_extra=None, timeout=90):
                     return False, f"initialize error: {msg.get('error', {}).get('message', '?')}"
             elif p.poll() is not None:
                 break
-        err = (p.stderr.read() if p.poll() is not None else "").strip().splitlines()
-        return False, (err[-1][:160] if err else f"no initialize reply within {timeout}s")
+        if p.poll() is None and line == "":  # stdout closed first: give the exiting server a moment to finish
+            try:
+                p.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                pass
+        if p.poll() is None:
+            return False, f"no initialize reply within {timeout}s"
+        err = [l for l in p.stderr.read().splitlines() if l.strip()]
+        # first line says what failed (most launchers), last line names the exception (tracebacks)
+        return False, " | ".join(dict.fromkeys([err[0], err[-1]]))[:200] if err else f"exited with code {p.returncode} before replying"
     finally:
         p.kill()
 
@@ -307,7 +328,12 @@ def check_codebase_memory():
 
 
 def check_reindex():
-    rc, _ = run(["launchctl", "print", f"gui/{os.getuid()}/ai.os.reindex"], 10)
+    if sys.platform == "darwin":
+        rc, _ = run(["launchctl", "print", f"gui/{os.getuid()}/ai.os.reindex"], 10)
+    elif sys.platform == "win32":  # registered by memory/windows/ai-os-tasks.ps1
+        rc, _ = run(["schtasks", "/Query", "/TN", "AI-OS reindex"], 10)
+    else:
+        return WARN, "no scheduled reindex: it is a launchd agent (macOS) or a scheduled task (Windows)"
     logs = sorted((ROOT / "memory" / "logs").glob("cron-reindex-*.log"), key=lambda p: p.stat().st_mtime)
     if not logs:
         return FAIL, "never ran"
@@ -316,7 +342,7 @@ def check_reindex():
     text = last.read_text(errors="replace")
     m = re.search(r"summary: (\d+) ok, (\d+) failed", text)
     if rc != 0:
-        return FAIL, f"agent ai.os.reindex not loaded (last run {age_h:.0f}h ago)"
+        return FAIL, f"schedule ai.os.reindex not registered (last run {age_h:.0f}h ago)"
     if age_h > 8:  # runs every 4h
         return FAIL, f"last run {age_h:.0f}h ago — the schedule is not firing"
     if not m or int(m.group(2)) or "✗ grepai" in text:

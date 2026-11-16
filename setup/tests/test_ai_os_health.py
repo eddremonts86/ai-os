@@ -50,5 +50,57 @@ class HealthTests(unittest.TestCase):
         self.assertIn(data["checks"][0]["status"], ("ok", "warn", "fail"))
 
 
+FAKE_SERVER = (
+    "import json, sys\n"
+    "req = json.loads(sys.stdin.readline())\n"
+    "print(json.dumps({'jsonrpc': '2.0', 'id': req['id'], 'result': {'serverInfo': {'name': 'fake'}}}), flush=True)\n"
+    "sys.stdin.readline()\n"
+)
+
+
+class WindowsPortabilityTests(unittest.TestCase):
+    """Each of these crashed or misreported on Windows before."""
+
+    def test_reindex_check_never_calls_launchctl_off_macos(self):
+        with mock.patch.object(health.sys, "platform", "linux"), \
+             mock.patch.object(health, "run", side_effect=AssertionError("must not call launchctl")):
+            status, detail = health.check_reindex()
+        self.assertEqual(status, health.WARN)
+
+    def test_reindex_check_asks_the_scheduled_task_on_windows(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            logs = Path(d) / "memory" / "logs"
+            logs.mkdir(parents=True)
+            (logs / "cron-reindex-x.log").write_text("  summary: 3 ok, 0 failed, 3 total\n", encoding="utf-8")
+            with mock.patch.object(health.sys, "platform", "win32"), mock.patch.object(health, "ROOT", Path(d)):
+                with mock.patch.object(health, "run", return_value=(0, "")) as run:
+                    status, detail = health.check_reindex()
+                self.assertEqual(run.call_args[0][0][0], "schtasks")
+                self.assertEqual(status, health.OK, detail)
+                with mock.patch.object(health, "run", return_value=(1, "")):  # task missing, log present
+                    status, detail = health.check_reindex()
+                self.assertEqual(status, health.FAIL)
+                self.assertIn("not registered", detail)
+
+    def test_stdio_handshake_reads_the_reply_without_select(self):
+        # select() on a pipe raises WinError 10038 on Windows; the reader thread works everywhere.
+        ok, detail = health.mcp_stdio_handshake(sys.executable, ["-c", FAKE_SERVER], timeout=20)
+        self.assertTrue(ok, detail)
+        self.assertIn("fake", detail)
+
+    def test_stdio_handshake_reports_why_a_server_exited(self):
+        script = "import sys; sys.stderr.write('launcher blocked the command\\nEvent code: X1\\n'); sys.exit(1)"
+        ok, detail = health.mcp_stdio_handshake(sys.executable, ["-c", script], timeout=20)
+        self.assertFalse(ok)
+        self.assertIn("launcher blocked the command", detail)
+        self.assertNotIn("no initialize reply", detail)
+
+    def test_run_decodes_utf8_output_whatever_the_locale(self):
+        rc, out = health.run([sys.executable, "-c", "import sys; sys.stdout.buffer.write('\\u2705 ok'.encode())"])
+        self.assertEqual(rc, 0)
+        self.assertEqual(out, "✅ ok")
+
+
 if __name__ == "__main__":
     unittest.main()

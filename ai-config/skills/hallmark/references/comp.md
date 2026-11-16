@@ -1,6 +1,6 @@
 # Comp before build: composing in pixels before composing in CSS
 
-Loaded **only** when the pre-flight found `TOGETHER_API_KEY` (signal 9): at the comp step after the Picks block, and for a generated still (§ Generated stills, at the end). With no key this file never loads and the build goes from the Picks block straight to Step 6. The comp step is never a blocker and never something to apologise for skipping.
+Loaded **only** when the pre-flight found `TOGETHER_API_KEY` (signal 9) and the user asked for generated images in this run (AI-OS limit): at the comp step after the Picks block, and for a generated still (§ Generated stills, at the end). With no key this file never loads and the build goes from the Picks block straight to Step 6. The comp step is never a blocker and never something to apologise for skipping.
 
 A rendered comp carries mass, interval and alignment at a glance, which prose cannot; reproducing an approved image is easier than inventing a composition from a paragraph.
 
@@ -95,7 +95,7 @@ Rower photograph   raster    library photo; the comp's crew is not a real crew
 
 ## § Generated stills
 
-A picture for the page itself, outside the comp step: only when `TOGETHER_API_KEY` is set and the user asked for generated images, or for a subject the library cannot reach (`imagery.md` § 1).
+A picture for the page itself, outside the comp step: only when `TOGETHER_API_KEY` is set and the user asked for generated images (AI-OS limit: a subject the library cannot reach is a reason to suggest one, not to run it; `imagery.md` § 1).
 
 ```
 node <skill-dir>/scripts/imagegen.mjs "<prompt>" --size 1536x1024 --out <project>/images/<name>.png

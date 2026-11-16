@@ -49,6 +49,8 @@ LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
     [[ "$d" =~ $SKIP_RE ]] && continue
     projects+=("$d")
   done < <(find "$PROJECTS_DIR" -mindepth 2 -maxdepth 4 -name .git -type d -not -path '*/node_modules/*' 2>/dev/null | sort)
+  # ai-os itself, also when it does not live inside the projects folder.
+  [[ " ${projects[*]} " == *" $AI_OS_ROOT/ "* ]] || projects+=("$AI_OS_ROOT/")
 
   echo "  → ${#projects[@]} project(s) to reindex"
   echo ""
@@ -57,7 +59,10 @@ LOG_FILE="$LOG_DIR/cron-reindex-$(date +%Y-%m-%d-%H%M%S).log"
   for path in "${projects[@]}"; do
     label="${path#$PROJECTS_DIR/}"
     label="${label%/}"
-    payload="$(printf '{"repo_path":"%s"}' "$path")"
+    repo="$path"
+    # Git Bash on Windows: the native binary finds no files under /c/..., only under C:/...
+    command -v cygpath >/dev/null 2>&1 && repo="$(cygpath -m "$path")"
+    payload="$(printf '{"repo_path":"%s"}' "$repo")"
     if out=$(codebase-memory-mcp cli index_repository "$payload" 2>&1); then
       if echo "$out" | grep -q '"status":"indexed"'; then
         nodes=$(echo "$out" | grep -oE '"nodes":[0-9]+' | head -1 | grep -oE '[0-9]+' || echo "?")
