@@ -61,12 +61,27 @@ FAKE_SERVER = (
 class WindowsPortabilityTests(unittest.TestCase):
     """Each of these crashed or misreported on Windows before."""
 
-    def test_reindex_check_does_not_need_launchd_off_macos(self):
-        with mock.patch.object(health.sys, "platform", "win32"), \
+    def test_reindex_check_never_calls_launchctl_off_macos(self):
+        with mock.patch.object(health.sys, "platform", "linux"), \
              mock.patch.object(health, "run", side_effect=AssertionError("must not call launchctl")):
             status, detail = health.check_reindex()
         self.assertEqual(status, health.WARN)
-        self.assertIn("macOS only", detail)
+
+    def test_reindex_check_asks_the_scheduled_task_on_windows(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            logs = Path(d) / "memory" / "logs"
+            logs.mkdir(parents=True)
+            (logs / "cron-reindex-x.log").write_text("  summary: 3 ok, 0 failed, 3 total\n", encoding="utf-8")
+            with mock.patch.object(health.sys, "platform", "win32"), mock.patch.object(health, "ROOT", Path(d)):
+                with mock.patch.object(health, "run", return_value=(0, "")) as run:
+                    status, detail = health.check_reindex()
+                self.assertEqual(run.call_args[0][0][0], "schtasks")
+                self.assertEqual(status, health.OK, detail)
+                with mock.patch.object(health, "run", return_value=(1, "")):  # task missing, log present
+                    status, detail = health.check_reindex()
+                self.assertEqual(status, health.FAIL)
+                self.assertIn("not registered", detail)
 
     def test_stdio_handshake_reads_the_reply_without_select(self):
         # select() on a pipe raises WinError 10038 on Windows; the reader thread works everywhere.

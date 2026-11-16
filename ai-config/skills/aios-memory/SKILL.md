@@ -35,7 +35,8 @@ ai-os memory bootstrap [--refresh]   # first-time / on-demand: start the whole s
 
 Periodic reindex of every git project next to ai-os (6x/day at 00/04/08/12/16/20):
 `memory/cron-reindex.sh`, scheduled by the launchd agent `ai.os.reindex`
-(`bash memory/launchd/install-reindex.sh [--status|--uninstall]`). Skips `/inHold/`
+(`bash memory/launchd/install-reindex.sh [--status|--uninstall]`); on Windows the task "AI-OS reindex"
+(`memory/windows/ai-os-tasks.ps1 [install|status|uninstall]`, logs in `~/.ai-os/logs`). Skips `/inHold/`
 by default (`AI_OS_REINDEX_SKIP`); root is `AI_OS_PROJECTS_DIR` (default: the
 directory that contains ai-os). Also refreshes grepai's ai-os index.
 
