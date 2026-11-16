@@ -1,6 +1,7 @@
 """aios-ui-verify's antislop.py: Hallmark's sloplint on a non-Hallmark project, without the Hallmark-only gates."""
 
 import importlib.util
+import json
 import os
 import re
 import shutil
@@ -107,6 +108,30 @@ class RenderTests(unittest.TestCase):
         self.assertFalse((page.parent / ".hallmark").exists(), "screenshots left in the project")
         self.assertTrue(list((root / "shots").rglob("x.png")))
 
+    def test_render_screenshots_in_subfolders_leave_the_project(self):
+        # a directory scan: the render tier writes .hallmark/ beside each HTML file, nested ones included
+        root = Path(tempfile.mkdtemp())
+        site = root / "site"
+        nested = site / "docs" / "guide" / "index.html"
+        nested.parent.mkdir(parents=True)
+        nested.write_text("<p>x</p>", encoding="utf-8")
+        kept = site / "old" / ".hallmark"
+        kept.mkdir(parents=True)  # was there before: stays
+        fake = root / "fake.sh"
+        fake.write_text('#!/usr/bin/env bash\nfor a; do [ -d "$a" ] && find "$a" -name "*.html" -not -path "*/.*" | '
+                        'while read -r f; do mkdir -p "$(dirname "$f")/.hallmark/shots"; '
+                        'touch "$(dirname "$f")/.hallmark/shots/x.png"; done; done\necho \'{"findings": []}\'\n',
+                        encoding="utf-8")
+        real = antislop.LAUNCHER
+        antislop.LAUNCHER = fake
+        try:
+            antislop.run([site], render=True, shots=root / "shots")
+        finally:
+            antislop.LAUNCHER = real
+        self.assertFalse((nested.parent / ".hallmark").exists(), "nested screenshots left in the project")
+        self.assertTrue(kept.is_dir(), "a .hallmark/ that existed before was moved")
+        self.assertTrue(list((root / "shots").rglob("x.png")))
+
 
 @unittest.skipIf(os.name == "nt" or not shutil.which("node"), "bash launcher; needs node")
 class LauncherTests(unittest.TestCase):
@@ -119,6 +144,18 @@ class LauncherTests(unittest.TestCase):
     def test_only_the_skill_scripts_it_names(self):
         for bad in ("install", "install-hook", "picture", "../../x", ""):
             self.assertEqual(self.run_launcher(bad).returncode, 2, bad)
+
+    def test_browser_tier_installs_from_the_lockfile(self):
+        deps = ROOT / "ai-config/skills/aios-ui-verify/scripts/hallmark-deps"
+        want = json.loads((deps / "package.json").read_text(encoding="utf-8"))["dependencies"]["puppeteer-core"]
+        lock = json.loads((deps / "package-lock.json").read_text(encoding="utf-8"))["packages"]
+        self.assertEqual(lock["node_modules/puppeteer-core"]["version"], want)
+        for name, pkg in lock.items():
+            if name:
+                self.assertTrue(pkg.get("integrity", "").startswith("sha512-"), f"{name} not pinned by hash")
+        text = self.LAUNCHER.read_text(encoding="utf-8")
+        self.assertIn("npm ci --ignore-scripts", text)
+        self.assertNotIn("npm install", text)
 
     def test_runs_a_hallmark_script(self):
         p = self.run_launcher("theme", "list")

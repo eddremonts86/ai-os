@@ -35,6 +35,8 @@ remote code. Scripts use only `node:*` builtins. Network: `api.together.xyz` (im
    generation only on request even when `TOGETHER_API_KEY` is set, never install or start a project outside the
    current one without asking, say when the page loads third-party fonts or photos).
 3. `agents/openai.yaml`: `allow_implicit_invocation: false` (Codex).
+4. `SKILL.md` signal 9, `references/flow.md`, `comp.md`, `imagery.md`: image generation and the comp step only when
+   the user asks for generated images (the key alone is not the ask); the edit-time hook lines say it was not vendored.
 
 ## How AI-OS uses it
 
@@ -42,11 +44,12 @@ remote code. Scripts use only `node:*` builtins. Network: `api.together.xyz` (im
   AI-OS commands built on it: `/aios-ui-page`, `/aios-ui-redesign`, `/aios-ui-audit`, `/aios-ui-themes`,
   `/aios-ui-photos`.
 - `ai-config/skills/aios-ui-verify/scripts/hallmark.sh` runs its scripts with the browser tier (puppeteer-core
-  pinned in `~/.ai-os/hallmark`, installed once with `--ignore-scripts`).
+  installed into `~/.ai-os/hallmark` with `npm ci --ignore-scripts` from the
+  committed `aios-ui-verify/scripts/hallmark-deps/` lockfile).
 - `ai-config/skills/aios-ui-verify/scripts/antislop.py` runs its `sloplint.mjs` statically on any project, without
   the Hallmark-only gates, as an advisory check of `/aios-ui-verify`.
 
 ## Updating
 
-Download the new commit's `skills/hallmark/`, diff it against this folder, re-apply the three edits, delete the
+Download the new commit's `skills/hallmark/`, diff it against this folder, re-apply the four edits, delete the
 four scripts again, update the table, re-run `setup/tests/test_antislop.py`, and re-vet changed scripts.
