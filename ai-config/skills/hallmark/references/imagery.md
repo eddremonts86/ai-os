@@ -76,7 +76,7 @@ A working control (a calculator on the user's prices, a booking form) is a fine 
 
 ## 6. Generated stills
 
-Only when `TOGETHER_API_KEY` is set and the user asked for generated images, or for a subject the library cannot reach: `comp.md` § Generated stills. Never auto-fire it.
+Only when `TOGETHER_API_KEY` is set and the user asked for generated images (a subject the library cannot reach is a reason to suggest one, not to run it): `comp.md` § Generated stills. Never auto-fire it.
 
 ## 7. Never
 
