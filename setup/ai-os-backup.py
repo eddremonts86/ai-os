@@ -34,7 +34,7 @@ a single commit rewritten on every run, so it never grows past the newest 14 fil
 The iCloud copy likewise goes to Backups/ai-os/<branch>/. Only ciphertext is
 published; without the key it is unreadable.
 
-Runs daily via the launchd agent ai.os.backup. Settings live in
+Runs daily via the launchd agent ai.os.backup (macOS) or the scheduled task "AI-OS backup" (Windows). Settings live in
 ~/.ai-os/backup.json (override the path with $AI_OS_BACKUP_CONFIG):
 
   ai-os backup --status                     # schedule, destinations, newest snapshot
@@ -77,6 +77,7 @@ FALKOR_DATA = ROOT / "memory" / "falkordb" / "data"
 CONFIG = Path(os.environ.get("AI_OS_BACKUP_CONFIG", HOME / ".ai-os" / "backup.json"))
 DEFAULTS = {"schedule": True, "icloud": True, "github_repo": "", "branch": ""}
 INSTALLER = ROOT / "memory" / "launchd" / "install-backup.sh"
+WIN_TASKS = ROOT / "memory" / "windows" / "ai-os-tasks.ps1"
 # launchd starts jobs with a bare PATH; docker lives in /usr/local/bin.
 os.environ["PATH"] = os.pathsep.join(["/usr/local/bin", "/opt/homebrew/bin", os.environ.get("PATH", "")])
 
@@ -495,6 +496,11 @@ def verify(snap=None):
 def schedule(on):
     """Record the choice first (install-backup.sh and setup/install-mac.sh honour it), then (un)load the agent."""
     save_config(schedule=on)
+    if sys.platform == "win32":  # the scheduled task, registered by memory/windows/ai-os-tasks.ps1
+        rc = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(WIN_TASKS),
+                             "install" if on else "uninstall", "-Only", "backup"]).returncode
+        print(f"daily backups {'enabled (13:00)' if on else 'disabled — manual `ai-os backup` still works; resume with --enable'}")
+        return rc
     if sys.platform != "darwin":
         print(f"daily backups {'enabled' if on else 'disabled'} in {CONFIG} (the scheduled agent is macOS-only)")
         return 0
@@ -505,7 +511,10 @@ def schedule(on):
 
 def status():
     cfg = config()
-    loaded = sys.platform == "darwin" and sh("launchctl", "print", f"gui/{os.getuid()}/ai.os.backup")[0] == 0
+    if sys.platform == "darwin":
+        loaded = sh("launchctl", "print", f"gui/{os.getuid()}/ai.os.backup")[0] == 0
+    else:
+        loaded = sys.platform == "win32" and sh("schtasks", "/Query", "/TN", "AI-OS backup")[0] == 0
     snap = latest()
     print(f"schedule:  {'on' if cfg['schedule'] else 'off'} (agent {'loaded' if loaded else 'not loaded'})")
     print(f"local:     {DEST} (newest: {snap.name if snap else 'none'})")
