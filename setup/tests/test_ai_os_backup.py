@@ -240,5 +240,33 @@ class ScheduleConfigTests(unittest.TestCase):
             self.assertEqual(p.returncode, 0)
             self.assertIn("not installing", p.stdout)
 
+
+class OffsiteKeyTests(unittest.TestCase):
+    """Both failed on Windows: the off-site step asked the macOS Keychain for a key even with nothing to send."""
+
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("ai_os_backup_key", SCRIPT)
+        cls.b = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.b)
+
+    def test_nothing_configured_needs_no_key(self):
+        from unittest import mock
+        with mock.patch.object(self.b, "icloud_on", return_value=False), \
+             mock.patch.object(self.b, "github_repo", return_value=None), \
+             mock.patch.object(self.b, "get_key", side_effect=AssertionError("must not ask for a key")):
+            self.assertEqual(self.b.push_offsite(Path("unused")), [])
+
+    def test_no_keychain_off_macos_says_how_to_set_the_key(self):
+        from unittest import mock
+        env = {k: v for k, v in os.environ.items() if k != "AI_OS_BACKUP_KEY"}
+        with mock.patch.dict(os.environ, env, clear=True), \
+             mock.patch.object(self.b.sys, "platform", "win32"), \
+             mock.patch.object(self.b, "sh", side_effect=AssertionError("must not call security")):
+            with self.assertRaises(RuntimeError) as cm:
+                self.b.get_key(create=True)
+        self.assertIn("AI_OS_BACKUP_KEY", str(cm.exception))
+
+
 if __name__ == "__main__":
     unittest.main()
