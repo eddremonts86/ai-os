@@ -328,9 +328,12 @@ def check_codebase_memory():
 
 
 def check_reindex():
-    if sys.platform != "darwin":
-        return WARN, "no scheduled reindex: it is a launchd agent, installed on macOS only"
-    rc, _ = run(["launchctl", "print", f"gui/{os.getuid()}/ai.os.reindex"], 10)
+    if sys.platform == "darwin":
+        rc, _ = run(["launchctl", "print", f"gui/{os.getuid()}/ai.os.reindex"], 10)
+    elif sys.platform == "win32":  # registered by memory/windows/ai-os-tasks.ps1
+        rc, _ = run(["schtasks", "/Query", "/TN", "AI-OS reindex"], 10)
+    else:
+        return WARN, "no scheduled reindex: it is a launchd agent (macOS) or a scheduled task (Windows)"
     logs = sorted((ROOT / "memory" / "logs").glob("cron-reindex-*.log"), key=lambda p: p.stat().st_mtime)
     if not logs:
         return FAIL, "never ran"
@@ -339,7 +342,7 @@ def check_reindex():
     text = last.read_text(errors="replace")
     m = re.search(r"summary: (\d+) ok, (\d+) failed", text)
     if rc != 0:
-        return FAIL, f"agent ai.os.reindex not loaded (last run {age_h:.0f}h ago)"
+        return FAIL, f"schedule ai.os.reindex not registered (last run {age_h:.0f}h ago)"
     if age_h > 8:  # runs every 4h
         return FAIL, f"last run {age_h:.0f}h ago — the schedule is not firing"
     if not m or int(m.group(2)) or "✗ grepai" in text:
