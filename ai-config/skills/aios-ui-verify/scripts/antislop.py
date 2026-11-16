@@ -10,7 +10,7 @@ in `:root` / `.dark` IS the project's token block, e.g. shadcn's), and gate 26a'
 the source styles focus through Tailwind's `focus-visible:` variant, which sloplint does not count. Everything else
 is reported, and it is advisory: confirm or dismiss each finding; it never changes verify.py's verdict. Static by
 default (writes nothing). --render adds the browser tier (layout, contrast, fold, overflow at real widths) through
-hallmark.sh, which installs a pinned puppeteer-core into ~/.ai-os/hallmark once; its screenshots go to --shots
+hallmark.sh, which installs puppeteer-core from a committed lockfile into ~/.ai-os/hallmark; its screenshots go to --shots
 (default ./ui-verify/antislop), never into the project. Exit 0 no Floor FAIL, 1 Floor FAIL,
 2 could not run (no node, no sloplint, bad output).
 """
@@ -48,6 +48,20 @@ def tailwind_focus(paths):
     return False
 
 
+def hallmark_dirs(paths):
+    """Every .hallmark/ the render tier could write for these paths: beside a file, or anywhere under a directory."""
+    found = set()
+    for p in map(lambda x: Path(x).resolve(), paths):
+        base = p if p.is_dir() else p.parent
+        found.add(base / ".hallmark")
+        if p.is_dir():
+            for d, subs, _ in os.walk(base):
+                if ".hallmark" in subs:
+                    found.add(Path(d) / ".hallmark")
+                subs[:] = [s for s in subs if s not in SKIP and not s.startswith(".")]
+    return {d for d in found if d.is_dir()}
+
+
 def keep(f, tw_focus=False):
     gate, evidence = f.get("gate"), f.get("evidence", "")
     if gate == "20":
@@ -80,14 +94,14 @@ def run(paths, genre=None, scope=None, render=False, urls=(), shots=None):
         cmd = ["bash", str(LAUNCHER), "sloplint", *args]
     else:
         cmd = [node, str(SLOPLINT), *args]
-    # The render tier saves a file's screenshots in a .hallmark/ beside it: note which exist, move the new ones out.
-    beside = {(Path(p).resolve() if Path(p).is_dir() else Path(p).resolve().parent) / ".hallmark" for p in paths}
-    existed = {d for d in beside if d.exists()}
+    # The render tier saves a file's screenshots in a .hallmark/ beside it (subfolders included when a directory is
+    # scanned): note which exist, move the new ones out.
+    existed = hallmark_dirs(paths) if render else set()
     try:
         p = subprocess.run(cmd, capture_output=True, text=True, timeout=600, cwd=cwd)
     finally:
-        for i, d in enumerate(sorted(beside - existed)):
-            if d.exists() and cwd:
+        if render:
+            for i, d in enumerate(sorted(hallmark_dirs(paths) - existed)):
                 shutil.move(str(d), str(cwd / f"shots-{i}-{d.parent.name}"))
     try:
         data = json.loads(p.stdout)

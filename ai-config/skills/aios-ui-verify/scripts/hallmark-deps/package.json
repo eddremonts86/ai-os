@@ -1,0 +1,8 @@
+{
+  "name": "ai-os-hallmark-deps",
+  "private": true,
+  "description": "The browser tier of the vendored Hallmark scripts, installed by hallmark.sh with npm ci into ~/.ai-os/hallmark.",
+  "dependencies": {
+    "puppeteer-core": "25.16.0"
+  }
+}
