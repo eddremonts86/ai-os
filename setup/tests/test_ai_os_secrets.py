@@ -93,5 +93,17 @@ class CheckPushTests(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stderr)
 
 
+class QuickChecksTests(unittest.TestCase):
+    def test_posix_mode_is_checked_only_where_it_means_something(self):
+        with tempfile.TemporaryDirectory() as d:
+            env = Path(d) / ".env"
+            env.write_text("A=b\n", encoding="utf-8")
+            os.chmod(env, 0o600)
+            with mock.patch.object(sec, "ENV", env):
+                texts = [t for _, t in sec.quick_checks()]
+        # NTFS has no mode bits: Python reports 666 for every writable file, a false "others can read it".
+        self.assertEqual(any(t.startswith("permissions") for t in texts), os.name != "nt", texts)
+
+
 if __name__ == "__main__":
     unittest.main()
