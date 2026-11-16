@@ -80,8 +80,9 @@ def quick_checks():
     findings = []
     if not ENV.exists():
         return [("fail", f"{ENV} not found")]
-    mode = ENV.stat().st_mode & 0o777
-    findings.append(("ok" if mode & 0o077 == 0 else "fail", f"permissions {oct(mode)[2:]}" + ("" if mode & 0o077 == 0 else " — others can read it: chmod 600")))
+    if os.name != "nt":  # NTFS has no POSIX mode bits: Python reports 666 for every writable file
+        mode = ENV.stat().st_mode & 0o777
+        findings.append(("ok" if mode & 0o077 == 0 else "fail", f"permissions {oct(mode)[2:]}" + ("" if mode & 0o077 == 0 else " — others can read it: chmod 600")))
     ign = subprocess.run(["git", "check-ignore", "-q", str(ENV)], cwd=ROOT).returncode == 0
     trk = subprocess.run(["git", "ls-files", "--error-unmatch", str(ENV)], cwd=ROOT, capture_output=True).returncode == 0
     findings.append(("ok" if ign and not trk else "fail", "git-ignored and untracked" if ign and not trk else f"git-ignored={ign} tracked={trk} — a tracked .env is published"))
