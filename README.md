@@ -241,7 +241,7 @@ The reviewers are read-only (enforced in Claude Code and opencode; on Codex and 
 3. **Whether you want daily backups at all.** They are on by default and you can switch them off with one command; manual backups still work. *Recommendation:* keep them on unless the machine holds nothing you would miss.
 4. **The local memory needs Docker and Ollama running.** That is about 500 MB of RAM in the background, and Ollama loads a local model only while it is working. *Recommendation:* keep it. Without it the assistant forgets every decision between sessions.
 
-**Known limits:** on Windows the installer, skills and MCP servers work, but the scheduled jobs and backups are macOS-only for now. The secrets file stays a plain file, readable only by you and git-ignored; `ai-os secrets` checks that.
+**Known limits:** on Windows the installer, skills, MCP servers, the scheduled reindex and the daily backup work, but the twice-daily health run (it notifies through macOS) and the off-site backup copies (they need the macOS Keychain, or `AI_OS_BACKUP_KEY`) are macOS-only for now. The secrets file stays a plain file, readable only by you and git-ignored; `ai-os secrets` checks that.
 
 ---
 
@@ -317,8 +317,8 @@ There are **12 MCP servers (8 enabled)**, declared as YAML in `ai-config/mcp/*.y
 | | macOS | Windows | Linux |
 | --- | --- | --- | --- |
 | Installer, skills, MCP, commands | ✅ | ✅ (symlink → junction/hard-link fallback without admin) | ✅ |
-| Scheduled agents (reindex, health, backup) | ✅ launchd | ❌ not yet | ❌ not yet |
-| Backups (Keychain key, iCloud) | ✅ | ❌ not yet | ❌ not yet |
+| Scheduled jobs (reindex, backup; health on macOS only) | ✅ launchd | ✅ Scheduled Tasks (`memory/windows/ai-os-tasks.ps1`) | ❌ not yet |
+| Backups (Keychain key, iCloud) | ✅ | ⚠️ local snapshots only | ❌ not yet |
 | Shell | zsh + Oh My Zsh + p10k, Warp | PowerShell, Windows Terminal | bash/zsh |
 
 Details: [`docs/cross-platform.md`](docs/cross-platform.md).

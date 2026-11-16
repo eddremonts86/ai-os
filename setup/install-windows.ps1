@@ -949,6 +949,15 @@ if ($env:SKIP_MEMORY -ne "1") {
     else {
         Warn "  go not installed (grepai skipped; install: choco install golang)"
     }
+
+    # 7b.5 — Scheduled jobs (reindex every 4 h, daily backup, ui-indexador where installed): the Windows
+    # stand-in for memory/launchd/. Per-user tasks, no admin; logs in ~/.ai-os/logs with a final "exit=N".
+    try {
+        & (Join-Path $AIOSRoot "memory\windows\ai-os-tasks.ps1") install | ForEach-Object { Ok "  $_" }
+    }
+    catch {
+        Warn "  scheduled tasks not registered ($_); run memory\windows\ai-os-tasks.ps1"
+    }
 }
 else {
     Log "7b. SKIP_MEMORY=1, skipping memory stack"
