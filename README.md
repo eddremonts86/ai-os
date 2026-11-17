@@ -138,7 +138,7 @@ flowchart TD
 
 | Command | Does |
 |---|---|
-| `/aios-ui-design` | Build a new page, screen or component from proven pieces (ui-indexador), one section shown first |
+| `/aios-ui-design` | Build a new page, screen or component: you pick one of three directions (impeccable, taste-skill, themes), then it is built from proven pieces (ui-indexador), one section shown first |
 | `/aios-ui-page` | A standalone page, component or app screen with its own look, in a dealt, named or custom theme (Hallmark) |
 | `/aios-ui-themes` | Browse, deal and apply Hallmark's 50 themes, or lock a system into `DESIGN.md` |
 | `/aios-ui-photos` | Openly licensed photos for a page, with credits |
