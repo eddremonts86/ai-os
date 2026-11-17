@@ -4,7 +4,8 @@
 #   ai-os-tasks.ps1 [install|uninstall|status] [-Only backup,reindex,ui-start,ui-refresh] [-DryRun]
 #   ai-os-tasks.ps1 run <job>    what the tasks call: appends to ~/.ai-os/logs/<job>-<date>.log, last line "exit=N"
 #
-# Jobs: backup (daily 13:00), reindex (every 4 h), and, only where ui-indexador is installed
+# Jobs: backup (daily 13:00), reindex (every 4 h and at logon: a PC that sleeps overnight misses the night runs and
+# StartWhenAvailable does not always catch up), and, only where ui-indexador is installed
 # (~/.ai-os/apps/ui-indexador, as setup/install-mac.sh step 8b): ui-start (at logon) and ui-refresh (daily 11:30).
 # `conhost --headless` keeps a console window from flashing but drops the exit code, so the log is the record;
 # `ai-os health` reads it. Idempotent. Windows PowerShell 5.1 compatible: no &&, ?: or ??.
@@ -31,7 +32,7 @@ function Test-BackupOn {  # `ai-os backup --disable` must survive a re-install, 
 $Jobs = [ordered]@{
     'backup'     = @{ Task = 'AI-OS backup'; Minutes = 30; At = @('13:00'); Ready = { Test-BackupOn }
                       Why = 'daily backups are off in backup.json (ai-os backup --enable)' }
-    'reindex'    = @{ Task = 'AI-OS reindex'; Minutes = 180; At = @('00:00', '04:00', '08:00', '12:00', '16:00', '20:00')
+    'reindex'    = @{ Task = 'AI-OS reindex'; Minutes = 180; Logon = $true; Delay = 'PT3M'; At = @('00:00', '04:00', '08:00', '12:00', '16:00', '20:00')
                       Ready = { $true }; Why = '' }
     'ui-start'   = @{ Task = 'AI-OS ui-indexador'; Minutes = 5; Logon = $true; Ready = { Test-Ui }
                       Why = 'ui-indexador is not installed' }
@@ -106,10 +107,20 @@ function Invoke-Job([string]$name) {
 }
 
 function New-Triggers($d) {
-    if ($d.Logon) { return @(New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME") }
-    @($d.At | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ })
+    $t = @()
+    if ($d.Logon) {
+        $l = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+        if ($d.Delay) { $l.Delay = $d.Delay }  # let Docker and Ollama come up first
+        $t += $l
+    }
+    if ($d.At) { $t += @($d.At | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ }) }
+    $t
 }
-function Show-When($d) { if ($d.Logon) { 'at logon' } else { 'daily at ' + ($d.At -join ', ') } }
+function Show-When($d) {
+    $w = if ($d.At) { 'daily at ' + ($d.At -join ', ') } else { '' }
+    if ($d.Logon) { $w = if ($w) { "$w and at logon" } else { 'at logon' } }
+    $w
+}
 
 function Install-Job([string]$n) {
     $d = $Jobs[$n]

@@ -31,6 +31,7 @@ class WindowsTasksTests(unittest.TestCase):
         self.assertEqual(p.returncode, 0, p.stderr)
         self.assertIn("AI-OS backup: would register (daily at 13:00)", p.stdout)
         self.assertIn("AI-OS reindex: would register (daily at 00:00, 04:00", p.stdout)
+        self.assertRegex(p.stdout, r"AI-OS reindex: .*and at logon\)")  # a PC that sleeps overnight misses the night runs
 
     @unittest.skipUnless(sys.platform == "win32" and PS, "needs Windows PowerShell")
     def test_unknown_job_is_refused(self):
