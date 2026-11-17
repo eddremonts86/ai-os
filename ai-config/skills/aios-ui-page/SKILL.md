@@ -20,7 +20,8 @@ The scripts run through the launcher, which adds the browser tier:
    someone works in (dashboard, settings) is app-screen scope (`flow.md`).
 2. **Context first.** The folder's scope decides the brand (`ai-os scope which`): an AI-OS surface uses
    `context/global/06_brand.md`, a project with `DESIGN.md` uses it (Hallmark's pre-flight treats it as a locked
-   system). A dealt theme only where neither exists, or the user asked for one.
+   system). A dealt theme only where neither exists, or the user asked for one. An existing design system is used 100%,
+   no hardcoded or inline styles (`rules/always_do.md` rule 27).
 3. **Material.** Hallmark asks once for material, audience, use and tone. Product screenshots:
    `$H capture` against the running app (local only). Photos: `/aios-ui-photos`. Generated comps (Together AI)
    only when the user asks for them in this run.

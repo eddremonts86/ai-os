@@ -184,5 +184,44 @@ class CommandDriftTests(unittest.TestCase):
         self.assertGreater(calls, 8, "the regex stopped finding the commands' launcher calls")
 
 
+class DesignSystemGateTests(unittest.TestCase):
+    """Rule 27: where a design system exists, hardcoded values are a Floor FAIL (no node needed)."""
+
+    def project(self, files):
+        root = Path(tempfile.mkdtemp())
+        for name, text in files.items():
+            (root / name).parent.mkdir(parents=True, exist_ok=True)
+            (root / name).write_text(text, encoding="utf-8")
+        return root
+
+    def found(self, root):
+        return {(Path(f["file"]).name, f["line"], f["evidence"].split(":")[0]) for f in antislop.design_system_findings([root])}
+
+    def test_hardcoded_values_fail_where_a_system_exists(self):
+        root = self.project({"DESIGN.md": "tokens", "src/A.tsx": (
+            'export const A = () => <div style={{ color: "red" }} className="bg-[#fff] p-[13px]">\n'
+            '<b style="margin:0"/>\n<i className="bg-primary p-4"/></div>\n'), "src/a.css": ".x { color: #fff; }\n"})
+        self.assertTrue(antislop.has_design_system([root]))
+        self.assertEqual(self.found(root), {("A.tsx", 1, "inline style"), ("A.tsx", 1, "colour literal"),
+                                            ("A.tsx", 1, "Tailwind arbitrary value"), ("A.tsx", 2, "inline style"),
+                                            ("a.css", 1, "colour literal")})
+
+    def test_tokens_custom_properties_and_ds_allow_are_not_hardcodes(self):
+        root = self.project({"components.json": "{}", "src/A.tsx": (
+            'export const A = () => <div style={{ "--w": pct + "%" }}>\n'
+            '{/* ds-allow: brand SVG gradient stop */}\n<stop stopColor="#fff"/>\n'
+            '<s style={{ top: 1 }}/> {/* ds-allow: virtual list offset */}</div>\n'),
+            "src/t.css": ":root { --primary: #b3ee55; }\n.dark {\n  --primary: oklch(0.9 0.2 130);\n}\n.x { color: var(--primary); }\n"})
+        self.assertEqual(self.found(root), set())
+
+    def test_no_system_no_gate(self):
+        root = self.project({"src/A.tsx": 'export const A = () => <div style={{ color: "red" }} className="bg-[#fff]"/>\n'})
+        self.assertFalse(antislop.has_design_system([root]))
+
+    def test_a_css_token_block_counts_as_a_system(self):
+        root = self.project({"src/t.css": ":root { --a: 1; --b: 2; --c: 3; }\n"})
+        self.assertTrue(antislop.has_design_system([root]))
+
+
 if __name__ == "__main__":
     unittest.main()

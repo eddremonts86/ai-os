@@ -26,7 +26,7 @@ It only reports a CSS animation that keeps running under `prefers-reduced-motion
 axe-core is taken from the nearest `node_modules/axe-core` or `--axe`. Without it the verdict says
 **a11y NOT CHECKED**; say so in your report, never call that a full pass.
 
-## Anti-slop check (static, advisory)
+## Anti-slop check (static; advisory, except the design-system gate)
 
 ```bash
 ~/.ai-os/venv/bin/python <this skill's dir>/scripts/antislop.py <src dir or files> [--genre modern-minimal] [--json]
@@ -42,6 +42,12 @@ Static, it writes nothing. `--render` adds the browser tier (layout, contrast, f
 `scripts/hallmark.sh`, which installs puppeteer-core from a committed lockfile into `~/.ai-os/hallmark`; its screenshots go to
 `--shots`, never into the project. Run it with verify.py on what you touched and treat each Floor FAIL as a finding to confirm or dismiss
 in the report; it never changes the verify verdict. Exit 0 none, 1 Floor FAIL, 2 could not run.
+
+**Design-system gate (`ds`, `rules/always_do.md` rule 27).** Where the project has a design system (`DESIGN.md`,
+`components.json`, a Tailwind config, `.ai-os/brand-tokens.md`, or a CSS token block), antislop.py also fails every inline
+`style` (one that only sets `--vars` is fine), colour literal and Tailwind arbitrary colour or length outside the token
+block. These are not advisory: fix them with the system's tokens and components, or, for a value no token
+expresses, add the token. `ds-allow: <reason>` on the line or the one above is the only exception, and the report lists each.
 
 ## Compare against a reference
 

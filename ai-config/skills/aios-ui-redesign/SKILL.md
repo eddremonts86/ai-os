@@ -26,7 +26,7 @@ when the design itself is the problem. `H=$AI_OS_ROOT/ai-config/skills/aios-ui-v
    argument maps to its depth (`polish`, `restyle`, `full`; asked when missing). Its AI-OS limits apply.
 4. **The plan.** Hallmark proposes a file-level plan. Show it to the user and wait: never delete a route or a
    component tree without their approval. Content, copy, data and wiring stay unless the user asks.
-5. **Build** in the project's own stack and token names (`references/export-formats.md`).
+5. **Build** in the project's own stack, tokens and components, with no hardcoded or inline styles (rule 27) (`references/export-formats.md`).
 6. **Prove it.** `$H sloplint <target> --kept --render` (what the before record had is still there),
    `/aios-ui-verify` into `ui-verify/after`, `compare.py` before vs after on the 375 and 1280 px shots, then
    `/aios-ui-review`.

@@ -8,7 +8,8 @@ disable-model-invocation: true
 
 New UI, start to verified. Reuse the skills below; do not restate them.
 
-1. **Context.** AI-OS surfaces use `context/global/06_brand.md`. Any other project uses its `PRODUCT.md` / `DESIGN.md`;
+1. **Context.** AI-OS surfaces use `context/global/06_brand.md`. Any other project uses its `PRODUCT.md` / `DESIGN.md`,
+   and an existing design system is used 100%, no hardcoded or inline styles (`rules/always_do.md` rule 27);
    if missing and the work is bigger than one component, run `impeccable init` (and `document` for an existing code base).
 2. **Directions: three to choose from, the user decides.** Nothing is built until they pick one.
    - **Brief.** A brief that does not say who the surface is for and what it must do gets impeccable's `shape` discovery
@@ -54,8 +55,9 @@ New UI, start to verified. Reuse the skills below; do not restate them.
      packages beyond the usual (react, motion, lucide-react, radix, cva, clsx, tailwind-merge, cmdk, sonner,
      recharts) without a reason. A result with `mirror_of` has an unverified licence: check the source or skip it.
      The index cannot see these; the code can.
-   - **Install** with the command the result returned (`npx shadcn@latest add @<registry>/<item>`), then adapt
-     content, tokens and accessibility; keep its structure unless a reason is recorded. Run the build after each
+   - **Install** with the command the result returned (`npx shadcn@latest add @<registry>/<item>`), then rewrite
+     its styling onto the project's own tokens and components (no hex, no inline style, no arbitrary values: rule 27),
+     and adapt content and accessibility; keep its structure unless a reason is recorded. Run the build after each
      install: undeclared dependencies show up there.
    - **Record** each section's queries, top candidates, the choice and why (and every rejection) in a build log
      (e.g. `build-log.json`) next to the code. Hand-build only what no indexed piece covers, and say so in the log.
