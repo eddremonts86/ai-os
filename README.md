@@ -138,12 +138,12 @@ flowchart TD
 
 | Command | Does |
 |---|---|
-| `/aios-ui-design` | Build a new page, screen or component from proven pieces (ui-indexador), one section shown first |
+| `/aios-ui-design` | Build a new page, screen or component: you pick one of three directions (impeccable, taste-skill, themes), then it is built from proven pieces (ui-indexador), one section shown first |
 | `/aios-ui-page` | A standalone page, component or app screen with its own look, in a dealt, named or custom theme (Hallmark) |
 | `/aios-ui-themes` | Browse, deal and apply Hallmark's 50 themes, or lock a system into `DESIGN.md` |
 | `/aios-ui-photos` | Openly licensed photos for a page, with credits |
 | `/aios-ui-improve` | Fix an existing UI, proven with before and after screenshots |
-| `/aios-ui-redesign` | A new look for an existing page or app, content and wiring kept |
+| `/aios-ui-redesign` | A new look for an existing page or app, content and wiring kept; a full redesign starts from three directions you choose between |
 | `/aios-ui-review` | A cold, read-only design review by a fresh agent |
 | `/aios-ui-audit` | Read-only anti-slop and craft audit in a real browser |
 | `/aios-ui-verify` | The runtime gate: 375/768/1280 px, light and dark, console, overflow, accessibility, anti-slop lint |

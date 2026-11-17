@@ -245,7 +245,17 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
-27. Brand tokens come from the folder's scope first, then `context/global/06_brand.md` (same rule as diagrams).
+27. **A design system that exists is used 100%.** When the project has one (a `DESIGN.md`, a `components.json`, a
+    Tailwind theme or a token block in its CSS, `.ai-os/brand-tokens.md`, or the folder scope's own: `ai-os scope
+    which`), every colour, font, size, space, radius, shadow and motion value comes from its tokens and every UI
+    piece from its component library. No hex/rgb/hsl literals, no inline `style`, no Tailwind arbitrary values for
+    colours or lengths, no copied library item that keeps its own styling. This binds every `aios-ui-*` command,
+    every skill that writes UI and every piece taken from ui-indexador (indexed items bring their own styling: map
+    them onto the project's tokens and components before they land). A value no token expresses is a missing token:
+    add it to the system, not inline. The one exception is `ds-allow: <reason>` beside the line, listed in the
+    report. With no system, an AI-OS surface uses `context/global/06_brand.md` and any other project starts from the
+    chosen theme (`/aios-ui-themes lock`), so one exists from then on. `aios-ui-verify`'s `antislop.py` checks this;
+    a violation is a Floor FAIL.
 
 ## At session end
 

@@ -8,7 +8,10 @@ what only makes sense inside a Hallmark build.
 Dropped: gate 20 (the Hallmark stamp on line 1 of the CSS), gate 48 on a custom-property definition (`--x: #hex`
 in `:root` / `.dark` IS the project's token block, e.g. shadcn's), and gate 26a's "no :focus-visible anywhere" when
 the source styles focus through Tailwind's `focus-visible:` variant, which sloplint does not count. Everything else
-is reported, and it is advisory: confirm or dismiss each finding; it never changes verify.py's verdict. Static by
+is reported, and it is advisory: confirm or dismiss each finding; it never changes verify.py's verdict. The one
+exception is gate "ds" (rules/always_do.md rule 27): where the project has a design system, a colour literal, an
+inline style or a Tailwind arbitrary colour/length is a Floor FAIL unless `ds-allow: <reason>` sits on that line or
+the one above. Static by
 default (writes nothing). --render adds the browser tier (layout, contrast, fold, overflow at real widths) through
 hallmark.sh, which installs puppeteer-core from a committed lockfile into ~/.ai-os/hallmark; its screenshots go to --shots
 (default ./ui-verify/antislop), never into the project. Exit 0 no Floor FAIL, 1 Floor FAIL,
@@ -34,18 +37,71 @@ SOURCE = {".html", ".css", ".jsx", ".tsx", ".vue", ".svelte", ".astro"}
 SKIP = {"node_modules", "dist", "build", "coverage"}
 
 
-def tailwind_focus(paths):
-    """True when any scanned source uses the focus-visible: variant (sloplint's own walk: skips deps and dot dirs)."""
+def source_files(paths):
+    """Source files under the given paths (sloplint's own walk: skips deps and dot dirs)."""
     for root in map(Path, paths):
-        files = [root] if root.is_file() else (f for f in root.rglob("*") if f.suffix in SOURCE
-                                                and not any(part in SKIP or part.startswith(".") for part in f.relative_to(root).parts))
-        for f in files:
-            try:
-                if "focus-visible:" in f.read_text(encoding="utf-8", errors="ignore"):
-                    return True
-            except OSError:
+        yield from ([root] if root.is_file() else (f for f in root.rglob("*") if f.suffix in SOURCE
+                                                   and not any(part in SKIP or part.startswith(".") for part in f.relative_to(root).parts)))
+
+
+def read(f):
+    try:
+        return f.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return ""
+
+
+def tailwind_focus(paths):
+    """True when any scanned source uses the focus-visible: variant."""
+    return any("focus-visible:" in read(f) for f in source_files(paths))
+
+
+TOKEN_LINE = re.compile(r"^\s*(?:(?::root|\.dark|@theme[^{]*)\s*\{\s*)?--[\w-]+\s*:")  # `--primary: #b3ee55;` is the token block itself
+COLOR = re.compile(r"#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|oklch|oklab|lab|lch)\(")
+ARBITRARY = re.compile(r"\[[^\]\s]*(?:#[0-9a-fA-F]{3,8}|\d(?:px|rem|em)\b|\b(?:rgba?|hsla?|oklch)\()[^\]\s]*\]")
+INLINE = re.compile(r"""\bstyle\s*=\s*(?:\{\{(?P<jsx>.*?)(?:\}\}|$)|"(?P<html>[^"]*)")""")
+CUSTOM_PROPS = re.compile(r"""\s*(?:['"]?--[\w-]+['"]?\s*:[^,]*,?\s*)+""")  # style that only sets --vars is not a hardcode
+SYSTEM_FILES = ("DESIGN.md", "components.json", "tailwind.config.js", "tailwind.config.ts", "tailwind.config.mjs",
+                "tailwind.config.cjs", ".ai-os/brand-tokens.md")
+
+
+def has_design_system(paths):
+    """A project has one when a design file sits at or above the scanned path (up to the repo root), or its CSS
+    holds a token block (3+ custom properties, a Tailwind `@theme`)."""
+    for p in map(lambda x: Path(x).resolve(), paths):
+        for d in [p if p.is_dir() else p.parent, *(p if p.is_dir() else p.parent).parents]:
+            if any((d / n).is_file() for n in SYSTEM_FILES):
+                return True
+            if (d / ".git").exists():
+                break
+    return any(f.suffix == ".css" and ("@theme" in (t := read(f)) or len(re.findall(r"--[\w-]+\s*:", t)) >= 3)
+               for f in source_files(paths))
+
+
+def design_system_findings(paths):
+    """Gate "ds": hardcoded values where a design system exists. Escape hatch: `ds-allow: <reason>` on the line or
+    the one above, which the report must list. ponytail: line regexes, so a value split across lines or built in
+    a template string is missed; upgrade to a real parser if that matters."""
+    out = []
+    for f in source_files(paths):
+        lines = read(f).splitlines()
+        for i, line in enumerate(lines):
+            if "ds-allow:" in line or (i and "ds-allow:" in lines[i - 1]) or TOKEN_LINE.match(line):
                 continue
-    return False
+            hits = []
+            for m in INLINE.finditer(line):
+                body = (m.group("jsx") or m.group("html") or "").strip()
+                if not body or not CUSTOM_PROPS.fullmatch(body):
+                    hits.append(("inline style", "use a class from the system's tokens or components"))
+                    break
+            if COLOR.search(line):
+                hits.append(("colour literal", "use the colour token (var(--...) or its Tailwind name)"))
+            if ARBITRARY.search(line):
+                hits.append(("Tailwind arbitrary value", "use the scale or add a token to the system"))
+            for what, fix in hits:
+                out.append({"gate": "ds", "grade": "FAIL", "file": str(f), "line": i + 1,
+                            "evidence": f"{what}: {line.strip()[:90]}", "fix": fix + "; or ds-allow: <reason>"})
+    return out
 
 
 def hallmark_dirs(paths):
@@ -109,6 +165,8 @@ def run(paths, genre=None, scope=None, render=False, urls=(), shots=None):
         raise RuntimeError(f"sloplint output was not JSON: {(p.stderr or p.stdout)[:300]}") from e
     tw = tailwind_focus(paths)
     out = [f for f in data.get("findings", []) if keep(f, tw)]
+    if has_design_system(paths):
+        out += design_system_findings(paths)
     for f in out:
         f["file"] = shorten(f.get("file", ""))
     return out

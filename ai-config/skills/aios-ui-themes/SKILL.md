@@ -16,7 +16,7 @@ disable-model-invocation: true
 - **show <slug>:** read `<slug>.md` and look at `<slug>.jpg`; summarise palette, type, surfaces and its Range.
 - **apply <slug>:** `$H theme scaffold <slug> --dir <beside the project's stylesheet>` writes `tokens.css` and
   `base.css`; then map the tokens onto the project's own names (shadcn's `--background`, `--primary`... per
-  `references/export-formats.md`) instead of adding a second system, check contrast for every text-on-colour
+  `references/export-formats.md`) instead of adding a second system (rule 27: no hex or inline style outside the token block), check contrast for every text-on-colour
   pair, and run `/aios-ui-verify`. The folder's scope brand wins on its own surfaces (`ai-os scope which`):
   apply a theme there only when the user asks.
 - **lock:** write the project's `DESIGN.md` from the applied or chosen theme (`references/design-md.md`), so

@@ -18,7 +18,8 @@ Fixes that are proven, not hoped for. Refinement preserves what works; it does n
    licence; swapping a component is a structural change, so it waits for the user like any other. For a palette
    finding, start from `search_themes` / `get_theme`. Read the item with `npx shadcn@latest view` before installing
    (the checks are in `/aios-ui-design` step 4). If ui-indexador does not answer, say so and go on with step 5.
-5. **Fix** with the `impeccable` command that names the problem (`polish`, `harden`, `adapt`, `clarify`, `layout`,
+5. **Fix** with the project's own tokens and components, never a hardcoded or inline style (rule 27), using the
+   `impeccable` command that names the problem (`polish`, `harden`, `adapt`, `clarify`, `layout`,
    `optimize`, `animate`) rather than ad hoc edits; one concern per change. Motion only via `micro-interactions`.
 6. **After.** `/aios-ui-verify` again, to a second folder. It must pass, or say precisely what is left and why.
 7. **Report:** what was found, what was changed, which indexed pieces were proposed or installed, what was left
