@@ -86,6 +86,8 @@ projects or are about the user go in `main`.
 - **Before** work on a project or a past decision: graphiti `search_memory_facts`
   (and `search_nodes`) with the project and topic. In Claude Code a SessionStart hook
   (`setup/hooks/claude-session-memory.py`) already preloads the repo's facts; search for more.
+  A UserPromptSubmit hook (`setup/hooks/claude-prompt-code-hints.py`) attaches up to three
+  likely code locations from grepai to each prompt: open those first, and treat them as hints.
 - **After** a decision, a root cause, a convention or an environment fact is settled:
   graphiti `add_memory` — one short, self-contained, dated episode in English. Never
   secrets, raw logs, or task progress (that goes in `specs/`).

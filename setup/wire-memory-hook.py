@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Wire setup/hooks/claude-session-memory.py into Claude Code as a SessionStart hook.
+"""Wire the AI-OS memory hooks into Claude Code.
+
+  SessionStart     setup/hooks/claude-session-memory.py   graphiti facts for the repo
+  UserPromptSubmit setup/hooks/claude-prompt-code-hints.py  likeliest code locations (grepai)
 
   python3 setup/wire-memory-hook.py           # install/repair (idempotent)
   python3 setup/wire-memory-hook.py --check   # report only, never writes
@@ -16,9 +19,19 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "setup" / "hooks" / "claude-session-memory.py"
+HOOKS = [("SessionStart", ROOT / "setup" / "hooks" / "claude-session-memory.py", 15),
+         ("UserPromptSubmit", ROOT / "setup" / "hooks" / "claude-prompt-code-hints.py", 10)]
 SETTINGS = Path.home() / ".claude" / "settings.json"
-COMMAND = f'python3 "{SCRIPT}"'
+
+
+def command(script):
+    return f'python3 "{script}"'
+
+
+def wired(settings, event, script):
+    ours = [h for g in settings.get("hooks", {}).get(event, []) for h in g.get("hooks", [])
+            if script.name in h.get("command", "")]
+    return len(ours) == 1 and ours[0].get("command") == command(script)
 
 
 def main():
@@ -29,26 +42,28 @@ def main():
         print(f"{SETTINGS} is not valid JSON — not touching it")
         return 2
 
-    groups = settings.setdefault("hooks", {}).setdefault("SessionStart", [])
-    ours = [h for g in groups for h in g.get("hooks", []) if SCRIPT.name in h.get("command", "")]
-    if any(h.get("command") == COMMAND for h in ours) and len(ours) == 1:
-        print("session-memory hook: wired")
+    missing = [(e, s, t) for e, s, t in HOOKS if not wired(settings, e, s)]
+    if not missing:
+        print("memory hooks: wired (session facts + prompt code hints)")
         return 0
     if check:
-        print("session-memory hook: NOT wired (run: python3 setup/wire-memory-hook.py)")
+        names = ", ".join(e for e, _, _ in missing)
+        print(f"memory hooks: NOT wired ({names}) (run: python3 setup/wire-memory-hook.py)")
         return 1
 
-    # Drop stale copies (e.g. an old repo path), then add ours once.
-    for g in groups:
-        g["hooks"] = [h for h in g.get("hooks", []) if SCRIPT.name not in h.get("command", "")]
-    groups[:] = [g for g in groups if g.get("hooks")]
-    groups.append({"hooks": [{"type": "command", "command": COMMAND, "timeout": 15}]})
+    for event, script, timeout in missing:
+        groups = settings.setdefault("hooks", {}).setdefault(event, [])
+        # Drop stale copies (e.g. an old repo path), then add ours once.
+        for g in groups:
+            g["hooks"] = [h for h in g.get("hooks", []) if script.name not in h.get("command", "")]
+        groups[:] = [g for g in groups if g.get("hooks")]
+        groups.append({"hooks": [{"type": "command", "command": command(script), "timeout": timeout}]})
 
     if SETTINGS.exists():
         shutil.copy2(SETTINGS, SETTINGS.with_name(f"settings.json.bak-{time.strftime('%Y%m%d-%H%M%S')}"))
     SETTINGS.parent.mkdir(parents=True, exist_ok=True)
     SETTINGS.write_text(json.dumps(settings, indent=2) + "\n")
-    print(f"session-memory hook: wired into {SETTINGS}")
+    print(f"memory hooks: wired into {SETTINGS}")
     return 0
 
 
