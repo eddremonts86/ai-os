@@ -95,6 +95,28 @@ projects or are about the user go in `main`.
 - A memory tool that does not answer never blocks the task: note it and continue.
   Health: `ai-os health` (functional checks; also runs twice a day and notifies on failure).
 
+## Stale context and side quests
+
+Agents treat what they read as current and actionable; old notes then cost steps, tokens and wrong decisions
+(Google measured +70% steps, +77% tokens and 2x wait time per detour: https://developers.googleblog.com/agent-distraction/).
+
+- **The code is the source of truth.** Specs, plans, docs, instruction files, memory (graphiti facts, CLI memory
+  files, `context/`) say what was true when written. When one disagrees with the code or the running system, act
+  on the code and report the mismatch at the end with both sides cited (`file:line`) and the edit that makes the
+  text true. Change code to match a text only when the user asks for that behaviour.
+- **History is not instructions.** `archive/`, `outputs/`, git log, closed issues and PRs, and dated memories
+  explain why things are the way they are; never take a to-do from them.
+- **Notes in code are not tasks.** `TODO`, `FIXME`, `XXX`, issue or bug references, "temporary" comments and
+  commented-out code are acted on only when the request covers them. Do not research a referenced bug unless it
+  blocks the task; list what you saw at the end (location, note, issue state if one cheap check gives it).
+- **Check a new request against the plan.** Before building a feature, read `specs/current_spec.md` and the
+  project's own plan or ticket if it has one. If the request contradicts or duplicates it, say so and ask which
+  wins before building.
+- **One task, one session.** Start a new session (or `/clear`) for unrelated work instead of carrying the old
+  context; after a compaction, re-read the files you act on instead of trusting the summary.
+- **Sweep periodically.** `docs-drift-checker` in sweep mode finds dead notes, plans the code has overtaken and
+  memories that name things that no longer exist; nothing is removed without the user's review.
+
 ## When a task needs an env value or secret
 
 Before inventing, hardcoding, or asking the user for any environment value, read the
@@ -176,7 +198,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 
 - **Before a push to `dev` or `main`:** the whole branch must be clean (see "Clean before `dev` or `main`" above).
 - **In what you touch** (files, functions, or flows the current task changes): fix it as part of the current task. "Pre-existing" is not a reason to skip it, and the code you touch must be left in better shape than you found it.
-- **Elsewhere** (unrelated files, other stacks, other repos): do not expand the task to fix it. Report it at the end with the location, the error, and a concrete proposed fix.
+- **Elsewhere** (unrelated files, other stacks, other repos): do not expand the task to fix it. Report it at the end with the location, the error, and a concrete proposed fix. The same holds for notes and stale plans you come across ("Stale context and side quests" above).
 - If a fix needs information only the user has (an external credential, a genuine product decision, a destructive/irreversible step), propose the concrete fix instead of just listing the symptom.
 
 ## When creating artifacts

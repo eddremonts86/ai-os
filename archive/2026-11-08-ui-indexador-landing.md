@@ -1,5 +1,7 @@
 # Spec (archived): ui-indexador landing page, built with ui-indexador
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 > Done 2026-11-08: landing served by server.py at /, 11 sections from MCP-found registry pieces (2 composed), build log rendered on the page, Lighthouse mobile 91 / desktop 100, a11y 100, axe clean at 375/768/1280; dogfooding fixed mirrors, framework and licence filters, and the MCP server on mcp 2.x.
 
 ## Metadata

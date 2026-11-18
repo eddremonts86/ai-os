@@ -1,5 +1,7 @@
 # Spec: rewrite ai-schadcn-chat with official shadcn chat components + full test suite + browser verification
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 ## Metadata
 
 - **Date:** 2026-06-28

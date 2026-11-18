@@ -95,11 +95,11 @@ This is the #1 anti-pattern that wastes the most time. **DO NOT do work sequenti
 Concrete forbidden patterns:
 
 - ❌ Running `git status`, `git log`, `git diff` one at a time when 3+ git commands are needed → dispatch 1 sub-agent that returns the full state.
-- ❌ Reading 3+ files one by one → dispatch 1 sub-agent that summarizes them.
+- ❌ Reading many files one by one for a summary that takes more than ~2 minutes → dispatch 1 sub-agent that summarizes them.
 - ❌ Running lint, type check, tests sequentially → dispatch 3 sub-agents in parallel.
 - ❌ Researching 2+ topics one by one → dispatch in parallel.
 - ❌ Installing packages sequentially (brew + npm + pip) → dispatch in parallel.
-- ❌ Polling/loitering for a process that takes minutes → use `background=true` and `notify_on_complete=true`.
+- ❌ Polling/loitering for a process that takes minutes → use your CLI's background run with a completion notice (Hermes: `background=true`, `notify_on_complete=true`).
 - ❌ Asking the user "should I continue?" mid-task for approved reversible work. A "go" instruction never bypasses action-specific approval for protected actions.
 - ❌ Doing the same search query in 2+ tools → pick the best tool, do it once.
 

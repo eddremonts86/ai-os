@@ -1,5 +1,7 @@
 # AI-OS Remediation Implementation Plan
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 **Date:** 2026-07-12
 **Status:** 🔄 In progress — Tasks 1-4 done; Windows memory-stack parity (P1-5) done; Hermes skills.external_dirs (P1-2) done; Graphiti MCP architecture decision made, wired, and structural deployment smoke-tested (enabled: true) — actual entity-extraction test with a real OPENAI_API_KEY still pending
 **Owner:** Edd

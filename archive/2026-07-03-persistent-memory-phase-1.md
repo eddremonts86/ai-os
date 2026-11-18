@@ -1,5 +1,7 @@
 # Spec: Persistent & Indexed Memory for AI-OS — Phase 1 implementation
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 **Date:** 2026-07-03
 **Status:** ✅ Phase 1 code complete · awaiting `bash setup/install-mac.sh` to actually run
 **Owner:** Edd

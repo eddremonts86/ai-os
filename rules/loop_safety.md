@@ -23,7 +23,7 @@ the prior level.
 **No loop may run above level 3 without:**
 
 - at least 5 successful manual runs at the prior level
-- an explicit human promotion recorded in `memory/loop_state/PROGRESS.md`
+- an explicit human promotion recorded in the loop's own `PROGRESS.md`
 - a documented failure / rollback policy in the loop's `LOOP_INSTRUCTIONS.md`
 
 ## Decision Tree

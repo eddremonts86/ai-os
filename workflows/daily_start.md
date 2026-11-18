@@ -74,12 +74,12 @@ The `daily_start` workflow of AI-OS has 7 steps:
 
 Read only the two small files up front:
 
-- `00_profile.md` — who I am.
-- `03_preferences.md` — language, tone, formatting.
+- `context/personal/me/profile.md` — who I am.
+- `context/personal/me/preferences.md` — language, tone, formatting.
 
 The rest of `context/` is read on demand — see the "Read only when the task needs it" table
 in `rules/always_do.md`. Reading all of it up front cost ~15K tokens per session
-(`02_projects.md` alone is 28K characters) for files most tasks never use.
+(`context/personal/work/projects.md` alone is 28K characters) for files most tasks never use.
 
 ### 6. Read `rules/` (read files)
 
@@ -94,7 +94,7 @@ The 3 rules files are **hard constraints**:
 
 - `always_do.md` — mandatory actions per phase + parallel dispatch rule.
 - `ask_before_doing.md` — 30+ actions that require explicit confirmation.
-- `never_do.md` — 60+ absolute prohibitions.
+- `never_do.md` — absolute prohibitions.
 
 ### 7. Start the task (start work)
 

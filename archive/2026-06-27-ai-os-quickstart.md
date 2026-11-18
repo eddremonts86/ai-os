@@ -1,5 +1,7 @@
 # Current Spec: ai-os-quickstart
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 > **Spec activa.** Reemplazá su contenido con cada nueva Spec. Al terminar, mover a `archive/`.
 
 ## Metadata

@@ -1,5 +1,7 @@
 # Current Spec: Community submissions for the plans corpus
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 ## Metadata
 
 - **Date:** 2026-08-14

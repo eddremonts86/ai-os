@@ -36,7 +36,7 @@ Show the goal to the user. They must approve.
 
 | Type          | Structure                                      | Length                    |
 | ------------- | ---------------------------------------------- | ------------------------- |
-| README        | What, why, install, usage, contributing        | 200-800 lines             |
+| README        | What, why, install, usage, contributing        | under 500 lines           |
 | ADR           | Context, decision, consequences, alternatives  | 50-200 lines              |
 | Tutorial      | Goal, prerequisites, steps, verification, next | 100-500 lines             |
 | API doc       | Endpoint, params, response, example            | 50-200 lines per endpoint |
@@ -96,7 +96,7 @@ Rules that apply here:
 
 - Route by destination per `rules/always_do.md` — this workflow produces repo files, so
   `diagram-design` is the right tool, not FigJam and not an Artifact.
-- Brand tokens come from `context/global/06_brand.md`. Never ask the user to onboard a brand.
+- Brand tokens come from the folder's scope first (`ai-os scope which`), and from `context/global/06_brand.md` only for AI-OS itself or a project without one (`rules/always_do.md`). Never ask the user to onboard a brand.
 - Output is a self-contained `.html`; commit it next to the doc and link it. Export PNG/SVG
   only when the destination cannot render HTML (GitHub README → export SVG).
 - One diagram per idea. Above 9 nodes it is two diagrams.
@@ -134,7 +134,7 @@ Apply `verifiers/critic_prompt.md` to review:
 - Are there sections that could be removed?
 - Are there missing sections?
 
-Apply 2-3 improvements. Do not skip this step.
+Apply 2-3 improvements. This step is optional: use it when a second look is worth it.
 
 ### 9. Review with → Load skill `code-review-and-quality` (load skill)
 
@@ -159,7 +159,7 @@ git commit -m "docs: add <topic> guide"
 
 If the content changes the AI-OS state, update `context/`:
 
-- `03_preferences.md` — new style preferences.
+- `context/personal/me/preferences.md` — new style preferences.
 - `04_tools.md` — new tools mentioned.
 - `05_sources.md` — new official docs URLs.
 
