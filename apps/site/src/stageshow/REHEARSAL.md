@@ -10,12 +10,14 @@ unmodified from the skill (MIT, `kit/LICENSE`).
   status that changes on its own pill (`Mark` and `Label` are its spinner/dot cell and
   width-easing word cell).
 - **Changed:** the deployments window became a `chrome="terminal"` window with the AI-OS
-  command; the list became a satellite card of four CLIs over the terminal's empty right half;
+  command; the list became a satellite card of the six CLIs over the terminal's empty right half;
   brand tokens from `context/global/06_brand.md` (page `#08090e`, acid `#b3ee55` lit only on
   Ready, Space Grotesk and JetBrains Mono).
-- **Real strings:** the command, Claude Code, Codex, Gemini, Hermes, the skills count
-  (`stats.json`) and Ready. Terminal output is placeholder.
-- **Compact (below 480 px):** the card keeps only its headline so the command stays in view.
+- **Real strings:** the command, the installer's eight steps with their counts (`stats.json`),
+  the six CLIs and Ready. The earlier run above the command repeats the steps dimmed.
+- **Compact (below 480 px):** the card keeps only its headline and the first three steps are
+  left out, so the command stays in view above it.
+- **Hero fit:** the figure carries `data-ss-fill`, so the stage grows past 600 px to its column.
 
 ## Checked
 

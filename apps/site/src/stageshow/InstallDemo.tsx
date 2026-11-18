@@ -6,7 +6,7 @@ import { Collapse } from './kit/motion/Collapse'
 import { Check } from './kit/parts/Check'
 import { Spinner } from './kit/parts/Spinner'
 import { Stage } from './kit/stage'
-import { Bar, Caret, Prompt, Text, Window } from './kit/window'
+import { Caret, Prompt, Text, Window } from './kit/window'
 import stats from '../stats.json'
 import './install.css'
 
@@ -19,31 +19,44 @@ import './install.css'
 // linked in turn; the card's status turns Ready on the same pill, the one
 // lit color. The page plays it once and holds Ready.
 //
-// Real strings: the command, four CLIs, the skills count and Ready. The
-// installer's output is placeholder at real line heights.
+// Real strings: the command, the installer's steps with their counts
+// (stats.json), the six CLIs and Ready. Only the earlier run above the
+// command is placeholder bars.
 
 const COMMAND = 'npx @edd_remonts/create-ai-os'
-const CLIS = ['Claude Code', 'Codex', 'Gemini', 'Hermes']
+const CLIS = ['Claude Code', 'Codex', 'Gemini', 'Antigravity', 'MiniMax', 'Hermes']
 const SKILLS = stats.skills_linked
-// An earlier run fills the screen; this run is short enough that its command stays in view at the end
-const HISTORY = [148, 196, 172, 120, 184, 136, 204, 160, 112, 176, 140]
-const OUT = [184, 136, 204, 160, 112, 176]
+// The installer's steps (setup/install-mac.sh) as it reports them; counts come from stats.json
+const STEPS: [string, string][] = [
+  ['prerequisites', 'brew · node · git'],
+  ['brew', `${stats.brew_total} packages`],
+  ['python', `${stats.pip_packages} packages`],
+  ['skills', `${SKILLS} → ${CLIS.length} CLIs`],
+  ['agents', `${stats.agents} distributed`],
+  ['mcp', `${stats.mcp_enabled} servers`],
+  ['memory', 'FalkorDB · Ollama'],
+  ['verify', `${stats.verify_sections} checks passed`],
+]
+// Steps 4 to 8 reach the CLIs: the card ticks them as those arrive
+const linkedAt = (i: number) => Math.max(0, Math.round(((i - 3) * CLIS.length) / (STEPS.length - 3)))
+// An earlier run fills the screen (its last line is verify, right above the new prompt); this run is short enough that its command stays in view at the end
+const HISTORY = Array.from({ length: 11 })
 
 type S = { cmd: string; out: number; next: boolean; linked: number; ready: boolean; card: boolean }
 const initial: S = { cmd: '', out: 0, next: false, linked: 0, ready: false, card: true }
-const POSTER: S = { cmd: COMMAND, out: OUT.length, next: false, linked: CLIS.length, ready: true, card: true }
+const POSTER: S = { cmd: COMMAND, out: STEPS.length, next: false, linked: CLIS.length, ready: true, card: true }
 
 async function script(a: Act<S>) {
-  await a.wait(800)
+  await a.wait(300)
   a.mark('type')
-  await a.type('cmd', COMMAND, { interval: 32 })
+  await a.type('cmd', COMMAND, { interval: 18 })
   await a.wait(300)
   // The installer's output scrolls the screen and links the CLIs one by one
-  for (let i = 1; i <= OUT.length; i++) {
-    const linked = Math.floor((i * CLIS.length) / OUT.length)
+  for (let i = 1; i <= STEPS.length; i++) {
+    const linked = linkedAt(i)
     a.mark(`line-${i}`)
     a.put({ out: i, linked })
-    await a.wait(560)
+    await a.wait(260)
   }
   a.mark('ready')
   a.put({ ready: true })
@@ -54,19 +67,20 @@ async function script(a: Act<S>) {
 export default function InstallDemo() {
   return (
     <Stage<S> play="once" width={600} height={380} compact={{ below: 480, width: 358, height: 340 }} theme="dark" initial={initial} poster={POSTER} script={script} className="ai">
-      {(s) => (
+      {(s, _rect, layout) => (
         <>
           <Window chrome="terminal" lights="grey" title="ai-os — zsh" className="ai-term">
             <div className="ss-term ai-screen">
               {/* An earlier run, shaped like this one's output */}
-              {HISTORY.map((w, i) => <Line key={`h${i}`} w={w} />)}
+              {HISTORY.map((_, i) => <Ghost key={`h${i}`} step={STEPS[(i + STEPS.length * 2 - HISTORY.length) % STEPS.length]!} />)}
               <Prompt path="~" className="ai-prompt">
                 {s.cmd}
                 {s.out === 0 && <Caret still={s.cmd.length > 0 && s.cmd.length < COMMAND.length} />}
               </Prompt>
-              {OUT.map((w, i) => (
-                <Collapse key={i} open={i < s.out}>
-                  <Line w={w} />
+              {/* Narrow, the card sits over the foot of the screen: the first three steps are left out so the rest end above it */}
+              {STEPS.map(([name, detail], i) => layout === 'compact' && i < 3 ? null : (
+                <Collapse key={name} open={i < s.out}>
+                  <Line name={name} detail={detail} />
                 </Collapse>
               ))}
               <Collapse open={s.next}>
@@ -100,11 +114,23 @@ export default function InstallDemo() {
   )
 }
 
-function Line({ w }: { w: number }) {
+function Line({ name, detail }: { name: string; detail: string }) {
   return (
     <div className="ai-line">
       <span className="ok">✓</span>
-      <Bar w={w} h={7} r={3.5} tone={2} />
+      <span className="ai-step">{name}</span>
+      <span className="ai-detail">{detail}</span>
+    </div>
+  )
+}
+
+// The earlier run, scrolled up behind the fade: the same steps, dimmed
+function Ghost({ step }: { step: [string, string] }) {
+  return (
+    <div className="ai-line ai-ghost">
+      <span className="ok">✓</span>
+      <span className="ai-step">{step[0]}</span>
+      <span className="ai-detail">{step[1]}</span>
     </div>
   )
 }

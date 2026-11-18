@@ -30,13 +30,14 @@
 .ai .ss-stage[data-layout='compact'] .ai-term {
   top: 16px;
   left: 16px;
-  width: 400px;
+  width: 326px;
 }
 
 /* Narrow, ten lines: the seam still holds, since the last ten lines of a
    run match the last ten of the earlier one */
 .ai .ss-stage[data-layout='compact'] .ai-screen {
-  height: 260px;
+  height: 286px;
+  padding-bottom: 72px;
 }
 
 .ai .ss-term {
@@ -73,8 +74,19 @@
   height: 26px;
 }
 
-.ai-line .ss-bar {
-  background: #2b2d38;
+.ai-step {
+  flex: none;
+  width: 104px;
+  color: var(--ss-text-strong);
+}
+
+.ai-detail {
+  color: #6b6e7a;
+  white-space: nowrap;
+}
+
+.ai-ghost {
+  opacity: 0.45;
 }
 
 /* The card: a level above the terminal, over its empty right half */
@@ -157,7 +169,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 34px;
+  height: 30px;
   border-bottom: 1px solid var(--ss-line-faint);
 }
 
