@@ -1,5 +1,7 @@
 # Unified Config Playground Implementation Plan
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`). Done in actives/ai-schadcn-chat (`demo/src/components/UnifiedPlayground.tsx`).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the duplicated live-chat sections (`#live-demo` + `#config-reference` playground) with a single two-column playground that uses the Coding Buddy persona as its starting state and exposes all 72 documented `ChatConfig` / `UiConfig` fields in a multi-section collapsible form, mutating state via `useChat().updateConfig()`.

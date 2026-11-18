@@ -101,7 +101,7 @@ The `aios-quickstart` skill auto-loads from:
 1. **Create your first Spec:** set `AI_OS_ROOT` to the repository root, then run `nano "$AI_OS_ROOT/specs/current_spec.md"` and follow the template.
 2. **Load context:** the `aios-quickstart` skill guides you step by step.
 3. **Personalize:** edit files in `ai-config/`, `dev-env/dotfiles/`, `context/` according to your preferences.
-4. **Sync to the repo:** `git add . && git commit -m "personalize" && git push`.
+4. **Sync to the repo:** commit on a branch and open a PR to `dev` (direct pushes to `main` are blocked; see `docs/sharing.md`). Your `context/personal/` is git-ignored and never pushed.
 
 ## Troubleshooting
 

@@ -214,7 +214,7 @@ whether a tool call happened.
 
 ### What this does not fix (yet)
 
-`apps/data/tools/plans-pipeline`'s 35-40M-token runs are still Task-tool /
+`apps/data/tools/plans-pipeline` (plansmith repo)'s 35-40M-token runs are still Task-tool /
 `delegate_task` subagent dispatch, not wired to this harness. This proves the local
 tool-use path *works* for simple, single-step reads — whether it can do the *real*
 enrichment work was tested directly (below), not assumed.

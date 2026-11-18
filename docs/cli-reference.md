@@ -26,8 +26,7 @@ git -C "$AI_OS_ROOT" config core.hooksPath setup/hooks   # pre-push gate (instal
 # Create new Spec (only when one is required — see CLAUDE.md "Method")
 $EDITOR "$AI_OS_ROOT/specs/current_spec.md"
 
-# Archive completed Spec
-mv "$AI_OS_ROOT/specs/current_spec.md" "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-slug.md"
+# Archive completed Spec: workflows/project_start.md step 8 (move, add the archived-record line, reset)
 ```
 
 ## How to invoke from each CLI
