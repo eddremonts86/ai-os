@@ -1,5 +1,7 @@
 # Wire up ui.* features that exist in the catalog but not in the components
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 **Date:** 2026-07-12
 **Status:** draft
 **Blocks:** 5 (each <= 30 min)

@@ -1,5 +1,7 @@
 # Persistent & Indexed Memory for AI-OS — Research Synthesis
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 **Date:** 2026-07-02
 **Status:** ✅ Research complete · awaiting user approval for Phase 1
 **Author:** Edd (assisted by 3 sub-agents)

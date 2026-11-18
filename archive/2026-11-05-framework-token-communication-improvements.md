@@ -1,5 +1,7 @@
 # Current Spec: Framework token/communication improvements (service-layer + evidence + compact)
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 > **Archive summary (2026-11-05):** closed unfinished. Done: `service-layer` skill (created and propagated), caveman/ponytail split documented in `intent/README.md`, `vendor/shimeles/README.md`. Not done: strategic-compact hook in `~/.claude/settings.json`, `before-and-after` availability. Checkboxes below were never ticked.
 
 ## Metadata

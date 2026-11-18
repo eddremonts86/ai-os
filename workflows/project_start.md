@@ -152,14 +152,18 @@ At the end:
 ### 8. Archive the completed Spec (move file)
 
 Archive only after the active Spec is completed. Archive names are immutable,
-versioned task records; do not overwrite an existing archive file.
+versioned task records; do not overwrite an existing archive file. Under the
+title, every archived Spec carries the line
+``> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).``
+so an agent that finds it later does not take it as work to do (`setup/tests/test_archive.py` checks it).
 
 ```bash
 mv "$AI_OS_ROOT/specs/current_spec.md" \
    "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-<slug>.md"
+# then add the archived-record line under its title
 
 # Reset for next task
-echo "# Current Spec\n\n*No active Spec.* Load a new Spec following \`specs/spec_template.md\` or run \`workflows/project_start.md\`." \
+printf '%s\n' '# Current Spec' '' '*No active Spec. Create one from `specs/spec_template.md` when needed.*' \
   > "$AI_OS_ROOT/specs/current_spec.md"
 ```
 

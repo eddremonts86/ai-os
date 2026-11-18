@@ -77,7 +77,7 @@ This is TDD. It is not "write code then add tests".
 
 → Load skill `using-git-worktrees` if the work is large or might conflict with other work.
 
-For small features, you can work on the main branch directly. For large features, use a worktree:
+Small work goes on a feature branch off `dev` (never `main`; see the git flow in `rules/always_do.md`). For large features, use a worktree:
 
 ```bash
 git worktree add ../<project>-<feature> -b feat/<feature-name>
@@ -175,6 +175,7 @@ not retain completed work.
 ```bash
 mv "$AI_OS_ROOT/specs/current_spec.md" \
    "$AI_OS_ROOT/archive/$(date +%Y-%m-%d)-<slug>.md"
+# then add the archived-record line under its title (workflows/project_start.md step 8)
 
 printf '%s\n' '# Current Spec' '' '*No active Spec. Create one from `specs/spec_template.md` when needed.*' \
   > "$AI_OS_ROOT/specs/current_spec.md"

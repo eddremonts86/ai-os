@@ -1,5 +1,7 @@
 # Current Spec: Landing Page Terminal Simulator
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 ## Metadata
 
 - **Date:** 2026-07-14

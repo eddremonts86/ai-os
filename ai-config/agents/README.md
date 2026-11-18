@@ -11,7 +11,7 @@ per-CLI extras are documented at the top of that script.
 | `aios-reviewer` | reviewing an AI-OS change against the repo's own rules before a PR (read-only) |
 | `bundle-optimizer` | measuring the production bundle and cutting it: heavy or duplicated deps, missing splits, assets |
 | `design-system-keeper` | UI code that bypasses the project's tokens or components: raw values, duplicates, theme breakage (read-only) |
-| `docs-drift-checker` | finding docs that no longer match the code: commands, paths, counts, steps (read-only) |
+| `docs-drift-checker` | finding docs that no longer match the code (commands, paths, counts, steps), and in sweep mode the dead notes, overtaken plans and stale memories that send agents on side quests (read-only) |
 | `docs-writer` | writing or fixing Markdown and MDX documents, checked before it finishes |
 | `fresh-reviewer` | a cold review of a Spec, plan or proposal; give it only the document and repo paths (read-only) |
 | `installer-tester` | running the installer in a throwaway HOME: idempotency, user files kept, real machine untouched |

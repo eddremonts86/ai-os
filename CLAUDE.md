@@ -25,7 +25,7 @@ notes in [`docs/skills-catalog.md`](docs/skills-catalog.md), the directory tree 
    `source_check_prompt.md`, `fresh_reviewer_prompt.md`) are optional tools — use them when a
    second look is worth it, not as a mandatory pass between blocks. A Spec gets one cold read
    by a fresh subagent (`workflows/project_start.md` step 3b).
-4. **Archive** a completed Spec to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary, then
+4. **Archive** a completed Spec to `archive/YYYY-MM-DD-<slug>.md` with a 1-line summary under the archived-record line (`workflows/project_start.md` step 8), then
    reset `specs/current_spec.md` to the no-active-Spec template. `specs/current_spec.md` holds
    at most one active Spec.
 
@@ -107,7 +107,7 @@ See `rules/never_do.md`. In short:
 - Agents (custom subagents): `ai-config/agents/<name>.md` (shared) or `context/personal/agents/` (yours), written
   into Claude Code, Codex, Gemini and opencode by `ai-os agents` (also run by the installers).
 - The 14 obra/superpowers skills plus `code-review-and-quality` are required; `setup/verify.sh`
-  checks them. Install and update notes: `docs/skills-catalog.md`.
+  checks the 14 superpowers skills. Install and update notes: `docs/skills-catalog.md`.
 
 ## 7. Do not "tidy" these
 

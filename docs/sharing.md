@@ -13,7 +13,7 @@
 ## To contribute to the original repo (PR)
 
 1. Fork + clone.
-2. Create branch: `git checkout -b feat/my-change`.
+2. Create a branch from `dev`: `git switch dev && git switch -c feat/my-change`.
 3. Make changes.
 4. **Conventional Commits** (already in `dev-env/dotfiles/git/.gitconfig.template`):
    - `feat:` new feature
@@ -22,12 +22,12 @@
    - `chore:` maintenance
    - `refactor:` refactor without functional change
    - `test:` tests
-5. Push + PR.
+5. Push + PR to `dev` (`main` only takes PRs from `dev`).
 6. Describe: what changes, why, how to test.
 
 ### What TO contribute
 
-- **New skills** (`~/.claude/skills/<name>/SKILL.md`) that are reusable.
+- **New skills** (`ai-config/skills/<name>/SKILL.md`) that are reusable.
 - **Workspace skills** (project-specific, not in `~/.claude/skills/`).
 - **New workflows** in `<AI_OS_ROOT>/workflows/`.
 - **New verifiers**.

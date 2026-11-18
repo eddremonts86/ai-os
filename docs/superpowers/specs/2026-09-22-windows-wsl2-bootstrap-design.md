@@ -1,6 +1,6 @@
 # Windows/WSL2 bootstrap for the actives/ workspace + novelaudio pipeline migration
 
-**Status**: approved (design), not yet implemented
+**Status**: approved (design); Phase C partly implemented (`novelaudio/scripts/bootstrap_wsl.sh`), systemd units not yet
 **Owner**: Edd
 **Date**: 2026-09-22
 

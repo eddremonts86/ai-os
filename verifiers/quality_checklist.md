@@ -15,7 +15,7 @@ Checklist that the Verifier applies to every output. **All boxes must pass** to 
 - [ ] Are there no warnings (TypeScript strict, Python strict, etc.)?
 - [ ] Does the lint pass (ESLint, ruff, shellcheck)?
 - [ ] Is the format applied (Prettier, black)?
-- [ ] Are the tests passing (coverage > 80%)?
+- [ ] Are the tests passing, with the new behaviour covered (no coverage target)?
 - [ ] Is the code DRY (no obvious duplication)?
 - [ ] Is the code readable (clear names, short functions, comments where needed)?
 - [ ] Are there no `any`/`unknown`/`@ts-ignore` without justification?
@@ -31,7 +31,7 @@ Checklist that the Verifier applies to every output. **All boxes must pass** to 
 ## Diagrams (only if the deliverable includes one)
 
 - [ ] Produced with `diagram-design` (not hand-rolled SVG, not a mermaid fence passed off as a deliverable)?
-- [ ] Tokens resolved from `context/global/06_brand.md` / project `.ai-os/brand-tokens.md` — no upstream default skin, no inlined hex?
+- [ ] Tokens resolved from the folder's scope first, then project `.ai-os/brand-tokens.md`, then `context/global/06_brand.md` (AI-OS itself) — no upstream default skin, no inlined hex?
 - [ ] Taste gate applied (`diagram-design` SKILL.md §9)?
 - [ ] `python3 ~/.claude/skills/diagram-design/scripts/self_check.py <file>` clean?
 - [ ] Opened in a browser — renders as intended, no overlapping labels, no clipped nodes?
@@ -65,15 +65,15 @@ Checklist that the Verifier applies to every output. **All boxes must pass** to 
 
 ## Verifier-specific
 
-- [ ] critic_prompt applied? (3+ improvements applied)
-- [ ] source_check_prompt applied? (URLs verified, no hallucinated claims)
+- [ ] critic_prompt applied, if a second look was worth it? (optional)
+- [ ] External claims verified (URLs, versions, numbers)? `source_check_prompt` or `source-checker` when there are many
 
 ## Final
 
 - [ ] Did the user say "ok" or "go" before you started?
 - [ ] Is the Spec archived?
 - [ ] Is the commit message conventional?
-- [ ] Is the branch pushed (or PR open)?
+- [ ] Committed locally; push or PR only after the user's OK?
 
 ## If any box fails
 
