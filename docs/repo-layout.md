@@ -100,12 +100,12 @@ rename** — not worth a deploy outage. (The plans-explorer and submission-api D
 plans product for plansmith on 2026-09-25.) See
 [`setup/deploy/README.md`](../setup/deploy/README.md).
 
-### `outputs/` exists in two places, on purpose
+### `outputs/` is framework output (product output moved to plansmith)
 
 | Path                 | Holds                                              | Written by                                |
 | -------------------- | -------------------------------------------------- | ----------------------------------------- |
 | `outputs/`           | research reports, audits, generated diagrams       | a human asking for research               |
-| `apps/data/outputs/` | enrichment reports, slice manifests, pipeline logs | `apps/data/tools/plans-pipeline/daily.sh` |
+| `apps/data/outputs/` (plansmith repo since 2026-09-25) | enrichment reports, slice manifests, pipeline logs | plansmith's `tools/plans-pipeline/daily.sh` |
 
 Both are gitignored with a tracked `.gitkeep`. This is not an accident to be consolidated: the
 first is framework output, the second is product output, and they are ignored separately so
@@ -121,7 +121,7 @@ live there unnoticed for weeks.
 
 ### Paths are resolved by marker, never by counting `..`
 
-`apps/data/tools/plan-format/lib/plan.mjs` walks up until it finds `CLAUDE.md`:
+`plan.mjs` (now in the plansmith repo) walks up until it finds `CLAUDE.md`:
 
 ```js
 function findRoot(from) {

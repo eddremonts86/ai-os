@@ -79,6 +79,6 @@ OK? (y/n)
 ## If the user is ambiguous
 
 - Ask with 2-4 options, not open-ended.
-- Use the `clarify` tool.
+- Use your CLI's question tool (Hermes: `clarify`).
 - Suggest a default and explain why.
 - If still ambiguous after one question, pick a reasonable default and proceed (max 1 clarification per task).

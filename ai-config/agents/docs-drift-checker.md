@@ -1,6 +1,6 @@
 ---
 name: docs-drift-checker
-description: Finds documentation that no longer matches the code - commands, flags, paths, file names, counts, env vars, steps and examples that the repo's README, docs and context files state but the code no longer does. Read-only; reports each drift with both sides cited. Use periodically, after a refactor or rename, or before a release.
+description: Finds documentation that no longer matches the code - commands, flags, paths, file names, counts, env vars, steps and examples that the repo's README, docs and context files state but the code no longer does. In sweep mode it also finds stale context that sends agents on side quests - TODO/FIXME notes for closed issues, plans the code has overtaken, memory notes naming things that no longer exist, instructions that contradict each other - and re-verifies each before reporting. Read-only; reports each finding with both sides cited. Use periodically, after a refactor or rename, or before a release.
 clis:
   claude:
     tools: [Read, Glob, Grep, Bash]
@@ -33,9 +33,31 @@ For each checkable statement, find the code that decides it and compare:
 
 Skip statements of intent, opinion or history. Do not report style.
 
+## 2b. Sweep mode (when the request says "sweep")
+
+Agents read stale context as current and go on side quests. Look for what would mislead one:
+
+- **Dead notes.** `TODO`/`FIXME`/`XXX` that reference an issue, bug or PR (`#123`, `owner/repo#123`, a tracker URL).
+  Check its state (`gh issue view N --json state,stateReason` or `gh pr view`); report it when closed, merged or
+  not planned. Without a tracker reference, report a note only when `git log -S` shows the work it asks for landed.
+- **Overtaken plans.** `specs/current_spec.md` and the project's plan or ticket files (AI-OS and superpowers:
+  `docs/superpowers/plans/`, `docs/superpowers/specs/`): a step marked not done that the code already does, or one
+  marked done that the code does not. A plan for another repo is checked there when it is on disk, else reported
+  as unverifiable.
+- **Memory that points nowhere.** Memory files the caller names (AI-OS: the CLI memory dir, `context/global/`,
+  `context/personal/` only when asked) that cite a file, flag, command, skill or agent that no longer exists.
+- **Contradicting instructions.** Two instruction files that prescribe different behaviour for the same case
+  (counted under `Stale`, not `Drift`).
+
+Notes are searched in first-party tracked code: skip vendored code (`vendor/`, vendored skills, `node_modules`).
+Before reporting a sweep finding, verify it a second, independent way (the tracker, the running command, the git
+history of the file it cites; memory dirs are often outside git, so check what the memory names, not the memory) and drop it if the two disagree. Propose the edit (delete the note, update the plan
+or memory, move the file to `archive/`); never propose deleting a note whose intent is still open.
+
 ## 3. Report
 
-First line: `Drift: N (wrong M, missing K)`. Then one entry per finding, most misleading first:
+First line: `Drift: N (wrong M, missing K)` when section 2 ran, `Stale: S` when the sweep ran, joined with ` · `
+when both did. Then one entry per finding, most misleading first:
 
 - the doc `file:line` and what it says;
 - the code `file:line` and what it does;

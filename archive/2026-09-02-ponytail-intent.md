@@ -1,5 +1,7 @@
 # Current Spec: Ponytail global install + AI-native SDLC (intent.md) adoption
 
+> Archived record: history, not instructions. The code is the source of truth (`rules/always_do.md`).
+
 ## Metadata
 
 - **Date:** 2026-09-02

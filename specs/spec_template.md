@@ -8,6 +8,7 @@ Template for `specs/current_spec.md`. Copy this structure for each new task.
 
 - **Date:** YYYY-MM-DD
 - **Status:** draft / approved / in-progress / completed / cancelled
+  (each block also carries its own status; keep both current, the code wins when they disagree)
 - **Blocks:** N (each small enough to verify on its own)
 - **Author:** <name>
 - **Reviewer:** <name>
@@ -35,16 +36,22 @@ Template for `specs/current_spec.md`. Copy this structure for each new task.
 
 ### Block 1: [name] (estimated: X min)
 
+**Status:** not started / in progress / done
+
 - [ ] [Concrete step 1]
 - [ ] [Concrete step 2]
 - [ ] **Verify:** [how to know this block worked]
 
 ### Block 2: [name] (estimated: X min)
 
+**Status:** not started / in progress / done
+
 - [ ] [Concrete step 1]
 - [ ] **Verify:** [how to know this block worked]
 
 ### Block N: [name] (estimated: X min)
+
+**Status:** not started / in progress / done
 
 - [ ] [Concrete step 1]
 - [ ] **Verify:** [how to know this block worked]

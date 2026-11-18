@@ -197,6 +197,6 @@ intentional changes (add a notes file, add a blocker, change a config).
 Each run should pick up the changes without starting from zero. That
 continuity is the whole point.
 
-When ready for scheduling, register with Hermes via `ai-os loop add my-loop/`,
-or wire to your CLI's native scheduler. Promotion to level 3+ requires
+When ready for scheduling, track it with `ai-os loop add my-loop/` (a local registry) and
+schedule it with a Hermes cron job or your CLI's native scheduler. Promotion to level 3+ requires
 human approval recorded in `PROGRESS.md` (`rules/loop_safety.md`).

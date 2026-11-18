@@ -20,7 +20,7 @@ Do not use for: tasks that need code changes (use `workflows/coding.md`).
 
 ### 1. Define the question (read Spec)
 
-Read `specs/current_spec.md`. If empty, the user has no Spec. Ask:
+Read `specs/current_spec.md`. If it holds the no-active-Spec template, the user has no Spec. Ask:
 
 > "What is the question you want answered?"
 
@@ -127,7 +127,7 @@ Apply `verifiers/critic_prompt.md` to review:
 - Is the analysis biased?
 - Are there hidden costs (licensing, maintenance, learning curve)?
 
-Apply the 2-3 improvements suggested. Do not skip this step.
+Apply the 2-3 improvements suggested. This step is optional: use it when a second look is worth it.
 
 ### 7. Review with → Load skill `code-review-and-quality` (load skill)
 
@@ -174,7 +174,7 @@ If the research changes the AI-OS state, update `context/`:
 
 - `04_tools.md` — new tool added.
 - `05_sources.md` — new official docs URL.
-- `02_projects.md` — new project.
+- `context/personal/work/projects.md` — new project.
 
 ## Output
 
