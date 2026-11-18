@@ -1729,13 +1729,14 @@ else
   log "9e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook"
 fi
 
-# 9f. Session-memory hook: every Claude Code session starts with what graphiti
-# remembers about its repo (setup/hooks/claude-session-memory.py).
+# 9f. Memory hooks: every Claude Code session starts with what graphiti remembers
+# about its repo, and every prompt gets up to three grepai code locations
+# (setup/hooks/claude-session-memory.py, claude-prompt-code-hints.py).
 if [ "${SKIP_MEMORY_HOOK:-0}" != "1" ]; then
   if python3 "$SCRIPT_DIR/wire-memory-hook.py"; then
-    ok "  session-memory hook wired (Claude Code SessionStart)"
+    ok "  memory hooks wired (Claude Code SessionStart + UserPromptSubmit)"
   else
-    warn "  session-memory hook not wired — see the message above (never blocks the install)"
+    warn "  memory hooks not wired — see the message above (never blocks the install)"
   fi
 fi
 echo ""

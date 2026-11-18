@@ -416,7 +416,7 @@ else
   opt_miss "${hook_status#\[compact-hook\] }"
 fi
 if mem_hook=$(python3 "$AI_OS_ROOT/setup/wire-memory-hook.py" --check 2>&1); then
-  opt_ok "$mem_hook (graphiti facts preloaded per repo)"
+  opt_ok "$mem_hook"
 else
   opt_miss "$mem_hook"
 fi
