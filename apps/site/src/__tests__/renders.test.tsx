@@ -1,5 +1,5 @@
 // Render-count regression checks, from the rerender-hunter audit (2026-11-14): the page must not re-render
-// while idle, and the terminal's typing must stop committing once it is done.
+// while idle, and the hero install demo (src/stageshow) must stop committing once it has played.
 import { act, render } from '@/test/render'
 import { Profiler, type ProfilerOnRenderCallback } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -16,7 +16,7 @@ function profiled() {
       <App />
     </Profiler>,
   )
-  act(() => showAllInView()) // jsdom has no layout: put everything in view so the terminal and tickers start
+  act(() => showAllInView()) // jsdom has no layout: put everything in view so the demo and tickers start
   return commits
 }
 
@@ -26,22 +26,21 @@ const advance = async (ms: number) => {
 }
 
 describe('render counts', () => {
-  it('stops committing once the hero terminal has finished, and stays idle', async () => {
+  it('stops committing once the hero demo has played, and stays idle', async () => {
     vi.useFakeTimers()
     const commits = profiled()
-    await advance(15_000) // the whole typing sequence takes about 3 s
+    await advance(15_000) // the demo plays once in about 6 s
     const settled = commits.length
     await advance(10_000)
     expect(commits.length - settled).toBe(0)
   })
 
-  it('types the hero terminal in a bounded number of commits', async () => {
+  it('plays the hero demo in a bounded number of commits', async () => {
     vi.useFakeTimers()
     const commits = profiled()
     await advance(15_000)
-    // about one commit per typed character plus one per line today (~50); a loop or a per-frame update would
-    // blow far past this
-    expect(commits.length).toBeGreaterThan(10) // the typing really ran
+    // about one commit per typed character plus one per beat; a loop or a per-frame update would blow far past this
+    expect(commits.length).toBeGreaterThan(10) // the demo really ran
     expect(commits.length).toBeLessThan(150)
   })
 })

@@ -1,0 +1,237 @@
+/* AI-OS brand (context/global/06_brand.md): hue-275 neutrals on #08090e, one acid accent */
+.ai .ss-stage {
+  overflow: hidden;
+  background: #08090e;
+  --ss-font: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --ss-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --ss-surface: #0f1119;
+  --ss-raised: #181a23;
+  --ss-line: #2b2d38;
+  --ss-line-faint: #1f2129;
+  --ss-text-strong: #f4f5f9;
+  --ss-text: #a2a4ae;
+  --ss-success: #b3ee55;
+  --ss-success-soft: rgb(179 238 85 / 0.14);
+  --ss-success-text: #b3ee55;
+  --ss-term-ok: #b3ee55;
+  --ss-radius-window: 10px;
+}
+
+/* The terminal: pinned top-left, off the right and the bottom */
+.ai-term {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  width: 640px;
+  height: 400px;
+  --ss-term-bg: #0f1119;
+}
+
+.ai .ss-stage[data-layout='compact'] .ai-term {
+  top: 16px;
+  left: 16px;
+  width: 400px;
+}
+
+/* Narrow, ten lines: the seam still holds, since the last ten lines of a
+   run match the last ten of the earlier one */
+.ai .ss-stage[data-layout='compact'] .ai-screen {
+  height: 260px;
+}
+
+.ai .ss-term {
+  font-size: 12.5px;
+  gap: 6px;
+}
+
+.ai .ss-term__caret {
+  margin-left: 8px;
+}
+
+/* The screen is pinned to its foot: new lines push the older ones up,
+   the way a terminal scrolls. Twelve 26px lines fill it exactly (an
+   earlier run fills it before the command, so it is never empty) */
+.ai-screen {
+  height: 312px;
+  /* Lines leaving at the top fade out before the edge reaches them */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 44px);
+  justify-content: flex-end;
+  gap: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.ai .ai-screen > * + .ss-term__prompt {
+  margin-top: 0;
+}
+
+.ai-line,
+.ai-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 26px;
+}
+
+.ai-line .ss-bar {
+  background: #2b2d38;
+}
+
+/* The card: a level above the terminal, over its empty right half */
+.ai-card {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  width: 236px;
+  padding: 16px 16px 8px;
+  border-radius: 12px;
+  background: var(--ss-raised);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.06), 0 24px 48px -12px rgb(0 0 0 / 0.6);
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.4s ease, translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.ai-card[data-on] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.ai .ss-stage[data-layout='compact'] .ai-card {
+  bottom: 16px;
+  right: 16px;
+  width: auto;
+  /* Even ink: the figure's line box carries more air above its digits */
+  padding: 12px 14px 16px;
+}
+
+/* Narrow, the card keeps only its headline: the terminal's command stays
+   in view above it */
+.ai .ss-stage[data-layout='compact'] .ai-head {
+  height: auto;
+  gap: 16px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.ai .ss-stage[data-layout='compact'] .ai-list {
+  display: none;
+}
+
+.ai-head {
+  height: 40px;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ss-line);
+}
+
+.ai-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--ss-text-strong);
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+
+.ai-unit {
+  color: var(--ss-text);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ai-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  border-bottom: 1px solid var(--ss-line-faint);
+}
+
+.ai-row:last-child {
+  border-bottom: 0;
+}
+
+.ai-name {
+  color: var(--ss-text-strong);
+  font-size: 13px;
+}
+
+.ai .ss-check {
+  /* Linked is quiet: the one lit color is the card's Ready */
+  --ss-success: #f4f5f9;
+  --ss-well: #181a23;
+}
+
+.ai .ss-check__tick {
+  stroke: #08090e;
+}
+
+.ai .ss-term-ok, .ai .ai-line .ok {
+  color: #6b6e7a;
+}
+
+.ai .ss-term__sigil {
+  color: #6b6e7a;
+}
+
+/* The status word: the cell eases to the width of the word showing, so the
+   pill keeps even padding and only its right edge moves */
+.ai-label {
+  display: grid;
+  justify-items: start;
+  transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ai-word {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+
+.ai-word[data-on] {
+  opacity: 1;
+  transition: opacity 0.2s ease 0.12s;
+}
+
+.ai-label[data-shrink] {
+  transition-delay: 0.1s;
+}
+
+.ai-mark {
+  display: grid;
+  place-items: center;
+  width: 8px;
+  height: 8px;
+}
+
+.ai-mark > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.2s ease;
+}
+
+.ai-mark[data-ready] .ss-spinner,
+.ai-mark:not([data-ready]) .ai-dot {
+  opacity: 0;
+}
+
+.ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}

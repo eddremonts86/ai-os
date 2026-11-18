@@ -108,3 +108,6 @@ _agent*/
 
 # Playwright MCP page snapshots can contain secrets shown on the page
 .playwright-mcp/
+
+# Vendored Stageshow skill: its playground and film tools install here
+ai-config/skills/stageshow/node_modules

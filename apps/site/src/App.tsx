@@ -1,24 +1,19 @@
 /**
  * AI-OS landing: header and hero, built from proven pieces (aios-ui-design step 4/5):
- * shadcn Button + Badge, Magic UI Terminal (MIT, magicuidesign/magicui). Copy is the current
+ * shadcn Button + Badge, and a Stageshow install demo (src/stageshow, MIT kit). Copy is the current
  * site's; brand tokens from context/global/06_brand.md (index.css).
  */
 import { Check, Copy } from 'lucide-react'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { AnimatedSpan, Terminal, TypingAnimation } from '@/components/ui/terminal'
 import stats from './stats.json'
 import { Closing, Footer, Install, Method, OneRepo, Plansmith, RunsItself, WhatItIs } from './sections'
 
+// Loaded after first paint: the kit would push first-load JS+CSS past the e2e gzip budget
+const InstallDemo = lazy(() => import('./stageshow/InstallDemo'))
+
 const COMMAND = 'npx @edd_remonts/create-ai-os'
-const INSTALL_LOG = [
-  `✓ ${stats.brew_core} brew packages · zsh · p10k`,
-  `✓ ${stats.skills_linked} skills → claude · codex · gemini · hermes`,
-  `✓ ${stats.agents} agents → claude · codex · gemini · opencode`,
-  `✓ ${stats.mcp_enabled} MCP servers generated`,
-  '✓ 19/19 required checks passed, ready.',
-]
 
 function CopyCommand() {
   const [copied, setCopied] = useState(false)
@@ -76,14 +71,12 @@ export default function App() {
           </div>
         </div>
 
-        <Terminal className="w-full max-w-none border-border bg-card font-mono text-[13px] [&_code]:whitespace-pre-wrap [&_pre]:overflow-visible [&_pre]:whitespace-pre-wrap">
-          <TypingAnimation>{`$ ${COMMAND}`}</TypingAnimation>
-          {INSTALL_LOG.map((line) => (
-            <AnimatedSpan key={line} className={line.includes('ready') ? 'text-primary' : 'text-muted-foreground'}>
-              {line}
-            </AnimatedSpan>
-          ))}
-        </Terminal>
+        <figure className="m-0 overflow-hidden rounded-xl" aria-label={`Installing AI-OS: ${stats.skills_linked} skills linked into Claude Code, Codex, Gemini and Hermes, then Ready.`}>
+          {/* The fallback holds the demo's 600x380 box, so nothing below moves when it arrives */}
+          <Suspense fallback={<div className="mx-auto aspect-[600/380] w-full max-w-[600px] bg-background" />}>
+            <InstallDemo />
+          </Suspense>
+        </figure>
         </div>
       </section>
       <OneRepo />
