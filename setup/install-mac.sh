@@ -26,6 +26,10 @@
 #                      registry index the aios-ui-* skills query over MCP. Clones it to
 #                      UI_INDEXER_DIR (default ~/.ai-os/apps/ui-indexador), runs it as launchd
 #                      services and builds its index in the background. Re-runs update an existing clone.
+#   FLOORPLAN=1      → also install Floorplan (github.com/haydenschmitty/floorplan), the interactive
+#                      codebase map, as a Claude Code / Codex plugin. It reads the commit vetted for AI-OS
+#                      (FLOORPLAN_SHA) from ~/.cache/ai-os/floorplan, never the default branch, and is
+#                      opt-in even under --full: its Ask bar runs `claude -p` under your own permission rules.
 #   AIOS_SHELL_THEME=1    → Oh My Zsh + Powerlevel10k and AI-OS's full ~/.zshrc / ~/.p10k.zsh
 #                           (an existing file is moved to *.pre-aios.bak). Default: keep your
 #                           ~/.zshrc and add one line that sources dev-env/dotfiles/zsh/aios.zsh.
@@ -38,8 +42,8 @@
 # setup/seed-personal-context.py). It sets the AIOS_* opt-ins above (an env var wins), the
 # optional CLIs (clis: codex, gemini), extra packages (brew, casks, npm) and MCP overrides, and what the
 # selector (create-ai-os / ai-os install) chose: skip: (claude, opencode, memory, mcp, ponytail, hooks),
-# exclude: (package names from the shared lists), extras: and ui_indexer:. --full / AIOS_FULL=1 ignores
-# skip: and exclude: and turns every opt-in on.
+# exclude: (package names from the shared lists), extras:, ui_indexer: and floorplan:. --full / AIOS_FULL=1 ignores
+# skip: and exclude: and turns extras and ui_indexer on (floorplan and the shell/terminal look stay opt-in).
 
 set -euo pipefail
 
@@ -83,12 +87,14 @@ profile_flag() { [ "$(profile_get "$1")" = "true" ] && echo 1 || echo 0; }
 # What the environment said before any profile read: a second read (once yq is installed) must start from these,
 # not from the 0s the first read wrote while yq was missing.
 _ENV_SHELL_THEME="${AIOS_SHELL_THEME-}" _ENV_FONTS="${AIOS_FONTS-}" _ENV_TERMINAL_THEME="${AIOS_TERMINAL_THEME-}"
-_ENV_EXTRAS="${EXTRAS-}" _ENV_UI_INDEXER="${UI_INDEXER-}"
+_ENV_EXTRAS="${EXTRAS-}" _ENV_UI_INDEXER="${UI_INDEXER-}" _ENV_FLOORPLAN="${FLOORPLAN-}"
 load_profile_flags() {
   # The look of your shell and terminal stays opt-in, --full included: it replaces your own ~/.zshrc.
   AIOS_SHELL_THEME="${_ENV_SHELL_THEME:-$(profile_flag shell_theme)}"
   AIOS_FONTS="${_ENV_FONTS:-$(profile_flag fonts)}"
   AIOS_TERMINAL_THEME="${_ENV_TERMINAL_THEME:-$(profile_flag terminal_theme)}"
+  # Third-party plugin with its own Ask agent: opt-in, --full included
+  FLOORPLAN="${_ENV_FLOORPLAN:-$(profile_flag floorplan)}"
   if [ "${AIOS_FULL:-0}" = "1" ]; then
     EXTRAS=1 UI_INDEXER=1
     return 0
@@ -184,6 +190,10 @@ resolve_claude() {
   return 1
 }
 
+# ─── Floorplan pin (read by the plan above and step 9g) ───
+# The commit security-reviewed for AI-OS (v0.11.0). A newer version is a new review, then a new SHA here.
+FLOORPLAN_SHA="${FLOORPLAN_SHA:-94f81b463b7617e06d873ac71323ce71644c8399}"
+
 # ─── Ponytail pin (read by 5b, 7b and 9c) ───
 # 5b (env.sh) and 7b (global bridge) regenerate their files in full on every
 # run, so ponytail has to be part of those renders: an append in 9c was wiped by
@@ -260,6 +270,7 @@ show_manifest() {
   [ "${SKIP_MCP:-0}" = "1" ] || echo "  🔌 MCP servers → ~/.hermes/config.yaml"
   [ "${SKIP_MEMORY:-0}" = "1" ] || echo "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
   [ "${UI_INDEXER:-0}" = "1" ] && echo "  🧩 ui-indexador (shadcn registry index, launchd services)"
+  [ "${FLOORPLAN:-0}" = "1" ] && echo "  🗺  Floorplan plugin (codebase map), pinned to ${FLOORPLAN_SHA:0:12}"
   local skipped=""
   [ "${SKIP_CLAUDE_NATIVE:-0}" = "1" ] && skipped+=" Claude Code"
   [ "${SKIP_OPENCODE:-0}" = "1" ] && skipped+=" opencode"
@@ -1739,6 +1750,72 @@ if [ "${SKIP_MEMORY_HOOK:-0}" != "1" ]; then
   fi
 fi
 echo ""
+
+# ─── 9g. Floorplan (optional: FLOORPLAN=1) ───
+# haydenschmitty/floorplan: an interactive plain-English map of a codebase, drawn by Claude or Codex.
+# Reviewed at FLOORPLAN_SHA (no hooks, MCP servers or dependencies; local-only server). The plugin is
+# read from a clone checked out at that commit and registered as a folder marketplace, so a later
+# upstream change never reaches the machine until the pin moves. Its only outbound request is an
+# opt-in waitlist form: ~/.floorplan/settings.json is seeded with "never" so the card does not ask.
+if [ "${FLOORPLAN:-0}" = "1" ]; then
+  log "9g. Floorplan ${FLOORPLAN_SHA:0:12} — haydenschmitty/floorplan..."
+  FLOORPLAN_DIR="$HOME_DIR/.cache/ai-os/floorplan"
+  FLOORPLAN_OK=0
+  mkdir -p "$(dirname "$FLOORPLAN_DIR")"
+  if [ ! -d "$FLOORPLAN_DIR/.git" ]; then
+    rm -rf "$FLOORPLAN_DIR" 2>/dev/null
+    git clone --quiet "${FLOORPLAN_REPO:-https://github.com/haydenschmitty/floorplan.git}" "$FLOORPLAN_DIR" 2>&1 | tail -2 || true
+  fi
+  if [ -d "$FLOORPLAN_DIR/.git" ] \
+     && (cd "$FLOORPLAN_DIR" && { git cat-file -e "$FLOORPLAN_SHA^{commit}" 2>/dev/null || git fetch --quiet --tags 2>/dev/null; } \
+         && git checkout -q "$FLOORPLAN_SHA" 2>/dev/null) \
+     && [ "$(git -C "$FLOORPLAN_DIR" rev-parse HEAD)" = "$FLOORPLAN_SHA" ]; then
+    ok "  floorplan source: $FLOORPLAN_DIR @ ${FLOORPLAN_SHA:0:12}"
+    FLOORPLAN_OK=1
+  else
+    warn "  floorplan: could not check out $FLOORPLAN_SHA — skipping (no network, or the pin moved)"
+  fi
+  if [ "$FLOORPLAN_OK" = "1" ]; then
+    mkdir -p "$HOME_DIR/.floorplan"
+    [ -f "$HOME_DIR/.floorplan/settings.json" ] || printf '{"cloud":{"status":"never"}}\n' > "$HOME_DIR/.floorplan/settings.json"
+    # The pin holds only if the `floorplan` marketplace is OUR clone: one added earlier from GitHub would
+    # install the default branch under the same name. Warn and leave it alone rather than replace it silently.
+    if [ -n "$CLAUDE_BIN" ]; then
+      fp_list="$("$CLAUDE_BIN" plugin marketplace list 2>/dev/null || true)"
+      if printf '%s\n' "$fp_list" | grep -q "❯ floorplan" && ! printf '%s\n' "$fp_list" | grep -qF "$FLOORPLAN_DIR"; then
+        warn "  Claude Code: a 'floorplan' marketplace from another source exists, so the pin is not enforced — run 'claude plugin marketplace remove floorplan' and re-run"
+      else
+        "$CLAUDE_BIN" plugin marketplace add "$FLOORPLAN_DIR" >/dev/null 2>&1 || true
+        if "$CLAUDE_BIN" plugin list 2>/dev/null | grep -q "floorplan@floorplan"; then
+          "$CLAUDE_BIN" plugin update floorplan@floorplan >/dev/null 2>&1 || true   # picks up a moved pin
+          ok "  Claude Code: floorplan plugin installed (pinned clone)"
+        elif out="$("$CLAUDE_BIN" plugin install floorplan@floorplan 2>&1)"; then
+          ok "  Claude Code: floorplan installed (ask: \"Make me a floorplan of this app\")"
+        else
+          warn "  Claude Code: floorplan install failed:"; printf '%s\n' "$out" | tail -3 | sed 's/^/      /'
+        fi
+      fi
+    else
+      log "  Claude Code not found — skipping its plugin"
+    fi
+    if command -v codex >/dev/null 2>&1; then
+      # Codex copies the marketplace into its own folder: compare the release fingerprint with the pinned clone's
+      codex plugin marketplace add "$FLOORPLAN_DIR" >/dev/null 2>&1 || true
+      fp_root="$(codex plugin marketplace list 2>/dev/null | awk '$1 == "floorplan" { print $2 }')"
+      if [ -n "$fp_root" ] && ! cmp -s "$fp_root/CHECKSUMS.txt" "$FLOORPLAN_DIR/CHECKSUMS.txt"; then
+        warn "  Codex: its 'floorplan' marketplace is not the pinned clone, so the pin is not enforced — run 'codex plugin marketplace remove floorplan' and re-run"
+      elif codex plugin list 2>/dev/null | grep -i "floorplan@" | grep -qi "installed"; then
+        ok "  Codex: floorplan plugin installed (pinned clone)"
+      elif out="$(codex plugin add floorplan@floorplan 2>&1)"; then
+        ok "  Codex: floorplan installed (type \$floorplan)"
+      else
+        warn "  Codex: floorplan install failed:"; printf '%s\n' "$out" | tail -3 | sed 's/^/      /'
+      fi
+    fi
+  fi
+else
+  log "9g. Floorplan not installed (opt in with FLOORPLAN=1)"
+fi
 
 # ─── 10. Warp defaults (Mac only) ───
 if [ "${AIOS_TERMINAL_THEME:-0}" = "1" ] && [ -d "/Applications/Warp.app" ]; then

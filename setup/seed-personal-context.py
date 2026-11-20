@@ -70,6 +70,7 @@ skip: []                 # default-on parts to leave out: claude, opencode, memo
 exclude: []              # packages from the shared Brewfile / pip / npm / Chocolatey lists to leave out
 extras: false            # also install dev-env/packages/Brewfile.extras
 ui_indexer: false        # ui-indexador (shadcn registry index), Mac
+floorplan: false         # Floorplan codebase-map plugin for Claude Code / Codex, pinned to a reviewed commit
 
 mcp:                     # shared servers live in ai-config/mcp/*.yaml
   enable: []             # names to turn on (e.g. rea)
