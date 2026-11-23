@@ -1,109 +1,123 @@
 # React Best Practices
 
-**Status**: ✅ Production Ready
-**Version**: 1.0.0 (Vercel source)
-**Last Updated**: 2026-01-28
-
-Comprehensive React and Next.js performance optimization guide from Vercel Engineering, containing 57 rules across 8 categories.
-
-## What This Skill Provides
-
-✅ **Eliminating Waterfalls** (CRITICAL) - 5 rules for async optimization
-✅ **Bundle Size Optimization** (CRITICAL) - 5 rules for reducing bundle size
-✅ **Server-Side Performance** (HIGH) - 7 rules for SSR optimization
-✅ **Client-Side Data Fetching** (MEDIUM-HIGH) - 2 rules for client optimization
-✅ **Re-render Optimization** (MEDIUM) - 12 rules for preventing unnecessary renders
-✅ **Rendering Performance** (MEDIUM) - 9 rules for efficient rendering
-✅ **JavaScript Performance** (LOW-MEDIUM) - 14 rules for JS optimization
-✅ **Advanced Patterns** (LOW) - 3 rules for advanced techniques
-
-**Total**: 57 production-tested rules with incorrect vs correct examples
-
-## When to Use This Skill
-
-Use this skill when:
-- Writing new React components or Next.js pages
-- Reviewing code for performance issues
-- Refactoring existing React/Next.js applications
-- Optimizing bundle size or load times
-- Debugging hydration errors, re-render issues, or memory leaks
-- Implementing async patterns, server components, or streaming
+A structured repository for creating and maintaining React Best Practices optimized for agents and LLMs.
 
 ## Structure
 
-- **SKILL.md** - Concise overview with rule categories (~1,500 words)
-- **AGENTS.md** - Full compiled guide with all rules expanded (~40,000 words)
-- **rules/** - 57 individual rule files for granular reference
-- **metadata.json** - Version and attribution metadata
+- `rules/` - Individual rule files (one per rule)
+  - `_sections.md` - Section metadata (titles, impacts, descriptions)
+  - `_template.md` - Template for creating new rules
+  - `area-description.md` - Individual rule files
+- `src/` - Build scripts and utilities
+- `metadata.json` - Document metadata (version, organization, abstract)
+- __`AGENTS.md`__ - Compiled output (generated)
+- __`test-cases.json`__ - Test cases for LLM evaluation (generated)
 
-## Attribution
+## Getting Started
 
-This skill packages **Vercel's React Best Practices guide** for Claude Code.
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-**Original Author**: [@shuding](https://github.com/shuding) (Vercel Engineering)
-**Source**: https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices
-**Packaging**: Claude Skills Maintainers
-**License**: MIT
+2. Build AGENTS.md from rules:
+   ```bash
+   pnpm build
+   ```
 
-We are grateful to Vercel for creating and open-sourcing this comprehensive guide.
+3. Validate rule files:
+   ```bash
+   pnpm validate
+   ```
 
-## Installation
+4. Extract test cases:
+   ```bash
+   pnpm extract-tests
+   ```
 
-```bash
-# Install this plugin
-/plugin install react-best-practices@claude-skills
+## Creating a New Rule
 
-# Or install manually
-./scripts/install-skill.sh react-best-practices
+1. Copy `rules/_template.md` to `rules/area-description.md`
+2. Choose the appropriate area prefix:
+   - `async-` for Eliminating Waterfalls (Section 1)
+   - `bundle-` for Bundle Size Optimization (Section 2)
+   - `server-` for Server-Side Performance (Section 3)
+   - `client-` for Client-Side Data Fetching (Section 4)
+   - `rerender-` for Re-render Optimization (Section 5)
+   - `rendering-` for Rendering Performance (Section 6)
+   - `js-` for JavaScript Performance (Section 7)
+   - `advanced-` for Advanced Patterns (Section 8)
+3. Fill in the frontmatter and content
+4. Ensure you have clear examples with explanations
+5. Run `pnpm build` to regenerate AGENTS.md and test-cases.json
+
+## Rule File Structure
+
+Each rule file should follow this structure:
+
+```markdown
+---
+title: Rule Title Here
+impact: MEDIUM
+impactDescription: Optional description
+tags: tag1, tag2, tag3
+---
+
+## Rule Title Here
+
+Brief explanation of the rule and why it matters.
+
+**Incorrect (description of what's wrong):**
+
+```typescript
+// Bad code example
 ```
 
-## Usage Examples
+**Correct (description of what's right):**
 
-### Example 1: Optimize Re-renders
+```typescript
+// Good code example
+```
 
-**Ask**: "How can I prevent unnecessary re-renders in my React component?"
+Optional explanatory text after examples.
 
-**Claude will**:
-- Reference SKILL.md re-render optimization section
-- Suggest memo, useMemo, useCallback patterns
-- Provide code examples from rules/
+Reference: [Link](https://example.com)
 
-### Example 2: Reduce Bundle Size
+## File Naming Convention
 
-**Ask**: "My React bundle is too large, help me reduce it"
+- Files starting with `_` are special (excluded from build)
+- Rule files: `area-description.md` (e.g., `async-parallel.md`)
+- Section is automatically inferred from filename prefix
+- Rules are sorted alphabetically by title within each section
+- IDs (e.g., 1.1, 1.2) are auto-generated during build
 
-**Claude will**:
-- Reference bundle optimization rules
-- Suggest dynamic imports, tree-shaking, direct imports
-- Show examples from rules/bundle-*.md
+## Impact Levels
 
-### Example 3: Fix Hydration Errors
+- `CRITICAL` - Highest priority, major performance gains
+- `HIGH` - Significant performance improvements
+- `MEDIUM-HIGH` - Moderate-high gains
+- `MEDIUM` - Moderate performance improvements
+- `LOW-MEDIUM` - Low-medium gains
+- `LOW` - Incremental improvements
 
-**Ask**: "I'm getting hydration mismatches in Next.js"
+## Scripts
 
-**Claude will**:
-- Reference hydration and server component patterns
-- Explain common causes and solutions
-- Point to specific rules/rendering-hydration-no-flicker.md
+- `pnpm build` - Compile rules into AGENTS.md
+- `pnpm validate` - Validate all rule files
+- `pnpm extract-tests` - Extract test cases for LLM evaluation
+- `pnpm dev` - Build and validate
 
-## Progressive Disclosure
+## Contributing
 
-**SKILL.md** (auto-loaded): Quick reference, rule categories, top errors
-**AGENTS.md** (on request): Full guide with all 57 rules expanded
-**rules/** (on request): Individual rule files for specific topics
+When adding or modifying rules:
 
-Ask Claude to "Load AGENTS.md" for the comprehensive guide.
+1. Use the correct filename prefix for your section
+2. Follow the `_template.md` structure
+3. Include clear bad/good examples with explanations
+4. Add appropriate tags
+5. Run `pnpm build` to regenerate AGENTS.md and test-cases.json
+6. Rules are automatically sorted by title - no need to manage numbers!
 
-## Related Skills
+## Acknowledgments
 
-- `nextjs` - Next.js framework patterns
-- `tanstack-query` - Data fetching optimization
-- `react-hook-form-zod` - Form validation patterns
-- `zustand-state-management` - State management
-- `tailwind-v4-shadcn` - UI component styling
-
-## Support
-
-- **Documentation**: See SKILL.md and AGENTS.md in skills/react-best-practices/
-- **Issues**: https://github.com/secondsky/claude-skills/issues
-- **Original Source**: https://github.com/vercel-labs/agent-skills
+Originally created by [@shuding](https://x.com/shuding) at [Vercel](https://vercel.com).
