@@ -13,8 +13,9 @@ const on = (item, profile) => {
 };
 
 export function initialSelection(catalog, profile = {}, mode = 'saved') {
-  // full: everything but the look of your shell and terminal, which replaces your own files and stays opt-in
-  const look = new Set(['shell_theme', 'fonts', 'terminal_theme']);
+  // full: everything but the look of your shell and terminal (it replaces your own files) and Floorplan (a
+  // third-party plugin with its own agent): those stay opt-in
+  const look = new Set(['shell_theme', 'fonts', 'terminal_theme', 'floorplan']);
   if (mode === 'full') return { clis: values(catalog.clis), components: values(catalog.components.filter((c) => !look.has(c.value) || on(c, profile))), packages: values(catalog.packages) };
   const pick = (xs) => values(xs.filter((x) => (mode === 'recommended' ? x.on : on(x, profile))));
   const exclude = new Set(mode === 'recommended' ? [] : (profile.exclude ?? []).map(String));

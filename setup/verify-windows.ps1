@@ -323,6 +323,28 @@ foreach ($cliPath in @(".claude\skills", ".codex\skills", ".gemini\skills", ".ag
 if ($brokenLinks -eq 0) { OptOk "  no dangling skill links in the CLI skill dirs" }
 else { OptMiss "  $brokenLinks dangling skill link(s) — re-run install-windows.ps1 to prune" }
 
+# ─── 3g. Floorplan (optional — FLOORPLAN=1 in install-windows.ps1; mirrors verify.sh "Floorplan (optional)") ───
+Section "3g. Floorplan (optional — haydenschmitty/floorplan)"
+# keep in sync with install-windows.ps1 $FloorplanSha
+$fpSha = if ($env:FLOORPLAN_SHA) { $env:FLOORPLAN_SHA } else { "94f81b463b7617e06d873ac71323ce71644c8399" }
+$fpDir = Join-Path (Join-Path (Join-Path $HomeDir ".cache") "ai-os") "floorplan"
+if (-not (Get-Command claude -ErrorAction SilentlyContinue)) { OptMiss "  claude not in PATH — skipping floorplan plugin check" }
+else {
+    try { $fpListed = (& claude plugin list 2>$null | Out-String) -match "floorplan@floorplan" } catch { $fpListed = $false }
+    if ($fpListed) {
+        # The pin holds only if the plugin's marketplace is the pinned clone (path matched literally, never as a regex).
+        try { $fpMkt = (& claude plugin marketplace list 2>$null | Out-String) } catch { $fpMkt = "" }
+        if ($fpMkt.IndexOf($fpDir, [StringComparison]::OrdinalIgnoreCase) -ge 0) { OptOk "  Claude Code: floorplan plugin installed from the pinned clone" }
+        else { OptMiss "  Claude Code: floorplan is installed but its marketplace is not the pinned clone — claude plugin marketplace remove floorplan; `$env:FLOORPLAN = '1'; setup\install-windows.ps1" }
+    }
+    else { OptMiss "  floorplan plugin not installed (opt in: `$env:FLOORPLAN = '1'; setup\install-windows.ps1)" }
+}
+if (Test-Path (Join-Path $fpDir ".git")) {
+    try { $fpHead = (& git -C $fpDir rev-parse HEAD 2>$null | Out-String).Trim() } catch { $fpHead = "" }
+    if ($fpHead -eq $fpSha) { OptOk "  floorplan clone at the pinned commit ($($fpSha.Substring(0, 12)))" }
+    else { OptMiss "  floorplan clone at $fpDir is not at the pin $($fpSha.Substring(0, 12)) (HEAD: $fpHead) — re-run install-windows.ps1 with FLOORPLAN=1" }
+} else { OptMiss "  floorplan clone not found at $fpDir (optional)" }
+
 # ─── 4. Superpowers (required = 14) ───
 Section "4. Superpowers skills (REQUIRED = 14)"
 $expected = 14

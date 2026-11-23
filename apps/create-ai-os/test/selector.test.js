@@ -89,6 +89,8 @@ describe('selection', () => {
     assert.equal(sel.packages.length, cat.packages.length);
     assert.deepEqual(sel.components, ['mcp', 'memory', 'ponytail', 'hooks', 'ui_indexer'], 'the shell/terminal look stays opt-in');
     assert.ok(initialSelection(cat, { fonts: true }, 'full').components.includes('fonts'), 'unless install.yaml already has it');
+    assert.ok(!sel.components.includes('floorplan'), 'a third-party plugin stays opt-in');
+    assert.ok(initialSelection(cat, { floorplan: true }, 'full').components.includes('floorplan'), 'unless install.yaml already has it');
   });
 
   test('saved: install.yaml skip/exclude/extras/clis/flags come back as they were written', (t) => {

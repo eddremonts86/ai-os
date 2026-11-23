@@ -1,5 +1,5 @@
 """install-mac.sh honours what the selector writes to install.yaml: exclude: drops packages from the shared lists,
-skip: turns default-on parts off, extras:/ui_indexer: turn opt-ins on, and --full / AIOS_FULL=1 ignores all of it.
+skip: turns default-on parts off, extras:/ui_indexer:/floorplan: turn opt-ins on, and --full / AIOS_FULL=1 ignores skip: and exclude: (floorplan stays opt-in).
 The functions are taken from the script itself, so these tests break if the script stops doing it."""
 
 import os
@@ -28,7 +28,7 @@ class InstallSelectionTests(unittest.TestCase):
         script = (f"LOG_PREFIX=t; {extract}; "
                   f"INSTALL_PROFILE='{self.profile}'; {body}")
         clean = {k: v for k, v in os.environ.items()
-                 if not k.startswith(("SKIP_", "AIOS_")) and k not in ("EXTRAS", "UI_INDEXER")}
+                 if not k.startswith(("SKIP_", "AIOS_")) and k not in ("EXTRAS", "UI_INDEXER", "FLOORPLAN")}
         return subprocess.run(["bash", "-c", script], capture_output=True, text=True, timeout=30,
                               env={**clean, **(env or {})}, check=True).stdout
 
@@ -57,14 +57,14 @@ class InstallSelectionTests(unittest.TestCase):
 
     show = ('load_profile_flags; echo "C=${SKIP_CLAUDE_NATIVE:-} O=${SKIP_OPENCODE:-} M=${SKIP_MEMORY:-} '
             'P=${SKIP_MCP:-} Y=${SKIP_PONYTAIL:-} H=${SKIP_MEMORY_HOOK:-}${SKIP_COMPACT_HOOK:-} '
-            'X=$EXTRAS U=$UI_INDEXER S=$AIOS_SHELL_THEME F=$AIOS_FONTS T=$AIOS_TERMINAL_THEME"')
+            'X=$EXTRAS U=$UI_INDEXER L=$FLOORPLAN S=$AIOS_SHELL_THEME F=$AIOS_FONTS T=$AIOS_TERMINAL_THEME"')
 
     def test_skip_maps_every_part_to_its_switch(self):
         out = self.sh(self.show, "skip: [claude, opencode, memory, mcp, ponytail, hooks]\nextras: true\nui_indexer: true\n")
-        self.assertEqual(out.strip(), "C=1 O=1 M=1 P=1 Y=1 H=11 X=1 U=1 S=0 F=0 T=0")
+        self.assertEqual(out.strip(), "C=1 O=1 M=1 P=1 Y=1 H=11 X=1 U=1 L=0 S=0 F=0 T=0")
 
     def test_without_skip_everything_default_on_stays_on(self):
-        self.assertEqual(self.sh(self.show, "fonts: true\n").strip(), "C= O= M= P= Y= H= X=0 U=0 S=0 F=1 T=0")
+        self.assertEqual(self.sh(self.show, "fonts: true\n").strip(), "C= O= M= P= Y= H= X=0 U=0 L=0 S=0 F=1 T=0")
 
     def test_an_env_var_wins_over_skip(self):
         out = self.sh(self.show, "skip: [memory]\n", {"SKIP_MEMORY": "0"})
@@ -72,15 +72,22 @@ class InstallSelectionTests(unittest.TestCase):
 
     def test_full_turns_extras_and_ui_indexer_on_ignores_skip_and_leaves_the_look_opt_in(self):
         out = self.sh(self.show, "skip: [memory, mcp]\n", {"AIOS_FULL": "1"})
-        self.assertEqual(out.strip(), "C= O= M= P= Y= H= X=1 U=1 S=0 F=0 T=0")
+        self.assertEqual(out.strip(), "C= O= M= P= Y= H= X=1 U=1 L=0 S=0 F=0 T=0")
         out = self.sh(self.show, "shell_theme: true\n", {"AIOS_FULL": "1"})
         self.assertIn("S=1", out)
+
+    def test_floorplan_is_opt_in_even_under_full_and_an_env_var_or_profile_turns_it_on(self):
+        self.assertIn("L=0", self.sh(self.show, "", {"AIOS_FULL": "1"}))
+        self.assertIn("L=1", self.sh(self.show, "floorplan: true\n"))
+        # the script records the environment's FLOORPLAN in _ENV_FLOORPLAN before the first profile read
+        self.assertIn("L=1", self.sh("_ENV_FLOORPLAN=1; " + self.show, ""))
+        self.assertIn("L=1", self.sh(self.show, "floorplan: true\n", {"AIOS_FULL": "1"}))
 
     def test_a_second_read_once_yq_is_there_applies_the_opt_ins(self):
         # first read on a new Mac: no yq on PATH, every flag reads as 0; then yq arrives and the script reads again
         body = "PATH=/nonexistent load_profile_flags; " + self.show
-        out = self.sh(body, "extras: true\nui_indexer: true\nshell_theme: true\nskip: [memory]\n")
-        self.assertEqual(out.strip(), "C= O= M=1 P= Y= H= X=1 U=1 S=1 F=0 T=0")
+        out = self.sh(body, "extras: true\nui_indexer: true\nfloorplan: true\nshell_theme: true\nskip: [memory]\n")
+        self.assertEqual(out.strip(), "C= O= M=1 P= Y= H= X=1 U=1 L=1 S=1 F=0 T=0")
 
     def test_an_unknown_skip_entry_is_reported(self):
         out = self.sh(self.show + " 2>&1", "skip: [memroy]\n")

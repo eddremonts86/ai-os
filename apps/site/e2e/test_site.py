@@ -124,12 +124,17 @@ class SiteE2E(unittest.TestCase):
                 tabs.nth(index).click()
                 self.assertIn(COMMAND, self.install_panel(page))
 
-    def test_hero_terminal_types_the_install_command(self):
+    def test_hero_demo_types_the_command_and_ends_ready(self):
         with self.visit() as page:
+            demo = page.locator("#top figure")
+            self.assertIn(f"{STATS['skills_linked']} skills", demo.get_attribute("aria-label"))
             page.wait_for_function(
-                "text => document.querySelector('#top pre code').textContent.includes(text)", arg=f"$ {COMMAND}", timeout=8000
+                "text => document.querySelector('#top figure .ss-term__cmd')?.textContent === text", arg=COMMAND, timeout=8000
             )
-            self.assertIn(f"{STATS['skills_linked']} skills", page.locator("#top pre").inner_text())
+            page.wait_for_function(
+                "() => document.querySelector('#top figure .ai-badge')?.dataset.tone === 'success'", timeout=12000
+            )
+            self.assertIn(str(STATS["skills_linked"]), demo.inner_text())
 
     def test_install_counts_run_up_to_the_published_values(self):
         with self.visit() as page:

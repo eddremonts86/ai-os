@@ -41,6 +41,8 @@ export class FakeIntersectionObserver {
     this.targets.clear()
   }
   trigger(isIntersecting: boolean) {
+    // A real observer never reports an empty batch (a disconnected one is silent)
+    if (!this.targets.size) return
     this.callback([...this.targets].map((target) => ({ target, isIntersecting })), this)
   }
 }

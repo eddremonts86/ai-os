@@ -18,6 +18,10 @@
 #   $env:AIOS_SHELL_THEME = "1" → replace your PowerShell profile with AI-OS's (yours kept as *.pre-aios.bak).
 #                                 Default: keep your profile and add a marked block that dot-sources AI-OS's.
 #   $env:AIOS_FONTS = "1"      → show the Nerd Font install hint
+#   $env:FLOORPLAN = "1"       → also install Floorplan (github.com/haydenschmitty/floorplan), the interactive
+#                                 codebase map, as a Claude Code / Codex plugin. It reads the commit vetted for AI-OS
+#                                 ($env:FLOORPLAN_SHA) from ~\.cache\ai-os\floorplan, never the default branch, and is
+#                                 opt-in even under --full: its Ask bar runs `claude -p` under your own permission rules.
 #   $env:ASSUME_YES = "1"      → skip the preflight confirmation prompt
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 #
@@ -50,12 +54,13 @@ $Manifest = Join-Path $AIOSRoot "ai-config\manifest.yaml"
 $AdapterTemplate = Join-Path $AIOSRoot "ai-config\templates\global-bridge.md.tmpl"
 $LogPrefix = "[ai-os install]"
 
-# Per-person install profile (git-ignored): `shell_theme: true` / `fonts: true` turn the opt-ins on unless the
+# Per-person install profile (git-ignored): `shell_theme: true` / `fonts: true` / `floorplan: true` turn the opt-ins on unless the
 # AIOS_* env var is already set. Needs yq, like the manifest; without it the defaults (off) stay.
 $InstallProfile = if ($env:AIOS_INSTALL_PROFILE) { $env:AIOS_INSTALL_PROFILE } else { Join-Path $AIOSRoot "context\personal\machine\install.yaml" }
 # skip: (memory, mcp, ponytail, hooks) turns default-on parts off and exclude: drops packages from the shared
-# Chocolatey list; --full / AIOS_FULL=1 ignores both and turns every opt-in on.
-# The shell profile and font stay opt-in under --full too (the theme replaces your own profile).
+# Chocolatey list; --full / AIOS_FULL=1 ignores both.
+# The shell profile, font and Floorplan stay opt-in under --full too (the theme replaces your own profile;
+# Floorplan is a third-party plugin with its own Ask agent).
 $ExcludedPackages = @()
 if ((Test-Path $InstallProfile) -and -not (Get-Command yq -ErrorAction SilentlyContinue)) {
     # yq normally arrives with the Chocolatey packages in step 1, too late to read install.yaml.
@@ -69,7 +74,7 @@ if ((Test-Path $InstallProfile) -and -not (Get-Command yq -ErrorAction SilentlyC
     }
 }
 if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
-    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"))) {
+    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"), @("FLOORPLAN", "floorplan"))) {
         if (-not [Environment]::GetEnvironmentVariable($pair[0])) {
             $value = (yq -r ".$($pair[1]) // false" $InstallProfile 2>$null)
             if ($value -eq "true") { [Environment]::SetEnvironmentVariable($pair[0], "1") }
@@ -147,6 +152,11 @@ function New-FileLink([string]$LinkPath, [string]$TargetPath) {
     }
 }
 
+# ─── Floorplan pin (read by the preflight manifest and step 7f) ───
+# The commit security-reviewed for AI-OS (v0.11.0). A newer version is a new review, then a new SHA here.
+# keep in sync with install-mac.sh FLOORPLAN_SHA and verify-windows.ps1.
+$FloorplanSha = if ($env:FLOORPLAN_SHA) { $env:FLOORPLAN_SHA } else { "94f81b463b7617e06d873ac71323ce71644c8399" }
+
 # ─── Chocolatey package list (single source: manifest + section 1) ───
 $ChocoPackages = @(
     "git", "gh", "nodejs", "python311", "uv", "pwsh", "fzf", "ripgrep",
@@ -166,6 +176,7 @@ function Show-Manifest {
     Write-Host "  🧠 AI skills symlinked into every CLI"
     Write-Host "  🔌 MCP servers → ~/.hermes/config.yaml"
     Write-Host "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+    if ($env:FLOORPLAN -eq "1") { Write-Host "  🗺  Floorplan plugin (codebase map), pinned to $($FloorplanSha.Substring(0, 12))" }
     Write-Host "  🐚 PowerShell profile + dotfile symlinks"
     Write-Host "  📁 Instruction adapters for Claude, Codex, Gemini, Hermes, Antigravity"
     Write-Host "  🧩 VS Code (GitHub Copilot Chat) global instructions"
@@ -235,16 +246,15 @@ Write-Host ""
 if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue)) {
     Log "1. Installing Chocolatey packages (may take 5-15 min)..."
 
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    if (-not $isAdmin) { Warn "not running as Administrator: Chocolatey cannot install packages (re-run from an elevated PowerShell)" }
+    $chocoFailed = @(); $needReboot = $false
     foreach ($pkg in $ChocoPackages) {
-        try {
-            choco install -y $pkg --no-progress 2>&1 | Out-Null
-            Ok "  $pkg"
-        }
-        catch {
-            Warn "  $pkg failed: $_"
-        }
+        choco install -y $pkg --no-progress 2>&1 | Out-Null
+        if ($LASTEXITCODE -in 0, 1641, 3010) { Ok "  $pkg"; if ($LASTEXITCODE) { $needReboot = $true } } else { $chocoFailed += $pkg; Warn "  $pkg failed (choco exit $LASTEXITCODE)" }
     }
-    Ok "Chocolatey packages installed"
+    if ($needReboot) { Warn "a package asked for a reboot (choco exit 1641/3010): restart Windows, then re-run this script" }
+    if ($chocoFailed.Count) { Warn "Chocolatey: $($chocoFailed.Count) package(s) failed: $($chocoFailed -join ', ')" } else { Ok "Chocolatey packages installed" }
 }
 else {
     Log "1. SKIP_CHOCO=1, skipping chocolatey"
@@ -278,7 +288,8 @@ if (-not $env:SKIP_DOTFILES) {
         # customization at all. Wire both.
         $profileTargets = @(
             $PROFILE.CurrentUserAllHosts,
-            (Join-Path $HomeDir "Documents\WindowsPowerShell\profile.ps1")
+            # MyDocuments, not $HOME\Documents: OneDrive/folder redirection moves it, and PS 5.1 follows it.
+            (Join-Path ([Environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\profile.ps1")
         ) | Select-Object -Unique
         foreach ($profilePath in $profileTargets) {
             $profileDir = Split-Path -Parent $profilePath
@@ -1065,6 +1076,84 @@ if (-not $env:SKIP_COMPACT_HOOK) {
     }
 }
 else { Log "7e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook" }
+Write-Host ""
+
+# ─── 7f. Floorplan (optional: $env:FLOORPLAN = "1") ───
+# Mirrors setup/install-mac.sh section 9g. haydenschmitty/floorplan: an interactive plain-English map of a
+# codebase, drawn by Claude or Codex. Reviewed at $FloorplanSha (no hooks, MCP servers or dependencies;
+# local-only server). The plugin is read from a clone checked out at that commit and registered as a folder
+# marketplace, so a later upstream change never reaches the machine until the pin moves. Its only outbound
+# request is an opt-in waitlist form: ~\.floorplan\settings.json is seeded with "never" so the card does not ask.
+if ($env:FLOORPLAN -eq "1") {
+    Log "7f. Floorplan $($FloorplanSha.Substring(0, 12)) — haydenschmitty/floorplan..."
+    # Native stderr must not turn into a terminating error here: this step never blocks the install.
+    $prevEap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+    try {
+        $fpDir = Join-Path (Join-Path (Join-Path $HomeDir ".cache") "ai-os") "floorplan"
+        $fpOk = $false
+        New-Item -ItemType Directory -Path (Split-Path -Parent $fpDir) -Force | Out-Null
+        if (-not (Test-Path (Join-Path $fpDir ".git"))) {
+            Remove-Item $fpDir -Recurse -Force -ErrorAction SilentlyContinue
+            $fpRepo = if ($env:FLOORPLAN_REPO) { $env:FLOORPLAN_REPO } else { "https://github.com/haydenschmitty/floorplan.git" }
+            & git clone --quiet $fpRepo $fpDir 2>&1 | Select-Object -Last 2 | ForEach-Object { Log "    $_" }
+        }
+        if (Test-Path (Join-Path $fpDir ".git")) {
+            & git -C $fpDir cat-file -e "$FloorplanSha^{commit}" 2>$null
+            if ($LASTEXITCODE -ne 0) { & git -C $fpDir fetch --quiet --tags 2>$null }
+            & git -C $fpDir checkout -q $FloorplanSha 2>$null
+            if ((& git -C $fpDir rev-parse HEAD 2>$null) -eq $FloorplanSha) {
+                Ok "  floorplan source: $fpDir @ $($FloorplanSha.Substring(0, 12))"
+                $fpOk = $true
+            }
+        }
+        if (-not $fpOk) { Warn "  floorplan: could not check out $FloorplanSha — skipping (no network, or the pin moved)" }
+        else {
+            $fpCfgDir = Join-Path $HomeDir ".floorplan"
+            New-Item -ItemType Directory -Path $fpCfgDir -Force | Out-Null
+            $fpCfg = Join-Path $fpCfgDir "settings.json"
+            # BOM-less UTF-8: Windows PowerShell 5.1's Set-Content -Encoding utf8 adds a BOM, which JSON.parse rejects.
+            if (-not (Test-Path $fpCfg)) { [IO.File]::WriteAllText($fpCfg, '{"cloud":{"status":"never"}}' + "`n", (New-Object Text.UTF8Encoding($false))) }
+            if (Get-Command claude -ErrorAction SilentlyContinue) {
+                # The pin holds only if the `floorplan` marketplace is OUR clone: one added earlier from GitHub would
+                # install the default branch under the same name. Warn and leave it alone rather than replace it silently.
+                # The entry line is "<marker> floorplan" (the marker is a glyph that a legacy console codepage may garble,
+                # so it is matched as any non-space token); the path is matched literally, case-insensitively.
+                $fpList = (& claude plugin marketplace list 2>$null | Out-String)
+                if (($fpList -match '(?m)^\s*\S+\s+floorplan\s*$') -and $fpList.IndexOf($fpDir, [StringComparison]::OrdinalIgnoreCase) -lt 0) {
+                    Warn "  Claude Code: a 'floorplan' marketplace from another source exists, so the pin is not enforced — run 'claude plugin marketplace remove floorplan' and re-run"
+                } else {
+                    & claude plugin marketplace add $fpDir 2>&1 | Out-Null
+                    if ((& claude plugin list 2>$null | Out-String) -match "floorplan@floorplan") {
+                        & claude plugin update floorplan@floorplan 2>&1 | Out-Null   # picks up a moved pin; best-effort
+                        Ok "  Claude Code: floorplan plugin installed (pinned clone)"
+                    } else {
+                        $fpOut = (& claude plugin install floorplan@floorplan 2>&1 | Out-String)
+                        if ($LASTEXITCODE -eq 0) { Ok '  Claude Code: floorplan installed (ask: "Make me a floorplan of this app")' }
+                        else { Warn "  Claude Code: floorplan install failed:"; ($fpOut -split "`r?`n" | Where-Object { $_ } | Select-Object -Last 3) | ForEach-Object { Write-Host "      $_" } }
+                    }
+                }
+            } else { Log "  Claude Code not found — skipping its plugin" }
+            if (Get-Command codex -ErrorAction SilentlyContinue) {
+                # Codex copies the marketplace into its own folder: compare the release fingerprint with the pinned clone's.
+                & codex plugin marketplace add $fpDir 2>&1 | Out-Null
+                $fpRoot = @(& codex plugin marketplace list 2>$null | ForEach-Object {
+                    $cols = $_.ToString().Trim() -split '\s+'
+                    if ($cols.Count -ge 2 -and $cols[0] -eq "floorplan") { $cols[1] }
+                }) | Select-Object -First 1
+                if ($fpRoot -and ((Get-FileHash (Join-Path $fpRoot "CHECKSUMS.txt") -ErrorAction SilentlyContinue).Hash -ne (Get-FileHash (Join-Path $fpDir "CHECKSUMS.txt") -ErrorAction SilentlyContinue).Hash)) {
+                    Warn "  Codex: its 'floorplan' marketplace is not the pinned clone, so the pin is not enforced — run 'codex plugin marketplace remove floorplan' and re-run"
+                }
+                elseif (@(& codex plugin list 2>$null | Where-Object { $_ -match "(?i)floorplan@" -and $_ -match "(?i)installed" }).Count -gt 0) { Ok "  Codex: floorplan plugin installed (pinned clone)" }
+                else {
+                    $fpOut = (& codex plugin add floorplan@floorplan 2>&1 | Out-String)
+                    if ($LASTEXITCODE -eq 0) { Ok '  Codex: floorplan installed (type $floorplan)' }
+                    else { Warn "  Codex: floorplan install failed:"; ($fpOut -split "`r?`n" | Where-Object { $_ } | Select-Object -Last 3) | ForEach-Object { Write-Host "      $_" } }
+                }
+            }
+        }
+    } catch { Warn "  floorplan: step failed ($($_.Exception.Message)) — never blocks the install" }
+    finally { $ErrorActionPreference = $prevEap }
+} else { Log "7f. Floorplan not installed (opt in with `$env:FLOORPLAN = '1')" }
 Write-Host ""
 
 # ─── 8. Terminal ───

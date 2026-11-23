@@ -31,7 +31,7 @@ PY = str(VENV_PY) if VENV_PY.exists() else sys.executable
 INSTALL_MEMORY = ["bash", "setup/install-mac.sh"]
 INSTALL_MEMORY_ENV = {"ASSUME_YES": "1", "SKIP_BREW": "1", "SKIP_NPM": "1", "SKIP_PIP": "1", "SKIP_OPENCODE": "1",
                       "AIOS_TERMINAL_THEME": "0", "AIOS_FONTS": "0", "SKIP_CLAUDE_NATIVE": "1", "SKIP_VERIFY": "1", "SKIP_PONYTAIL": "1",
-                      "SKIP_COMPACT_HOOK": "1", "SKIP_MEMORY_HOOK": "1"}
+                      "SKIP_COMPACT_HOOK": "1", "SKIP_MEMORY_HOOK": "1", "FLOORPLAN": "0"}
 VSCODE_MCP = HOME / "Library/Application Support/Code/User/mcp.json"
 SYNC_MCP = [[PY, "setup/sync-ide-mcp-servers.py", "ai-config/mcp", "--claude", str(HOME / ".claude.json"),
              "--codex", str(HOME / ".codex/config.toml"), "--gemini", str(HOME / ".gemini/settings.json")]

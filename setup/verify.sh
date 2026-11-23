@@ -652,6 +652,31 @@ else
   opt_miss "  not installed (UI_INDEXER=1 bash setup/install-mac.sh); aios-ui-* skills fall back to npx shadcn search"
 fi
 
+# ─── 5f. Floorplan (optional: FLOORPLAN=1 in install-mac.sh) ───
+section "5f. Floorplan (optional, codebase map plugin pinned to a reviewed commit)"
+FLOORPLAN_DIR="$HOME_DIR/.cache/ai-os/floorplan"
+FLOORPLAN_PIN="$(sed -n 's/^FLOORPLAN_SHA="\${FLOORPLAN_SHA:-\([0-9a-f]*\)}"/\1/p' "$SCRIPT_DIR/install-mac.sh" | head -1)"
+if [ -d "$FLOORPLAN_DIR/.git" ]; then
+  fp_head="$(git -C "$FLOORPLAN_DIR" rev-parse HEAD 2>/dev/null || true)"
+  if [ -n "$FLOORPLAN_PIN" ] && [ "$fp_head" = "$FLOORPLAN_PIN" ]; then
+    opt_ok "  source at the reviewed commit ${fp_head:0:12}"
+  else
+    opt_miss "  source is at ${fp_head:0:12}, the reviewed commit is ${FLOORPLAN_PIN:0:12} — re-run: FLOORPLAN=1 bash setup/install-mac.sh"
+  fi
+  fp_list="$(claude plugin marketplace list 2>/dev/null || true)"
+  if command -v claude >/dev/null 2>&1 && claude plugin list 2>/dev/null | grep -q "floorplan@floorplan"; then
+    if printf '%s\n' "$fp_list" | grep -qF "$FLOORPLAN_DIR"; then
+      opt_ok "  Claude Code: floorplan plugin installed from the pinned clone"
+    else
+      opt_miss "  Claude Code: floorplan is installed but its marketplace is not the pinned clone — claude plugin marketplace remove floorplan; FLOORPLAN=1 bash setup/install-mac.sh"
+    fi
+  else
+    opt_miss "  Claude Code: floorplan plugin not installed (FLOORPLAN=1 bash setup/install-mac.sh)"
+  fi
+else
+  opt_miss "  not installed (FLOORPLAN=1 bash setup/install-mac.sh); optional"
+fi
+
 # ─── 5d. Curated ECC DAILY agents (Claude Code only, best-effort) ───
 section "5d. ECC DAILY agents (Claude Code)"
 ECC_DAILY_AGENTS=(typescript-reviewer vue-reviewer build-error-resolver)

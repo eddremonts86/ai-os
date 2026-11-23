@@ -1,10 +1,10 @@
 {
-  "skills_linked": 198,
-  "skills_flat": 181,
+  "skills_linked": 199,
+  "skills_flat": 182,
   "skills_gstack": 3,
   "skills_ecc": 14,
   "superpowers": 14,
-  "skills_curated": 184,
+  "skills_curated": 185,
   "mcp_enabled": 8,
   "mcp_total": 12,
   "commands": 8,
@@ -14,5 +14,5 @@
   "brew_total": 55,
   "npm_globals": 0,
   "pip_packages": 30,
-  "verify_sections": 21
+  "verify_sections": 22
 }
