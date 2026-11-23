@@ -38,8 +38,9 @@ class PinIsTheSameEverywhere(unittest.TestCase):
         # verify.sh does not carry the SHA: it reads it from install-mac.sh with this sed
         sed = re.search(r"FLOORPLAN_PIN=\"\$\(sed -n '([^']+)' ", (SETUP / "verify.sh").read_text(encoding="utf-8"))
         self.assertIsNotNone(sed)
-        out = subprocess.run(["sed", "-n", sed.group(1), str(SETUP / "install-mac.sh")], capture_output=True, text=True).stdout.strip()
-        self.assertEqual(out, found["install-mac.sh"])
+        if os.name != "nt":  # verify.sh runs on macOS/Linux; Windows runners ship a different sed
+            out = subprocess.run(["sed", "-n", sed.group(1), str(SETUP / "install-mac.sh")], capture_output=True, text=True).stdout.strip()
+            self.assertEqual(out, found["install-mac.sh"])
 
     def test_windows_wires_the_same_flag_and_is_opt_in_under_full(self):
         win = (SETUP / "install-windows.ps1").read_text(encoding="utf-8-sig")
