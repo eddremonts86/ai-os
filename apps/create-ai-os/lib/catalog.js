@@ -19,6 +19,7 @@ export const COMPONENTS = [
   { value: 'ponytail', label: 'Ponytail ruleset', kind: 'skip', on: true },
   { value: 'hooks', label: 'Session hooks', hint: 'memory recall + strategic-compact', kind: 'skip', on: true },
   { value: 'ui_indexer', label: 'ui-indexador', hint: 'shadcn registry index', kind: 'flag', on: false, mac: true },
+  { value: 'floorplan', label: 'Floorplan', hint: 'codebase map plugin, pinned to a reviewed commit', kind: 'flag', on: false },
   { value: 'shell_theme', label: 'Shell theme', hint: 'replaces your shell profile, yours kept as .pre-aios.bak', kind: 'flag', on: false },
   { value: 'fonts', label: 'Nerd Font', kind: 'flag', on: false },
   { value: 'terminal_theme', label: 'Terminal theme', hint: 'Terminal.app + Warp', kind: 'flag', on: false, mac: true },

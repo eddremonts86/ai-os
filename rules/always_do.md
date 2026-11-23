@@ -261,6 +261,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Make it look premium, distinctive, not templated (anti-slop) | `taste-skill` |
     | The user names Hallmark (or one of the commands above built on it) | `hallmark` (explicit only) |
     | Audit an existing app's UI/UX across every route, prioritised findings | `saas-review` |
+    | A product demo or faux app UI for a landing page (hero, feature card, bento), still or animated with a cursor | `stageshow` |
     | Polish details: component feel, animation decisions | `emil-design-eng` |
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
     | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |

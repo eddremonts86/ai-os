@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@/test/render'
+import { act, fireEvent, render, screen, waitFor } from '@/test/render'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAiOsPackage } from '@/test/repo'
 import App from '../App'
@@ -70,14 +70,12 @@ describe('App hero', () => {
     expect(screen.getByText(new RegExp(`${stats.skills_linked} skills and ${stats.mcp_enabled} MCP servers across six AI CLIs`))).toBeTruthy()
   })
 
-  it('lists the install log with the same counts', () => {
+  it('describes the install demo with the published skills count', async () => {
     const { container } = render(<App />)
-    const log = container.querySelector('pre')!.textContent!
-    expect(log).toContain(`✓ ${stats.brew_core} brew packages`)
-    expect(log).toContain(`✓ ${stats.skills_linked} skills`)
-    expect(log).toContain(`✓ ${stats.agents} agents`)
-    expect(log).toContain(`✓ ${stats.mcp_enabled} MCP servers generated`)
-    expect(log).toContain('ready.')
+    const demo = container.querySelector('#top figure')!
+    expect(demo.getAttribute('aria-label')).toContain(`${stats.skills_linked} skills`)
+    // The demo is lazy-loaded: its card arrives after the first render
+    await waitFor(() => expect(demo.textContent).toContain(`${stats.skills_linked}skills`))
   })
 
   it('shows the bootstrap command that matches the published package', () => {

@@ -161,8 +161,8 @@ class RenderTests(unittest.TestCase):
             self.assertEqual(ra.main(["--home", str(home)]), 0)
             self.assertEqual(ra.main(["--home", str(home), "--check"]), 0)
         n = len(ra.load_agents())
-        self.assertIn(f"{n} agent(s) → claude; {n} change(s)", out.getvalue())
-        self.assertIn(f"{n} agent(s) → claude; 0 change(s)", out.getvalue())
+        self.assertIn(f"{n} agent(s) -> claude; {n} change(s)", out.getvalue())
+        self.assertIn(f"{n} agent(s) -> claude; 0 change(s)", out.getvalue())
         (home / ".claude/agents/docs-writer.md").unlink()
         out = io.StringIO()
         with contextlib.redirect_stdout(out):

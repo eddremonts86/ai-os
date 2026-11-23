@@ -43,7 +43,8 @@ In short (the full list and every opt-in are in the README's "Install" section):
 2. Adds one marked block to your own `~/.zshrc` and `~/.ssh/config` (or links them when you have none), and seeds
    `~/.gitconfig` from a template only if you have none; Oh My Zsh + Powerlevel10k
    (`AIOS_SHELL_THEME=1`), the Nerd Font (`AIOS_FONTS=1`) and the Warp/Terminal.app restyle
-   (`AIOS_TERMINAL_THEME=1`) are opt-in.
+   (`AIOS_TERMINAL_THEME=1`) are opt-in, and so is the Floorplan codebase-map plugin (`FLOORPLAN=1`, pinned to a
+   reviewed commit; `--full` does not turn it on).
 3. Links the skills into every CLI and checks the 14 required superpowers skills (links any that are missing).
 4. Writes the agents from `ai-config/agents/` into Claude Code, Codex, Gemini CLI and opencode.
 5. Generates the MCP config for Hermes, Claude Code, Codex, Gemini and VS Code from `ai-config/mcp/*.yaml`.

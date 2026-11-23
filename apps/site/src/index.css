@@ -1,3 +1,7 @@
+/* Cascade layers, lowest first: the Stageshow kit (src/stageshow) sits above Tailwind's preflight,
+   so its parts keep their padding, and below components and utilities. */
+@layer theme, base, stageshow, components, utilities;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
