@@ -39,7 +39,7 @@ component library and proven registry items first, and reach for this skill only
   user's explicit request and only pinned (`web@0.js`, `web@0.css`).
 - `references/web-components.md`: the two CDN tags pinned to `web@0.js` and `web@0.css` (both checked to
   resolve), with a notice.
-- `references/agent-ready.md`, `references/testing.md`: `allow: () => true` annotated as a test mock, never app code.
+- `references/agent-ready.md`, `references/testing.md`: `allow: () => true` annotated: a test mock, or `registerTools` only when the bridge's own `allow` already asks the person.
 - `SKILL.md`: the `@layer ui-sdk;` bullet made conditional on importing `web.css` (checked: behaviors alone emit no layer).
 - `references/ai-os-notes.md`: new, AI-OS's own. The search before building and what "proven" means, decisions and
   doc gaps found on beta.16, and a stepper built and driven in a browser as a worked example.

@@ -63,7 +63,7 @@ export { agent }
 
 - `agent.snapshot()` lists the components, their state and their `actions`. `agent.act({ steps })` runs steps in order. `agent.query({ text, within, kind })` finds components and list items.
 - **Your own model:** `agentTools` has the three tools' names, descriptions and JSON Schemas. Route each tool call to the matching method on `agent` and return its result.
-- **A browser agent (WebMCP):** `const unregister = registerTools(agent, { allow })`. It does nothing in a browser without `document.modelContext`. `allow` is required here, since you didn't write that agent. Ask the person in one place: when the bridge's own `allow` already asks, as above, pass `allow: () => true` here, or every marked step asks twice.
+- **A browser agent (WebMCP):** `const unregister = registerTools(agent, { allow })`. It does nothing in a browser without `document.modelContext`. `allow` is required here, since you didn't write that agent. Ask the person in one place: when the bridge's own `allow` already asks, as above, pass `allow: () => true` here, or every marked step asks twice. (AI-OS, Apache-2.0 §4: only in that case, when `createAgent`'s own `allow` really asks the person for every marked step; never otherwise.)
 - `allow` returns `true`, `false`, or a `Promise<boolean>` for your own confirmation UI. (AI-OS, Apache-2.0 §4: it never returns a constant `true` in app code; that approves every step for the agent.) Without it, steps on `data-agent-confirm` fail with "Needs a person".
 - In Next.js and other server rendering setups, create the bridge in client code only, like a `"use client"` module imported by a client component.
 

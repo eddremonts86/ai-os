@@ -28,7 +28,8 @@ description: "Build UI from ui-sdk behaviors (React, Vue, Svelte, Solid, web com
 - **No remote code by default.** Install the npm package. A CDN `<script>` only when the user asks for a page
   with no build step, and then a pinned URL (`https://ui-sdk.dev/web@0.js`), never the moving `web.js`.
 - **Agent approvals stay.** `data-agent-confirm`, `-secret` and `-hidden` stay on delete, pay and send. An
-  `allow` callback that returns `true` belongs in a test mock only, never in app code.
+  `allow` callback that returns `true` belongs in a test mock, or in `registerTools` only when `createAgent`'s own
+  `allow` already asks the person for every marked step; nowhere else.
 - **The project's own rules win** where they differ: comment style and test requirements follow the repo
   (`rules/always_do.md`), not the two bullets below on comments and tests.
 

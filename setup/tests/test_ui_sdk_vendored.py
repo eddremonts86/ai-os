@@ -18,11 +18,11 @@ class VendoredUiSdkTests(unittest.TestCase):
                 # the moving URLs may be named in prose that forbids them, never loaded from a tag
                 self.assertNotRegex(path.read_text(encoding="utf-8"), r"(?:src|href)=\"" + re.escape(url), path.name)
 
-    def test_a_constant_allow_is_only_ever_marked_as_a_test_mock(self):
+    def test_a_constant_allow_is_only_ever_marked_as_a_mock_or_a_double_ask(self):
         for path in SKILL.rglob("*.md"):
             for line in path.read_text(encoding="utf-8").splitlines():
                 if "allow: () => true" in line:
-                    self.assertRegex(line, r"test mock|never in app code|annotated", f"{path.name}: {line.strip()}")
+                    self.assertRegex(line, r"test mock|never in app code|annotated|only in that case", f"{path.name}: {line.strip()}")
 
     def test_the_licence_the_provenance_and_the_limits_are_there(self):
         self.assertIn("Apache License", text("LICENSE"))
