@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** in-progress (approved 2026-11-23; blocks 1-2 done)
+- **Status:** in-progress (approved 2026-11-23; blocks 1-3 done)
 - **Blocks:** 4
 - **Review:** cold read by a fresh reviewer on 2026-11-23, 6 majors, all addressed
 - **Author:** Claude (session design-systems-forms)
@@ -175,12 +175,19 @@ error summary.
 
 ### Block 3: proof on the Ledger project (estimated: 60 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] A subagent builds the "New invoice" form and the recipes page by following the skill as written and
+- [x] A subagent builds the "New invoice" form and the recipes page by following the skill as written and
       reports every place the text was unclear or wrong.
-- [ ] **Verify:** build and type-check pass; the behaviour in the third acceptance criterion is exercised in
+- [x] **Verify:** build and type-check pass; the behaviour in the third acceptance criterion is exercised in
       a real browser; audit, axe and `/aios-ui-verify` results recorded; the four screenshots looked at.
+- Result: on Ledger the `react-hook-form` path worked as written; the form passes `tsc`, build, axe in four
+  states, `audit-forms.mjs`, `/aios-ui-verify` 12/12 and `tokens.py check`; `tokens.py scan` gained no literal
+  and no arbitrary value. The run found 27 friction points: the `@tanstack/react-form` timing recipe was wrong,
+  five recipes (amount message, textarea, radio, select, error summary) compiled but misbehaved on Base UI,
+  and the rules lacked focus handling, cross-field and summary guidance. All folded back into the skill.
+  Not done: `a11y-auditor` was replaced by axe plus a scripted keyboard pass; `/aios-ui-verify` ran on the dev
+  server; Chrome only; radio and switch hit areas stay 32px on a phone.
 
 ### Block 4: fold back, review, commit (estimated: 30 min)
 
