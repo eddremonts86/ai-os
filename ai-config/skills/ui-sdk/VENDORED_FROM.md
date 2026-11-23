@@ -40,6 +40,12 @@ component library and proven registry items first, and reach for this skill only
 - `references/web-components.md`: the two CDN tags pinned to `web@0.js` and `web@0.css` (both checked to
   resolve), with a notice.
 - `references/agent-ready.md`, `references/testing.md`: `allow: () => true` annotated as a test mock, never app code.
+- `SKILL.md`: the `@layer ui-sdk;` bullet made conditional on importing `web.css` (checked: behaviors alone emit no layer).
+- `references/ai-os-notes.md`: new, AI-OS's own. The search before building and what "proven" means, decisions and
+  doc gaps found on beta.16, and a stepper built and driven in a browser as a worked example.
+
+`pnpm add @ui-sdk/core` prints "Agent skills awaiting approval": the npm package ships its own, unmodified copy of
+this skill (with the CDN text and the constant `allow`). Do not approve it; this vendored copy is the vetted one.
 
 Refresh by re-copying upstream `packages/core/skills/ui-sdk/`, re-applying the edits above, and updating the
 commit, version and hash. Re-vet it first.

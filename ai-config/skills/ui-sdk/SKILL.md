@@ -8,11 +8,14 @@ description: "Build UI from ui-sdk behaviors (React, Vue, Svelte, Solid, web com
 > **Modified by AI-OS** (Apache-2.0 §4): description trimmed to AI-OS's 350-character cap and the upstream text
 > quoted below; this notice and the "AI-OS limits" section added; the no-bundler CDN instruction (below and in
 > `references/web-components.md`) changed; `allow: () => true` annotated in `references/agent-ready.md` and
-> `references/testing.md`. See `VENDORED_FROM.md`.
+> `references/testing.md`; the `@layer` bullet below made conditional; `references/ai-os-notes.md` added. See
+> `VENDORED_FROM.md`.
 > Upstream description: Builds interfaces with ui-sdk in React, Vue, Svelte, Solid or web components. Covers choosing and composing its components, building a component or behavior it doesn't ship from @ui-sdk/core (like a stepper, splitter, transfer list or emoji picker), making the interface usable by agents through createAgent, agent tools and WebMCP, and testing keyboard, focus, ARIA, server rendering and right to left, including writing tests for an existing component. Use whenever a project has @ui-sdk/* installed or the user mentions ui-sdk.
 
 ## AI-OS limits
 
+- **Read [references/ai-os-notes.md](references/ai-os-notes.md)** before building: the search that must come first, what
+  "proven" means, doc gaps found on beta.16, and a tested stepper.
 - **Components before behaviors.** Use the project's own component library and a proven registry item first
   (shadcn components, ui-indexador; `rules/always_do.md` rule 27). This skill is for the part no component
   covers (path 2 below) and for making a UI operable by agents (`createAgent`). Never hand-write keyboard,
@@ -65,7 +68,7 @@ Every path ends the same way:
 - **Default or controlled.** `defaultValue` to start, or `value` with `onValueChange(value, details)` to control it (each framework's idiom: `v-model` in Vue, `bind:value` in Svelte, properties and events in web components). `details` has `reason`, `source` and `cancel()`.
 - **Name every control.** Use the component's label part (`FieldLabel`, `SelectLabel`, `DialogTitle`), or `aria-label` when there's no visible text. People using screen readers and agents both find controls by name.
 - **Style from state.** Target `data-slot` and state attributes like `data-open` or `data-pressed`, and the CSS variables each component lists. Never inline styles for state, and never generated ids. When the app uses `web.css`, read [references/styles.md](references/styles.md) first: it draws icons and sets sizes you can't see in the markup.
-- **Declare the ui-sdk layer.** Put `@layer ui-sdk;` at the top of the global stylesheet, above `@import "tailwindcss"` if there is one.
+- **Declare the ui-sdk layer** (only when you import `web.css`; behaviors alone emit no layer). Put `@layer ui-sdk;` at the top of the global stylesheet, above `@import "tailwindcss"` if there is one.
 - **Check color.** Text needs 4.5:1 against what's behind it, and control edges, focus rings and state fills 3:1. jsdom can't see color, so check it in a real browser.
 - **Key lists by value or id**, never by index.
 - **Right to left needs no provider.** Components read the direction from the page.

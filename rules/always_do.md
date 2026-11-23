@@ -289,7 +289,9 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     **Components before code.** Take each UI piece in this order: the project's own component library and its
     wrappers; a proven registry item (ui-indexador, shadcn registries); and only when none of them has the piece,
     build it from behaviors with `ui-sdk` (`@ui-sdk/core`), never from a bare `div` with hand-written keyboard,
-    focus and `role=` handling. The built piece is styled with the project's tokens like any other.
+    focus and `role=` handling. A registry item is "proven" only with a permissive licence, readable source that
+    maps onto the project's tokens, and the keyboard and ARIA behaviour the piece needs; record the search. The
+    built piece is styled with the project's tokens like any other (`ai-config/skills/ui-sdk/references/ai-os-notes.md`).
 
 ## At session end
 
