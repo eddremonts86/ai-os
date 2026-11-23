@@ -1,18 +1,18 @@
 # Current Spec
 
-# `/aios-ui-system`: create or extract a design system (core)
+# `/aios-ui-system-*`: create, extract and check a design system (core)
 
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** draft
+- **Status:** approved (2026-11-23, with three explicit commands instead of one)
 - **Blocks:** 6
 - **Author:** Claude (session design-systems-forms)
 - **Reviewer:** Eduardo
 
 ## Objective
 
-Add one command, `/aios-ui-system`, that gives any project a complete shadcn-based design system, created from
+Add three commands, `/aios-ui-system-create`, `/aios-ui-system-extract` and `/aios-ui-system-check`, that give any project a complete shadcn-based design system, created from
 a brief or extracted from what the app already has, written in one canonical `DESIGN.md` format.
 
 ## Context
@@ -41,14 +41,22 @@ form-building skill on shadcn `Field`, plus a `## Forms` section) each get their
 
 ## Design
 
-### Command
+### Commands
 
-`/aios-ui-system <create "<brief>" | extract [<dir>] | check [<dir>]>`, explicit invocation only
-(`disable-model-invocation: true`), in `ai-config/skills/aios-ui-system/`.
+Three explicit commands, one skill each, explicit invocation only (`disable-model-invocation: true`):
+
+| Command | Skill directory |
+| --- | --- |
+| `/aios-ui-system-create "<brief>"` | `ai-config/skills/aios-ui-system-create/` |
+| `/aios-ui-system-extract [<dir>]` | `ai-config/skills/aios-ui-system-extract/` |
+| `/aios-ui-system-check [<dir>]` | `ai-config/skills/aios-ui-system-check/` |
+
+`aios-ui-system-check` owns what the three share, `scripts/tokens.py` and `references/design-md.md`; the other
+two reach them by path, the way the `aios-ui-*` commands already share `aios-ui-verify/scripts/hallmark.sh`.
 
 For this command a project **has a system** when a `DESIGN.md` exists at its root. A `components.json` or a
 default shadcn token block alone does not count (rule 27 uses a wider definition for enforcement; a freshly
-scaffolded shadcn project must still be able to run `create`).
+scaffolded shadcn project must still be able to run `/aios-ui-system-create`).
 
 ### The contract (what `create` and `extract` both leave in the project)
 
@@ -69,7 +77,7 @@ scaffolded shadcn project must still be able to run `create`).
 
 ### Canonical `DESIGN.md`
 
-`ai-config/skills/aios-ui-system/references/design-md.md` owns the template. It is the Google DESIGN.md shape
+`ai-config/skills/aios-ui-system-check/references/design-md.md` owns the template. It is the Google DESIGN.md shape
 impeccable already reads and writes (frontmatter `name, description, colors, typography, rounded, spacing,
 components`; sections Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and
 Don'ts), with two AI-OS sections appended:
@@ -89,10 +97,10 @@ Hallmark treats any root `DESIGN.md` as a locked system and may append its `## E
 accepted: `check` ignores sections it does not own.
 
 In a project that has a `components.json`, this is the only format written. `/aios-ui-themes lock` there
-runs `/aios-ui-system extract` (the theme's tokens are already applied, so extracting is what locks them).
-`/aios-ui-design` step 1 runs `/aios-ui-system extract` for an existing codebase without a `DESIGN.md`, and
-its step 2 ends with `/aios-ui-system extract` instead of `lock`. `/aios-ui-design` step 2 keeps owning the
-three-directions mechanics; `/aios-ui-system create` reuses them and never calls back into `/aios-ui-design`.
+runs `/aios-ui-system-extract` (the theme's tokens are already applied, so extracting is what locks them).
+`/aios-ui-design` step 1 runs `/aios-ui-system-extract` for an existing codebase without a `DESIGN.md`, and
+its step 2 ends with `/aios-ui-system-extract` instead of `lock`. `/aios-ui-design` step 2 keeps owning the
+three-directions mechanics; `/aios-ui-system-create` reuses them and never calls back into `/aios-ui-design`.
 Hallmark's own format stays for Hallmark's standalone pages (no `components.json`). Vendored `hallmark/` and
 `impeccable/` are not edited.
 
@@ -115,10 +123,10 @@ Shared rules: the stylesheet is the `tailwind.css` path in `components.json`, el
 more than once, the last declaration of a variable wins. The frontmatter `colors:` block is parsed by hand
 (flat `key: "value"` lines), since the standard library has no YAML reader.
 
-### `create "<brief>"`
+### `/aios-ui-system-create "<brief>"`
 
 1. `ai-os scope which`: a scope or brand system wins on its own surfaces. If the project has a system (a root
-   `DESIGN.md`), stop and offer `check`; if it has code but no `DESIGN.md`, say that `extract` keeps what is
+   `DESIGN.md`), stop and offer `/aios-ui-system-check`; if it has code but no `DESIGN.md`, say that `/aios-ui-system-extract` keeps what is
    there and ask which the user wants.
 2. References: ui-indexador `design_notes`, `list_captures`, `search_themes`/`get_theme` when it is enabled;
    otherwise shadcn's own theme presets. Sources are named to the user.
@@ -129,7 +137,7 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 6. Write `DESIGN.md`, build the specimen page, run `tokens.py check` and `/aios-ui-verify`, send screenshots
    (light and dark, desktop and mobile).
 
-### `extract [<dir>]`
+### `/aios-ui-system-extract [<dir>]`
 
 1. `tokens.py scan` for the inventory; `impeccable document` scan order for components and prose.
 2. If the project's own dev server is running (localhost), sample computed styles of `body`, headings, links,
@@ -144,29 +152,30 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 ### Wiring
 
-- `rules/always_do.md`: rule 26 table row; rule 27 names `/aios-ui-system create` as the start when no system
+- `rules/always_do.md`: three rule 26 table rows; rule 27 names `/aios-ui-system-create` as the start when no system
   exists and states the customisation order in one sentence.
 - `ai-config/skills/aios-ui-themes/SKILL.md`: `lock` hands over when `components.json` exists; fix its
   `references/design-md.md` pointer (the file is in `hallmark/references/`).
-- `ai-config/skills/aios-ui-design/SKILL.md`: step 1 and step 2 point at `/aios-ui-system`.
+- `ai-config/skills/aios-ui-design/SKILL.md`: step 1 and step 2 point at `/aios-ui-system-extract`.
 - `README.md` (chooser and command table), `docs/skills-catalog.md`, `setup/skills-routing-bank.json`, then
   `python3 setup/ai-os-stats.py --write`.
 
 ## Acceptance criteria
 
-- [ ] `ai-config/skills/aios-ui-system/SKILL.md` exists with a top-level layout, description at most 350
-      characters; `ai-os-skills.py lint --strict` exits 0 and the new routing-bank request lands in the top 3.
+- [ ] The three skill directories each have a top-level `SKILL.md` with a description of at most 350
+      characters; `ai-os-skills.py lint --strict` exits 0 with no near-duplicate warning among the three, and
+      one routing-bank request per command lands in the top 3.
 - [ ] `setup/tests/test_aios_ui_system.py` passes and covers: `scan` on a fixture project; `contrast` against
       the ratios published in `context/global/06_brand.md`, computed from its **hex** column (ink 18.26,
       muted 8.01, acid 14.47, and `faint` 4.27 failing 4.5:1); the OKLCH conversion pinned separately to that
       table's oklch-to-hex pairs within 1/255 per channel; `check` failing on a missing variable, a failing
       pair and a `DESIGN.md` mismatch.
-- [ ] `extract` on `apps/site` (read-only, output in the scratchpad) produces an inventory, including
+- [ ] `/aios-ui-system-extract` on `apps/site` (read-only, output in the scratchpad) produces an inventory, including
       computed styles sampled from its dev server, and a `DESIGN.md` that passes
       `check --stylesheet apps/site/src/index.css --design <scratch>/DESIGN.md` or lists only real findings.
-- [ ] `create` on a scratch Vite + shadcn project produces the token block in both modes, `DESIGN.md` and the
+- [ ] `/aios-ui-system-create` on a scratch Vite + shadcn project produces the token block in both modes, `DESIGN.md` and the
       specimen page; `tokens.py check` exits 0; `/aios-ui-verify` passes; four screenshots are sent.
-- [ ] A test asserts that `aios-ui-themes` and `aios-ui-design` name `/aios-ui-system` for `components.json`
+- [ ] A test asserts that `aios-ui-themes` and `aios-ui-design` name `/aios-ui-system-extract` for `components.json`
       projects, so a second format cannot come back unnoticed.
 - [ ] `ai-os-stats.py --check` passes, and after the work is committed `setup/hooks/pre-push` passes when fed
       the commit on stdin without pushing (with no stdin it checks nothing and exits 0).
@@ -188,17 +197,17 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 **Status:** not started
 
 - [ ] Write `setup/tests/test_aios_ui_system.py` first (fixtures in a temp dir), see it fail.
-- [ ] Implement `scan`, `contrast`, `check` in `ai-config/skills/aios-ui-system/scripts/tokens.py`.
+- [ ] Implement `scan`, `contrast`, `check` in `ai-config/skills/aios-ui-system-check/scripts/tokens.py`.
 - [ ] **Verify:** the test file passes; `contrast` reproduces the `06_brand.md` ratios to two decimals from
       the hex values, and the OKLCH conversion matches the table's hex within 1/255 per channel.
 
-### Block 2: template and skill (estimated: 45 min)
+### Block 2: template and three skills (estimated: 45 min)
 
 **Status:** not started
 
 - [ ] Write `references/design-md.md` (canonical template, both appended sections).
-- [ ] Write `SKILL.md` with `create`, `extract`, `check` as designed above.
-- [ ] **Verify:** `ai-os-skills.py lint --strict` exits 0; the skill is found by the installer's glob.
+- [ ] Write the three `SKILL.md` files as designed above.
+- [ ] **Verify:** `ai-os-skills.py lint --strict` exits 0; the three skills are found by the installer's glob.
 
 ### Block 3: wiring (estimated: 30 min)
 
@@ -210,13 +219,13 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
       with the installed Chrome as commit `a56ec1760` did.
 - [ ] Commit blocks 1 to 3 here, so block 4 starts from a clean tree.
 - [ ] **Verify:** full `setup/tests` suite passes with PyYAML; `ai-os-stats.py --check` passes; bank stays
-      above 70 % with the new request in the top 3.
+      above 70 % with the three new requests in the top 3.
 
 ### Block 4: proof on an existing app (estimated: 20 min)
 
 **Status:** not started
 
-- [ ] Run `extract` on `apps/site` with its dev server up and output in the scratchpad.
+- [ ] Run `/aios-ui-system-extract` on `apps/site` with its dev server up and output in the scratchpad.
 - [ ] **Verify:** inventory lists the variables in `apps/site/src/index.css` and the sampled computed styles;
       `check --stylesheet apps/site/src/index.css --design <scratch>/DESIGN.md` passes or lists real
       findings; `git status` shows no change under `apps/site`.
@@ -225,7 +234,7 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 **Status:** not started
 
-- [ ] Scaffold a Vite + shadcn project in the scratchpad and run `create` with a written brief.
+- [ ] Scaffold a Vite + shadcn project in the scratchpad and run `/aios-ui-system-create` with a written brief.
 - [ ] **Verify:** `tokens.py check` exits 0; `/aios-ui-verify` passes; the four screenshots were looked at
       and sent to the user.
 
@@ -245,15 +254,15 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 | This becomes a third `DESIGN.md` format instead of the one | med | high | It is a superset of the shape impeccable already reads; themes and design hand over in `components.json` projects; a test guards the hand-over |
 | Hallmark's pre-flight misreads the canonical file | low | med | Hallmark only treats the file as a locked system; `## System` carries its four lines when a Hallmark theme was used; an appended `## Exports` is accepted |
 | OKLCH to sRGB conversion is wrong and contrast results lie | med | high | The conversion is pinned to the oklch-to-hex pairs in `06_brand.md`, separately from the ratio test |
-| `extract` maps a value to the wrong role | med | med | Nothing is written before the mapping table is approved |
-| ui-indexador is not enabled on the machine | med | low | `create` falls back to shadcn's presets; block 5 says which path it used |
-| One more always-loaded skill description | high | low | Explicit invocation only; description within the 350-character target |
+| `/aios-ui-system-extract` maps a value to the wrong role | med | med | Nothing is written before the mapping table is approved |
+| ui-indexador is not enabled on the machine | med | low | `/aios-ui-system-create` falls back to shadcn's presets; block 5 says which path it used |
+| Three more always-loaded skill descriptions | high | low | Explicit invocation only; description within the 350-character target |
 
 ## Verification (end-to-end)
 
-- [ ] From a clean scratch project, `/aios-ui-system create "<brief>"` ends with a passing `check`, a passing
+- [ ] From a clean scratch project, `/aios-ui-system-create "<brief>"` ends with a passing `check`, a passing
       `/aios-ui-verify` and screenshots.
-- [ ] On `apps/site`, `/aios-ui-system extract` reproduces the tokens the stylesheet already has.
+- [ ] On `apps/site`, `/aios-ui-system-extract` reproduces the tokens the stylesheet already has.
 - [ ] All acceptance criteria met; pre-push hook passes locally.
 
 ## References
