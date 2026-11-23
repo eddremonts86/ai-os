@@ -36,7 +36,7 @@ Every form in every project is built the same way: the rules in `references/form
    answer, a maximum width, one primary action last.
 5. **Fields.** Per `field-recipes.md`: every control inside a `Field`; a prefix, suffix, icon or button through
    `InputGroup`; `id` (`<form>-<field>`), `name`, `type`,
-   `autocomplete` and, on text-like inputs, `inputmode` set; `aria-invalid` and
+   `autocomplete`, `required` (or `aria-required` on a group) and, on text-like inputs, `inputmode` set; `aria-invalid` and
    `aria-describedby` wired to `FieldError` and `FieldDescription`.
 6. **States.** Each control: default, hover, focus, disabled, invalid. The form: idle, submitting (button says
    so and cannot fire twice), failed (field errors, one form-level message for the rest, values kept),
@@ -46,7 +46,8 @@ Every form in every project is built the same way: the rules in `references/form
    - In a real browser: type a wrong value and leave the field (the error appears), fix it (the error goes
      while typing), submit with an empty required field (focus lands on the first invalid field), submit
      twice quickly (one request).
-   - `node "$AI_OS_ROOT/ai-config/skills/optimizing-forms/audit-forms.mjs"` per that skill: no finding. A
+   - From the project root, `node "$AI_OS_ROOT/ai-config/skills/optimizing-forms/audit-forms.mjs"` per that
+     skill: no finding. A
      finding on a layout grid that is not a field row, or on a select placeholder that is labelled a few
      lines up, is dismissed with the reason written down.
    - `python3 "$AI_OS_ROOT/ai-config/skills/aios-ui-system-check/scripts/tokens.py" scan <dir>` before and

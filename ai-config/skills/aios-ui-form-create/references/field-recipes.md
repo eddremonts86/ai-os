@@ -9,7 +9,15 @@ Radix or React Aria project the `Field` parts are the same, but check each contr
 Every control goes inside a `Field`. The legacy form wrapper (`components/ui/form`) is not used.
 
 **Id convention:** every control's `id` is `<form>-<field name>` (`invoice-email`), so labels, `aria-describedby`
-and the error summary's links all find it.
+and the error summary's links all find it. A group (radio buttons) puts that id on the group.
+
+**Imports:** a snippet that uses `Button`, `Textarea`, `Checkbox`, `RadioGroup`, `RadioGroupItem`, `Select*`,
+`Switch` imports it from the matching `@/components/ui/<name>` file, as `Input` and `Button` are imported in the
+first example.
+
+**Required fields:** a required control also carries `required` (the form is `noValidate`, so the browser shows
+no bubbles of its own) or, for a group, `aria-required` on the group, so a screen reader hears what the visual
+mark says.
 
 ## Schema first
 
@@ -65,6 +73,7 @@ export function InvoiceForm({ onSave }: { onSave: (values: Invoice) => Promise<v
                 type="email"
                 autoComplete="email"
                 inputMode="email"
+                required
                 aria-invalid={fieldState.invalid}
                 aria-describedby={fieldState.invalid ? "invoice-email-help invoice-email-error" : "invoice-email-help"}
               />
@@ -110,6 +119,7 @@ The blur error would otherwise stay until the next blur, so one `onChange` valid
 import { useForm } from "@tanstack/react-form"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const form = useForm({
   defaultValues: { email: "" },
@@ -134,6 +144,7 @@ const form = useForm({
             type="email"
             autoComplete="email"
             inputMode="email"
+            required
             value={field.state.value}
             onBlur={() => { field.handleBlur(); void field.validate("change") }}
             onChange={(e) => field.handleChange(e.target.value)}
@@ -164,6 +175,7 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGr
     {...field}
     id="invoice-amount"
     inputMode="decimal"
+    required
     className="text-right tabular-nums"
     aria-invalid={fieldState.invalid}
     aria-describedby={fieldState.invalid ? "invoice-amount-error" : undefined}
@@ -223,10 +235,12 @@ validated only on submit.
 <FieldSet data-invalid={fieldState.invalid}>
   <FieldLegend variant="label">Payment terms</FieldLegend>
   <RadioGroup
+    id="invoice-terms"
     name={field.name}
     value={field.value}
     onValueChange={field.onChange}
     onBlur={field.onBlur}
+    aria-required
     aria-invalid={fieldState.invalid}
     aria-describedby={fieldState.invalid ? "invoice-terms-error" : undefined}
   >

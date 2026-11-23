@@ -58,6 +58,13 @@ class FormSkillTests(unittest.TestCase):
         self.assertIn("\n## Forms\n", template)
         self.assertLess(template.index("\n## Variants and patterns\n"), template.index("\n## Forms\n"))
 
+    def test_every_path_the_skill_names_exists(self):
+        text = read(FORM / "SKILL.md")
+        paths = re.findall(r"(?:ai-config/skills/)?((?:optimizing-forms|aios-ui-system-check)/[\w./-]+\.(?:mjs|py|md))", text)
+        self.assertGreaterEqual(len(paths), 2)
+        for rel in paths:
+            self.assertTrue((SKILLS / rel).is_file(), rel)
+
     def test_the_other_form_skills_name_the_command(self):
         for skill in ("optimizing-forms", "pick-ui-library", "shadcn-patterns"):
             self.assertIn("/aios-ui-form-create", read(SKILLS / skill / "SKILL.md"), skill)

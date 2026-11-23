@@ -276,7 +276,8 @@ function Dashboard() {
 
 ## Forms
 
-See `react-hook-form-zod` (installed skill) — preferred pattern.
+Build forms with `/aios-ui-form-create` (shadcn `Field`, react-hook-form or TanStack Form, zod). `react-hook-form-zod`
+holds version-specific API notes only; its `FormField` examples are the legacy wrapper.
 
 ## Testing (Vitest + React Testing Library)
 

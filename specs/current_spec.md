@@ -5,11 +5,11 @@
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** in-progress (approved 2026-11-23; blocks 1-3 done)
+- **Status:** completed (approved 2026-11-23; all four blocks done, nothing pushed)
 - **Blocks:** 4
 - **Review:** cold read by a fresh reviewer on 2026-11-23, 6 majors, all addressed
 - **Author:** Claude (session design-systems-forms)
-- **Reviewer:** Eduardo
+- **Reviewer:** Edd
 
 ## Objective
 
@@ -125,22 +125,22 @@ error summary.
 
 ## Acceptance criteria
 
-- [ ] `ai-config/skills/aios-ui-form-create/SKILL.md` exists, description at most 350 characters;
+- [x] `ai-config/skills/aios-ui-form-create/SKILL.md` exists, description at most 350 characters;
       `ai-os-skills.py lint --strict` exits 0 and a routing-bank request for it lands in the top 3.
-- [ ] `setup/tests/test_aios_ui_form.py` passes and asserts: neither recipe file nor `shadcn-patterns` uses
+- [x] `setup/tests/test_aios_ui_form.py` passes and asserts: neither recipe file nor `shadcn-patterns` uses
       `<FormField`, `<FormItem` or `FormMessage`; every component name the recipes import from
       `@/components/ui/field` and `@/components/ui/input-group` is in the list of exports recorded in the test;
       the canonical template has `## Forms`; `optimizing-forms` and `pick-ui-library` name the command.
-- [ ] In the scratch "Ledger" project from piece 1, a subagent that follows the skill as written builds a
+- [x] In the scratch "Ledger" project from piece 1, a subagent that follows the skill as written builds a
       "New invoice" form (client, email, issue and due date, amount with currency, VAT number, notes, a
       send-me-a-copy checkbox). It type-checks and builds; validation fires on blur and clears on change;
       submitting with errors focuses the first invalid field. `tokens.py scan` is recorded before and after:
       `literals` and `tailwind.palette` stay empty and `tailwind.arbitrary` gains no entry.
-- [ ] A recipes page in the same project renders every recipe in `field-recipes.md`, including the
+- [x] A recipes page in the same project renders every recipe in `field-recipes.md`, including the
       `@tanstack/react-form` variant, and builds without type errors.
-- [ ] On that form: `audit-forms.mjs` reports no finding (it runs the rules that apply to the project's stack), axe reports no violation, `/aios-ui-verify` passes,
+- [x] On that form: `audit-forms.mjs` reports no finding (it runs the rules that apply to the project's stack), axe reports no violation, `/aios-ui-verify` passes,
       and four screenshots (empty, errors, filled, phone) were looked at and sent.
-- [ ] The full `setup/tests` suite passes with PyYAML, `ai-os-stats.py --check` passes, and the pre-push hook
+- [x] The full `setup/tests` suite passes with PyYAML, `ai-os-stats.py --check` passes, and the pre-push hook
       fed the commit on stdin (no push) passes.
 
 ## Non-goals (explicit)
@@ -191,11 +191,11 @@ error summary.
 
 ### Block 4: fold back, review, commit (estimated: 30 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] Fold the proof's findings into the skill; `aios-reviewer` on the diff; fix what it confirms.
-- [ ] Commit, then feed the pre-push hook the commit on stdin without pushing.
-- [ ] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
+- [x] Fold the proof's findings into the skill; `aios-reviewer` on the diff; fix what it confirms.
+- [x] Commit, then feed the pre-push hook the commit on stdin without pushing.
+- [x] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
 
 ## Risks and mitigation
 
@@ -209,8 +209,8 @@ error summary.
 
 ## Verification (end-to-end)
 
-- [ ] `/aios-ui-form-create` on the Ledger project ends with a working form, clean audits and screenshots.
-- [ ] All acceptance criteria met; pre-push hook passes locally.
+- [x] `/aios-ui-form-create` on the Ledger project ends with a working form, clean audits and screenshots.
+- [x] All acceptance criteria met; pre-push hook passes locally.
 
 ## References
 

@@ -21,7 +21,8 @@ own values (control height, maximum width, how required fields are marked); ever
 - **One primary action, last,** aligned with the fields' left edge. A secondary action sits beside it and looks
   quieter. A destructive action is apart from both.
 - **Mark the minority.** If most fields are required, mark the optional ones with the word "optional" in the
-  label; if most are optional, mark the required ones with "required". No lone asterisk.
+  label; if most are optional, mark the required ones with "required". No lone asterisk. The mark is for
+  eyes; the control also carries `required` or `aria-required`, so the two always agree.
 
 ## Behaviour
 

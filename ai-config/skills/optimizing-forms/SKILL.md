@@ -159,7 +159,7 @@ It detects the stack and self-disables rules it cannot judge for that project �
 
 - **`/aios-ui-form-create`** — builds a new form by the same rules (shadcn `Field`, `references/form-rules.md`).
 - **The host project's own form-construction skill** — mechanics. Verify its claims against source.
-- **`react-hook-form-zod`** — construction for React Hook Form + Zod stacks.
+- **`react-hook-form-zod`** — version-specific API notes for React Hook Form + Zod (not its `FormField` examples: legacy).
 - **`web-design-guidelines`** — broader web interface guideline review.
 - **`fix-ui-ux`** — full-product interface remediation, when forms are one part of a larger pass.
 - **`references/profiles/`** — per-stack specifics; add one when you profile a new stack.
