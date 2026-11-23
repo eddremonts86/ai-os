@@ -235,16 +235,15 @@ Write-Host ""
 if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue)) {
     Log "1. Installing Chocolatey packages (may take 5-15 min)..."
 
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    if (-not $isAdmin) { Warn "not running as Administrator: Chocolatey cannot install packages (re-run from an elevated PowerShell)" }
+    $chocoFailed = @(); $needReboot = $false
     foreach ($pkg in $ChocoPackages) {
-        try {
-            choco install -y $pkg --no-progress 2>&1 | Out-Null
-            Ok "  $pkg"
-        }
-        catch {
-            Warn "  $pkg failed: $_"
-        }
+        choco install -y $pkg --no-progress 2>&1 | Out-Null
+        if ($LASTEXITCODE -in 0, 1641, 3010) { Ok "  $pkg"; if ($LASTEXITCODE) { $needReboot = $true } } else { $chocoFailed += $pkg; Warn "  $pkg failed (choco exit $LASTEXITCODE)" }
     }
-    Ok "Chocolatey packages installed"
+    if ($needReboot) { Warn "a package asked for a reboot (choco exit 1641/3010): restart Windows, then re-run this script" }
+    if ($chocoFailed.Count) { Warn "Chocolatey: $($chocoFailed.Count) package(s) failed: $($chocoFailed -join ', ')" } else { Ok "Chocolatey packages installed" }
 }
 else {
     Log "1. SKIP_CHOCO=1, skipping chocolatey"
@@ -278,7 +277,8 @@ if (-not $env:SKIP_DOTFILES) {
         # customization at all. Wire both.
         $profileTargets = @(
             $PROFILE.CurrentUserAllHosts,
-            (Join-Path $HomeDir "Documents\WindowsPowerShell\profile.ps1")
+            # MyDocuments, not $HOME\Documents: OneDrive/folder redirection moves it, and PS 5.1 follows it.
+            (Join-Path ([Environment]::GetFolderPath("MyDocuments")) "WindowsPowerShell\profile.ps1")
         ) | Select-Object -Unique
         foreach ($profilePath in $profileTargets) {
             $profileDir = Split-Path -Parent $profilePath
