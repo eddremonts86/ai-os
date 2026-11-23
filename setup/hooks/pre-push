@@ -25,6 +25,11 @@ fail() { echo "FAIL"; printf '%s\n' "$1" | sed 's/^/           /' | head -15; fa
 # hook is the push side). Hotfix escape hatch: AIOS_ALLOW_MAIN_PUSH=1 git push ...
 ZERO=0000000000000000000000000000000000000000
 ORIG="$(git rev-parse --show-toplevel)"   # the real checkout: only it has the untracked .env
+# From a linked worktree git runs this hook with GIT_DIR exported. Left set, every `git` below and in
+# the suites this hook starts acts on this clone instead of its own directory: a test's `git init` in
+# a temp dir rewrote the shared .git/config (core.bare = true, a fake user) on 2026-11-23.
+# shellcheck disable=SC2046
+unset $(git rev-parse --local-env-vars)
 sha=""
 base=""
 ranges=()
