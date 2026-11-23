@@ -112,7 +112,9 @@ Hallmark's own format stays for Hallmark's standalone pages (no `components.json
   missing.
 - `contrast <stylesheet>`: WCAG 2.x ratio for every `X` / `X-foreground` pair plus `foreground` on
   `background`, `muted-foreground` on `background` and `card`, in both modes. Reads oklch, hex, rgb and hsl.
-  Text pairs need 4.5:1; `ring` on `background` needs 3:1.
+  Text pairs need 4.5:1; `ring` on `background` needs 3:1. After the block 5 proof: `destructive` on
+  `background` (error text) at 4.5:1 and `input` on `background` (the field's edge) at 3:1 were added, and a
+  `frontmatter <stylesheet>` subcommand that prints the `colors:` block.
 - `check [<dir>] [--stylesheet <css>] [--design <md>]`: every colour variable defined in both modes and every
   single-mode variable defined once, `contrast` passes, `DESIGN.md` frontmatter colours match the stylesheet.
   Exit 1 with one line per failure. The two flags let a `DESIGN.md` in one place be checked against a
@@ -223,20 +225,32 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 ### Block 4: proof on an existing app (estimated: 20 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] Run `/aios-ui-system-extract` on `apps/site` with its dev server up and output in the scratchpad.
-- [ ] **Verify:** inventory lists the variables in `apps/site/src/index.css` and the sampled computed styles;
+- [x] Run `/aios-ui-system-extract` on `apps/site` with its dev server up and output in the scratchpad.
+- [x] **Verify:** inventory lists the variables in `apps/site/src/index.css` and the sampled computed styles;
       `check --stylesheet apps/site/src/index.css --design <scratch>/DESIGN.md` passes or lists real
       findings; `git status` shows no change under `apps/site`.
+- Result: 62 frontmatter colours match `apps/site/src/index.css`; `check` exits 1 with 8 real findings: six
+  single-mode tokens the stylesheet never declares (`--shadow-sm|md|lg`, `--ease-out`, `--duration-fast|base`)
+  and two light-mode pairs left at shadcn's defaults (`--ring` on `--background` 2.58, `--muted-foreground` on
+  `--muted` 4.35). The light block is not a designed mode on that site. Nothing under `apps/site` changed.
 
 ### Block 5: proof from zero (estimated: 60 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] Scaffold a Vite + shadcn project in the scratchpad and run `/aios-ui-system-create` with a written brief.
-- [ ] **Verify:** `tokens.py check` exits 0; `/aios-ui-verify` passes; the four screenshots were looked at
+- [x] Scaffold a Vite + shadcn project in the scratchpad and run `/aios-ui-system-create` with a written brief.
+- [x] **Verify:** `tokens.py check` exits 0; `/aios-ui-verify` passes; the four screenshots were looked at
       and sent to the user.
+- Result: a fresh Vite 8 + Tailwind 4 + shadcn (base-nova) project became the "Ledger" system by a
+  subagent that followed the skill as written. `tokens.py check` exits 0 (26 pairs pass), `scan` finds no
+  colour, radius, shadow or font literal, `/aios-ui-verify` passes 6/6 (375/768/1280, light and dark, axe 0
+  findings) through installed Chrome, and four screenshots were looked at and sent. The run produced 20
+  friction points; those about the three skills were folded back into them (where each token goes under
+  Tailwind v4, the dark-mode switch before verifying, the specimen conventions, two more contrast pairs, a
+  `frontmatter` subcommand). Left for `aios-ui-verify`, outside this Spec: `verify.py` exits 1 with a traceback
+  instead of 2 when Playwright's Chromium is missing and has no option to use installed Chrome.
 
 ### Block 6: review and commit (estimated: 20 min)
 

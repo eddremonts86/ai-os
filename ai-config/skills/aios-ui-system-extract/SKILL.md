@@ -26,12 +26,10 @@ a project that wants a new look uses `/aios-ui-redesign` or `/aios-ui-system-cre
    what you had to derive because the app has no value for it (a dark mode, a missing `-foreground`).
    Write nothing before the user approves the table.
 4. **Write.** Put the token block in the global stylesheet, replacing same-named variables in place, adding
-   the missing ones, leaving every other variable untouched. Write `DESIGN.md` from the template; if one
-   exists, show what would change and ask.
-5. **Specimen page.** One page in the project's own stack: palette in both modes, type scale, radius,
-   shadows, and the button, input and card variants with their states.
-6. **Verify.** `$T check` must exit 0, then `/aios-ui-verify` on the specimen page; look at the screenshots
-   and send them.
+   the missing ones, leaving every other variable untouched (where each kind goes under Tailwind v4 is in
+   `/aios-ui-system-create` step 4). Write `DESIGN.md` from the template, its `colors` block from
+   `$T frontmatter <stylesheet>`; if one exists, show what would change and ask.
+5. **Specimen page** and 6. **Verify**, exactly as `/aios-ui-system-create` steps 7 and 8 describe them.
 7. **Report what is left.** From `$T scan`: how many literals and arbitrary values still sit in the code.
    Moving them onto the tokens is `/aios-ui-improve`, not this command.
 

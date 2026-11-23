@@ -10,10 +10,11 @@ the colours and records the decisions a stylesheet cannot hold.
 - **Never overwrite an existing `DESIGN.md` silently.** Show what would change and ask.
 - **Frontmatter `colors` is a flat map of strings.** The light value sits under the variable's name without the leading
   dashes (`background`), the dark value under `<name>-dark` (`background-dark`). No nesting: readers of
-  this format only see flat entries. Copy the values from the stylesheet as written (OKLCH).
+  this format only see flat entries. Generate the block with `tokens.py frontmatter <stylesheet>`; never retype it.
 - **Every contract colour variable appears twice** (light and dark). `tokens.py check` converts both sides to
   sRGB and fails when a channel differs by more than 2/255.
-- **Omit a section that has nothing true to say.** No invented rules.
+- **Omit a section that has nothing true to say.** No invented rules. The `typography`, `rounded`, `spacing` and
+  `components` entries in the template are examples of the shape: write what the project's components really use.
 - **Sections this format does not own are left alone** (Hallmark may append `## Exports`).
 - Component sub-tokens use only `backgroundColor`, `textColor`, `typography`, `rounded`, `padding`, `size`,
   `height`, `width`, and reference primitives as `{colors.primary}`. Shadows, motion and focus rings are
@@ -90,6 +91,7 @@ error). Motion: `--ease-out`, `--duration-fast`, `--duration-base` and what they
 
 ## Variants and patterns
 <One line per decision, newest last.>
+- token `--<name>`: <why the contract's tokens did not cover it>
 - variant `<component>.<variant>`: <what it is for>
 - pattern `<WrapperComponent>` (`<path>`): <the product pattern it owns>
 ```

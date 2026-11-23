@@ -187,7 +187,9 @@ def contrast(blocks):
     rows = []
     for mode, scope in modes(blocks).items():
         pairs = [("--foreground", "--background", TEXT), ("--muted-foreground", "--background", TEXT),
-                 ("--muted-foreground", "--card", TEXT), ("--ring", "--background", NON_TEXT)]
+                 ("--muted-foreground", "--card", TEXT), ("--ring", "--background", NON_TEXT),
+                 # error text is set in --destructive; --input is the only edge a field has (WCAG 1.4.11)
+                 ("--destructive", "--background", TEXT), ("--input", "--background", NON_TEXT)]
         pairs += [(n, n[:-len("-foreground")], TEXT) for n in scope if n.endswith("-foreground") and n != "--foreground"]
         for fg, bg, need in pairs:
             if fg not in scope or bg not in scope:
@@ -201,6 +203,18 @@ def contrast(blocks):
                 row.update(ok=False, error=str(e))
             rows.append(row)
     return rows
+
+
+def frontmatter(blocks):
+    """The `colors:` block of DESIGN.md, generated so nobody retypes sixty values: light under the name, dark
+    under `<name>-dark`, as written in the stylesheet (a `var()` reference is written as its resolved hex)."""
+    scopes, lines = modes(blocks), ["colors:"]
+    for name in COLOR_VARS:
+        for mode, end in (("light", ""), ("dark", "-dark")):
+            value = scopes.get(mode, {}).get(name)
+            if value:
+                lines.append(f'  {name[2:]}{end}: "{_hex(color(name, scopes[mode])) if "var(" in value else value}"')
+    return "\n".join(lines)
 
 
 def gaps(blocks):
@@ -362,6 +376,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("scan", help="JSON inventory of a project").add_argument("dir")
     sub.add_parser("contrast", help="WCAG ratio of every pair").add_argument("stylesheet")
+    sub.add_parser("frontmatter", help="the DESIGN.md colors block for a stylesheet").add_argument("stylesheet")
     chk = sub.add_parser("check", help="contract, contrast and DESIGN.md colours")
     chk.add_argument("dir", nargs="?", default=".")
     chk.add_argument("--stylesheet")
@@ -372,6 +387,13 @@ def main(argv=None):
             print(f"tokens: not a directory: {a.dir}", file=sys.stderr)
             return 2
         print(json.dumps(scan(a.dir), indent=1))
+        return 0
+    if a.cmd == "frontmatter":
+        try:
+            print(frontmatter(parse_css(Path(a.stylesheet).read_text(encoding="utf-8", errors="replace"))))
+        except (OSError, ValueError) as e:
+            print(f"tokens: {e}", file=sys.stderr)
+            return 2
         return 0
     if a.cmd == "contrast":
         try:

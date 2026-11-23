@@ -41,6 +41,7 @@ def palette(surface, text):
 
 LIGHT = palette("oklch(1 0 0)", "oklch(0.145 0 0)")
 DARK = palette("#0a0a0a", "rgb(250 250 250)")
+LIGHT["destructive"], DARK["destructive"] = "#b91c1c", "#f87171"  # error text must pass on its own background
 
 
 def block(selector, values):
@@ -322,6 +323,21 @@ class CheckTests(Fixtures):
         self.assertEqual(tokens.check(within), [])
         line = self.one_failure(self.system(css, design_md(dark=dict(DARK, **{"chart-1": "#676464"}))))
         self.assertEqual(line, "DESIGN.md colors.chart-1-dark #676464 differs from --chart-1 in the stylesheet #646464")
+
+    def test_error_text_and_the_field_edge_are_checked(self):
+        css = stylesheet(light=dict(LIGHT, destructive="#f87171", input="#e5e5e5"))
+        fails = tokens.check(self.system(css, design_md(light=dict(LIGHT, destructive="#f87171", input="#e5e5e5"))))
+        self.assertEqual([f.split(" is ")[0] for f in fails], ["contrast light: --destructive on --background",
+                                                              "contrast light: --input on --background"])
+
+    def test_frontmatter_is_generated_from_the_stylesheet_and_passes_check(self):
+        css = stylesheet(light=dict(LIGHT, ring="var(--foreground)"))
+        block = tokens.frontmatter(tokens.parse_css(css))
+        self.assertIn('  background: "oklch(1 0 0)"\n  background-dark: "#0a0a0a"', block)
+        resolved = tokens._hex(tokens.parse_color("oklch(0.145 0 0)"))
+        self.assertIn(f'  ring: "{resolved}"', block)  # a var() reference is written resolved
+        self.assertEqual(len(block.splitlines()), 1 + 2 * len(tokens.COLOR_VARS))
+        self.assertEqual(tokens.check(self.system(css, "---\nname: x\n" + block + "\n---\n")), [])
 
     def test_a_contract_colour_missing_from_design_md(self):
         md = "\n".join(l for l in design_md().splitlines() if not l.startswith("  ring-dark:"))
