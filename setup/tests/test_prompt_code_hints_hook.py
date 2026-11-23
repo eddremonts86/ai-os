@@ -26,6 +26,7 @@ J
 """
 
 
+@unittest.skipIf(os.name == "nt", "the grepai stand-in is a shell script")
 class PromptCodeHintsHookTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -90,7 +91,7 @@ class WireMemoryHooksTests(unittest.TestCase):
             settings.parent.mkdir()
             settings.write_text(json.dumps({"model": "x", "hooks": {"UserPromptSubmit": [
                 {"hooks": [{"type": "command", "command": "other"}]}]}}))
-            env = {**os.environ, "HOME": home}
+            env = {**os.environ, "HOME": home, "USERPROFILE": home}
             wire = lambda *a: subprocess.run([sys.executable, str(WIRE), *a], capture_output=True, text=True, env=env)
             self.assertEqual(wire("--check").returncode, 1)
             self.assertEqual(wire().returncode, 0)
