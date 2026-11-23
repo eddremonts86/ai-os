@@ -28,9 +28,14 @@ Only when no item passes, build from behaviors (the upstream "path 2").
 - **Links or buttons.** Steps that change a page in place are buttons with `aria-current="step"`. Use `<a>`
   only when each step is its own URL.
 - **Agent-operable flows and the project's Button.** `agent-ready.md` says a plain `<button>` is invisible to the
-  agent bridge, and a shadcn `Button` (Base UI) was invisible in the snapshot too. Where an agent must press a
-  button (Back, Continue, Send), use ui-sdk's own button part and style it with the project's tokens. Wrapping
-  the project's `Button` through the `render` prop was not tried: test it before relying on it.
+  agent bridge, and a bare shadcn `Button` (Base UI) was invisible in the snapshot too. Wrap the project's own
+  control in ui-sdk's part through `render`, which was built and tested on the Agent Cockpit demo: both appear in
+  `snapshot()` by label, redact secrets and honour `data-agent-confirm`, and keep the project's look.
+
+  ```tsx
+  <SdkButton render={<Button />}>Send invoice</SdkButton>
+  <SdkInput render={<Input />} aria-label="Client email" />
+  ```
 - **The agent test for a component.** A lone component has no interface of its own: the demo page that mounts it
   is the interface the `createAgent` test runs against.
 - **`@layer ui-sdk;`** is needed only when `web.css` is imported. With behaviors only, nothing emits that layer.
@@ -52,6 +57,12 @@ Only when no item passes, build from behaviors (the upstream "path 2").
 - `outline-none` with `focus-visible:outline-2` draws no ring in Tailwind 4 (it sets the outline style to `none`):
   use `outline-solid` and look at the focus screenshot.
 - A `mousedown` on a gated item still focuses it: guard `mousedown` as the example does.
+- While a `data-agent-confirm` approval is pending, every later `query` and `act` on that bridge waits too: in a
+  test, answer the approval first, or the test deadlocks on its own `query`.
+- The agent cannot read text errors. With a shadcn `Field` and react-hook-form it sees a value and whether the
+  step advanced, not the `FieldError`; expose errors through ui-sdk's field parts if an agent has to read them.
+- An item's name is its raw text: `Note` plus `(optional)` with no space between them reads `note(optional)`.
+  Put the space inside the markup, or the optional marker in `sr-only` text with a leading space.
 - Programmatic `.focus()` on an unreachable roving item still lands; Enter and Space do not activate it.
 
 ## Worked example: a stepper

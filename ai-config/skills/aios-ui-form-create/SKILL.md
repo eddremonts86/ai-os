@@ -21,7 +21,8 @@ Every form in every project is built the same way: the rules in `references/form
    `@tanstack/react-form`); with none, add `react-hook-form`, `zod` and `@hookform/resolvers`. Add only the
    shadcn components whose file is absent: `field`, `input-group` and each control the form uses (`checkbox`,
    `select`, `textarea`, `radio-group`, `switch`). Never overwrite an existing component file: answer no to
-   the CLI's overwrite question. Run `tokens.py scan` right after the CLI: every new `tailwind.arbitrary`
+   the CLI's overwrite question (`yes n | pnpm dlx shadcn@latest add <names>`; with `-y` it hangs on the prompt and
+   writes nothing). Run `tokens.py scan` right after the CLI: every new `tailwind.arbitrary`
    entry is the to-do list. Move what was added onto the project's tokens (rule 27: no literal colour or
    length, no `transition-all`) and onto the `DESIGN.md` Shapes and Motion rules too (a system with square
    corners and colour-only transitions does not keep the stock switch's pill and transform).

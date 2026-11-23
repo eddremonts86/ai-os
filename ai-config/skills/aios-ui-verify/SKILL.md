@@ -71,4 +71,6 @@ means the render is greyer than the reference. Capture the render at the referen
 ## Limits
 
 Mechanics only. It does not know whether the design is good, whether copy is right, or what happens after a click.
-For those, `/aios-ui-review`. Interaction flows still need `webapp-testing`.
+For those, `/aios-ui-review`. Interaction flows still need `webapp-testing`. It checks the page as loaded: a screen
+with states (running, waiting for approval, error, success) needs an axe pass per state, written by the caller;
+wait for fade-ins to finish first, or a half-transparent row reports a false contrast failure.

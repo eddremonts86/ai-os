@@ -41,4 +41,5 @@ canonical format in `references/design-md.md`.
 
 Limits: the script reads source, not the built CSS, so it cannot tell that Tailwind inlined a variable away;
 `primary` used as text (a link variant) is not a checked pair; `scan` does not see Tailwind's paren values
-(`gap-(--x)`) and counts a grid template like any other arbitrary value.
+(`gap-(--x)`) and counts a grid template like any other arbitrary value. A grid template has no token equivalent: keep it and note
+`ds-allow: grid template` beside it (rule 27's one exception), or use `col-span` instead.

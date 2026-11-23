@@ -284,7 +284,8 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     report. With no system, an AI-OS surface uses `context/global/06_brand.md` and any other project starts from
     `/aios-ui-system-create` (or `/aios-ui-system-extract` when it already has UI code), so one exists from then on.
     Change a look in this order: a token, then a variant inside the component, then a wrapper component for a
-    product pattern, and `className` from outside only for a true one-off. `aios-ui-verify`'s `antislop.py` checks this;
+    product pattern, and `className` from outside only for a true one-off. A duration the system lacks is a new
+    token with its own reduced-motion value; a fade survives `prefers-reduced-motion`, a travel does not. `aios-ui-verify`'s `antislop.py` checks this;
     a violation is a Floor FAIL.
     **Components before code.** Take each UI piece in this order: the project's own component library and its
     wrappers; a proven registry item (ui-indexador, shadcn registries); and only when none of them has the piece,

@@ -34,6 +34,8 @@ own values (control height, maximum width, how required fields are marked); ever
     `field.validate("change")`; show the error once `field.state.meta.isBlurred` (or a submit was attempted)
     and the field is invalid. An `onBlur` validator alone leaves its error in place until the next blur.
   - A rule across two fields validates the dependent field only once it has been touched.
+  - An agent's write (`setValue` through a ui-sdk bridge) never blurs the field, so under `mode: "onTouched"` its
+  first error would never show: treat an agent's change as the first blur and call `field.onBlur()` after it.
 - **The error** is text under the field in `FieldError`. The control carries `aria-invalid`, the `Field`
   carries `data-invalid`, and the control's `aria-describedby` names the error (and the description). It says
   what to do ("Enter the 8 digits after the country code"), not only what is wrong ("Invalid").
