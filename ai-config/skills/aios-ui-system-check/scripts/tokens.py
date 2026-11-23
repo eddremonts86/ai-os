@@ -249,7 +249,7 @@ def check(root=".", stylesheet=None, design=None):
     sheet = Path(stylesheet) if stylesheet else find_stylesheet(root)
     if not sheet or not sheet.is_file():
         return [f"stylesheet not found: {stylesheet or root}"]
-    blocks = parse_css(sheet.read_text(encoding="utf-8", errors="replace"))
+    blocks = parse_css(sheet.read_text(encoding="utf-8-sig", errors="replace"))
     scopes = modes(blocks)
     fails = [f"missing {gap}" for gap in gaps(blocks)]
     for mode, scope in scopes.items():
@@ -267,7 +267,7 @@ def check(root=".", stylesheet=None, design=None):
     md = Path(design) if design else root / "DESIGN.md"
     if not md.is_file():
         return list(dict.fromkeys([*fails, f"DESIGN.md not found: {md}"]))
-    declared = frontmatter_colors(md.read_text(encoding="utf-8", errors="replace"))
+    declared = frontmatter_colors(md.read_text(encoding="utf-8-sig", errors="replace"))
     if not declared:
         fails.append("DESIGN.md has no frontmatter colors")
     else:  # the file mirrors the whole contract, light and dark, or a reader of it sees half a system
@@ -342,11 +342,11 @@ def scan(root):
     sheet, files = find_stylesheet(root), list(_source_files(root))
     blocks = {}
     for f in [sheet] if sheet else [f for f in files if f.suffix == ".css"]:
-        for selector, props in parse_css(f.read_text(encoding="utf-8", errors="replace")).items():
+        for selector, props in parse_css(f.read_text(encoding="utf-8-sig", errors="replace")).items():
             blocks.setdefault(selector, {}).update(props)
     found = {kind: {} for kind in PATTERNS}
     for f in files:
-        for line in f.read_text(encoding="utf-8", errors="replace").splitlines():
+        for line in f.read_text(encoding="utf-8-sig", errors="replace").splitlines():
             if TOKEN_LINE.match(line):
                 continue
             for kind, pattern in PATTERNS.items():
@@ -390,14 +390,14 @@ def main(argv=None):
         return 0
     if a.cmd == "frontmatter":
         try:
-            print(frontmatter(parse_css(Path(a.stylesheet).read_text(encoding="utf-8", errors="replace"))))
+            print(frontmatter(parse_css(Path(a.stylesheet).read_text(encoding="utf-8-sig", errors="replace"))))
         except (OSError, ValueError) as e:
             print(f"tokens: {e}", file=sys.stderr)
             return 2
         return 0
     if a.cmd == "contrast":
         try:
-            rows = contrast(parse_css(Path(a.stylesheet).read_text(encoding="utf-8", errors="replace")))
+            rows = contrast(parse_css(Path(a.stylesheet).read_text(encoding="utf-8-sig", errors="replace")))
         except OSError as e:
             print(f"tokens: {e}", file=sys.stderr)
             return 2

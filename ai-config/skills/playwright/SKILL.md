@@ -1,6 +1,6 @@
 ---
 name: playwright
-description: Browser automation and E2E testing with Playwright. Auto-detects dev servers, writes clean test scripts. Test pages, fill forms, take screenshots, check responsive design, validate UX, test login flows, check links, automate any browser task. Use for cross-browser testing, visual regression, API testing, component testing in TypeScript/JavaScript and Python projects.
+description: "Browser automation and E2E with Playwright: drive a real browser, fill forms, take screenshots, check responsive layouts and links, visual regression, cross-browser runs. TypeScript/JavaScript and Python."
 allowed-tools: Bash, Read, Edit, Write, Grep, Glob, TodoWrite
 license: MIT
 ---

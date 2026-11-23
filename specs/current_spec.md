@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** in-progress (approved 2026-11-23 with three explicit commands; blocks 1-3 done)
+- **Status:** completed (approved 2026-11-23 with three explicit commands; all six blocks done, nothing pushed)
 - **Blocks:** 6
 - **Author:** Claude (session design-systems-forms)
 - **Reviewer:** Eduardo
@@ -19,7 +19,7 @@ a brief or extracted from what the app already has, written in one canonical `DE
 
 The owner wants every project to share one visual identity, built the way shadcn/ui is meant to be used: you
 own the tokens and the components, and you customise in a fixed order. Five videos were studied (notes:
-`design-systems-forms-study.md` in the session notes folder). The method they agree on:
+kept outside the repository; the method is summarised below). The method they agree on:
 
 1. Semantic tokens first, in OKLCH, in the global stylesheet. Never a literal name such as `--blue`.
 2. A reusable style is a variant inside the component (cva).
@@ -164,22 +164,22 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 ## Acceptance criteria
 
-- [ ] The three skill directories each have a top-level `SKILL.md` with a description of at most 350
+- [x] The three skill directories each have a top-level `SKILL.md` with a description of at most 350
       characters; `ai-os-skills.py lint --strict` exits 0 with no near-duplicate warning among the three, and
       one routing-bank request per command lands in the top 3.
-- [ ] `setup/tests/test_aios_ui_system.py` passes and covers: `scan` on a fixture project; `contrast` against
+- [x] `setup/tests/test_aios_ui_system.py` passes and covers: `scan` on a fixture project; `contrast` against
       the ratios published in `context/global/06_brand.md`, computed from its **hex** column (ink 18.26,
       muted 8.01, acid 14.47, and `faint` 4.27 failing 4.5:1); the OKLCH conversion pinned separately to that
       table's oklch-to-hex pairs within 1/255 per channel; `check` failing on a missing variable, a failing
       pair and a `DESIGN.md` mismatch.
-- [ ] `/aios-ui-system-extract` on `apps/site` (read-only, output in the scratchpad) produces an inventory, including
+- [x] `/aios-ui-system-extract` on `apps/site` (read-only, output in the scratchpad) produces an inventory, including
       computed styles sampled from its dev server, and a `DESIGN.md` that passes
       `check --stylesheet apps/site/src/index.css --design <scratch>/DESIGN.md` or lists only real findings.
-- [ ] `/aios-ui-system-create` on a scratch Vite + shadcn project produces the token block in both modes, `DESIGN.md` and the
+- [x] `/aios-ui-system-create` on a scratch Vite + shadcn project produces the token block in both modes, `DESIGN.md` and the
       specimen page; `tokens.py check` exits 0; `/aios-ui-verify` passes; four screenshots are sent.
-- [ ] A test asserts that `aios-ui-themes` and `aios-ui-design` name `/aios-ui-system-extract` for `components.json`
+- [x] A test asserts that `aios-ui-themes` and `aios-ui-design` name `/aios-ui-system-extract` for `components.json`
       projects, so a second format cannot come back unnoticed.
-- [ ] `ai-os-stats.py --check` passes, and after the work is committed `setup/hooks/pre-push` passes when fed
+- [x] `ai-os-stats.py --check` passes, and after the work is committed `setup/hooks/pre-push` passes when fed
       the commit on stdin without pushing (with no stdin it checks nothing and exits 0).
 
 ## Non-goals (explicit)
@@ -254,12 +254,12 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 ### Block 6: review and commit (estimated: 20 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] `aios-reviewer` agent on the diff; fix what it confirms.
-- [ ] Commit locally, then feed the hook the commit without pushing:
+- [x] `aios-reviewer` agent on the diff; fix what it confirms.
+- [x] Commit locally, then feed the hook the commit without pushing:
       `echo "refs/heads/<branch> $(git rev-parse HEAD) refs/heads/<branch> $(git rev-parse origin/dev)" | bash setup/hooks/pre-push origin <url>`.
-- [ ] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
+- [x] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
 
 ## Risks and mitigation
 
@@ -274,14 +274,13 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 ## Verification (end-to-end)
 
-- [ ] From a clean scratch project, `/aios-ui-system-create "<brief>"` ends with a passing `check`, a passing
+- [x] From a clean scratch project, `/aios-ui-system-create "<brief>"` ends with a passing `check`, a passing
       `/aios-ui-verify` and screenshots.
-- [ ] On `apps/site`, `/aios-ui-system-extract` reproduces the tokens the stylesheet already has.
-- [ ] All acceptance criteria met; pre-push hook passes locally.
+- [x] On `apps/site`, `/aios-ui-system-extract` reproduces the tokens the stylesheet already has.
+- [x] All acceptance criteria met; pre-push hook passes locally.
 
 ## References
 
-- Study notes: `design-systems-forms-study.md` in the session notes folder (videos, inventory, gaps).
 - `rules/always_do.md` rules 26 and 27; `context/global/06_brand.md`.
 - `ai-config/skills/aios-ui-themes/SKILL.md`, `ai-config/skills/aios-ui-design/SKILL.md`.
 - `ai-config/skills/impeccable/reference/document.md`, `ai-config/skills/hallmark/references/design-md.md`,

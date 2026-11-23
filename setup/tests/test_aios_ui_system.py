@@ -304,6 +304,9 @@ class CheckTests(Fixtures):
         self.assertEqual(self.cli("check", root), (1, fails[0] + "\n"))
         return fails[0]
 
+    def test_a_stylesheet_with_a_byte_order_mark_still_has_its_root(self):
+        self.assertEqual(tokens.check(self.system("\ufeff" + stylesheet(), design_md())), [])
+
     def test_a_colour_variable_missing_in_dark(self):
         dark = {k: v for k, v in DARK.items() if k != "chart-3"}
         self.assertEqual(self.one_failure(self.system(stylesheet(dark=dark), design_md(dark=DARK))), "missing --chart-3 in .dark")

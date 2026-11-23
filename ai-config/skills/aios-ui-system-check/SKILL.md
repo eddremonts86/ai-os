@@ -6,7 +6,8 @@ disable-model-invocation: true
 
 # aios-ui-system-check
 
-`T="python3 $AI_OS_ROOT/ai-config/skills/aios-ui-system-check/scripts/tokens.py"` (standard library only, same
+`T="$AI_OS_ROOT/ai-config/skills/aios-ui-system-check/scripts/tokens.py"`, run as `python3 "$T" <cmd>`
+(`python` on Windows) (standard library only, same
 on macOS and Windows). This skill owns what the three `aios-ui-system-*` commands share: that script and the
 canonical format in `references/design-md.md`.
 
@@ -27,16 +28,16 @@ canonical format in `references/design-md.md`.
 
 ## Run
 
-1. `$T check [<dir>]` from the project. It finds the stylesheet through `components.json` (`tailwind.css`),
+1. `python3 "$T" check [<dir>]` from the project. It finds the stylesheet through `components.json` (`tailwind.css`),
    else `src/index.css`, `src/styles/globals.css`, `app/globals.css`, `src/app/globals.css`. To check files in
-   two places: `$T check --stylesheet <css> --design <DESIGN.md>`.
+   two places: `python3 "$T" check --stylesheet <css> --design <DESIGN.md>`.
 2. Report each failure line as it is printed. Do not fix anything: a missing or failing token is fixed in the
    stylesheet by `/aios-ui-system-create` or `/aios-ui-system-extract`, or by hand, then checked again.
 3. For drift in the code that uses the system (literals, arbitrary values, one-off copies of components), run
-   the `design-system-keeper` agent and `/aios-ui-verify`; `$T scan <dir>` gives the counts.
+   the `design-system-keeper` agent and `/aios-ui-verify`; `python3 "$T" scan <dir>` gives the counts.
 
-`$T contrast <stylesheet>` prints every pair's ratio on its own when only that is wanted, and
-`$T frontmatter <stylesheet>` prints the `colors:` block for `DESIGN.md`.
+`python3 "$T" contrast <stylesheet>` prints every pair's ratio on its own when only that is wanted, and
+`python3 "$T" frontmatter <stylesheet>` prints the `colors:` block for `DESIGN.md`.
 
 Limits: the script reads source, not the built CSS, so it cannot tell that Tailwind inlined a variable away;
 `primary` used as text (a link variant) is not a checked pair; `scan` does not see Tailwind's paren values

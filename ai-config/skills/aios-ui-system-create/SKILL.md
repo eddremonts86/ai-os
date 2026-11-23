@@ -6,7 +6,8 @@ disable-model-invocation: true
 
 # aios-ui-system-create
 
-`T="python3 $AI_OS_ROOT/ai-config/skills/aios-ui-system-check/scripts/tokens.py"`. The contract and the
+`T="$AI_OS_ROOT/ai-config/skills/aios-ui-system-check/scripts/tokens.py"`, run as `python3 "$T" <cmd>`
+(`python` on Windows). The contract and the
 `DESIGN.md` format are in `aios-ui-system-check` (`SKILL.md`, `references/design-md.md`): read both first.
 
 shadcn is not a component library to restyle from outside; it is the base of a system the project owns. So
@@ -41,11 +42,11 @@ the look is decided in this order, and each decision is written down:
      `-base`) in `@theme inline` so `duration-fast` exists as a class.
 
    One accent colour, in `--primary` and `--ring`; shadcn's `--accent` is a hover surface and stays neutral.
-   Neutrals share one hue. Then `$T contrast <stylesheet>` and adjust until every pair passes.
+   Neutrals share one hue. Then `python3 "$T" contrast <stylesheet>` and adjust until every pair passes.
 5. **Components.** Use the project's `components.json`, or initialise shadcn per `shadcn-patterns`. Carry the
    direction through tokens first, then variants, then wrappers. Stock components ship arbitrary colour and
    length values and `transition-all`: rewrite those onto tokens (rule 27); grid templates may stay.
-6. **`DESIGN.md`.** Write it from the template. Generate the `colors` block with `$T frontmatter <stylesheet>`,
+6. **`DESIGN.md`.** Write it from the template. Generate the `colors` block with `python3 "$T" frontmatter <stylesheet>`,
    never by retyping. Include `## System` and one line per added token, variant and wrapper in
    `## Variants and patterns`.
 7. **Specimen page.** With a router, the route `/specimen`; without, `src/specimen.tsx` rendered by the app
@@ -53,7 +54,7 @@ the look is decided in this order, and each decision is written down:
    light panel can sit inside the dark page), the type scale, radius, shadows, and the button, input and card
    variants. Default, disabled and invalid states are rendered; hover and focus are triggered when the
    screenshots are taken. No marketing content.
-8. **Verify.** `$T check` must exit 0. Then `/aios-ui-verify` on the specimen page, served from the production
+8. **Verify.** `python3 "$T" check` must exit 0. Then `/aios-ui-verify` on the specimen page, served from the production
    build, with `--slices 4` so the phone shot is readable. Before it runs: make `<html>` follow
    `prefers-color-scheme` (shadcn's dark is the `.dark` class, and without that every "dark" shot is the light
    page), and add `axe-core` as a dev dependency or the accessibility verdict is not checked. Run `antislop.py`
