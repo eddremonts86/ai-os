@@ -1,297 +1,220 @@
 # Current Spec
 
-# `/aios-ui-system-*`: create, extract and check a design system (core)
+# `/aios-ui-form-create`: build forms on the project's design system
 
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** completed (approved 2026-11-23 with three explicit commands; all six blocks done, nothing pushed)
-- **Blocks:** 6
+- **Status:** draft
+- **Blocks:** 4
+- **Review:** cold read by a fresh reviewer on 2026-11-23, 6 majors, all addressed
 - **Author:** Claude (session design-systems-forms)
 - **Reviewer:** Eduardo
 
 ## Objective
 
-Add three commands, `/aios-ui-system-create`, `/aios-ui-system-extract` and `/aios-ui-system-check`, that give any project a complete shadcn-based design system, created from
-a brief or extracted from what the app already has, written in one canonical `DESIGN.md` format.
+Add one command, `/aios-ui-form-create`, that builds a form the same way in every project: on shadcn's `Field`
+components, from the project's tokens, with one written set of layout, validation and error rules.
 
 ## Context
 
-The owner wants every project to share one visual identity, built the way shadcn/ui is meant to be used: you
-own the tokens and the components, and you customise in a fixed order. Five videos were studied (notes:
-kept outside the repository; the method is summarised below). The method they agree on:
+This is piece 3 of the design-system work; piece 1 (`/aios-ui-system-create`, `-extract`, `-check`) is built
+(`archive/2026-11-23-aios-ui-system-core.md`). Piece 2 (sharing a system through a shadcn registry) is still
+to come and does not block this one.
 
-1. Semantic tokens first, in OKLCH, in the global stylesheet. Never a literal name such as `--blue`.
-2. A reusable style is a variant inside the component (cva).
-3. A product-specific pattern is a wrapper component.
-4. `className` from outside only for a true one-off.
+AI-OS can audit a form but not build one consistently:
 
-AI-OS has the pieces but not the flow. `/aios-ui-themes` deals Hallmark's editorial themes; `impeccable
-document` scans a codebase; rule 27 and `design-system-keeper` enforce a system once it exists. Nothing produces
-a complete shadcn variable set (light and dark, radius, type, shadow, motion), nothing maps an existing app's de
-facto values onto shadcn names, and nothing checks contrast across a whole system.
+- `optimizing-forms` audits and repairs, and says building belongs to "the project's form-construction skill".
+- `react-hook-form-zod` is linked since commit `a56ec1760`, but it is third-party, pins old versions and calls
+  shadcn's `Field` "coming soon".
+- `shadcn-patterns` still teaches the legacy `<Form>` / `FormField` wrapper. No skill covers shadcn's `Field`
+  family, which the current CLI installs (`Field`, `FieldGroup`, `FieldSet`, `FieldLegend`, `FieldLabel`,
+  `FieldDescription`, `FieldError`, `FieldContent`, `FieldSeparator`, `FieldTitle`; `InputGroup` with
+  `InputGroupAddon`, `InputGroupInput`, `InputGroupText`, `InputGroupButton`, `InputGroupTextarea`).
+- Skills disagree on validation timing (Hallmark: on blur, then on every input; `optimizing-forms`: on blur,
+  never on keypress), and nothing fixes form layout, the error pattern or submit states per project.
 
-Two `DESIGN.md` formats are in use and disagree: Hallmark's short one
-(`ai-config/skills/hallmark/references/design-md.md`) and impeccable's Google DESIGN.md shape
-(`ai-config/skills/impeccable/reference/document.md`). `/aios-ui-design` calls both. Both skills are vendored,
-so the fix must live in AI-OS-owned files.
-
-This Spec is piece 1 of 3. Piece 2 (share a system across projects through a shadcn registry) and piece 3 (a
-form-building skill on shadcn `Field`, plus a `## Forms` section) each get their own Spec afterwards.
+The method comes from the videos studied for piece 1: one input component with slots instead of a component
+per case, every state explicit, one column, related fields grouped by spacing, the same edge on every control,
+the action last, and a form never left floating in empty space.
 
 ## Design
 
-### Commands
+### Command
 
-Three explicit commands, one skill each, explicit invocation only (`disable-model-invocation: true`):
+`/aios-ui-form-create "<what the form collects and what happens on submit>"`, explicit invocation only, in
+`ai-config/skills/aios-ui-form-create/` (`SKILL.md`, `references/form-rules.md`, `references/field-recipes.md`).
+No new audit command: `optimizing-forms` stays the audit and its `audit-forms.mjs`
+(`ai-config/skills/optimizing-forms/audit-forms.mjs`) is this command's gate.
 
-| Command | Skill directory |
-| --- | --- |
-| `/aios-ui-system-create "<brief>"` | `ai-config/skills/aios-ui-system-create/` |
-| `/aios-ui-system-extract [<dir>]` | `ai-config/skills/aios-ui-system-extract/` |
-| `/aios-ui-system-check [<dir>]` | `ai-config/skills/aios-ui-system-check/` |
+### Steps the skill prescribes
 
-`aios-ui-system-check` owns what the three share, `scripts/tokens.py` and `references/design-md.md`; the other
-two reach them by path, the way the `aios-ui-*` commands already share `aios-ui-verify/scripts/hallmark.sh`.
+1. **System first.** The project needs a design system (a root `DESIGN.md`). Without one, stop and point at
+   `/aios-ui-system-create` or `/aios-ui-system-extract`. Read its `## Forms` section; if the section is
+   missing, show the one that would be appended (the defaults in `form-rules.md`) and ask before writing it.
+   With no user to answer, append it and say so.
+2. **Stack.** Read `package.json`: use the form library the project already has (`react-hook-form` or
+   `@tanstack/react-form`); with none, `react-hook-form` with `zod` and `@hookform/resolvers`. Add only the
+   shadcn components whose file is absent: `field`, `input-group` and each control the form uses (`checkbox`,
+   `select`, `textarea`, ...). An existing file is never overwritten. Move what was added onto the project's
+   tokens (rule 27) before using it. A Vue project is sent to
+   `shadcn-vue`; this command is React.
+3. **Schema.** One `zod` schema per form, written first, shared by client validation and the submit handler.
+   Field names, types, required or optional and messages come from it.
+4. **Layout**, per `form-rules.md`.
+5. **Fields**, per `field-recipes.md`: every control inside `Field`, never the legacy `<Form>` wrapper.
+6. **States.** Each control: default, hover, focus, disabled, invalid. The form: idle, submitting, failed
+   (field errors and a form-level message), succeeded.
+7. **Verify.** `optimizing-forms`' `audit-forms.mjs` reports nothing new, `a11y-auditor` on the form, then
+   `/aios-ui-verify`; screenshots of the form empty, with errors, filled, and on a phone are looked at and sent.
 
-For this command a project **has a system** when a `DESIGN.md` exists at its root. A `components.json` or a
-default shadcn token block alone does not count (rule 27 uses a wider definition for enforcement; a freshly
-scaffolded shadcn project must still be able to run `/aios-ui-system-create`).
+### `references/form-rules.md` (the one set of rules)
 
-### The contract (what `create` and `extract` both leave in the project)
+Layout:
+- One column. Two fields share a row only when they are short and read as one thing (city and postcode).
+- Width follows the expected answer; the form has a maximum width and sits in a card or beside related
+  content, never alone in a wide empty page.
+- Related fields are a `FieldSet` with a `FieldLegend`; groups are separated by more space than fields.
+- Label above the control. A placeholder is an example, never the label.
+- Every control has the same edge (`--input`) and the same height; on a phone, targets are at least 44px.
+- Help text sits under the control (`FieldDescription`); consent text is not styled as a label, and its links
+  are underlined.
+- One primary action, last, aligned with the fields' left edge; a destructive action is apart from it.
+- Mark the minority: if most fields are required, mark the optional ones in words, and the reverse.
 
-1. **Token block** in the project's global stylesheet, values in OKLCH, shadcn's own variable names so shadcn,
-   shadcn-vue and any CSS can read them. The stylesheet is the source of truth for values.
-   - Colour variables, required in both `:root` and `.dark`: `--background`, `--foreground`, `--card`,
-     `--popover`, `--primary`, `--secondary`, `--muted`, `--accent` (each of the last six with its
-     `-foreground`), `--destructive`, `--border`, `--input`, `--ring`, `--chart-1` to `--chart-5`, and
-     `--sidebar`, `--sidebar-foreground`, `--sidebar-primary`, `--sidebar-primary-foreground`,
-     `--sidebar-accent`, `--sidebar-accent-foreground`, `--sidebar-border`, `--sidebar-ring`.
-   - Single-mode variables, required once in `:root` or `@theme`: `--radius`, `--font-sans`, `--font-mono`,
-     `--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--ease-out`, `--duration-fast`, `--duration-base`.
-   - It replaces same-named variables in place, adds the missing ones and leaves every other project
-     variable untouched.
-2. **`DESIGN.md`** at the project root, in the canonical format below.
-3. **Specimen page**: one page in the project's own stack showing the palette in both modes, the type scale,
-   radius, shadows, and the button, input and card variants. It is what gets screenshotted and verified.
+Behaviour:
+- Validate a field when it first loses focus, not on the first keystrokes; from then on re-validate it on
+  every change so an error clears the moment it is fixed. In `react-hook-form` that is `mode: "onTouched"`
+  (not `onBlur`, whose re-validation on change only starts after a submit). In `@tanstack/react-form` it is an
+  `onBlur` validator plus an `onChange` validator that returns nothing until the field's `meta.isBlurred`.
+  Hallmark's field recipe already says the same; `optimizing-forms` gets a one-line edit to match.
+- The error is text under the field (`FieldError`), tied with `aria-describedby`, with `aria-invalid` on the
+  control and `data-invalid` on the `Field`. It says what to do, not only what is wrong.
+- Submit stays enabled. On submit with errors, focus moves to the first invalid field; a form longer than
+  one screen also gets a summary at the top that links to each field.
+- While submitting, the button shows it and cannot fire twice; inputs keep their values on failure.
+- Server errors map onto fields where they belong and into one form-level alert otherwise.
+- Native types, `autocomplete`, `inputmode` and `name` are set so the browser and password managers help.
+- More than about eight fields: split into steps with progress, validation per step, and Back keeping data.
 
-### Canonical `DESIGN.md`
+### `references/field-recipes.md`
 
-`ai-config/skills/aios-ui-system-check/references/design-md.md` owns the template. It is the Google DESIGN.md shape
-impeccable already reads and writes (frontmatter `name, description, colors, typography, rounded, spacing,
-components`; sections Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and
-Don'ts), with two AI-OS sections appended:
+Short, complete examples against the current shadcn components. Every recipe is built in block 3 on a
+recipes page of the Ledger project, which uses shadcn's `base-nova` style on Base UI primitives; the file says
+so, and that a Radix or React Aria project must check the control props against its own components:
+`Field` with `react-hook-form`'s `Controller` and a `zod` resolver; the same with `@tanstack/react-form`;
+text, select, checkbox, radio group, switch and textarea; one input with a prefix, suffix, icon or button
+through `InputGroup` (search, amount with currency, URL); a `FieldSet` group; the submit button's states; the
+error summary.
 
-- `## System`: how it was made (created or extracted, date), the component base (shadcn family and
-  primitive library), the theme source, and the stylesheet path that holds the token block. When the
-  direction came from a Hallmark theme it also carries Hallmark's own four lines (Genre, Shape, Theme,
-  Axes) so Hallmark's pre-flight finds them.
-- `## Variants and patterns`: each variant added to a component and each wrapper component, one line each,
-  so the customisation order above is recorded and reviewable.
+### Changes outside the new skill
 
-Frontmatter `colors` is a flat map of strings, because that is what impeccable reads: the light value under
-the variable's name (`background`) and the dark value under `<name>-dark` (`background-dark`). It mirrors the
-stylesheet; `check` converts both sides to sRGB and fails when any channel differs by more than 2/255.
-
-Hallmark treats any root `DESIGN.md` as a locked system and may append its `## Exports` section. That is
-accepted: `check` ignores sections it does not own.
-
-In a project that has a `components.json`, this is the only format written. `/aios-ui-themes lock` there
-runs `/aios-ui-system-extract` (the theme's tokens are already applied, so extracting is what locks them).
-`/aios-ui-design` step 1 runs `/aios-ui-system-extract` for an existing codebase without a `DESIGN.md`, and
-its step 2 ends with `/aios-ui-system-extract` instead of `lock`. `/aios-ui-design` step 2 keeps owning the
-three-directions mechanics; `/aios-ui-system-create` reuses them and never calls back into `/aios-ui-design`.
-Hallmark's own format stays for Hallmark's standalone pages (no `components.json`). Vendored `hallmark/` and
-`impeccable/` are not edited.
-
-### `scripts/tokens.py` (Python standard library only, so macOS and Windows behave the same)
-
-- `scan <dir>`: JSON inventory of the de facto system. Custom properties per selector (`:root`, `.dark`,
-  `@theme`); colour, radius, shadow and font-family literals with counts and files; Tailwind palette classes
-  (`bg-blue-500`) and arbitrary values (`p-[13px]`) with counts; which contract variables exist and which are
-  missing.
-- `contrast <stylesheet>`: WCAG 2.x ratio for every `X` / `X-foreground` pair plus `foreground` on
-  `background`, `muted-foreground` on `background` and `card`, in both modes. Reads oklch, hex, rgb and hsl.
-  Text pairs need 4.5:1; `ring` on `background` needs 3:1. After the block 5 proof: `destructive` on
-  `background` (error text) at 4.5:1 and `input` on `background` (the field's edge) at 3:1 were added, and a
-  `frontmatter <stylesheet>` subcommand that prints the `colors:` block.
-- `check [<dir>] [--stylesheet <css>] [--design <md>]`: every colour variable defined in both modes and every
-  single-mode variable defined once, `contrast` passes, `DESIGN.md` frontmatter colours match the stylesheet.
-  Exit 1 with one line per failure. The two flags let a `DESIGN.md` in one place be checked against a
-  stylesheet in another.
-
-Shared rules: the stylesheet is the `tailwind.css` path in `components.json`, else the first that exists of
-`src/index.css`, `src/styles/globals.css`, `app/globals.css`, `src/app/globals.css`. When a selector appears
-more than once, the last declaration of a variable wins. The frontmatter `colors:` block is parsed by hand
-(flat `key: "value"` lines), since the standard library has no YAML reader.
-
-### `/aios-ui-system-create "<brief>"`
-
-1. `ai-os scope which`: a scope or brand system wins on its own surfaces. If the project has a system (a root
-   `DESIGN.md`), stop and offer `/aios-ui-system-check`; if it has code but no `DESIGN.md`, say that `/aios-ui-system-extract` keeps what is
-   there and ask which the user wants.
-2. References: ui-indexador `design_notes`, `list_captures`, `search_themes`/`get_theme` when it is enabled;
-   otherwise shadcn's own theme presets. Sources are named to the user.
-3. Three directions as pictures (the mechanics `/aios-ui-design` step 2 already has); the user picks one.
-4. Write the full token block, run `tokens.py contrast`, fix until it passes.
-5. Component base: use the project's `components.json`, or run shadcn init per `shadcn-patterns`. Apply the
-   direction through tokens first, then variants; record each in `## Variants and patterns`.
-6. Write `DESIGN.md`, build the specimen page, run `tokens.py check` and `/aios-ui-verify`, send screenshots
-   (light and dark, desktop and mobile).
-
-### `/aios-ui-system-extract [<dir>]`
-
-1. `tokens.py scan` for the inventory; `impeccable document` scan order for components and prose.
-2. If the project's own dev server is running (localhost), sample computed styles of `body`, headings, links,
-   buttons, inputs and cards in the browser and add them to the inventory. Other people's sites are out of
-   scope here.
-3. Map de facto values onto the contract by role and frequency, and show the mapping as one table (role,
-   chosen value, where it came from, count, contrast) for a single approval.
-4. Write the token block and `DESIGN.md`. An existing `DESIGN.md` is never overwritten silently: show what
-   would change and ask.
-5. Build the specimen page; run `tokens.py check` and `/aios-ui-verify`.
-6. Report how many literals and arbitrary values remain in the code. Migrating them is `/aios-ui-improve`.
-
-### Wiring
-
-- `rules/always_do.md`: three rule 26 table rows; rule 27 names `/aios-ui-system-create` as the start when no system
-  exists and states the customisation order in one sentence.
-- `ai-config/skills/aios-ui-themes/SKILL.md`: `lock` hands over when `components.json` exists; fix its
-  `references/design-md.md` pointer (the file is in `hallmark/references/`).
-- `ai-config/skills/aios-ui-design/SKILL.md`: step 1 and step 2 point at `/aios-ui-system-extract`.
-- `README.md` (chooser and command table), `docs/skills-catalog.md`, `setup/skills-routing-bank.json`, then
-  `python3 setup/ai-os-stats.py --write`.
+- `ai-config/skills/aios-ui-system-check/references/design-md.md`: a `## Forms` section in the canonical
+  template (control height, label position, required marking, validation timing, error pattern, maximum
+  width, action alignment), appended after `## Variants and patterns` so the eight sections `impeccable`
+  reads stay as they are; the file's introduction then says three AI-OS sections instead of two.
+- `ai-config/skills/aios-ui-system-create/SKILL.md`: the specimen page also shows one short form built by
+  these rules.
+- `ai-config/skills/shadcn-patterns/SKILL.md`: the legacy `<Form>` / `FormField` section is replaced by a
+  short `Field` pointer to this skill; its anti-pattern list gains "the legacy `<Form>` wrapper".
+- `ai-config/skills/optimizing-forms/SKILL.md` and `ai-config/skills/pick-ui-library/SKILL.md`: name
+  `/aios-ui-form-create` as the form-construction skill. In `optimizing-forms`, the "Validation on blur" row of
+  its rule table gets the same timing rule (one line); nothing else in that skill changes. `react-hook-form-zod` is not edited (third-party).
+- `rules/always_do.md` rule 26 row, `README.md`, `docs/skills-catalog.md`, `setup/skills-routing-bank.json`,
+  then `python3 setup/ai-os-stats.py --write` (219 to 220 skills).
 
 ## Acceptance criteria
 
-- [x] The three skill directories each have a top-level `SKILL.md` with a description of at most 350
-      characters; `ai-os-skills.py lint --strict` exits 0 with no near-duplicate warning among the three, and
-      one routing-bank request per command lands in the top 3.
-- [x] `setup/tests/test_aios_ui_system.py` passes and covers: `scan` on a fixture project; `contrast` against
-      the ratios published in `context/global/06_brand.md`, computed from its **hex** column (ink 18.26,
-      muted 8.01, acid 14.47, and `faint` 4.27 failing 4.5:1); the OKLCH conversion pinned separately to that
-      table's oklch-to-hex pairs within 1/255 per channel; `check` failing on a missing variable, a failing
-      pair and a `DESIGN.md` mismatch.
-- [x] `/aios-ui-system-extract` on `apps/site` (read-only, output in the scratchpad) produces an inventory, including
-      computed styles sampled from its dev server, and a `DESIGN.md` that passes
-      `check --stylesheet apps/site/src/index.css --design <scratch>/DESIGN.md` or lists only real findings.
-- [x] `/aios-ui-system-create` on a scratch Vite + shadcn project produces the token block in both modes, `DESIGN.md` and the
-      specimen page; `tokens.py check` exits 0; `/aios-ui-verify` passes; four screenshots are sent.
-- [x] A test asserts that `aios-ui-themes` and `aios-ui-design` name `/aios-ui-system-extract` for `components.json`
-      projects, so a second format cannot come back unnoticed.
-- [x] `ai-os-stats.py --check` passes, and after the work is committed `setup/hooks/pre-push` passes when fed
-      the commit on stdin without pushing (with no stdin it checks nothing and exits 0).
+- [ ] `ai-config/skills/aios-ui-form-create/SKILL.md` exists, description at most 350 characters;
+      `ai-os-skills.py lint --strict` exits 0 and a routing-bank request for it lands in the top 3.
+- [ ] `setup/tests/test_aios_ui_form.py` passes and asserts: neither recipe file nor `shadcn-patterns` uses
+      `<FormField`, `<FormItem` or `FormMessage`; every component name the recipes import from
+      `@/components/ui/field` and `@/components/ui/input-group` is in the list of exports recorded in the test;
+      the canonical template has `## Forms`; `optimizing-forms` and `pick-ui-library` name the command.
+- [ ] In the scratch "Ledger" project from piece 1, a subagent that follows the skill as written builds a
+      "New invoice" form (client, email, issue and due date, amount with currency, VAT number, notes, a
+      send-me-a-copy checkbox). It type-checks and builds; validation fires on blur and clears on change;
+      submitting with errors focuses the first invalid field. `tokens.py scan` is recorded before and after:
+      `literals` and `tailwind.palette` stay empty and `tailwind.arbitrary` gains no entry.
+- [ ] A recipes page in the same project renders every recipe in `field-recipes.md`, including the
+      `@tanstack/react-form` variant, and builds without type errors.
+- [ ] On that form: `audit-forms.mjs` reports no finding (it runs the rules that apply to the project's stack), axe reports no violation, `/aios-ui-verify` passes,
+      and four screenshots (empty, errors, filled, phone) were looked at and sent.
+- [ ] The full `setup/tests` suite passes with PyYAML, `ai-os-stats.py --check` passes, and the pre-push hook
+      fed the commit on stdin (no push) passes.
 
 ## Non-goals (explicit)
 
-- Sharing a system across projects (registry, package, sync): piece 2.
-- Building forms, shadcn `Field`, a `## Forms` section, fixing `shadcn-patterns`' legacy `<Form>`: piece 3.
-- Rewriting an app's components to use the new tokens.
-- Editing vendored `hallmark/` or `impeccable/`.
-- Committing a `DESIGN.md` for `apps/site`; the run there is a read-only proof.
-- Extracting from a third-party URL. Hallmark's `brand-truth` already reads colours and fonts off a public site.
-- Native (Expo) systems: `expo-design-system` keeps that.
+- A new audit command, or changes to `optimizing-forms` beyond the one timing line and the pointer.
+- Editing third-party `react-hook-form-zod`, or vendored `hallmark/` and `impeccable/`.
+- Vue, Nuxt and native forms.
+- Tables (the other half of the "Forms & Tables" material) and multi-step wizards beyond the rule above.
+- Server-side frameworks: the recipes stop at a typed submit handler.
+- Piece 2 (registry).
 
 ## Plan (blocks)
 
-### Block 1: `tokens.py` with tests (estimated: 60 min)
+### Block 1: rules, recipes and skill (estimated: 60 min)
 
-**Status:** done
+**Status:** not started
 
-- [x] Write `setup/tests/test_aios_ui_system.py` first (fixtures in a temp dir), see it fail.
-- [x] Implement `scan`, `contrast`, `check` in `ai-config/skills/aios-ui-system-check/scripts/tokens.py`.
-- [x] **Verify:** the test file passes; `contrast` reproduces the `06_brand.md` ratios to two decimals from
-      the hex values, and the OKLCH conversion matches the table's hex within 1/255 per channel.
+- [ ] Write `setup/tests/test_aios_ui_form.py` first and see it fail.
+- [ ] Write `references/form-rules.md`, `references/field-recipes.md` and `SKILL.md`.
+- [ ] **Verify:** the new test passes except the checks that depend on block 2; lint exits 0.
 
-### Block 2: template and three skills (estimated: 45 min)
+### Block 2: template, sibling skills and wiring (estimated: 30 min)
 
-**Status:** done
+**Status:** not started
 
-- [x] Write `references/design-md.md` (canonical template, both appended sections).
-- [x] Write the three `SKILL.md` files as designed above.
-- [x] **Verify:** `ai-os-skills.py lint --strict` exits 0; the three skills are found by the installer's glob.
+- [ ] `## Forms` in the canonical template; the specimen line in `aios-ui-system-create`; the `shadcn-patterns`
+      replacement; pointers in `optimizing-forms` and `pick-ui-library`; rule 26, `README.md`, catalogue,
+      routing bank; `ai-os-stats.py --write` and the two PNGs rendered with installed Chrome.
+- [ ] Commit blocks 1 and 2.
+- [ ] **Verify:** full suite passes with PyYAML; `ai-os-stats.py --check` passes; bank above 70 % with the
+      new request in the top 3.
 
-### Block 3: wiring (estimated: 30 min)
+### Block 3: proof on the Ledger project (estimated: 60 min)
 
-**Status:** done
+**Status:** not started
 
-- [x] Edit rules 26 and 27, `aios-ui-themes`, `aios-ui-design`, `README.md`, `docs/skills-catalog.md`, the
-      routing bank; add the hand-over test; run `ai-os-stats.py --write`.
-- [x] The PNGs that `--write` re-renders need Playwright's Chromium, which this machine lacks: render them
-      with the installed Chrome as commit `a56ec1760` did.
-- [x] Commit blocks 1 to 3 here, so block 4 starts from a clean tree.
-- [x] **Verify:** full `setup/tests` suite passes with PyYAML; `ai-os-stats.py --check` passes; bank stays
-      above 70 % with the three new requests in the top 3.
+- [ ] A subagent builds the "New invoice" form and the recipes page by following the skill as written and
+      reports every place the text was unclear or wrong.
+- [ ] **Verify:** build and type-check pass; the behaviour in the third acceptance criterion is exercised in
+      a real browser; audit, axe and `/aios-ui-verify` results recorded; the four screenshots looked at.
 
-### Block 4: proof on an existing app (estimated: 20 min)
+### Block 4: fold back, review, commit (estimated: 30 min)
 
-**Status:** done (2026-11-23)
+**Status:** not started
 
-- [x] Run `/aios-ui-system-extract` on `apps/site` with its dev server up and output in the scratchpad.
-- [x] **Verify:** inventory lists the variables in `apps/site/src/index.css` and the sampled computed styles;
-      `check --stylesheet apps/site/src/index.css --design <scratch>/DESIGN.md` passes or lists real
-      findings; `git status` shows no change under `apps/site`.
-- Result: 62 frontmatter colours match `apps/site/src/index.css`; `check` exits 1 with 8 real findings: six
-  single-mode tokens the stylesheet never declares (`--shadow-sm|md|lg`, `--ease-out`, `--duration-fast|base`)
-  and two light-mode pairs left at shadcn's defaults (`--ring` on `--background` 2.58, `--muted-foreground` on
-  `--muted` 4.35). The light block is not a designed mode on that site. Nothing under `apps/site` changed.
-
-### Block 5: proof from zero (estimated: 60 min)
-
-**Status:** done (2026-11-23)
-
-- [x] Scaffold a Vite + shadcn project in the scratchpad and run `/aios-ui-system-create` with a written brief.
-- [x] **Verify:** `tokens.py check` exits 0; `/aios-ui-verify` passes; the four screenshots were looked at
-      and sent to the user.
-- Result: a fresh Vite 8 + Tailwind 4 + shadcn (base-nova) project became the "Ledger" system by a
-  subagent that followed the skill as written. `tokens.py check` exits 0 (26 pairs pass), `scan` finds no
-  colour, radius, shadow or font literal, `/aios-ui-verify` passes 6/6 (375/768/1280, light and dark, axe 0
-  findings) through installed Chrome, and four screenshots were looked at and sent. The run produced 20
-  friction points; those about the three skills were folded back into them (where each token goes under
-  Tailwind v4, the dark-mode switch before verifying, the specimen conventions, two more contrast pairs, a
-  `frontmatter` subcommand). Left for `aios-ui-verify`, outside this Spec: `verify.py` exits 1 with a traceback
-  instead of 2 when Playwright's Chromium is missing and has no option to use installed Chrome.
-
-### Block 6: review and commit (estimated: 20 min)
-
-**Status:** done (2026-11-23)
-
-- [x] `aios-reviewer` agent on the diff; fix what it confirms.
-- [x] Commit locally, then feed the hook the commit without pushing:
-      `echo "refs/heads/<branch> $(git rev-parse HEAD) refs/heads/<branch> $(git rev-parse origin/dev)" | bash setup/hooks/pre-push origin <url>`.
-- [x] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
+- [ ] Fold the proof's findings into the skill; `aios-reviewer` on the diff; fix what it confirms.
+- [ ] Commit, then feed the pre-push hook the commit on stdin without pushing.
+- [ ] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
 
 ## Risks and mitigation
 
 | Risk | Probability | Impact | Mitigation |
 | --- | --- | --- | --- |
-| This becomes a third `DESIGN.md` format instead of the one | med | high | It is a superset of the shape impeccable already reads; themes and design hand over in `components.json` projects; a test guards the hand-over |
-| Hallmark's pre-flight misreads the canonical file | low | med | Hallmark only treats the file as a locked system; `## System` carries its four lines when a Hallmark theme was used; an appended `## Exports` is accepted |
-| OKLCH to sRGB conversion is wrong and contrast results lie | med | high | The conversion is pinned to the oklch-to-hex pairs in `06_brand.md`, separately from the ratio test |
-| `/aios-ui-system-extract` maps a value to the wrong role | med | med | Nothing is written before the mapping table is approved |
-| ui-indexador is not enabled on the machine | med | low | `/aios-ui-system-create` falls back to shadcn's presets; block 5 says which path it used |
-| Three more always-loaded skill descriptions | high | low | Explicit invocation only; description within the 350-character target |
+| The recipes drift from shadcn's real `Field` API | med | high | Every recipe is built in block 3 against components the CLI installs today (Base UI family); the test pins the export names |
+| A third opinion on forms next to `optimizing-forms` and Hallmark | med | med | `form-rules.md` states the one timing rule; Hallmark's recipe already matches and `optimizing-forms`' row is edited to match; the audit script stays the gate |
+| The scratch Ledger project was cleaned up | low | low | Recreate it with `/aios-ui-system-create` (commands recorded in the archived Spec) |
+| `audit-forms.mjs` assumes a project shape the proof does not have | med | low | Run it early in block 3; if it cannot run, say so and rely on axe and the browser checks |
+| `shadcn-patterns` readers lose the legacy section they need for an old project | low | low | The replacement says the legacy wrapper still exists and names `react-hook-form-zod` for it |
 
 ## Verification (end-to-end)
 
-- [x] From a clean scratch project, `/aios-ui-system-create "<brief>"` ends with a passing `check`, a passing
-      `/aios-ui-verify` and screenshots.
-- [x] On `apps/site`, `/aios-ui-system-extract` reproduces the tokens the stylesheet already has.
-- [x] All acceptance criteria met; pre-push hook passes locally.
+- [ ] `/aios-ui-form-create` on the Ledger project ends with a working form, clean audits and screenshots.
+- [ ] All acceptance criteria met; pre-push hook passes locally.
 
 ## References
 
-- `rules/always_do.md` rules 26 and 27; `context/global/06_brand.md`.
-- `ai-config/skills/aios-ui-themes/SKILL.md`, `ai-config/skills/aios-ui-design/SKILL.md`.
-- `ai-config/skills/impeccable/reference/document.md`, `ai-config/skills/hallmark/references/design-md.md`,
-  `ai-config/skills/hallmark/references/export-formats.md` (shadcn mapping and the `accent`/`muted` name clash).
-- `ai-config/skills/aios-ui-verify/scripts/antislop.py` and `setup/tests/test_antislop.py` (script and test
-  pattern to follow).
+- `archive/2026-11-23-aios-ui-system-core.md` (piece 1 and its proof).
+- `ai-config/skills/optimizing-forms/SKILL.md` and `audit-forms.mjs` beside it.
+- `ai-config/skills/shadcn-patterns/SKILL.md` (legacy `<Form>` section, `InputGroup` anti-pattern line).
+- `ai-config/skills/react-hook-form-zod/` (third-party; `references/shadcn-integration.md`).
+- `ai-config/skills/hallmark/references/interaction-and-states.md` (field recipe and timing).
+- `ai-config/agents/a11y-auditor.md`.
 
 ## Notes
 
-- Decisions the owner can still change before block 1: the canonical format (Google DESIGN.md shape plus two
-  sections, chosen over Hallmark's short format because it carries components and is already machine-read);
-  keeping `apps/site` read-only.
-- The branch already carries two unrelated fixes (`a56ec1760` nested skills, `9d38c389a` pre-push hook). They
-  are better merged to `dev` as their own PR before this work lands on top.
+- Decisions the owner can still change before block 1: no separate `/aios-ui-form-check` (the audit stays
+  `optimizing-forms`); `react-hook-form` plus `zod` as the default when a project has no form library.
