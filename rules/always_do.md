@@ -270,6 +270,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
     | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |
     | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
+    | A UI piece no component library ships (stepper, splitter, transfer list, an interactive map), or a UI an agent can operate (`createAgent`) | `ui-sdk` |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
 27. **A design system that exists is used 100%.** When the project has one (a `DESIGN.md`, a `components.json`, a
@@ -285,6 +286,10 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     Change a look in this order: a token, then a variant inside the component, then a wrapper component for a
     product pattern, and `className` from outside only for a true one-off. `aios-ui-verify`'s `antislop.py` checks this;
     a violation is a Floor FAIL.
+    **Components before code.** Take each UI piece in this order: the project's own component library and its
+    wrappers; a proven registry item (ui-indexador, shadcn registries); and only when none of them has the piece,
+    build it from behaviors with `ui-sdk` (`@ui-sdk/core`), never from a bare `div` with hand-written keyboard,
+    focus and `role=` handling. The built piece is styled with the project's tokens like any other.
 
 ## At session end
 

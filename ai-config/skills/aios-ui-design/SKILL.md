@@ -60,7 +60,7 @@ New UI, start to verified. Reuse the skills below; do not restate them.
      and adapt content and accessibility; keep its structure unless a reason is recorded. Run the build after each
      install: undeclared dependencies show up there.
    - **Record** each section's queries, top candidates, the choice and why (and every rejection) in a build log
-     (e.g. `build-log.json`) next to the code. Hand-build only what no indexed piece covers, and say so in the log.
+     (e.g. `build-log.json`) next to the code. Build only what no indexed piece covers, from `ui-sdk` behaviors (never a bare `div` with hand-written keyboard, focus and ARIA), and say so in the log.
    Then `pick-ui-library` for libraries (toasts, charts, forms) the pieces do not bring.
    **Match references** (optional, when the user gives target screens or images, or a bar like "make it look like
    this"). References are the minimum bar, not inspiration. Write a shot list (one row per reference: the screen

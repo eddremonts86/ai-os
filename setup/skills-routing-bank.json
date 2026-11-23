@@ -298,5 +298,11 @@
     "expect": [
       "aios-ui-form-create"
     ]
+  },
+  {
+    "prompt": "build a stepper component that the library does not ship, from ui-sdk behaviors, with keyboard focus and ARIA",
+    "expect": [
+      "ui-sdk"
+    ]
   }
 ]

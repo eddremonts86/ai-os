@@ -62,5 +62,7 @@ Every form in every project is built the same way: the rules in `references/form
 - No legacy shadcn form wrapper (`components/ui/form`); `Field` replaced it.
 - No placeholder as a label, no submit button disabled because the form is invalid (disabled only while a
   request is in flight, and still focusable), no error that only says "Invalid".
+- No hand-built control when the library has one; a control no library ships (a stepper, a transfer list) is
+  built from `ui-sdk` behaviors, not from a `div` with its own key handling.
 - No second column to fill space, and no form floating alone in a wide page.
 - No value outside the tokens: a control that needs a new look gets a variant in its component.
