@@ -250,6 +250,9 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | A new look for an existing page or app, content and wiring kept | `/aios-ui-redesign` |
     | Read-only anti-slop and craft audit in a real browser | `/aios-ui-audit` |
     | Browse, deal, apply a design theme, or lock a system into DESIGN.md | `/aios-ui-themes` |
+    | A complete design system from a brief (shadcn tokens, variants, DESIGN.md, specimen page) | `/aios-ui-system-create` |
+    | The design system an existing app already implies, mapped onto shadcn tokens | `/aios-ui-system-extract` |
+    | Check a design system: tokens for both modes, contrast, DESIGN.md against the stylesheet | `/aios-ui-system-check` |
     | Openly licensed photos for a page, credited | `/aios-ui-photos` |
 
     UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
@@ -276,8 +279,10 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     every skill that writes UI and every piece taken from ui-indexador (indexed items bring their own styling: map
     them onto the project's tokens and components before they land). A value no token expresses is a missing token:
     add it to the system, not inline. The one exception is `ds-allow: <reason>` beside the line, listed in the
-    report. With no system, an AI-OS surface uses `context/global/06_brand.md` and any other project starts from the
-    chosen theme (`/aios-ui-themes lock`), so one exists from then on. `aios-ui-verify`'s `antislop.py` checks this;
+    report. With no system, an AI-OS surface uses `context/global/06_brand.md` and any other project starts from
+    `/aios-ui-system-create` (or `/aios-ui-system-extract` when it already has UI code), so one exists from then on.
+    Change a look in this order: a token, then a variant inside the component, then a wrapper component for a
+    product pattern, and `className` from outside only for a true one-off. `aios-ui-verify`'s `antislop.py` checks this;
     a violation is a Floor FAIL.
 
 ## At session end

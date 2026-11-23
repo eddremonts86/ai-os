@@ -10,7 +10,7 @@ New UI, start to verified. Reuse the skills below; do not restate them.
 
 1. **Context.** AI-OS surfaces use `context/global/06_brand.md`. Any other project uses its `PRODUCT.md` / `DESIGN.md`,
    and an existing design system is used 100%, no hardcoded or inline styles (`rules/always_do.md` rule 27);
-   if missing and the work is bigger than one component, run `impeccable init` (and `document` for an existing code base).
+   if missing and the work is bigger than one component, run `impeccable init` (and `/aios-ui-system-extract` for an existing code base).
 2. **Directions: three to choose from, the user decides.** Nothing is built until they pick one.
    - **Brief.** A brief that does not say who the surface is for and what it must do gets impeccable's `shape` discovery
      (`reference/shape.md` phase 1: one round of two or three questions). Either way, open the offer below with the
@@ -34,7 +34,7 @@ New UI, start to verified. Reuse the skills below; do not restate them.
      would pick and why, put them in your reply, attach the theme pictures where the CLI can, and stop. Build the chosen one and
      borrow from the others only what makes it stronger. With no user to answer (a loop), take your pick and say so.
    - **Lock,** after the pick and before step 3. `/aios-ui-themes apply <slug>` for a theme (mapped onto the project's token names), then
-     `/aios-ui-themes lock` so `DESIGN.md` carries the choice into the build and the gate.
+     `/aios-ui-themes lock` (in a `components.json` project that is `/aios-ui-system-extract`) so `DESIGN.md` carries the choice into the build and the gate.
    - When the user asks for Hallmark, or the target is a standalone page with its own look, hand off to
      `/aios-ui-page` before this step; a new look for an existing page is `/aios-ui-redesign`.
 3. **Plan the chosen direction before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan

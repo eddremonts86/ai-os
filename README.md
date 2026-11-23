@@ -128,6 +128,8 @@ flowchart TD
   Q{"What do you have?"} -- "nothing yet" --> N{"Own look,<br/>or the product's<br/>components?"}
   N -- "product components" --> D["/aios-ui-design"]
   N -- "its own look, a theme" --> PG["/aios-ui-page"]
+  N -- "no design system yet" --> SC["/aios-ui-system-create"]
+  Q -- "an app with no<br/>written system" --> SE["/aios-ui-system-extract"]
   Q -- "a page that works,<br/>details are off" --> I["/aios-ui-improve"]
   Q -- "a page that needs<br/>a new look" --> RD["/aios-ui-redesign"]
   Q -- "I only want an opinion" --> O{"Design or<br/>mechanics?"}
@@ -141,6 +143,9 @@ flowchart TD
 | `/aios-ui-design` | Build a new page, screen or component: you pick one of three directions (impeccable, taste-skill, themes), then it is built from proven pieces (ui-indexador), one section shown first |
 | `/aios-ui-page` | A standalone page, component or app screen with its own look, in a dealt, named or custom theme (Hallmark) |
 | `/aios-ui-themes` | Browse, deal and apply Hallmark's 50 themes, or lock a system into `DESIGN.md` |
+| `/aios-ui-system-create` | A complete design system from a brief: shadcn tokens for light and dark, variants, `DESIGN.md`, a specimen page |
+| `/aios-ui-system-extract` | The system an existing app already implies, mapped onto shadcn tokens after you approve the mapping |
+| `/aios-ui-system-check` | Read-only check: every token defined, contrast on each text pair, `DESIGN.md` equal to the stylesheet |
 | `/aios-ui-photos` | Openly licensed photos for a page, with credits |
 | `/aios-ui-improve` | Fix an existing UI, proven with before and after screenshots |
 | `/aios-ui-redesign` | A new look for an existing page or app, content and wiring kept; a full redesign starts from three directions you choose between |

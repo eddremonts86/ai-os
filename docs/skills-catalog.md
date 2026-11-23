@@ -69,6 +69,10 @@ globally: iaWorkSpace, plansmith and other project-specific skills.
   the browser tier), and five commands expose the rest: `/aios-ui-page` (build), `/aios-ui-redesign`,
   `/aios-ui-audit`, `/aios-ui-themes` (list, deal, apply, lock into DESIGN.md) and `/aios-ui-photos`. See
   `ai-config/skills/hallmark/VENDORED_FROM.md`.
+- **aios-ui-system-create / -extract / -check**: a project's own design system on shadcn conventions. `create`
+  builds one from a brief, `extract` maps what an existing app already uses onto shadcn token names, `check`
+  verifies tokens for both modes, contrast and `DESIGN.md` against the stylesheet (`scripts/tokens.py`). They
+  share one canonical `DESIGN.md` format (`aios-ui-system-check/references/design-md.md`).
 - **stageshow (third-party MIT, Benji Taylor)**: faux product UI for marketing pages, a still or a short cursor
   demo of one app screen, built from its React kit and ~40 gold examples and filmed frame by frame before hand-over
   (`npm run dev` in the skill folder serves the playground). See `ai-config/skills/stageshow/VENDORED_FROM.md`.

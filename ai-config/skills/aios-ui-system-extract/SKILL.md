@@ -1,0 +1,39 @@
+---
+name: aios-ui-system-extract
+description: Turn what an existing app already uses into its design system - inventory the CSS variables, literals and Tailwind classes, map them onto shadcn token names for approval, then write the token block, DESIGN.md and a specimen page. Explicit invocation, /aios-ui-system-extract [dir].
+disable-model-invocation: true
+---
+
+# aios-ui-system-extract
+
+`T="python3 $AI_OS_ROOT/ai-config/skills/aios-ui-system-check/scripts/tokens.py"`. The contract and the
+`DESIGN.md` format are in `aios-ui-system-check` (`SKILL.md`, `references/design-md.md`): read both first.
+
+Detection, not invention: the values the app already uses become the system. Nothing new is designed here;
+a project that wants a new look uses `/aios-ui-redesign` or `/aios-ui-system-create`.
+
+## Steps
+
+1. **Inventory.** `$T scan <dir>` lists the custom properties per selector, the colour, radius, shadow and
+   font literals with counts and files, the Tailwind palette classes and arbitrary values, and which contract
+   variables exist or are missing. Read the main button, input, card, dialog and navigation components for
+   their variants (the scan order in `impeccable`'s `reference/document.md`).
+2. **Running app.** If the project's own dev server is up (localhost), sample the computed styles of `body`,
+   headings, links, buttons, inputs and cards in the browser and add them: they catch values the files hide.
+   Other people's sites are out of scope here.
+3. **Mapping, approved once.** Assign de facto values to the contract by role and frequency, and show one
+   table: role, chosen value (in OKLCH), where it came from, how often it is used, and its contrast. Flag
+   what you had to derive because the app has no value for it (a dark mode, a missing `-foreground`).
+   Write nothing before the user approves the table.
+4. **Write.** Put the token block in the global stylesheet, replacing same-named variables in place, adding
+   the missing ones, leaving every other variable untouched. Write `DESIGN.md` from the template; if one
+   exists, show what would change and ask.
+5. **Specimen page.** One page in the project's own stack: palette in both modes, type scale, radius,
+   shadows, and the button, input and card variants with their states.
+6. **Verify.** `$T check` must exit 0, then `/aios-ui-verify` on the specimen page; look at the screenshots
+   and send them.
+7. **Report what is left.** From `$T scan`: how many literals and arbitrary values still sit in the code.
+   Moving them onto the tokens is `/aios-ui-improve`, not this command.
+
+Called by `/aios-ui-themes lock` and `/aios-ui-design` in a project that has a `components.json`, so one
+`DESIGN.md` format is written there.

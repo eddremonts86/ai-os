@@ -274,5 +274,23 @@
       "aios-ui-audit",
       "saas-review"
     ]
+  },
+  {
+    "prompt": "create a complete design system from a brief for a project that has none, shadcn tokens for light and dark",
+    "expect": [
+      "aios-ui-system-create"
+    ]
+  },
+  {
+    "prompt": "turn what this existing app already uses into its design system, inventory the CSS variables and map them onto shadcn token names",
+    "expect": [
+      "aios-ui-system-extract"
+    ]
+  },
+  {
+    "prompt": "verify the design system mechanically: every token defined, WCAG contrast on each pair, DESIGN.md matching the stylesheet",
+    "expect": [
+      "aios-ui-system-check"
+    ]
   }
 ]

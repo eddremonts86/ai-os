@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** approved (2026-11-23, with three explicit commands instead of one)
+- **Status:** in-progress (approved 2026-11-23 with three explicit commands; blocks 1-3 done)
 - **Blocks:** 6
 - **Author:** Claude (session design-systems-forms)
 - **Reviewer:** Eduardo
@@ -194,31 +194,31 @@ more than once, the last declaration of a variable wins. The frontmatter `colors
 
 ### Block 1: `tokens.py` with tests (estimated: 60 min)
 
-**Status:** not started
+**Status:** done
 
-- [ ] Write `setup/tests/test_aios_ui_system.py` first (fixtures in a temp dir), see it fail.
-- [ ] Implement `scan`, `contrast`, `check` in `ai-config/skills/aios-ui-system-check/scripts/tokens.py`.
-- [ ] **Verify:** the test file passes; `contrast` reproduces the `06_brand.md` ratios to two decimals from
+- [x] Write `setup/tests/test_aios_ui_system.py` first (fixtures in a temp dir), see it fail.
+- [x] Implement `scan`, `contrast`, `check` in `ai-config/skills/aios-ui-system-check/scripts/tokens.py`.
+- [x] **Verify:** the test file passes; `contrast` reproduces the `06_brand.md` ratios to two decimals from
       the hex values, and the OKLCH conversion matches the table's hex within 1/255 per channel.
 
 ### Block 2: template and three skills (estimated: 45 min)
 
-**Status:** not started
+**Status:** done
 
-- [ ] Write `references/design-md.md` (canonical template, both appended sections).
-- [ ] Write the three `SKILL.md` files as designed above.
-- [ ] **Verify:** `ai-os-skills.py lint --strict` exits 0; the three skills are found by the installer's glob.
+- [x] Write `references/design-md.md` (canonical template, both appended sections).
+- [x] Write the three `SKILL.md` files as designed above.
+- [x] **Verify:** `ai-os-skills.py lint --strict` exits 0; the three skills are found by the installer's glob.
 
 ### Block 3: wiring (estimated: 30 min)
 
-**Status:** not started
+**Status:** done
 
-- [ ] Edit rules 26 and 27, `aios-ui-themes`, `aios-ui-design`, `README.md`, `docs/skills-catalog.md`, the
+- [x] Edit rules 26 and 27, `aios-ui-themes`, `aios-ui-design`, `README.md`, `docs/skills-catalog.md`, the
       routing bank; add the hand-over test; run `ai-os-stats.py --write`.
-- [ ] The PNGs that `--write` re-renders need Playwright's Chromium, which this machine lacks: render them
+- [x] The PNGs that `--write` re-renders need Playwright's Chromium, which this machine lacks: render them
       with the installed Chrome as commit `a56ec1760` did.
-- [ ] Commit blocks 1 to 3 here, so block 4 starts from a clean tree.
-- [ ] **Verify:** full `setup/tests` suite passes with PyYAML; `ai-os-stats.py --check` passes; bank stays
+- [x] Commit blocks 1 to 3 here, so block 4 starts from a clean tree.
+- [x] **Verify:** full `setup/tests` suite passes with PyYAML; `ai-os-stats.py --check` passes; bank stays
       above 70 % with the three new requests in the top 3.
 
 ### Block 4: proof on an existing app (estimated: 20 min)
