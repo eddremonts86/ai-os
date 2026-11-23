@@ -86,7 +86,7 @@ Left column is the requirement — it does not vary. Right column is how to sati
 | Persistent label, programmatically associated | The project's form-item wrapper, or `<label for>` / `aria-labelledby`. Never a bare `<span>` beside an input. |
 | Required-field affordance | The abstraction's validation declaration, so the visual mark and `aria-required` are emitted together. Never a hand-typed asterisk in the label string. |
 | Helper / format text | The field's description slot, wired to `aria-describedby`. |
-| Validation on blur | Not on keypress (hostile), not only on submit (too late). |
+| Validation on blur | On first blur, then on every change so a fixed error clears at once. Not on the first keystrokes (hostile), not only on submit (too late). |
 | Error adjacent to its field | The field's message slot, plus `aria-invalid`. A toast is for form-level or save failures only. |
 | Specific, actionable error text | Name the constraint and the fix. "Invalid input" is a defect. |
 | Correct input type | `email`, `tel`, `url`, `date`, `number` — plus `inputMode`; `type` alone does not settle the mobile keyboard. |
@@ -157,6 +157,7 @@ It detects the stack and self-disables rules it cannot judge for that project �
 
 ## Cross-references
 
+- **`/aios-ui-form-create`** — builds a new form by the same rules (shadcn `Field`, `references/form-rules.md`).
 - **The host project's own form-construction skill** — mechanics. Verify its claims against source.
 - **`react-hook-form-zod`** — construction for React Hook Form + Zod stacks.
 - **`web-design-guidelines`** — broader web interface guideline review.

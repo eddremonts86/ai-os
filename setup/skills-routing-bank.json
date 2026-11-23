@@ -292,5 +292,11 @@
     "expect": [
       "aios-ui-system-check"
     ]
+  },
+  {
+    "prompt": "build a new invoice form on the design system: zod schema, shadcn Field components, validation on blur and error text under each field",
+    "expect": [
+      "aios-ui-form-create"
+    ]
   }
 ]

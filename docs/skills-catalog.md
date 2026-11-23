@@ -73,6 +73,10 @@ globally: iaWorkSpace, plansmith and other project-specific skills.
   builds one from a brief, `extract` maps what an existing app already uses onto shadcn token names, `check`
   verifies tokens for both modes, contrast and `DESIGN.md` against the stylesheet (`scripts/tokens.py`). They
   share one canonical `DESIGN.md` format (`aios-ui-system-check/references/design-md.md`).
+- **aios-ui-form-create**: builds a form the same way in every project, on shadcn's `Field` components from the
+  project's tokens. One set of rules (`references/form-rules.md`: one column, label above, validation on first
+  blur then on change, error text under the field, one primary action last) and recipes for `react-hook-form`
+  and TanStack Form with `zod`. `optimizing-forms` stays the audit.
 - **stageshow (third-party MIT, Benji Taylor)**: faux product UI for marketing pages, a still or a short cursor
   demo of one app screen, built from its React kit and ~40 gold examples and filmed frame by frame before hand-over
   (`npm run dev` in the skill folder serves the playground). See `ai-config/skills/stageshow/VENDORED_FROM.md`.

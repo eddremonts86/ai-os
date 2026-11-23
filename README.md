@@ -146,6 +146,7 @@ flowchart TD
 | `/aios-ui-system-create` | A complete design system from a brief: shadcn tokens for light and dark, variants, `DESIGN.md`, a specimen page |
 | `/aios-ui-system-extract` | The system an existing app already implies, mapped onto shadcn tokens after you approve the mapping |
 | `/aios-ui-system-check` | Read-only check: every token defined, contrast on each text pair, `DESIGN.md` equal to the stylesheet |
+| `/aios-ui-form-create` | A form built on the design system: `zod` schema first, shadcn `Field`, validation on blur then change, errors under each field |
 | `/aios-ui-photos` | Openly licensed photos for a page, with credits |
 | `/aios-ui-improve` | Fix an existing UI, proven with before and after screenshots |
 | `/aios-ui-redesign` | A new look for an existing page or app, content and wiring kept; a full redesign starts from three directions you choose between |

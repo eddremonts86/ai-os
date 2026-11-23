@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-23
-- **Status:** draft
+- **Status:** in-progress (approved 2026-11-23; blocks 1-2 done)
 - **Blocks:** 4
 - **Review:** cold read by a fresh reviewer on 2026-11-23, 6 majors, all addressed
 - **Author:** Claude (session design-systems-forms)
@@ -156,21 +156,21 @@ error summary.
 
 ### Block 1: rules, recipes and skill (estimated: 60 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] Write `setup/tests/test_aios_ui_form.py` first and see it fail.
-- [ ] Write `references/form-rules.md`, `references/field-recipes.md` and `SKILL.md`.
-- [ ] **Verify:** the new test passes except the checks that depend on block 2; lint exits 0.
+- [x] Write `setup/tests/test_aios_ui_form.py` first and see it fail.
+- [x] Write `references/form-rules.md`, `references/field-recipes.md` and `SKILL.md`.
+- [x] **Verify:** the new test passes except the checks that depend on block 2; lint exits 0.
 
 ### Block 2: template, sibling skills and wiring (estimated: 30 min)
 
-**Status:** not started
+**Status:** done (2026-11-23)
 
-- [ ] `## Forms` in the canonical template; the specimen line in `aios-ui-system-create`; the `shadcn-patterns`
+- [x] `## Forms` in the canonical template; the specimen line in `aios-ui-system-create`; the `shadcn-patterns`
       replacement; pointers in `optimizing-forms` and `pick-ui-library`; rule 26, `README.md`, catalogue,
       routing bank; `ai-os-stats.py --write` and the two PNGs rendered with installed Chrome.
-- [ ] Commit blocks 1 and 2.
-- [ ] **Verify:** full suite passes with PyYAML; `ai-os-stats.py --check` passes; bank above 70 % with the
+- [x] Commit blocks 1 and 2.
+- [x] **Verify:** full suite passes with PyYAML; `ai-os-stats.py --check` passes; bank above 70 % with the
       new request in the top 3.
 
 ### Block 3: proof on the Ledger project (estimated: 60 min)

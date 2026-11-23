@@ -52,8 +52,9 @@ the look is decided in this order, and each decision is written down:
 7. **Specimen page.** With a router, the route `/specimen`; without, `src/specimen.tsx` rendered by the app
    root. It shows the palette of both modes side by side (declare the light block as `:root, .light` so a
    light panel can sit inside the dark page), the type scale, radius, shadows, and the button, input and card
-   variants. Default, disabled and invalid states are rendered; hover and focus are triggered when the
-   screenshots are taken. No marketing content.
+   variants, and one short form built by `/aios-ui-form-create`'s rules (label above, help text, an error,
+   the action last). Default, disabled and invalid states are rendered; hover and focus are triggered when
+   the screenshots are taken. No marketing content.
 8. **Verify.** `python3 "$T" check` must exit 0. Then `/aios-ui-verify` on the specimen page, served from the production
    build, with `--slices 4` so the phone shot is readable. Before it runs: make `<html>` follow
    `prefers-color-scheme` (shadcn's dark is the `.dark` class, and without that every "dark" shot is the light

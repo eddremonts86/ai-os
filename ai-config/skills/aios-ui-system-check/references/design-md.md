@@ -1,8 +1,8 @@
 # The canonical `DESIGN.md`
 
 The one format `/aios-ui-system-create` and `/aios-ui-system-extract` write, and `/aios-ui-system-check`
-verifies. It is the Google DESIGN.md shape that `impeccable` reads (frontmatter plus eight sections) with two
-AI-OS sections appended. The project's global stylesheet is the source of truth for values; this file mirrors
+verifies. It is the Google DESIGN.md shape that `impeccable` reads (frontmatter plus eight sections) with three
+AI-OS sections appended (`System`, `Variants and patterns`, `Forms`). The project's global stylesheet is the source of truth for values; this file mirrors
 the colours and records the decisions a stylesheet cannot hold.
 
 ## Rules
@@ -94,4 +94,14 @@ error). Motion: `--ease-out`, `--duration-fast`, `--duration-base` and what they
 - token `--<name>`: <why the contract's tokens did not cover it>
 - variant `<component>.<variant>`: <what it is for>
 - pattern `<WrapperComponent>` (`<path>`): <the product pattern it owns>
+
+## Forms
+<Written by `/aios-ui-form-create` the first time the project gets a form; its rules are in that skill's
+`references/form-rules.md`. Only the project's own values go here.>
+- Controls: <height> tall, `--input` edge, `--ring` focus; at least 44px on a phone
+- Labels: above the control; <optional | required> fields are marked in words
+- Width: <max width>, one column
+- Validation: on first blur, then on change; error text under the field
+- Actions: one primary, last, left-aligned
+- Built with `/aios-ui-form-create` (`Field`, <form library>, `zod`)
 ```
