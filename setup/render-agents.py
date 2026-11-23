@@ -160,7 +160,7 @@ def main(argv=None):
             print(f"  {action:15} {path}")
     changed = sum(1 for act, _, _ in report if act in ("write", "remove"))
     clis = sorted({cli for _, _, cli in report})
-    print(f"{len(agents)} agent(s) → {', '.join(clis) or 'no CLI found'}; {changed} change(s)")
+    print(f"{len(agents)} agent(s) -> {', '.join(clis) or 'no CLI found'}; {changed} change(s)")
     return 1 if a.check and changed else 0
 
 
