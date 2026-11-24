@@ -61,6 +61,11 @@ shadcn components, look for these (each was a default, not a bug in the project)
 - **Dialogs at 400% zoom** (320×256): the popup needs `max-h-[calc(100dvh-2rem)] overflow-y-auto` or its buttons
   fall off the screen.
 - **Hash-routed pages** keep one `<title>`: set `document.title` per route (WCAG 2.4.2).
+- **WebKit and VoiceOver.** In WebKit with VoiceOver, Base UI marks its modal focus guards (`span[data-base-ui-focus-guard]`)
+  `role="button"` with no name so VoiceOver's cursor cannot leave a dialog, and axe reports `aria-command-name` on them
+  (two per open dialog). It is the library's choice, not a bug in the project: exclude `[data-base-ui-focus-guard]` from
+  axe in a WebKit run and say so. A focus outline also reads as translucent for the first ~100 ms of its transition; wait
+  400 ms before measuring it.
 
 An `a11y-auditor` pass (keyboard, zoom, reduced motion, every state) is the check for these; `/aios-ui-verify`
 is not.
