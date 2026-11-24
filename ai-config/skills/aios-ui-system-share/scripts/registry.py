@@ -5,7 +5,6 @@
   registry.py install <built <name>-tokens.json> [dir]            guards, shadcn add, check, lock file
   registry.py update [dir] [--yes]                                lists local edits and upstream changes first
   registry.py init <built <name>-base.json> <project name> [dir]  a new Vite project with the system (shadcn init)
-  registry.py build <stylesheet> --design <md> --name N --scope S writes registry.json only, no CLI
 
 Standard library only, except that the scope guard reads AI-OS's scope config with PyYAML: run it with the AI-OS
 venv's python. The shadcn CLI is run at the pinned version SHADCN_VERSION (AIOS_SHADCN_VERSION overrides).
@@ -249,7 +248,8 @@ def _scopes(path):
 
 def _git(path, *args):
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}  # a hook's GIT_DIR must not leak in
-    return subprocess.run(["git", *args], cwd=str(path), env=env, capture_output=True, text=True)
+    return subprocess.run(["git", *args], cwd=str(path), env=env, capture_output=True, text=True,
+                          encoding="utf-8", errors="replace")
 
 
 def tree_problem(path):
@@ -264,17 +264,21 @@ def tree_problem(path):
     return None
 
 
+def _runner(name, windows):
+    """On Windows npx and pnpm are .cmd shims that subprocess only finds by full path."""
+    return (shutil.which(name) or name) if windows else name
+
+
 def run_shadcn(args, cwd, run=subprocess.run, env=None):
     """Run `shadcn@<pinned> args` in cwd through pnpm dlx or npx. Exit 2 when the CLI cannot be reached or the version
     does not exist, 1 when it fails."""
     lookup = os.environ if env is None else env
     version = lookup.get("AIOS_SHADCN_VERSION") or SHADCN_VERSION
     pm = ["pnpm", "dlx"] if (Path(cwd) / "pnpm-lock.yaml").is_file() else ["npx", "--yes"]
-    if os.name == "nt":
-        pm[0] = shutil.which(pm[0]) or pm[0]
+    pm[0] = _runner(pm[0], os.name == "nt")
     cmd = [*pm, f"shadcn@{version}", *args]
     try:
-        done = run(cmd, cwd=str(cwd), capture_output=True, text=True, timeout=900)
+        done = run(cmd, cwd=str(cwd), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=900)
     except (OSError, subprocess.TimeoutExpired) as e:
         print(f"shadcn {version} not reachable: {e}", file=sys.stderr)
         raise SystemExit(2)
@@ -404,6 +408,18 @@ def stale_design_notes(design_text, upstream):
             and e["lock"] in design_text]
 
 
+def update_design(design, block, upstream):
+    """Rewrite the `colors:` block of a DESIGN.md in place and return the messages to show. The file is read and
+    written as bytes decoded here, so a CRLF checkout stays CRLF and git shows only the block."""
+    text = Path(design).read_bytes().decode("utf-8")
+    notes = []
+    try:
+        Path(design).write_bytes(write_colors(text, block).encode("utf-8"))
+    except ValueError as e:
+        notes.append(f"DESIGN.md not updated ({e}); paste this block under its frontmatter:\n{block}")
+    return notes + [f"note: {n}" for n in stale_design_notes(text, upstream)]
+
+
 def update(project=".", yes=False, run=subprocess.run, scopes=None):
     project = Path(project).resolve()
     if problem := tree_problem(project):
@@ -433,13 +449,8 @@ def update(project=".", yes=False, run=subprocess.run, scopes=None):
     block = tokens.frontmatter(tokens.parse_css(sheet.read_text(encoding="utf-8-sig", errors="replace")))
     design = project / "DESIGN.md"
     if design.is_file():
-        text = design.read_text(encoding="utf-8")
-        try:
-            design.write_text(write_colors(text, block), encoding="utf-8", newline="")
-        except ValueError as e:
-            print(f"DESIGN.md not updated ({e}); paste this block under its frontmatter:\n{block}", file=sys.stderr)
-        for note in stale_design_notes(text, d["upstream"]):
-            print(f"note: {note}")
+        for note in update_design(design, block, d["upstream"]):
+            print(note, file=sys.stderr if note.startswith("DESIGN.md not updated") else sys.stdout)
     return _finish(project, item, lock["address"])
 
 
@@ -451,8 +462,6 @@ def main(argv=None):
     i = sub.add_parser("install"); i.add_argument("address"); i.add_argument("dir", nargs="?", default=".")
     n = sub.add_parser("init"); n.add_argument("address"); n.add_argument("name"); n.add_argument("dir", nargs="?", default=".")
     u = sub.add_parser("update"); u.add_argument("dir", nargs="?", default="."); u.add_argument("--yes", action="store_true")
-    b = sub.add_parser("build"); b.add_argument("stylesheet"); b.add_argument("--design", required=True)
-    b.add_argument("--name", required=True); b.add_argument("--scope", required=True); b.add_argument("--version", default="0.1.0")
     a = ap.parse_args(argv)
     if a.cmd == "publish":
         r = publish(a.dir, name=a.name, scope=a.scope, version=a.version)
@@ -465,13 +474,7 @@ def main(argv=None):
         return install(a.address, a.dir)
     if a.cmd == "init":
         return init_project(a.address, a.name, a.dir)
-    if a.cmd == "update":
-        return update(a.dir, a.yes)
-    out = build(Path(a.stylesheet).read_text(encoding="utf-8-sig"), name=a.name, scope=a.scope, version=a.version,
-                design_path=a.design)
-    Path("registry.json").write_text(json.dumps(out["registry"], indent=2) + "\n", encoding="utf-8")
-    print("registry.json written; not exported: " + (", ".join(out["skipped"]) or "nothing"))
-    return 0
+    return update(a.dir, a.yes)
 
 
 if __name__ == "__main__":

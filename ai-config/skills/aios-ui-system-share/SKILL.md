@@ -10,8 +10,8 @@ One system, many projects: the stylesheet tokens and `DESIGN.md` of a project th
 `/aios-ui-system-check` become a shadcn registry, and another project installs them from it.
 
 `R="$AI_OS_ROOT/ai-config/skills/aios-ui-system-share/scripts/registry.py"`, run as `~/.ai-os/venv/bin/python "$R" <cmd>`
-(`~/.ai-os/venv/Scripts/python.exe` on Windows). Use that python, not the system one: the scope guard reads
-AI-OS's scope config with PyYAML, and a python without it makes every command stop with "cannot read the AI-OS scope
+(on Windows, the `python` that `install-windows.ps1` gave PyYAML). Use a python that has PyYAML, not any python: the
+scope guard reads AI-OS's scope config with it, and without it every command stops with "cannot read the AI-OS scope
 config". The scope config is the one under `AI_OS_ROOT` (the same one `ai-os scope which` reads when it is set). Node and
 `pnpm` or `npx` are needed for the shadcn CLI, which the script runs at the version it was measured on
 (`SHADCN_VERSION`; `AIOS_SHADCN_VERSION` overrides it).

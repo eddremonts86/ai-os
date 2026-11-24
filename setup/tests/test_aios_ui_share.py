@@ -196,6 +196,26 @@ class WriteColorsTests(unittest.TestCase):
                 registry.write_colors(text, block)
 
 
+class UpdateDesignTests(unittest.TestCase):
+    def test_a_crlf_designmd_stays_crlf_through_the_update_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            md = Path(d, "DESIGN.md")
+            md.write_bytes('---\r\nname: A\r\ncolors:\r\n  background: "#ffffff"\r\n---\r\n\r\nBody\r\n'.encode("utf-8"))
+            notes = registry.update_design(md, 'colors:\n  background: "#fefefe"', [])
+            raw = md.read_bytes()
+            self.assertEqual(notes, [])
+            self.assertIn(b'background: "#fefefe"', raw)
+            self.assertEqual(raw.count(b"\r\n"), raw.count(b"\n"))
+
+    def test_a_file_it_cannot_edit_is_reported_not_rewritten(self):
+        with tempfile.TemporaryDirectory() as d:
+            md = Path(d, "DESIGN.md")
+            md.write_text("# no frontmatter\n", encoding="utf-8")
+            notes = registry.update_design(md, 'colors:\n  a: "#fff"', [])
+            self.assertIn("DESIGN.md not updated", notes[0])
+            self.assertEqual(md.read_text(encoding="utf-8"), "# no frontmatter\n")
+
+
 class GuardTests(unittest.TestCase):
     def test_guard(self):
         known = {"personal", "acme"}
@@ -306,6 +326,21 @@ class CliRunnerTests(unittest.TestCase):
             calls = Calls()
             registry.run_shadcn(["add", "x.json"], d, run=calls, env={})
             self.assertEqual(calls.cmds[0][:2], ["pnpm", "dlx"])
+
+    def test_windows_resolves_the_runner_to_a_full_path_and_output_is_decoded_as_utf8(self):
+        from unittest import mock
+        with mock.patch.object(registry.shutil, "which", lambda n: "C:/node/" + n + ".cmd"):
+            self.assertEqual(registry._runner("npx", True), "C:/node/npx.cmd")
+            self.assertEqual(registry._runner("npx", False), "npx")
+        seen = {}
+
+        def run(cmd, **kw):
+            seen.update(kw)
+            return subprocess.CompletedProcess(cmd, 0, "", "")
+
+        with tempfile.TemporaryDirectory() as d:
+            registry.run_shadcn(["add", "x"], d, run=run, env={})
+        self.assertEqual((seen["encoding"], seen["errors"]), ("utf-8", "replace"))
 
     def test_the_version_can_be_overridden_by_the_environment(self):
         with tempfile.TemporaryDirectory() as d:
@@ -442,6 +477,22 @@ class StaleDesignNotesTests(unittest.TestCase):
         notes = registry.stale_design_notes("`--radius` is 0.375rem and primary is #111111.", up)
         self.assertEqual(len(notes), 1)
         self.assertIn("0.375rem", notes[0])
+
+
+@unittest.skipUnless(shutil.which("git"), "git is needed")
+class MainTests(unittest.TestCase):
+    def test_update_without_a_lock_file_stops_with_code_3(self):
+        with tempfile.TemporaryDirectory() as d:
+            env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+            subprocess.run(["git", "init", "-q"], cwd=d, env=env, check=True, capture_output=True)
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as cm:
+                registry.main(["update", d])
+            self.assertEqual(cm.exception.code, 3)
+
+    def test_there_is_no_subcommand_that_skips_the_guards(self):
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as cm:
+            registry.main(["build", "x.css", "--design", "d", "--name", "n", "--scope", "s"])
+        self.assertEqual(cm.exception.code, 2)
 
 
 class SourceTests(unittest.TestCase):

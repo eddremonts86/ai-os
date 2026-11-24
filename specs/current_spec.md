@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-24
-- **Status:** in-progress (approved 2026-11-24; blocks 1 to 4 done)
+- **Status:** completed (approved 2026-11-24; all five blocks done; committed locally, nothing pushed)
 - **Blocks:** 5
 - **Review:** cold read by a fresh reviewer on 2026-11-24 (`workflows/project_start.md` step 3b): 0 blockers, 8 majors, all verified against the repo and addressed
 - **Author:** Claude (session design-systems-forms)
@@ -235,11 +235,16 @@ it locally), components, and removals (a token dropped from the system stays in 
 
 ### Block 5: fold back, review, commit (estimated: 30 min)
 
-**Status:** not started
+**Status:** done (2026-11-24)
 
-- [ ] Fold the proof's findings into the skill; `aios-reviewer` on the diff; fix what it confirms.
-- [ ] Commit locally, feed the pre-push hook the commit on stdin without pushing.
-- [ ] **Verify:** the hook prints every check and exits 0; the tree is clean; nothing pushed.
+- [x] Fold the proof's findings into the skill; `aios-reviewer` on the diff; fix what it confirms.
+- [x] Commit locally, feed the pre-push hook the commit on stdin without pushing.
+- [x] **Verify:** the hook prints every check and exits 0; the tree is clean; nothing pushed.
+- Result: `aios-reviewer` found 0 blockers and 4 majors, all confirmed and fixed: the Windows interpreter text (the Windows
+  installer gives the system `python` PyYAML and creates no venv), a CRLF `DESIGN.md` rewritten to LF by `update`, the
+  `build` subcommand that skipped every guard (removed), and UTF-8 decoding of CLI output plus a test for the Windows
+  runner path. Not covered by the default test run (stated in the skill): placement rules against the real CLI, which
+  only run with `AIOS_SHADCN_TESTS=1` (4 tests, passing on shadcn 4.23.0).
 
 ## Risks and mitigation
 
