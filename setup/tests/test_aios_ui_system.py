@@ -387,5 +387,15 @@ class HandOverTests(unittest.TestCase):
             self.assertIn("components.json", text, skill)
 
 
+class VerifyScreenshotNameTests(unittest.TestCase):
+    def test_hash_routes_of_one_page_get_their_own_screenshot_name(self):
+        path = ROOT / "ai-config/skills/aios-ui-verify/scripts/verify.py"
+        spec = importlib.util.spec_from_file_location("aios_ui_verify", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        names = {mod.slug(f"http://127.0.0.1:5199/#/{r}", 1280, "light") for r in ("cockpit", "invoice", "")}
+        self.assertEqual(len(names), 3, names)
+
+
 if __name__ == "__main__":
     unittest.main()
