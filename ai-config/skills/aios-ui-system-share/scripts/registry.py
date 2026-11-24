@@ -2,9 +2,13 @@
 """registry.py: publish a design system as a shadcn registry, and install or update it in another project.
 
   registry.py publish [dir] --name N --scope S [--version V]     tokens.py check, build, validate, shadcn build
-  registry.py install <built <name>-tokens.json> [dir]            guards, shadcn add, check, lock file
-  registry.py update [dir] [--yes]                                lists local edits and upstream changes first
-  registry.py init <built <name>-base.json> <project name> [dir]  a new Vite project with the system (shadcn init)
+  registry.py install <address> [dir]                             guards, shadcn add, check, lock file
+  registry.py update [dir] [--ref REF] [--yes]                    lists local edits and upstream changes first
+  registry.py init <address of the base item> <name> [dir]        a new Vite project with the system (shadcn init)
+
+An address is the local path of a built `<name>-tokens.json` (`<name>-base.json` for init), or a GitHub registry item
+`owner/repo/<name>-tokens[#ref]` (`#ref` is a tag, branch or commit; none means the default branch). A private
+repository needs `gh auth login` or GH_TOKEN. `update --ref` moves a GitHub install to another ref.
 
 Standard library only, except that the scope guard reads AI-OS's scope config with PyYAML: run it with the AI-OS
 venv's python. The shadcn CLI is run at the pinned version SHADCN_VERSION (AIOS_SHADCN_VERSION overrides).
@@ -25,6 +29,10 @@ from pathlib import Path
 SHADCN_VERSION = "4.23.0"  # the version the placement rules below were measured on (2026-11-24)
 LOCK = "ds-registry.lock.json"
 BUILT = "registry/dist"  # not public/: a Vite app ships public/ in dist, and the registry is not part of the app
+# Each part starts with a letter or digit: an address never begins with `-` (the CLI would read it as an option) and
+# `../x/y` stays a relative path. A ref uses git's own alphabet, so no shell metacharacter can ride in it (npx and pnpm
+# are .cmd shims on Windows and go through cmd.exe).
+GITHUB = re.compile(r"(?P<owner>[A-Za-z0-9][\w.-]*)/(?P<repo>[A-Za-z0-9][\w.-]*)/(?P<item>[A-Za-z0-9][\w.-]*)(?:#(?P<ref>[\w./@+-]+))?")
 ITEM_SCHEMA = "https://ui.shadcn.com/schema/registry-item.json"
 REGISTRY_SCHEMA = "https://ui.shadcn.com/schema/registry.json"
 ROOT_EXTRAS = ("--shadow-color", "--control-height")  # not in the token contract, but the shadow and the controls need them
@@ -269,9 +277,20 @@ def _runner(name, windows):
     return (shutil.which(name) or name) if windows else name
 
 
-def run_shadcn(args, cwd, run=subprocess.run, env=None):
+CMD_META = re.compile(r'[&|<>^%"\r\n]')
+
+
+def cmd_unsafe(args, windows):
+    """The first argument cmd.exe would interpret (`&`, `|`, `<`, `>`, `^`, `%`, a quote, a newline), None elsewhere or
+    when there is none: on Windows npx and pnpm are .cmd shims, so such an argument could run another command."""
+    return next((a for a in args if windows and CMD_META.search(str(a))), None)
+
+
+def run_shadcn(args, cwd, run=subprocess.run, env=None, check=True):
     """Run `shadcn@<pinned> args` in cwd through pnpm dlx or npx. Exit 2 when the CLI cannot be reached or the version
-    does not exist, 1 when it fails."""
+    does not exist, 1 when it fails (check=False returns that failed run instead, for probes)."""
+    if bad := cmd_unsafe(args, os.name == "nt"):
+        _stop(f"refusing to pass {bad!r} to the shadcn CLI: it contains a character cmd.exe would interpret", 3)
     lookup = os.environ if env is None else env
     version = lookup.get("AIOS_SHADCN_VERSION") or SHADCN_VERSION
     pm = ["pnpm", "dlx"] if (Path(cwd) / "pnpm-lock.yaml").is_file() else ["npx", "--yes"]
@@ -289,6 +308,8 @@ def run_shadcn(args, cwd, run=subprocess.run, env=None):
             kind = "does not exist" if "No matching version" in text or "ETARGET" in text else "not reachable"
             print(f"shadcn {version} {kind}: {(lines or text.splitlines() or ['no output'])[0].strip()}", file=sys.stderr)
             raise SystemExit(2)
+        if not check:
+            return done
         print(text, file=sys.stderr)
         raise SystemExit(1)
     return done
@@ -299,6 +320,60 @@ def run_shadcn(args, cwd, run=subprocess.run, env=None):
 def _stop(message, code=3):
     print(message, file=sys.stderr)
     raise SystemExit(code)
+
+
+def parse_address(address):
+    """("github", {owner, repo, item, ref}) for `owner/repo/item[#ref]`, else ("local", Path). A path that exists, or
+    that ends in .json, is always local."""
+    text = str(address)
+    m = GITHUB.fullmatch(text)
+    if m and not text.endswith(".json") and not Path(text).exists():
+        return "github", m.groupdict()
+    return "local", Path(text)
+
+
+def _github(parts, item=None, ref=None):
+    ref = parts["ref"] if ref is None else ref
+    return f"{parts['owner']}/{parts['repo']}/{item or parts['item']}" + (f"#{ref}" if ref else "")
+
+
+def with_ref(address, ref):
+    kind, parts = parse_address(address)
+    if kind != "github":
+        raise ValueError("--ref applies to GitHub addresses (owner/repo/item#ref), not to a local path")
+    if not re.fullmatch(r"[\w./@+-]+", ref):
+        raise ValueError(f"{ref!r} is not a tag, branch or commit name")
+    return _github(parts, ref=ref)
+
+
+def sibling(address, old, new):
+    """The address of the item next to this one (`-tokens` to `-design-md`), in the same repo at the same ref; None
+    when the item is not named `...<old>`."""
+    kind, parts = parse_address(address)
+    if kind == "github":
+        return _github(parts, item=parts["item"][: -len(old)] + new) if parts["item"].endswith(old) else None
+    name = parts.name
+    return str(parts.with_name(name[: -len(old + ".json")] + new + ".json")) if name.endswith(old + ".json") else None
+
+
+def fetch_item(address, cwd, run=subprocess.run):
+    """The registry item at an address: the file for a local path, `shadcn view` for a GitHub item."""
+    kind, parts = parse_address(address)
+    if kind == "local":
+        return _read(parts)
+    done = run_shadcn(["view", str(address)], cwd, run=run)
+    start = done.stdout.find("[")
+    try:
+        return json.loads(done.stdout[start:])[0]
+    except (ValueError, IndexError):
+        _stop(f"could not read {address}: shadcn view printed no item", 1)
+
+
+def item_exists(address, cwd, run=subprocess.run):
+    kind, parts = parse_address(address)
+    if kind == "local":
+        return parts.is_file()
+    return run_shadcn(["view", str(address)], cwd, run=run, check=False).returncode == 0
 
 
 def _read(path):
@@ -359,44 +434,50 @@ def _finish(project, item, address, run_check=True):
     return 1 if fails else 0
 
 
+def _normal(address):
+    """A local path made absolute (the CLI runs in the project); a GitHub address as given."""
+    kind, parts = parse_address(address)
+    return str(parts.resolve()) if kind == "local" else str(address)
+
+
 def install(address, project=".", run=subprocess.run, scopes=None):
     project = Path(project).resolve()
     if problem := tree_problem(project):
         _stop(problem)
-    addr = Path(address).resolve()  # the CLI runs in the project: a relative path would point somewhere else
-    item = _read(addr)
+    addr = _normal(address)
+    item = fetch_item(addr, project, run)
     known, here = (scopes or _scopes)(project)
     if problem := scope_problem(item.get("meta", {}).get("scope"), here, known):
         _stop(problem)
-    run_shadcn(["add", str(addr), "-y"], project, run=run)
-    stem = addr.name[: -len("-tokens.json")] if addr.name.endswith("-tokens.json") else None
+    run_shadcn(["add", addr, "-y"], project, run=run)
     for suffix, once in (("-design-md", not (project / "DESIGN.md").exists()), ("-font", True)):
-        sibling = addr.with_name(f"{stem}{suffix}.json") if stem else None
-        if sibling and sibling.is_file() and once:
-            run_shadcn(["add", str(sibling), "-y"], project, run=run)
-    return _finish(project, item, str(addr))
+        other = sibling(addr, "-tokens", suffix)
+        if other and once and item_exists(other, project, run):
+            run_shadcn(["add", other, "-y"], project, run=run)
+    return _finish(project, item, addr)
 
 
 def init_project(address, name, cwd=".", run=subprocess.run, scopes=None):
-    """A new Vite + shadcn project called `name` in `cwd`, from a built `<name>-base.json` item, with the lock file
-    `update` needs (it points at the `<name>-tokens.json` beside the base item)."""
+    """A new Vite + shadcn project called `name` in `cwd`, from the system's base item, with the lock file `update`
+    needs (it points at the `<name>-tokens` item beside the base item, at the same ref)."""
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", name):
         _stop(f"project name must be a lowercase slug, got {name!r}", 1)
     cwd = Path(cwd).resolve()
     dest = cwd / name
     if dest.exists():
         _stop(f"{dest} already exists: init only creates new projects")
-    base = Path(address).resolve()
-    item = _read(base)
+    base = _normal(address)
+    item = fetch_item(base, cwd, run)
     known, here = (scopes or _scopes)(cwd)
     if problem := scope_problem(item.get("meta", {}).get("scope"), here, known):
         _stop(problem)
-    run_shadcn(["init", str(base), "-t", "vite", "-y", "--name", name, "--cwd", str(cwd)], cwd, run=run)
-    tokens_path = base.with_name(base.name.replace("-base.json", "-tokens.json"))
+    run_shadcn(["init", base, "-t", "vite", "-y", "--name", name, "--cwd", str(cwd)], cwd, run=run)
+    tokens_addr = sibling(base, "-base", "-tokens")
     sheet = tokens.find_stylesheet(dest) if dest.is_dir() else None
-    if sheet and tokens_path.is_file():
+    if sheet and tokens_addr and item_exists(tokens_addr, dest, run):
         css = sheet.read_text(encoding="utf-8-sig", errors="replace")
-        (dest / LOCK).write_text(json.dumps(make_lock(_read(tokens_path), css, str(tokens_path)), indent=2) + "\n", encoding="utf-8")
+        lock = make_lock(fetch_item(tokens_addr, dest, run), css, tokens_addr)
+        (dest / LOCK).write_text(json.dumps(lock, indent=2) + "\n", encoding="utf-8")
         print(f"{name}: created, lock file written; commit everything (the CLI adds its own files) before the first update")
     return 0
 
@@ -420,7 +501,7 @@ def update_design(design, block, upstream):
     return notes + [f"note: {n}" for n in stale_design_notes(text, upstream)]
 
 
-def update(project=".", yes=False, run=subprocess.run, scopes=None):
+def update(project=".", yes=False, run=subprocess.run, scopes=None, ref=None):
     project = Path(project).resolve()
     if problem := tree_problem(project):
         _stop(problem)
@@ -428,30 +509,40 @@ def update(project=".", yes=False, run=subprocess.run, scopes=None):
     if not lock_path.is_file():
         _stop(f"{LOCK} not found: this project has no recorded install (run install first)")
     lock = _read(lock_path)
-    item = _read(lock["address"])
+    address = lock["address"]
+    if ref:
+        try:
+            address = with_ref(address, ref)
+        except ValueError as e:
+            _stop(str(e))
+    item = fetch_item(address, project, run)
     known, here = (scopes or _scopes)(project)
     if problem := scope_problem(item.get("meta", {}).get("scope"), here, known):
         _stop(problem)
     css = _sheet(project).read_text(encoding="utf-8-sig", errors="replace")
     d = drift(lock, css, item)
-    print(f"{lock['name']}: installed {lock['version']}, available {item['meta'].get('version')}")
+    moved = address != lock["address"]
+    print(f"{lock['name']}: installed {lock['version']}, available {item['meta'].get('version')}"
+          + (f" at {address}" if moved else ""))
     for e in d["local_edits"]:
         print(f"  local edit, will be overwritten: {e['name']} ({e['where']}) {e['lock']} -> {e['now']}")
     for e in d["upstream"]:
         print(f"  upstream: {e['name']} ({e['where']}) {e['lock']} -> {e['new']}")
-    if not d["upstream"] and not d["local_edits"]:
+    if moved:
+        print(f"  the lock will move from {lock['address']} to {address}")
+    if not d["upstream"] and not d["local_edits"] and not moved:
         print("  nothing to do")
         return 0
     if not yes:
         _stop("nothing changed yet: re-run with --yes to apply")
-    run_shadcn(["add", lock["address"], "-o", "-y"], project, run=run)
+    run_shadcn(["add", address, "-o", "-y"], project, run=run)
     sheet = _sheet(project)
     block = tokens.frontmatter(tokens.parse_css(sheet.read_text(encoding="utf-8-sig", errors="replace")))
     design = project / "DESIGN.md"
     if design.is_file():
         for note in update_design(design, block, d["upstream"]):
             print(note, file=sys.stderr if note.startswith("DESIGN.md not updated") else sys.stdout)
-    return _finish(project, item, lock["address"])
+    return _finish(project, item, address)
 
 
 def main(argv=None):
@@ -462,6 +553,7 @@ def main(argv=None):
     i = sub.add_parser("install"); i.add_argument("address"); i.add_argument("dir", nargs="?", default=".")
     n = sub.add_parser("init"); n.add_argument("address"); n.add_argument("name"); n.add_argument("dir", nargs="?", default=".")
     u = sub.add_parser("update"); u.add_argument("dir", nargs="?", default="."); u.add_argument("--yes", action="store_true")
+    u.add_argument("--ref", help="move a GitHub install to this tag, branch or commit")
     a = ap.parse_args(argv)
     if a.cmd == "publish":
         r = publish(a.dir, name=a.name, scope=a.scope, version=a.version)
@@ -474,7 +566,7 @@ def main(argv=None):
         return install(a.address, a.dir)
     if a.cmd == "init":
         return init_project(a.address, a.name, a.dir)
-    return update(a.dir, a.yes)
+    return update(a.dir, a.yes, ref=a.ref)
 
 
 if __name__ == "__main__":

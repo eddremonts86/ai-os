@@ -34,23 +34,27 @@ stopped before changing anything (dirty tree, scope guard, or `update` waiting f
    it in the stylesheet.
 5. Items written: `<name>-tokens` (`registry:theme`, safe to re-run), `<name>-design-md` (`registry:file`, installed
    once), `<name>-font` (only for a fontsource import), `<name>-base` (`registry:base`, for `init`).
-   Nothing is hosted or pushed. Hosting the registry is a separate decision.
+   Nothing is hosted or pushed. To host it on GitHub, commit `registry.json` and `registry/<name>/DESIGN.md` to the
+   registry repo (no build needed: `registry/dist/` stays out) and tag the commit with the version (`v0.1.0`).
+   Consumers then install from the repo by address, below.
 
 ## Mode 2: install (a project that should adopt the system)
 
 1. The project must be a git repository with a clean tree; `install` stops otherwise.
-2. `~/.ai-os/venv/bin/python "$R" install <path to the built <name>-tokens.json> [dir]` (relative paths are fine). It
-   stops when the item's scope is missing, not in the configuration, or different from this folder's. Then
-   `shadcn add` the tokens, the `DESIGN.md` item only when the project has none, and the font item, then
-   `tokens.py check`, then writes `ds-registry.lock.json`: the address (made absolute), version, scope and every
-   installed value.
+2. `~/.ai-os/venv/bin/python "$R" install <address> [dir]`. An address is either the local path of a built
+   `<name>-tokens.json` (relative is fine) or a GitHub registry item, `owner/repo/<name>-tokens#ref`, where `#ref` is a
+   tag, branch or commit (letters, digits and `. / @ + -` only; pin a tag; without one it reads the default branch). A private repository needs `gh auth login`
+   or `GH_TOKEN`; nothing is stored in a file. It stops when the item's scope is missing, not in the configuration, or
+   different from this folder's. Then `shadcn add` the tokens, the `DESIGN.md` item only when the project has none, and
+   the font item (the siblings are looked up in the same repo at the same ref), then `tokens.py check`, then writes
+   `ds-registry.lock.json`: the address (a local path made absolute), version, scope and every installed value.
 3. If the project had no `DESIGN.md`, the one it received is the producer's: edit its `name` and description now.
-   Commit `ds-registry.lock.json` and `DESIGN.md` with the change. The lock's address is a path on this machine until the
-   registry is hosted.
+   Commit `ds-registry.lock.json` and `DESIGN.md` with the change. A GitHub address in the lock works on any machine; a
+   local path only on this one.
 4. Rollback, if something is wrong before the commit: `git checkout -- .` and delete the untracked `DESIGN.md` and
    `ds-registry.lock.json` the install added.
 
-A brand-new project starts from the base item: `~/.ai-os/venv/bin/python "$R" init <path to <name>-base.json> <project name> [dir]`
+A brand-new project starts from the base item: `~/.ai-os/venv/bin/python "$R" init <address of <name>-base> <project name> [dir]`
 creates a Vite project with the system's style, icons, tokens and `DESIGN.md` (same scope guard) and writes the lock
 file, so `update` works there too. Edit the `DESIGN.md` name and description, then commit everything (the lock
 file and the CLI's own files) before the first `update`: it refuses a dirty tree.
@@ -58,7 +62,8 @@ file and the CLI's own files) before the first `update`: it refuses a dirty tree
 ## Mode 3: update (the system changed upstream)
 
 1. Re-run `publish` in the producer with a new `--version` (mode 1, step 2 first), then in the consumer:
-   `~/.ai-os/venv/bin/python "$R" update [dir]`. With a clean tree it compares the stylesheet with the lock file and
+   `~/.ai-os/venv/bin/python "$R" update [dir] [--ref <tag>]`. For a GitHub install `--ref` moves it to that tag,
+   branch or commit (without it, the recorded address is read again); for a local path it is refused. With a clean tree it compares the stylesheet with the lock file and
    prints every token the project edited locally (these will be overwritten) and every token the new version
    changes. Nothing has changed yet.
 2. **Show that list to the user and wait.** Only then `update [dir] --yes`: `shadcn add -o` on the tokens, the
@@ -79,8 +84,9 @@ file and the CLI's own files) before the first `update`: it refuses a dirty tree
 
 ## Limits
 
-The scope guard reads the item's `meta.scope`, which a hand-edited file can lie about: it prevents mistakes, not
+On Windows an argument containing `& | < > ^ %` or a quote is refused (npx and pnpm run through cmd.exe), which also covers a
+hostile `ds-registry.lock.json`. The scope guard reads the item's `meta.scope`, which a hand-edited file can lie about: it prevents mistakes, not
 attacks. The findings behind the placement rules are for shadcn CLI 4.23.0; raising `SHADCN_VERSION` means running
 `AIOS_SHADCN_TESTS=1 ~/.ai-os/venv/bin/python -m unittest setup.tests.test_aios_ui_share` first, because the tests that
-run by default only guard the generated JSON. Hosted registries (GitHub, private auth), the shadcn MCP server and Vue
-projects are not covered yet.
+run by default only guard the generated JSON. GitHub registries (public or private through `gh`) are covered; other hosts
+and `@namespace` registries, the shadcn MCP server and Vue projects are not.
