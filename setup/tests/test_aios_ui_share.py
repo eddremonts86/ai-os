@@ -530,6 +530,19 @@ class AddressTests(unittest.TestCase):
         for risky in ("-x/y/z", "--help/y/z", "me/-r/z", "../registry/dist/acme-tokens", "./a/b/c"):
             self.assertEqual(registry.parse_address(risky)[0], "local", risky)
 
+    def test_a_ref_carrying_shell_metacharacters_is_not_a_github_address(self):
+        for hostile in ("a/b/c#v1&calc", "a/b/c#v1|calc", "a/b/c#v1 x", 'a/b/c#"v1"', "a/b/c#v1%PATH%", "a/b/c#v1^x"):
+            self.assertEqual(registry.parse_address(hostile)[0], "local", hostile)
+        with self.assertRaises(ValueError):
+            registry.with_ref("a/b/c#v1", "v2&calc")
+        self.assertEqual(registry.parse_address("a/b/c#release/1.2+rc@x")[0], "github")
+
+    def test_cmd_metacharacters_are_refused_on_windows_only(self):
+        for arg in ("x&calc", "a|b", "<f", "a>b", "a^b", "%PATH%", 'a"b', "a\nb"):
+            self.assertEqual(registry.cmd_unsafe(["add", arg], True), arg)
+            self.assertIsNone(registry.cmd_unsafe(["add", arg], False))
+        self.assertIsNone(registry.cmd_unsafe(["add", "me/r/acme-tokens#v1.0.0", "-o", "-y"], True))
+
     def test_an_existing_local_path_wins_over_a_github_shape(self):
         with tempfile.TemporaryDirectory() as d:
             here = os.getcwd()
@@ -650,6 +663,20 @@ class GitHubFlowTests(unittest.TestCase):
             self.assertEqual(fake.args("add"), [["add", "me/design-systems/acme-tokens#v2", "-o", "-y"]])
             lock = json.loads(Path(d, registry.LOCK).read_text(encoding="utf-8"))
             self.assertEqual((lock["address"], lock["version"]), ("me/design-systems/acme-tokens#v2", "0.2.0"))
+
+    def test_a_ref_move_with_identical_tokens_still_moves_the_lock(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.lock_project(d)
+            fake = FakeShadcn(self.items("0.2.0"))  # same stylesheet, so no token differs
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as cm:
+                registry.update(d, yes=False, run=fake, scopes=self.OK, ref="v2")
+            self.assertEqual(cm.exception.code, 3)  # asks for --yes instead of saying "nothing to do"
+            self.assertIn("will move", out.getvalue())
+            with self.quiet():
+                registry.update(d, yes=True, run=fake, scopes=self.OK, ref="v2")
+            lock = json.loads(Path(d, registry.LOCK).read_text(encoding="utf-8"))
+            self.assertEqual(lock["address"], "me/design-systems/acme-tokens#v2")
 
     def test_update_without_a_ref_reads_the_recorded_address(self):
         with tempfile.TemporaryDirectory() as d:

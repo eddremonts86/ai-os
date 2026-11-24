@@ -43,7 +43,7 @@ stopped before changing anything (dirty tree, scope guard, or `update` waiting f
 1. The project must be a git repository with a clean tree; `install` stops otherwise.
 2. `~/.ai-os/venv/bin/python "$R" install <address> [dir]`. An address is either the local path of a built
    `<name>-tokens.json` (relative is fine) or a GitHub registry item, `owner/repo/<name>-tokens#ref`, where `#ref` is a
-   tag, branch or commit (pin a tag; without one it reads the default branch). A private repository needs `gh auth login`
+   tag, branch or commit (letters, digits and `. / @ + -` only; pin a tag; without one it reads the default branch). A private repository needs `gh auth login`
    or `GH_TOKEN`; nothing is stored in a file. It stops when the item's scope is missing, not in the configuration, or
    different from this folder's. Then `shadcn add` the tokens, the `DESIGN.md` item only when the project has none, and
    the font item (the siblings are looked up in the same repo at the same ref), then `tokens.py check`, then writes
@@ -84,7 +84,8 @@ file and the CLI's own files) before the first `update`: it refuses a dirty tree
 
 ## Limits
 
-The scope guard reads the item's `meta.scope`, which a hand-edited file can lie about: it prevents mistakes, not
+On Windows an argument containing `& | < > ^ %` or a quote is refused (npx and pnpm run through cmd.exe), which also covers a
+hostile `ds-registry.lock.json`. The scope guard reads the item's `meta.scope`, which a hand-edited file can lie about: it prevents mistakes, not
 attacks. The findings behind the placement rules are for shadcn CLI 4.23.0; raising `SHADCN_VERSION` means running
 `AIOS_SHADCN_TESTS=1 ~/.ai-os/venv/bin/python -m unittest setup.tests.test_aios_ui_share` first, because the tests that
 run by default only guard the generated JSON. GitHub registries (public or private through `gh`) are covered; other hosts

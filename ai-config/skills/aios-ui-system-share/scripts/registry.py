@@ -30,8 +30,9 @@ SHADCN_VERSION = "4.23.0"  # the version the placement rules below were measured
 LOCK = "ds-registry.lock.json"
 BUILT = "registry/dist"  # not public/: a Vite app ships public/ in dist, and the registry is not part of the app
 # Each part starts with a letter or digit: an address never begins with `-` (the CLI would read it as an option) and
-# `../x/y` stays a relative path.
-GITHUB = re.compile(r"(?P<owner>[A-Za-z0-9][\w.-]*)/(?P<repo>[A-Za-z0-9][\w.-]*)/(?P<item>[A-Za-z0-9][\w.-]*)(?:#(?P<ref>[^\s#]+))?")
+# `../x/y` stays a relative path. A ref uses git's own alphabet, so no shell metacharacter can ride in it (npx and pnpm
+# are .cmd shims on Windows and go through cmd.exe).
+GITHUB = re.compile(r"(?P<owner>[A-Za-z0-9][\w.-]*)/(?P<repo>[A-Za-z0-9][\w.-]*)/(?P<item>[A-Za-z0-9][\w.-]*)(?:#(?P<ref>[\w./@+-]+))?")
 ITEM_SCHEMA = "https://ui.shadcn.com/schema/registry-item.json"
 REGISTRY_SCHEMA = "https://ui.shadcn.com/schema/registry.json"
 ROOT_EXTRAS = ("--shadow-color", "--control-height")  # not in the token contract, but the shadow and the controls need them
@@ -276,9 +277,20 @@ def _runner(name, windows):
     return (shutil.which(name) or name) if windows else name
 
 
+CMD_META = re.compile(r'[&|<>^%"\r\n]')
+
+
+def cmd_unsafe(args, windows):
+    """The first argument cmd.exe would interpret (`&`, `|`, `<`, `>`, `^`, `%`, a quote, a newline), None elsewhere or
+    when there is none: on Windows npx and pnpm are .cmd shims, so such an argument could run another command."""
+    return next((a for a in args if windows and CMD_META.search(str(a))), None)
+
+
 def run_shadcn(args, cwd, run=subprocess.run, env=None, check=True):
     """Run `shadcn@<pinned> args` in cwd through pnpm dlx or npx. Exit 2 when the CLI cannot be reached or the version
     does not exist, 1 when it fails (check=False returns that failed run instead, for probes)."""
+    if bad := cmd_unsafe(args, os.name == "nt"):
+        _stop(f"refusing to pass {bad!r} to the shadcn CLI: it contains a character cmd.exe would interpret", 3)
     lookup = os.environ if env is None else env
     version = lookup.get("AIOS_SHADCN_VERSION") or SHADCN_VERSION
     pm = ["pnpm", "dlx"] if (Path(cwd) / "pnpm-lock.yaml").is_file() else ["npx", "--yes"]
@@ -329,6 +341,8 @@ def with_ref(address, ref):
     kind, parts = parse_address(address)
     if kind != "github":
         raise ValueError("--ref applies to GitHub addresses (owner/repo/item#ref), not to a local path")
+    if not re.fullmatch(r"[\w./@+-]+", ref):
+        raise ValueError(f"{ref!r} is not a tag, branch or commit name")
     return _github(parts, ref=ref)
 
 
@@ -507,13 +521,16 @@ def update(project=".", yes=False, run=subprocess.run, scopes=None, ref=None):
         _stop(problem)
     css = _sheet(project).read_text(encoding="utf-8-sig", errors="replace")
     d = drift(lock, css, item)
+    moved = address != lock["address"]
     print(f"{lock['name']}: installed {lock['version']}, available {item['meta'].get('version')}"
-          + (f" at {address}" if address != lock["address"] else ""))
+          + (f" at {address}" if moved else ""))
     for e in d["local_edits"]:
         print(f"  local edit, will be overwritten: {e['name']} ({e['where']}) {e['lock']} -> {e['now']}")
     for e in d["upstream"]:
         print(f"  upstream: {e['name']} ({e['where']}) {e['lock']} -> {e['new']}")
-    if not d["upstream"] and not d["local_edits"]:
+    if moved:
+        print(f"  the lock will move from {lock['address']} to {address}")
+    if not d["upstream"] and not d["local_edits"] and not moved:
         print("  nothing to do")
         return 0
     if not yes:
