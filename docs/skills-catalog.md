@@ -73,6 +73,9 @@ globally: iaWorkSpace, plansmith and other project-specific skills.
   builds one from a brief, `extract` maps what an existing app already uses onto shadcn token names, `check`
   verifies tokens for both modes, contrast and `DESIGN.md` against the stylesheet (`scripts/tokens.py`). They
   share one canonical `DESIGN.md` format (`aios-ui-system-check/references/design-md.md`).
+- **aios-ui-system-share**: publishes a project's tokens and `DESIGN.md` as a shadcn registry and installs or updates
+  them in another project (`scripts/registry.py`, shadcn CLI pinned). A scope guard stops a system from crossing
+  scopes, and a lock file lists local edits before an update overwrites them.
 - **aios-ui-form-create**: builds a form the same way in every project, on shadcn's `Field` components from the
   project's tokens. One set of rules (`references/form-rules.md`: one column, label above, validation on first
   blur then on change, error text under the field, one primary action last) and recipes for `react-hook-form`

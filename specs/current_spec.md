@@ -1,227 +1,277 @@
 # Current Spec
 
-# `/aios-ui-form-create`: build forms on the project's design system
+# `/aios-ui-system-share`: one design system, many projects, through a shadcn registry
 
 ## Metadata
 
-- **Date:** 2026-11-23
-- **Status:** completed (approved 2026-11-23; all four blocks done, nothing pushed)
-- **Blocks:** 4
-- **Review:** cold read by a fresh reviewer on 2026-11-23, 6 majors, all addressed
+- **Date:** 2026-11-24
+- **Status:** completed (approved 2026-11-24; all five blocks done; committed locally, nothing pushed)
+- **Blocks:** 5
+- **Review:** cold read by a fresh reviewer on 2026-11-24 (`workflows/project_start.md` step 3b): 0 blockers, 8 majors, all verified against the repo and addressed
 - **Author:** Claude (session design-systems-forms)
 - **Reviewer:** Edd
 
 ## Objective
 
-Add one command, `/aios-ui-form-create`, that builds a form the same way in every project: on shadcn's `Field`
-components, from the project's tokens, with one written set of layout, validation and error rules.
+Add one command, `/aios-ui-system-share`, that publishes a project's design system (tokens and `DESIGN.md`) as a
+shadcn registry and installs or updates it in another project, so every project of a scope shares one visual identity
+without copying files by hand.
 
 ## Context
 
-This is piece 3 of the design-system work; piece 1 (`/aios-ui-system-create`, `-extract`, `-check`) is built
-(`archive/2026-11-23-aios-ui-system-core.md`). Piece 2 (sharing a system through a shadcn registry) is still
-to come and does not block this one.
+This is piece 2 of the design-system work. Piece 1 (`/aios-ui-system-create`, `-extract`, `-check`) and piece 3
+(`/aios-ui-form-create`) are built and merged (`archive/2026-11-23-aios-ui-system-core.md`,
+`archive/2026-11-24-aios-ui-form-create.md`). A system now lives in one project as a stylesheet plus a root
+`DESIGN.md`; a second project can only get it by copying.
 
-AI-OS can audit a form but not build one consistently:
+A research pass on 2026-11-24 (shadcn CLI 4.23.0, primary docs, and a real build plus install into a fresh Vite +
+shadcn project) found that a registry can carry the whole contract:
 
-- `optimizing-forms` audits and repairs, and says building belongs to "the project's form-construction skill".
-- `react-hook-form-zod` is linked since commit `a56ec1760`, but it is third-party, pins old versions and calls
-  shadcn's `Field` "coming soon".
-- `shadcn-patterns` still teaches the legacy `<Form>` / `FormField` wrapper. No skill covers shadcn's `Field`
-  family, which the current CLI installs (`Field`, `FieldGroup`, `FieldSet`, `FieldLegend`, `FieldLabel`,
-  `FieldDescription`, `FieldError`, `FieldContent`, `FieldSeparator`, `FieldTitle`; `InputGroup` with
-  `InputGroupAddon`, `InputGroupInput`, `InputGroupText`, `InputGroupButton`, `InputGroupTextarea`).
-- Skills disagree on validation timing (Hallmark: on blur, then on every input; `optimizing-forms`: on blur,
-  never on keypress), and nothing fixes form layout, the error pattern or submit states per project.
+- One `registry:theme` item carried the 31 colours in both modes, `--radius`, fonts, shadows, `--ease-out` and the
+  durations. After install every value equalled the source and `tokens.py check` exited 0.
+- `DESIGN.md` travels as a `registry:file` item with `target: "~/DESIGN.md"`.
+- Re-running `shadcn add` updates tokens, but silently overwrites a token the consumer edited, and `DESIGN.md` with
+  `-o`. There is no update command, no lockfile and no version field.
+- Six things behave differently from the stylesheet and must be built around (Design, "Placement rules").
 
-The method comes from the videos studied for piece 1: one input component with slots instead of a component
-per case, every state explicit, one column, related fields grouped by spacing, the same edge on every control,
-the action last, and a form never left floating in empty space.
+Measured on 2026-11-24 for this Spec: shadows and `--ease-out` in `@theme inline` give the same computed
+`box-shadow` and `transition-timing-function` as in `@theme`, in light and dark (Chrome, Cockpit dev server). That
+settles the one open question the research left.
 
 ## Design
 
 ### Command
 
-`/aios-ui-form-create "<what the form collects and what happens on submit>"`, explicit invocation only, in
-`ai-config/skills/aios-ui-form-create/` (`SKILL.md`, `references/form-rules.md`, `references/field-recipes.md`).
-No new audit command: `optimizing-forms` stays the audit and its `audit-forms.mjs`
-(`ai-config/skills/optimizing-forms/audit-forms.mjs`) is this command's gate.
+`/aios-ui-system-share <publish|install|update> [args]`, explicit invocation only, in
+`ai-config/skills/aios-ui-system-share/` (`SKILL.md`, `scripts/registry.py`). The fourth command of the
+`aios-ui-system-*` family; `aios-ui-system-check` stays the gate and is not changed except for a pointer.
 
-### Steps the skill prescribes
+- **`publish [dir] --scope <name>`** (producer). Needs a root `DESIGN.md` and `tokens.py check` exiting 0, else
+  stops. Runs `registry.py build`, then `shadcn registry validate` and `shadcn build`. Output: `registry.json`, a copy of
+  `DESIGN.md` under `registry/<name>/`, and the built items in `registry/dist/` (not `public/`, which a Vite app ships);
+  nothing is written until the CLI has answered; nothing hosted.
+- **`install <address> [dir]`** (consumer). `<address>` is the local path of the built `<name>-tokens.json`; the `-design-md` item beside it is added only when
+  the project has no `DESIGN.md`, and the `-font` item when there is one.
+  Needs a git repository with a clean tree, else stops and says why. Runs `shadcn add <address> -y` (no
+  namespace and no `registry add`: those are for URL addresses, a follow-up), then `tokens.py check`, then writes
+  the lock file. Verified 2026-11-24 with CLI 4.23.0: adding by local path changed only `src/index.css`;
+  `components.json` and `package.json` stay untouched unless the item has npm `dependencies` (the font item).
+- **`update [dir]`** (consumer). Same preconditions. Compares the stylesheet with the lock file (below), lists
+  every token the consumer changed locally and every token the new item changes, and asks before going on. Then
+  `shadcn add <tokens item> -o -y`, shows `git diff`, rewrites the `colors:` block of `DESIGN.md`, rewrites the
+  lock file, runs `check`. A failed step leaves the tree as it is; the skill prints `git checkout -- .` as the
+  rollback.
 
-1. **System first.** The project needs a design system (a root `DESIGN.md`). Without one, stop and point at
-   `/aios-ui-system-create` or `/aios-ui-system-extract`. Read its `## Forms` section; if the section is
-   missing, show the one that would be appended (the defaults in `form-rules.md`) and ask before writing it.
-   With no user to answer, append it and say so.
-2. **Stack.** Read `package.json`: use the form library the project already has (`react-hook-form` or
-   `@tanstack/react-form`); with none, `react-hook-form` with `zod` and `@hookform/resolvers`. Add only the
-   shadcn components whose file is absent: `field`, `input-group` and each control the form uses (`checkbox`,
-   `select`, `textarea`, ...). An existing file is never overwritten. Move what was added onto the project's
-   tokens (rule 27) before using it. A Vue project is sent to
-   `shadcn-vue`; this command is React.
-3. **Schema.** One `zod` schema per form, written first, shared by client validation and the submit handler.
-   Field names, types, required or optional and messages come from it.
-4. **Layout**, per `form-rules.md`.
-5. **Fields**, per `field-recipes.md`: every control inside `Field`, never the legacy `<Form>` wrapper.
-6. **States.** Each control: default, hover, focus, disabled, invalid. The form: idle, submitting, failed
-   (field errors and a form-level message), succeeded.
-7. **Verify.** `optimizing-forms`' `audit-forms.mjs` reports nothing new, `a11y-auditor` on the form, then
-   `/aios-ui-verify`; screenshots of the form empty, with errors, filled, and on a phone are looked at and sent.
+**Lock file.** `ds-registry.lock.json` at the consumer's root, written by `registry.py lock` after `install` and
+`update`: the address, item name, `meta.version`, `meta.scope`, and every installed variable with its value per
+selector. It is what makes a local edit distinguishable from an upstream change; without it `update` cannot tell
+them apart (the CLI has no lockfile of its own).
 
-### `references/form-rules.md` (the one set of rules)
+**`DESIGN.md`.** `install` never writes it when one exists. `update` replaces only the flat `colors:` map in its
+frontmatter, through `registry.py write_colors` (new, owned by this skill; `tokens.py` only prints the block). If
+the file has no frontmatter or no `colors:` block, or the block has anything but flat `key: "value"` lines, it
+stops and prints the block to paste. Address and version live in the lock file, not in `DESIGN.md`.
 
-Layout:
-- One column. Two fields share a row only when they are short and read as one thing (city and postcode).
-- Width follows the expected answer; the form has a maximum width and sits in a card or beside related
-  content, never alone in a wide empty page.
-- Related fields are a `FieldSet` with a `FieldLegend`; groups are separated by more space than fields.
-- Label above the control. A placeholder is an example, never the label.
-- Every control has the same edge (`--input`) and the same height; on a phone, targets are at least 44px.
-- Help text sits under the control (`FieldDescription`); consent text is not styled as a label, and its links
-  are underlined.
-- One primary action, last, aligned with the fields' left edge; a destructive action is apart from it.
-- Mark the minority: if most fields are required, mark the optional ones in words, and the reverse.
+**Scope guard.** `ai-os scope which` in the producer folder at `publish` and in the consumer folder at `install` and
+`update`. `publish --scope` must be the producer folder's own scope and one of the scope names in the AI-OS config
+(`setup/ai-os-scope.py`), else it stops. `install` and `update` stop when either side resolves to no scope, and when the two differ, printing both.
+The guard checks the item's `meta.scope`, which a hand-edited item can lie about: it prevents a mistake, not an attack.
 
-Behaviour:
-- Validate a field when it first loses focus, not on the first keystrokes; from then on re-validate it on
-  every change so an error clears the moment it is fixed. In `react-hook-form` that is `mode: "onTouched"`
-  (not `onBlur`, whose re-validation on change only starts after a submit). In `@tanstack/react-form` it is an
-  `onBlur` validator plus an `onChange` validator that returns nothing until the field's `meta.isBlurred`.
-  Hallmark's field recipe already says the same; `optimizing-forms` gets a one-line edit to match.
-- The error is text under the field (`FieldError`), tied with `aria-describedby`, with `aria-invalid` on the
-  control and `data-invalid` on the `Field`. It says what to do, not only what is wrong.
-- Submit stays enabled. On submit with errors, focus moves to the first invalid field; a form longer than
-  one screen also gets a summary at the top that links to each field.
-- While submitting, the button shows it and cannot fire twice; inputs keep their values on failure.
-- Server errors map onto fields where they belong and into one form-level alert otherwise.
-- Native types, `autocomplete`, `inputmode` and `name` are set so the browser and password managers help.
-- More than about eight fields: split into steps with progress, validation per step, and Back keeping data.
+**CLI version.** `registry.py` holds `SHADCN_VERSION = "4.23.0"`, the version the findings were measured on, and runs
+`shadcn@<that>` through the project's package runner (`pnpm dlx` or `npx`); `AIOS_SHADCN_VERSION` overrides it.
+When the CLI cannot be reached (offline, version unpublished) the command exits 2 with
+`shadcn <version> not reachable: <reason>` and changes nothing. Raising the constant means running the gated
+integration test below first.
 
-### `references/field-recipes.md`
+### `scripts/registry.py` (stdlib only)
 
-Short, complete examples against the current shadcn components. Every recipe is built in block 3 on a
-recipes page of the Ledger project, which uses shadcn's `base-nova` style on Base UI primitives; the file says
-so, and that a Radix or React Aria project must check the control props against its own components:
-`Field` with `react-hook-form`'s `Controller` and a `zod` resolver; the same with `@tanstack/react-form`;
-text, select, checkbox, radio group, switch and textarea; one input with a prefix, suffix, icon or button
-through `InputGroup` (search, amount with currency, URL); a `FieldSet` group; the submit button's states; the
-error summary.
+It loads the sibling `aios-ui-system-check/scripts/tokens.py` by path, resolved from its own real location
+(`Path(__file__).resolve().parents[2]`, so it still works through each CLI's symlink; `AI_OS_ROOT` is the fallback).
+`aios-ui-system-create` runs `tokens.py` as a command and does not import it; only the tests import by path today.
+It reads the stylesheet with `tokens.parse_css` and writes `registry.json` plus these items (prefix `<name>`).
+
+**What is exported.** `parse_css` folds `@theme` and `@theme inline` into one `@theme` key, so the source placement
+cannot be recovered and placement is decided by variable name (rules below). The export set is: the contract's
+colour variables, `tokens.SINGLE_VARS`, every `--duration-*`, and a short fixed list of extras the Cockpit needs
+(`--shadow-color`, `--control-height`) kept as a table in `registry.py`. Any other custom property is not
+exported, and `publish` prints each skipped name so the author sees it. A value that points with `var(--x)` at
+a name outside the export set makes `publish` fail. The font item is built only when the stylesheet imports a
+`@fontsource-variable/<name>` package; otherwise there is none.
+
+| Item | Type | Content | Install policy |
+| --- | --- | --- | --- |
+| `<name>-tokens` | `registry:theme` | `cssVars` and `css` per the placement rules; `meta.scope`, `meta.version` | safe to re-run with `-o` |
+| `<name>-design-md` | `registry:file` | `DESIGN.md` to `~/DESIGN.md` | once; never `-o` |
+| `<name>-font` | `registry:font` | only when the system uses a fontsource font | once |
+| `<name>-base` | `registry:base` | the tokens and `DESIGN.md` plus `config` (style, icon library, base colour) | `shadcn init <address>` for a new project |
+
+There is no bundle item in this slice (decided in block 2): its `registryDependencies` must name the items by an
+address that exists only once the registry is hosted, and a local path install does not need one.
+
+### Placement rules (each is a verified finding and gets a test)
+
+1. Colours and `--radius` go in `cssVars.light` and `cssVars.dark`.
+2. Fonts, shadows, `--ease-out` and `transition-duration-*` go in `cssVars.theme`. They land in `@theme inline`,
+   which renders identically to `@theme` (measured); `aios-ui-system-create` step 4 is reworded to allow both.
+3. Every other single-mode variable (`--shadow-color`, `--duration-*`, `--control-height`) goes in
+   `css: {":root": ...}`, never in `cssVars`: the CLI would emit self-referencing aliases such as
+   `--duration-fast: var(--duration-fast)`.
+4. `@theme` is never a key of `css` with declarations: the install fails. Only nested at-rules may sit under it.
+5. The bundle is `registry:theme`, not `registry:item`: a `registry:item` parent drops its dependencies' tokens.
+6. New projects use the `registry:base` item with `config`: `init` on a theme item ignores the style.
+
+Not shipped, and said in the skill: the `.light` selector (the CLI appends it after `.dark`; the specimen page keeps
+it locally), components, and removals (a token dropped from the system stays in consumers).
 
 ### Changes outside the new skill
 
-- `ai-config/skills/aios-ui-system-check/references/design-md.md`: a `## Forms` section in the canonical
-  template (control height, label position, required marking, validation timing, error pattern, maximum
-  width, action alignment), appended after `## Variants and patterns` so the eight sections `impeccable`
-  reads stay as they are; the file's introduction then says three AI-OS sections instead of two.
-- `ai-config/skills/aios-ui-system-create/SKILL.md`: the specimen page also shows one short form built by
-  these rules.
-- `ai-config/skills/shadcn-patterns/SKILL.md`: the legacy `<Form>` / `FormField` section is replaced by a
-  short `Field` pointer to this skill; its anti-pattern list gains "the legacy `<Form>` wrapper".
-- `ai-config/skills/optimizing-forms/SKILL.md` and `ai-config/skills/pick-ui-library/SKILL.md`: name
-  `/aios-ui-form-create` as the form-construction skill. In `optimizing-forms`, the "Validation on blur" row of
-  its rule table gets the same timing rule (one line); nothing else in that skill changes. `react-hook-form-zod` is not edited (third-party).
-- `rules/always_do.md` rule 26 row, `README.md`, `docs/skills-catalog.md`, `setup/skills-routing-bank.json`,
-  then `python3 setup/ai-os-stats.py --write` (219 to 220 skills).
+- `ai-config/skills/aios-ui-system-create/SKILL.md` step 4: shadows and ease may sit in `@theme` or `@theme inline`;
+  the "in `:root` they are ignored" warning stays.
+- `ai-config/skills/aios-ui-system-check/SKILL.md`: a one-line pointer to `/aios-ui-system-share`. `DESIGN.md` and
+  its template do not change.
+- `rules/always_do.md` rule 26 row, `README.md`, `docs/skills-catalog.md`, `setup/skills-routing-bank.json`, then
+  `python3 setup/ai-os-stats.py --write` (221 to 222 skills). The skill needs no extra linking: the installers link
+  every top-level `SKILL.md`.
+
+### Decisions (defaults chosen; change any at approval)
+
+1. **Home of the registry:** the system's own project folder (`registry/`), local paths in this slice. Where it
+   is hosted is a follow-up, decided per scope; only the AI-OS brand may live in the public ai-os repo.
+2. **Auth:** none in this slice. For a private GitHub registry later, `gh auth login` or `GH_TOKEN` (already named
+   in `dev-env/env-config/.env.example`), never a token in `components.json`.
+3. **`DESIGN.md`:** installed once; afterwards the consumer owns it and updates regenerate only the `colors:` block.
+4. **Components:** tokens only. Shipping rewritten components is a later piece because every update would overwrite
+   local edits.
+5. **Shadow placement:** `@theme inline` accepted (measured).
+6. **`.light`:** not shipped.
+7. **shadcn MCP server:** not registered now; revisit with hosting.
+8. **Vue:** not promised; `shadcn-vue` reading the same format is unconfirmed.
 
 ## Acceptance criteria
 
-- [x] `ai-config/skills/aios-ui-form-create/SKILL.md` exists, description at most 350 characters;
+- [ ] `ai-config/skills/aios-ui-system-share/SKILL.md` exists, description at most 350 characters;
       `ai-os-skills.py lint --strict` exits 0 and a routing-bank request for it lands in the top 3.
-- [x] `setup/tests/test_aios_ui_form.py` passes and asserts: neither recipe file nor `shadcn-patterns` uses
-      `<FormField`, `<FormItem` or `FormMessage`; every component name the recipes import from
-      `@/components/ui/field` and `@/components/ui/input-group` is in the list of exports recorded in the test;
-      the canonical template has `## Forms`; `optimizing-forms` and `pick-ui-library` name the command.
-- [x] In the scratch "Ledger" project from piece 1, a subagent that follows the skill as written builds a
-      "New invoice" form (client, email, issue and due date, amount with currency, VAT number, notes, a
-      send-me-a-copy checkbox). It type-checks and builds; validation fires on blur and clears on change;
-      submitting with errors focuses the first invalid field. `tokens.py scan` is recorded before and after:
-      `literals` and `tailwind.palette` stay empty and `tailwind.arbitrary` gains no entry.
-- [x] A recipes page in the same project renders every recipe in `field-recipes.md`, including the
-      `@tanstack/react-form` variant, and builds without type errors.
-- [x] On that form: `audit-forms.mjs` reports no finding (it runs the rules that apply to the project's stack), axe reports no violation, `/aios-ui-verify` passes,
-      and four screenshots (empty, errors, filled, phone) were looked at and sent.
-- [x] The full `setup/tests` suite passes with PyYAML, `ai-os-stats.py --check` passes, and the pre-push hook
+- [ ] `setup/tests/test_aios_ui_share.py` passes and asserts, on a generated registry (no network): the item's
+      variables equal the stylesheet's for both modes (round trip); no `cssVars` value is a self-referencing
+      `var()`; no `css` key is `@theme` with declarations; the bundle type is `registry:theme`; `DESIGN.md` is a
+      `registry:file` with a `target`; `meta.scope` is set; variables outside the export set are reported and a
+      `var()` to one fails; `write_colors` replaces only the `colors:` block and refuses a file without one; the
+      scope guard refuses an unresolved scope, a name not in the config, and a mismatch; no bash-only call.
+- [ ] A second test class, `AIOS_SHADCN_TESTS=1` only, installs into a temporary Vite + shadcn project with the
+      pinned CLI and asserts placement rules 3 to 6 against the real behaviour. It is run in block 4 and its output
+      recorded; it is not in the pre-push hook, and a skipped run is never reported as a pass.
+- [ ] From the Cockpit project, `publish` writes a registry that `shadcn registry validate` accepts, and a fresh
+      Vite + shadcn project installs it by local path: `tokens.py check` exits 0, `vite build` succeeds, and a
+      screenshot of the consumer next to the producer shows the same palette, radius, fonts and shadows in light and dark.
+- [ ] `update` after changing one token in the producer: the consumer's `git diff` shows only that token (and the
+      lock file); a local edit of `--primary` is listed from the lock-file comparison before anything is
+      overwritten; a local line in `DESIGN.md` survives; `check` exits 0 afterwards.
+- [ ] `install` and `update` stop with both scope names on a mismatch, when a scope is unresolved, on a dirty
+      tree and on a folder that is not a git repository.
+- [ ] A new project created with `shadcn init <base item>` gets the right style and the tokens.
+- [ ] The full `setup/tests` suite passes with PyYAML, `ai-os-stats.py --check` passes, and the pre-push hook
       fed the commit on stdin (no push) passes.
 
 ## Non-goals (explicit)
 
-- A new audit command, or changes to `optimizing-forms` beyond the one timing line and the pointer.
-- Editing third-party `react-hook-form-zod`, or vendored `hallmark/` and `impeccable/`.
-- Vue, Nuxt and native forms.
-- Tables (the other half of the "Forms & Tables" material) and multi-step wizards beyond the rule above.
-- Server-side frameworks: the recipes stop at a typed submit handler.
-- Piece 2 (registry).
+- Hosting the registry (GitHub, Pages, Coolify) and any private-registry auth: a follow-up that needs a repo and
+  the owner's decision; nothing is published or pushed.
+- Shipping components, hooks or blocks in the registry.
+- Registering the shadcn MCP server; indexing the registry in ui-indexador.
+- Vue, Nuxt and native projects; Windows execution beyond a path-safe script (no `pwsh` here).
+- `extends` on a `registry:style` (not exercised in the research).
+- Changing the token contract or `tokens.py` rules.
 
 ## Plan (blocks)
 
-### Block 1: rules, recipes and skill (estimated: 60 min)
+### Block 1: lock the contract wording (estimated: 20 min)
 
-**Status:** done (2026-11-23)
+**Status:** done (2026-11-24)
 
-- [x] Write `setup/tests/test_aios_ui_form.py` first and see it fail.
-- [x] Write `references/form-rules.md`, `references/field-recipes.md` and `SKILL.md`.
-- [x] **Verify:** the new test passes except the checks that depend on block 2; lint exits 0.
+- [x] Reword `aios-ui-system-create` step 4 for `@theme` or `@theme inline`; add the pointer in
+      `aios-ui-system-check`.
+- [x] **Verify:** `tokens.py check` still passes on the Cockpit; the existing system tests pass.
 
-### Block 2: template, sibling skills and wiring (estimated: 30 min)
+### Block 2: `registry.py` and its tests, test first (estimated: 90 min)
 
-**Status:** done (2026-11-23)
+**Status:** done (2026-11-24)
 
-- [x] `## Forms` in the canonical template; the specimen line in `aios-ui-system-create`; the `shadcn-patterns`
-      replacement; pointers in `optimizing-forms` and `pick-ui-library`; rule 26, `README.md`, catalogue,
-      routing bank; `ai-os-stats.py --write` and the two PNGs rendered with installed Chrome.
-- [x] Commit blocks 1 and 2.
-- [x] **Verify:** full suite passes with PyYAML; `ai-os-stats.py --check` passes; bank above 70 % with the
-      new request in the top 3.
+- [x] Write `setup/tests/test_aios_ui_share.py` first and see it fail; then `scripts/registry.py` (`build`, `lock`,
+      `write_colors`, the scope guard, the version check).
+- [x] **Verify:** the tests pass; running `build` on the Cockpit and `shadcn registry validate` succeed.
+- Result: 33 tests pass; with `AIOS_SHADCN_TESTS=1` the 3 real-CLI tests pass on shadcn 4.23.0 (validate, build, `add` of
+  the tokens item with every value equal and no self-referencing alias, `init` from the base item). `publish` on a copy of
+  the Cockpit built four items and reported the 19 variables outside the contract; a scope not in the config is refused.
 
-### Block 3: proof on the Ledger project (estimated: 60 min)
+### Block 3: the skill and its wiring (estimated: 45 min)
 
-**Status:** done (2026-11-23)
+**Status:** done (2026-11-24)
 
-- [x] A subagent builds the "New invoice" form and the recipes page by following the skill as written and
+- [x] `SKILL.md` with the three modes, the scope guard, the update procedure and the not-shipped list; rule 26 row,
+      README, catalogue, routing bank; `ai-os-stats.py --write` (PNGs rendered with installed Chrome).
+- [x] **Verify:** lint strict exits 0; bank stays above 70 % with the new request in the top 3; stats check passes.
+- Result: lint strict exits 0; the routing bank lands the new request in the top 3 (46/49; the three misses are other
+  requests, one of which, `humanizer`, already misses on `origin/dev`); `ai-os-stats.py --check` passes (222 skills).
+  Added beyond the Spec: an `init` subcommand (new project from the base item, with the scope guard and the lock file).
+
+### Block 4: proof on a fresh consumer (estimated: 90 min)
+
+**Status:** done (2026-11-24)
+
+- [x] A subagent follows the skill as written: publish from the Cockpit, install into a fresh Vite + shadcn
+      project, change a token and update, hit the scope guard, then `init` a new project from the base item; it
       reports every place the text was unclear or wrong.
-- [x] **Verify:** build and type-check pass; the behaviour in the third acceptance criterion is exercised in
-      a real browser; audit, axe and `/aios-ui-verify` results recorded; the four screenshots looked at.
-- Result: on Ledger the `react-hook-form` path worked as written; the form passes `tsc`, build, axe in four
-  states, `audit-forms.mjs`, `/aios-ui-verify` 12/12 and `tokens.py check`; `tokens.py scan` gained no literal
-  and no arbitrary value. The run found 27 friction points: the `@tanstack/react-form` timing recipe was wrong,
-  five recipes (amount message, textarea, radio, select, error summary) compiled but misbehaved on Base UI,
-  and the rules lacked focus handling, cross-field and summary guidance. All folded back into the skill.
-  Not done: `a11y-auditor` was replaced by axe plus a scripted keyboard pass; `/aios-ui-verify` ran on the dev
-  server; Chrome only; radio and switch hit areas stay 32px on a phone.
+- [x] **Verify:** the acceptance criteria 3 to 6 in a real browser; screenshots of producer and consumer in both
+      modes looked at and sent.
+- Result: a subagent followed the skill as written against a copy of the Cockpit and a fresh Vite + shadcn consumer. All 49
+  custom properties the item sets matched in light and dark at 1280 and 390 px and under reduced motion; `check`
+  and `pnpm build` passed; an update reported the local `--primary` edit before overwriting it, the diff held only the
+  intended tokens and the lock file, and a local `DESIGN.md` line survived. The guards held (dirty tree, non-git folder,
+  hand-edited scope, unreachable CLI exit 2). It found 14 defects in the text and script, all folded back in block 5:
+  a relative lock address broke `update`, `init` with a relative folder failed, `publish` did not check its own scope and
+  wrote files before the CLI answered, `--spacing-control` was not exported, the skill said `python3` where PyYAML is
+  needed, and the rollback and `DESIGN.md` guidance was incomplete. Not verified: a second real scope (the worktree
+  config has one), a real network failure, a producer whose `components.json` differs (covered by a unit test only).
 
-### Block 4: fold back, review, commit (estimated: 30 min)
+### Block 5: fold back, review, commit (estimated: 30 min)
 
-**Status:** done (2026-11-23)
+**Status:** done (2026-11-24)
 
 - [x] Fold the proof's findings into the skill; `aios-reviewer` on the diff; fix what it confirms.
-- [x] Commit, then feed the pre-push hook the commit on stdin without pushing.
-- [x] **Verify:** the hook prints every check and exits 0; the branch is clean; nothing pushed.
+- [x] Commit locally, feed the pre-push hook the commit on stdin without pushing.
+- [x] **Verify:** the hook prints every check and exits 0; the tree is clean; nothing pushed.
+- Result: `aios-reviewer` found 0 blockers and 4 majors, all confirmed and fixed: the Windows interpreter text (the Windows
+  installer gives the system `python` PyYAML and creates no venv), a CRLF `DESIGN.md` rewritten to LF by `update`, the
+  `build` subcommand that skipped every guard (removed), and UTF-8 decoding of CLI output plus a test for the Windows
+  runner path. Not covered by the default test run (stated in the skill): placement rules against the real CLI, which
+  only run with `AIOS_SHADCN_TESTS=1` (4 tests, passing on shadcn 4.23.0).
 
 ## Risks and mitigation
 
 | Risk | Probability | Impact | Mitigation |
 | --- | --- | --- | --- |
-| The recipes drift from shadcn's real `Field` API | med | high | Every recipe is built in block 3 against components the CLI installs today (Base UI family); the test pins the export names |
-| A third opinion on forms next to `optimizing-forms` and Hallmark | med | med | `form-rules.md` states the one timing rule; Hallmark's recipe already matches and `optimizing-forms`' row is edited to match; the audit script stays the gate |
-| The scratch Ledger project was cleaned up | low | low | Recreate it with `/aios-ui-system-create` (commands recorded in the archived Spec) |
-| `audit-forms.mjs` assumes a project shape the proof does not have | med | low | Run it early in block 3; if it cannot run, say so and rely on axe and the browser checks |
-| `shadcn-patterns` readers lose the legacy section they need for an old project | low | low | The replacement says the legacy wrapper still exists and names `react-hook-form-zod` for it |
+| The shadcn CLI changes registry behaviour (these findings are for 4.23.0) | med | med | the version is pinned in `registry.py`; the gated integration test checks rules 3 to 6 and runs before the pin is raised and in block 4; the always-on tests only guard the generated JSON, so a CLI change is caught only when the gated test runs |
+| A consumer's local token edit is overwritten on update | high | med | clean tree required; the lock file lists every local edit before anything is overwritten; `git diff` shown; `tokens.py check` after |
+| `DESIGN.md` overwritten by `-o` | med | high | it is its own item, installed once; `update` never passes `-o` to it |
+| A system of one scope installed into another scope's project | low | high | scope guard refuses unresolved scopes and mismatches; `--scope` validated against the config; a hand-edited item can still lie |
+| Shadows differ in another browser or in a production build | low | low | measured in Chrome dev only; the proof in block 4 builds the consumer and compares both modes |
+| Prototype-only evidence for GitHub hosting | med | low | hosting is a non-goal here; slice 2 tests it against a real repo the owner creates |
 
 ## Verification (end-to-end)
 
-- [x] `/aios-ui-form-create` on the Ledger project ends with a working form, clean audits and screenshots.
-- [x] All acceptance criteria met; pre-push hook passes locally.
+- [ ] `publish` from the Cockpit, `install` into a fresh project, `update` after a token change, as one run, with
+      `tokens.py check` exit 0 and `vite build` passing in the consumer.
+- [ ] All acceptance criteria above met and the four screenshots (producer and consumer, light and dark) looked at.
 
 ## References
 
-- `archive/2026-11-23-aios-ui-system-core.md` (piece 1 and its proof).
-- `ai-config/skills/optimizing-forms/SKILL.md` and `audit-forms.mjs` beside it.
-- `ai-config/skills/shadcn-patterns/SKILL.md` (legacy `<Form>` section, `InputGroup` anti-pattern line).
-- `ai-config/skills/react-hook-form-zod/` (third-party; `references/shadcn-integration.md`).
-- `ai-config/skills/hallmark/references/interaction-and-states.md` (field recipe and timing).
-- `ai-config/agents/a11y-auditor.md`.
+- Research note: `design-systems-forms-study.md` and `piece-2-design-system-registry-research.md` in the shared
+  notes folder (outside the repo); sources are the shadcn registry docs read 2026-11-24.
+- `ai-config/skills/aios-ui-system-check/scripts/tokens.py`, `references/design-md.md`
+- `archive/2026-11-23-aios-ui-system-core.md`, `archive/2026-11-24-aios-ui-form-create.md`
+- Producer fixture: a scratch project with a stylesheet and `DESIGN.md` (the Agent Cockpit demo).
 
 ## Notes
 
-- Decisions the owner can still change before block 1: no separate `/aios-ui-form-check` (the audit stays
-  `optimizing-forms`); `react-hook-form` plus `zod` as the default when a project has no form library.
+- The research artefacts (the generator, a local static server, the installed fixtures) live in a scratch
+  directory and are rebuilt in block 2; none is reused as is.

@@ -64,3 +64,6 @@ shadcn components, look for these (each was a default, not a bug in the project)
 
 An `a11y-auditor` pass (keyboard, zoom, reduced motion, every state) is the check for these; `/aios-ui-verify`
 is not.
+
+To reuse a system that passes in another project, `/aios-ui-system-share` publishes it as a shadcn registry and installs
+or updates it there; run `check` on both sides.

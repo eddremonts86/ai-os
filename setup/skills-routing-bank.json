@@ -294,6 +294,12 @@
     ]
   },
   {
+    "prompt": "share my design system with another project through a shadcn registry: publish the tokens and DESIGN.md, install and update them there",
+    "expect": [
+      "aios-ui-system-share"
+    ]
+  },
+  {
     "prompt": "build a new invoice form on the design system: zod schema, shadcn Field components, validation on blur and error text under each field",
     "expect": [
       "aios-ui-form-create"

@@ -255,6 +255,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | A complete design system from a brief (shadcn tokens, variants, DESIGN.md, specimen page) | `/aios-ui-system-create` |
     | The design system an existing app already implies, mapped onto shadcn tokens | `/aios-ui-system-extract` |
     | Check a design system: tokens for both modes, contrast, DESIGN.md against the stylesheet | `/aios-ui-system-check` |
+    | Share a design system with another project through a shadcn registry (publish, install, update) | `/aios-ui-system-share` |
     | Build a form on the design system (zod schema, shadcn Field, one set of layout and error rules) | `/aios-ui-form-create` |
     | Openly licensed photos for a page, credited | `/aios-ui-photos` |
 
