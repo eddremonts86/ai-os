@@ -29,7 +29,9 @@ from pathlib import Path
 SHADCN_VERSION = "4.23.0"  # the version the placement rules below were measured on (2026-11-24)
 LOCK = "ds-registry.lock.json"
 BUILT = "registry/dist"  # not public/: a Vite app ships public/ in dist, and the registry is not part of the app
-GITHUB = re.compile(r"(?P<owner>[\w.-]+)/(?P<repo>[\w.-]+)/(?P<item>[\w.-]+)(?:#(?P<ref>[^\s#]+))?")
+# Each part starts with a letter or digit: an address never begins with `-` (the CLI would read it as an option) and
+# `../x/y` stays a relative path.
+GITHUB = re.compile(r"(?P<owner>[A-Za-z0-9][\w.-]*)/(?P<repo>[A-Za-z0-9][\w.-]*)/(?P<item>[A-Za-z0-9][\w.-]*)(?:#(?P<ref>[^\s#]+))?")
 ITEM_SCHEMA = "https://ui.shadcn.com/schema/registry-item.json"
 REGISTRY_SCHEMA = "https://ui.shadcn.com/schema/registry.json"
 ROOT_EXTRAS = ("--shadow-color", "--control-height")  # not in the token contract, but the shadow and the controls need them

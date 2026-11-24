@@ -526,6 +526,10 @@ class AddressTests(unittest.TestCase):
         for local in ("registry/dist/acme-tokens.json", "C:/x/acme-tokens.json", "./a/b/c.json", "just-a-name"):
             self.assertEqual(registry.parse_address(local)[0], "local", local)
 
+    def test_an_address_cannot_start_with_a_dash_or_climb_out_of_a_folder(self):
+        for risky in ("-x/y/z", "--help/y/z", "me/-r/z", "../registry/dist/acme-tokens", "./a/b/c"):
+            self.assertEqual(registry.parse_address(risky)[0], "local", risky)
+
     def test_an_existing_local_path_wins_over_a_github_shape(self):
         with tempfile.TemporaryDirectory() as d:
             here = os.getcwd()
