@@ -5,8 +5,9 @@ against a temporary project; without it the CLI behaviours behind the placement 
 skipped run is not a pass.
 """
 
-import copy
+import contextlib
 import importlib.util
+import io
 import json
 import os
 import re
@@ -39,6 +40,7 @@ def sheet(extra_root="", extra_theme="", extra_dark="", imports=""):
   --transition-duration-fast: var(--duration-fast);
   --color-background: var(--background);
   --font-heading: var(--font-sans);
+  --spacing-control: var(--control-height);
   {extra_theme}
 }}
 @theme {{
@@ -92,7 +94,7 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(got["dark", name], DARK[name], name)
         self.assertEqual(got["light", "--radius"], "0.5rem")
         for name in ("--font-sans", "--font-mono", "--shadow-sm", "--shadow-md", "--shadow-lg", "--ease-out",
-                     "--transition-duration-fast"):
+                     "--transition-duration-fast", "--spacing-control"):
             self.assertEqual(got["theme", name], " ".join((blocks["@theme"][name]).split()), name)
         self.assertEqual(got[":root", "--duration-fast"], "120ms")
         self.assertEqual(got[":root", "--shadow-color"], "rgb(0 0 0 / 9%)")
@@ -153,8 +155,8 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(font["font"]["family"], "'Geist Variable', ui-sans-serif, sans-serif")
 
     def test_variables_outside_the_export_set_are_reported_but_colour_aliases_are_not(self):
-        out = build(sheet(extra_root="--brand-extra: 1px;", extra_theme="--spacing-control: 2rem;"))
-        self.assertEqual(sorted(out["skipped"]), ["--animate-pop", "--brand-extra", "--font-heading", "--spacing-control"])
+        out = build(sheet(extra_root="--brand-extra: 1px;", extra_theme="--spacing-card: 2rem;"))
+        self.assertEqual(sorted(out["skipped"]), ["--animate-pop", "--brand-extra", "--font-heading", "--spacing-card"])
 
     def test_a_var_pointing_outside_the_export_set_fails(self):
         css = sheet(extra_root="--duration-slow: var(--brand-delay);")
@@ -250,6 +252,49 @@ class Calls:
         return subprocess.CompletedProcess(cmd, out[0], out[1], out[2])
 
 
+class PublishTests(unittest.TestCase):
+    def project(self, d, components=None):
+        Path(d, "src").mkdir()
+        Path(d, "src/index.css").write_text(sheet(), encoding="utf-8")
+        Path(d, "DESIGN.md").write_text("---\nname: Acme\n---\n", encoding="utf-8")
+        if components:
+            Path(d, "components.json").write_text(json.dumps(components), encoding="utf-8")
+
+    def test_nothing_is_written_when_the_cli_cannot_be_reached(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d)
+            with self.assertRaises(SystemExit) as cm:
+                registry.publish(d, name="acme", scope="personal", gates=False,
+                                 run=Calls([(1, "", "npm error code ENOTFOUND registry.npmjs.org")]))
+            self.assertEqual(cm.exception.code, 2)
+            self.assertFalse(Path(d, "registry.json").exists())
+            self.assertFalse(Path(d, "registry").exists())
+
+    def test_the_scope_must_be_the_projects_own(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d)
+            for known, here in (({"personal", "other"}, "other"), ({"personal"}, None), ({"personal"}, "personal")):
+                calls = Calls()
+                scope = "personal" if here != "personal" else "ghost"
+                with self.assertRaises(SystemExit, msg=(known, here, scope)):
+                    registry.publish(d, name="acme", scope=scope, run=calls, scopes=lambda p, k=known, h=here: (k, h))
+                self.assertEqual(calls.cmds, [])
+
+    def test_style_icons_and_base_colour_come_from_the_projects_components_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d, {"style": "new-york", "iconLibrary": "phosphor", "tailwind": {"baseColor": "zinc"}})
+            registry.publish(d, name="acme", scope="personal", gates=False, run=Calls())
+            base = next(i for i in json.loads(Path(d, "registry.json").read_text(encoding="utf-8"))["items"] if i["name"] == "acme-base")
+            self.assertEqual(base["config"], {"style": "new-york", "iconLibrary": "phosphor", "tailwind": {"baseColor": "zinc"}})
+
+    def test_the_registry_is_built_outside_public(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d)
+            calls = Calls()
+            registry.publish(d, name="acme", scope="personal", gates=False, run=calls)
+            self.assertIn(["build", "-o", "registry/dist"], [c[c.index("shadcn@" + registry.SHADCN_VERSION) + 1:] for c in calls.cmds])
+
+
 class CliRunnerTests(unittest.TestCase):
     def test_runs_the_pinned_version_through_the_projects_package_runner(self):
         with tempfile.TemporaryDirectory() as d:
@@ -274,6 +319,19 @@ class CliRunnerTests(unittest.TestCase):
                 with self.assertRaises(SystemExit) as cm:
                     registry.run_shadcn(["add", "x"], d, run=Calls([answer]), env={})
                 self.assertEqual(cm.exception.code, 2)
+
+    def test_the_message_names_the_cause_not_the_log_pointer(self):
+        cases = (("npm error code ENOTFOUND\nnpm error A complete log of this run can be found in /x.log", "not reachable", "ENOTFOUND"),
+                 ("npm error code ETARGET\nnpm error notarget No matching version found for shadcn@0.0.1", "does not exist", "No matching version|ETARGET"))
+        with tempfile.TemporaryDirectory() as d:
+            for text, kind, cause in cases:
+                err = io.StringIO()
+                with contextlib.redirect_stderr(err), self.assertRaises(SystemExit) as cm:
+                    registry.run_shadcn(["add", "x"], d, run=Calls([(1, "", text)]), env={})
+                self.assertEqual(cm.exception.code, 2)
+                self.assertIn(kind, err.getvalue())
+                self.assertRegex(err.getvalue(), cause)
+                self.assertNotIn("complete log", err.getvalue())
 
     def test_a_real_cli_failure_exits_1_and_keeps_the_output(self):
         with tempfile.TemporaryDirectory() as d:
@@ -302,6 +360,32 @@ class GitGuardTests(unittest.TestCase):
             self.git(d, "commit", "-qm", "x")
             self.assertIsNone(registry.tree_problem(d))
 
+    def test_a_relative_address_reaches_the_cli_as_an_absolute_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.git(d, "init", "-q")
+            Path(d, "keep").write_text("x", encoding="utf-8")
+            self.git(d, "add", "-A")
+            self.git(d, "commit", "-qm", "x")
+            item = Path(d, "elsewhere")
+            item.mkdir()
+            Path(item, "acme-tokens.json").write_text(json.dumps(build()["items"]["acme-tokens"]), encoding="utf-8")
+            Path(d, "src").mkdir()
+            Path(d, "src/index.css").write_text(sheet(), encoding="utf-8")
+            self.git(d, "add", "-A")
+            self.git(d, "commit", "-qm", "css")
+            here = os.getcwd()
+            try:
+                os.chdir(item)
+                calls = Calls()
+                with contextlib.redirect_stdout(io.StringIO()):  # the fixture's colours fail the contrast check on purpose
+                    registry.install("acme-tokens.json", d, run=calls, scopes=lambda p: ({"personal"}, "personal"))
+            finally:
+                os.chdir(here)
+            add = next(c for c in calls.cmds if "add" in c)
+            self.assertTrue(Path(add[add.index("add") + 1]).is_absolute())
+            lock = json.loads(Path(d, registry.LOCK).read_text(encoding="utf-8"))
+            self.assertTrue(Path(lock["address"]).is_absolute())
+
     def test_install_refuses_before_the_cli_is_called(self):
         with tempfile.TemporaryDirectory() as d:
             calls = Calls()
@@ -324,8 +408,19 @@ class InitTests(unittest.TestCase):
             base, calls = self.base_item(d), Calls()
             registry.init_project(base, "fresh", d, run=calls, scopes=self.OK)
             cmd = calls.cmds[0]
-            self.assertEqual(cmd[cmd.index("shadcn@" + registry.SHADCN_VERSION) + 1:][:5], ["init", str(base), "-t", "vite", "-y"])
+            self.assertEqual(cmd[cmd.index("shadcn@" + registry.SHADCN_VERSION) + 1:][:5], ["init", str(base.resolve()), "-t", "vite", "-y"])
             self.assertEqual(cmd[cmd.index("--name") + 1], "fresh")
+
+    def test_init_with_a_relative_folder_passes_an_absolute_cwd(self):
+        with tempfile.TemporaryDirectory() as d:
+            base, calls, here = self.base_item(d), Calls(), os.getcwd()
+            try:
+                os.chdir(d)
+                registry.init_project("acme-base.json", "fresh", ".", run=calls, scopes=self.OK)
+            finally:
+                os.chdir(here)
+            cmd = calls.cmds[0]
+            self.assertTrue(Path(cmd[cmd.index("--cwd") + 1]).is_absolute())
 
     def test_init_refuses_an_existing_folder_a_bad_name_and_a_scope_mismatch(self):
         with tempfile.TemporaryDirectory() as d:
@@ -337,6 +432,16 @@ class InitTests(unittest.TestCase):
                 with self.assertRaises(SystemExit, msg=name):
                     registry.init_project(base, name, d, run=calls, scopes=scopes)
                 self.assertEqual(calls.cmds, [], name)
+
+
+class StaleDesignNotesTests(unittest.TestCase):
+    def test_prose_that_quotes_the_old_value_of_a_changed_token_is_flagged(self):
+        up = [{"where": "light", "name": "--radius", "lock": "0.375rem", "new": "0.75rem"},
+              {"where": "light", "name": "--primary", "lock": "#111111", "new": "#222222"},
+              {"where": "light", "name": "--ease-out", "lock": None, "new": "linear"}]
+        notes = registry.stale_design_notes("`--radius` is 0.375rem and primary is #111111.", up)
+        self.assertEqual(len(notes), 1)
+        self.assertIn("0.375rem", notes[0])
 
 
 class SourceTests(unittest.TestCase):
@@ -377,13 +482,13 @@ class RealCliTests(unittest.TestCase):
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
     def test_the_cli_validates_and_builds_the_registry(self):
-        built = self.producer / "public/r"
+        built = self.producer / "registry/dist"
         for name in ("acme-tokens", "acme-design-md", "acme-base"):
             self.assertTrue((built / f"{name}.json").is_file(), name)
 
     def test_installing_the_tokens_item_lands_every_value_without_self_references(self):
         self.git_baseline()
-        registry.run_shadcn(["add", str(self.producer / "public/r/acme-tokens.json"), "-y"], str(self.consumer))
+        registry.run_shadcn(["add", str(self.producer / "registry/dist/acme-tokens.json"), "-y"], str(self.consumer))
         css = (self.consumer / "src/index.css").read_text(encoding="utf-8")
         blocks = tk.parse_css(css)
         for name in tk.COLOR_VARS:
@@ -393,7 +498,7 @@ class RealCliTests(unittest.TestCase):
         self.assertNotRegex(css, r"--control-height:\s*var\(--control-height\)")
 
     def test_init_from_the_base_item_writes_the_style_the_tokens_and_design_md(self):
-        registry.init_project(self.producer / "public/r/acme-base.json", "fresh", self.tmp,
+        registry.init_project(self.producer / "registry/dist/acme-base.json", "fresh", self.tmp,
                               scopes=lambda path: ({"personal"}, "personal"))
         fresh = self.tmp / "fresh"
         components = json.loads((fresh / "components.json").read_text(encoding="utf-8"))
@@ -404,10 +509,37 @@ class RealCliTests(unittest.TestCase):
         self.assertTrue((fresh / "DESIGN.md").is_file())
         self.assertEqual(json.loads((fresh / registry.LOCK).read_text(encoding="utf-8"))["name"], "acme-tokens")
 
-    def git_baseline(self):
+    def test_update_reports_then_overwrites_a_local_edit_and_keeps_designmd_lines(self):
+        ok = lambda path: ({"personal"}, "personal")
+        registry.init_project(self.producer / "registry/dist/acme-base.json", "upd", self.tmp, scopes=ok)
+        proj = self.tmp / "upd"
+        css_path, md_path = proj / "src/index.css", proj / "DESIGN.md"
+        css_path.write_text(css_path.read_text(encoding="utf-8").replace(COLORS["--primary"], "#010203", 1), encoding="utf-8")
+        md_path.write_text(md_path.read_text(encoding="utf-8") + "\nLocal note kept across updates.\n", encoding="utf-8")
+        self.git_baseline(proj)
+        # the producer changes --radius and --primary, and publishes 0.2.0 again
+        new_css = sheet().replace("--radius: 0.5rem", "--radius: 1rem").replace(COLORS["--primary"], "#a0b0c0", 1)
+        (self.producer / "src/index.css").write_text(new_css, encoding="utf-8")
+        registry.publish(str(self.producer), name="acme", scope="personal", version="0.2.0", gates=False)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), self.assertRaises(SystemExit) as cm:
+            registry.update(proj, yes=False, scopes=ok)
+        self.assertEqual(cm.exception.code, 3)
+        self.assertIn("local edit, will be overwritten: --primary", out.getvalue())
+        self.assertIn("--radius", out.getvalue())
+        self.assertIn("0.5rem", css_path.read_text(encoding="utf-8"))  # nothing applied without --yes
+        with contextlib.redirect_stdout(io.StringIO()):
+            registry.update(proj, yes=True, scopes=ok)  # exit status follows the fixture's contrast check, not asserted
+        blocks = tk.parse_css(css_path.read_text(encoding="utf-8"))
+        self.assertEqual(blocks[":root"]["--radius"], "1rem")
+        self.assertEqual(blocks[":root"]["--primary"], "#a0b0c0")
+        self.assertIn("Local note kept across updates.", md_path.read_text(encoding="utf-8"))
+        self.assertEqual(json.loads((proj / registry.LOCK).read_text(encoding="utf-8"))["version"], "0.2.0")
+
+    def git_baseline(self, path=None):
         env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
         for args in (["init", "-q"], ["add", "-A"], ["-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "base"]):
-            subprocess.run(["git", *args], cwd=self.consumer, env=env, capture_output=True)
+            subprocess.run(["git", *args], cwd=path or self.consumer, env=env, capture_output=True)
 
 
 if __name__ == "__main__":

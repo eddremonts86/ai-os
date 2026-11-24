@@ -7,7 +7,8 @@
   registry.py init <built <name>-base.json> <project name> [dir]  a new Vite project with the system (shadcn init)
   registry.py build <stylesheet> --design <md> --name N --scope S writes registry.json only, no CLI
 
-Standard library only. The shadcn CLI is run at the pinned version SHADCN_VERSION (AIOS_SHADCN_VERSION overrides).
+Standard library only, except that the scope guard reads AI-OS's scope config with PyYAML: run it with the AI-OS
+venv's python. The shadcn CLI is run at the pinned version SHADCN_VERSION (AIOS_SHADCN_VERSION overrides).
 Exit codes: 0 done, 1 a check or the CLI failed, 2 the CLI cannot be reached, 3 stopped before changing anything
 (dirty tree, scope guard, or `update` waiting for --yes).
 """
@@ -24,10 +25,12 @@ from pathlib import Path
 
 SHADCN_VERSION = "4.23.0"  # the version the placement rules below were measured on (2026-11-24)
 LOCK = "ds-registry.lock.json"
+BUILT = "registry/dist"  # not public/: a Vite app ships public/ in dist, and the registry is not part of the app
 ITEM_SCHEMA = "https://ui.shadcn.com/schema/registry-item.json"
 REGISTRY_SCHEMA = "https://ui.shadcn.com/schema/registry.json"
 ROOT_EXTRAS = ("--shadow-color", "--control-height")  # not in the token contract, but the shadow and the controls need them
-THEME_NAMES = ("--font-sans", "--font-mono", "--shadow-sm", "--shadow-md", "--shadow-lg", "--ease-out")
+THEME_NAMES = ("--font-sans", "--font-mono", "--shadow-sm", "--shadow-md", "--shadow-lg", "--ease-out",
+               "--spacing-control")  # --spacing-control makes the h-control utility; it points at --control-height
 UNREACHABLE = re.compile(r"ENOTFOUND|ETARGET|E404|EAI_AGAIN|ECONNREFUSED|ECONNRESET|ETIMEDOUT|No matching version|"
                          r"fetch failed|getaddrinfo|network", re.I)
 
@@ -61,7 +64,7 @@ def _n(value):
 
 
 def exported(name):
-    return (name in tokens.COLOR_VARS or name in tokens.SINGLE_VARS or name in ROOT_EXTRAS
+    return (name in tokens.COLOR_VARS or name in tokens.SINGLE_VARS or name in ROOT_EXTRAS or name in THEME_NAMES
             or name.startswith(("--duration-", "--transition-duration-")))
 
 
@@ -231,14 +234,16 @@ def scope_problem(item_scope, consumer_scope, known):
 
 def _scopes(path):
     """(known scope names, the scope of `path`) from the AI-OS scope config; ({}, None) when it cannot be read."""
-    mod = Path(__file__).resolve().parents[4] / "setup/ai-os-scope.py"
-    if not mod.is_file() and os.environ.get("AI_OS_ROOT"):
-        mod = Path(os.environ["AI_OS_ROOT"]) / "setup/ai-os-scope.py"
+    mod = Path(os.environ["AI_OS_ROOT"]) / "setup/ai-os-scope.py" if os.environ.get("AI_OS_ROOT") else None
+    if not mod or not mod.is_file():
+        mod = Path(__file__).resolve().parents[4] / "setup/ai-os-scope.py"
     try:
         m = _load(mod, "ai_os_scope")
         cfg = m.load()
         return set((cfg or {}).get("scopes") or {}), m.which(cfg, str(path)).get("scope")
-    except Exception:  # missing file, no PyYAML, unreadable config: the guard then refuses
+    except Exception as e:  # missing file, no PyYAML, unreadable config: the guard then refuses
+        print(f"cannot read the AI-OS scope config ({type(e).__name__}: {e}); run with the AI-OS venv's python "
+              f"(~/.ai-os/venv/bin/python)", file=sys.stderr)
         return set(), None
 
 
@@ -260,8 +265,8 @@ def tree_problem(path):
 
 
 def run_shadcn(args, cwd, run=subprocess.run, env=None):
-    """Run `shadcn@<pinned> args` in cwd through pnpm dlx or npx. Exit 2 when the CLI cannot be reached, 1 when it
-    fails; nothing else in this script changes a project before it has succeeded."""
+    """Run `shadcn@<pinned> args` in cwd through pnpm dlx or npx. Exit 2 when the CLI cannot be reached or the version
+    does not exist, 1 when it fails."""
     lookup = os.environ if env is None else env
     version = lookup.get("AIOS_SHADCN_VERSION") or SHADCN_VERSION
     pm = ["pnpm", "dlx"] if (Path(cwd) / "pnpm-lock.yaml").is_file() else ["npx", "--yes"]
@@ -276,7 +281,9 @@ def run_shadcn(args, cwd, run=subprocess.run, env=None):
     if done.returncode:
         text = f"{done.stdout}\n{done.stderr}".strip()
         if UNREACHABLE.search(text):
-            print(f"shadcn {version} not reachable: {text.splitlines()[-1] if text else 'no output'}", file=sys.stderr)
+            lines = [ln for ln in text.splitlines() if UNREACHABLE.search(ln)]
+            kind = "does not exist" if "No matching version" in text or "ETARGET" in text else "not reachable"
+            print(f"shadcn {version} {kind}: {(lines or text.splitlines() or ['no output'])[0].strip()}", file=sys.stderr)
             raise SystemExit(2)
         print(text, file=sys.stderr)
         raise SystemExit(1)
@@ -290,34 +297,46 @@ def _stop(message, code=3):
     raise SystemExit(code)
 
 
+def _read(path):
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        _stop(f"{path} not found: the lock file records where the registry was built; rebuild it there with `publish`, "
+              f"or correct the address in {LOCK}", 1)
+
+
 def publish(project, *, name, scope, version="0.1.0", gates=True, run=subprocess.run, scopes=None):
-    """Check, build and validate the project's system as a registry. gates=False skips the check and the scope test."""
-    project = Path(project)
+    """Check, build and validate the project's system as a registry. gates=False skips the check and the scope test.
+    Nothing is written until the shadcn CLI has answered."""
+    project = Path(project).resolve()
     sheet = tokens.find_stylesheet(project)
     design = project / "DESIGN.md"
     if not sheet or not design.is_file():
         _stop("needs a stylesheet and a DESIGN.md at the project root: run /aios-ui-system-create or -extract first")
     if gates:
-        known = (scopes or _scopes)(project)[0]
-        if scope not in known:
-            _stop(f"--scope '{scope}' is not a scope in the AI-OS configuration ({', '.join(sorted(known)) or 'none configured'})")
+        known, here = (scopes or _scopes)(project)
+        if problem := scope_problem(scope, here, known):
+            _stop(f"--scope {scope}: {problem}")
         fails = tokens.check(project)
         if fails:
             _stop("tokens.py check fails, nothing was built:\n  " + "\n  ".join(fails), 1)
+    run_shadcn(["--version"], project, run=run)
+    try:
+        components = json.loads((project / "components.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        components = {}
+    out = build(sheet.read_text(encoding="utf-8-sig", errors="replace"), name=name, scope=scope, version=version,
+                design_path=f"registry/{name}/DESIGN.md", style=components.get("style") or "base-nova",
+                icons=components.get("iconLibrary") or "lucide",
+                base_color=(components.get("tailwind") or {}).get("baseColor") or "neutral")
     dest = project / "registry" / name
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(design, dest / "DESIGN.md")
-    out = build(sheet.read_text(encoding="utf-8-sig", errors="replace"), name=name, scope=scope, version=version,
-                design_path=f"registry/{name}/DESIGN.md")
     (project / "registry.json").write_text(json.dumps(out["registry"], indent=2) + "\n", encoding="utf-8")
     run_shadcn(["registry", "validate"], project, run=run)
-    run_shadcn(["build"], project, run=run)
-    built = sorted((project / "public/r").glob(f"{name}-*.json"))
+    run_shadcn(["build", "-o", BUILT], project, run=run)
+    built = sorted((project / BUILT).glob(f"{name}-*.json"))
     return {"registry": str(project / "registry.json"), "built": [str(p) for p in built], "skipped": out["skipped"]}
-
-
-def _read(path):
-    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 def _sheet(project):
@@ -337,14 +356,14 @@ def _finish(project, item, address, run_check=True):
 
 
 def install(address, project=".", run=subprocess.run, scopes=None):
-    project = Path(project)
+    project = Path(project).resolve()
     if problem := tree_problem(project):
         _stop(problem)
-    item = _read(address)
+    addr = Path(address).resolve()  # the CLI runs in the project: a relative path would point somewhere else
+    item = _read(addr)
     known, here = (scopes or _scopes)(project)
     if problem := scope_problem(item.get("meta", {}).get("scope"), here, known):
         _stop(problem)
-    addr = Path(address)
     run_shadcn(["add", str(addr), "-y"], project, run=run)
     stem = addr.name[: -len("-tokens.json")] if addr.name.endswith("-tokens.json") else None
     for suffix, once in (("-design-md", not (project / "DESIGN.md").exists()), ("-font", True)):
@@ -359,12 +378,13 @@ def init_project(address, name, cwd=".", run=subprocess.run, scopes=None):
     `update` needs (it points at the `<name>-tokens.json` beside the base item)."""
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", name):
         _stop(f"project name must be a lowercase slug, got {name!r}", 1)
-    dest = Path(cwd) / name
+    cwd = Path(cwd).resolve()
+    dest = cwd / name
     if dest.exists():
         _stop(f"{dest} already exists: init only creates new projects")
-    base = Path(address)
+    base = Path(address).resolve()
     item = _read(base)
-    known, here = (scopes or _scopes)(Path(cwd))
+    known, here = (scopes or _scopes)(cwd)
     if problem := scope_problem(item.get("meta", {}).get("scope"), here, known):
         _stop(problem)
     run_shadcn(["init", str(base), "-t", "vite", "-y", "--name", name, "--cwd", str(cwd)], cwd, run=run)
@@ -373,12 +393,19 @@ def init_project(address, name, cwd=".", run=subprocess.run, scopes=None):
     if sheet and tokens_path.is_file():
         css = sheet.read_text(encoding="utf-8-sig", errors="replace")
         (dest / LOCK).write_text(json.dumps(make_lock(_read(tokens_path), css, str(tokens_path)), indent=2) + "\n", encoding="utf-8")
-        print(f"{name}: created, lock file written")
+        print(f"{name}: created, lock file written; commit everything (the CLI adds its own files) before the first update")
     return 0
 
 
+def stale_design_notes(design_text, upstream):
+    """DESIGN.md prose that still quotes the old value of a non-colour token the update changed."""
+    return [f"DESIGN.md still mentions {e['lock']} ({e['name']} is now {e['new']}): update its text"
+            for e in upstream if e["name"] not in tokens.COLOR_VARS and e["lock"] and len(e["lock"]) > 2
+            and e["lock"] in design_text]
+
+
 def update(project=".", yes=False, run=subprocess.run, scopes=None):
-    project = Path(project)
+    project = Path(project).resolve()
     if problem := tree_problem(project):
         _stop(problem)
     lock_path = project / LOCK
@@ -400,16 +427,19 @@ def update(project=".", yes=False, run=subprocess.run, scopes=None):
         print("  nothing to do")
         return 0
     if not yes:
-        _stop("re-run with --yes to apply (rollback: git checkout -- .)")
+        _stop("nothing changed yet: re-run with --yes to apply")
     run_shadcn(["add", lock["address"], "-o", "-y"], project, run=run)
     sheet = _sheet(project)
     block = tokens.frontmatter(tokens.parse_css(sheet.read_text(encoding="utf-8-sig", errors="replace")))
     design = project / "DESIGN.md"
     if design.is_file():
+        text = design.read_text(encoding="utf-8")
         try:
-            design.write_text(write_colors(design.read_text(encoding="utf-8"), block), encoding="utf-8", newline="")
+            design.write_text(write_colors(text, block), encoding="utf-8", newline="")
         except ValueError as e:
             print(f"DESIGN.md not updated ({e}); paste this block under its frontmatter:\n{block}", file=sys.stderr)
+        for note in stale_design_notes(text, d["upstream"]):
+            print(f"note: {note}")
     return _finish(project, item, lock["address"])
 
 

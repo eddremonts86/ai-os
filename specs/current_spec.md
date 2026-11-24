@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-24
-- **Status:** in-progress (approved 2026-11-24; blocks 1 to 3 done)
+- **Status:** in-progress (approved 2026-11-24; blocks 1 to 4 done)
 - **Blocks:** 5
 - **Review:** cold read by a fresh reviewer on 2026-11-24 (`workflows/project_start.md` step 3b): 0 blockers, 8 majors, all verified against the repo and addressed
 - **Author:** Claude (session design-systems-forms)
@@ -48,7 +48,8 @@ settles the one open question the research left.
 
 - **`publish [dir] --scope <name>`** (producer). Needs a root `DESIGN.md` and `tokens.py check` exiting 0, else
   stops. Runs `registry.py build`, then `shadcn registry validate` and `shadcn build`. Output: `registry.json`, a copy of
-  `DESIGN.md` under `registry/<name>/`, and the built items in `public/r/`; nothing hosted.
+  `DESIGN.md` under `registry/<name>/`, and the built items in `registry/dist/` (not `public/`, which a Vite app ships);
+  nothing is written until the CLI has answered; nothing hosted.
 - **`install <address> [dir]`** (consumer). `<address>` is the local path of the built `<name>-tokens.json`; the `-design-md` item beside it is added only when
   the project has no `DESIGN.md`, and the `-font` item when there is one.
   Needs a git repository with a clean tree, else stops and says why. Runs `shadcn add <address> -y` (no
@@ -72,8 +73,8 @@ the file has no frontmatter or no `colors:` block, or the block has anything but
 stops and prints the block to paste. Address and version live in the lock file, not in `DESIGN.md`.
 
 **Scope guard.** `ai-os scope which` in the producer folder at `publish` and in the consumer folder at `install` and
-`update`. `publish --scope` must be one of the scope names in the AI-OS config (`setup/ai-os-scope.py`), else it
-stops. `install` and `update` stop when either side resolves to no scope, and when the two differ, printing both.
+`update`. `publish --scope` must be the producer folder's own scope and one of the scope names in the AI-OS config
+(`setup/ai-os-scope.py`), else it stops. `install` and `update` stop when either side resolves to no scope, and when the two differ, printing both.
 The guard checks the item's `meta.scope`, which a hand-edited item can lie about: it prevents a mistake, not an attack.
 
 **CLI version.** `registry.py` holds `SHADCN_VERSION = "4.23.0"`, the version the findings were measured on, and runs
@@ -215,13 +216,22 @@ it locally), components, and removals (a token dropped from the system stays in 
 
 ### Block 4: proof on a fresh consumer (estimated: 90 min)
 
-**Status:** not started
+**Status:** done (2026-11-24)
 
-- [ ] A subagent follows the skill as written: publish from the Cockpit, install into a fresh Vite + shadcn
+- [x] A subagent follows the skill as written: publish from the Cockpit, install into a fresh Vite + shadcn
       project, change a token and update, hit the scope guard, then `init` a new project from the base item; it
       reports every place the text was unclear or wrong.
-- [ ] **Verify:** the acceptance criteria 3 to 6 in a real browser; screenshots of producer and consumer in both
+- [x] **Verify:** the acceptance criteria 3 to 6 in a real browser; screenshots of producer and consumer in both
       modes looked at and sent.
+- Result: a subagent followed the skill as written against a copy of the Cockpit and a fresh Vite + shadcn consumer. All 49
+  custom properties the item sets matched in light and dark at 1280 and 390 px and under reduced motion; `check`
+  and `pnpm build` passed; an update reported the local `--primary` edit before overwriting it, the diff held only the
+  intended tokens and the lock file, and a local `DESIGN.md` line survived. The guards held (dirty tree, non-git folder,
+  hand-edited scope, unreachable CLI exit 2). It found 14 defects in the text and script, all folded back in block 5:
+  a relative lock address broke `update`, `init` with a relative folder failed, `publish` did not check its own scope and
+  wrote files before the CLI answered, `--spacing-control` was not exported, the skill said `python3` where PyYAML is
+  needed, and the rollback and `DESIGN.md` guidance was incomplete. Not verified: a second real scope (the worktree
+  config has one), a real network failure, a producer whose `components.json` differs (covered by a unit test only).
 
 ### Block 5: fold back, review, commit (estimated: 30 min)
 
