@@ -68,7 +68,7 @@ clis: []                 # optional CLIs from npm: codex, gemini
 # Written by the selector (`ai-os install` / create-ai-os); --full ignores skip: and exclude:
 skip: []                 # default-on parts to leave out: claude, opencode, memory, mcp, ponytail, hooks
 exclude: []              # packages from the shared Brewfile / pip / npm / Chocolatey lists to leave out
-extras: false            # also install dev-env/packages/Brewfile.extras
+extras: false            # also install the optional apps: dev-env/packages/Brewfile.extras (Mac), the Chocolatey extras (Windows)
 ui_indexer: false        # ui-indexador (shadcn registry index), Mac
 floorplan: false         # Floorplan codebase-map plugin for Claude Code / Codex, pinned to a reviewed commit
 
