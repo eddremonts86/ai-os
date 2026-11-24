@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-24
-- **Status:** in-progress (approved 2026-11-24; block 1 done)
+- **Status:** in-progress (approved 2026-11-24; blocks 1 and 2 done)
 - **Blocks:** 5
 - **Review:** cold read by a fresh reviewer on 2026-11-24 (`workflows/project_start.md` step 3b): 0 blockers, 8 majors, all verified against the repo and addressed
 - **Author:** Claude (session design-systems-forms)
@@ -47,9 +47,10 @@ settles the one open question the research left.
 `aios-ui-system-*` family; `aios-ui-system-check` stays the gate and is not changed except for a pointer.
 
 - **`publish [dir] --scope <name>`** (producer). Needs a root `DESIGN.md` and `tokens.py check` exiting 0, else
-  stops. Runs `registry.py build`, then `shadcn registry validate`. Output: `registry.json` and the item files in
-  the project (default folder `registry/`), nothing hosted.
-- **`install <address> [dir]`** (consumer). `<address>` is a local path to a built item file in this slice.
+  stops. Runs `registry.py build`, then `shadcn registry validate` and `shadcn build`. Output: `registry.json`, a copy of
+  `DESIGN.md` under `registry/<name>/`, and the built items in `public/r/`; nothing hosted.
+- **`install <address> [dir]`** (consumer). `<address>` is the local path of the built `<name>-tokens.json`; the `-design-md` item beside it is added only when
+  the project has no `DESIGN.md`, and the `-font` item when there is one.
   Needs a git repository with a clean tree, else stops and says why. Runs `shadcn add <address> -y` (no
   namespace and no `registry add`: those are for URL addresses, a follow-up), then `tokens.py check`, then writes
   the lock file. Verified 2026-11-24 with CLI 4.23.0: adding by local path changed only `src/index.css`;
@@ -101,8 +102,10 @@ a name outside the export set makes `publish` fail. The font item is built only 
 | `<name>-tokens` | `registry:theme` | `cssVars` and `css` per the placement rules; `meta.scope`, `meta.version` | safe to re-run with `-o` |
 | `<name>-design-md` | `registry:file` | `DESIGN.md` to `~/DESIGN.md` | once; never `-o` |
 | `<name>-font` | `registry:font` | only when the system uses a fontsource font | once |
-| `<name>` | `registry:theme` | `registryDependencies` on the items above | first install into an existing project |
-| `<name>-base` | `registry:base` | same, plus `config` (style, icon library, base colour) | `shadcn init <address>` for a new project |
+| `<name>-base` | `registry:base` | the tokens and `DESIGN.md` plus `config` (style, icon library, base colour) | `shadcn init <address>` for a new project |
+
+There is no bundle item in this slice (decided in block 2): its `registryDependencies` must name the items by an
+address that exists only once the registry is hosted, and a local path install does not need one.
 
 ### Placement rules (each is a verified finding and gets a test)
 
@@ -190,11 +193,14 @@ it locally), components, and removals (a token dropped from the system stays in 
 
 ### Block 2: `registry.py` and its tests, test first (estimated: 90 min)
 
-**Status:** not started
+**Status:** done (2026-11-24)
 
-- [ ] Write `setup/tests/test_aios_ui_share.py` first and see it fail; then `scripts/registry.py` (`build`, `lock`,
+- [x] Write `setup/tests/test_aios_ui_share.py` first and see it fail; then `scripts/registry.py` (`build`, `lock`,
       `write_colors`, the scope guard, the version check).
-- [ ] **Verify:** the tests pass; running `build` on the Cockpit and `shadcn registry validate` succeed.
+- [x] **Verify:** the tests pass; running `build` on the Cockpit and `shadcn registry validate` succeed.
+- Result: 33 tests pass; with `AIOS_SHADCN_TESTS=1` the 3 real-CLI tests pass on shadcn 4.23.0 (validate, build, `add` of
+  the tokens item with every value equal and no self-referencing alias, `init` from the base item). `publish` on a copy of
+  the Cockpit built four items and reported the 19 variables outside the contract; a scope not in the config is refused.
 
 ### Block 3: the skill and its wiring (estimated: 45 min)
 
