@@ -1,6 +1,6 @@
 # Vendored from vercel-labs/ui
 
-Third-party skill, vendored into `ai-config/skills/` so `setup/install-mac.sh` step 7 links it into every CLI.
+Third-party skill, vendored into `ai-config/skills/` so the installers (`setup/install-mac.sh` step 7, `setup/install-windows.ps1` step 5) link it into every CLI.
 
 | Field | Value |
 |---|---|

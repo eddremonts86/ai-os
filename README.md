@@ -128,7 +128,7 @@ flowchart TD
   Q{"What do you have?"} -- "nothing yet" --> N{"Own look,<br/>or the product's<br/>components?"}
   N -- "product components" --> D["/aios-ui-design"]
   N -- "its own look, a theme" --> PG["/aios-ui-page"]
-  N -- "no design system yet" --> SC["/aios-ui-system-create"]
+  Q -- "no design system yet,<br/>start one" --> SC["/aios-ui-system-create"]
   Q -- "an app with no<br/>written system" --> SE["/aios-ui-system-extract"]
   Q -- "a page that works,<br/>details are off" --> I["/aios-ui-improve"]
   Q -- "a page that needs<br/>a new look" --> RD["/aios-ui-redesign"]
