@@ -495,6 +495,250 @@ class MainTests(unittest.TestCase):
         self.assertEqual(cm.exception.code, 2)
 
 
+class FakeShadcn:
+    """Answers `shadcn view <github address>` from a dict of items and records everything else, like the real CLI."""
+
+    def __init__(self, items, on_init=None):
+        self.items, self.cmds, self.on_init = items, [], on_init
+
+    def __call__(self, cmd, **kw):
+        self.cmds.append(cmd)
+        args = cmd[cmd.index("shadcn@" + registry.SHADCN_VERSION) + 1:]
+        if args[0] == "view":
+            name = args[1].split("/")[-1].split("#")[0]
+            if name in self.items:
+                return subprocess.CompletedProcess(cmd, 0, "Using gh credentials.\n" + json.dumps([self.items[name]]), "")
+            return subprocess.CompletedProcess(cmd, 1, "", f'Registry item "{name}" was not found.')
+        if args[0] == "init" and self.on_init:
+            self.on_init(args)
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
+    def args(self, verb):
+        return [c[c.index("shadcn@" + registry.SHADCN_VERSION) + 1:] for c in self.cmds
+                if c[c.index("shadcn@" + registry.SHADCN_VERSION) + 1] == verb]
+
+
+class AddressTests(unittest.TestCase):
+    def test_github_and_local_addresses_are_told_apart(self):
+        kind, v = registry.parse_address("me/design-systems/acme-tokens#v1.0.0")
+        self.assertEqual((kind, v["owner"], v["repo"], v["item"], v["ref"]), ("github", "me", "design-systems", "acme-tokens", "v1.0.0"))
+        self.assertIsNone(registry.parse_address("me/design-systems/acme-tokens")[1]["ref"])
+        for local in ("registry/dist/acme-tokens.json", "C:/x/acme-tokens.json", "./a/b/c.json", "just-a-name"):
+            self.assertEqual(registry.parse_address(local)[0], "local", local)
+
+    def test_an_existing_local_path_wins_over_a_github_shape(self):
+        with tempfile.TemporaryDirectory() as d:
+            here = os.getcwd()
+            try:
+                os.chdir(d)
+                Path("me/repo").mkdir(parents=True)
+                Path("me/repo/item").write_text("{}", encoding="utf-8")
+                self.assertEqual(registry.parse_address("me/repo/item")[0], "local")
+            finally:
+                os.chdir(here)
+
+    def test_with_ref_changes_or_adds_the_ref_and_refuses_local_paths(self):
+        self.assertEqual(registry.with_ref("me/r/acme-tokens#v1", "v2"), "me/r/acme-tokens#v2")
+        self.assertEqual(registry.with_ref("me/r/acme-tokens", "v2"), "me/r/acme-tokens#v2")
+        with self.assertRaises(ValueError):
+            registry.with_ref("registry/dist/acme-tokens.json", "v2")
+
+    def test_siblings_keep_the_repo_and_the_ref(self):
+        self.assertEqual(registry.sibling("me/r/acme-tokens#v1", "-tokens", "-design-md"), "me/r/acme-design-md#v1")
+        self.assertEqual(registry.sibling("me/r/acme-base", "-base", "-tokens"), "me/r/acme-tokens")
+        self.assertIsNone(registry.sibling("me/r/acme-other#v1", "-tokens", "-font"))
+        self.assertEqual(registry.sibling("/x/acme-tokens.json", "-tokens", "-font"), str(Path("/x/acme-font.json")))
+
+
+class GitHubItemTests(unittest.TestCase):
+    def test_view_output_is_parsed_after_the_cli_banner(self):
+        fake = FakeShadcn({"acme-tokens": build()["items"]["acme-tokens"]})
+        with tempfile.TemporaryDirectory() as d:
+            item = registry.fetch_item("me/r/acme-tokens#v1", d, fake)
+        self.assertEqual(item["meta"]["scope"], "personal")
+        self.assertEqual(fake.args("view"), [["view", "me/r/acme-tokens#v1"]])
+
+    def test_a_missing_item_stops_with_the_cli_message(self):
+        with tempfile.TemporaryDirectory() as d, contextlib.redirect_stderr(io.StringIO()) as err, \
+                self.assertRaises(SystemExit) as cm:
+            registry.fetch_item("me/r/nope#v1", d, FakeShadcn({}))
+        self.assertEqual(cm.exception.code, 1)
+        self.assertIn("nope", err.getvalue())
+
+    def test_item_exists_does_not_exit_on_a_missing_item(self):
+        with tempfile.TemporaryDirectory() as d:
+            fake = FakeShadcn({"acme-tokens": {}})
+            self.assertTrue(registry.item_exists("me/r/acme-tokens", d, fake))
+            self.assertFalse(registry.item_exists("me/r/acme-font", d, fake))
+
+
+@unittest.skipUnless(shutil.which("git"), "git is needed")
+class GitHubFlowTests(unittest.TestCase):
+    OK = staticmethod(lambda p: ({"personal"}, "personal"))
+    ADDR = "me/design-systems/acme-tokens#v1"
+
+    def project(self, d, design=False):
+        env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+        Path(d, "src").mkdir()
+        Path(d, "src/index.css").write_text(sheet(), encoding="utf-8")
+        if design:
+            Path(d, "DESIGN.md").write_text("---\nname: A\ncolors:\n  background: \"#ffffff\"\n---\n", encoding="utf-8")
+        for args in (["init", "-q"], ["add", "-A"], ["-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "x"]):
+            subprocess.run(["git", *args], cwd=d, env=env, check=True, capture_output=True)
+
+    def items(self, version="0.1.0", css=None):
+        out = build(css, version=version)["items"]
+        return {"acme-tokens": out["acme-tokens"], "acme-design-md": out["acme-design-md"]}
+
+    def quiet(self):
+        return contextlib.redirect_stdout(io.StringIO())
+
+    def test_install_adds_the_tokens_and_design_md_by_their_github_addresses(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d)
+            fake = FakeShadcn(self.items())
+            with self.quiet():
+                registry.install(self.ADDR, d, run=fake, scopes=self.OK)
+            self.assertEqual([a[1] for a in fake.args("add")], [self.ADDR, "me/design-systems/acme-design-md#v1"])
+            lock = json.loads(Path(d, registry.LOCK).read_text(encoding="utf-8"))
+            self.assertEqual((lock["address"], lock["name"], lock["version"]), (self.ADDR, "acme-tokens", "0.1.0"))
+
+    def test_install_leaves_an_existing_design_md_alone(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d, design=True)
+            fake = FakeShadcn(self.items())
+            with self.quiet():
+                registry.install(self.ADDR, d, run=fake, scopes=self.OK)
+            self.assertEqual([a[1] for a in fake.args("add")], [self.ADDR])
+
+    def test_install_refuses_a_scope_mismatch_before_adding_anything(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d)
+            fake = FakeShadcn(self.items())
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as cm:
+                registry.install(self.ADDR, d, run=fake, scopes=lambda p: ({"personal", "acme"}, "acme"))
+            self.assertEqual(cm.exception.code, 3)
+            self.assertEqual(fake.args("add"), [])
+
+    def lock_project(self, d, ref="v1"):
+        self.project(d)
+        item = self.items()["acme-tokens"]
+        Path(d, registry.LOCK).write_text(json.dumps(registry.make_lock(item, sheet(), f"me/design-systems/acme-tokens#{ref}")),
+                                          encoding="utf-8")
+        env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+        subprocess.run(["git", "add", "-A"], cwd=d, env=env, check=True, capture_output=True)
+        subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "lock"], cwd=d, env=env,
+                       check=True, capture_output=True)
+
+    def test_update_with_a_ref_previews_then_moves_the_lock_to_the_new_ref(self):
+        v2 = self.items("0.2.0", sheet().replace("--radius: 0.5rem", "--radius: 1rem"))
+        with tempfile.TemporaryDirectory() as d:
+            self.lock_project(d)
+            fake = FakeShadcn(v2)
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as cm:
+                registry.update(d, yes=False, run=fake, scopes=self.OK, ref="v2")
+            self.assertEqual(cm.exception.code, 3)
+            self.assertIn("--radius", out.getvalue())
+            self.assertEqual(fake.args("add"), [])  # nothing applied without --yes
+            with self.quiet():
+                registry.update(d, yes=True, run=fake, scopes=self.OK, ref="v2")
+            self.assertEqual(fake.args("add"), [["add", "me/design-systems/acme-tokens#v2", "-o", "-y"]])
+            lock = json.loads(Path(d, registry.LOCK).read_text(encoding="utf-8"))
+            self.assertEqual((lock["address"], lock["version"]), ("me/design-systems/acme-tokens#v2", "0.2.0"))
+
+    def test_update_without_a_ref_reads_the_recorded_address(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.lock_project(d)
+            fake = FakeShadcn(self.items())
+            with self.quiet():
+                registry.update(d, yes=True, run=fake, scopes=self.OK)
+            self.assertEqual(fake.args("view"), [["view", "me/design-systems/acme-tokens#v1"]])
+
+    def test_a_ref_on_a_local_address_is_refused(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.project(d)
+            item = self.items()["acme-tokens"]
+            local = Path(d, "built", "acme-tokens.json")
+            local.parent.mkdir()
+            local.write_text(json.dumps(item), encoding="utf-8")
+            Path(d, registry.LOCK).write_text(json.dumps(registry.make_lock(item, sheet(), str(local))), encoding="utf-8")
+            env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+            subprocess.run(["git", "add", "-A"], cwd=d, env=env, check=True, capture_output=True)
+            subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "l"], cwd=d, env=env,
+                           check=True, capture_output=True)
+            with contextlib.redirect_stderr(io.StringIO()) as err, self.assertRaises(SystemExit) as cm:
+                registry.update(d, yes=True, run=Calls(), scopes=self.OK, ref="v2")
+            self.assertEqual(cm.exception.code, 3)
+            self.assertIn("GitHub", err.getvalue())
+
+    def test_init_from_a_github_base_item_writes_the_lock_for_the_tokens_item(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = build()["items"]["acme-base"]
+            items = {**self.items(), "acme-base": base}
+
+            def make_project(args):
+                name = args[args.index("--name") + 1]
+                Path(d, name, "src").mkdir(parents=True)
+                Path(d, name, "src/index.css").write_text(sheet(), encoding="utf-8")
+
+            fake = FakeShadcn(items, on_init=make_project)
+            with self.quiet():
+                registry.init_project("me/design-systems/acme-base#v1", "fresh", d, run=fake, scopes=self.OK)
+            init = fake.args("init")[0]
+            self.assertEqual(init[1], "me/design-systems/acme-base#v1")
+            lock = json.loads(Path(d, "fresh", registry.LOCK).read_text(encoding="utf-8"))
+            self.assertEqual((lock["address"], lock["name"]), ("me/design-systems/acme-tokens#v1", "acme-tokens"))
+
+
+class MainRefTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("git"), "git is needed")
+    def test_update_accepts_a_ref_argument(self):
+        with tempfile.TemporaryDirectory() as d:
+            env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+            subprocess.run(["git", "init", "-q"], cwd=d, env=env, check=True, capture_output=True)
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as cm:
+                registry.main(["update", d, "--ref", "v2"])
+            self.assertEqual(cm.exception.code, 3)  # reaches the lock-file check, so the argument parsed
+
+
+@unittest.skipUnless(os.environ.get("AIOS_SHADCN_TESTS") == "1" and os.environ.get("AIOS_SHADCN_GITHUB_ITEM"),
+                     "set AIOS_SHADCN_TESTS=1 and AIOS_SHADCN_GITHUB_ITEM=owner/repo/<name>-tokens#ref (needs gh auth)")
+class RealGitHubTests(unittest.TestCase):
+    """The installed tokens of a real GitHub registry arrive, with DESIGN.md, and the lock points at the address."""
+
+    def test_install_from_github_passes_the_contract_check(self):
+        tmp = Path(tempfile.mkdtemp(prefix="aios-gh-"))
+        try:
+            registry.run_shadcn(["init", "-t", "vite", "-b", "base", "-p", "nova", "-y", "--name", "consumer", "--cwd", str(tmp)], str(tmp))
+            proj = tmp / "consumer"
+            env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+            for args in (["init", "-q"], ["add", "-A"], ["-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-qm", "base"]):
+                subprocess.run(["git", *args], cwd=proj, env=env, capture_output=True)
+            address = os.environ["AIOS_SHADCN_GITHUB_ITEM"]
+            scope = registry.fetch_item(address, str(proj), subprocess.run)["meta"]["scope"]
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = registry.install(address, proj, scopes=lambda p: ({scope}, scope))
+            self.assertEqual(code, 0)
+            self.assertEqual(json.loads((proj / registry.LOCK).read_text(encoding="utf-8"))["address"], address)
+            self.assertEqual(tk.check(proj), [])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_init_from_the_github_base_item_writes_the_lock_for_the_tokens_item(self):
+        tokens_addr = os.environ["AIOS_SHADCN_GITHUB_ITEM"]
+        base = registry.sibling(tokens_addr, "-tokens", "-base")
+        tmp = Path(tempfile.mkdtemp(prefix="aios-ghinit-"))
+        try:
+            scope = registry.fetch_item(base, str(tmp), subprocess.run)["meta"]["scope"]
+            with contextlib.redirect_stdout(io.StringIO()):
+                registry.init_project(base, "fresh", tmp, scopes=lambda p: ({scope}, scope))
+            self.assertEqual(json.loads((tmp / "fresh" / registry.LOCK).read_text(encoding="utf-8"))["address"], tokens_addr)
+            self.assertTrue((tmp / "fresh" / "DESIGN.md").is_file())
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+
 class SourceTests(unittest.TestCase):
     def test_the_script_has_no_shell_calls(self):
         text = (SKILL / "scripts/registry.py").read_text(encoding="utf-8")
