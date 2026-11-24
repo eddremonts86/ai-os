@@ -252,6 +252,11 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | A new look for an existing page or app, content and wiring kept | `/aios-ui-redesign` |
     | Read-only anti-slop and craft audit in a real browser | `/aios-ui-audit` |
     | Browse, deal, apply a design theme, or lock a system into DESIGN.md | `/aios-ui-themes` |
+    | A complete design system from a brief (shadcn tokens, variants, DESIGN.md, specimen page) | `/aios-ui-system-create` |
+    | The design system an existing app already implies, mapped onto shadcn tokens | `/aios-ui-system-extract` |
+    | Check a design system: tokens for both modes, contrast, DESIGN.md against the stylesheet | `/aios-ui-system-check` |
+    | Share a design system with another project through a shadcn registry (publish, install, update) | `/aios-ui-system-share` |
+    | Build a form on the design system (zod schema, shadcn Field, one set of layout and error rules) | `/aios-ui-form-create` |
     | Openly licensed photos for a page, credited | `/aios-ui-photos` |
 
     UI work is not done until `/aios-ui-verify` passes, or its gaps are stated, and the screenshots were looked at.
@@ -268,6 +273,7 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     | Hover/press/focus states, transitions, loading and scroll motion | `micro-interactions` |
     | Check UI code against interface guidelines (focus, forms, a11y, perf) | `web-design-guidelines` |
     | Which library for a frontend task (toasts, charts, drag and drop, animated numbers…) | `pick-ui-library` (explicit invocation only) |
+    | A UI piece no component library ships (stepper, splitter, transfer list, an interactive map), or a UI an agent can operate (`createAgent`) | `ui-sdk` |
     | The destination is a claude.ai Artifact | harness `artifact-design` skill |
 
 27. **A design system that exists is used 100%.** When the project has one (a `DESIGN.md`, a `components.json`, a
@@ -278,9 +284,18 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
     every skill that writes UI and every piece taken from ui-indexador (indexed items bring their own styling: map
     them onto the project's tokens and components before they land). A value no token expresses is a missing token:
     add it to the system, not inline. The one exception is `ds-allow: <reason>` beside the line, listed in the
-    report. With no system, an AI-OS surface uses `context/global/06_brand.md` and any other project starts from the
-    chosen theme (`/aios-ui-themes lock`), so one exists from then on. `aios-ui-verify`'s `antislop.py` checks this;
+    report. With no system, an AI-OS surface uses `context/global/06_brand.md` and any other project starts from
+    `/aios-ui-system-create` (or `/aios-ui-system-extract` when it already has UI code), so one exists from then on.
+    Change a look in this order: a token, then a variant inside the component, then a wrapper component for a
+    product pattern, and `className` from outside only for a true one-off. A duration the system lacks is a new
+    token with its own reduced-motion value; a fade survives `prefers-reduced-motion`, a travel does not. `aios-ui-verify`'s `antislop.py` checks this;
     a violation is a Floor FAIL.
+    **Components before code.** Take each UI piece in this order: the project's own component library and its
+    wrappers; a proven registry item (ui-indexador, shadcn registries); and only when none of them has the piece,
+    build it from behaviors with `ui-sdk` (`@ui-sdk/core`), never from a bare `div` with hand-written keyboard,
+    focus and `role=` handling. A registry item is "proven" only with a permissive licence, readable source that
+    maps onto the project's tokens, and the keyboard and ARIA behaviour the piece needs; record the search. The
+    built piece is styled with the project's tokens like any other (`ai-config/skills/ui-sdk/references/ai-os-notes.md`).
 
 ## At session end
 

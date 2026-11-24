@@ -51,7 +51,7 @@ def find_axe(explicit):
 
 def slug(url, width, scheme):
     u = urlparse(url)
-    s = re.sub(r"[^a-z0-9]+", "-", (u.netloc + u.path).lower()).strip("-") or "page"
+    s = re.sub(r"[^a-z0-9]+", "-", (u.netloc + u.path + u.fragment).lower()).strip("-") or "page"
     return f"{s}-{width}-{scheme}.png"
 
 
@@ -167,7 +167,13 @@ def main():
     with sync_playwright() as p:
         # Headless Chromium on macOS draws WebGL canvases black without the GPU (seen 2026-11-13 on a cobe globe).
         gpu = ["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist"] if sys.platform == "darwin" else []
-        browser = p.chromium.launch(args=gpu)
+        try:
+            browser = p.chromium.launch(args=gpu)
+        except Exception as e:
+            if "Executable doesn't exist" not in str(e):
+                raise
+            # Playwright's own Chromium is not installed (`playwright install chromium`): use the installed Chrome.
+            browser = p.chromium.launch(channel="chrome", args=gpu)
         for url in urls:
             for w in widths:
                 for s in schemes:

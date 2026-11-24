@@ -274,5 +274,41 @@
       "aios-ui-audit",
       "saas-review"
     ]
+  },
+  {
+    "prompt": "create a complete design system from a brief for a project that has none, shadcn tokens for light and dark",
+    "expect": [
+      "aios-ui-system-create"
+    ]
+  },
+  {
+    "prompt": "turn what this existing app already uses into its design system, inventory the CSS variables and map them onto shadcn token names",
+    "expect": [
+      "aios-ui-system-extract"
+    ]
+  },
+  {
+    "prompt": "verify the design system mechanically: every token defined, WCAG contrast on each pair, DESIGN.md matching the stylesheet",
+    "expect": [
+      "aios-ui-system-check"
+    ]
+  },
+  {
+    "prompt": "share my design system with another project through a shadcn registry: publish the tokens and DESIGN.md, install and update them there",
+    "expect": [
+      "aios-ui-system-share"
+    ]
+  },
+  {
+    "prompt": "build a new invoice form on the design system: zod schema, shadcn Field components, validation on blur and error text under each field",
+    "expect": [
+      "aios-ui-form-create"
+    ]
+  },
+  {
+    "prompt": "build a stepper component that the library does not ship, from ui-sdk behaviors, with keyboard focus and ARIA",
+    "expect": [
+      "ui-sdk"
+    ]
   }
 ]
