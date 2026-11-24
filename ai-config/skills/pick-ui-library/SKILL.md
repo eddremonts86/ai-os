@@ -31,7 +31,7 @@ Our projects are shadcn/ui + Tailwind v4 + TanStack, so some picks already arriv
 - **Toasts** = Sonner, **charts** = recharts, **`className`** = `cn()` (clsx + tailwind-merge), **variants** = cva:
   shadcn already ships all four; reuse what is installed.
 - **Not on this list, owned by other skills:** server state `tanstack-query`, routing `tanstack-router`,
-  tables `tanstack-table`, forms `react-hook-form-zod`. State shared on the client: zustand, below.
+  tables `tanstack-table`, forms `/aios-ui-form-create` (version-specific API notes: `react-hook-form-zod`, not its `FormField` examples). State shared on the client: zustand, below.
 
 ## Components and blocks: the ranked registry index
 

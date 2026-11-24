@@ -774,9 +774,9 @@ echo ""
 # ─── 7. Global skills (native destinations from manifest) ───
 require_manifest_tool
 log "7. Setting global skills in native client destinations..."
-# Only flat skills (a dir with a top-level SKILL.md) are symlinked here. Plugin
-# bundles in ai-config/skills/ that have a NESTED layout (claude.tools) are
-# installed by their own script (install-claude-tools.sh); ECC is steps 7e/7f.
+# Only flat skills (a dir with a top-level SKILL.md) are symlinked here. A dir
+# with a nested plugin layout (skills/<name>/SKILL.md) is NOT a skill and no
+# script installs it: flatten it to make it linkable. ECC is steps 7e/7f.
 #   Claude ~/.claude/skills | Codex ~/.codex/skills | Gemini ~/.gemini/skills
 #   Antigravity ~/.agents/skills | Hermes reads ~/.agents/skills via skills.external_dirs (no copy)
 #   MiniMax Code ~/.minimax/skills (global skills.paths entry in opencode.json)

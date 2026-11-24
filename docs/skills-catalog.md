@@ -69,6 +69,18 @@ globally: iaWorkSpace, plansmith and other project-specific skills.
   the browser tier), and five commands expose the rest: `/aios-ui-page` (build), `/aios-ui-redesign`,
   `/aios-ui-audit`, `/aios-ui-themes` (list, deal, apply, lock into DESIGN.md) and `/aios-ui-photos`. See
   `ai-config/skills/hallmark/VENDORED_FROM.md`.
+- **aios-ui-system-create / -extract / -check**: a project's own design system on shadcn conventions. `create`
+  builds one from a brief, `extract` maps what an existing app already uses onto shadcn token names, `check`
+  verifies tokens for both modes, contrast and `DESIGN.md` against the stylesheet (`scripts/tokens.py`). They
+  share one canonical `DESIGN.md` format (`aios-ui-system-check/references/design-md.md`).
+- **aios-ui-form-create**: builds a form the same way in every project, on shadcn's `Field` components from the
+  project's tokens. One set of rules (`references/form-rules.md`: one column, label above, validation on first
+  blur then on change, error text under the field, one primary action last) and recipes for `react-hook-form`
+  and TanStack Form with `zod`. `optimizing-forms` stays the audit.
+- **ui-sdk (third-party Apache-2.0, Vercel)**: the behavior layer under component libraries (keyboard, focus,
+  selection, popups, ARIA) in React, Vue, Svelte, Solid and web components, plus an agent bridge. Used only when
+  no ready-made component covers a piece (rule 27, "Components before code"). Vendored with limits (pinned CDN
+  only on request, no constant `allow`): `ai-config/skills/ui-sdk/VENDORED_FROM.md`.
 - **stageshow (third-party MIT, Benji Taylor)**: faux product UI for marketing pages, a still or a short cursor
   demo of one app screen, built from its React kit and ~40 gold examples and filmed frame by frame before hand-over
   (`npm run dev` in the skill folder serves the playground). See `ai-config/skills/stageshow/VENDORED_FROM.md`.

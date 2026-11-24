@@ -10,7 +10,7 @@ New UI, start to verified. Reuse the skills below; do not restate them.
 
 1. **Context.** AI-OS surfaces use `context/global/06_brand.md`. Any other project uses its `PRODUCT.md` / `DESIGN.md`,
    and an existing design system is used 100%, no hardcoded or inline styles (`rules/always_do.md` rule 27);
-   if missing and the work is bigger than one component, run `impeccable init` (and `document` for an existing code base).
+   if missing and the work is bigger than one component, run `impeccable init` (and for an existing code base `/aios-ui-system-extract` with a `components.json`, impeccable `document` without).
 2. **Directions: three to choose from, the user decides.** Nothing is built until they pick one.
    - **Brief.** A brief that does not say who the surface is for and what it must do gets impeccable's `shape` discovery
      (`reference/shape.md` phase 1: one round of two or three questions). Either way, open the offer below with the
@@ -34,7 +34,7 @@ New UI, start to verified. Reuse the skills below; do not restate them.
      would pick and why, put them in your reply, attach the theme pictures where the CLI can, and stop. Build the chosen one and
      borrow from the others only what makes it stronger. With no user to answer (a loop), take your pick and say so.
    - **Lock,** after the pick and before step 3. `/aios-ui-themes apply <slug>` for a theme (mapped onto the project's token names), then
-     `/aios-ui-themes lock` so `DESIGN.md` carries the choice into the build and the gate.
+     `/aios-ui-themes lock` (in a `components.json` project that is `/aios-ui-system-extract`) so `DESIGN.md` carries the choice into the build and the gate.
    - When the user asks for Hallmark, or the target is a standalone page with its own look, hand off to
      `/aios-ui-page` before this step; a new look for an existing page is `/aios-ui-redesign`.
 3. **Plan the chosen direction before code.** Palette, type, layout (one-line prose and an ASCII wireframe), principles. Review the plan
@@ -60,7 +60,7 @@ New UI, start to verified. Reuse the skills below; do not restate them.
      and adapt content and accessibility; keep its structure unless a reason is recorded. Run the build after each
      install: undeclared dependencies show up there.
    - **Record** each section's queries, top candidates, the choice and why (and every rejection) in a build log
-     (e.g. `build-log.json`) next to the code. Hand-build only what no indexed piece covers, and say so in the log.
+     (e.g. `build-log.json`) next to the code. Build only what no indexed piece covers, from `ui-sdk` behaviors (never a bare `div` with hand-written keyboard, focus and ARIA), and say so in the log.
    Then `pick-ui-library` for libraries (toasts, charts, forms) the pieces do not bring.
    **Match references** (optional, when the user gives target screens or images, or a bar like "make it look like
    this"). References are the minimum bar, not inspiration. Write a shot list (one row per reference: the screen

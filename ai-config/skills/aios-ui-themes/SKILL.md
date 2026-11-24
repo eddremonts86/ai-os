@@ -19,7 +19,9 @@ disable-model-invocation: true
   `references/export-formats.md`) instead of adding a second system (rule 27: no hex or inline style outside the token block), check contrast for every text-on-colour
   pair, and run `/aios-ui-verify`. The folder's scope brand wins on its own surfaces (`ai-os scope which`):
   apply a theme there only when the user asks.
-- **lock:** write the project's `DESIGN.md` from the applied or chosen theme (`references/design-md.md`), so
+- **lock:** in a project with a `components.json`, run `/aios-ui-system-extract`: the theme's tokens are already
+  applied, so extracting them is what locks the system, in the one `DESIGN.md` format app projects use. In a
+  standalone Hallmark page, write `DESIGN.md` from the theme (Hallmark's `references/design-md.md`). Either way
   later builds (Hallmark's pre-flight, `/aios-ui-design`) share it.
 - **check:** for a palette of your own, `$H theme check --axes "<paper>/<display>/<accent>" --face "<face>"`
   says how close it sits to the themes and to recent builds.

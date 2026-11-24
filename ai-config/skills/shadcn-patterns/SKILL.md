@@ -321,57 +321,24 @@ module.exports = {
 </DialogTrigger>
 ```
 
-### Form patterns (with react-hook-form)
+### Form patterns
+
+Forms are built on the `Field` family (`npx shadcn@latest add field input-group`): `Field`, `FieldLabel`,
+`FieldDescription`, `FieldError`, grouped with `FieldSet`, `FieldLegend` and `FieldGroup`, and `InputGroup` for
+a prefix, suffix, icon or button inside the control. `/aios-ui-form-create` owns the rules and the recipes
+(`react-hook-form` or `@tanstack/react-form` with `zod`): build forms through it.
 
 ```tsx
-'use client';
-
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import {
-  Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-
-const formSchema = z.object({
-  username: z.string().min(2).max(50),
-});
-
-export function ProfileForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { username: '' },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-  );
-}
+<Field data-invalid={fieldState.invalid}>
+  <FieldLabel htmlFor="email">Email</FieldLabel>
+  <Input {...field} id="email" type="email" aria-invalid={fieldState.invalid} />
+  <FieldDescription>We only use it to send the invoice.</FieldDescription>
+  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+</Field>
 ```
+
+The older wrapper in `components/ui/form` still exists in projects scaffolded before `Field`; keep it where
+it is already used (`react-hook-form-zod` documents it) and do not add it to new code.
 
 ### Custom components (Radix wrapper)
 
@@ -437,6 +404,7 @@ import { ChevronRight, Mail, User } from 'lucide-react';
 12. ❌ Passing `''` as a `SelectItem` value for "any / none" → ✅ a sentinel constant mapped back to `null` at the boundary; an empty value throws at runtime.
 13. ❌ Assembling class names at runtime (`` `bg-${x}-500` ``, `s.replace('bg-','border-')`) → ✅ literal class strings; the JIT never generates what it cannot see in source.
 14. ❌ Assuming `Input`, `SelectTrigger` and an icon `Button` are the same height → ✅ set one height explicitly on all of them in a dense row.
+15. ❌ Adding the legacy form wrapper (`components/ui/form`) to new code → ✅ `Field`, `FieldLabel`, `FieldError` (see Form patterns).
 
 ## Customization — Strategy
 
@@ -476,7 +444,7 @@ const buttonVariants = cva(/* ... */, {
 
 ## Complementary stack
 
-- **Forms:** react-hook-form + zod (with shadcn's `<Form>` wrapper).
+- **Forms:** `/aios-ui-form-create` (shadcn `Field`, react-hook-form or TanStack Form, zod).
 - **Toasts:** sonner.
 - **Date pickers:** react-day-picker.
 - **Charts:** recharts.
