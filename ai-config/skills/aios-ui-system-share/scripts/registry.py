@@ -4,6 +4,7 @@
   registry.py publish [dir] --name N --scope S [--version V]     tokens.py check, build, validate, shadcn build
   registry.py install <built <name>-tokens.json> [dir]            guards, shadcn add, check, lock file
   registry.py update [dir] [--yes]                                lists local edits and upstream changes first
+  registry.py init <built <name>-base.json> <project name> [dir]  a new Vite project with the system (shadcn init)
   registry.py build <stylesheet> --design <md> --name N --scope S writes registry.json only, no CLI
 
 Standard library only. The shadcn CLI is run at the pinned version SHADCN_VERSION (AIOS_SHADCN_VERSION overrides).
@@ -353,6 +354,29 @@ def install(address, project=".", run=subprocess.run, scopes=None):
     return _finish(project, item, str(addr))
 
 
+def init_project(address, name, cwd=".", run=subprocess.run, scopes=None):
+    """A new Vite + shadcn project called `name` in `cwd`, from a built `<name>-base.json` item, with the lock file
+    `update` needs (it points at the `<name>-tokens.json` beside the base item)."""
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", name):
+        _stop(f"project name must be a lowercase slug, got {name!r}", 1)
+    dest = Path(cwd) / name
+    if dest.exists():
+        _stop(f"{dest} already exists: init only creates new projects")
+    base = Path(address)
+    item = _read(base)
+    known, here = (scopes or _scopes)(Path(cwd))
+    if problem := scope_problem(item.get("meta", {}).get("scope"), here, known):
+        _stop(problem)
+    run_shadcn(["init", str(base), "-t", "vite", "-y", "--name", name, "--cwd", str(cwd)], cwd, run=run)
+    tokens_path = base.with_name(base.name.replace("-base.json", "-tokens.json"))
+    sheet = tokens.find_stylesheet(dest) if dest.is_dir() else None
+    if sheet and tokens_path.is_file():
+        css = sheet.read_text(encoding="utf-8-sig", errors="replace")
+        (dest / LOCK).write_text(json.dumps(make_lock(_read(tokens_path), css, str(tokens_path)), indent=2) + "\n", encoding="utf-8")
+        print(f"{name}: created, lock file written")
+    return 0
+
+
 def update(project=".", yes=False, run=subprocess.run, scopes=None):
     project = Path(project)
     if problem := tree_problem(project):
@@ -395,6 +419,7 @@ def main(argv=None):
     p = sub.add_parser("publish"); p.add_argument("dir", nargs="?", default="."); p.add_argument("--name", required=True)
     p.add_argument("--scope", required=True); p.add_argument("--version", default="0.1.0")
     i = sub.add_parser("install"); i.add_argument("address"); i.add_argument("dir", nargs="?", default=".")
+    n = sub.add_parser("init"); n.add_argument("address"); n.add_argument("name"); n.add_argument("dir", nargs="?", default=".")
     u = sub.add_parser("update"); u.add_argument("dir", nargs="?", default="."); u.add_argument("--yes", action="store_true")
     b = sub.add_parser("build"); b.add_argument("stylesheet"); b.add_argument("--design", required=True)
     b.add_argument("--name", required=True); b.add_argument("--scope", required=True); b.add_argument("--version", default="0.1.0")
@@ -408,6 +433,8 @@ def main(argv=None):
         return 0
     if a.cmd == "install":
         return install(a.address, a.dir)
+    if a.cmd == "init":
+        return init_project(a.address, a.name, a.dir)
     if a.cmd == "update":
         return update(a.dir, a.yes)
     out = build(Path(a.stylesheet).read_text(encoding="utf-8-sig"), name=a.name, scope=a.scope, version=a.version,

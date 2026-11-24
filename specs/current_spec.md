@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-24
-- **Status:** in-progress (approved 2026-11-24; blocks 1 and 2 done)
+- **Status:** in-progress (approved 2026-11-24; blocks 1 to 3 done)
 - **Blocks:** 5
 - **Review:** cold read by a fresh reviewer on 2026-11-24 (`workflows/project_start.md` step 3b): 0 blockers, 8 majors, all verified against the repo and addressed
 - **Author:** Claude (session design-systems-forms)
@@ -204,11 +204,14 @@ it locally), components, and removals (a token dropped from the system stays in 
 
 ### Block 3: the skill and its wiring (estimated: 45 min)
 
-**Status:** not started
+**Status:** done (2026-11-24)
 
-- [ ] `SKILL.md` with the three modes, the scope guard, the update procedure and the not-shipped list; rule 26 row,
+- [x] `SKILL.md` with the three modes, the scope guard, the update procedure and the not-shipped list; rule 26 row,
       README, catalogue, routing bank; `ai-os-stats.py --write` (PNGs rendered with installed Chrome).
-- [ ] **Verify:** lint strict exits 0; bank stays above 70 % with the new request in the top 3; stats check passes.
+- [x] **Verify:** lint strict exits 0; bank stays above 70 % with the new request in the top 3; stats check passes.
+- Result: lint strict exits 0; the routing bank lands the new request in the top 3 (46/49; the three misses are other
+  requests, one of which, `humanizer`, already misses on `origin/dev`); `ai-os-stats.py --check` passes (222 skills).
+  Added beyond the Spec: an `init` subcommand (new project from the base item, with the scope guard and the lock file).
 
 ### Block 4: proof on a fresh consumer (estimated: 90 min)
 

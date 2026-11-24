@@ -311,6 +311,34 @@ class GitGuardTests(unittest.TestCase):
             self.assertEqual(calls.cmds, [])
 
 
+class InitTests(unittest.TestCase):
+    OK = staticmethod(lambda p: ({"personal"}, "personal"))
+
+    def base_item(self, d, scope="personal"):
+        path = Path(d, "acme-base.json")
+        path.write_text(json.dumps(build(scope=scope)["items"]["acme-base"]), encoding="utf-8")
+        return path
+
+    def test_init_runs_the_pinned_cli_with_the_base_item(self):
+        with tempfile.TemporaryDirectory() as d:
+            base, calls = self.base_item(d), Calls()
+            registry.init_project(base, "fresh", d, run=calls, scopes=self.OK)
+            cmd = calls.cmds[0]
+            self.assertEqual(cmd[cmd.index("shadcn@" + registry.SHADCN_VERSION) + 1:][:5], ["init", str(base), "-t", "vite", "-y"])
+            self.assertEqual(cmd[cmd.index("--name") + 1], "fresh")
+
+    def test_init_refuses_an_existing_folder_a_bad_name_and_a_scope_mismatch(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = self.base_item(d)
+            Path(d, "taken").mkdir()
+            cases = (("taken", self.OK), ("Bad Name", self.OK), ("fresh", lambda p: ({"personal", "acme"}, "acme")))
+            for name, scopes in cases:
+                calls = Calls()
+                with self.assertRaises(SystemExit, msg=name):
+                    registry.init_project(base, name, d, run=calls, scopes=scopes)
+                self.assertEqual(calls.cmds, [], name)
+
+
 class SourceTests(unittest.TestCase):
     def test_the_script_has_no_shell_calls(self):
         text = (SKILL / "scripts/registry.py").read_text(encoding="utf-8")
@@ -365,9 +393,8 @@ class RealCliTests(unittest.TestCase):
         self.assertNotRegex(css, r"--control-height:\s*var\(--control-height\)")
 
     def test_init_from_the_base_item_writes_the_style_the_tokens_and_design_md(self):
-        run = registry.run_shadcn
-        run(["init", str(self.producer / "public/r/acme-base.json"), "-t", "vite", "-y", "--name", "fresh", "--cwd", str(self.tmp)],
-            str(self.tmp))
+        registry.init_project(self.producer / "public/r/acme-base.json", "fresh", self.tmp,
+                              scopes=lambda path: ({"personal"}, "personal"))
         fresh = self.tmp / "fresh"
         components = json.loads((fresh / "components.json").read_text(encoding="utf-8"))
         self.assertEqual((components["style"], components["iconLibrary"], components["tailwind"]["baseColor"]),
@@ -375,6 +402,7 @@ class RealCliTests(unittest.TestCase):
         blocks = tk.parse_css((fresh / "src/index.css").read_text(encoding="utf-8"))
         self.assertEqual(blocks[":root"]["--primary"], COLORS["--primary"])
         self.assertTrue((fresh / "DESIGN.md").is_file())
+        self.assertEqual(json.loads((fresh / registry.LOCK).read_text(encoding="utf-8"))["name"], "acme-tokens")
 
     def git_baseline(self):
         env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
