@@ -155,7 +155,8 @@ class ContrastTests(unittest.TestCase):
             ("light", "--foreground", "--background"), ("light", "--ring", "--background"),
             ("dark", "--foreground", "--background"), ("dark", "--ring", "--background"),
             ("dark", "--muted-foreground", "--background"), ("dark", "--muted-foreground", "--card"),
-            ("dark", "--muted-foreground", "--muted"), ("dark", "--primary-foreground", "--primary")})
+            ("dark", "--muted-foreground", "--muted"), ("dark", "--primary-foreground", "--primary"),
+            ("dark", "--ring", "--card")})
         faint = got["dark", "--muted-foreground", "--background"]
         self.assertEqual((round(faint["ratio"], 2), faint["need"], faint["ok"]), (4.27, 4.5, False))
         self.assertTrue(got["dark", "--foreground", "--background"]["ok"])
@@ -330,8 +331,17 @@ class CheckTests(Fixtures):
     def test_error_text_and_the_field_edge_are_checked(self):
         css = stylesheet(light=dict(LIGHT, destructive="#f87171", input="#e5e5e5"))
         fails = tokens.check(self.system(css, design_md(light=dict(LIGHT, destructive="#f87171", input="#e5e5e5"))))
-        self.assertEqual([f.split(" is ")[0] for f in fails], ["contrast light: --destructive on --background",
-                                                              "contrast light: --input on --background"])
+        self.assertEqual([f.split(" is ")[0] for f in fails], [
+            "contrast light: --destructive on --background", "contrast light: --input on --background",
+            "contrast light: --input on --card", "contrast light: --input on --popover",
+            "contrast light: --input on --muted"])
+
+    def test_the_field_edge_must_also_pass_on_a_lighter_dark_surface(self):
+        # a dark switch track passed on the page (3.5:1) and measured 3.00:1 on a muted card in the Cockpit audit
+        rows = tokens.contrast(tokens.parse_css(
+            ".dark { --background: #0a0a0a; --card: #171717; --muted: #3a3a3a; --input: #6b6b6b; }"))
+        got = {r["bg"]: r["ok"] for r in rows if r["fg"] == "--input"}
+        self.assertEqual(got, {"--background": True, "--card": True, "--muted": False})
 
     def test_frontmatter_is_generated_from_the_stylesheet_and_passes_check(self):
         css = stylesheet(light=dict(LIGHT, ring="var(--foreground)"))

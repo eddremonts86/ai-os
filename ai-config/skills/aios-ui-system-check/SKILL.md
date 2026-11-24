@@ -23,7 +23,8 @@ canonical format in `references/design-md.md`.
   reference a per-mode `--shadow-color`; on dark surfaces depth comes from a lighter surface, not a shadow.
 - **Contrast:** 4.5:1 for every `X` / `X-foreground` pair, `foreground` on `background`, and
   `muted-foreground` on `background` and on `card`, and `destructive` on `background` (error text); 3:1 for
-  `ring` and for `input` (the field's edge) on `background`.
+  `ring` (on `background` and `card`) and for `input` (the field's edge) on `background`, `card`, `popover` and
+  `muted`: a control sits on whichever surface holds it, and a dark card is lighter than the page.
 - **`DESIGN.md`** at the project root, in the canonical format, with colours equal to the stylesheet.
 
 ## Run
@@ -43,3 +44,23 @@ Limits: the script reads source, not the built CSS, so it cannot tell that Tailw
 `primary` used as text (a link variant) is not a checked pair; `scan` does not see Tailwind's paren values
 (`gap-(--x)`) and counts a grid template like any other arbitrary value. A grid template has no token equivalent: keep it and note
 `ds-allow: grid template` beside it (rule 27's one exception), or use `col-span` instead.
+
+## What a script cannot see
+
+axe and `check` passed a shadcn-style app that a manual audit still failed in seven places. After adding the
+shadcn components, look for these (each was a default, not a bug in the project):
+
+- **Focus halo.** `focus-visible:ring-3 ring-ring/50` measures about 2:1 even when `--ring` itself passes. Use
+  `outline-2 outline-offset-2 outline-ring` (or `ring-ring` at full opacity) on every focusable component,
+  Switch and scrollable regions included (WCAG 1.4.11).
+- **Variant surfaces.** `--input` on a `muted` or `popover` surface can sit at 3.00:1 while it passes on the page;
+  that is why the pairs above include them. A translucent fill (`dark:bg-input/80`) lowers it again: use the token.
+- **Headings.** `CardTitle` renders a `div`; make it an `h2` (or take an `as` prop) so heading navigation finds it.
+- **Progress.** Base UI's `aria-labelledby` wins over `aria-label`, so the reader hears only a percentage: pass
+  `getAriaValueText` with the real value ("6.71 KB"). `aria-label` on a plain `span` is ignored: add `role="img"`.
+- **Dialogs at 400% zoom** (320×256): the popup needs `max-h-[calc(100dvh-2rem)] overflow-y-auto` or its buttons
+  fall off the screen.
+- **Hash-routed pages** keep one `<title>`: set `document.title` per route (WCAG 2.4.2).
+
+An `a11y-auditor` pass (keyboard, zoom, reduced motion, every state) is the check for these; `/aios-ui-verify`
+is not.

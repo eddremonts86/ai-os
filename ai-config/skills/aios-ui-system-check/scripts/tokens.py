@@ -188,8 +188,12 @@ def contrast(blocks):
     for mode, scope in modes(blocks).items():
         pairs = [("--foreground", "--background", TEXT), ("--muted-foreground", "--background", TEXT),
                  ("--muted-foreground", "--card", TEXT), ("--ring", "--background", NON_TEXT),
-                 # error text is set in --destructive; --input is the only edge a field has (WCAG 1.4.11)
-                 ("--destructive", "--background", TEXT), ("--input", "--background", NON_TEXT)]
+                 # error text is set in --destructive; --input is the only edge a field has (WCAG 1.4.11). Controls sit
+                 # on cards and popovers too, and a dark card is lighter than the page: a switch track passed on the
+                 # page at 3.5:1 and measured 3.00:1 on a muted card.
+                 ("--destructive", "--background", TEXT), ("--input", "--background", NON_TEXT),
+                 ("--input", "--card", NON_TEXT), ("--input", "--popover", NON_TEXT), ("--input", "--muted", NON_TEXT),
+                 ("--ring", "--card", NON_TEXT)]
         pairs += [(n, n[:-len("-foreground")], TEXT) for n in scope if n.endswith("-foreground") and n != "--foreground"]
         for fg, bg, need in pairs:
             if fg not in scope or bg not in scope:
