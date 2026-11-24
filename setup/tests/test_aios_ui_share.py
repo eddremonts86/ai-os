@@ -321,11 +321,11 @@ class CliRunnerTests(unittest.TestCase):
             calls = Calls()
             registry.run_shadcn(["add", "x.json", "-y"], d, run=calls, env={})
             self.assertEqual(calls.cmds[0][-4:], ["shadcn@" + registry.SHADCN_VERSION, "add", "x.json", "-y"])
-            self.assertEqual(calls.cmds[0][0], "npx")
+            self.assertEqual(Path(calls.cmds[0][0]).stem.lower(), "npx")  # a full path ending in npx.CMD on Windows
             Path(d, "pnpm-lock.yaml").write_text("", encoding="utf-8")
             calls = Calls()
             registry.run_shadcn(["add", "x.json"], d, run=calls, env={})
-            self.assertEqual(calls.cmds[0][:2], ["pnpm", "dlx"])
+            self.assertEqual((Path(calls.cmds[0][0]).stem.lower(), calls.cmds[0][1]), ("pnpm", "dlx"))
 
     def test_windows_resolves_the_runner_to_a_full_path_and_output_is_decoded_as_utf8(self):
         from unittest import mock
