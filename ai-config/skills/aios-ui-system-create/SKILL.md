@@ -37,7 +37,8 @@ the look is decided in this order, and each decision is written down:
    in place and leaving other project variables alone. Under Tailwind v4:
    - colours and `--radius` go in `:root` and `.dark`;
    - `--font-sans` and `--font-mono` go in `@theme inline`;
-   - `--shadow-sm|md|lg` and `--ease-out` go in `@theme` (in `:root` the `shadow-md` utility ignores them);
+   - `--shadow-sm|md|lg` and `--ease-out` go in `@theme` or `@theme inline` (same computed `box-shadow` and
+     easing in both, light and dark; in `:root` the `shadow-md` utility ignores them);
    - `--duration-fast|base` go in `:root`, with `--transition-duration-fast: var(--duration-fast)` (and
      `-base`) in `@theme inline` so `duration-fast` exists as a class.
 

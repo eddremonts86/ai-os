@@ -5,7 +5,7 @@
 ## Metadata
 
 - **Date:** 2026-11-24
-- **Status:** draft (waiting for approval)
+- **Status:** in-progress (approved 2026-11-24; block 1 done)
 - **Blocks:** 5
 - **Review:** cold read by a fresh reviewer on 2026-11-24 (`workflows/project_start.md` step 3b): 0 blockers, 8 majors, all verified against the repo and addressed
 - **Author:** Claude (session design-systems-forms)
@@ -182,11 +182,11 @@ it locally), components, and removals (a token dropped from the system stays in 
 
 ### Block 1: lock the contract wording (estimated: 20 min)
 
-**Status:** not started
+**Status:** done (2026-11-24)
 
-- [ ] Reword `aios-ui-system-create` step 4 for `@theme` or `@theme inline`; add the pointer in
+- [x] Reword `aios-ui-system-create` step 4 for `@theme` or `@theme inline`; add the pointer in
       `aios-ui-system-check`.
-- [ ] **Verify:** `tokens.py check` still passes on the Cockpit; the existing system tests pass.
+- [x] **Verify:** `tokens.py check` still passes on the Cockpit; the existing system tests pass.
 
 ### Block 2: `registry.py` and its tests, test first (estimated: 90 min)
 
