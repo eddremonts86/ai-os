@@ -49,7 +49,7 @@ powershell -ExecutionPolicy Bypass -File .\setup\install-windows.ps1
 
 Includes:
 
-- Chocolatey packages (git, node, python, gh, fzf, etc.).
+- Chocolatey packages: the core only (git, gh, node, python, uv, pwsh, jq, yq, plus Docker, Ollama and Go for the memory stack). Editors, browsers, chat apps and shell tools are opt-in extras: `extras: true` in `install.yaml`, `EXTRAS=1` or `--full`. Without Administrator rights the Chocolatey step is skipped with one message.
 - PowerShell custom profile.
 - Flat global skills across the Windows core CLI targets.
 - 14 superpowers skills.

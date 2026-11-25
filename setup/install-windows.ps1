@@ -74,7 +74,7 @@ if ((Test-Path $InstallProfile) -and -not (Get-Command yq -ErrorAction SilentlyC
     }
 }
 if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
-    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"), @("FLOORPLAN", "floorplan"))) {
+    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"), @("FLOORPLAN", "floorplan"), @("EXTRAS", "extras"))) {
         if (-not [Environment]::GetEnvironmentVariable($pair[0])) {
             $value = (yq -r ".$($pair[1]) // false" $InstallProfile 2>$null)
             if ($value -eq "true") { [Environment]::SetEnvironmentVariable($pair[0], "1") }
@@ -158,13 +158,18 @@ function New-FileLink([string]$LinkPath, [string]$TargetPath) {
 $FloorplanSha = if ($env:FLOORPLAN_SHA) { $env:FLOORPLAN_SHA } else { "94f81b463b7617e06d873ac71323ce71644c8399" }
 
 # ─── Chocolatey package list (single source: manifest + section 1) ───
-$ChocoPackages = @(
-    "git", "gh", "nodejs", "python311", "uv", "pwsh", "fzf", "ripgrep",
-    "fd", "jq", "yq", "mkcert", "docker-desktop", "ollama", "golang",
-    "vscode", "windsurf", "googlechrome", "firefox", "slack", "discord",
-    "7zip", "notepadplusplus", "keepassxc", "postman", "tableplus",
-    "warp"  # Warp has a Windows version
-) | Where-Object { $ExcludedPackages -notcontains $_ }
+# Core is what AI-OS itself runs on; the memory stack's tools come only while the memory stack is on. Everything else
+# is an opt-in extra (install.yaml extras: true, EXTRAS=1 or --full), as dev-env/packages/Brewfile.extras on the Mac.
+$ChocoCore = @("git", "gh", "nodejs", "python311", "uv", "pwsh", "jq", "yq")
+$ChocoMemory = @("docker-desktop", "ollama", "golang")
+$ChocoExtras = @("fzf", "ripgrep", "fd", "mkcert", "vscode", "windsurf", "googlechrome", "firefox", "slack", "discord",
+    "7zip", "notepadplusplus", "keepassxc", "postman", "tableplus", "warp")
+$WithExtras = ($env:EXTRAS -eq "1") -or ($env:AIOS_FULL -eq "1")
+$ChocoPackages = @($ChocoCore) + @(if ($env:SKIP_MEMORY -ne "1") { $ChocoMemory }) + @(if ($WithExtras) { $ChocoExtras }) |
+    Where-Object { $ExcludedPackages -notcontains $_ }
+# A package whose command already works is left alone: no admin rights and no choco run needed for it.
+$ChocoCommand = @{ git = "git"; gh = "gh"; nodejs = "node"; python311 = "python"; uv = "uv"; pwsh = "pwsh"; jq = "jq"; yq = "yq";
+    "docker-desktop" = "docker"; ollama = "ollama"; golang = "go" }
 
 function Show-Manifest {
     if ($env:AIOS_FULL -eq "1") { Log "--full: every CLI, component and package (install.yaml skip: and exclude: ignored)" }
@@ -172,6 +177,7 @@ function Show-Manifest {
     Write-Host ""
     Write-Host "  📦 Chocolatey packages ($($ChocoPackages.Count)):"
     Write-Host ("        " + ($ChocoPackages -join ", "))
+    if (-not $WithExtras) { Write-Host "        (not installed by default: $($ChocoExtras.Count) extras, add them with extras: true in install.yaml, EXTRAS=1 or --full)" }
     Write-Host ""
     Write-Host "  🧠 AI skills symlinked into every CLI"
     Write-Host "  🔌 MCP servers → ~/.hermes/config.yaml"
@@ -247,9 +253,16 @@ if (-not $env:SKIP_CHOCO -and (Get-Command choco -ErrorAction SilentlyContinue))
     Log "1. Installing Chocolatey packages (may take 5-15 min)..."
 
     $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    if (-not $isAdmin) { Warn "not running as Administrator: Chocolatey cannot install packages (re-run from an elevated PowerShell)" }
     $chocoFailed = @(); $needReboot = $false
-    foreach ($pkg in $ChocoPackages) {
+    $todo = @($ChocoPackages | Where-Object {
+        $cmd = $ChocoCommand[$_]
+        if ($cmd -and (Get-Command $cmd -ErrorAction SilentlyContinue)) { Ok "  $_ (already installed)"; $false } else { $true }
+    })
+    if ($todo.Count -and -not $isAdmin) {
+        Warn "not running as Administrator: skipping $($todo.Count) Chocolatey package(s) ($($todo -join ', ')); re-run from an elevated PowerShell to install them"
+        $todo = @()
+    }
+    foreach ($pkg in $todo) {
         choco install -y $pkg --no-progress 2>&1 | Out-Null
         if ($LASTEXITCODE -in 0, 1641, 3010) { Ok "  $pkg"; if ($LASTEXITCODE) { $needReboot = $true } } else { $chocoFailed += $pkg; Warn "  $pkg failed (choco exit $LASTEXITCODE)" }
     }
