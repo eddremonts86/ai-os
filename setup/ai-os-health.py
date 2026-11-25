@@ -142,6 +142,8 @@ def mcp_stdio_handshake(command, args, env_extra=None, timeout=90):
     cmd = [os.path.expandvars(command.replace("${HOME}", str(HOME)))] + [
         os.path.expandvars(str(a).replace("${HOME}", str(HOME))) for a in args]
     env = {**os.environ, **{k: str(v) for k, v in (env_extra or {}).items()}}
+    # Windows CreateProcess finds only .exe; which() honours PATHEXT, so npx resolves to npx.cmd.
+    cmd[0] = shutil.which(cmd[0], path=env.get("PATH")) or cmd[0]
     try:
         # cwd=ROOT: grepai's server refuses to start outside a repo with a .grepai/ index,
         # and launchd starts this script in /.
