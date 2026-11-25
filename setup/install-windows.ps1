@@ -22,6 +22,10 @@
 #                                 codebase map, as a Claude Code / Codex plugin. It reads the commit vetted for AI-OS
 #                                 ($env:FLOORPLAN_SHA) from ~\.cache\ai-os\floorplan, never the default branch, and is
 #                                 opt-in even under --full: its Ask bar runs `claude -p` under your own permission rules.
+#   $env:UI_INDEXER = "1"      → also install ui-indexador (github.com/eddremonts86/ui-indexador): the shadcn registry
+#                                 index behind the aios-ui-* skills, as a local service (API :3040, MCP :3041/mcp) plus
+#                                 two scheduled tasks. Needs `gh auth login` for the first ~15 min index build; --full
+#                                 turns it on, and an existing clone is kept up to date without the flag.
 #   $env:ASSUME_YES = "1"      → skip the preflight confirmation prompt
 #   $env:DRY_RUN = "1"         → simulate without executing (CI mode)
 #
@@ -33,7 +37,7 @@ $ErrorActionPreference = "Stop"
 
 foreach ($arg in $args) {
     switch -Regex ($arg) {
-        '^(--full|-Full)$' { $env:AIOS_FULL = "1" }
+        '^(--full|-Full)$' { $env:AIOS_FULL = "1"; $env:UI_INDEXER = "1" }
         '^(--yes|-y|-Yes)$' { $env:ASSUME_YES = "1" }
         '^(--dry-run|-DryRun)$' { $env:DRY_RUN = "1" }
         default { Write-Host "install-windows.ps1: unknown option $arg (--full, --yes, --dry-run)"; exit 2 }
@@ -74,7 +78,7 @@ if ((Test-Path $InstallProfile) -and -not (Get-Command yq -ErrorAction SilentlyC
     }
 }
 if ((Test-Path $InstallProfile) -and (Get-Command yq -ErrorAction SilentlyContinue)) {
-    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"), @("FLOORPLAN", "floorplan"))) {
+    foreach ($pair in @(@("AIOS_SHELL_THEME", "shell_theme"), @("AIOS_FONTS", "fonts"), @("FLOORPLAN", "floorplan"), @("UI_INDEXER", "ui_indexer"))) {
         if (-not [Environment]::GetEnvironmentVariable($pair[0])) {
             $value = (yq -r ".$($pair[1]) // false" $InstallProfile 2>$null)
             if ($value -eq "true") { [Environment]::SetEnvironmentVariable($pair[0], "1") }
@@ -176,6 +180,7 @@ function Show-Manifest {
     Write-Host "  🧠 AI skills symlinked into every CLI"
     Write-Host "  🔌 MCP servers → ~/.hermes/config.yaml"
     Write-Host "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+    if ($env:UI_INDEXER -eq "1") { Write-Host "  🧩 ui-indexador (shadcn registry index: local service + MCP, first index build ~15 min)" }
     if ($env:FLOORPLAN -eq "1") { Write-Host "  🗺  Floorplan plugin (codebase map), pinned to $($FloorplanSha.Substring(0, 12))" }
     Write-Host "  🐚 PowerShell profile + dotfile symlinks"
     Write-Host "  📁 Instruction adapters for Claude, Codex, Gemini, Hermes, Antigravity"
@@ -680,6 +685,65 @@ if ($actual -ne $expected) {
 }
 else {
     Ok "Superpowers OK ($actual/$expected)"
+}
+Write-Host ""
+
+# ─── 6b. ui-indexador (optional: $env:UI_INDEXER = "1", or an existing clone) ───
+# Mirrors setup/install-mac.sh step 8b. The shadcn registry index behind aios-ui-design / -improve / -review, as its
+# own app and repo. It runs before step 7 so the MCP generators find its service answering: ai-config/mcp/
+# ui-indexador.yaml has `requires_url`, so machines without it never get a broken MCP entry. memory\windows\
+# ai-os-tasks.ps1 owns the service (ui-start, at logon) and the daily refresh; both look for this exact folder.
+$UiDir = Join-Path $HomeDir ".ai-os\apps\ui-indexador"
+$UiTasks = Join-Path (Join-Path $AIOSRoot "memory\windows") "ai-os-tasks.ps1"  # same file the memory step registers below
+if ($env:UI_INDEXER -eq "1" -or (Test-Path (Join-Path $UiDir ".git"))) {
+    Log "6b. ui-indexador ($UiDir)..."
+    $uiOk = $true
+    if (Test-Path (Join-Path $UiDir ".git")) {
+        git -C $UiDir pull --ff-only --quiet 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { Ok "  updated" } else { Warn "  git pull failed - keeping the current checkout" }
+    }
+    else {
+        New-Item -ItemType Directory -Path (Split-Path $UiDir) -Force | Out-Null
+        git clone --quiet https://github.com/eddremonts86/ui-indexador $UiDir 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { Ok "  cloned" } else { Warn "  clone failed - skipping ui-indexador"; $uiOk = $false }
+    }
+    $uiPython = Get-Command python -ErrorAction SilentlyContinue
+    if ($uiOk -and -not $uiPython) { Warn "  python not found - skipping ui-indexador"; $uiOk = $false }
+    if ($uiOk) {
+        $uiVenvPy = Join-Path $UiDir ".venv\Scripts\python.exe"
+        if (-not (Test-Path $uiVenvPy)) { & $uiPython.Source -m venv (Join-Path $UiDir ".venv") 2>&1 | Out-Null }
+        & $uiVenvPy -m pip install --quiet --disable-pip-version-check -r (Join-Path $UiDir "requirements.txt") 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { Ok "  Python environment ready" } else { Warn "  pip install failed - see $UiDir\requirements.txt"; $uiOk = $false }
+    }
+    if ($uiOk) {
+        # The services and the daily refresh are per-user scheduled tasks; `run ui-start` brings them up now.
+        try {
+            & $UiTasks install | Out-Null
+            & $UiTasks run ui-start | Out-Null
+            $uiUp = $false
+            foreach ($i in 1..15) {
+                try { Invoke-RestMethod -Uri "http://127.0.0.1:3040/health" -TimeoutSec 2 | Out-Null; $uiUp = $true; break } catch { Start-Sleep -Seconds 1 }
+            }
+            if ($uiUp) { Ok "  services up (API :3040, MCP :3041/mcp, refresh daily 11:30)" } else { Warn "  service did not answer on :3040 - see $HomeDir\.ai-os\logs\ui-indexador-3040.err.log" }
+        }
+        catch { Warn "  scheduled tasks not registered ($_); run: pwsh $UiTasks install" }
+        # The first build needs the GitHub API (stars rank the registries), so it needs `gh auth login`. ~15 min,
+        # in the background; embeddings use the Ollama of the memory stack (step 7b) and are filled in by the refresh.
+        if (-not (Test-Path (Join-Path $UiDir "data\catalog.json"))) {
+            $uiGh = Get-Command gh -ErrorAction SilentlyContinue
+            if ($uiGh) { & $uiGh.Source auth status 2>&1 | Out-Null }
+            if ($uiGh -and $LASTEXITCODE -eq 0) {
+                Start-Process pwsh -WindowStyle Hidden -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $UiTasks, "run", "ui-refresh") | Out-Null
+                Ok "  first index build started in the background (~15 min, logs in $HomeDir\.ai-os\logs)"
+            }
+            else {
+                Warn "  no index yet and gh is not logged in: run 'gh auth login', then: pwsh $UiTasks run ui-refresh"
+            }
+        }
+    }
+}
+else {
+    Log "6b. ui-indexador not installed (opt in with `$env:UI_INDEXER = '1'); the aios-ui-* skills fall back to npx shadcn search"
 }
 Write-Host ""
 

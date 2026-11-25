@@ -111,6 +111,13 @@ class WindowsInstallerSelectionTests(unittest.TestCase):
                        "Where-Object { $ExcludedPackages -notcontains $_ }", 'memory = @("SKIP_MEMORY")'):
             self.assertIn(needle, text)
 
+    def test_ui_indexer_is_wired_before_the_mcp_step(self):
+        text = (ROOT / "setup/install-windows.ps1").read_text(encoding="utf-8-sig")
+        for needle in ('"UI_INDEXER", "ui_indexer"', '$env:UI_INDEXER = "1" }', "6b. ui-indexador", 'run ui-start'):
+            self.assertIn(needle, text)
+        # the MCP generators only register ui-indexador while its service answers, so it must be up first
+        self.assertLess(text.index("6b. ui-indexador ("), text.index("Log \"7. Configuring MCP servers"))
+
 
 if __name__ == "__main__":
     unittest.main()
