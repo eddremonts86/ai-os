@@ -231,6 +231,12 @@ pdftk input.pdf rotate 1east output rotated.pdf
 ## Common Tasks
 
 ### Extract Text from Scanned PDFs
+Default (AI-OS): local OCR with LiteParse + OCRia-nano-1, then send the text, not page images, to the model
+(rules/always_do.md "Images and scanned PDFs"; licence limits are stated there).
+```bash
+lit parse scanned.pdf --format text -q    # --format json for per-word boxes and confidence
+```
+Fallback when `lit` is not installed:
 ```python
 # Requires: pip install pytesseract pdf2image
 import pytesseract
@@ -303,7 +309,7 @@ with open("encrypted.pdf", "wb") as output:
 | Extract tables | pdfplumber | `page.extract_tables()` |
 | Create PDFs | reportlab | Canvas or Platypus |
 | Command line merge | qpdf | `qpdf --empty --pages ...` |
-| OCR scanned PDFs | pytesseract | Convert to image first |
+| OCR scanned PDFs | `lit parse` (LiteParse) | Fallback: pytesseract, convert to image first |
 | Fill PDF forms | pdf-lib or pypdf (see FORMS.md) | See FORMS.md |
 
 ## Next Steps

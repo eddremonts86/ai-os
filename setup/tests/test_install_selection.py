@@ -46,6 +46,15 @@ class InstallSelectionTests(unittest.TestCase):
         pip = self.write("pip.txt", "mcp[cli]   # SDK\nruff\nmypy # types\n")
         self.assertEqual(self.sh(f"without_excluded {pip}", 'exclude: ["mcp[cli]", mypy]\n'), "ruff\n")
 
+    def test_exclude_by_bare_name_drops_a_pinned_entry(self):
+        pip = self.write("pip.txt", "ruff\nliteparse==2.21.4   # lit\n")
+        for exclude in ("liteparse", '"liteparse==2.21.4"'):
+            self.assertEqual(self.sh(f"without_excluded {pip}", f"exclude: [{exclude}]\n"), "ruff\n", exclude)
+
+    def test_model_pull_follows_the_effective_list_not_the_venv(self):
+        text = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("if grep -q '^liteparse' \"$PIP_USE\" 2>/dev/null && [ -x \"$AIOS_VENV/bin/lit\" ]; then", text)
+
     def test_no_profile_or_no_exclude_keeps_everything(self):
         brewfile = self.write("Brewfile", 'brew "git"\nbrew "jq"\n')
         self.assertEqual(self.sh(f"without_excluded {brewfile}", "fonts: true\n"), 'brew "git"\nbrew "jq"\n')
@@ -110,6 +119,15 @@ class WindowsInstallerSelectionTests(unittest.TestCase):
         for needle in ("'^(--full|-Full)$'", ".skip // [] | .[]", ".exclude // [] | .[]",
                        "Where-Object { $ExcludedPackages -notcontains $_ }", 'memory = @("SKIP_MEMORY")'):
             self.assertIn(needle, text)
+
+    def test_liteparse_exclude_matches_bare_name_and_pin_and_never_aborts(self):
+        text = (ROOT / "setup/install-windows.ps1").read_text(encoding="utf-8-sig")
+        self.assertIn('$LiteparseExcluded = ($ExcludedPackages -contains "liteparse") -or ($ExcludedPackages -contains $LiteparsePin)', text)
+        step = text[text.index("# ─── 7h. Local OCR"):text.index("# ─── 7f. Floorplan")]
+        self.assertIn("$LiteparseExcluded", step)
+        # native stderr under $ErrorActionPreference = "Stop" would abort the whole install
+        self.assertIn('$ErrorActionPreference = "Continue"', step)
+        self.assertIn("finally { $ErrorActionPreference = $prevEap }", step)
 
     def test_ui_indexer_is_wired_before_the_mcp_step(self):
         text = (ROOT / "setup/install-windows.ps1").read_text(encoding="utf-8-sig")
