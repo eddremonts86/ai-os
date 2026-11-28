@@ -345,6 +345,20 @@ if (Test-Path (Join-Path $fpDir ".git")) {
     else { OptMiss "  floorplan clone at $fpDir is not at the pin $($fpSha.Substring(0, 12)) (HEAD: $fpHead) — re-run install-windows.ps1 with FLOORPLAN=1" }
 } else { OptMiss "  floorplan clone not found at $fpDir (optional)" }
 
+# ─── 3h. Local OCR (optional — install-windows.ps1 step 7h) ───
+Section "3h. Local OCR (optional — LiteParse lit + OCRia-nano-1)"
+$litBin = $null
+if (Get-Command uv -ErrorAction SilentlyContinue) {
+    try { $litBin = Join-Path ((& uv tool dir --bin 2>$null | Out-String).Trim()) "lit.exe" } catch { $litBin = $null }
+}
+if (-not $litBin -or -not (Test-Path $litBin)) { OptMiss "  lit not found in uv tool dir --bin (optional; re-run install-windows.ps1, or liteparse is in exclude:)" }
+else {
+    OptOk "  lit installed: $litBin"
+    try { $litModels = @(& $litBin models list 2>$null) } catch { $litModels = @() }
+    if ($litModels -match '^ocria-nano@') { OptOk "  OCRia-nano-1 model present (lit models list)" }
+    else { OptMiss "  OCRia-nano-1 model missing; lit uses Tesseract — run: lit models pull ocria-nano@1.0.0" }
+}
+
 # ─── 4. Superpowers (required = 14) ───
 Section "4. Superpowers skills (REQUIRED = 14)"
 $expected = 14

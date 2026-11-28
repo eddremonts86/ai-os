@@ -219,7 +219,7 @@ and send the text:
 - Born-digital PDFs already carry text: extract it (`pdf` skill) instead of OCRing.
 - OCRia-nano-1 is under the OCRia-nano-1 Model License (RAIL-M based): free commercial use only for organisations
   under $2M revenue and $2M total funding, and never inside a product that competes with LlamaParse. Outside that,
-  run `lit models rm ocria-nano` (Tesseract stays) or exclude `liteparse==2.21.4` in `install.yaml`.
+  run `lit models rm ocria-nano` (Tesseract stays) or add `liteparse` to `exclude:` in `install.yaml`.
 
 ## When creating artifacts
 

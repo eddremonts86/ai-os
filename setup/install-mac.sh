@@ -128,7 +128,8 @@ without_excluded() {
       name = $0
       if (match($0, /^(brew|cask) "[^"]+"/)) { name = substr($0, RSTART, RLENGTH); sub(/^(brew|cask) "/, "", name); sub(/"$/, "", name) }
       else { sub(/#.*/, "", name); gsub(/[ \t]/, "", name) }
-      if (!(name in x)) print
+      bare = name; sub(/[<>=~!].*/, "", bare)  # `exclude: liteparse` also drops `liteparse==2.21.4`
+      if (!(name in x) && !(bare in x)) print
     }' "$1"
 }
 load_profile_flags
@@ -505,7 +506,8 @@ if [ "${SKIP_PIP:-0}" != "1" ]; then
     # LiteParse's `lit` turns scans and screenshots into text locally (rules/always_do.md "Images and
     # scanned PDFs"). The OCRia-nano-1 model is a separate ~75 MB download; without it lit uses its
     # Tesseract engine. `pull` re-downloads every time, so only pull when it is not listed.
-    if [ -x "$AIOS_VENV/bin/lit" ]; then
+    # Only while liteparse is in this install's list: excluding it later must not still pull the model.
+    if grep -q '^liteparse' "$PIP_USE" 2>/dev/null && [ -x "$AIOS_VENV/bin/lit" ]; then
       if "$AIOS_VENV/bin/lit" models list 2>/dev/null | grep -q '^ocria-nano@'; then
         ok "OCRia-nano-1 OCR model already present (lit)"
       elif "$AIOS_VENV/bin/lit" models pull ocria-nano@1.0.0 -q >/dev/null 2>&1; then
