@@ -11,6 +11,7 @@
 # Options (env vars):
 #   $env:SKIP_CHOCO = "1"       → skip chocolatey packages
 #   $env:SKIP_NPM = "1"        → skip npm packages
+#   $env:SKIP_PIP = "1"        → skip Python tools (local OCR: liteparse + OCRia-nano-1, step 7h)
 #   $env:SKIP_DOTFILES = "1"   → skip dotfile symlinks
 #   $env:SKIP_MCP = "1"        → skip MCP config regeneration
 #   $env:SKIP_MEMORY = "1"     → skip memory stack (FalkorDB, Ollama, code indexers)
@@ -161,6 +162,9 @@ function New-FileLink([string]$LinkPath, [string]$TargetPath) {
 # keep in sync with install-mac.sh FLOORPLAN_SHA and verify-windows.ps1.
 $FloorplanSha = if ($env:FLOORPLAN_SHA) { $env:FLOORPLAN_SHA } else { "94f81b463b7617e06d873ac71323ce71644c8399" }
 
+# ─── LiteParse pin (read by the preflight manifest and step 7h; same pin as dev-env/packages/pip-packages.txt) ───
+$LiteparsePin = "liteparse==2.21.4"
+
 # ─── Chocolatey package list (single source: manifest + section 1) ───
 $ChocoPackages = @(
     "git", "gh", "nodejs", "python311", "uv", "pwsh", "fzf", "ripgrep",
@@ -180,6 +184,7 @@ function Show-Manifest {
     Write-Host "  🧠 AI skills symlinked into every CLI"
     Write-Host "  🔌 MCP servers → ~/.hermes/config.yaml"
     Write-Host "  💾 Memory stack (Docker): FalkorDB, Ollama, code indexers"
+    if ($env:SKIP_PIP -ne "1" -and $ExcludedPackages -notcontains $LiteparsePin) { Write-Host "  🔎 Local OCR: liteparse (uv tool) + OCRia-nano-1 model (~75 MB): free commercial use only under `$2M revenue and funding" }
     if ($env:UI_INDEXER -eq "1") { Write-Host "  🧩 ui-indexador (shadcn registry index: local service + MCP, first index build ~15 min)" }
     if ($env:FLOORPLAN -eq "1") { Write-Host "  🗺  Floorplan plugin (codebase map), pinned to $($FloorplanSha.Substring(0, 12))" }
     Write-Host "  🐚 PowerShell profile + dotfile symlinks"
@@ -1140,6 +1145,32 @@ if (-not $env:SKIP_COMPACT_HOOK) {
     }
 }
 else { Log "7e. SKIP_COMPACT_HOOK=1, skipping strategic-compact hook" }
+Write-Host ""
+
+# ─── 7h. Local OCR (LiteParse `lit` + OCRia-nano-1) ───
+# Mirrors the liteparse entry of dev-env/packages/pip-packages.txt, which install-mac.sh step 3 installs into
+# ~/.ai-os/venv. This installer has no shared-venv step, so the same pin goes in as a uv tool. Scans and
+# screenshots then reach a model as text (rules/always_do.md "Images and scanned PDFs"). Model licence
+# (OCRia-nano-1 Model License): free commercial use only under $2M revenue and $2M funding.
+if ($env:SKIP_PIP -eq "1" -or $ExcludedPackages -contains $LiteparsePin) {
+    Log "7h. Local OCR skipped (SKIP_PIP=1 or $LiteparsePin in exclude:)"
+}
+elseif (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
+    Warn "7h. uv not installed; skipping local OCR (lit)"
+}
+else {
+    Log "7h. Local OCR (LiteParse lit + OCRia-nano-1)..."
+    & uv tool install --quiet $LiteparsePin 2>&1 | Out-Null
+    $lit = Join-Path (& uv tool dir --bin) "lit.exe"
+    if (-not (Test-Path $lit)) { Warn "  uv tool install $LiteparsePin failed; local OCR unavailable" }
+    # `pull` re-downloads every time, so only pull when the model is not listed.
+    elseif ((& $lit models list 2>$null) -match '^ocria-nano@') { Ok "  OCRia-nano-1 OCR model already present (lit)" }
+    else {
+        & $lit models pull ocria-nano@1.0.0 -q 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { Ok "  OCRia-nano-1 OCR model installed (lit); licence: free commercial use only under `$2M revenue and funding" }
+        else { Warn "  lit models pull ocria-nano@1.0.0 failed; lit falls back to Tesseract" }
+    }
+}
 Write-Host ""
 
 # ─── 7f. Floorplan (optional: $env:FLOORPLAN = "1") ───

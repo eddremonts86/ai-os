@@ -42,6 +42,15 @@ were learned the hard way. Facts about one specific computer live in `context/pe
   The gstack `diagram` skill (excalidraw triplet) was retired 2026-08-13 — full trigger
   collision with `diagram-design`.
 
+## Local OCR (LiteParse + OCRia-nano-1)
+
+- `lit` (PyPI `liteparse`, Apache-2.0) turns scans and screenshots into text locally so a model gets text instead
+  of image tokens. macOS: `dev-env/packages/pip-packages.txt` → `~/.ai-os/venv`; Windows: `uv tool` (step 7h).
+  Both installers then pull `ocria-nano@1.0.0` (~75 MB, `~/.cache/liteparse/models/`) once.
+- Model licence: OCRia-nano-1 Model License (RAIL-M based), free commercial use only under $2M revenue and $2M
+  total funding, not in a LlamaParse competitor. Personal and dev tooling use is fine.
+- When to use it and the fallback order: `rules/always_do.md` "Images and scanned PDFs".
+
 ## Environment config (secrets)
 
 - **Master merged `.env`:** `dev-env/env-config/.env` — single source of truth for

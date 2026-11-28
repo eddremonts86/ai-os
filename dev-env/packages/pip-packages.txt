@@ -7,6 +7,12 @@
 mcp[cli]                  # MCP SDK
 mcp-server-git            # MCP git server (npm has no equivalent)
 gitingest                 # repo→LLM text digest (Python-only, not on npm)
+liteparse==2.21.4         # `lit` CLI: local OCR (OCRia-nano-1) so scans/screenshots reach a model as text.
+                          # install-mac.sh then runs `lit models pull ocria-nano@1.0.0` (~75 MB).
+                          # Model licence (OCRia-nano-1 Model License, RAIL-M based): free commercial use only
+                          # for organisations under $2M revenue AND $2M funding, never in a LlamaParse competitor.
+                          # Not covered? `lit models rm ocria-nano` (lit falls back to its Tesseract engine), or
+                          # add `liteparse==2.21.4` to exclude: in install.yaml to skip it entirely.
 
 # Utilities
 ruff                      # Python linter (faster than flake8)

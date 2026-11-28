@@ -203,6 +203,24 @@ If a check (type-check, lint, test, build, runtime) surfaces an error:
 - **Elsewhere** (unrelated files, other stacks, other repos): do not expand the task to fix it. Report it at the end with the location, the error, and a concrete proposed fix. The same holds for notes and stale plans you come across ("Stale context and side quests" above).
 - If a fix needs information only the user has (an external credential, a genuine product decision, a destructive/irreversible step), propose the concrete fix instead of just listing the symptom.
 
+## Images and scanned PDFs
+
+A page sent as an image costs ~1,500 tokens or more; the same page as text costs a few hundred. So before a scanned
+PDF or a text-heavy image (screenshot of text, photo of a document, receipt, CV) goes to a model, OCR it locally
+and send the text:
+
+- `lit parse <file> --format text -q` (LiteParse; the installers put it in `~/.ai-os/venv/bin` on macOS and as a
+  `uv tool` on Windows, with the OCRia-nano-1 model). It reads `.pdf`, `.png`, `.jpg` and office files, not unknown
+  extensions: copy an odd one to a known extension first. `--format json` adds per-word boxes and a `confidence`.
+- Fallback, in order: without the model `lit` uses its own Tesseract engine on its own; if `lit` is missing, use the
+  pdf MCP server's `ocr_pdf` or the `pdf` skill's pytesseract recipe. Look at the image itself only when the text
+  comes back empty or garbled, or when the layout, a chart, a photo or handwriting is the point.
+- OCR drops bullet glyphs (•) and visual styling; keep the image when those matter.
+- Born-digital PDFs already carry text: extract it (`pdf` skill) instead of OCRing.
+- OCRia-nano-1 is under the OCRia-nano-1 Model License (RAIL-M based): free commercial use only for organisations
+  under $2M revenue and $2M total funding, and never inside a product that competes with LlamaParse. Outside that,
+  run `lit models rm ocria-nano` (Tesseract stays) or exclude `liteparse==2.21.4` in `install.yaml`.
+
 ## When creating artifacts
 
 17. Save active task planning only in `specs/current_spec.md`; save completed Specs in the versioned `archive/` directory.

@@ -265,6 +265,8 @@ show_manifest() {
   echo ""
   echo "  🐍 Python packages in ~/.ai-os/venv ($n_pip):"
   grep -vE '^[[:space:]]*(#|$)' "$PIP_USE" 2>/dev/null | sed -E 's/[[:space:]]*#.*//;s/[[:space:]]*$//' | join_fold
+  grep -q '^liteparse' "$PIP_USE" 2>/dev/null \
+    && echo "  🔎 OCRia-nano-1 OCR model for lit (~75 MB, ~/.cache/liteparse): free commercial use only under \$2M revenue and funding"
   echo ""
   echo "  🧠 AI skills symlinked into every CLI (~$n_skills)"
   [ "${SKIP_MCP:-0}" = "1" ] || echo "  🔌 MCP servers → ~/.hermes/config.yaml"
@@ -498,6 +500,18 @@ if [ "${SKIP_PIP:-0}" != "1" ]; then
         ok "Playwright chromium installed (diagram-design PNG export)"
       else
         warn "playwright install chromium failed; diagram-design PNG export unavailable (SVG/HTML still work)"
+      fi
+    fi
+    # LiteParse's `lit` turns scans and screenshots into text locally (rules/always_do.md "Images and
+    # scanned PDFs"). The OCRia-nano-1 model is a separate ~75 MB download; without it lit uses its
+    # Tesseract engine. `pull` re-downloads every time, so only pull when it is not listed.
+    if [ -x "$AIOS_VENV/bin/lit" ]; then
+      if "$AIOS_VENV/bin/lit" models list 2>/dev/null | grep -q '^ocria-nano@'; then
+        ok "OCRia-nano-1 OCR model already present (lit)"
+      elif "$AIOS_VENV/bin/lit" models pull ocria-nano@1.0.0 -q >/dev/null 2>&1; then
+        ok "OCRia-nano-1 OCR model installed (lit); licence: free commercial use only under \$2M revenue and funding"
+      else
+        warn "lit models pull ocria-nano@1.0.0 failed; lit falls back to Tesseract"
       fi
     fi
   else
